@@ -1,0 +1,43 @@
+﻿<UserControl
+    x:Class="SpeziInspector.Controls.HeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SpeziInspector.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <controls:DropShadowPanel
+            Margin="20"
+            HorizontalContentAlignment="Stretch"
+            BlurRadius="5"
+            IsMasked="True"
+            OffsetX="5"
+            OffsetY="5"
+            ShadowOpacity="0.7"
+            Color="Black">
+            <Rectangle
+                Height="100"
+                HorizontalAlignment="Stretch"
+                Fill="#F05A28"
+                RadiusX="10"
+                RadiusY="10" />
+        </controls:DropShadowPanel>
+        <StackPanel
+            Margin="20,0,20,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Image
+                Height="90"
+                Margin="5"
+                Source="/Images/Inspector.png" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontWeight="ExtraBlack"
+                Style="{StaticResource SubheaderTextBlockStyle}"
+                Text="Spezifikation Inspector" />
+        </StackPanel>
+    </Grid>
+</UserControl>
