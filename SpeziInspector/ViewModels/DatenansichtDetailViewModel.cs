@@ -1,15 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml.Automation.Peers;
 using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 
 namespace SpeziInspector.ViewModels
 {
@@ -22,22 +22,8 @@ namespace SpeziInspector.ViewModels
 
         public Parameter Item
         {
-            get 
-            {
-                if (_item is not null)
-                {
-                    CanSaveParameter = _item.IsDirty;
-                }
-                return _item;
-            }
-            set
-            {
-                if (_item is not null)
-                {
-                   CanSaveParameter = _item.IsDirty;
-                }
-                SetProperty(ref _item, value); 
-            }
+            get => _item;
+            set => SetProperty(ref _item, value);
         }
 
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
@@ -45,7 +31,6 @@ namespace SpeziInspector.ViewModels
             _parameterDataService = parameterDataService;
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
         }
-
         public IRelayCommand SaveParameter { get; }
 
         private bool _CanSaveParameter;
@@ -59,27 +44,23 @@ namespace SpeziInspector.ViewModels
             }
         }
 
+
         private void SaveParameterAsync()
         {
             Debug.WriteLine("Daten werden in XML gespeichert :)");
         }
-
         public void OnNavigatedTo(object parameter)
         {
-
             if (parameter is not null)
             {
-                
                 _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
                 if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
                 var data = ParamterList.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);
             }
         }
-
         public void OnNavigatedFrom()
         {
         }
-
     }
 }

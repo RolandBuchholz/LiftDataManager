@@ -24,7 +24,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="250" />
             </Grid.ColumnDefinitions>
             <Button
@@ -32,7 +31,7 @@
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
-                Content="Date Parameters"
+                Content="Unsaved Parameters"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
             <Button
@@ -40,19 +39,11 @@
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
-                Content="Unsaved Parameters"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
-            <Button
-                Grid.Column="3"
-                Width="175"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Right"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
             <TextBox
-                Grid.Column="4"
+                Grid.Column="3"
                 Margin="5"
                 IsSpellCheckEnabled="False"
                 PlaceholderText="Suche"

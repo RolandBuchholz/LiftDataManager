@@ -30,39 +30,51 @@ namespace SpeziInspector.Core.Models
         }
 
         public string Name { get; set; }
-
         public string TypeCode { get; set; }
-
         private string _Value;  
         public string Value    
         {
             get => _Value;
             set
             {
-                if (Value != null && value != Value)
+                if ((_Value != null && value != _Value) || (_Value is null && value != ""))
                 {
                     IsDirty = true;
                 }
-
                 SetProperty(ref _Value, value);
             }
         }
-
         private string _Comment;
         public string Comment
         {
             get => _Comment;
             set
             {
-                if (Comment != null && value != Comment)
+                if ((_Comment != null && value != _Comment) || (_Comment is null && value !=""))
                 {
                     IsDirty = true;
                 }
                 SetProperty(ref _Comment, value);
-  
             } 
         }
-
+        private DateTimeOffset? _Date;
+        public DateTimeOffset? Date
+        {
+            get => _Date;
+            set
+            {
+                if ((_Date != null && value != _Date) || (_Date is null && value != null))
+                {
+                    IsDirty = true;
+                }
+                SetProperty(ref _Date, value);
+                if (_Date != null)
+                {
+                   _Value = _Date?.ToString("d");
+                }
+                
+            }
+        }
         private bool _IsKey;
         public bool IsKey
         { 
@@ -76,7 +88,6 @@ namespace SpeziInspector.Core.Models
                 SetProperty(ref _IsKey, value);
             } 
         }
-
         private bool _IsDirty;
         public bool IsDirty 
         {
@@ -86,23 +97,15 @@ namespace SpeziInspector.Core.Models
                 SetProperty(ref _IsDirty, value);
             }
         }
-
         public bool IsDate { get; set; }
-
         public bool IsNumberOnly { get; set; }
-
         public bool IsString { get; set; }
-
-        public DateTimeOffset? Date { get; set; }
-
+        public bool IsBoolean { get; set; }
         public char Symbol => (char)SymbolCode;
-
         public int SymbolCode { get; set; }
-
 
         private int GetSymbolCode(string TypeCode)
         {
-
             switch (TypeCode.ToLower())
             {
                 case "mm":
@@ -122,6 +125,7 @@ namespace SpeziInspector.Core.Models
                     return 60032;
 
                 case "boolean":
+                    IsBoolean = true;
                     return 62250;
 
                 case "mps":
@@ -142,12 +146,7 @@ namespace SpeziInspector.Core.Models
 
                 default:
                     return 59412;
-
             }
-
-
         }
-
-
     }
 }

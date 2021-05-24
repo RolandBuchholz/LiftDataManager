@@ -83,6 +83,15 @@
                 Language="de"
                 PlaceholderText="Datum auswählen"
                 Visibility="{x:Bind ListDetailsMenuItem.IsDate, Mode=OneWay}" />
+            <ComboBox
+                Margin="0,10,0,0"
+                HorizontalAlignment="Stretch"
+                Header="Parameterwert"
+                SelectedValue="{x:Bind ListDetailsMenuItem.Value, Mode=TwoWay}"
+                Visibility="{x:Bind ListDetailsMenuItem.IsBoolean, Mode=OneWay}">
+                <x:String>True</x:String>
+                <x:String>False</x:String>
+            </ComboBox>
             <TextBox
                 Margin="0,10,0,0"
                 Header="Kommentar"
