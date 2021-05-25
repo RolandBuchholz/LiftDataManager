@@ -115,7 +115,7 @@ namespace SpeziInspector.ViewModels
             }
             else
             {
-                FullPathXml = @"C:\Work\Administration\Spezifikation\0815-AutoDeskTransfer.xml";
+                FullPathXml = @"C:\Work\Administration\Spezifikation\8951268-AutoDeskTransfer.xml";
             }
         }
 
