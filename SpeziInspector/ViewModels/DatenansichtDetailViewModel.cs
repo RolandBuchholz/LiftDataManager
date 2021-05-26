@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Automation.Peers;
 using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
@@ -29,8 +28,15 @@ namespace SpeziInspector.ViewModels
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
+            //PropertyChanged += Countdown_PropertyChanged;
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
         }
+
+        //private void Countdown_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    Debug.WriteLine("Hallo Änderung");
+        //}
+
         public IRelayCommand SaveParameter { get; }
 
         private bool _CanSaveParameter;
@@ -43,6 +49,8 @@ namespace SpeziInspector.ViewModels
                 SaveParameter.NotifyCanExecuteChanged();
             }
         }
+
+
 
 
         private void SaveParameterAsync()

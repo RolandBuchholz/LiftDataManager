@@ -1,13 +1,11 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 
-
 namespace SpeziInspector.Core.Models
 {
     public class Parameter : ObservableObject
 
     {
-
         public Parameter(string _TypeCode, string _Value)
         {
             IsDirty = false;
@@ -21,14 +19,32 @@ namespace SpeziInspector.Core.Models
                 {
                     Date = null;
                 }
-                else 
+                else
                 {
                     double excelDate = Convert.ToDouble(_Value);
                     Date = DateTime.FromOADate(excelDate);
-                } 
+                }
+            }
+
+            if (IsBoolean)
+            {
+                if (string.IsNullOrWhiteSpace(_Value))
+                {
+                    BoolValue = null;
+                }
+                else
+                {
+                    if (_Value.ToLower() == "false") 
+                    {
+                        BoolValue = false;
+                    }
+                    else
+                    {
+                        BoolValue = true;
+                    }
+                }
             }
         }
-
         public string Name { get; set; }
         public string TypeCode { get; set; }
         private string _Value;  
@@ -50,7 +66,7 @@ namespace SpeziInspector.Core.Models
             get => _Comment;
             set
             {
-                if ((_Comment != null && value != _Comment) || (_Comment is null && value !=""))
+                if ((_Comment != null && value != _Comment) || (_Comment is null && value != ""))
                 {
                     IsDirty = true;
                 }
@@ -70,9 +86,8 @@ namespace SpeziInspector.Core.Models
                 SetProperty(ref _Date, value);
                 if (_Date != null)
                 {
-                   _Value = _Date?.ToString("d");
+                    _Value = _Date?.ToString("d");
                 }
-                
             }
         }
         private bool _IsKey;
@@ -86,7 +101,25 @@ namespace SpeziInspector.Core.Models
                     IsDirty = true;
                 }
                 SetProperty(ref _IsKey, value);
+
             } 
+        }
+        private bool? _BoolValue;
+        public bool? BoolValue
+        {
+            get => _BoolValue;
+            set
+            {
+                if (value != BoolValue)
+                {
+                    IsDirty = true;
+                }
+                SetProperty(ref _BoolValue, value);
+                if (_BoolValue != null)
+                {
+                    _Value = _BoolValue?.ToString();
+                }
+            }
         }
         private bool _IsDirty;
         public bool IsDirty 

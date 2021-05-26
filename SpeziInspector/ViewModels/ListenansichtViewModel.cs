@@ -2,7 +2,6 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.ViewModels;
-using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
@@ -112,7 +111,7 @@ namespace SpeziInspector.ViewModels
 
         public void EnsureItemSelected()
         {
-            if (Selected == null && FilteredParameters.Count>0) 
+            if (Selected == null && FilteredParameters.Count > 0)
             {
                 Selected = FilteredParameters.First();
             }
