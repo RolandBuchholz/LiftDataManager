@@ -104,19 +104,6 @@
                 Margin="0,10,0,0"
                 Content="Schlüsselparameter"
                 IsChecked="{x:Bind ListDetailsMenuItem.IsKey, Mode=TwoWay}" />
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="Red"
-                    Text="Parameter noch nicht gespeichert"
-                    Visibility="{x:Bind ListDetailsMenuItem.IsDirty, Mode=OneWay}" />
-                <Button
-                    Margin="10"
-                    Content="Save Parameter"
-                    FontWeight="Bold"
-                    Style="{StaticResource AccentButtonStyle}" />
-            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

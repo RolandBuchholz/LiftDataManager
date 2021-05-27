@@ -7,6 +7,7 @@ using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,20 +23,26 @@ namespace SpeziInspector.ViewModels
         public Parameter Item
         {
             get => _item;
-            set => SetProperty(ref _item, value);
+            set
+            {
+                SetProperty(ref _item, value);
+                _item.PropertyChanged += CheckIsDirty;
+            }
+                
         }
-
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
-            //PropertyChanged += Countdown_PropertyChanged;
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
         }
 
-        //private void Countdown_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    Debug.WriteLine("Hallo Änderung");
-        //}
+        private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
+        {
+            if (Item.IsDirty)
+            {
+                CanSaveParameter = true;
+            }
+        }
 
         public IRelayCommand SaveParameter { get; }
 
@@ -49,13 +56,11 @@ namespace SpeziInspector.ViewModels
                 SaveParameter.NotifyCanExecuteChanged();
             }
         }
-
-
-
-
         private void SaveParameterAsync()
         {
-            Debug.WriteLine("Daten werden in XML gespeichert :)");
+            Debug.WriteLine(Item.Name+" in XML gespeichert :)");
+            CanSaveParameter = false;
+            Item.IsDirty = false;
         }
         public void OnNavigatedTo(object parameter)
         {
@@ -69,6 +74,7 @@ namespace SpeziInspector.ViewModels
         }
         public void OnNavigatedFrom()
         {
+            Item.PropertyChanged -= CheckIsDirty;
         }
     }
 }

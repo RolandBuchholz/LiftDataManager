@@ -96,7 +96,7 @@ namespace SpeziInspector.Core.Models
             get => _IsKey;
             set
             {
-                if (value != IsKey)
+                if (value != _IsKey)
                 {
                     IsDirty = true;
                 }
@@ -110,15 +110,12 @@ namespace SpeziInspector.Core.Models
             get => _BoolValue;
             set
             {
-                if (value != BoolValue)
+                if (_BoolValue != null && value != _BoolValue)
                 {
                     IsDirty = true;
+                    _Value = value.ToString();
                 }
                 SetProperty(ref _BoolValue, value);
-                if (_BoolValue != null)
-                {
-                    _Value = _BoolValue?.ToString();
-                }
             }
         }
         private bool _IsDirty;

@@ -90,6 +90,7 @@
                     <controls:DataGridCheckBoxColumn Binding="{Binding IsDirty}" Header="Dirty" />
                     <controls:DataGridCheckBoxColumn Binding="{Binding IsDate}" Header="Date" />
                     <controls:DataGridCheckBoxColumn Binding="{Binding IsNumberOnly}" Header="OnlyNumber" />
+                    <controls:DataGridCheckBoxColumn Binding="{Binding IsBoolean}" Header="IsBoolean" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>

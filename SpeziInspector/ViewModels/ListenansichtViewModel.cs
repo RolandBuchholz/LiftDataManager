@@ -6,6 +6,7 @@ using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -24,7 +25,16 @@ namespace SpeziInspector.ViewModels
         public Parameter Selected
         {
             get { return _selected; }
-            set { SetProperty(ref _selected, value); }
+            set 
+            {
+                if (Selected is not null)
+                {
+                    Selected.PropertyChanged -= CheckIsDirty;
+                }
+
+                SetProperty(ref _selected, value);
+                _selected.PropertyChanged += CheckIsDirty;
+            }
         }
 
         public ListenansichtViewModel()
@@ -34,7 +44,15 @@ namespace SpeziInspector.ViewModels
 
         public IRelayCommand SaveParameter { get; }
 
-        private bool _CanSaveParameter = true;
+        private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
+        {
+            if (Selected.IsDirty)
+            {
+                CanSaveParameter = true;
+            }
+        }
+
+        private bool _CanSaveParameter;
         public bool CanSaveParameter
         {
             get => _CanSaveParameter;
@@ -47,10 +65,10 @@ namespace SpeziInspector.ViewModels
 
         private void SaveParameterAsync()
         {
-            Debug.WriteLine("Daten werden in XML gespeichert :)");
+            Debug.WriteLine(Selected.Name + " in XML gespeichert :)");
+            CanSaveParameter = false;
+            Selected.IsDirty = false;
         }
-
-
 
         private string _SearchInput;
         public string SearchInput
