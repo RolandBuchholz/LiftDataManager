@@ -88,6 +88,7 @@
                 Width="175"
                 Margin="5,5,5,0"
                 HorizontalAlignment="Right"
+                Command="{x:Bind ViewModel.ShowUnsavedParameters}"
                 Content="Unsaved Parameters"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
@@ -96,6 +97,7 @@
                 Width="175"
                 Margin="5,5,5,0"
                 HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.SaveAllSpeziParameters}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
@@ -123,10 +125,11 @@
             ViewStateChanged="OnViewStateChanged" />
         <StackPanel
             Grid.Row="1"
-            Margin="0,370,20,0"
+            Margin="0,150,20,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}">
             <TextBlock
                 VerticalAlignment="Center"
                 FontSize="12"

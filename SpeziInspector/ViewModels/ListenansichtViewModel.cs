@@ -20,11 +20,25 @@ namespace SpeziInspector.ViewModels
         public string FullPathXml;
         public ObservableCollection<Parameter> ParamterList { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
+        public ObservableCollection<Parameter> UnsavedParameters { get; set; } = new();
+
         private Parameter _selected;
 
         public Parameter Selected
         {
-            get { return _selected; }
+            get 
+            {
+                CheckIsDirty(_selected);
+                if(_selected is not null)
+                {
+                    IsItemSelected = true;
+                }
+                else
+                {
+                    IsItemSelected = false;
+                }
+                return _selected; 
+            }
             set 
             {
                 if (Selected is not null)
@@ -33,22 +47,49 @@ namespace SpeziInspector.ViewModels
                 }
 
                 SetProperty(ref _selected, value);
-                _selected.PropertyChanged += CheckIsDirty;
+                if (_selected is not null)
+                {
+                    _selected.PropertyChanged += CheckIsDirty;
+                }
+                
             }
         }
 
         public ListenansichtViewModel()
         {
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
+            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
+            ShowUnsavedParameters= new RelayCommand(UnsavedParametersToList, () => CanShowUnsavedParameters);
         }
 
         public IRelayCommand SaveParameter { get; }
+        public IRelayCommand SaveAllSpeziParameters { get; }
+        public IRelayCommand ShowUnsavedParameters { get; }
 
         private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
         {
-            if (Selected.IsDirty)
+            CheckIsDirty((Parameter)sender);
+        }
+
+        private void CheckIsDirty(Parameter Item)
+        {
+            if (Item is not null && Item.IsDirty)
             {
                 CanSaveParameter = true;
+            }
+            else
+            {
+                CanSaveParameter = false;
+            }
+            SaveParameter.NotifyCanExecuteChanged();
+        }
+
+        private bool _IsItemSelected;
+        public bool IsItemSelected 
+        { get => _IsItemSelected;
+            set
+            {
+                SetProperty(ref _IsItemSelected, value);
             }
         }
 
@@ -63,12 +104,40 @@ namespace SpeziInspector.ViewModels
             }
         }
 
+        private bool _CanSaveAllSpeziParameters;
+        public bool CanSaveAllSpeziParameters
+        {
+            get => _CanSaveAllSpeziParameters;
+            set
+            {
+                SetProperty(ref _CanSaveAllSpeziParameters, value);
+                SaveAllSpeziParameters.NotifyCanExecuteChanged();
+            }
+        }
+
+        private bool _CanShowUnsavedParameters =true;
+        public bool CanShowUnsavedParameters
+        {
+            get => _CanShowUnsavedParameters;
+            set
+            {
+                SetProperty(ref _CanShowUnsavedParameters, value);
+                ShowUnsavedParameters.NotifyCanExecuteChanged();
+            }
+        }
+
         private void SaveParameterAsync()
         {
             Debug.WriteLine(Selected.Name + " in XML gespeichert :)");
             CanSaveParameter = false;
             Selected.IsDirty = false;
         }
+
+        private void SaveAllParameterAsync()
+        {
+            Debug.WriteLine("Daten werden in XML gespeichert :)");
+        }
+
 
         private string _SearchInput;
         public string SearchInput
@@ -86,7 +155,6 @@ namespace SpeziInspector.ViewModels
 
         private void FilterParameter(string searchInput)
         {
-
             if (string.IsNullOrWhiteSpace(searchInput))
             {
                 FilteredParameters.Clear();
@@ -103,12 +171,21 @@ namespace SpeziInspector.ViewModels
                 var filteredData = ParamterList.Where(p => (p.Name != null && p.Name.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
                                                         || (p.Value != null && p.Value.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
                                                         || (p.Comment != null && p.Comment.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase)));
-
                 foreach (var item in filteredData)
                 {
                     FilteredParameters.Add(item);
                 }
+            }
+        }
 
+        private void UnsavedParametersToList() 
+        {
+            FilteredParameters.Clear();
+            var allData = ParamterList.Where(p => p.IsDirty);
+
+            foreach (var item in allData)
+            {
+                FilteredParameters.Add(item);
             }
         }
 
@@ -133,6 +210,7 @@ namespace SpeziInspector.ViewModels
             {
                 Selected = FilteredParameters.First();
             }
+
         }
     }
 }

@@ -26,12 +26,12 @@ namespace SpeziInspector.ViewModels
             _parameterDataService = parameterDataService;
             LoadDataFromVault = new RelayCommand(LoadVaultData, () => CanLoadDataFromVault) ;
             LoadSpeziDataAsync = new RelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-            SaveAllSpeziData = new RelayCommand(SaveData, () => CanSaveAllSpeziData);
+            SaveAllSpeziParameters = new RelayCommand(SaveData, () => CanSaveAllSpeziParameters);
         }
 
         public IRelayCommand LoadDataFromVault { get; }
         public IRelayCommand LoadSpeziDataAsync { get; }
-        public IRelayCommand SaveAllSpeziData { get; }
+        public IRelayCommand SaveAllSpeziParameters { get; }
 
         private bool _CanLoadDataFromVault;
         public bool CanLoadDataFromVault
@@ -55,14 +55,14 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private bool _CanSaveAllSpeziData = false;
-        public bool CanSaveAllSpeziData
+        private bool _CanSaveAllSpeziParameters = false;
+        public bool CanSaveAllSpeziParameters
         {
-            get => _CanSaveAllSpeziData;
+            get => _CanSaveAllSpeziParameters;
             set
             {
-                SetProperty(ref _CanSaveAllSpeziData, value);
-                SaveAllSpeziData.NotifyCanExecuteChanged();
+                SetProperty(ref _CanSaveAllSpeziParameters, value);
+                SaveAllSpeziParameters.NotifyCanExecuteChanged();
             }
         }
 

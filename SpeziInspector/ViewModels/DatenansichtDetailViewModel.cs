@@ -22,13 +22,17 @@ namespace SpeziInspector.ViewModels
 
         public Parameter Item
         {
-            get => _item;
+            get
+            {
+                CheckIsDirty(_item);
+                return _item;
+            }  
+                
             set
             {
                 SetProperty(ref _item, value);
-                _item.PropertyChanged += CheckIsDirty;
+                _item.PropertyChanged += OnPropertyChanged;
             }
-                
         }
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
@@ -36,16 +40,26 @@ namespace SpeziInspector.ViewModels
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
         }
 
-        private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (Item.IsDirty)
-            {
-                CanSaveParameter = true;
-            }
+            CheckIsDirty((Parameter)sender);
         }
 
         public IRelayCommand SaveParameter { get; }
 
+        private void CheckIsDirty(Parameter Item)
+        {
+            if (Item is not null && Item.IsDirty)
+            {
+                CanSaveParameter = true;
+            }
+            else
+            {
+                CanSaveParameter = false;
+            }
+            SaveParameter.NotifyCanExecuteChanged();
+        }
+             
         private bool _CanSaveParameter;
         public bool CanSaveParameter
         {
@@ -74,7 +88,7 @@ namespace SpeziInspector.ViewModels
         }
         public void OnNavigatedFrom()
         {
-            Item.PropertyChanged -= CheckIsDirty;
+            Item.PropertyChanged -= OnPropertyChanged;
         }
     }
 }

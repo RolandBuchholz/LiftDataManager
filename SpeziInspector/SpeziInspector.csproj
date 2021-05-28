@@ -39,10 +39,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SpeziInspector.Core\SpeziInspector.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.18362.16" />
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.18362.16" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <Page Update="Controls\FooterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
