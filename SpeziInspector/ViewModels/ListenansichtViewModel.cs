@@ -45,13 +45,11 @@ namespace SpeziInspector.ViewModels
                 {
                     Selected.PropertyChanged -= CheckIsDirty;
                 }
-
                 SetProperty(ref _selected, value);
                 if (_selected is not null)
                 {
                     _selected.PropertyChanged += CheckIsDirty;
                 }
-                
             }
         }
 
@@ -59,7 +57,7 @@ namespace SpeziInspector.ViewModels
         {
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
             SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
-            ShowUnsavedParameters= new RelayCommand(UnsavedParametersToList, () => CanShowUnsavedParameters);
+            ShowUnsavedParameters= new RelayCommand(AddUnsavedParameters, () => CanShowUnsavedParameters);
         }
 
         public IRelayCommand SaveParameter { get; }
@@ -76,6 +74,11 @@ namespace SpeziInspector.ViewModels
             if (Item is not null && Item.IsDirty)
             {
                 CanSaveParameter = true;
+                if (!UnsavedParameters.Contains(Item))
+                {
+                    UnsavedParameters.Add(Item);
+                }
+                
             }
             else
             {
@@ -131,11 +134,14 @@ namespace SpeziInspector.ViewModels
             Debug.WriteLine(Selected.Name + " in XML gespeichert :)");
             CanSaveParameter = false;
             Selected.IsDirty = false;
+            UnsavedParameters.Remove(Selected);
+            AddUnsavedParameters();
         }
 
         private void SaveAllParameterAsync()
         {
             Debug.WriteLine("Daten werden in XML gespeichert :)");
+            UnsavedParameters.Clear();
         }
 
 
@@ -178,12 +184,14 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void UnsavedParametersToList() 
+
+
+        private void AddUnsavedParameters() 
         {
             FilteredParameters.Clear();
-            var allData = ParamterList.Where(p => p.IsDirty);
+            var unsavedParameter = UnsavedParameters.Where(p => !string.IsNullOrWhiteSpace(p.Name));
 
-            foreach (var item in allData)
+            foreach (var item in unsavedParameter)
             {
                 FilteredParameters.Add(item);
             }
@@ -210,7 +218,6 @@ namespace SpeziInspector.ViewModels
             {
                 Selected = FilteredParameters.First();
             }
-
         }
     }
 }
