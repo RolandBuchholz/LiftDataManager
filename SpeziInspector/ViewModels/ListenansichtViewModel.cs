@@ -42,9 +42,8 @@ namespace SpeziInspector.ViewModels
             set 
             {
                 if (Selected is not null)
-                {
                     Selected.PropertyChanged -= CheckIsDirty;
-                }
+
                 SetProperty(ref _selected, value);
                 if (_selected is not null)
                 {
@@ -58,11 +57,13 @@ namespace SpeziInspector.ViewModels
             SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
             SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
             ShowUnsavedParameters= new RelayCommand(AddUnsavedParameters, () => CanShowUnsavedParameters);
+            ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
 
         public IRelayCommand SaveParameter { get; }
         public IRelayCommand SaveAllSpeziParameters { get; }
         public IRelayCommand ShowUnsavedParameters { get; }
+        public IRelayCommand ShowAllParameters { get; }
 
         private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
         {
@@ -75,21 +76,38 @@ namespace SpeziInspector.ViewModels
             {
                 CanSaveParameter = true;
                 if (!UnsavedParameters.Contains(Item))
-                {
-                    UnsavedParameters.Add(Item);
-                }
-                
+                    UnsavedParameters.Add(Item);  
             }
             else
             {
                 CanSaveParameter = false;
             }
+            if (UnsavedParameters.Count>0)
+            {
+                CanShowUnsavedParameters = true;
+            }
+            else
+            {
+                CanShowUnsavedParameters = false;
+            }
+
+            ShowUnsavedParameters.NotifyCanExecuteChanged();
             SaveParameter.NotifyCanExecuteChanged();
         }
 
+        private bool _IsUnsavedParametersSelected;
+        public bool IsUnsavedParametersSelected
+        { get => _IsUnsavedParametersSelected;
+            set
+            {
+                SetProperty(ref _IsUnsavedParametersSelected, value);
+            }
+        }
+
         private bool _IsItemSelected;
-        public bool IsItemSelected 
-        { get => _IsItemSelected;
+        public bool IsItemSelected
+        {
+            get => _IsItemSelected;
             set
             {
                 SetProperty(ref _IsItemSelected, value);
@@ -118,7 +136,7 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private bool _CanShowUnsavedParameters =true;
+        private bool _CanShowUnsavedParameters;
         public bool CanShowUnsavedParameters
         {
             get => _CanShowUnsavedParameters;
@@ -135,7 +153,7 @@ namespace SpeziInspector.ViewModels
             CanSaveParameter = false;
             Selected.IsDirty = false;
             UnsavedParameters.Remove(Selected);
-            AddUnsavedParameters();
+            if (IsUnsavedParametersSelected) AddUnsavedParameters();
         }
 
         private void SaveAllParameterAsync()
@@ -143,7 +161,6 @@ namespace SpeziInspector.ViewModels
             Debug.WriteLine("Daten werden in XML gespeichert :)");
             UnsavedParameters.Clear();
         }
-
 
         private string _SearchInput;
         public string SearchInput
@@ -157,6 +174,13 @@ namespace SpeziInspector.ViewModels
                 _CurrentSpeziProperties.SearchInput = SearchInput;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
+        }
+
+        private void ShowAllParametersView() 
+        {
+            SearchInput = null;
+            FilterParameter(SearchInput);
+            IsUnsavedParametersSelected = false;
         }
 
         private void FilterParameter(string searchInput)
@@ -184,26 +208,24 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-
-
-        private void AddUnsavedParameters() 
+        private void AddUnsavedParameters()
         {
             FilteredParameters.Clear();
-            var unsavedParameter = UnsavedParameters.Where(p => !string.IsNullOrWhiteSpace(p.Name));
+            var unsavedParameter = ParamterList.Where(p => p.IsDirty);
 
             foreach (var item in unsavedParameter)
             {
                 FilteredParameters.Add(item);
             }
+            IsUnsavedParametersSelected = true;
         }
 
         public void OnNavigatedTo(object parameter)
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-            if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
-            if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
-            Adminmode = _CurrentSpeziProperties.Adminmode;
+            if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
+            if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
         }
@@ -215,9 +237,7 @@ namespace SpeziInspector.ViewModels
         public void EnsureItemSelected()
         {
             if (Selected == null && FilteredParameters.Count > 0)
-            {
                 Selected = FilteredParameters.First();
-            }
         }
     }
 }
