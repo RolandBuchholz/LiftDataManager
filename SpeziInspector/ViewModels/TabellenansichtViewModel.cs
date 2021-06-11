@@ -91,6 +91,21 @@ namespace SpeziInspector.ViewModels
         }
 
 
+        private void CheckUnsavedParametres()
+        {
+            if (ParamterList.Any(p => p.IsDirty))
+            {
+                CanShowUnsavedParameters = true;
+                CanSaveAllSpeziParameters = true;
+            }
+            else
+            {
+                CanShowUnsavedParameters = false;
+                CanSaveAllSpeziParameters = false;
+            }
+
+        }
+
         private string _SearchInput;
         public string SearchInput
         {
@@ -142,6 +157,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
+            CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()

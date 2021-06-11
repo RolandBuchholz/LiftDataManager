@@ -23,7 +23,6 @@ namespace SpeziInspector.ViewModels
         public string FullPathXml;
         public ObservableCollection<Parameter> ParamterList { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
-        public ObservableCollection<Parameter> UnsavedParameters { get; set; } = new();
 
         private ICommand _itemClickCommand;
 
@@ -33,7 +32,7 @@ namespace SpeziInspector.ViewModels
         {
             _navigationService = navigationService;
             SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
-            ShowUnsavedParameters = new RelayCommand(AddUnsavedParameters, () => CanShowUnsavedParameters);
+            ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
 
@@ -86,13 +85,22 @@ namespace SpeziInspector.ViewModels
         private void CheckUnsavedParametres()
         {
             if (ParamterList.Any(p => p.IsDirty))
+            {
                 CanShowUnsavedParameters = true;
+                CanSaveAllSpeziParameters = true;
+            }
+            else
+            {
+                CanShowUnsavedParameters = false;
+                CanSaveAllSpeziParameters = false;
+            }
+       
         }
 
         private void SaveAllParameterAsync()
         {
             Debug.WriteLine("Daten werden in XML gespeichert :)");
-            UnsavedParameters.Clear();
+            CheckUnsavedParametres();
         }
 
         private void ShowAllParametersView()
@@ -102,7 +110,7 @@ namespace SpeziInspector.ViewModels
             IsUnsavedParametersSelected = false;
         }
 
-        private void AddUnsavedParameters()
+        private void ShowUnsavedParametersView()
         {
             FilteredParameters.Clear();
             var unsavedParameter = ParamterList.Where(p => p.IsDirty);

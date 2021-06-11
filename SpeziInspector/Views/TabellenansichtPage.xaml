@@ -24,26 +24,39 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="250" />
             </Grid.ColumnDefinitions>
             <Button
                 Grid.Column="1"
                 Width="175"
-                Margin="5,0,5,0"
+                Margin="5,5,5,0"
                 HorizontalAlignment="Right"
-                Content="Unsaved Parameters"
+                Command="{x:Bind ViewModel.ShowAllParameters}"
+                Content="All Parameters"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.IsUnsavedParametersSelected, Mode=OneWay}" />
             <Button
                 Grid.Column="2"
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
+                Command="{x:Bind ViewModel.ShowUnsavedParameters}"
+                Content="Unsaved Parameters"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+            <Button
+                Grid.Column="3"
+                Width="175"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Right"
+                Command="{x:Bind ViewModel.SaveAllSpeziParameters}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
             <TextBox
-                Grid.Column="3"
+                Grid.Column="4"
                 Margin="5"
                 IsSpellCheckEnabled="False"
                 PlaceholderText="Suche"
