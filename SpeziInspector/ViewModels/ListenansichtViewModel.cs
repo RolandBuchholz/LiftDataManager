@@ -87,7 +87,7 @@ namespace SpeziInspector.ViewModels
             }
 
             SaveParameter.NotifyCanExecuteChanged();
-            CheckUnsavedParameter();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParameter();
 
         }
 
@@ -255,7 +255,7 @@ namespace SpeziInspector.ViewModels
             if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            CheckUnsavedParameter();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParameter();
         }
 
         public void OnNavigatedFrom()

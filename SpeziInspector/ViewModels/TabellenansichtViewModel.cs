@@ -152,12 +152,12 @@ namespace SpeziInspector.ViewModels
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-            if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
-            if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
+            if (_CurrentSpeziProperties.FullPathXml is not null)  FullPathXml = _CurrentSpeziProperties.FullPathXml; 
+            if (_CurrentSpeziProperties.ParamterList is not null)  ParamterList = _CurrentSpeziProperties.ParamterList; 
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            CheckUnsavedParametres();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()

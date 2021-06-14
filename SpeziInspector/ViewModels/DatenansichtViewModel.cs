@@ -6,7 +6,6 @@ using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -173,7 +172,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            CheckUnsavedParametres();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()
