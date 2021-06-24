@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.ViewModels;
+using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
@@ -14,6 +15,7 @@ namespace SpeziInspector.ViewModels
 {
     public class ListenansichtViewModel : ObservableRecipient, INavigationAware
     {
+        private readonly IParameterDataService _parameterDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
@@ -21,18 +23,14 @@ namespace SpeziInspector.ViewModels
         public ObservableCollection<Parameter> ParamterList { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
 
-        //ToDo Remove ObservableCollection<Parameter> UnsavedParameters
-
-        public ObservableCollection<Parameter> UnsavedParameters { get; set; } = new();
-
         private Parameter _selected;
 
         public Parameter Selected
         {
-            get 
+            get
             {
                 CheckIsDirty(_selected);
-                if(_selected is not null)
+                if (_selected is not null)
                 {
                     IsItemSelected = true;
                 }
@@ -40,9 +38,9 @@ namespace SpeziInspector.ViewModels
                 {
                     IsItemSelected = false;
                 }
-                return _selected; 
+                return _selected;
             }
-            set 
+            set
             {
                 if (Selected is not null)
                     Selected.PropertyChanged -= CheckIsDirty;
@@ -55,11 +53,12 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        public ListenansichtViewModel()
+        public ListenansichtViewModel(IParameterDataService parameterDataService)
         {
-            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
-            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
-            ShowUnsavedParameters= new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
+            _parameterDataService = parameterDataService;
+            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
 
@@ -78,8 +77,6 @@ namespace SpeziInspector.ViewModels
             if (Item is not null && Item.IsDirty)
             {
                 CanSaveParameter = true;
-                if (!UnsavedParameters.Contains(Item))
-                    UnsavedParameters.Add(Item);  
             }
             else
             {
@@ -87,15 +84,13 @@ namespace SpeziInspector.ViewModels
             }
 
             SaveParameter.NotifyCanExecuteChanged();
-            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParameter();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
 
         }
 
-        private void CheckUnsavedParameter()
+        private void CheckUnsavedParametres()
         {
-            RefeshUnsavedParameters();
-
-            if (UnsavedParameters.Count > 0)
+            if (ParamterList.Any(p => p.IsDirty))
             {
                 CanShowUnsavedParameters = true;
                 CanSaveAllSpeziParameters = true;
@@ -106,13 +101,12 @@ namespace SpeziInspector.ViewModels
                 CanSaveAllSpeziParameters = false;
             }
 
-            ShowUnsavedParameters.NotifyCanExecuteChanged();
-            SaveAllSpeziParameters.NotifyCanExecuteChanged();
         }
 
         private bool _IsUnsavedParametersSelected;
         public bool IsUnsavedParametersSelected
-        { get => _IsUnsavedParametersSelected;
+        {
+            get => _IsUnsavedParametersSelected;
             set
             {
                 SetProperty(ref _IsUnsavedParametersSelected, value);
@@ -162,19 +156,17 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void SaveParameterAsync()
+        private  void SaveParameterAsync()
         {
-            Debug.WriteLine(Selected.Name + " in XML gespeichert :)");
+             _parameterDataService.SaveParameterAsync(Selected, FullPathXml) ;
             CanSaveParameter = false;
             Selected.IsDirty = false;
-            UnsavedParameters.Remove(Selected);
             if (IsUnsavedParametersSelected) ShowUnsavedParametersView();
         }
 
         private void SaveAllParameterAsync()
         {
             Debug.WriteLine("Daten werden in XML gespeichert :)");
-            UnsavedParameters.Clear();
         }
 
         private string _SearchInput;
@@ -191,7 +183,7 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void ShowAllParametersView() 
+        private void ShowAllParametersView()
         {
             SearchInput = null;
             FilterParameter(SearchInput);
@@ -223,17 +215,6 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void RefeshUnsavedParameters()
-        {
-            UnsavedParameters.Clear();
-            var unsavedParameter = ParamterList.Where(p => p.IsDirty);
-
-            foreach (var item in unsavedParameter)
-            {
-                UnsavedParameters.Add(item);
-            }
-
-        }
         private void ShowUnsavedParametersView()
         {
             FilteredParameters.Clear();
@@ -250,12 +231,12 @@ namespace SpeziInspector.ViewModels
         public void OnNavigatedTo(object parameter)
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-
             if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
             if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
+            Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParameter();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()

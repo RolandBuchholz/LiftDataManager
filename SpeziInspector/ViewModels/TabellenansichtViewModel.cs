@@ -19,11 +19,15 @@ namespace SpeziInspector.ViewModels
         public string FullPathXml;
         public ObservableCollection<Parameter> ParamterList { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
-        public ObservableCollection<Parameter> UnsavedParameters { get; set; } = new();
 
         public TabellenansichtViewModel()
         {
-            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters);
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            {
+                if (m is not null && m.Value == true) CheckUnsavedParametres();
+            });
+
+            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(AddUnsavedParameters, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
@@ -68,7 +72,7 @@ namespace SpeziInspector.ViewModels
         private void SaveAllParameterAsync()
         {
             Debug.WriteLine("Daten werden in XML gespeichert :)");
-            UnsavedParameters.Clear();
+            CheckUnsavedParametres();
         }
 
         private void ShowAllParametersView()
@@ -107,6 +111,7 @@ namespace SpeziInspector.ViewModels
         }
 
         private string _SearchInput;
+
         public string SearchInput
         {
             get => _SearchInput;
@@ -152,8 +157,8 @@ namespace SpeziInspector.ViewModels
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-            if (_CurrentSpeziProperties.FullPathXml is not null)  FullPathXml = _CurrentSpeziProperties.FullPathXml; 
-            if (_CurrentSpeziProperties.ParamterList is not null)  ParamterList = _CurrentSpeziProperties.ParamterList; 
+            if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
+            if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
@@ -162,6 +167,7 @@ namespace SpeziInspector.ViewModels
 
         public void OnNavigatedFrom()
         {
+            WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
         }
     }
 }

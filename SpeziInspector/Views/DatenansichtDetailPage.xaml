@@ -113,12 +113,18 @@
                     Content="Schlüsselparameter"
                     IsChecked="{x:Bind ViewModel.Item.IsKey, Mode=TwoWay}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="12"
+                    <SymbolIcon
+                        Margin="0,4"
+                        HorizontalAlignment="Right"
                         Foreground="Red"
-                        Text="Parameter noch nicht gespeichert"
-                        Visibility="{x:Bind ViewModel.Item.IsDirty, Mode=OneWay}" />
+                        Symbol="ReportHacked"
+                        Visibility="{x:Bind ViewModel.Item.IsDirty, Mode=OneWay}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock Foreground="Red">
+                                Parameter noch nicht gespeichert!<LineBreak />
+                                Speichern ist nur im Adminmode möglich!</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </SymbolIcon>
                     <Button
                         Margin="10"
                         Command="{x:Bind ViewModel.SaveParameter}"

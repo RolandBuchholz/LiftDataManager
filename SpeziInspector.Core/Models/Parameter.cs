@@ -1,9 +1,11 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using SpeziInspector.Messenger.Messages;
 using System;
 
 namespace SpeziInspector.Core.Models
 {
-    public class Parameter : ObservableObject
+    public class Parameter : ObservableRecipient
 
     {
         public Parameter(string _TypeCode, string _Value)
@@ -125,6 +127,7 @@ namespace SpeziInspector.Core.Models
             set
             {
                 SetProperty(ref _IsDirty, value);
+                Messenger.Send(new ParameterDirtyMessage(value));
             }
         }
         public bool IsDate { get; set; }

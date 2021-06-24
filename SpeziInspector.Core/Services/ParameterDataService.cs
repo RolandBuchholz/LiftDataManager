@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System;
 
 namespace SpeziInspector.Core.Services
 {
@@ -32,12 +33,42 @@ namespace SpeziInspector.Core.Services
             return parameterList;
         }
 
-        public void SaveParameterAsync(Parameter parameter, string path)
+        public async Task SaveParameterAsync(Parameter parameter, string path)
         {
             XElement doc = XElement.Load(path);
-            Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
-            Debug.WriteLine($"in {path}");
 
+            // Find a specific customer
+            XElement xmlparameter =
+              (from para in doc.Elements("parameters").Elements("ParamWithValue")
+               where para.Element("name").Value == parameter.Name
+               select para).SingleOrDefault();
+
+            // Modify some of the node values
+
+            switch (parameter.TypeCode.ToLower())
+            {
+                case "boolean":
+                    xmlparameter.Element("value").Value = parameter.Value.ToString();
+                    break;
+
+                case "date":
+                    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
+                    xmlparameter.Element("value").Value = exceldate;
+                    break;
+
+                default:
+                    xmlparameter.Element("value").Value = parameter.Value;
+                    break;
+            }
+
+            xmlparameter.Element("comment").Value = parameter.Comment;
+            xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
+
+            doc.Save(path); 
+            
+            Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
+            Debug.WriteLine($"in vorhandene {path}");
+            await Task.CompletedTask;
         }
 
 

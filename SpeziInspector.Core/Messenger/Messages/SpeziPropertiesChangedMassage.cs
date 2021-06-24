@@ -2,7 +2,7 @@
 
 namespace SpeziInspector.Messenger.Messages
 {
-    class SpeziPropertiesChangedMassage : ValueChangedMessage<CurrentSpeziProperties>
+    public class SpeziPropertiesChangedMassage : ValueChangedMessage<CurrentSpeziProperties>
     {
         public SpeziPropertiesChangedMassage(CurrentSpeziProperties value) : base(value)
         {

@@ -6,6 +6,7 @@
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:SpeziInspector.Core.Models"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -19,8 +20,19 @@
             x:Key="BoolToSting"
             FalseValue="False"
             TrueValue="True" />
+        <Style x:Name="GridTextboxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style x:Name="GridComboboxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style x:Name="GridCalendarDatePickerStyle" TargetType="CalendarDatePicker">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
     </Page.Resources>
-
     <Grid
         x:Name="ContentAreaTabelle"
         Margin="5"
@@ -86,11 +98,9 @@
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"
-                ItemsSource="{x:Bind ViewModel.FilteredParameters}"
-                RowDetailsVisibilityMode="VisibleWhenSelected">
-
-                <controls:DataGrid.RowDetailsTemplate>
-                    <DataTemplate>
+                ItemsSource="{x:Bind ViewModel.FilteredParameters}">
+                <!--<controls:DataGrid.RowDetailsTemplate>
+                    <DataTemplate x:DataType="models:Parameter">
                         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                             <StackPanel
                                 Margin="10"
@@ -107,7 +117,7 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         FontSize="50"
-                                        Glyph="{Binding Symbol}" />
+                                        Glyph="{x:Bind Symbol}" />
                                 </Grid>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock
@@ -115,7 +125,7 @@
                                         VerticalAlignment="Top"
                                         FontSize="18"
                                         Style="{ThemeResource TitleTextBlockStyle}"
-                                        Text="{Binding Name, Mode=OneWay}" />
+                                        Text="{x:Bind Name, Mode=OneWay}" />
                                     <StackPanel x:Name="statusGroup" Margin="{StaticResource SmallTopMargin}">
                                         <TextBlock
                                             Margin="10,0,10,5"
@@ -135,51 +145,49 @@
                                     Margin="0,10,0,0"
                                     AcceptsReturn="True"
                                     Header="Parameterwert"
-                                    Text="{Binding Value, Mode=TwoWay}"
+                                    Text="{x:Bind Value, Mode=TwoWay}"
                                     TextWrapping="Wrap"
-                                    Visibility="{Binding IsString, Mode=OneWay}" />
-                                <!--  Textbox ValidationMode noch ändern  -->
+                                    Visibility="{x:Bind IsString, Mode=OneWay}" />
                                 <TextBox
                                     Margin="0,10,0,0"
-                                    ui:TextBoxExtensions.ValidationMode="Normal"
+                                    ui:TextBoxExtensions.ValidationMode="Dynamic"
                                     ui:TextBoxExtensions.ValidationType="Decimal"
                                     AcceptsReturn="True"
                                     Header="Parameterwert"
-                                    Text="{Binding Value, Mode=TwoWay}"
+                                    Text="{x:Bind Value, Mode=TwoWay}"
                                     TextWrapping="Wrap"
-                                    Visibility="{Binding IsNumberOnly, Mode=OneWay}" />
+                                    Visibility="{x:Bind IsNumberOnly, Mode=OneWay}" />
                                 <CalendarDatePicker
                                     Margin="0,10,0,0"
                                     HorizontalAlignment="Stretch"
                                     CalendarIdentifier="GregorianCalendar"
-                                    Date="{Binding Date, Mode=TwoWay}"
+                                    Date="{x:Bind Date, Mode=TwoWay}"
                                     DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                     Header="Parameterwert"
                                     Language="de"
                                     PlaceholderText="Datum auswählen"
-                                    Visibility="{Binding IsDate, Mode=OneWay}" />
+                                    Visibility="{x:Bind IsDate, Mode=OneWay}" />
                                 <ComboBox
                                     Margin="0,10,0,0"
                                     HorizontalAlignment="Stretch"
                                     Header="Parameterwert"
-                                    SelectedValue="{Binding BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
-                                    Visibility="{Binding IsBoolean, Mode=OneWay}">
+                                    SelectedValue="{x:Bind BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
+                                    Visibility="{x:Bind IsBoolean, Mode=OneWay}">
                                     <x:String>True</x:String>
                                     <x:String>False</x:String>
                                 </ComboBox>
                                 <TextBox
                                     Margin="0,10,0,0"
                                     Header="Kommentar"
-                                    Text="{Binding Comment, Mode=TwoWay}" />
+                                    Text="{x:Bind Comment, Mode=TwoWay}" />
                                 <CheckBox
                                     Margin="0,10,0,0"
                                     Content="Schlüsselparameter"
-                                    IsChecked="{Binding IsKey, Mode=TwoWay}" />
+                                    IsChecked="{x:Bind IsKey, Mode=TwoWay}" />
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
-                </controls:DataGrid.RowDetailsTemplate>
-
+                </controls:DataGrid.RowDetailsTemplate>-->
                 <controls:DataGrid.Columns>
                     <controls:DataGridTemplateColumn Header="Symbol">
                         <controls:DataGridTemplateColumn.CellTemplate>
@@ -199,20 +207,62 @@
                         Binding="{Binding TypeCode}"
                         Header="VariablenTyp"
                         IsReadOnly="True" />
-                    <controls:DataGridTextColumn
-                        Binding="{Binding Value}"
-                        Header="Parameterwert"
-                        IsReadOnly="True" />
+                    <controls:DataGridTemplateColumn Header="Parameterwert">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:Parameter">
+                                <StackPanel>
+                                    <TextBox
+                                        AcceptsReturn="True"
+                                        Style="{StaticResource GridTextboxStyle}"
+                                        Text="{x:Bind Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap"
+                                        Visibility="{x:Bind IsString, Mode=OneWay}" />
+                                    <TextBox
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        AcceptsReturn="True"
+                                        Style="{StaticResource GridTextboxStyle}"
+                                        Text="{x:Bind Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap"
+                                        Visibility="{x:Bind IsNumberOnly, Mode=OneWay}" />
+                                    <CalendarDatePicker
+                                        HorizontalAlignment="Stretch"
+                                        CalendarIdentifier="GregorianCalendar"
+                                        Date="{x:Bind Date, Mode=TwoWay}"
+                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                                        Language="de"
+                                        PlaceholderText="Datum auswählen"
+                                        Style="{StaticResource GridCalendarDatePickerStyle}"
+                                        Visibility="{x:Bind IsDate, Mode=OneWay}" />
+                                    <ComboBox
+                                        HorizontalAlignment="Stretch"
+                                        SelectedValue="{x:Bind BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
+                                        Style="{StaticResource GridComboboxStyle}"
+                                        Visibility="{x:Bind IsBoolean, Mode=OneWay}">
+                                        <x:String>True</x:String>
+                                        <x:String>False</x:String>
+                                    </ComboBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                     <controls:DataGridCheckBoxColumn
                         Width="45"
                         Binding="{Binding IsKey}"
-                        HeaderStyle="{StaticResource SymbolHeaderKey}"
-                        IsReadOnly="True" />
-                    <controls:DataGridTextColumn Binding="{Binding Comment}" Header="Kommentar" />
-                    <!--<controls:DataGridCheckBoxColumn Binding="{Binding IsDirty}" Header="Dirty" />
-                    <controls:DataGridCheckBoxColumn Binding="{Binding IsDate}" Header="Date" />
-                    <controls:DataGridCheckBoxColumn Binding="{Binding IsNumberOnly}" Header="OnlyNumber" />
-                    <controls:DataGridCheckBoxColumn Binding="{Binding IsBoolean}" Header="IsBoolean" />-->
+                        HeaderStyle="{StaticResource SymbolHeaderKey}" />
+                    <controls:DataGridTemplateColumn Header="Kommentar">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:Parameter">
+                                <StackPanel>
+                                    <TextBox
+                                        AcceptsReturn="True"
+                                        Style="{StaticResource GridTextboxStyle}"
+                                        Text="{x:Bind Comment, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
@@ -233,7 +283,6 @@
                 RadiusX="10"
                 RadiusY="10" />
         </controls:DropShadowPanel>
-
         <Grid Grid.Row="2" Padding="25,5,25,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />

@@ -54,6 +54,7 @@ namespace SpeziInspector
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ISettingService, SettingsService>();
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();

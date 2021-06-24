@@ -2,7 +2,7 @@
 
 namespace SpeziInspector.Messenger.Messages
 {
-    class SpeziPropertiesRequestMessage : RequestMessage<CurrentSpeziProperties>
+    public class SpeziPropertiesRequestMessage : RequestMessage<CurrentSpeziProperties>
     {
     }
 }

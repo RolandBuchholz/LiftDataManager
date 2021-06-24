@@ -17,6 +17,9 @@ namespace SpeziInspector.ViewModels
     {
         private readonly IParameterDataService _parameterDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
+        private bool Adminmode;
+        private bool AuftragsbezogeneXml;
+        public string FullPathXml;
         public ObservableCollection<Parameter> ParamterList { get; set; }
         private Parameter _item;
 
@@ -37,7 +40,7 @@ namespace SpeziInspector.ViewModels
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
-            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter);
+            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -72,7 +75,8 @@ namespace SpeziInspector.ViewModels
         }
         private void SaveParameterAsync()
         {
-            Debug.WriteLine(Item.Name+" in XML gespeichert :)");
+            _parameterDataService.SaveParameterAsync(Item, FullPathXml);
+            CanSaveParameter = false;
             CanSaveParameter = false;
             Item.IsDirty = false;
         }
@@ -81,7 +85,10 @@ namespace SpeziInspector.ViewModels
             if (parameter is not null)
             {
                 _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-                if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
+                if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
+                if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
+                Adminmode = _CurrentSpeziProperties.Adminmode;
+                AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
                 var data = ParamterList.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);
             }

@@ -1,32 +1,34 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using SpeziInspector.Contracts.Services;
 using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 
 namespace SpeziInspector.ViewModels
 {
-    public class HomeViewModel : ObservableRecipient ,INavigationAware
+    public class HomeViewModel : ObservableRecipient, INavigationAware
     {
 
         private readonly IParameterDataService _parameterDataService;
+        private readonly ISettingService _settingService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         public ObservableCollection<Parameter> ParamterList { get; set; } = new();
 
-        public HomeViewModel(IParameterDataService parameterDataService)
+        public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService)
         {
             _parameterDataService = parameterDataService;
-            LoadDataFromVault = new RelayCommand(LoadVaultData, () => CanLoadDataFromVault) ;
+            _settingService = settingsSelectorService;
+            LoadDataFromVault = new RelayCommand(LoadVaultData, () => CanLoadDataFromVault);
             LoadSpeziDataAsync = new RelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-            SaveAllSpeziParameters = new RelayCommand(SaveData, () => CanSaveAllSpeziParameters);
+            SaveAllSpeziParameters = new RelayCommand(SaveData, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
         public IRelayCommand LoadDataFromVault { get; }
@@ -37,18 +39,18 @@ namespace SpeziInspector.ViewModels
         public bool CanLoadDataFromVault
         {
             get => _CanLoadDataFromVault;
-            set 
+            set
             {
                 SetProperty(ref _CanLoadDataFromVault, value);
                 LoadDataFromVault.NotifyCanExecuteChanged();
             }
         }
 
-        private bool _CanLoadSpeziData =true;
+        private bool _CanLoadSpeziData = true;
         public bool CanLoadSpeziData
         {
             get => _CanLoadSpeziData;
-            set 
+            set
             {
                 SetProperty(ref _CanLoadSpeziData, value);
                 LoadSpeziDataAsync.NotifyCanExecuteChanged();
@@ -76,7 +78,7 @@ namespace SpeziInspector.ViewModels
                 _CurrentSpeziProperties.AuftragsbezogeneXml = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
                 //CanLoadDataFromVault = value;
-                //CanLoadSpeziData = !value;
+                //CanLoadSpeziData = !value; 
                 SetFullPathXml();
             }
         }
@@ -128,7 +130,7 @@ namespace SpeziInspector.ViewModels
         {
             ParamterList.Clear();
             if (FullPathXml is null) { SetFullPathXml(); };
-            var data =await _parameterDataService.LoadParameterAsync(FullPathXml);
+            var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
             foreach (var item in data)
             {
@@ -140,8 +142,6 @@ namespace SpeziInspector.ViewModels
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
 
             Debug.WriteLine($"Daten aus {FullPathXml} geladen :)");
-
-            
         }
 
         private void SaveData()
@@ -149,17 +149,25 @@ namespace SpeziInspector.ViewModels
             Debug.WriteLine("Daten werden in XML gespeichert :)");
         }
 
-        public void OnNavigatedTo(object parameter)
+
+        private void SetAdminmode()
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+            Adminmode = _settingService.Adminmode;
+            _CurrentSpeziProperties.Adminmode = Adminmode;
+            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+        }
 
+        public void OnNavigatedTo(object parameter)
+        {
+            if (_CurrentSpeziProperties is null) SetAdminmode();
+            _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
             SetHomeParameter();
-
         }
 
         public void OnNavigatedFrom()

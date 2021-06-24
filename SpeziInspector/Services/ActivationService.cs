@@ -16,14 +16,16 @@ namespace SpeziInspector.Services
         private readonly IEnumerable<IActivationHandler> _activationHandlers;
         private readonly INavigationService _navigationService;
         private readonly IThemeSelectorService _themeSelectorService;
+        private readonly ISettingService _settingService;
 
-        public ActivationService(IShellWindow shellWindow, ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService)
+        public ActivationService(IShellWindow shellWindow, ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService)
         {
             App.MainWindow = shellWindow as Window;
             _defaultHandler = defaultHandler;
             _activationHandlers = activationHandlers;
             _navigationService = navigationService;
             _themeSelectorService = themeSelectorService;
+            _settingService = settingsSelectorService;
         }
 
         public async Task ActivateAsync(object activationArgs)
@@ -61,6 +63,7 @@ namespace SpeziInspector.Services
         private async Task InitializeAsync()
         {
             await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
+            await _settingService.InitializeAsync().ConfigureAwait(false);
             await Task.CompletedTask;
         }
 

@@ -9,7 +9,7 @@ namespace SpeziInspector.Core.Contracts.Services
     {
         Task<IEnumerable<Parameter>> LoadParameterAsync(string path);
 
-        void SaveParameterAsync(Parameter parameter, string path);
+        Task SaveParameterAsync(Parameter parameter, string path);
 
         void SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path);
     }

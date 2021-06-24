@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace SpeziInspector.Messenger
 {
-    class CurrentSpeziProperties
+    public class  CurrentSpeziProperties
     {
         public bool Adminmode { get; set; }
         public bool AuftragsbezogeneXml { get; set; }
