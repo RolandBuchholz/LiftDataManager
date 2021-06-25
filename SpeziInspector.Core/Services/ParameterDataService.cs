@@ -72,11 +72,52 @@ namespace SpeziInspector.Core.Services
         }
 
 
-        public void SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path)
+        public async Task SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path)
         {
             XElement doc = XElement.Load(path);
+
+            var unsavedParameter = ParamterList.Where(p => p.IsDirty);
+
+            foreach (var parameter in unsavedParameter)
+            {
+                // Find a specific customer
+                XElement xmlparameter =
+                  (from para in doc.Elements("parameters").Elements("ParamWithValue")
+                   where para.Element("name").Value == parameter.Name
+                   select para).SingleOrDefault();
+
+                // Modify some of the node values
+
+                switch (parameter.TypeCode.ToLower())
+                {
+                    case "boolean":
+                        xmlparameter.Element("value").Value = parameter.Value.ToString();
+                        break;
+
+                    case "date":
+                        var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
+                        xmlparameter.Element("value").Value = exceldate;
+                        break;
+
+                    default:
+                        xmlparameter.Element("value").Value = parameter.Value;
+                        break;
+                }
+
+                xmlparameter.Element("comment").Value = parameter.Comment;
+                xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
+
+                parameter.IsDirty = false;
+
+                Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
+                Debug.WriteLine($"in vorhandene {path}");
+            }
+
+            doc.Save(path);
+
             Debug.WriteLine($"Alle Parameter gespeichert:");
             Debug.WriteLine($"in {path}");
+            await Task.CompletedTask;
         }
     }
 }

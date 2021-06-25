@@ -166,7 +166,9 @@ namespace SpeziInspector.ViewModels
 
         private void SaveAllParameterAsync()
         {
-            Debug.WriteLine("Daten werden in XML gespeichert :)");
+            _parameterDataService.SaveAllParameterAsync(ParamterList, FullPathXml);
+            CheckUnsavedParametres();
+            ShowAllParametersView();
         }
 
         private string _SearchInput;

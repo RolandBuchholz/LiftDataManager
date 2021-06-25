@@ -11,6 +11,6 @@ namespace SpeziInspector.Core.Contracts.Services
 
         Task SaveParameterAsync(Parameter parameter, string path);
 
-        void SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path);
+        Task SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.Services;
 using SpeziInspector.Contracts.ViewModels;
+using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
@@ -16,6 +17,7 @@ namespace SpeziInspector.ViewModels
     public class DatenansichtViewModel : ObservableRecipient, INavigationAware
     {
         private readonly INavigationService _navigationService;
+        private readonly IParameterDataService _parameterDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
@@ -27,9 +29,10 @@ namespace SpeziInspector.ViewModels
 
         public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
 
-        public DatenansichtViewModel(INavigationService navigationService)
+        public DatenansichtViewModel(INavigationService navigationService,IParameterDataService parameterDataService)
         {
             _navigationService = navigationService;
+            _parameterDataService = parameterDataService;
             SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
@@ -98,8 +101,9 @@ namespace SpeziInspector.ViewModels
 
         private void SaveAllParameterAsync()
         {
-            Debug.WriteLine("Daten werden in XML gespeichert :)");
+            _parameterDataService.SaveAllParameterAsync(ParamterList, FullPathXml);
             CheckUnsavedParametres();
+            ShowAllParametersView();
         }
 
         private void ShowAllParametersView()

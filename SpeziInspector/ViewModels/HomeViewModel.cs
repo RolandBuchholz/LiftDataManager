@@ -5,8 +5,10 @@ using SpeziInspector.Contracts.Services;
 using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Models;
+using SpeziInspector.Helpers;
 using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -21,6 +23,7 @@ namespace SpeziInspector.ViewModels
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         public ObservableCollection<Parameter> ParamterList { get; set; } = new();
+        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
         public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService)
         {
@@ -28,7 +31,14 @@ namespace SpeziInspector.ViewModels
             _settingService = settingsSelectorService;
             LoadDataFromVault = new RelayCommand(LoadVaultData, () => CanLoadDataFromVault);
             LoadSpeziDataAsync = new RelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-            SaveAllSpeziParameters = new RelayCommand(SaveData, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+
+            MyDict = new Dictionary<string, string>
+                {
+                    { "First","Test1"},
+                    { "Second","Test2" }
+
+                };
         }
 
         public IRelayCommand LoadDataFromVault { get; }
@@ -65,6 +75,18 @@ namespace SpeziInspector.ViewModels
             {
                 SetProperty(ref _CanSaveAllSpeziParameters, value);
                 SaveAllSpeziParameters.NotifyCanExecuteChanged();
+            }
+        }
+
+        private void CheckUnsavedParametres()
+        {
+            if (ParamterList.Any(p => p.IsDirty))
+            {
+                CanSaveAllSpeziParameters = true;
+            }
+            else
+            {
+                CanSaveAllSpeziParameters = false;
             }
         }
 
@@ -135,7 +157,25 @@ namespace SpeziInspector.ViewModels
             foreach (var item in data)
             {
                 ParamterList.Add(item);
+                try
+                {
+                    ParamterDictionary.Add(item.Name, item);
+                }
+                catch
+                { 
+                    Debug.WriteLine(item.Name+ " sind bereits im Dictionary"); 
+                }
+
+                //MyDict = new Dictionary<string, string>
+                //{
+                //    { "First","Test1"},
+                //    { "Second","Test2" }
+
+                //};
             }
+
+            //string key = "var_Index";
+            //var test = ParamterDictionary[key];
             SetHomeParameter();
 
             _CurrentSpeziProperties.ParamterList = ParamterList;
@@ -144,9 +184,10 @@ namespace SpeziInspector.ViewModels
             Debug.WriteLine($"Daten aus {FullPathXml} geladen :)");
         }
 
-        private void SaveData()
+        private void SaveAllParameterAsync()
         {
-            Debug.WriteLine("Daten werden in XML gespeichert :)");
+            _parameterDataService.SaveAllParameterAsync(ParamterList, FullPathXml);
+            CheckUnsavedParametres();
         }
 
 
@@ -168,6 +209,7 @@ namespace SpeziInspector.ViewModels
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterList is not null) { ParamterList = _CurrentSpeziProperties.ParamterList; }
             SetHomeParameter();
+            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()
@@ -177,7 +219,7 @@ namespace SpeziInspector.ViewModels
         private void SetHomeParameter()
         {
 
-            Kennwort = ParamterList.FirstOrDefault(p => p.Name == "var_Kennwort");
+            if (ParamterList.Count > 0) Kennwort = (ParamterList.FirstOrDefault(p => p.Name == "var_Kennwort")).Value;
             Projekt = ParamterList.FirstOrDefault(p => p.Name == "var_Projekt");
             Betreiber = ParamterList.FirstOrDefault(p => p.Name == "var_Betreiber");
             Nutzlast = ParamterList.FirstOrDefault(p => p.Name == "var_Q");
@@ -196,18 +238,37 @@ namespace SpeziInspector.ViewModels
             Kommentare = ParamterList.FirstOrDefault(p => p.Name == "var_Kommentare");
         }
 
-        private Parameter _var_Kennwort;
-        public Parameter Kennwort
+
+        private Dictionary<string, string> _MyDict;
+        public Dictionary<string,string> MyDict
+        {
+            get { return _MyDict; }
+            set { _MyDict = value; } 
+        }
+
+
+
+        private string _var_Kennwort;
+        public string Kennwort
         {
             get => _var_Kennwort;
-            set => SetProperty(ref _var_Kennwort, value);
+            set
+            {
+                SetProperty(ref _var_Kennwort, value);
+                ParamterList.FirstOrDefault(p => p.Name == "var_Kennwort").Value = value;
+                CheckUnsavedParametres();
+            }
         }
 
         private Parameter _var_Projekt;
         public Parameter Projekt
         {
             get => _var_Projekt;
-            set => SetProperty(ref _var_Projekt, value);
+            set
+            {
+                SetProperty(ref _var_Projekt, value);
+                CheckUnsavedParametres();
+            }
         }
 
         private Parameter _var_Betreiber;
