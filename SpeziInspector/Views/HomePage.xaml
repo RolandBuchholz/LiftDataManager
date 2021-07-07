@@ -392,7 +392,7 @@
                                 Grid.Column="0"
                                 Header="Schachtkopf"
                                 PlaceholderText="Schachtkopf"
-                                Text="{x:Bind ViewModel.Schachtgrube.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.Schachtkopf.Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
