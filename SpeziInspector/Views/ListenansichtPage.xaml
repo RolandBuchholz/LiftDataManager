@@ -49,12 +49,6 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ListHeaderTemplate">
-            <!--<Grid Height="40">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ListTitleStyle}"
-                    Text="{Binding}" />
-            </Grid>-->
         </DataTemplate>
         <DataTemplate x:Key="MinimalListHeaderTemplate">
             <Grid Height="40">

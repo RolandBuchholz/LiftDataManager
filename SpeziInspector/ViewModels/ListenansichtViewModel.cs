@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Cogs.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.ViewModels;
@@ -8,7 +9,6 @@ using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SpeziInspector.ViewModels
@@ -20,7 +20,7 @@ namespace SpeziInspector.ViewModels
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
         public string FullPathXml;
-        public ObservableCollection<Parameter> ParamterList { get; set; }
+        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
 
         private Parameter _selected;
@@ -84,13 +84,13 @@ namespace SpeziInspector.ViewModels
             }
 
             SaveParameter.NotifyCanExecuteChanged();
-            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
+            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
 
         }
 
         private void CheckUnsavedParametres()
         {
-            if (ParamterList.Any(p => p.IsDirty))
+            if (ParamterDictionary.Values.Any(p => p.IsDirty))
             {
                 CanShowUnsavedParameters = true;
                 CanSaveAllSpeziParameters = true;
@@ -156,9 +156,9 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private  void SaveParameterAsync()
+        private void SaveParameterAsync()
         {
-             _parameterDataService.SaveParameterAsync(Selected, FullPathXml) ;
+            _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
             CanSaveParameter = false;
             Selected.IsDirty = false;
             if (IsUnsavedParametersSelected) ShowUnsavedParametersView();
@@ -166,7 +166,7 @@ namespace SpeziInspector.ViewModels
 
         private void SaveAllParameterAsync()
         {
-            _parameterDataService.SaveAllParameterAsync(ParamterList, FullPathXml);
+            _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             CheckUnsavedParametres();
             ShowAllParametersView();
         }
@@ -179,7 +179,7 @@ namespace SpeziInspector.ViewModels
             set
             {
                 SetProperty(ref _SearchInput, value);
-                if (ParamterList is not null) { FilterParameter(SearchInput); }
+                if (ParamterDictionary is not null) { FilterParameter(SearchInput); }
                 _CurrentSpeziProperties.SearchInput = SearchInput;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
@@ -197,7 +197,7 @@ namespace SpeziInspector.ViewModels
             if (string.IsNullOrWhiteSpace(searchInput))
             {
                 FilteredParameters.Clear();
-                var allData = ParamterList.Where(p => !string.IsNullOrWhiteSpace(p.Name));
+                var allData = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
 
                 foreach (var item in allData)
                 {
@@ -207,7 +207,7 @@ namespace SpeziInspector.ViewModels
             else
             {
                 FilteredParameters.Clear();
-                var filteredData = ParamterList.Where(p => (p.Name != null && p.Name.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
+                var filteredData = ParamterDictionary.Values.Where(p => (p.Name != null && p.Name.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
                                                         || (p.Value != null && p.Value.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
                                                         || (p.Comment != null && p.Comment.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase)));
                 foreach (var item in filteredData)
@@ -220,7 +220,7 @@ namespace SpeziInspector.ViewModels
         private void ShowUnsavedParametersView()
         {
             FilteredParameters.Clear();
-            var unsavedParameter = ParamterList.Where(p => p.IsDirty);
+            var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);
 
             foreach (var item in unsavedParameter)
             {
@@ -234,11 +234,11 @@ namespace SpeziInspector.ViewModels
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
-            if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
+            if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            if (_CurrentSpeziProperties.ParamterList is not null) CheckUnsavedParametres();
+            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
         }
 
         public void OnNavigatedFrom()

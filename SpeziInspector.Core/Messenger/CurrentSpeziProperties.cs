@@ -1,4 +1,5 @@
-﻿using SpeziInspector.Core.Models;
+﻿using Cogs.Collections;
+using SpeziInspector.Core.Models;
 using System.Collections.ObjectModel;
 
 namespace SpeziInspector.Messenger
@@ -9,7 +10,6 @@ namespace SpeziInspector.Messenger
         public bool AuftragsbezogeneXml { get; set; }
         public string FullPathXml { get; set; }
         public string SearchInput { get; set; }
-        public ObservableCollection<Parameter> ParamterList { get; set; }
-
+        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
     }
 }

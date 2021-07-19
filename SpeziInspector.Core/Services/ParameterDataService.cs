@@ -1,13 +1,12 @@
-﻿using SpeziInspector.Core.Contracts.Services;
+﻿using Cogs.Collections;
+using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Helpers;
 using SpeziInspector.Core.Models;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System;
 
 namespace SpeziInspector.Core.Services
 {
@@ -64,19 +63,19 @@ namespace SpeziInspector.Core.Services
             xmlparameter.Element("comment").Value = parameter.Comment;
             xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
 
-            doc.Save(path); 
-            
+            doc.Save(path);
+
             Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
             Debug.WriteLine($"in vorhandene {path}");
             await Task.CompletedTask;
         }
 
 
-        public async Task SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path)
+        public async Task SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
         {
             XElement doc = XElement.Load(path);
 
-            var unsavedParameter = ParamterList.Where(p => p.IsDirty);
+            var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);
 
             foreach (var parameter in unsavedParameter)
             {

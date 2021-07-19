@@ -23,8 +23,15 @@ namespace SpeziInspector.Core.Models
                 }
                 else
                 {
-                    double excelDate = Convert.ToDouble(_Value);
-                    Date = DateTime.FromOADate(excelDate);
+                    try
+                    {
+                        double excelDate = Convert.ToDouble(_Value);
+                        Date = DateTime.FromOADate(excelDate);
+                    }
+                    catch
+                    {
+                        Date = null;
+                    }
                 }
             }
 

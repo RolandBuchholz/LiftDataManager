@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using Cogs.Collections;
 using SpeziInspector.Core.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.Core.Contracts.Services
 {
@@ -11,6 +11,6 @@ namespace SpeziInspector.Core.Contracts.Services
 
         Task SaveParameterAsync(Parameter parameter, string path);
 
-        Task SaveAllParameterAsync(ObservableCollection<Parameter> ParamterList, string path);
+        Task SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path);
     }
 }

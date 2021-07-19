@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Cogs.Collections;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.ViewModels;
@@ -8,7 +9,6 @@ using SpeziInspector.Messenger;
 using SpeziInspector.Messenger.Messages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SpeziInspector.ViewModels
@@ -20,7 +20,7 @@ namespace SpeziInspector.ViewModels
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
         public string FullPathXml;
-        public ObservableCollection<Parameter> ParamterList { get; set; }
+        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         private Parameter _item;
 
         public Parameter Item
@@ -29,8 +29,8 @@ namespace SpeziInspector.ViewModels
             {
                 CheckIsDirty(_item);
                 return _item;
-            }  
-                
+            }
+
             set
             {
                 SetProperty(ref _item, value);
@@ -62,7 +62,7 @@ namespace SpeziInspector.ViewModels
             }
             SaveParameter.NotifyCanExecuteChanged();
         }
-             
+
         private bool _CanSaveParameter;
         public bool CanSaveParameter
         {
@@ -86,10 +86,10 @@ namespace SpeziInspector.ViewModels
             {
                 _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
                 if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
-                if (_CurrentSpeziProperties.ParamterList is not null) ParamterList = _CurrentSpeziProperties.ParamterList;
+                if(_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
                 Adminmode = _CurrentSpeziProperties.Adminmode;
                 AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-                var data = ParamterList.Where(p => !string.IsNullOrWhiteSpace(p.Name));
+                var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);
             }
         }

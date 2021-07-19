@@ -5,12 +5,20 @@
     xmlns:SpeziControls="using:SpeziInspector.Controls"
     xmlns:behaviors="using:SpeziInspector.Behaviors"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BoolToObjectConverter
+            x:Key="InvertBoolToObjectConverter"
+            FalseValue="Visible"
+            TrueValue="Collapsed" />
+    </Page.Resources>
 
     <Grid
         Margin="5"
@@ -72,39 +80,17 @@
                 Content="Load Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
-                Visibility="Visible" />
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
 
-
-            <!--<ToggleSplitButton
-                x:Name="myListButton"
-                Grid.Column="6"
-                Margin="5,0,5,0">
-                <SymbolIcon x:Name="mySymbolIcon" Symbol="List" />
-                <ToggleSplitButton.Flyout>
-                    <Flyout Placement="Bottom">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel.Resources>
-                                <Style TargetType="Button">
-                                    <Setter Property="Padding" Value="4" />
-                                    <Setter Property="MinWidth" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
-                                    <Setter Property="Margin" Value="6" />
-                                </Style>
-                            </StackPanel.Resources>
-                            <Button>
-                                <SymbolIcon Symbol="AllApps" />
-                            </Button>
-                            <Button>
-                                <SymbolIcon Symbol="PreviewLink" />
-                            </Button>
-                            <Button>
-                                <SymbolIcon Symbol="List" />
-                            </Button>
-                        </StackPanel>
-                    </Flyout>
-                </ToggleSplitButton.Flyout>
-            </ToggleSplitButton>-->
-
+            <Button
+                Grid.Column="3"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.LoadSpeziDataAsync}"
+                Content="Standard XML laden"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
             <Button
                 Grid.Column="5"
                 Width="175"
@@ -123,6 +109,9 @@
                 PlaceholderText="Suche"
                 Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
+
+        <!--  Parameter  -->
+
         <ScrollViewer
             Grid.Row="2"
             Margin="5"
@@ -163,13 +152,13 @@
                     VerticalAlignment="Center"
                     FontWeight="Bold"
                     Text="Allgemeine Aufzugsdaten:" />
-
                 <TextBox
                     Grid.Row="1"
                     Margin="0,10,0,10"
                     Header="Kennwort"
                     PlaceholderText="Kennwort"
-                    Text="{x:Bind ViewModel.Kennwort, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kennwort'].Value, Mode=TwoWay}" />
+
                 <Grid Grid.Row="2" Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -182,7 +171,7 @@
                         AcceptsReturn="True"
                         Header="Bauvorhaben"
                         PlaceholderText="Bauvorhaben"
-                        Text="{x:Bind ViewModel.Projekt.Value, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                     <TextBox
                         Grid.Column="1"
@@ -191,7 +180,7 @@
                         AcceptsReturn="True"
                         Header="Betreiber"
                         PlaceholderText="Betreiber"
-                        Text="{x:Bind ViewModel.Betreiber.Value, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
                 <controls:Expander
@@ -224,7 +213,7 @@
                                 Grid.Column="0"
                                 Header="Nutzlast"
                                 PlaceholderText="Nutzlast"
-                                Text="{x:Bind ViewModel.Nutzlast.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -245,7 +234,7 @@
                                 Grid.Column="0"
                                 Header="Fahrkorbgewicht"
                                 PlaceholderText="Fahrkorbgewicht"
-                                Text="{x:Bind ViewModel.Fahrkorbgewicht.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -266,7 +255,7 @@
                                 Grid.Column="0"
                                 Header="Nenngeschwindigkeit"
                                 PlaceholderText="Nenngeschwindigkeit"
-                                Text="{x:Bind ViewModel.Nenngeschwindigkeit.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -287,7 +276,7 @@
                                 Grid.Column="0"
                                 Header="Anzahl Personen"
                                 PlaceholderText="Anzahl Personen"
-                                Text="{x:Bind ViewModel.AnzahlPersonen.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -329,7 +318,7 @@
                                 Grid.Column="0"
                                 Header="Schachtbreite"
                                 PlaceholderText="Schachtbreite"
-                                Text="{x:Bind ViewModel.Schachtbreite.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -350,7 +339,7 @@
                                 Grid.Column="0"
                                 Header="Schachttiefe"
                                 PlaceholderText="Schachttiefe"
-                                Text="{x:Bind ViewModel.Schachtiefe.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -371,7 +360,7 @@
                                 Grid.Column="0"
                                 Header="Schachtgrube"
                                 PlaceholderText="Schachtgrube"
-                                Text="{x:Bind ViewModel.Schachtgrube.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -392,7 +381,7 @@
                                 Grid.Column="0"
                                 Header="Schachtkopf"
                                 PlaceholderText="Schachtkopf"
-                                Text="{x:Bind ViewModel.Schachtkopf.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -413,7 +402,7 @@
                                 Grid.Column="0"
                                 Header="Förderhöhe"
                                 PlaceholderText="Förderhöhe"
-                                Text="{x:Bind ViewModel.Foederhoehe.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -454,7 +443,7 @@
                                 Grid.Column="0"
                                 Header="Kabinenbreite"
                                 PlaceholderText="Kabinenbreite"
-                                Text="{x:Bind ViewModel.Kabinenbreite.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -475,7 +464,7 @@
                                 Grid.Column="0"
                                 Header="Kabinentiefe"
                                 PlaceholderText="Kabinentiefe"
-                                Text="{x:Bind ViewModel.Kabinentiefe.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -496,7 +485,7 @@
                                 Grid.Column="0"
                                 Header="Kabinenhöhe"
                                 PlaceholderText="Kabinenhöhe im Licht"
-                                Text="{x:Bind ViewModel.Kabinenhoehe.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHI'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -517,7 +506,7 @@
                                 Grid.Column="0"
                                 Header="Kabinenfläche"
                                 PlaceholderText="Kabinenfläche"
-                                Text="{x:Bind ViewModel.Kabinenflaeche.Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -532,7 +521,7 @@
                     Grid.Row="6"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.Kommentare.Value, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
             </Grid>
         </ScrollViewer>
 
@@ -575,7 +564,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     FontWeight="Bold"
-                    Text="{x:Bind ViewModel.ParamterList.Count, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}" />
                 <TextBlock
                     VerticalAlignment="Center"
                     FontWeight="Bold"

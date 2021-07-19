@@ -191,7 +191,6 @@ namespace SpeziInspector.ViewModels
         public void OnNavigatedTo(object parameter)
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-            //Adminmode = _CurrentSpeziProperties.Adminmode;
             Adminmode = _settingService.Adminmode;
         }
 
