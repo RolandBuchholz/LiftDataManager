@@ -1,12 +1,12 @@
 ﻿using Cogs.Collections;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using SpeziInspector.Contracts.ViewModels;
 using SpeziInspector.Core.Contracts.Services;
+using SpeziInspector.Core.Messenger;
+using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Models;
-using SpeziInspector.Messenger;
-using SpeziInspector.Messenger.Messages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;

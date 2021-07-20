@@ -1,12 +1,11 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using SpeziInspector.Messenger.Messages;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using SpeziInspector.Core.Messenger.Messages;
 using System;
 
 namespace SpeziInspector.Core.Models
 {
     public class Parameter : ObservableRecipient
-
     {
         public Parameter(string _TypeCode, string _Value)
         {
@@ -43,7 +42,7 @@ namespace SpeziInspector.Core.Models
                 }
                 else
                 {
-                    if (_Value.ToLower() == "false") 
+                    if (_Value.ToLower() == "false")
                     {
                         BoolValue = false;
                     }
@@ -56,8 +55,8 @@ namespace SpeziInspector.Core.Models
         }
         public string Name { get; set; }
         public string TypeCode { get; set; }
-        private string _Value;  
-        public string Value    
+        private string _Value;
+        public string Value
         {
             get => _Value;
             set
@@ -80,7 +79,7 @@ namespace SpeziInspector.Core.Models
                     IsDirty = true;
                 }
                 SetProperty(ref _Comment, value);
-            } 
+            }
         }
         private DateTimeOffset? _Date;
         public DateTimeOffset? Date
@@ -101,7 +100,7 @@ namespace SpeziInspector.Core.Models
         }
         private bool _IsKey;
         public bool IsKey
-        { 
+        {
             get => _IsKey;
             set
             {
@@ -111,7 +110,7 @@ namespace SpeziInspector.Core.Models
                 }
                 SetProperty(ref _IsKey, value);
 
-            } 
+            }
         }
         private bool? _BoolValue;
         public bool? BoolValue
@@ -128,7 +127,7 @@ namespace SpeziInspector.Core.Models
             }
         }
         private bool _IsDirty;
-        public bool IsDirty 
+        public bool IsDirty
         {
             get => _IsDirty;
             set

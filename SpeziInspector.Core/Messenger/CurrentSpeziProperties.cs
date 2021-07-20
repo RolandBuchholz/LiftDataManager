@@ -1,10 +1,9 @@
 ﻿using Cogs.Collections;
 using SpeziInspector.Core.Models;
-using System.Collections.ObjectModel;
 
-namespace SpeziInspector.Messenger
+namespace SpeziInspector.Core.Messenger
 {
-    public class  CurrentSpeziProperties
+    public class CurrentSpeziProperties
     {
         public bool Adminmode { get; set; }
         public bool AuftragsbezogeneXml { get; set; }

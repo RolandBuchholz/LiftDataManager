@@ -2,7 +2,6 @@
 
 namespace SpeziInspector.Activation
 {
-    // Extend this class to implement new ActivationHandlers
     public abstract class ActivationHandler<T> : IActivationHandler
         where T : class
     {

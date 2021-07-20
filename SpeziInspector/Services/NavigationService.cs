@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+﻿using CommunityToolkit.WinUI.UI.Animations;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -9,6 +10,8 @@ using SpeziInspector.Helpers;
 
 namespace SpeziInspector.Services
 {
+    // For more information on navigation between pages see
+    // https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/WinUI/navigation.md
     public class NavigationService : INavigationService
     {
         private readonly IPageService _pageService;
@@ -23,7 +26,7 @@ namespace SpeziInspector.Services
             {
                 if (_frame == null)
                 {
-                    _frame = Window.Current.Content as Frame;
+                    _frame = App.MainWindow.Content as Frame;
                     RegisterFrameEvents();
                 }
 

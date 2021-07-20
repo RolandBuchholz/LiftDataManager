@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controlsprimitives="using:Microsoft.Toolkit.Uwp.UI.Controls.Primitives">
+    xmlns:controlsprimitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives">
 
     <Style
         x:Key="SymbolHeaderKey"
@@ -38,21 +38,6 @@
                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 Glyph="&#xE8D7;" />
 
-                            <!--<ContentPresenter
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Content="{TemplateBinding Content}" />-->
-
-                            <!--<FontIcon
-                                x:Name="SortIcon"
-                                Grid.Column="1"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                FontSize="12"
-                                Foreground="{ThemeResource DataGridColumnHeaderForegroundBrush}"
-                                Glyph="{ThemeResource SortIconAscending}"
-                                Opacity="0" />-->
                         </Grid>
                         <Rectangle
                             x:Name="VerticalSeparator"
@@ -157,5 +142,4 @@
 
         </Setter>
     </Style>
-
 </ResourceDictionary>

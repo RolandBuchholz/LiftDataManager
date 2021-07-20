@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:SpeziInspector.Controls"
     xmlns:behaviors="using:SpeziInspector.Behaviors"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -19,7 +19,6 @@
             FalseValue="Visible"
             TrueValue="Collapsed" />
     </Page.Resources>
-
     <Grid
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
@@ -30,10 +29,8 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <!--  Header  -->
         <SpeziControls:HeaderControl Grid.Row="0" Margin="0" />
-
         <!--  Optionen  -->
         <Grid Grid.Row="1" Margin="20,0,20,0">
             <Grid.ColumnDefinitions>
@@ -45,14 +42,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
             <ToggleSwitch
                 Grid.Column="0"
                 Margin="5,0,5,0"
                 IsOn="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 OffContent="Standard XML"
                 OnContent="Auftragsbezoge XML" />
-
             <TextBox
                 Grid.Column="1"
                 Margin="5,0,5,0"
@@ -61,7 +56,6 @@
                 MaxLength="7"
                 PlaceholderText="Auftragsnummer"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-
             <Button
                 Grid.Column="2"
                 Margin="5,0,5,0"
@@ -71,7 +65,6 @@
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-
             <Button
                 Grid.Column="3"
                 Margin="5,0,5,0"
@@ -81,7 +74,6 @@
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-
             <Button
                 Grid.Column="3"
                 Margin="5,0,5,0"
@@ -109,9 +101,7 @@
                 PlaceholderText="Suche"
                 Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-
         <!--  Parameter  -->
-
         <ScrollViewer
             Grid.Row="2"
             Margin="5"
@@ -550,7 +540,6 @@
                     Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
             </Grid>
         </ScrollViewer>
-
         <controls:DropShadowPanel
             Grid.Row="3"
             Margin="25,5,25,5"
@@ -597,7 +586,5 @@
                     Text=" Parameter gefunden." />
             </StackPanel>
         </Grid>
-
     </Grid>
-
 </Page>

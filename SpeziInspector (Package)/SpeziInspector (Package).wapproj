@@ -32,13 +32,13 @@
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
     <PathToXAMLWinRTImplementations>SpeziInspector\</PathToXAMLWinRTImplementations>
-    <AssetTargetFallback>net5.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
   </PropertyGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
-    <ProjectGuid>EE5BCE91-705E-4E09-84C1-DFB63D58EF5D</ProjectGuid>
+    <ProjectGuid>306A446A-853B-4AB0-937F-291CD0AD66BF</ProjectGuid>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <AssetTargetFallback>net5.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\SpeziInspector\SpeziInspector.csproj</EntryPointProjectUniqueName>
@@ -52,26 +52,8 @@
     <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
     <Content Include="Images\Square150x150Logo.scale-200.png" />
-    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
-    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
-    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
-    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
-    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
-    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-16.png" />
-    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-256.png" />
-    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-32.png" />
-    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-48.png" />
-    <Content Include="Images\Square44x44Logo.scale-100.png" />
-    <Content Include="Images\Square44x44Logo.scale-125.png" />
-    <Content Include="Images\Square44x44Logo.scale-150.png" />
     <Content Include="Images\Square44x44Logo.scale-200.png" />
-    <Content Include="Images\Square44x44Logo.scale-400.png" />
-    <Content Include="Images\Square44x44Logo.targetsize-16.png" />
-    <Content Include="Images\Square44x44Logo.targetsize-24.png" />
     <Content Include="Images\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Images\Square44x44Logo.targetsize-256.png" />
-    <Content Include="Images\Square44x44Logo.targetsize-32.png" />
-    <Content Include="Images\Square44x44Logo.targetsize-48.png" />
     <Content Include="Images\StoreLogo.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Package.appinstaller" />
@@ -86,7 +68,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0-preview">
+    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.1">
       <IncludeAssets>build</IncludeAssets>
     </PackageReference>
   </ItemGroup>

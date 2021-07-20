@@ -3,15 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:SpeziInspector.Behaviors"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:SpeziInspector.Core.Models"
     xmlns:views="using:SpeziInspector.Views"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-
     <Page.Resources>
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid Height="60">
@@ -48,8 +47,7 @@
                     TextAlignment="Center" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="ListHeaderTemplate">
-        </DataTemplate>
+        <DataTemplate x:Key="ListHeaderTemplate" />
         <DataTemplate x:Key="MinimalListHeaderTemplate">
             <Grid Height="40">
                 <TextBlock

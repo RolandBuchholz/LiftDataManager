@@ -1,8 +1,7 @@
-﻿using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Uwp.UI.Animations;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-
 using SpeziInspector.Contracts.Services;
 using SpeziInspector.ViewModels;
 

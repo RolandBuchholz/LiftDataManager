@@ -1,6 +1,6 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace SpeziInspector.Messenger.Messages
+namespace SpeziInspector.Core.Messenger.Messages
 {
     public class SpeziPropertiesChangedMassage : ValueChangedMessage<CurrentSpeziProperties>
     {

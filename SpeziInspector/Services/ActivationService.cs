@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using CommunityToolkit.Mvvm.DependencyInjection;
+
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 using SpeziInspector.Activation;
 using SpeziInspector.Contracts.Services;
-using SpeziInspector.Contracts.Views;
+using SpeziInspector.Views;
 
 namespace SpeziInspector.Services
 {
@@ -17,10 +20,10 @@ namespace SpeziInspector.Services
         private readonly INavigationService _navigationService;
         private readonly IThemeSelectorService _themeSelectorService;
         private readonly ISettingService _settingService;
+        private UIElement _shell = null;
 
-        public ActivationService(IShellWindow shellWindow, ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService)
+        public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService)
         {
-            App.MainWindow = shellWindow as Window;
             _defaultHandler = defaultHandler;
             _activationHandlers = activationHandlers;
             _navigationService = navigationService;
@@ -34,11 +37,18 @@ namespace SpeziInspector.Services
             // take into account that the splash screen is shown while this code runs.
             await InitializeAsync();
 
-            App.MainWindow.Activate();
+            if (App.MainWindow.Content == null)
+            {
+                _shell = Ioc.Default.GetService<ShellPage>();
+                App.MainWindow.Content = _shell ?? new Frame();
+            }
 
             // Depending on activationArgs one of ActivationHandlers or DefaultActivationHandler
             // will navigate to the first page
             await HandleActivationAsync(activationArgs);
+
+            // Ensure the current window is active
+            App.MainWindow.Activate();
 
             // Tasks after activation
             await StartupAsync();

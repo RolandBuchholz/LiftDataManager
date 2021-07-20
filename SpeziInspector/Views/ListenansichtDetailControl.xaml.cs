@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+
 using SpeziInspector.Core.Models;
 
 namespace SpeziInspector.Views
@@ -11,14 +12,12 @@ namespace SpeziInspector.Views
             get { return GetValue(ListDetailsMenuItemProperty) as Parameter; }
             set { SetValue(ListDetailsMenuItemProperty, value); }
         }
-
         public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(Parameter), typeof(ListenansichtDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
         public ListenansichtDetailControl()
         {
             InitializeComponent();
         }
-
         private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = d as ListenansichtDetailControl;

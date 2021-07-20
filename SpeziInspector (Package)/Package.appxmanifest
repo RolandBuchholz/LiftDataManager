@@ -8,7 +8,7 @@
   IgnorableNamespaces="uap rescap genTemplate">
 
   <Identity
-    Name="E05E4103-9777-4F60-B1F0-B4B891211508"
+    Name="306437BC-F515-4495-9F58-8FCDFF75E7B6"
     Publisher="CN=Roland_B"
     Version="1.0.0.0" />
 
@@ -51,8 +51,8 @@
 
   <genTemplate:Metadata>
     <genTemplate:Item Name="generator" Value="Windows Template Studio"/>
-    <genTemplate:Item Name="wizardVersion" Version="v0.22.21099.1" />
-    <genTemplate:Item Name="templatesVersion" Version="v0.22.21099.1" />
+    <genTemplate:Item Name="wizardVersion" Version="v0.22.21182.1" />
+    <genTemplate:Item Name="templatesVersion" Version="v0.22.21182.1" />
     <genTemplate:Item Name="projectType" Value="SplitView" />
     <genTemplate:Item Name="framework" Value="MVVMToolkit" />
     <genTemplate:Item Name="platform" Value="WinUI" />

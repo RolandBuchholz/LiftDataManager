@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using Microsoft.UI.Xaml;
-
 using SpeziInspector.Contracts.Services;
 using SpeziInspector.ViewModels;
 

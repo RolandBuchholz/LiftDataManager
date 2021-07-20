@@ -1,12 +1,12 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SpeziInspector.Contracts.Services;
 using SpeziInspector.Contracts.ViewModels;
-using SpeziInspector.Messenger;
-using SpeziInspector.Messenger.Messages;
+using SpeziInspector.Core.Messenger;
+using SpeziInspector.Core.Messenger.Messages;
 using System;
 using System.Windows.Input;
 using Windows.ApplicationModel;
@@ -20,7 +20,6 @@ namespace SpeziInspector.ViewModels
         private readonly ISettingService _settingService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private ElementTheme _elementTheme;
-
         public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService)
         {
             _themeSelectorService = themeSelectorService;
@@ -29,9 +28,7 @@ namespace SpeziInspector.ViewModels
             VersionDescription = GetVersionDescription();
             PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
         }
-
         public IRelayCommand PinDialog { get; }
-
         private async void PinDialogAsync(ContentDialog pwdDialog)
         {
             if (!Adminmode)
@@ -48,25 +45,18 @@ namespace SpeziInspector.ViewModels
                 }
             }
         }
-
         public ElementTheme ElementTheme
         {
             get { return _elementTheme; }
-
             set { SetProperty(ref _elementTheme, value); }
         }
-
         private string _versionDescription;
-
         public string VersionDescription
         {
             get { return _versionDescription; }
-
             set { SetProperty(ref _versionDescription, value); }
         }
-
         private ICommand _switchThemeCommand;
-
         public ICommand SwitchThemeCommand
         {
             get
@@ -83,11 +73,9 @@ namespace SpeziInspector.ViewModels
                             }
                         });
                 }
-
                 return _switchThemeCommand;
             }
         }
-
         private bool _Adminmode;
         public bool Adminmode
         {
@@ -100,7 +88,6 @@ namespace SpeziInspector.ViewModels
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
-
         private bool _CanSwitchToAdminmode = false;
         public bool CanSwitchToAdminmode
         {
@@ -110,7 +97,6 @@ namespace SpeziInspector.ViewModels
                 SetProperty(ref _CanSwitchToAdminmode, value);
             }
         }
-
         private string _PasswortInfoText = "Kein PIN eingegeben";
         public string PasswortInfoText
         {
@@ -120,7 +106,6 @@ namespace SpeziInspector.ViewModels
                 SetProperty(ref _PasswortInfoText, value);
             }
         }
-
         private string _PasswortInput;
         public string PasswortInput
         {
@@ -131,7 +116,6 @@ namespace SpeziInspector.ViewModels
                 CheckpasswortInput();
             }
         }
-
         private bool _AdminmodeWarningAccepted;
         public bool AdminmodeWarningAccepted
         {
@@ -142,7 +126,6 @@ namespace SpeziInspector.ViewModels
                 CheckCanSwitchToAdminmode();
             }
         }
-
         private void CheckpasswortInput()
         {
 
@@ -163,8 +146,6 @@ namespace SpeziInspector.ViewModels
             }
 
         }
-
-
         private void CheckCanSwitchToAdminmode()
         {
 
@@ -177,7 +158,6 @@ namespace SpeziInspector.ViewModels
                 CanSwitchToAdminmode = false;
             }
         }
-
         private string GetVersionDescription()
         {
             var appName = "Spezifikations Inspector";
@@ -187,13 +167,11 @@ namespace SpeziInspector.ViewModels
 
             return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
-
         public void OnNavigatedTo(object parameter)
         {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             Adminmode = _settingService.Adminmode;
         }
-
         public void OnNavigatedFrom()
         {
         }
