@@ -211,6 +211,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Nutzlast"
                                 PlaceholderText="Nutzlast"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
@@ -232,6 +234,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Fahrkorbgewicht"
                                 PlaceholderText="Fahrkorbgewicht"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
@@ -253,6 +257,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Nenngeschwindigkeit"
                                 PlaceholderText="Nenngeschwindigkeit"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
@@ -274,6 +280,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Anzahl Personen"
                                 PlaceholderText="Anzahl Personen"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
@@ -316,6 +324,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtbreite"
                                 PlaceholderText="Schachtbreite"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
@@ -337,6 +347,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachttiefe"
                                 PlaceholderText="Schachttiefe"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
@@ -358,6 +370,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtgrube"
                                 PlaceholderText="Schachtgrube"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
@@ -379,6 +393,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtkopf"
                                 PlaceholderText="Schachtkopf"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
@@ -400,6 +416,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Förderhöhe"
                                 PlaceholderText="Förderhöhe"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
@@ -441,6 +459,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenbreite"
                                 PlaceholderText="Kabinenbreite"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}" />
@@ -462,6 +482,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinentiefe"
                                 PlaceholderText="Kabinentiefe"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}" />
@@ -483,6 +505,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenhöhe"
                                 PlaceholderText="Kabinenhöhe im Licht"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_KHI'].Value, Mode=TwoWay}" />
@@ -504,6 +528,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenfläche"
                                 PlaceholderText="Kabinenfläche"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}" />
