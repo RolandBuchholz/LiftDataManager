@@ -16,7 +16,7 @@ namespace SpeziInspector.Core.Models
 
             if (IsDate)
             {
-                if (string.IsNullOrWhiteSpace(_Value))
+                if (string.IsNullOrWhiteSpace(_Value) || _Value == "0")
                 {
                     Date = null;
                 }
