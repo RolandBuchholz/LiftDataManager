@@ -499,7 +499,7 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenhöhe"
                                 PlaceholderText="Kabinenhöhe im Licht"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHI'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -533,11 +533,13 @@
                         </Grid>
                     </Grid>
                 </controls:Expander>
+
                 <TextBox
                     Grid.Row="6"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
                     Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
+
             </Grid>
         </ScrollViewer>
         <controls:DropShadowPanel
