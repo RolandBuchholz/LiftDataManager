@@ -54,7 +54,7 @@
             <Button
                 Grid.Column="1"
                 Width="175"
-                Margin="5,5,5,0"
+                Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Command="{x:Bind ViewModel.ShowAllParameters}"
                 Content="All Parameters"
