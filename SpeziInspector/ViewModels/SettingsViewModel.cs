@@ -5,9 +5,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SpeziInspector.Contracts.Services;
 using SpeziInspector.Contracts.ViewModels;
+using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Messenger;
 using SpeziInspector.Core.Messenger.Messages;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 
@@ -18,17 +20,23 @@ namespace SpeziInspector.ViewModels
         private const string adminpasswort = "2342";
         private readonly IThemeSelectorService _themeSelectorService;
         private readonly ISettingService _settingService;
+        private readonly IAuswahlParameterDataService _auswahlParameterDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private ElementTheme _elementTheme;
-        public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService)
+        public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService)
         {
             _themeSelectorService = themeSelectorService;
             _settingService = settingsSelectorService;
+            _auswahlParameterDataService = auswahlParameterDataService;
             _elementTheme = _themeSelectorService.Theme;
             VersionDescription = GetVersionDescription();
             PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
+            UpdateAuswahlParameter = new RelayCommand(UpdateAuswahlParameterAsync, () => true);
         }
+
         public IRelayCommand PinDialog { get; }
+        public IRelayCommand UpdateAuswahlParameter { get; }
+
         private async void PinDialogAsync(ContentDialog pwdDialog)
         {
             if (!Adminmode)
@@ -45,6 +53,11 @@ namespace SpeziInspector.ViewModels
                 }
             }
         }
+        private void UpdateAuswahlParameterAsync()
+        {
+           _auswahlParameterDataService.UpdateAuswahlparameter();
+        }
+
         public ElementTheme ElementTheme
         {
             get { return _elementTheme; }

@@ -56,6 +56,7 @@ namespace SpeziInspector
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
+            services.AddSingleton<IAuswahlParameterDataService, AuswahlParameterDataService>();
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();

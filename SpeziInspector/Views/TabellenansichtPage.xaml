@@ -153,6 +153,12 @@
                                         <x:String>True</x:String>
                                         <x:String>False</x:String>
                                     </ComboBox>
+                                    <ComboBox
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{x:Bind DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind DropDownListValue, Mode=TwoWay}"
+                                        Style="{StaticResource GridComboboxStyle}"
+                                        Visibility="{x:Bind IsDropDownList, Mode=OneWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
@@ -161,6 +167,12 @@
                         Width="45"
                         Binding="{Binding IsKey}"
                         HeaderStyle="{StaticResource SymbolHeaderKey}" />
+
+                    <controls:DataGridCheckBoxColumn
+                        Width="45"
+                        Binding="{Binding IsDropDownList}"
+                        Header="TestList" />
+
                     <controls:DataGridTemplateColumn Header="Kommentar">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="models:Parameter">
