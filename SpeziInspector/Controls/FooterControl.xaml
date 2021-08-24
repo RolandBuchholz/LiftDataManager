@@ -6,6 +6,7 @@
     xmlns:local="using:SpeziInspector.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wct="using:CommunityToolkit.WinUI.UI.Controls"
+    x:Name="root"
     mc:Ignorable="d">
 
     <Grid>
@@ -36,14 +37,18 @@
                 Margin="10,0,10,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                FontWeight="Bold" />
+                FontWeight="Bold"
+                Text="{x:Bind XmlPath, Mode=OneWay}" />
             <StackPanel
                 Grid.Column="1"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" FontWeight="Bold" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Text="{x:Bind ParameterFound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     VerticalAlignment="Center"
                     FontWeight="Bold"

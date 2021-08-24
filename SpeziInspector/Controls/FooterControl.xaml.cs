@@ -1,25 +1,31 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace SpeziInspector.Controls
 {
     public sealed partial class FooterControl : UserControl
     {
+        public string XmlPath
+        {
+            get { return (string)GetValue(XmlPathProperty); }
+            set { SetValue(XmlPathProperty, value); }
+        }
+
+        public static readonly DependencyProperty XmlPathProperty =
+            DependencyProperty.Register("XmlPath", typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
+
+        public int ParameterFound
+        {
+            get { return (int)GetValue(ParameterfoundProperty); }
+            set { SetValue(ParameterfoundProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ParameterfoundProperty =
+            DependencyProperty.Register("ParameterFound", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
+
+
+
         public FooterControl()
         {
             this.InitializeComponent();
