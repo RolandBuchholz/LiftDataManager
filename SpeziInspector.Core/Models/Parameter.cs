@@ -1,22 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Messenger.Messages;
+using SpeziInspector.Core.Services;
 using System;
+using System.Collections.Generic;
 
 namespace SpeziInspector.Core.Models
 {
     public class Parameter : ObservableRecipient
     {
-        public Parameter(string _TypeCode, string _Value)
+        public enum ParameterTypValue
         {
+            String,
+            NumberOnly,
+            Date,
+            Boolean,
+            DropDownList
+        }
+        private readonly IAuswahlParameterDataService _auswahlParameterDataService;
+        public List<string> DropDownList { get; } = new();
+        public Parameter( string name, string typeCode, string value)
+        {
+            AuswahlParameterDataService auswahlParameterDataService = new();
+            _auswahlParameterDataService = auswahlParameterDataService;      
+            IsDropDownList = false;
             IsDirty = false;
-            TypeCode = _TypeCode;
-            Value = _Value;
+            TypeCode = typeCode;
+            Value = value;
+            Name = name;
             SymbolCode = GetSymbolCode(TypeCode);
-
             if (IsDate)
             {
-                if (string.IsNullOrWhiteSpace(_Value) || _Value == "0")
+                if (string.IsNullOrWhiteSpace(Value) || Value == "0")
                 {
                     Date = null;
                 }
@@ -36,13 +52,13 @@ namespace SpeziInspector.Core.Models
 
             if (IsBoolean)
             {
-                if (string.IsNullOrWhiteSpace(_Value))
+                if (string.IsNullOrWhiteSpace(Value))
                 {
                     BoolValue = null;
                 }
                 else
                 {
-                    if (_Value.ToLower() == "false")
+                    if (Value.ToLower() == "false")
                     {
                         BoolValue = false;
                     }
@@ -51,6 +67,17 @@ namespace SpeziInspector.Core.Models
                         BoolValue = true;
                     }
                 }
+            }
+            IsDropDownList = _auswahlParameterDataService.ParameterHasAuswahlliste(name);
+            if (IsDropDownList)
+            {
+                DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
+                DropDownListValue = Value;
+                ParameterTyp = Parameter.ParameterTypValue.DropDownList;
+                IsDate = false;
+                IsNumberOnly = false;
+                IsString = false;
+                IsBoolean = false;
             }
         }
         public string Name { get; set; }
@@ -126,6 +153,22 @@ namespace SpeziInspector.Core.Models
                 SetProperty(ref _BoolValue, value);
             }
         }
+
+        private string _DropDownListValue;
+        public string DropDownListValue
+        {
+            get => _DropDownListValue;
+            set
+            {
+                if (value != _DropDownListValue)
+                {
+                    Value = value;
+                }
+                SetProperty(ref _DropDownListValue, value);
+            }
+        }
+
+
         private bool _IsDirty;
         public bool IsDirty
         {
@@ -136,10 +179,12 @@ namespace SpeziInspector.Core.Models
                 Messenger.Send(new ParameterDirtyMessage(value));
             }
         }
+        public ParameterTypValue ParameterTyp { get; set; }
         public bool IsDate { get; set; }
         public bool IsNumberOnly { get; set; }
         public bool IsString { get; set; }
         public bool IsBoolean { get; set; }
+        public bool IsDropDownList { get; set; }
         public char Symbol => (char)SymbolCode;
         public int SymbolCode { get; set; }
 
@@ -149,38 +194,47 @@ namespace SpeziInspector.Core.Models
             {
                 case "mm":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 60220;
 
                 case "string":
                     IsString = true;
+                    ParameterTyp = Parameter.ParameterTypValue.String;
                     return 59602;
 
                 case "kg":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 59394;
 
                 case "oe":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 60032;
 
                 case "boolean":
                     IsBoolean = true;
+                    ParameterTyp = Parameter.ParameterTypValue.Boolean;
                     return 62250;
 
                 case "mps":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 60490;
 
                 case "m":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 60614;
 
                 case "n":
                     IsNumberOnly = true;
+                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
                     return 59394;
 
                 case "date":
                     IsDate = true;
+                    ParameterTyp = Parameter.ParameterTypValue.Date;
                     return 57699;
 
                 default:

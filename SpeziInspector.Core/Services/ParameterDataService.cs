@@ -20,9 +20,9 @@ namespace SpeziInspector.Core.Services
             List<Parameter> parameterList =
               (from para in doc.Elements("parameters").Elements("ParamWithValue")
                    //orderby para.Element("name").Value
-               select new Parameter(para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
+               select new Parameter(para.Element("name").GetAs<string>(),para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
                {
-                   Name = para.Element("name").GetAs<string>(),
+                   //Name = para.Element("name").GetAs<string>(),
                    Comment = para.Element("comment").GetAs<string>(),
                    IsKey = para.Element("isKey").GetAs<bool>(),
                    IsDirty = false,

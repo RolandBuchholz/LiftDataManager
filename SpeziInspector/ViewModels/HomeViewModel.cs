@@ -141,7 +141,7 @@ namespace SpeziInspector.ViewModels
 
         private async void LoadDataAsync()
         {
-            //ToDo alle ParamterDictionary auf null setzen
+            
             if (FullPathXml is null) { SetFullPathXml(); };
             var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 

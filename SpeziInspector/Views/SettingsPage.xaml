@@ -154,6 +154,15 @@
                         </Core:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                 </ToggleSwitch>
+                <TextBlock Margin="0,10,0,0" Text="Wartung und Updates" />
+                <Button
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    Command="{x:Bind ViewModel.UpdateAuswahlParameter}"
+                    Content="Update Auswahlparmeter"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
             </StackPanel>
             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Beschreibung der App" />
             <StackPanel Margin="{StaticResource XSmallTopMargin}">
