@@ -1,70 +1,91 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using SpeziInspector.Core.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.Core.Helpers
 {
     public static class ExcelHelper
     {
-        public static List<string> ReadExcelParameterListe(string excelFilePath, string sheetname, string auswahlParameterName)
+        public static async Task<List<AuswahlParameter>> ReadExcelParameterListeAsync(string excelFilePath,string[,] importAusawahlParameter)
         {
             List<string> rowList = new List<string>();
             ISheet sheet;
-            using (var stream = new FileStream(excelFilePath, FileMode.Open))
+            List<AuswahlParameter> _data = new List<AuswahlParameter>();
+            await using (var stream = new FileStream(excelFilePath, FileMode.Open))
             {
                 stream.Position = 0;
                 XSSFWorkbook xssWorkbook = new XSSFWorkbook(stream);
-                sheet = xssWorkbook.GetSheet(sheetname);
-
+                string sheetname;
                 int startRow = 0;
                 int startCell = 0;
                 bool dataParsen = false;
-
-                for (int i = (sheet.FirstRowNum); i <= sheet.LastRowNum; i++)
+                
+                for (int i = 0; i < (importAusawahlParameter.Length) / 3; i++)
                 {
-                    IRow row = sheet.GetRow(i);
-                    if (row == null) continue;
-                    var startIndex = row.Cells.SingleOrDefault(d => d.CellType == CellType.String && d.StringCellValue == auswahlParameterName);
-                    if (startIndex != null)
-                    {
-                        startRow = startIndex.RowIndex;
-                        startCell = startIndex.ColumnIndex;
-                        dataParsen = true;
-                        break;
-                    }
-                }
+                    sheetname = importAusawahlParameter[i, 0];
+                    sheet = xssWorkbook.GetSheet(sheetname);
+                    string auswahlParameterName = importAusawahlParameter[i, 1];
 
-                while (dataParsen)
-                {
-                    IRow row = sheet.GetRow(startRow + 1);
-                    if (row == null)
+                    for (int j = (sheet.FirstRowNum); j <= sheet.LastRowNum; j++)
                     {
-                        return rowList;
-                    }
-                    if (row.GetCell(startCell) != null)
-                    {
-                        if (!string.IsNullOrEmpty(row.GetCell(startCell).ToString()) && !string.IsNullOrWhiteSpace(row.GetCell(startCell).ToString()))
+                        IRow row = sheet.GetRow(j);
+                        if (row == null) continue;
+                        var startIndex = row.Cells.SingleOrDefault(d => d.CellType == CellType.String && d.StringCellValue == auswahlParameterName);
+                        if (startIndex != null)
                         {
-                            rowList.Add(row.GetCell(startCell).ToString());
+                            startRow = startIndex.RowIndex;
+                            startCell = startIndex.ColumnIndex;
+                            dataParsen = true;
+                            break;
                         }
-                        if (startRow < sheet.LastRowNum - 1)
+                    }
+
+                    rowList.Clear();
+
+                    while (dataParsen)
+                    {
+                        IRow row = sheet.GetRow(startRow + 1);
+                        if (row == null)
                         {
-                            startRow++;
+                            dataParsen = false;
+                            break;
+                        }
+                        if (row.GetCell(startCell) != null)
+                        {
+                            if (!string.IsNullOrEmpty(row.GetCell(startCell).ToString()) && !string.IsNullOrWhiteSpace(row.GetCell(startCell).ToString()))
+                            {
+                                rowList.Add(row.GetCell(startCell).ToString());
+                            }
+                            if (startRow < sheet.LastRowNum - 1)
+                            {
+                                startRow++;
+                            }
+                            else
+                            {
+                                dataParsen = false;
+                            }
                         }
                         else
                         {
                             dataParsen = false;
                         }
                     }
-                    else
+
+                    AuswahlParameter _auswahlParameter = new();
+                    _auswahlParameter.Name = importAusawahlParameter[i, 2];
+
+                    foreach (string par in rowList)
                     {
-                        dataParsen = false;
+                        _auswahlParameter.Auswahlliste.Add(par);
                     }
+                    _data.Add(_auswahlParameter);
                 }
             }
-            return rowList;
+            return _data;
         }
     }
 }

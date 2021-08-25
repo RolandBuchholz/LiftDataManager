@@ -4,6 +4,7 @@ using SpeziInspector.Core.Helpers;
 using SpeziInspector.Core.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -34,6 +35,13 @@ namespace SpeziInspector.Core.Services
 
         public async Task SaveParameterAsync(Parameter parameter, string path)
         {
+            FileInfo AutoDeskTransferInfo = new FileInfo(path);
+
+            if (AutoDeskTransferInfo.IsReadOnly)
+            {
+                AutoDeskTransferInfo.IsReadOnly = false;
+            }
+
             XElement doc = XElement.Load(path);
 
             // Find a specific customer
@@ -73,6 +81,13 @@ namespace SpeziInspector.Core.Services
 
         public async Task SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
         {
+            FileInfo AutoDeskTransferInfo = new FileInfo(path);
+
+            if (AutoDeskTransferInfo.IsReadOnly)
+            {
+                AutoDeskTransferInfo.IsReadOnly = false;
+            }
+
             XElement doc = XElement.Load(path);
 
             var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);

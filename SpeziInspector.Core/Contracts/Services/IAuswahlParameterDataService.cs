@@ -11,7 +11,7 @@ namespace SpeziInspector.Core.Contracts.Services
     {
         Dictionary<string, AuswahlParameter> AuswahlParameterDictionary { get; set; }
         List<string> GetListeAuswahlparameter(string name);
-        void UpdateAuswahlparameter();
+        Task<string> UpdateAuswahlparameterAsync();
         bool ParameterHasAuswahlliste(string name);
     }
 }

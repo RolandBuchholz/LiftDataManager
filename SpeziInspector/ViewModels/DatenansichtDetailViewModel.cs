@@ -9,6 +9,7 @@ using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Models;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.ViewModels
 {
@@ -39,7 +40,7 @@ namespace SpeziInspector.ViewModels
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
-            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
+            SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -72,9 +73,9 @@ namespace SpeziInspector.ViewModels
                 SaveParameter.NotifyCanExecuteChanged();
             }
         }
-        private void SaveParameterAsync()
+        private async Task SaveParameterAsync()
         {
-            _parameterDataService.SaveParameterAsync(Item, FullPathXml);
+            await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
             CanSaveParameter = false;
             CanSaveParameter = false;
             Item.IsDirty = false;

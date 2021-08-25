@@ -167,17 +167,12 @@
                         Width="45"
                         Binding="{Binding IsKey}"
                         HeaderStyle="{StaticResource SymbolHeaderKey}" />
-
-                    <controls:DataGridCheckBoxColumn
-                        Width="45"
-                        Binding="{Binding IsDropDownList}"
-                        Header="TestList" />
-
                     <controls:DataGridTemplateColumn Header="Kommentar">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="models:Parameter">
                                 <StackPanel>
                                     <TextBox
+                                        HorizontalAlignment="Stretch"
                                         AcceptsReturn="True"
                                         Style="{StaticResource GridTextboxStyle}"
                                         Text="{x:Bind Comment, Mode=TwoWay}"

@@ -10,6 +10,7 @@ using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Models;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.ViewModels
 {
@@ -30,9 +31,9 @@ namespace SpeziInspector.ViewModels
             });
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
-            LoadDataFromVault = new RelayCommand(LoadVaultData, () => CanLoadDataFromVault);
-            LoadSpeziDataAsync = new RelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            LoadDataFromVault = new AsyncRelayCommand(LoadVaultData, () => CanLoadDataFromVault);
+            LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
+            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
         public IRelayCommand LoadDataFromVault { get; }
@@ -130,16 +131,17 @@ namespace SpeziInspector.ViewModels
             }
             else
             {
-                FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\639\639010\639010-AutoDeskTransfer.xml";
+                FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\895\8951214\8951214-AutoDeskTransfer.xml";
             }
         }
 
-        private void LoadVaultData()
+        private async Task LoadVaultData()
         {
+            await Task.CompletedTask;
             Debug.WriteLine("Daten aus Vault geladen :)");
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             
             if (FullPathXml is null) { SetFullPathXml(); };
@@ -163,9 +165,9 @@ namespace SpeziInspector.ViewModels
             Debug.WriteLine($"Daten aus {FullPathXml} geladen :)");
         }
 
-        private void SaveAllParameterAsync()
+        private async Task SaveAllParameterAsync()
         {
-            _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             CheckUnsavedParametres();
         }
 

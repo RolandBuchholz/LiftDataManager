@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.Core.Services
 {
@@ -18,6 +19,20 @@ namespace SpeziInspector.Core.Services
         public AuswahlParameterDataService()
         {
             AuswahlParameterDataPath = @"C:\Work\Administration\Spezifikation\Auswahlparameter.json";
+            if(!File.Exists(AuswahlParameterDataPath)) 
+            {
+               Task.Run(()=> UpdateAuswahlparameterAsync());
+            }
+            else
+            {
+                FileInfo AuswahlparameterInfo = new FileInfo(AuswahlParameterDataPath);
+
+                if (AuswahlparameterInfo.IsReadOnly)
+                {
+                    AuswahlparameterInfo.IsReadOnly = false;
+                }
+            }
+
             FillParameterDictionary();
 
         }
@@ -41,9 +56,22 @@ namespace SpeziInspector.Core.Services
             }
         }
 
-        public void UpdateAuswahlparameter()
+        public async Task<string> UpdateAuswahlparameterAsync()
         {
             string excelFilePath = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
+
+            if (!File.Exists(excelFilePath))
+            {
+                throw new ArgumentException("Spezifikation nicht vorhanden ", nameof(excelFilePath));
+            }
+
+            FileInfo SpezifikationInfo = new FileInfo(excelFilePath);
+
+            if (SpezifikationInfo.IsReadOnly)
+            {
+                SpezifikationInfo.IsReadOnly = false;
+            }
+
             List<AuswahlParameter> _data = new List<AuswahlParameter>();
 
             string[,] importAusawahlParameter =
@@ -61,7 +89,7 @@ namespace SpeziInspector.Core.Services
                 { "Daten Bausatz", "Führungsschienen","var_FuehrungsschieneFahrkorb" },
                 { "Daten Bausatz", "Führungsschienen GGW / Joch","var_FuehrungsschieneGegengewicht" },
                 { "Daten Bausatz", "Status Schienen","var_StatusFuehrungsschienen" },
-                { "Daten Bausatz", "Status Schienen","var_var_StatusGGWSchienen" },
+                { "Daten Bausatz", "Status Schienen","var_StatusGGWSchienen" },
                 { "Daten Bausatz", "Lastmessvorrichtung","var_Lastmesseinrichtung" },
                 { "Daten Bausatz", "Beschichtung","var_Beschichtung" },
                 { "Daten Bausatz", "Fangvorrichtung","var_TypFV" },
@@ -70,17 +98,20 @@ namespace SpeziInspector.Core.Services
                 { "Daten Bausatz", "Schachtinformation","var_Schachtinformation" },
                 { "Daten Bausatz", "Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer" },
                 { "Daten Normen", "Normen","var_Normen" },
-                { "Daten Schacht", "Schacht / Maschinenraum","var_var_Schachtinformationen" },
+                { "Daten Schacht", "Schacht / Maschinenraum","var_Schachtinformationen" },
                 { "Daten Schacht", "Schachttyp","var_SchachtInformationen" },
                 { "Daten Schacht", "Maschinenraumposition","var_Maschinenraum" },
                 { "Daten Schacht", "Brandabschluß","var_Brandabschlussinfo" },
                 { "Daten Schacht", "Schachtentrauchung","var_Schachtentrauchung" },
                 { "Daten Schacht", "Schienenbügelbefestigung","var_Befestigung" },
-                { "Daten Kabine", "Kabinentyp","var_xx" },
+                { "Daten Schacht", "Schachtgerüst Feldfüllung","var_SchachtgeruestFeldfuellung"},
+                { "Daten Kabine", "Kabinentyp","var_Fahrkorbtyp" },
                 { "Daten Kabine", "Antidröhn","var_Antidroehn" },
                 { "Daten Kabine", "Decke","var_Decke" },
                 { "Daten Kabine", "Beleuchtung","var_Beleuchtung" },
-                { "Daten Kabine", "Material","var_Material" },
+                { "Daten Kabine", "Material","var_Seitenwaende" },
+                { "Daten Kabine", "Material","var_Rueckwand" },
+                { "Daten Kabine", "Material","var_Eingangswand" },
                 { "Daten Kabine", "Materialstärke","var_Materialstaerke" },
                 { "Daten Kabine", "Bodentyp","var_Bodentyp" },
                 { "Daten Kabine", "Bodenblech","var_Bodenblech" },
@@ -96,49 +127,53 @@ namespace SpeziInspector.Core.Services
                 { "Daten Türen", "Oberflächen Türe/Tableau","var_Tueroberflaeche" },
                 { "Daten Türen", "Türöffnung","var_Tueroeffnung" },
                 { "Daten Türen", "Türsteuerung","var_Tuersteuerung" },
-                { "Daten Türen", "Türsteuerung mit V3F-Antrieb","var_xx" },
+                { "Daten Türen", "Türsteuerung mit V3F-Antrieb","var_Frequenzumrichter" },
                 { "Daten Türen", "Türüberwachung","var_Lichtgitter" },
                 { "Daten Türen", "Schwellenprofile","var_Schwellenprofil" },
                 { "Daten Türen", "Türzulassung","var_ZulassungTuere" },
                 { "Daten Tableau", "Tableau","var_KabTabKabinentableau" },
                 { "Daten Tableau", "Aufbau","var_KabTabAufbau" },
-                { "Daten Tableau", "Anzeigen","var_xx" },
-                { "Daten Tableau", "Farbe Punktmatrix bzw. TFT","var_xx" },
-                { "Daten Tableau", "Taster","var_xx" },
-                { "Daten Tableau", "Tasterplatten","var_xx" },
-                { "Daten Tableau", "Farbe Quittung LED Taster","var_xx" },
-                { "Daten Tableau", "AT Befestigung","var_xx" },
-                { "Daten Tableau", "Leuchtfeld Größe","var_xx" },
+                { "Daten Tableau", "Anzeigen","var_KabTabPunktmatrixTyp" },
+                { "Daten Tableau", "Anzeigen","var_AussTabPunktmatrixTyp" },
+                { "Daten Tableau", "Anzeigen","var_WfaTabPunktmatrixTyp" },
+                { "Daten Tableau", "Farbe Punktmatrix bzw. TFT","var_KabTabFarbe" },
+                { "Daten Tableau", "Farbe Punktmatrix bzw. TFT","var_AussTabFarbe" },
+                { "Daten Tableau", "Farbe Punktmatrix bzw. TFT","var_WfaTabFarbe" },
+                { "Daten Tableau", "Taster","var_KabTabTaster" },
+                { "Daten Tableau", "Taster","var_AussTabTaster" },
+                { "Daten Tableau", "Tasterplatten","var_KabTabTasterplatten" },
+                { "Daten Tableau", "Tasterplatten","var_AussTabTasterplatten" },
+                { "Daten Tableau", "Farbe Quittung LED Taster","var_ColLedFT" },
+                { "Daten Tableau", "Farbe Quittung LED Taster","var_ColLedAT" },
+                { "Daten Tableau", "AT Befestigung","var_AussTabATBefestigung" },
+                { "Daten Tableau", "AT Befestigung","var_WfaWFABefestigung" },
+                { "Daten Tableau", "Leuchtfeld Größe","var_AussTabLeuchtfeldGroee" },
+                { "Daten Tableau", "Leuchtfeld Größe","var_WfaLeuchtfeldGroee" },
                 { "Daten Tableau", "Anbauort WFA","var_WfaAnbauortWFA" },
                 { "Daten Tableau", "Gongposition","var_WfaGongposition" },
-                { "Daten Tableau", "Material Tasterplatten","var_xx" },
-                { "Daten Tableau", "Material","var_xx" },
+                { "Daten Tableau", "Material Tasterplatten","var_KabTabTasterplattenmaterial" },
+                { "Daten Tableau", "Material Tasterplatten","var_AussTabTasterplattenmaterial" },
+                { "Daten Tableau", "Material","var_KabTabMaterial" },
+                { "Daten Tableau", "Material","var_AussTabMaterial" },
+                { "Daten Tableau", "Material","var_Material" },
                 { "Daten Steuerung und Antrieb", "Steuerung","var_Steuerungstyp" },
                 { "Daten Steuerung und Antrieb", "Lage Schaltschrank","var_LageSchaltschrank" },
                 { "Daten Steuerung und Antrieb", "Stromanschluss","var_Stromanschluss" },
                 { "Daten Steuerung und Antrieb", "Aggregat","var_Aggregat" },
                 { "Daten Steuerung und Antrieb", "Getriebe","var_Getriebe" },
                 { "Daten Steuerung und Antrieb", "Notruf","var_Notruf" },
-                { "Daten Steuerung und Antrieb", "Lieferoption Notruftaster","var_xx" },
-                { "Daten Steuerung und Antrieb", "Notrufleitung","var_xx" },
+                { "Daten Steuerung und Antrieb", "Lieferoption Notruftaster","var_NotruftasterKabineDachSG" },
+                { "Daten Steuerung und Antrieb", "Notrufleitung","var_NotrufNetz" },
                 { "Daten Steuerung und Antrieb", "Notruftyp","var_Notruftyp" },
-                { "Daten Steuerung und Antrieb", "AT / Steuerungsart","var_xx" },
-                { "Daten Steuerung und Antrieb", "Schaltschrankgrößen","var_xx" }
+                { "Daten Steuerung und Antrieb", "AT / Steuerungsart","var_XKnopfsteuerung" },
+                { "Daten Steuerung und Antrieb", "Schaltschrankgrößen","var_Schaltschrankgroesse" }
             };
 
-            for (int i = 0; i < (importAusawahlParameter.Length) / 3; i++)
-            {
 
-                var parList = ExcelHelper.ReadExcelParameterListe(excelFilePath, importAusawahlParameter[i, 0], importAusawahlParameter[i, 1]);
-                AuswahlParameter _auswahlParameter = new();
-                _auswahlParameter.Name = importAusawahlParameter[i, 2];
 
-                foreach (string par in parList)
-                {
-                    _auswahlParameter.Auswahlliste.Add(par);
-                }
-                _data.Add(_auswahlParameter);
-            }
+            Task<List<AuswahlParameter>> parameterInfo = ExcelHelper.ReadExcelParameterListeAsync(excelFilePath, importAusawahlParameter);
+
+            _data = parameterInfo.Result;
 
             var options = new JsonSerializerOptions
             {
@@ -146,8 +181,17 @@ namespace SpeziInspector.Core.Services
             };
 
             string json = JsonSerializer.Serialize(_data, options);
-            File.WriteAllText(AuswahlParameterDataPath, json);
+            await File.WriteAllTextAsync(AuswahlParameterDataPath, json);
+
+            if (!SpezifikationInfo.IsReadOnly)
+            {
+                SpezifikationInfo.IsReadOnly = true;
+            }
+
+            return json;
         }
+
+       
 
         private void FillParameterDictionary()
         {

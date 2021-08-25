@@ -9,6 +9,7 @@ using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.ViewModels
 {
@@ -29,7 +30,7 @@ namespace SpeziInspector.ViewModels
                 if (m is not null && m.Value == true) CheckUnsavedParametres();
             });
             _parameterDataService = parameterDataService;
-            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(AddUnsavedParameters, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
@@ -71,9 +72,9 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void SaveAllParameterAsync()
+        private async Task SaveAllParameterAsync()
         {
-            _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             CheckUnsavedParametres();
             ShowAllParametersView();
         }

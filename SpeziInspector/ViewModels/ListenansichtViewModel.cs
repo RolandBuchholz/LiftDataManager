@@ -10,6 +10,7 @@ using SpeziInspector.Core.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpeziInspector.ViewModels
 {
@@ -56,8 +57,8 @@ namespace SpeziInspector.ViewModels
         public ListenansichtViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
-            SaveParameter = new RelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
-            SaveAllSpeziParameters = new RelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
@@ -156,17 +157,17 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private void SaveParameterAsync()
+        private async Task SaveParameterAsync()
         {
-            _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
+            await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
             CanSaveParameter = false;
             Selected.IsDirty = false;
             if (IsUnsavedParametersSelected) ShowUnsavedParametersView();
         }
 
-        private void SaveAllParameterAsync()
+        private async Task SaveAllParameterAsync()
         {
-            _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             CheckUnsavedParametres();
             ShowAllParametersView();
         }

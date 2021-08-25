@@ -9,6 +9,7 @@ using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Messenger;
 using SpeziInspector.Core.Messenger.Messages;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
@@ -31,7 +32,7 @@ namespace SpeziInspector.ViewModels
             _elementTheme = _themeSelectorService.Theme;
             VersionDescription = GetVersionDescription();
             PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
-            UpdateAuswahlParameter = new RelayCommand(UpdateAuswahlParameterAsync, () => true);
+            UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
         }
 
         public IRelayCommand PinDialog { get; }
@@ -46,16 +47,29 @@ namespace SpeziInspector.ViewModels
                 if (result == ContentDialogResult.Primary)
                 {
                     Adminmode = true;
+                    InfoText += "Adminmode aktiviert\n";
                 }
                 else
                 {
                     Adminmode = false;
+                    InfoText += "Adminmode deaktiviert\n";
                 }
             }
         }
-        private void UpdateAuswahlParameterAsync()
+        private async Task UpdateAuswahlParameterAsync()
         {
-           _auswahlParameterDataService.UpdateAuswahlparameter();
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            InfoText += "Daten aus Spezifikation werden geladen\n";
+            InfoText += "Loading ...\n";
+            var result = await Task.Run(()=>_auswahlParameterDataService.UpdateAuswahlparameterAsync());
+            var updateDataInfo = new StringBuilder();
+            updateDataInfo.AppendLine("Aktualisierte Daten: ");
+            updateDataInfo.AppendLine("--------------------");
+            updateDataInfo.AppendLine(result);
+            InfoText += updateDataInfo;
+            var stopTimeMs = watch.ElapsedMilliseconds;
+            InfoText += $"Downloadtime:  {stopTimeMs} ms\n";
+            InfoText += "Daten erfolgreich geladen\n";
         }
 
         public ElementTheme ElementTheme
@@ -83,6 +97,7 @@ namespace SpeziInspector.ViewModels
                             {
                                 ElementTheme = param;
                                 await _themeSelectorService.SetThemeAsync(param);
+                                InfoText += $"Theme {param} aktiviert\n";
                             }
                         });
                 }
@@ -119,6 +134,17 @@ namespace SpeziInspector.ViewModels
                 SetProperty(ref _PasswortInfoText, value);
             }
         }
+
+        private string _InfoText;
+        public string InfoText
+        {
+            get => _InfoText;
+            set
+            {
+                SetProperty(ref _InfoText, value);
+            }
+        }
+
         private string _PasswortInput;
         public string PasswortInput
         {
