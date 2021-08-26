@@ -189,7 +189,7 @@ namespace SpeziInspector.ViewModels
             SearchInput = _CurrentSpeziProperties.SearchInput;
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
-            if (ParamterDictionary.Values.Count == 0) { LoadDataAsync(); }
+            if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
         }
 

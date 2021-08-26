@@ -5,6 +5,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:SpeziInspector.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:SpeziInspector.Core.Models"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
@@ -20,6 +21,7 @@
             x:Key="BoolToSting"
             FalseValue="False"
             TrueValue="True" />
+        <helpers:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
         <Style x:Name="GridTextboxStyle" TargetType="TextBox">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -127,7 +129,7 @@
                                         Style="{StaticResource GridTextboxStyle}"
                                         Text="{x:Bind Value, Mode=TwoWay}"
                                         TextWrapping="Wrap"
-                                        Visibility="{x:Bind IsString, Mode=OneWay}" />
+                                        Visibility="{x:Bind ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=String, Mode=OneWay}" />
                                     <TextBox
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
@@ -135,7 +137,7 @@
                                         Style="{StaticResource GridTextboxStyle}"
                                         Text="{x:Bind Value, Mode=TwoWay}"
                                         TextWrapping="Wrap"
-                                        Visibility="{x:Bind IsNumberOnly, Mode=OneWay}" />
+                                        Visibility="{x:Bind ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=NumberOnly, Mode=OneWay}" />
                                     <CalendarDatePicker
                                         HorizontalAlignment="Stretch"
                                         CalendarIdentifier="GregorianCalendar"
@@ -144,12 +146,12 @@
                                         Language="de"
                                         PlaceholderText="Datum auswählen"
                                         Style="{StaticResource GridCalendarDatePickerStyle}"
-                                        Visibility="{x:Bind IsDate, Mode=OneWay}" />
+                                        Visibility="{x:Bind ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Date, Mode=OneWay}" />
                                     <ComboBox
                                         HorizontalAlignment="Stretch"
                                         SelectedValue="{x:Bind BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
                                         Style="{StaticResource GridComboboxStyle}"
-                                        Visibility="{x:Bind IsBoolean, Mode=OneWay}">
+                                        Visibility="{x:Bind ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Boolean, Mode=OneWay}">
                                         <x:String>True</x:String>
                                         <x:String>False</x:String>
                                     </ComboBox>
@@ -158,7 +160,7 @@
                                         ItemsSource="{x:Bind DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind DropDownListValue, Mode=TwoWay}"
                                         Style="{StaticResource GridComboboxStyle}"
-                                        Visibility="{x:Bind IsDropDownList, Mode=OneWay}" />
+                                        Visibility="{x:Bind ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=DropDownList, Mode=OneWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>

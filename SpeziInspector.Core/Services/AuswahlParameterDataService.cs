@@ -116,7 +116,7 @@ namespace SpeziInspector.Core.Services
                 { "Daten Kabine", "Bodentyp","var_Bodentyp" },
                 { "Daten Kabine", "Bodenblech","var_Bodenblech" },
                 { "Daten Kabine", "Sonderbleche","var_Sonderbleche" },
-                { "Daten Kabine", "Bodenprofile","var_xx" },
+                { "Daten Kabine", "Bodenprofile","var_BoPr" },
                 { "Daten Kabine", "Bodenbelag","var_Bodenbelag" },
                 { "Daten Kabine", "Paneele","var_Paneelmaterial" },
                 { "Daten Kabine", "Spiegel","var_Spiegel" },

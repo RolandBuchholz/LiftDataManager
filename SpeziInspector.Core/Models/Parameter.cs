@@ -23,14 +23,13 @@ namespace SpeziInspector.Core.Models
         public Parameter( string name, string typeCode, string value)
         {
             AuswahlParameterDataService auswahlParameterDataService = new();
-            _auswahlParameterDataService = auswahlParameterDataService;      
-            IsDropDownList = false;
+            _auswahlParameterDataService = auswahlParameterDataService;
             IsDirty = false;
             TypeCode = typeCode;
             Value = value;
             Name = name;
             SymbolCode = GetSymbolCode(TypeCode);
-            if (IsDate)
+            if (ParameterTyp == ParameterTypValue.Date)
             {
                 if (string.IsNullOrWhiteSpace(Value) || Value == "0")
                 {
@@ -50,7 +49,7 @@ namespace SpeziInspector.Core.Models
                 }
             }
 
-            if (IsBoolean)
+            if (ParameterTyp == ParameterTypValue.Boolean)
             {
                 if (string.IsNullOrWhiteSpace(Value))
                 {
@@ -68,16 +67,12 @@ namespace SpeziInspector.Core.Models
                     }
                 }
             }
-            IsDropDownList = _auswahlParameterDataService.ParameterHasAuswahlliste(name);
-            if (IsDropDownList)
+      
+            if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
             {
                 DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
                 DropDownListValue = Value;
-                ParameterTyp = Parameter.ParameterTypValue.DropDownList;
-                IsDate = false;
-                IsNumberOnly = false;
-                IsString = false;
-                IsBoolean = false;
+                ParameterTyp = ParameterTypValue.DropDownList;
             }
         }
         public string Name { get; set; }
@@ -180,11 +175,6 @@ namespace SpeziInspector.Core.Models
             }
         }
         public ParameterTypValue ParameterTyp { get; set; }
-        public bool IsDate { get; set; }
-        public bool IsNumberOnly { get; set; }
-        public bool IsString { get; set; }
-        public bool IsBoolean { get; set; }
-        public bool IsDropDownList { get; set; }
         public char Symbol => (char)SymbolCode;
         public int SymbolCode { get; set; }
 
@@ -193,48 +183,39 @@ namespace SpeziInspector.Core.Models
             switch (TypeCode.ToLower())
             {
                 case "mm":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 60220;
 
                 case "string":
-                    IsString = true;
-                    ParameterTyp = Parameter.ParameterTypValue.String;
+                    ParameterTyp = ParameterTypValue.String;
                     return 59602;
 
                 case "kg":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 59394;
 
                 case "oe":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 60032;
 
                 case "boolean":
-                    IsBoolean = true;
-                    ParameterTyp = Parameter.ParameterTypValue.Boolean;
+                    ParameterTyp = ParameterTypValue.Boolean;
                     return 62250;
 
                 case "mps":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 60490;
 
                 case "m":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 60614;
 
                 case "n":
-                    IsNumberOnly = true;
-                    ParameterTyp = Parameter.ParameterTypValue.NumberOnly;
+                    ParameterTyp = ParameterTypValue.NumberOnly;
                     return 59394;
 
                 case "date":
-                    IsDate = true;
-                    ParameterTyp = Parameter.ParameterTypValue.Date;
+                    ParameterTyp = ParameterTypValue.Date;
                     return 57699;
 
                 default:

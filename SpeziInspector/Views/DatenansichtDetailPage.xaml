@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:SpeziInspector.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
@@ -18,8 +19,8 @@
             x:Key="BoolToSting"
             FalseValue="False"
             TrueValue="True" />
+        <helpers:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
     </Page.Resources>
-
     <Grid
         x:Name="ContentArea"
         Margin="5"
@@ -74,7 +75,7 @@
                     Header="Parameterwert"
                     Text="{x:Bind ViewModel.Item.Value, Mode=TwoWay}"
                     TextWrapping="Wrap"
-                    Visibility="{x:Bind ViewModel.Item.IsString, Mode=OneWay}" />
+                    Visibility="{x:Bind ViewModel.Item.ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=String, Mode=OneWay}" />
                 <TextBox
                     Margin="0,10,0,0"
                     ui:TextBoxExtensions.ValidationMode="Dynamic"
@@ -83,7 +84,7 @@
                     Header="Parameterwert"
                     Text="{x:Bind ViewModel.Item.Value, Mode=TwoWay}"
                     TextWrapping="Wrap"
-                    Visibility="{x:Bind ViewModel.Item.IsNumberOnly, Mode=OneWay}" />
+                    Visibility="{x:Bind ViewModel.Item.ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=NumberOnly, Mode=OneWay}" />
                 <CalendarDatePicker
                     HorizontalAlignment="Stretch"
                     CalendarIdentifier="GregorianCalendar"
@@ -92,16 +93,21 @@
                     Header="Parameterwert"
                     Language="de"
                     PlaceholderText="Datum auswählen"
-                    Visibility="{x:Bind ViewModel.Item.IsDate, Mode=OneWay}" />
+                    Visibility="{x:Bind ViewModel.Item.ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Date, Mode=OneWay}" />
                 <ComboBox
                     Margin="0,10,0,0"
                     HorizontalAlignment="Stretch"
                     Header="Parameterwert"
                     SelectedValue="{x:Bind ViewModel.Item.BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
-                    Visibility="{x:Bind ViewModel.Item.IsBoolean, Mode=OneWay}">
+                    Visibility="{x:Bind ViewModel.Item.ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Boolean, Mode=OneWay}">
                     <x:String>True</x:String>
                     <x:String>False</x:String>
                 </ComboBox>
+                <ComboBox
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.Item.DropDownList, Mode=OneWay}"
+                    SelectedValue="{x:Bind ViewModel.Item.DropDownListValue, Mode=TwoWay}"
+                    Visibility="{x:Bind ViewModel.Item.ParameterTyp, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=DropDownList, Mode=OneWay}" />
                 <TextBox
                     Margin="0,10,0,0"
                     Header="Kommentar"
