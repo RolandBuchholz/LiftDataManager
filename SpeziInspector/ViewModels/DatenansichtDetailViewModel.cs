@@ -48,7 +48,7 @@ namespace SpeziInspector.ViewModels
             CheckIsDirty((Parameter)sender);
         }
 
-        public IRelayCommand SaveParameter { get; }
+        public IAsyncRelayCommand SaveParameter { get; }
 
         private void CheckIsDirty(Parameter Item)
         {

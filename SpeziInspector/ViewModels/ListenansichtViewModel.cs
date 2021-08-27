@@ -63,8 +63,8 @@ namespace SpeziInspector.ViewModels
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
 
-        public IRelayCommand SaveParameter { get; }
-        public IRelayCommand SaveAllSpeziParameters { get; }
+        public IAsyncRelayCommand SaveParameter { get; }
+        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
         public IRelayCommand ShowUnsavedParameters { get; }
         public IRelayCommand ShowAllParameters { get; }
 

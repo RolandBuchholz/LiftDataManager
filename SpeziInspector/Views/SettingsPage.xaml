@@ -217,6 +217,12 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
+            <ProgressRing
+                Width="200"
+                Height="200"
+                Background="Transparent"
+                Foreground="{StaticResource SystemAccentColor}"
+                IsActive="{x:Bind ViewModel.UpdateAuswahlParameter.IsRunning, FallbackValue=False, Mode=OneWay}" />
         </Grid>
         <ContentDialog
             x:Name="AdminModePasswortDialog"

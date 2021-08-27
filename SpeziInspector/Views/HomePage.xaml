@@ -29,10 +29,17 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
         <!--  Header  -->
-        <SpeziControls:HeaderControl Grid.Row="0" Margin="0" />
+        <SpeziControls:HeaderControl
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Margin="0" />
         <!--  Optionen  -->
-        <Grid Grid.Row="1" Margin="20,0,20,0">
+        <Grid Grid.Row="1" Margin="20,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -104,7 +111,7 @@
         <!--  Parameter  -->
         <ScrollViewer
             Grid.Row="2"
-            Margin="5"
+            Margin="5,5,0,5"
             Padding="20,5,20,5">
             <Grid>
                 <Grid.RowDefinitions>
@@ -533,18 +540,56 @@
                         </Grid>
                     </Grid>
                 </controls:Expander>
-
                 <TextBox
                     Grid.Row="6"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
                     Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
-
             </Grid>
         </ScrollViewer>
+
+        <controls:Expander
+            x:Name="ExpanderInfoSidebarPanel"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Margin="0,0,25,10"
+            ExpandDirection="Left"
+            Header="Info Sidebar Panel"
+            Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
+
+            <ScrollViewer
+                Name="InfoTextScroller"
+                MinWidth="250"
+                MaxWidth="350"
+                VerticalAlignment="Stretch"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock VerticalAlignment="Top" TextWrapping="Wrap">
+                        <Run>Hallo</Run>
+                        <LineBreak />
+                        <Run>Hallofghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</Run>
+                        <LineBreak />
+                        <Run>Hallfhhhhhhhhhhhhhhhhhhhhhhhhhrtro</Run>
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+
+
+        </controls:Expander>
+
+        <ProgressRing
+            Grid.Row="2"
+            Width="200"
+            Height="200"
+            Background="Transparent"
+            Foreground="{StaticResource SystemAccentColor}"
+            IsActive="{x:Bind ViewModel.LoadDataFromVault.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="3"
+            Grid.ColumnSpan="2"
             Margin="0"
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />

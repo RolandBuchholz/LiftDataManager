@@ -36,7 +36,7 @@ namespace SpeziInspector.ViewModels
         }
 
         public IRelayCommand PinDialog { get; }
-        public IRelayCommand UpdateAuswahlParameter { get; }
+        public IAsyncRelayCommand UpdateAuswahlParameter { get; }
 
         private async void PinDialogAsync(ContentDialog pwdDialog)
         {

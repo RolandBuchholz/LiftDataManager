@@ -36,9 +36,9 @@ namespace SpeziInspector.ViewModels
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
-        public IRelayCommand LoadDataFromVault { get; }
-        public IRelayCommand LoadSpeziDataAsync { get; }
-        public IRelayCommand SaveAllSpeziParameters { get; }
+        public IAsyncRelayCommand LoadDataFromVault { get; }
+        public IAsyncRelayCommand LoadSpeziDataAsync { get; }
+        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
 
         private bool _CanLoadDataFromVault;
         public bool CanLoadDataFromVault
@@ -161,7 +161,7 @@ namespace SpeziInspector.ViewModels
 
             _CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-
+            //await Task.Delay(5000);
             Debug.WriteLine($"Daten aus {FullPathXml} geladen :)");
         }
 
@@ -170,7 +170,6 @@ namespace SpeziInspector.ViewModels
             await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             CheckUnsavedParametres();
         }
-
 
         private void SetAdminmode()
         {

@@ -18,6 +18,7 @@
     <None Remove="Controls\FooterControl.xaml" />
     <None Remove="Controls\HeaderControl.xaml" />
     <None Remove="Styles\DataGrid.xaml" />
+    <None Remove="Styles\Expander.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,5 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\Expander.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
