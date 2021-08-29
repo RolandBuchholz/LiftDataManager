@@ -73,6 +73,18 @@ namespace SpeziInspector.ViewModels
                 SaveParameter.NotifyCanExecuteChanged();
             }
         }
+        private string _SearchInputInfoSidebarPanelText;
+        public string SearchInputInfoSidebarPanelText
+        {
+            get => _SearchInputInfoSidebarPanelText;
+
+            set
+            {
+                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
+                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
         private async Task SaveParameterAsync()
         {
             await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
@@ -89,6 +101,7 @@ namespace SpeziInspector.ViewModels
                 if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
                 Adminmode = _CurrentSpeziProperties.Adminmode;
                 AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
+                SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
                 var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);
             }

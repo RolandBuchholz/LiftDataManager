@@ -35,8 +35,8 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Rectangle
@@ -46,6 +46,7 @@
 
                         <Slider
                             x:Name="ArrowRotation"
+                            Grid.Column="1"
                             Maximum="180"
                             Minimum="-180"
                             Visibility="Collapsed"
@@ -53,10 +54,11 @@
 
                         <FontIcon
                             x:Name="Arrow"
+                            Grid.Column="1"
                             Margin="12"
                             FontFamily="Segoe MDL2 Assets"
                             FontSize="12"
-                            Glyph="&#xE76C;"
+                            Glyph="&#xE96F;"
                             RenderTransformOrigin="0.5,0.5">
                             <FontIcon.RenderTransform>
                                 <RotateTransform />
@@ -65,10 +67,10 @@
 
                         <ContentPresenter
                             x:Name="ContentPresenter"
-                            Grid.Column="1"
+                            Grid.Column="0"
                             Margin="0,0,12,0"
                             Padding="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -288,13 +290,12 @@
         <Setter Property="Header" Value="Header" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HeaderStyle" Value="{StaticResource HeaderToggleButtonStylePanelStyle}" />
-        <!--<Setter Property="Background" Value="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />-->
-        <Setter Property="Background" Value="SaddleBrown" />
+        <Setter Property="Background" Value="{ThemeResource SystemControlPageBackgroundChromeMediumLowBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Expander">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid x:Name="PART_RootGrid">
+                        <Grid x:Name="PART_RootGrid" CornerRadius="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition x:Name="RowOne" Height="Auto" />
                                 <RowDefinition x:Name="RowTwo" Height="*" />
@@ -358,7 +359,7 @@
                                 <ContentPresenter
                                     x:Name="ContentPresenter"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    VerticalAlignment="Top"
                                     HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     Opacity="0">
@@ -534,7 +535,8 @@
                                         <Setter Target="ColumnOne.Width" Value="*" />
                                         <Setter Target="ColumnTwo.Width" Value="Auto" />
                                         <Setter Target="PART_MainContent.RenderTransformOrigin" Value="1, 0.5" />
-                                        <Setter Target="PART_ExpanderToggleButton.Background" Value="{Binding ElementName=PART_MainContent, Path=Background}" />
+                                        <Setter Target="PART_ExpanderToggleButton.Background" Value="Transparent" />
+                                        <!--<Setter Target="PART_ExpanderToggleButton.Background" Value="{Binding ElementName=PART_MainContent, Path=Background}" />-->
                                     </VisualState.Setters>
                                     <Storyboard>
                                         <DoubleAnimation

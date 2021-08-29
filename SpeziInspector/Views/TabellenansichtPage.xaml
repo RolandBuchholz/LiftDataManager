@@ -93,6 +93,10 @@
             Margin="10,5,10,5"
             Background="{ThemeResource SystemChromeMediumColor}"
             CornerRadius="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
             <controls:DataGrid
                 AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                 AutoGenerateColumns="False"
@@ -185,6 +189,30 @@
                     </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
+            <controls:Expander
+                x:Name="ExpanderInfoSidebarPanel"
+                Grid.Column="1"
+                Margin="0,0,0,0"
+                ExpandDirection="Left"
+                Header="Info Sidebar Panel"
+                Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
+
+                <ScrollViewer
+                    Name="InfoTextScroller"
+                    MinWidth="250"
+                    MaxWidth="350"
+                    Padding="10"
+                    VerticalAlignment="Top"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock
+                            VerticalAlignment="Top"
+                            Text="{x:Bind ViewModel.SearchInputInfoSidebarPanelText, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:Expander>
         </Grid>
         <controls:DropShadowPanel
             Grid.Row="2"

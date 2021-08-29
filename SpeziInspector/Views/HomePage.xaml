@@ -562,21 +562,17 @@
                 Name="InfoTextScroller"
                 MinWidth="250"
                 MaxWidth="350"
-                VerticalAlignment="Stretch"
+                Padding="10"
+                VerticalAlignment="Top"
                 HorizontalScrollBarVisibility="Auto"
                 VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <TextBlock VerticalAlignment="Top" TextWrapping="Wrap">
-                        <Run>Hallo</Run>
-                        <LineBreak />
-                        <Run>Hallofghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</Run>
-                        <LineBreak />
-                        <Run>Hallfhhhhhhhhhhhhhhhhhhhhhhhhhrtro</Run>
-                    </TextBlock>
+                    <TextBlock
+                        VerticalAlignment="Top"
+                        Text="{x:Bind ViewModel.SearchInputInfoSidebarPanelText, Mode=OneWay}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
             </ScrollViewer>
-
-
         </controls:Expander>
 
         <ProgressRing

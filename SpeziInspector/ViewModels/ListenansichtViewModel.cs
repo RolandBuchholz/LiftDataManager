@@ -157,6 +157,18 @@ namespace SpeziInspector.ViewModels
             }
         }
 
+        private string _SearchInputInfoSidebarPanelText;
+        public string SearchInputInfoSidebarPanelText
+        {
+            get => _SearchInputInfoSidebarPanelText;
+
+            set
+            {
+                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
+                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
         private async Task SaveParameterAsync()
         {
             await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
@@ -239,6 +251,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
         }
 

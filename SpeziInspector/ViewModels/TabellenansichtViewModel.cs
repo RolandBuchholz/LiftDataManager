@@ -98,7 +98,6 @@ namespace SpeziInspector.ViewModels
             IsUnsavedParametersSelected = true;
         }
 
-
         private void CheckUnsavedParametres()
         {
             if (ParamterDictionary.Values.Any(p => p.IsDirty))
@@ -125,6 +124,19 @@ namespace SpeziInspector.ViewModels
                 SetProperty(ref _SearchInput, value);
                 if (ParamterDictionary is not null) { FilterParameter(SearchInput); }
                 _CurrentSpeziProperties.SearchInput = SearchInput;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
+
+        private string _SearchInputInfoSidebarPanelText;
+        public string SearchInputInfoSidebarPanelText
+        {
+            get => _SearchInputInfoSidebarPanelText;
+
+            set
+            {
+                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
+                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
@@ -166,6 +178,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
         }
 

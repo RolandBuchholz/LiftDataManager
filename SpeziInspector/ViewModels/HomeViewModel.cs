@@ -123,6 +123,19 @@ namespace SpeziInspector.ViewModels
             }
         }
 
+        private string _SearchInputInfoSidebarPanelText;
+        public string SearchInputInfoSidebarPanelText
+        {
+            get => _SearchInputInfoSidebarPanelText;
+
+            set
+            {
+                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
+                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
+
         private void SetFullPathXml()
         {
             if (!AuftragsbezogeneXml)
@@ -138,7 +151,7 @@ namespace SpeziInspector.ViewModels
         private async Task LoadVaultData()
         {
             await Task.CompletedTask;
-            Debug.WriteLine("Daten aus Vault geladen :)");
+            SearchInputInfoSidebarPanelText += $"Daten aus Vault geladen \n";
         }
 
         private async Task LoadDataAsync()
@@ -158,11 +171,9 @@ namespace SpeziInspector.ViewModels
                     ParamterDictionary.Add(item.Name, item);
                 }
             }
-
             _CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            //await Task.Delay(5000);
-            Debug.WriteLine($"Daten aus {FullPathXml} geladen :)");
+            SearchInputInfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
         }
 
         private async Task SaveAllParameterAsync()
@@ -186,6 +197,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
             if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
