@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using SpeziInspector.Core.Contracts.Services;
+using SpeziInspector.Core.Messenger;
 using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Services;
 using System;
@@ -19,19 +20,24 @@ namespace SpeziInspector.Core.Models
             DropDownList
         }
         private readonly IAuswahlParameterDataService _auswahlParameterDataService;
+        private bool dataImport = false;
+        private ParameterChangeInfo _ParameterChangeInfo { get; set; } = new();
         public List<string> DropDownList { get; } = new();
         public Parameter( string name, string typeCode, string value)
         {
+            dataImport = true;
             AuswahlParameterDataService auswahlParameterDataService = new();
             _auswahlParameterDataService = auswahlParameterDataService;
-            IsDirty = false;
             TypeCode = typeCode;
-            Value = value;
-            Name = name;
             SymbolCode = GetSymbolCode(TypeCode);
+            _ParameterChangeInfo.ParameterName = name;
+            _ParameterChangeInfo.OldValue = value;
+            IsDirty = false;   
+            if (ParameterTyp != ParameterTypValue.Date) Value = value;
+            Name = name;
             if (ParameterTyp == ParameterTypValue.Date)
             {
-                if (string.IsNullOrWhiteSpace(Value) || Value == "0")
+                if (string.IsNullOrWhiteSpace(value) || value == "0")
                 {
                     Date = null;
                 }
@@ -39,7 +45,7 @@ namespace SpeziInspector.Core.Models
                 {
                     try
                     {
-                        double excelDate = Convert.ToDouble(_Value);
+                        double excelDate = Convert.ToDouble(value);
                         Date = DateTime.FromOADate(excelDate);
                     }
                     catch
@@ -51,7 +57,7 @@ namespace SpeziInspector.Core.Models
 
             if (ParameterTyp == ParameterTypValue.Boolean)
             {
-                if (string.IsNullOrWhiteSpace(Value))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     BoolValue = null;
                 }
@@ -71,9 +77,10 @@ namespace SpeziInspector.Core.Models
             if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
             {
                 DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
-                DropDownListValue = Value;
+                DropDownListValue = value;
                 ParameterTyp = ParameterTypValue.DropDownList;
             }
+            dataImport = false;
         }
         public string Name { get; set; }
         public string TypeCode { get; set; }
@@ -85,7 +92,22 @@ namespace SpeziInspector.Core.Models
             {
                 if ((_Value != null && value != _Value) || (_Value is null && value != ""))
                 {
-                    IsDirty = true;
+                    
+                    if (_ParameterChangeInfo.OldValue != value)
+                    {
+                        if (string.IsNullOrWhiteSpace(_ParameterChangeInfo.NewValue))
+                        {
+                            _ParameterChangeInfo.NewValue = value;
+                        }
+                        else
+                        {
+                            _ParameterChangeInfo.OldValue = _ParameterChangeInfo.NewValue;
+                            _ParameterChangeInfo.NewValue = value;
+                        }
+
+                        IsDirty = true;
+                    }
+
                 }
                 SetProperty(ref _Value, value);
             }
@@ -96,7 +118,7 @@ namespace SpeziInspector.Core.Models
             get => _Comment;
             set
             {
-                if ((_Comment != null && value != _Comment) || (_Comment is null && value != ""))
+                if ((_Comment != null && value != _Comment) || (_Comment != null && value != ""))
                 {
                     IsDirty = true;
                 }
@@ -109,14 +131,10 @@ namespace SpeziInspector.Core.Models
             get => _Date;
             set
             {
-                if ((_Date != null && value != _Date) || (_Date is null && value != null))
-                {
-                    IsDirty = true;
-                }
                 SetProperty(ref _Date, value);
                 if (_Date != null)
                 {
-                    _Value = _Date?.ToString("d");
+                    Value = _Date?.ToString("d");
                 }
             }
         }
@@ -142,8 +160,7 @@ namespace SpeziInspector.Core.Models
             {
                 if (_BoolValue != null && value != _BoolValue)
                 {
-                    IsDirty = true;
-                    _Value = value.ToString();
+                    Value = value.ToString();
                 }
                 SetProperty(ref _BoolValue, value);
             }
@@ -155,6 +172,7 @@ namespace SpeziInspector.Core.Models
             get => _DropDownListValue;
             set
             {
+                //if (value != null && value != _DropDownListValue)
                 if (value != _DropDownListValue)
                 {
                     Value = value;
@@ -163,7 +181,6 @@ namespace SpeziInspector.Core.Models
             }
         }
 
-
         private bool _IsDirty;
         public bool IsDirty
         {
@@ -171,8 +188,12 @@ namespace SpeziInspector.Core.Models
             set
             {
                 SetProperty(ref _IsDirty, value);
-                Messenger.Send(new ParameterDirtyMessage(value));
-            }
+                _ParameterChangeInfo.IsDirty = value;
+                if (value && !dataImport && (Value != _ParameterChangeInfo.NewValue))
+                {
+                    Messenger.Send(new ParameterDirtyMessage(_ParameterChangeInfo));
+                }
+            }          
         }
         public ParameterTypValue ParameterTyp { get; set; }
         public char Symbol => (char)SymbolCode;

@@ -9,7 +9,7 @@ namespace SpeziInspector.Core.Messenger
         public bool AuftragsbezogeneXml { get; set; }
         public string FullPathXml { get; set; }
         public string SearchInput { get; set; }
-        public string SearchInputInfoSidebarPanelText { get; set; }
+        public string InfoSidebarPanelText { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
     }
 }

@@ -37,18 +37,26 @@ namespace SpeziInspector.ViewModels
                 _item.PropertyChanged += OnPropertyChanged;
             }
         }
+
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            {
+                if (m is not null && m.Value.IsDirty == true)
+                {
+                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                }
+            });
             SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
         }
+
+        public IAsyncRelayCommand SaveParameter { get; }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             CheckIsDirty((Parameter)sender);
         }
-
-        public IAsyncRelayCommand SaveParameter { get; }
 
         private void CheckIsDirty(Parameter Item)
         {
@@ -73,25 +81,29 @@ namespace SpeziInspector.ViewModels
                 SaveParameter.NotifyCanExecuteChanged();
             }
         }
-        private string _SearchInputInfoSidebarPanelText;
-        public string SearchInputInfoSidebarPanelText
+
+        private string _InfoSidebarPanelText;
+        public string InfoSidebarPanelText
         {
-            get => _SearchInputInfoSidebarPanelText;
+            get => _InfoSidebarPanelText;
 
             set
             {
-                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
-                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                SetProperty(ref _InfoSidebarPanelText, value);
+                _CurrentSpeziProperties.InfoSidebarPanelText = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
+
         private async Task SaveParameterAsync()
         {
-            await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
+            var infotext = await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
+            InfoSidebarPanelText += infotext;
             CanSaveParameter = false;
             CanSaveParameter = false;
             Item.IsDirty = false;
         }
+
         public void OnNavigatedTo(object parameter)
         {
             if (parameter is not null)
@@ -101,11 +113,12 @@ namespace SpeziInspector.ViewModels
                 if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
                 Adminmode = _CurrentSpeziProperties.Adminmode;
                 AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-                SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
+                InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
                 var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);
             }
         }
+
         public void OnNavigatedFrom()
         {
             Item.PropertyChanged -= OnPropertyChanged;

@@ -106,7 +106,8 @@
                 Margin="5,0,5,0"
                 IsSpellCheckEnabled="False"
                 PlaceholderText="Suche"
-                Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="Collapsed" />
         </Grid>
         <!--  Parameter  -->
         <ScrollViewer
@@ -547,34 +548,13 @@
                     Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
             </Grid>
         </ScrollViewer>
-
-        <controls:Expander
-            x:Name="ExpanderInfoSidebarPanel"
+        <!--  InfoSidebarPanel  -->
+        <SpeziControls:SidebarPanel
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.Column="1"
-            Margin="0,0,25,10"
-            ExpandDirection="Left"
-            Header="Info Sidebar Panel"
-            Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
-
-            <ScrollViewer
-                Name="InfoTextScroller"
-                MinWidth="250"
-                MaxWidth="350"
-                Padding="10"
-                VerticalAlignment="Top"
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <TextBlock
-                        VerticalAlignment="Top"
-                        Text="{x:Bind ViewModel.SearchInputInfoSidebarPanelText, Mode=OneWay}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </ScrollViewer>
-        </controls:Expander>
-
+            Margin="0,0,20,10"
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"

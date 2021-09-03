@@ -25,7 +25,7 @@ namespace SpeziInspector.Core.Services
             }
             else
             {
-                FileInfo AuswahlparameterInfo = new FileInfo(AuswahlParameterDataPath);
+                FileInfo AuswahlparameterInfo = new(AuswahlParameterDataPath);
 
                 if (AuswahlparameterInfo.IsReadOnly)
                 {

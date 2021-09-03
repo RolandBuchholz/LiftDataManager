@@ -33,7 +33,7 @@ namespace SpeziInspector.Core.Services
             return parameterList;
         }
 
-        public async Task SaveParameterAsync(Parameter parameter, string path)
+        public async Task<string> SaveParameterAsync(Parameter parameter, string path)
         {
             FileInfo AutoDeskTransferInfo = new FileInfo(path);
 
@@ -72,16 +72,19 @@ namespace SpeziInspector.Core.Services
             xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
 
             doc.Save(path);
-
-            Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
-            Debug.WriteLine($"in vorhandene {path}");
             await Task.CompletedTask;
+
+            string infotext = $"Parameter gespeichet: { parameter.Name} => { parameter.Value}  \n";
+            infotext += $"----------\n";
+            return infotext;
         }
 
 
-        public async Task SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
+        public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
         {
             FileInfo AutoDeskTransferInfo = new FileInfo(path);
+
+            string infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
 
             if (AutoDeskTransferInfo.IsReadOnly)
             {
@@ -123,15 +126,13 @@ namespace SpeziInspector.Core.Services
 
                 parameter.IsDirty = false;
 
-                Debug.WriteLine($"Parameter gespeichert: {parameter.Name}");
-                Debug.WriteLine($"in vorhandene {path}");
+                infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
             }
 
             doc.Save(path);
-
-            Debug.WriteLine($"Alle Parameter gespeichert:");
-            Debug.WriteLine($"in {path}");
             await Task.CompletedTask;
+            infotext += $"----------\n";
+            return infotext;
         }
     }
 }

@@ -8,7 +8,6 @@ using SpeziInspector.Core.Contracts.Services;
 using SpeziInspector.Core.Messenger;
 using SpeziInspector.Core.Messenger.Messages;
 using SpeziInspector.Core.Models;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,18 +26,25 @@ namespace SpeziInspector.ViewModels
         {
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
             {
-                if (m is not null && m.Value == true) CheckUnsavedParametres();
+                if (m is not null && m.Value.IsDirty == true)
+                {
+                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    CheckUnsavedParametres();
+                }
+
             });
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
             LoadDataFromVault = new AsyncRelayCommand(LoadVaultData, () => CanLoadDataFromVault);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+
         }
 
         public IAsyncRelayCommand LoadDataFromVault { get; }
         public IAsyncRelayCommand LoadSpeziDataAsync { get; }
         public IAsyncRelayCommand SaveAllSpeziParameters { get; }
+
 
         private bool _CanLoadDataFromVault;
         public bool CanLoadDataFromVault
@@ -123,15 +129,15 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private string _SearchInputInfoSidebarPanelText;
-        public string SearchInputInfoSidebarPanelText
+        private string _InfoSidebarPanelText;
+        public string InfoSidebarPanelText
         {
-            get => _SearchInputInfoSidebarPanelText;
+            get => _InfoSidebarPanelText;
 
             set
             {
-                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
-                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                SetProperty(ref _InfoSidebarPanelText, value);
+                _CurrentSpeziProperties.InfoSidebarPanelText = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
@@ -144,19 +150,20 @@ namespace SpeziInspector.ViewModels
             }
             else
             {
-                FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\895\8951214\8951214-AutoDeskTransfer.xml";
+                FullPathXml = @"C:\Work\Administration\Spezifikation\Testfile-AutoDeskTransfer.xml";
             }
         }
 
         private async Task LoadVaultData()
         {
             await Task.CompletedTask;
-            SearchInputInfoSidebarPanelText += $"Daten aus Vault geladen \n";
+            InfoSidebarPanelText += $"Daten aus Vault geladen \n";
+            InfoSidebarPanelText += $"----------\n";
         }
 
         private async Task LoadDataAsync()
         {
-            
+
             if (FullPathXml is null) { SetFullPathXml(); };
             var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
@@ -173,12 +180,14 @@ namespace SpeziInspector.ViewModels
             }
             _CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            SearchInputInfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
+            InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
+            InfoSidebarPanelText += $"----------\n";
         }
 
         private async Task SaveAllParameterAsync()
         {
-            await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            InfoSidebarPanelText += infotext;
             CheckUnsavedParametres();
         }
 
@@ -197,7 +206,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
+            InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
             if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }

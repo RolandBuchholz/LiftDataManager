@@ -2,6 +2,7 @@
     x:Class="SpeziInspector.Views.ListenansichtPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SpeziControls="using:SpeziInspector.Controls"
     xmlns:behaviors="using:SpeziInspector.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -106,52 +107,62 @@
                 Style="{StaticResource AccentButtonStyle}" />
             <TextBox
                 Grid.Column="4"
-                Margin="5,10,20,5"
+                Margin="5,10,15,5"
                 IsSpellCheckEnabled="False"
                 PlaceholderText="Suche"
                 Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-        <controls:ListDetailsView
-            x:Name="ListDetailsViewControl"
-            x:Uid="Listenansicht"
-            Grid.Row="1"
-            Margin="10"
-            BackButtonBehavior="Automatic"
-            Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-            BorderBrush="Transparent"
-            DetailsTemplate="{StaticResource DetailsTemplate}"
-            ItemTemplate="{StaticResource ItemTemplate}"
-            ItemsSource="{x:Bind ViewModel.FilteredParameters}"
-            ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
-            NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
-            SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
-            ViewStateChanged="OnViewStateChanged" />
-        <StackPanel
-            Grid.Row="1"
-            Margin="0,150,20,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal"
-            Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}">
-            <SymbolIcon
-                Margin="0,4"
-                HorizontalAlignment="Right"
-                Foreground="Red"
-                Symbol="ReportHacked"
-                Visibility="{x:Bind ViewModel.Selected.IsDirty, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="Red">
-                        Parameter noch nicht gespeichert!<LineBreak />
-                        Speichern ist nur im Adminmode möglich!</TextBlock>
-                </ToolTipService.ToolTip>
-            </SymbolIcon>
-            <Button
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <controls:ListDetailsView
+                x:Name="ListDetailsViewControl"
+                x:Uid="Listenansicht"
                 Margin="10"
-                Command="{x:Bind ViewModel.SaveParameter}"
-                Content="Save Parameter"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
-        </StackPanel>
+                BackButtonBehavior="Automatic"
+                Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                BorderBrush="Transparent"
+                DetailsTemplate="{StaticResource DetailsTemplate}"
+                ItemTemplate="{StaticResource ItemTemplate}"
+                ItemsSource="{x:Bind ViewModel.FilteredParameters}"
+                ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                ViewStateChanged="OnViewStateChanged" />
+            <StackPanel
+                Margin="0,150,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal"
+                Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}">
+                <SymbolIcon
+                    Margin="0,4"
+                    HorizontalAlignment="Right"
+                    Foreground="Red"
+                    Symbol="ReportHacked"
+                    Visibility="{x:Bind ViewModel.Selected.IsDirty, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Foreground="Red">
+                            Parameter noch nicht gespeichert!<LineBreak />
+                            Speichern ist nur im Adminmode möglich!</TextBlock>
+                    </ToolTipService.ToolTip>
+                </SymbolIcon>
+                <Button
+                    Margin="10"
+                    Command="{x:Bind ViewModel.SaveParameter}"
+                    Content="Save Parameter"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}" />
+            </StackPanel>
+            <!--  InfoSidebarPanel  -->
+            <SpeziControls:SidebarPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,10,10,0"
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+        </Grid>
         <controls:DropShadowPanel
             Grid.Row="2"
             Margin="10,5,10,5"

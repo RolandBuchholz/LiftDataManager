@@ -2,9 +2,9 @@
 
 namespace SpeziInspector.Core.Messenger.Messages
 {
-    public class ParameterDirtyMessage : ValueChangedMessage<bool>
+    public class ParameterDirtyMessage : ValueChangedMessage<ParameterChangeInfo>
     {
-        public ParameterDirtyMessage(bool value) : base(value)
+        public ParameterDirtyMessage(ParameterChangeInfo value) : base(value)
         {
         }
     }

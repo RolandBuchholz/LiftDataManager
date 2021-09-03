@@ -9,8 +9,8 @@ namespace SpeziInspector.Core.Contracts.Services
     {
         Task<IEnumerable<Parameter>> LoadParameterAsync(string path);
 
-        Task SaveParameterAsync(Parameter parameter, string path);
+        Task<string> SaveParameterAsync(Parameter parameter, string path);
 
-        Task SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path);
+        Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path);
     }
 }

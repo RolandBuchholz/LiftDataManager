@@ -57,6 +57,13 @@ namespace SpeziInspector.ViewModels
         public ListenansichtViewModel(IParameterDataService parameterDataService)
         {
             _parameterDataService = parameterDataService;
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            {
+                if (m is not null && m.Value.IsDirty == true)
+                {
+                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                }
+            });
             SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
@@ -157,21 +164,23 @@ namespace SpeziInspector.ViewModels
             }
         }
 
-        private string _SearchInputInfoSidebarPanelText;
-        public string SearchInputInfoSidebarPanelText
+        private string _InfoSidebarPanelText;
+        public string InfoSidebarPanelText
         {
-            get => _SearchInputInfoSidebarPanelText;
+            get => _InfoSidebarPanelText;
 
             set
             {
-                SetProperty(ref _SearchInputInfoSidebarPanelText, value);
-                _CurrentSpeziProperties.SearchInputInfoSidebarPanelText = value;
+                SetProperty(ref _InfoSidebarPanelText, value);
+                _CurrentSpeziProperties.InfoSidebarPanelText = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
+
         private async Task SaveParameterAsync()
         {
-            await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
+            var infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
+            InfoSidebarPanelText += infotext;
             CanSaveParameter = false;
             Selected.IsDirty = false;
             if (IsUnsavedParametersSelected) ShowUnsavedParametersView();
@@ -179,7 +188,8 @@ namespace SpeziInspector.ViewModels
 
         private async Task SaveAllParameterAsync()
         {
-            await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            InfoSidebarPanelText += infotext;
             CheckUnsavedParametres();
             ShowAllParametersView();
         }
@@ -251,7 +261,7 @@ namespace SpeziInspector.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            SearchInputInfoSidebarPanelText = _CurrentSpeziProperties.SearchInputInfoSidebarPanelText;
+            InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
         }
 
