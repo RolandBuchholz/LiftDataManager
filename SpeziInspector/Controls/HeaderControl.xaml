@@ -10,7 +10,7 @@
 
     <Grid>
         <controls:DropShadowPanel
-            Margin="20"
+            Margin="10"
             HorizontalContentAlignment="Stretch"
             BlurRadius="5"
             IsMasked="True"
@@ -26,7 +26,7 @@
                 RadiusY="10" />
         </controls:DropShadowPanel>
         <StackPanel
-            Margin="20,0,20,0"
+            Margin="10,0,10,0"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
             <Image

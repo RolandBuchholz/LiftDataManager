@@ -212,50 +212,11 @@
                 Margin="0"
                 InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         </Grid>
-        <controls:DropShadowPanel
+        <!--  Footer  -->
+        <SpeziControls:FooterControl
             Grid.Row="2"
-            Margin="10,5,10,5"
-            HorizontalContentAlignment="Stretch"
-            BlurRadius="5"
-            IsMasked="True"
-            OffsetX="5"
-            OffsetY="5"
-            ShadowOpacity="0.9"
-            Color="Black">
-            <Rectangle
-                Height="35"
-                HorizontalAlignment="Stretch"
-                Fill="{StaticResource SystemControlPageBackgroundBaseLowBrush}"
-                RadiusX="10"
-                RadiusY="10" />
-        </controls:DropShadowPanel>
-        <Grid Grid.Row="2" Padding="25,5,25,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                Grid.Column="0"
-                Margin="10,0,10,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                FontWeight="Bold"
-                Text="{x:Bind ViewModel.FullPathXml, Mode=TwoWay}" />
-            <StackPanel
-                Grid.Column="1"
-                Margin="10,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Text="{x:Bind ViewModel.FilteredParameters.Count, Mode=OneWay}" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Text=" Parameter gefunden." />
-            </StackPanel>
-        </Grid>
+            Margin="0"
+            ParameterFound="{x:Bind ViewModel.FilteredParameters.Count, Mode=OneWay}"
+            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

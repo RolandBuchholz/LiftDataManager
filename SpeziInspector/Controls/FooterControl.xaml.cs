@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
 
 namespace SpeziInspector.Controls
 {
@@ -21,12 +22,11 @@ namespace SpeziInspector.Controls
 
         public int ParameterFound
         {
-            get { return (int)GetValue(ParameterfoundProperty); }
-            set { SetValue(ParameterfoundProperty, value); }
+            get { return (int)GetValue(ParameterFoundProperty); }
+            set { SetValue(ParameterFoundProperty, value); }
         }
 
-        public static readonly DependencyProperty ParameterfoundProperty =
+        public static readonly DependencyProperty ParameterFoundProperty =
             DependencyProperty.Register("ParameterFound", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
-
     }
 }
