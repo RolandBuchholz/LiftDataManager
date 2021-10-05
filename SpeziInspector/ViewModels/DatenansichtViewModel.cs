@@ -27,6 +27,7 @@ namespace SpeziInspector.ViewModels
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
         private ICommand _itemClickCommand;
         public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
+
         public DatenansichtViewModel(INavigationService navigationService, IParameterDataService parameterDataService)
         {
             _navigationService = navigationService;

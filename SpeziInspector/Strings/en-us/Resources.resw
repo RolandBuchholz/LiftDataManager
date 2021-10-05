@@ -166,4 +166,7 @@
     <value>https://YourPrivacyUrlGoesHere/</value>
     <comment>Here is your Privacy Statement url for SettingsPage</comment>
   </data>
+  <data name="Shell_QuickLinks.Content" xml:space="preserve">
+    <value>QuickLinks</value>
+  </data>
 </root>

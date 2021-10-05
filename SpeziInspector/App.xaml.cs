@@ -71,6 +71,8 @@ namespace SpeziInspector
             services.AddTransient<DatenansichtDetailPage>();
             services.AddTransient<TabellenansichtViewModel>();
             services.AddTransient<TabellenansichtPage>();
+            services.AddTransient<QuickLinksViewModel>();
+            services.AddTransient<QuickLinksPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             return services.BuildServiceProvider();

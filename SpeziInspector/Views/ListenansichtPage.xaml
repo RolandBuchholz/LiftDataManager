@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:SpeziInspector.Core.Models"
     xmlns:views="using:SpeziInspector.Views"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>

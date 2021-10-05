@@ -18,26 +18,59 @@
             OffsetY="5"
             ShadowOpacity="0.7"
             Color="Black">
-            <Rectangle
+            <Image
                 Height="100"
-                HorizontalAlignment="Stretch"
-                Fill="#F05A28"
-                RadiusX="10"
-                RadiusY="10" />
+                Source="/Images/banner.png"
+                Stretch="UniformToFill" />
         </controls:DropShadowPanel>
         <StackPanel
             Margin="10,0,10,0"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
-            <Image
-                Height="90"
-                Margin="5"
-                Source="/Images/Inspector.png" />
             <TextBlock
                 VerticalAlignment="Center"
-                FontWeight="ExtraBlack"
-                Style="{StaticResource SubheaderTextBlockStyle}"
-                Text="Spezifikation Inspector" />
+                FontFamily="Segoe UI Variable"
+                FontSize="72"
+                FontWeight="Bold"
+                Foreground="WhiteSmoke"
+                Text="L" />
+            <TextBlock
+                Margin="0,0,10,0"
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Variable"
+                FontSize="48"
+                FontWeight="Bold"
+                Foreground="WhiteSmoke"
+                Text="ift" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Variable"
+                FontSize="72"
+                FontWeight="Bold"
+                Foreground="WhiteSmoke"
+                Text="D" />
+            <TextBlock
+                Margin="0,0,10,0"
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Variable"
+                FontSize="48"
+                FontWeight="Bold"
+                Foreground="WhiteSmoke"
+                Text="ata" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Variable"
+                FontSize="72"
+                FontWeight="Bold"
+                Foreground="Black"
+                Text="M" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Variable"
+                FontSize="48"
+                FontWeight="Bold"
+                Foreground="Black"
+                Text="anager" />
         </StackPanel>
     </Grid>
 </UserControl>

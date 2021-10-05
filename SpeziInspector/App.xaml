@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="/Styles/DataGrid.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/Expander.xaml" />
+                <ResourceDictionary Source="/Styles/Button.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.DataGrid/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

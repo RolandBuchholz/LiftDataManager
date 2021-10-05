@@ -37,6 +37,13 @@
                 helpers:NavHelper.NavigateTo="SpeziInspector.ViewModels.TabellenansichtViewModel"
                 Icon="List" />
         </NavigationView.MenuItems>
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItem
+                x:Uid="Shell_QuickLinks"
+                helpers:NavHelper.NavigateTo="SpeziInspector.ViewModels.QuickLinksViewModel"
+                Icon="View" />
+        </NavigationView.FooterMenuItems>
+
         <NavigationView.HeaderTemplate>
             <DataTemplate>
                 <Grid>

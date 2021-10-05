@@ -24,6 +24,7 @@ namespace SpeziInspector.Services
             Configure<DatenansichtDetailViewModel, DatenansichtDetailPage>();
             Configure<TabellenansichtViewModel, TabellenansichtPage>();
             Configure<SettingsViewModel, SettingsPage>();
+            Configure<QuickLinksViewModel, QuickLinksPage>();
         }
 
         public Type GetPageType(string key)
