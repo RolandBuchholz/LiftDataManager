@@ -1,0 +1,149 @@
+﻿<Page
+    x:Class="LiftDataManager.Views.QuickLinksPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:LiftDataManager.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="40" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Margin="24,5,0,0"
+            VerticalAlignment="Top"
+            Style="{StaticResource PageTitleStyle}"
+            Text="Quick Links" />
+        <GridView
+            Grid.Row="1"
+            Margin="10"
+            Padding="5"
+            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+            CornerRadius="10">
+
+            <Button Command="{x:Bind ViewModel.OpenSpeziCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/ExcelTransparent.png"
+                        Stretch="UniformToFill" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Spezifikation" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenSpeziPdfCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/PdfTransparent.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Spezifikation Pdf" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenBauerCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/Ordneryellow.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="KPS/Bauer" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenWorkspaceCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/Ordnerblue.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Arbeitsbereich" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenVaultCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/VaultTransparent.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Vault" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenCFPCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/CFPTransparent.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="CFP" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenZiehlAbeggCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/ZiehlAbeggTransparent.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Ziehl Abegg" />
+                </StackPanel>
+            </Button>
+            <Button
+                x:Name="LoadLilo"
+                Command="{x:Bind ViewModel.OpenLiloCommand}"
+                Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/LiloTransparent.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Lilo" />
+                </StackPanel>
+            </Button>
+        </GridView>
+    </Grid>
+</Page>
