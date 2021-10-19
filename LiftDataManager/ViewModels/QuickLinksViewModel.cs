@@ -112,11 +112,13 @@ namespace LiftDataManager.ViewModels
 
             if (File.Exists(filename)) 
             {
-                string[] ordernumber ={auftragsnummer};
-                File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\OrderNumber.txt", ordernumber);
-                string[] cfpStart = { "From CFP" };
-                File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\fromCFP.txt", cfpStart);
-
+                if (!string.IsNullOrWhiteSpace(auftragsnummer))
+                {
+                    string[] ordernumber = { auftragsnummer };
+                    File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\OrderNumber.txt", ordernumber);
+                    string[] cfpStart = { "From CFP" };
+                    File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\fromCFP.txt", cfpStart);
+                }
                 StartProgram(filename, startargs);
             }
         }
