@@ -106,11 +106,17 @@ namespace LiftDataManager.ViewModels
 
         private void OpenSpezi()
         {
+            string auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
             string filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
             string startargs = "";
 
             if (File.Exists(filename)) 
             {
+                string[] ordernumber ={auftragsnummer};
+                File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\OrderNumber.txt", ordernumber);
+                string[] cfpStart = { "From CFP" };
+                File.WriteAllLinesAsync(@"C:\Work\Administration\Spezifikation\fromCFP.txt", cfpStart);
+
                 StartProgram(filename, startargs);
             }
         }
