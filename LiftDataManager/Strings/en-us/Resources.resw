@@ -169,4 +169,31 @@
   <data name="Shell_QuickLinks.Content" xml:space="preserve">
     <value>QuickLinks</value>
   </data>
+  <data name="Shell_Kabine.Content" xml:space="preserve">
+    <value>Kabine</value>
+  </data>
+  <data name="Shell_AllgemeineDaten.Content" xml:space="preserve">
+    <value>AllgemeineDaten</value>
+  </data>
+  <data name="Shell_Schacht.Content" xml:space="preserve">
+    <value>Schacht</value>
+  </data>
+  <data name="Shell_Bausatz.Content" xml:space="preserve">
+    <value>Bausatz</value>
+  </data>
+  <data name="Shell_Türen.Content" xml:space="preserve">
+    <value>Türen</value>
+  </data>
+  <data name="Shell_AntriebSteuerungNotruf.Content" xml:space="preserve">
+    <value>AntriebSteuerungNotruf</value>
+  </data>
+  <data name="Shell_Signalisation.Content" xml:space="preserve">
+    <value>Signalisation</value>
+  </data>
+  <data name="Shell_WartungMontageTüv.Content" xml:space="preserve">
+    <value>WartungMontageTüv</value>
+  </data>
+  <data name="Shell_Sonstiges.Content" xml:space="preserve">
+    <value>Sonstiges</value>
+  </data>
 </root>

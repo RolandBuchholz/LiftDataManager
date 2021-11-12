@@ -3,10 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:LiftDataManager.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="OnLoaded"
     Style="{StaticResource PageStyle}">
 
@@ -24,6 +22,44 @@
                 x:Uid="Shell_Home"
                 helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.HomeViewModel"
                 Icon="Home" />
+            <NavigationViewItemSeparator />
+            <NavigationViewItem
+                x:Uid="Shell_AllgemeineDaten"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.AllgemeineDatenViewModel"
+                Icon="People" />
+            <NavigationViewItem
+                x:Uid="Shell_Schacht"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SchachtViewModel"
+                Icon="CellPhone" />
+            <NavigationViewItem
+                x:Uid="Shell_Kabine"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.KabineViewModel"
+                Icon="DockBottom" />
+            <NavigationViewItem
+                x:Uid="Shell_Bausatz"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.BausatzViewModel"
+                Icon="Memo" />
+            <NavigationViewItem
+                x:Uid="Shell_Türen"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.TürenViewModel"
+                Icon="ClosePane" />
+            <NavigationViewItem
+                x:Uid="Shell_AntriebSteuerungNotruf"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.AntriebSteuerungNotrufViewModel"
+                Icon="Phone" />
+            <NavigationViewItem
+                x:Uid="Shell_Signalisation"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SignalisationViewModel"
+                Icon="Calculator" />
+            <NavigationViewItem
+                x:Uid="Shell_WartungMontageTüv"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.WartungMontageTüvViewModel"
+                Icon="Repair" />
+            <NavigationViewItem
+                x:Uid="Shell_Sonstiges"
+                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SonstigesViewModel"
+                Icon="Pin" />
+            <NavigationViewItemSeparator />
             <NavigationViewItem
                 x:Uid="Shell_Listenansicht"
                 helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel"

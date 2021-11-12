@@ -4,11 +4,11 @@ using System.Linq;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using Microsoft.UI.Xaml.Controls;
-
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
 using LiftDataManager.Views;
+
+using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.Services
 {
@@ -25,6 +25,15 @@ namespace LiftDataManager.Services
             Configure<TabellenansichtViewModel, TabellenansichtPage>();
             Configure<SettingsViewModel, SettingsPage>();
             Configure<QuickLinksViewModel, QuickLinksPage>();
+            Configure<KabineViewModel, KabinePage>();
+            Configure<AllgemeineDatenViewModel, AllgemeineDatenPage>();
+            Configure<SchachtViewModel, SchachtPage>();
+            Configure<BausatzViewModel, BausatzPage>();
+            Configure<TürenViewModel, TürenPage>();
+            Configure<AntriebSteuerungNotrufViewModel, AntriebSteuerungNotrufPage>();
+            Configure<SignalisationViewModel, SignalisationPage>();
+            Configure<WartungMontageTüvViewModel, WartungMontageTüvPage>();
+            Configure<SonstigesViewModel, SonstigesPage>();
         }
 
         public Type GetPageType(string key)

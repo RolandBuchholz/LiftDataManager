@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
-
 using LiftDataManager.Activation;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Core.Contracts.Services;
@@ -12,6 +9,8 @@ using LiftDataManager.Services;
 using LiftDataManager.ViewModels;
 using LiftDataManager.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 
 namespace LiftDataManager
 {
@@ -75,6 +74,24 @@ namespace LiftDataManager
             services.AddTransient<QuickLinksPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
+            services.AddTransient<KabineViewModel>();
+            services.AddTransient<KabinePage>();
+            services.AddTransient<AllgemeineDatenViewModel>();
+            services.AddTransient<AllgemeineDatenPage>();
+            services.AddTransient<SchachtViewModel>();
+            services.AddTransient<SchachtPage>();
+            services.AddTransient<BausatzViewModel>();
+            services.AddTransient<BausatzPage>();
+            services.AddTransient<TürenViewModel>();
+            services.AddTransient<TürenPage>();
+            services.AddTransient<AntriebSteuerungNotrufViewModel>();
+            services.AddTransient<AntriebSteuerungNotrufPage>();
+            services.AddTransient<SignalisationViewModel>();
+            services.AddTransient<SignalisationPage>();
+            services.AddTransient<WartungMontageTüvViewModel>();
+            services.AddTransient<WartungMontageTüvPage>();
+            services.AddTransient<SonstigesViewModel>();
+            services.AddTransient<SonstigesPage>();
             return services.BuildServiceProvider();
         }
     }
