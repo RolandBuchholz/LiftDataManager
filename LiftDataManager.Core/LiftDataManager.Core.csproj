@@ -7,7 +7,7 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cogs.Collections" Version="1.9.0" />
+    <PackageReference Include="Cogs.Collections" Version="1.9.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
