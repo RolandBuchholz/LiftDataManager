@@ -1,4 +1,4 @@
-﻿using Microsoft.ApplicationModel.Resources;
+﻿using Windows.ApplicationModel.Resources;
 
 namespace LiftDataManager.Helpers
 {

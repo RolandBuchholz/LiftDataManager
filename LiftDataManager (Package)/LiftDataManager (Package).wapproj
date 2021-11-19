@@ -35,11 +35,11 @@
   </PropertyGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
-    <ProjectGuid>306A446A-853B-4AB0-937F-291CD0AD66BF</ProjectGuid>
+    <ProjectGuid>3fc82b40-7982-4cb9-b170-afe60297b069</ProjectGuid>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <AssetTargetFallback>net5.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>de-DE</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\LiftDataManager\LiftDataManager.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
@@ -56,10 +56,6 @@
     <Content Include="Images\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Images\StoreLogo.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
-    <Content Include="Package.appinstaller" />
-    <PRIResource Include="Strings\en-us\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiftDataManager\LiftDataManager.csproj">
@@ -68,7 +64,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.5">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="[1.0.0]">
+      <IncludeAssets>build</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.196">
       <IncludeAssets>build</IncludeAssets>
     </PackageReference>
   </ItemGroup>
