@@ -4,25 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:LiftDataManager.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="6"
+            Offset="6" />
+    </UserControl.Resources>
     <Grid>
-        <controls:DropShadowPanel
+        <Rectangle
+            Height="100"
             Margin="10"
-            HorizontalContentAlignment="Stretch"
-            BlurRadius="5"
-            IsMasked="True"
-            OffsetX="5"
-            OffsetY="5"
-            ShadowOpacity="0.7"
-            Color="Black">
-            <Image
-                Height="100"
-                Source="/Images/banner.png"
-                Stretch="UniformToFill" />
-        </controls:DropShadowPanel>
+            HorizontalAlignment="Stretch"
+            ui:Effects.Shadow="{StaticResource CommonShadow}"
+            RadiusX="6"
+            RadiusY="6">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Images/banner.png" Stretch="UniformToFill" />
+            </Rectangle.Fill>
+        </Rectangle>
         <StackPanel
             Margin="10,0,10,0"
             HorizontalAlignment="Center"

@@ -7,6 +7,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -16,6 +17,10 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
     </Page.Resources>
 
     <Grid
@@ -55,25 +60,15 @@
                     <RowDefinition />
 
                 </Grid.RowDefinitions>
-
-                <controls:DropShadowPanel
+                <Rectangle
                     Grid.Row="0"
+                    Height="35"
                     Margin="0,5,0,5"
-                    HorizontalContentAlignment="Stretch"
-                    BlurRadius="5"
-                    IsMasked="True"
-                    OffsetX="5"
-                    OffsetY="5"
-                    ShadowOpacity="0.7"
-                    Color="Black">
-                    <Rectangle
-                        Height="35"
-                        HorizontalAlignment="Stretch"
-                        Fill="{StaticResource SystemControlPageBackgroundListLowBrush}"
-                        RadiusX="10"
-                        RadiusY="10" />
-                </controls:DropShadowPanel>
-
+                    HorizontalAlignment="Stretch"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Fill="{StaticResource SystemControlPageBackgroundListLowBrush}"
+                    RadiusX="5"
+                    RadiusY="5" />
                 <TextBlock
                     Grid.Row="0"
                     Margin="10"

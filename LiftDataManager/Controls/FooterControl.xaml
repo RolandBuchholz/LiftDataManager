@@ -4,29 +4,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     x:Name="root"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
+    </UserControl.Resources>
 
     <Grid>
-        <wct:DropShadowPanel
-            Margin="10,5,10,5"
-            HorizontalContentAlignment="Stretch"
-            BlurRadius="5"
-            IsMasked="True"
-            OffsetX="5"
-            OffsetY="5"
-            ShadowOpacity="0.7"
-            Color="Black">
-            <Rectangle
-                Height="35"
-                HorizontalAlignment="Stretch"
-                Fill="{StaticResource SystemControlPageBackgroundBaseLowBrush}"
-                RadiusX="10"
-                RadiusY="10" />
-        </wct:DropShadowPanel>
-
-        <Grid Padding="10,5,10,5">
+        <Rectangle
+            Height="35"
+            Margin="10"
+            HorizontalAlignment="Stretch"
+            ui:Effects.Shadow="{StaticResource CommonShadow}"
+            Fill="{StaticResource SystemControlPageBackgroundBaseLowBrush}"
+            RadiusX="5"
+            RadiusY="5" />
+        <Grid Padding="10,5,10,5" CornerRadius="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
