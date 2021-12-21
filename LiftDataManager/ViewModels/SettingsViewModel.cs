@@ -199,7 +199,7 @@ namespace LiftDataManager.ViewModels
         }
         private string GetVersionDescription()
         {
-            var appName = "Spezifikations Inspector";
+            var appName = "Lift Data Manager";
             var package = Package.Current;
             var packageId = package.Id;
             var version = packageId.Version;

@@ -7,11 +7,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
         <Style x:Name="ContentDialogButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{ThemeResource AccentButtonForeground}" />
             <Setter Property="Background" Value="{ThemeResource AccentButtonBackground}" />
@@ -204,18 +210,20 @@
                 <Border
                     Grid.Row="1"
                     VerticalAlignment="Stretch"
-                    Background="{StaticResource SystemControlPageBackgroundChromeMediumLowBrush}"
-                    CornerRadius="10">
-                    <ScrollViewer
-                        Name="InfoTextScroller"
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto">
-                        <TextBlock
-                            Margin="10"
-                            Text="{x:Bind ViewModel.InfoText, Mode=OneWay}"
-                            TextWrapping="Wrap" />
-                    </ScrollViewer>
-                </Border>
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Background="{StaticResource SystemControlPageBackgroundListLowBrush}"
+                    CornerRadius="5" />
+                <ScrollViewer
+                    Name="InfoTextScroller"
+                    Grid.Row="1"
+                    Margin="5,10,5,10"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Auto">
+                    <TextBlock
+                        Margin="10"
+                        Text="{x:Bind ViewModel.InfoText, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
             </Grid>
             <ProgressRing
                 Width="200"

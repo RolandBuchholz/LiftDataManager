@@ -9,6 +9,7 @@ using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace LiftDataManager.ViewModels
@@ -31,33 +32,33 @@ namespace LiftDataManager.ViewModels
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
                     CheckUnsavedParametres();
                 }
-
             });
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
-            LoadDataFromVault = new AsyncRelayCommand(LoadVaultData, () => CanLoadDataFromVault);
+            ClearSpeziData = new AsyncRelayCommand(ClearData, () => CanClearData);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
+            UpLoadSpeziDataAsync = new AsyncRelayCommand(LoadUpDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
 
         }
 
-        public IAsyncRelayCommand LoadDataFromVault { get; }
+        public IAsyncRelayCommand ClearSpeziData { get; }
         public IAsyncRelayCommand LoadSpeziDataAsync { get; }
+        public IAsyncRelayCommand UpLoadSpeziDataAsync { get; }
         public IAsyncRelayCommand SaveAllSpeziParameters { get; }
 
-
-        private bool _CanLoadDataFromVault;
-        public bool CanLoadDataFromVault
+        private bool _CanCanClearData;
+        public bool CanClearData
         {
-            get => _CanLoadDataFromVault;
+            get => _CanCanClearData;
             set
             {
-                SetProperty(ref _CanLoadDataFromVault, value);
-                LoadDataFromVault.NotifyCanExecuteChanged();
+                SetProperty(ref _CanCanClearData, value);
+                ClearSpeziData.NotifyCanExecuteChanged();
             }
         }
 
-        private bool _CanLoadSpeziData = true;
+        private bool _CanLoadSpeziData;
         public bool CanLoadSpeziData
         {
             get => _CanLoadSpeziData;
@@ -68,13 +69,25 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        private bool _CanSaveAllSpeziParameters = false;
+        private bool _CanUpLoadSpeziData;
+        public bool CanUpLoadSpeziData
+        {
+            get => _CanUpLoadSpeziData;
+            set
+            {
+                SetProperty(ref _CanUpLoadSpeziData, value);
+                UpLoadSpeziDataAsync.NotifyCanExecuteChanged();
+            }
+        }
+
+        private bool _CanSaveAllSpeziParameters;
         public bool CanSaveAllSpeziParameters
         {
             get => _CanSaveAllSpeziParameters;
             set
             {
                 SetProperty(ref _CanSaveAllSpeziParameters, value);
+                CanUpLoadSpeziData = !value;
                 SaveAllSpeziParameters.NotifyCanExecuteChanged();
             }
         }
@@ -100,7 +113,36 @@ namespace LiftDataManager.ViewModels
                 SetProperty(ref _AuftragsbezogeneXml, value);
                 _CurrentSpeziProperties.AuftragsbezogeneXml = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-                SetFullPathXml();
+                CanClearData = value;
+            }
+        }
+
+        private string _SpezifikationStatusTyp;
+        public string SpezifikationStatusTyp
+        {
+            get
+            {
+                if (_SpezifikationStatusTyp is null) { _SpezifikationStatusTyp = "Auftrag"; }
+                return _SpezifikationStatusTyp;
+            }
+            set
+            {
+                if (_SpezifikationStatusTyp != value) { SpezifikationName = string.Empty; }
+                SetProperty(ref _SpezifikationStatusTyp, value);
+                _CurrentSpeziProperties.SpezifikationStatusTyp = value;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
+
+        private string _SpezifikationName;
+        public string SpezifikationName
+        {
+            get => _SpezifikationName;
+
+            set
+            {
+                SetProperty(ref _SpezifikationName, value);
+                CanLoadSpeziData = ((SpezifikationName.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) || ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Angebot"));
             }
         }
 
@@ -144,30 +186,89 @@ namespace LiftDataManager.ViewModels
 
         private void SetFullPathXml()
         {
-            if (!AuftragsbezogeneXml)
+            if (!CanLoadSpeziData)
             {
                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
             }
             else
             {
-                //FullPathXml = @"C:\Work\Administration\Spezifikation\Testfile-AutoDeskTransfer.xml";
-                //FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\895\8951273-1275\8951273\8951273-AutoDeskTransfer.xml";
-                //FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\100\1001042-1043\1001042\1001042-AutoDeskTransfer.xml";
-                FullPathXml = @"C:\Work\AUFTRÄGE NEU\Konstruktion\895\8951317\8951317-AutoDeskTransfer.xml";
+                InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                string path;
+                if (SpezifikationStatusTyp == "Auftrag")
+                {
+                    path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+                }
+                else
+                {
+                    path = @"C:\Work\AUFTRÄGE NEU\Angebote";
+                }
+                string searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
+                var searchResult = Directory.GetFiles(path, searchPattern,SearchOption.AllDirectories);
+                var stopTimeMs = watch.ElapsedMilliseconds;
+                if (searchResult.Length == 0)
+                {
+                    //ToDo VaultSuche
+                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    InfoSidebarPanelText += $"Die Datei {searchPattern} wurde nicht gefunden\n";
+                    InfoSidebarPanelText += $"Standard Daten geladen\n";
+                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                    AuftragsbezogeneXml = false;
+                }
+                
+                else if (searchResult.Length == 1)
+                {
+                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    string autoDeskTransferpath = searchResult[0];
+                    FileInfo AutoDeskTransferInfo = new FileInfo(autoDeskTransferpath);
+                    if (!AutoDeskTransferInfo.IsReadOnly)
+                    {
+                        FullPathXml = searchResult[0];
+                        InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
+                        AuftragsbezogeneXml = true;
+                    }
+                    else
+                    {
+                        //ToDo VaultSuche
+                        InfoSidebarPanelText += $"Daten sind schreibgeschützt\n";
+                        InfoSidebarPanelText += $"Standard Daten geladen\n";
+                        FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                        AuftragsbezogeneXml = false;
+                    }
+                }
+                else
+                {
+                    //ToDo VaultSuche
+                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
+                    InfoSidebarPanelText += $"Standard Daten geladen\n";
+                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                    AuftragsbezogeneXml = false;
+                }
             }
         }
 
-        private async Task LoadVaultData()
+        private async Task ClearData()
         {
-            await Task.CompletedTask;
-            InfoSidebarPanelText += $"Daten aus Vault geladen \n";
+            InfoSidebarPanelText += $"Daten wurden auf die Standardwerte zurückgesetzt\n";
             InfoSidebarPanelText += $"----------\n";
+            AuftragsbezogeneXml = false;
+            CanLoadSpeziData = false;
+            CanSaveAllSpeziParameters = false;
+            await LoadDataAsync();
+        }
+
+        private async Task LoadUpDataAsync()
+        {
+            InfoSidebarPanelText += $"Spezifikation wird hochgeladen\n";
+            InfoSidebarPanelText += $"----------\n";
+            await ClearData();
         }
 
         private async Task LoadDataAsync()
         {
+            SetFullPathXml();
 
-            if (FullPathXml is null) { SetFullPathXml(); };
             var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
             foreach (var item in data)
@@ -185,6 +286,7 @@ namespace LiftDataManager.ViewModels
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
             InfoSidebarPanelText += $"----------\n";
+            SpezifikationName = string.Empty;
         }
 
         private async Task SaveAllParameterAsync()
@@ -204,16 +306,17 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
-            if (_CurrentSpeziProperties is null) SetAdminmode();
+            if (_CurrentSpeziProperties is null) { SetAdminmode(); }
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
+            SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
             SearchInput = _CurrentSpeziProperties.SearchInput;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
-            if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+            if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
             if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
-            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
+            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) { CheckUnsavedParametres(); }
         }
 
         public void OnNavigatedFrom()

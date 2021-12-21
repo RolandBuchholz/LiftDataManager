@@ -23,7 +23,6 @@
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
-
     </Page.Resources>
     <Grid
         Margin="5"
@@ -51,53 +50,65 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <ToggleSwitch
+            <ComboBox
                 Grid.Column="0"
                 Margin="5,0,5,0"
-                IsOn="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                OffContent="Standard XML"
-                OnContent="Auftragsbezoge XML" />
-            <TextBox
+                HorizontalAlignment="Stretch"
+                SelectedItem="{x:Bind ViewModel.SpezifikationStatusTyp, Mode=TwoWay}">
+                <x:String>Auftrag</x:String>
+                <x:String>Angebot</x:String>
+            </ComboBox>
+            <controls:SwitchPresenter
                 Grid.Column="1"
                 Margin="5,0,5,0"
-                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                ui:TextBoxExtensions.ValidationType="Number"
-                MaxLength="7"
-                PlaceholderText="Auftragsnummer"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+                Value="{x:Bind ViewModel.SpezifikationStatusTyp, Mode=OneWay}">
+                <controls:Case Value="Auftrag">
+                    <TextBox
+                        x:Name="AuftragsTextbox"
+                        MinWidth="125"
+                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                        ui:TextBoxExtensions.ValidationType="Number"
+                        MaxLength="7"
+                        PlaceholderText="Auftragsnummer"
+                        Text="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </controls:Case>
+                <controls:Case Value="Angebot">
+                    <SpeziControls:OrderNumberControl OrderNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </controls:Case>
+            </controls:SwitchPresenter>
             <Button
                 Grid.Column="2"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.LoadDataFromVault}"
-                Content="Vault Download"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-            <Button
-                Grid.Column="3"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.LoadSpeziDataAsync}"
-                Content="Load Parameter"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-            <Button
-                Grid.Column="3"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.LoadSpeziDataAsync}"
-                Content="Standard XML laden"
+                Content="Load Data"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
             <Button
-                Grid.Column="5"
+                Grid.Column="3"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.UpLoadSpeziDataAsync}"
+                Content="Upload Vault"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+            <Button
+                Grid.Column="4"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.ClearSpeziData}"
+                Content="Clear Data"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+            <Button
+                Grid.Column="6"
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
@@ -105,9 +116,8 @@
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
-
             <TextBox
-                Grid.Column="6"
+                Grid.Column="7"
                 Width="250"
                 Margin="5,0,5,0"
                 IsSpellCheckEnabled="False"
@@ -637,7 +647,7 @@
             Height="200"
             Background="Transparent"
             Foreground="{StaticResource SystemAccentColor}"
-            IsActive="{x:Bind ViewModel.LoadDataFromVault.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.LoadSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="3"

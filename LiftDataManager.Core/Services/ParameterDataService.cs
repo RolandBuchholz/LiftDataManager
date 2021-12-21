@@ -3,7 +3,6 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Helpers;
 using LiftDataManager.Core.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

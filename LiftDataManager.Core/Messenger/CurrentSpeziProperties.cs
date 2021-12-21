@@ -7,6 +7,7 @@ namespace LiftDataManager.Core.Messenger
     {
         public bool Adminmode { get; set; }
         public bool AuftragsbezogeneXml { get; set; }
+        public string SpezifikationStatusTyp { get; set; }
         public string FullPathXml { get; set; }
         public string SearchInput { get; set; }
         public string InfoSidebarPanelText { get; set; }
