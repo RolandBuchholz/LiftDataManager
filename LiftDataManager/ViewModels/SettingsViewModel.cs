@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
+using System.Diagnostics;
 
 namespace LiftDataManager.ViewModels
 {
@@ -58,7 +59,7 @@ namespace LiftDataManager.ViewModels
         }
         private async Task UpdateAuswahlParameterAsync()
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
             InfoText += "Daten aus Spezifikation werden geladen\n";
             InfoText += "Loading ...\n";
             var result = await Task.Run(()=>_auswahlParameterDataService.UpdateAuswahlparameterAsync());

@@ -56,6 +56,7 @@ namespace LiftDataManager
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
             services.AddSingleton<IAuswahlParameterDataService, AuswahlParameterDataService>();
+            services.AddSingleton<IVaultDataService, VaultDataService>();
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();

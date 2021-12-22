@@ -11,6 +11,7 @@ using LiftDataManager.Core.Models;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace LiftDataManager.ViewModels
 {
@@ -19,11 +20,12 @@ namespace LiftDataManager.ViewModels
 
         private readonly IParameterDataService _parameterDataService;
         private readonly ISettingService _settingService;
+        private readonly IVaultDataService _vaultDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
-        public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService)
+        public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService)
         {
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
             {
@@ -35,6 +37,7 @@ namespace LiftDataManager.ViewModels
             });
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
+            _vaultDataService = vaultDataService;
             ClearSpeziData = new AsyncRelayCommand(ClearData, () => CanClearData);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
             UpLoadSpeziDataAsync = new AsyncRelayCommand(LoadUpDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
@@ -192,28 +195,23 @@ namespace LiftDataManager.ViewModels
             }
             else
             {
-                InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
-                var watch = System.Diagnostics.Stopwatch.StartNew();
-                string path;
-                if (SpezifikationStatusTyp == "Auftrag")
-                {
-                    path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
-                }
-                else
-                {
-                    path = @"C:\Work\AUFTRÄGE NEU\Angebote";
-                }
                 string searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
-                var searchResult = Directory.GetFiles(path, searchPattern,SearchOption.AllDirectories);
+                var searchResult = SearchWorkspaceAsync(searchPattern).Result;
+                var watch = Stopwatch.StartNew();
+
                 var stopTimeMs = watch.ElapsedMilliseconds;
+
                 if (searchResult.Length == 0)
                 {
                     //ToDo VaultSuche
-                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                    InfoSidebarPanelText += $"Die Datei {searchPattern} wurde nicht gefunden\n";
-                    InfoSidebarPanelText += $"Standard Daten geladen\n";
-                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                    AuftragsbezogeneXml = false;
+                    InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
+
+                    var vaultDownlodResult = VaultDownloadAsync();
+                    int exitCode = vaultDownlodResult.Result;
+
+                    //InfoSidebarPanelText += $"Standard Daten geladen\n";
+                    //FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                    //AuftragsbezogeneXml = false;
                 }
                 
                 else if (searchResult.Length == 1)
@@ -303,6 +301,34 @@ namespace LiftDataManager.ViewModels
             _CurrentSpeziProperties.Adminmode = Adminmode;
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
+
+        private async Task<int> VaultDownloadAsync()
+        {
+            var exitCode = await _vaultDataService.GetFileAsync(SpezifikationName);
+            return exitCode;
+        }
+
+        private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
+        {
+            InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
+            
+            string path;
+            if (SpezifikationStatusTyp == "Auftrag")
+            {
+                path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+            }
+            else
+            {
+                path = @"C:\Work\AUFTRÄGE NEU\Angebote";
+            }
+
+            var searchResult = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+
+            await Task.CompletedTask;
+
+            return searchResult;
+        }
+
 
         public void OnNavigatedTo(object parameter)
         {
