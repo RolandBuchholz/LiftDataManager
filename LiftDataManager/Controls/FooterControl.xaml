@@ -26,8 +26,9 @@
             RadiusY="5" />
         <Grid Padding="10,5,10,5" CornerRadius="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock
                 Grid.Column="0"
@@ -36,8 +37,16 @@
                 VerticalAlignment="Center"
                 FontWeight="Bold"
                 Text="{x:Bind XmlPath, Mode=OneWay}" />
-            <StackPanel
+            <TextBlock
                 Grid.Column="1"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="{x:Bind FileInfoForeground, Mode=OneWay}"
+                Text="{x:Bind FileInfo, Mode=OneWay}" />
+            <StackPanel
+                Grid.Column="2"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -45,7 +54,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     FontWeight="Bold"
-                    Text="{x:Bind ParameterFound, Mode=OneWay}" />
+                    Text="{x:Bind ParameterFound, Mode=TwoWay}" />
                 <TextBlock
                     VerticalAlignment="Center"
                     FontWeight="Bold"

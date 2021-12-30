@@ -1,19 +1,57 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using System.Linq;
 
 namespace LiftDataManager.Controls
 {
     public sealed partial class FooterControl : UserControl
     {
         public FooterControl()
-        {
+        { 
             InitializeComponent();
         }
 
+        private readonly SolidColorBrush checkIncolorBrush = new(Colors.Red);
+        private readonly SolidColorBrush checkOutcolorBrush = new(Colors.Green);
+
+        public string FileInfo
+        {
+            get => (string)GetValue(FileInfoProperty); 
+            set => SetValue(FileInfoProperty, value);
+        }
+
+        public static readonly DependencyProperty FileInfoProperty =
+            DependencyProperty.Register("FileInfo", typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
+
+        public SolidColorBrush FileInfoForeground
+        {
+            get => (SolidColorBrush)GetValue(FileInfoForegroundProperty);
+            set => SetValue(FileInfoForegroundProperty, value);
+        }
+
+        public static readonly DependencyProperty FileInfoForegroundProperty =
+            DependencyProperty.Register("FileInfoForeground", typeof(SolidColorBrush), typeof(FooterControl), new PropertyMetadata(null));
+
+        public bool CheckOut
+        {
+            get => (bool)GetValue(CheckOutProperty);
+            set
+            {
+                SetValue(CheckOutProperty, value);
+                FileInfo = value ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt";
+                FileInfoForeground = value ? checkOutcolorBrush : checkIncolorBrush;
+            }
+        }
+
+        public static readonly DependencyProperty CheckOutProperty =
+            DependencyProperty.Register("CheckOut", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+
         public string XmlPath
         {
-            get { return (string)GetValue(XmlPathProperty); }
-            set { SetValue(XmlPathProperty, value); }
+            get => ((string)GetValue(XmlPathProperty)).Split(@"\").Last();
+            set => SetValue(XmlPathProperty, value);
         }
 
         public static readonly DependencyProperty XmlPathProperty =
@@ -21,8 +59,8 @@ namespace LiftDataManager.Controls
 
         public int ParameterFound
         {
-            get { return (int)GetValue(ParameterFoundProperty); }
-            set { SetValue(ParameterFoundProperty, value); }
+            get => (int)GetValue(ParameterFoundProperty);
+            set => SetValue(ParameterFoundProperty, value);
         }
 
         public static readonly DependencyProperty ParameterFoundProperty =

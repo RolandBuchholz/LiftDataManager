@@ -40,14 +40,14 @@ namespace LiftDataManager.ViewModels
             _vaultDataService = vaultDataService;
             ClearSpeziData = new AsyncRelayCommand(ClearData, () => CanClearData);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-            UpLoadSpeziDataAsync = new AsyncRelayCommand(LoadUpDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
+            UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
 
         }
 
         public IAsyncRelayCommand ClearSpeziData { get; }
         public IAsyncRelayCommand LoadSpeziDataAsync { get; }
-        public IAsyncRelayCommand UpLoadSpeziDataAsync { get; }
+        public IAsyncRelayCommand UploadSpeziDataAsync { get; }
         public IAsyncRelayCommand SaveAllSpeziParameters { get; }
 
         private bool _CanCanClearData;
@@ -79,7 +79,7 @@ namespace LiftDataManager.ViewModels
             set
             {
                 SetProperty(ref _CanUpLoadSpeziData, value);
-                UpLoadSpeziDataAsync.NotifyCanExecuteChanged();
+                UploadSpeziDataAsync.NotifyCanExecuteChanged();
             }
         }
 
@@ -117,6 +117,18 @@ namespace LiftDataManager.ViewModels
                 _CurrentSpeziProperties.AuftragsbezogeneXml = value;
                 Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
                 CanClearData = value;
+            }
+        }
+
+        private bool _CheckOut;
+        public bool CheckOut
+        {
+            get => _CheckOut;
+            set
+            {
+                SetProperty(ref _CheckOut, value);
+                _CurrentSpeziProperties.CheckOut = value;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -187,7 +199,7 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        private void SetFullPathXml()
+        private async Task SetFullPathXmlAsync()
         {
             if (!CanLoadSpeziData)
             {
@@ -196,9 +208,8 @@ namespace LiftDataManager.ViewModels
             else
             {
                 string searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
-                var searchResult = SearchWorkspaceAsync(searchPattern).Result;
                 var watch = Stopwatch.StartNew();
-
+                var searchResult = SearchWorkspaceAsync(searchPattern).Result;
                 var stopTimeMs = watch.ElapsedMilliseconds;
 
                 if (searchResult.Length == 0)
@@ -206,8 +217,8 @@ namespace LiftDataManager.ViewModels
                     //ToDo VaultSuche
                     InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
 
-                    var vaultDownlodResult = VaultDownloadAsync();
-                    int exitCode = vaultDownlodResult.Result;
+                    int vaultDownlodResult = await VaultDownloadAsync();
+                    int exitCode = vaultDownlodResult;
 
                     //InfoSidebarPanelText += $"Standard Daten geladen\n";
                     //FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -224,6 +235,7 @@ namespace LiftDataManager.ViewModels
                         FullPathXml = searchResult[0];
                         InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
                         AuftragsbezogeneXml = true;
+                        CheckOut = true;
                     }
                     else
                     {
@@ -256,7 +268,7 @@ namespace LiftDataManager.ViewModels
             await LoadDataAsync();
         }
 
-        private async Task LoadUpDataAsync()
+        private async Task UploadDataAsync()
         {
             InfoSidebarPanelText += $"Spezifikation wird hochgeladen\n";
             InfoSidebarPanelText += $"----------\n";
@@ -265,7 +277,7 @@ namespace LiftDataManager.ViewModels
 
         private async Task LoadDataAsync()
         {
-            SetFullPathXml();
+            await SetFullPathXmlAsync();
 
             var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
@@ -321,6 +333,9 @@ namespace LiftDataManager.ViewModels
             {
                 path = @"C:\Work\AUFTRÄGE NEU\Angebote";
             }
+
+
+            //var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
 
             var searchResult = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
 
