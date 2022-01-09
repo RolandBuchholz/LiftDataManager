@@ -19,6 +19,7 @@ namespace LiftDataManager.ViewModels
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
+        private bool CheckOut;
         public string FullPathXml;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         private Parameter _item;
@@ -113,6 +114,7 @@ namespace LiftDataManager.ViewModels
                 if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
                 Adminmode = _CurrentSpeziProperties.Adminmode;
                 AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
+                CheckOut = _CurrentSpeziProperties.CheckOut;
                 InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
                 var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
                 Item = data.First(i => i.Name == (string)parameter);

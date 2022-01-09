@@ -209,10 +209,10 @@ namespace LiftDataManager.ViewModels
             {
                 string searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
                 var watch = Stopwatch.StartNew();
-                var searchResult = SearchWorkspaceAsync(searchPattern).Result;
+                var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
                 var stopTimeMs = watch.ElapsedMilliseconds;
 
-                if (searchResult.Length == 0)
+                if (workspaceSearch.Length == 0)
                 {
                     //ToDo VaultSuche
                     InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
@@ -225,14 +225,14 @@ namespace LiftDataManager.ViewModels
                     //AuftragsbezogeneXml = false;
                 }
                 
-                else if (searchResult.Length == 1)
+                else if (workspaceSearch.Length == 1)
                 {
                     InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                    string autoDeskTransferpath = searchResult[0];
-                    FileInfo AutoDeskTransferInfo = new FileInfo(autoDeskTransferpath);
+                    string autoDeskTransferpath = workspaceSearch[0];
+                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
                     if (!AutoDeskTransferInfo.IsReadOnly)
                     {
-                        FullPathXml = searchResult[0];
+                        FullPathXml = workspaceSearch[0];
                         InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
                         AuftragsbezogeneXml = true;
                         CheckOut = true;
@@ -334,16 +334,9 @@ namespace LiftDataManager.ViewModels
                 path = @"C:\Work\AUFTRÄGE NEU\Angebote";
             }
 
-
-            //var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
-
-            var searchResult = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
-
-            await Task.CompletedTask;
-
+            var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
             return searchResult;
         }
-
 
         public void OnNavigatedTo(object parameter)
         {
@@ -351,6 +344,7 @@ namespace LiftDataManager.ViewModels
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
+            CheckOut = _CurrentSpeziProperties.CheckOut;
             SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
             SearchInput = _CurrentSpeziProperties.SearchInput;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;

@@ -19,6 +19,7 @@ namespace LiftDataManager.ViewModels
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         private bool AuftragsbezogeneXml;
+        private bool CheckOut;
         public string FullPathXml;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
@@ -181,6 +182,7 @@ namespace LiftDataManager.ViewModels
             if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
+            CheckOut = _CurrentSpeziProperties.CheckOut;
             SearchInput = _CurrentSpeziProperties.SearchInput;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) CheckUnsavedParametres();
