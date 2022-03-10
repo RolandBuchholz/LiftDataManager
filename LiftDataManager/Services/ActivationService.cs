@@ -41,6 +41,7 @@ namespace LiftDataManager.Services
             {
                 _shell = Ioc.Default.GetService<ShellPage>();
                 App.MainWindow.Content = _shell ?? new Frame();
+                App.MainRoot = App.MainWindow.Content as FrameworkElement;
             }
 
             // Depending on activationArgs one of ActivationHandlers or DefaultActivationHandler

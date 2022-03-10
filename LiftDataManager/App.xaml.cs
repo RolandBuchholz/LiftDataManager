@@ -17,7 +17,7 @@ namespace LiftDataManager
     public partial class App : Application
     {
         public static Window MainWindow { get; set; } = new Window() { Title = "AppDisplayName".GetLocalized() };
-
+        public static FrameworkElement MainRoot { get; set; }
         public App()
         {
             InitializeComponent();
@@ -35,7 +35,6 @@ namespace LiftDataManager
             var activationService = Ioc.Default.GetService<IActivationService>();
             await activationService.ActivateAsync(args);
         }
-
         private System.IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();

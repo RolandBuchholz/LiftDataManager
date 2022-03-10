@@ -12,6 +12,7 @@ using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using LiftDataManager.Services;
 
 namespace LiftDataManager.ViewModels
 {
@@ -252,10 +253,16 @@ namespace LiftDataManager.ViewModels
                     InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
                     InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
                     InfoSidebarPanelText += $"Standard Daten geladen\n";
+
+                    var confirmed = await App.MainRoot.ConfirmationDialogAsync(
+                                            $"Es wurden mehrere {searchPattern} Dateien gefunden?",
+                                             "XML aus Vault herunterladen",
+                                                "Abbrechen"
                     FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                     AuftragsbezogeneXml = false;
                 }
             }
+
         }
 
         private async Task ClearData()
