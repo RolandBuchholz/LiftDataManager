@@ -16,13 +16,10 @@ namespace LiftDataManager.Core.Services
         {
             XElement doc = XElement.Load(path);
 
-            // Order By Display Order
             List<Parameter> parameterList =
               (from para in doc.Elements("parameters").Elements("ParamWithValue")
-                   //orderby para.Element("name").Value
                select new Parameter(para.Element("name").GetAs<string>(),para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
                {
-                   //Name = para.Element("name").GetAs<string>(),
                    Comment = para.Element("comment").GetAs<string>(),
                    IsKey = para.Element("isKey").GetAs<bool>(),
                    IsDirty = false,
@@ -34,12 +31,11 @@ namespace LiftDataManager.Core.Services
 
         public async Task<string> SaveParameterAsync(Parameter parameter, string path)
         {
-            FileInfo AutoDeskTransferInfo = new FileInfo(path);
-
-            if (AutoDeskTransferInfo.IsReadOnly)
-            {
-                AutoDeskTransferInfo.IsReadOnly = false;
-            }
+            //FileInfo AutoDeskTransferInfo = new FileInfo(path);
+            //if (AutoDeskTransferInfo.IsReadOnly)
+            //{
+            //    AutoDeskTransferInfo.IsReadOnly = false;
+            //}
 
             XElement doc = XElement.Load(path);
 
@@ -81,14 +77,13 @@ namespace LiftDataManager.Core.Services
 
         public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
         {
-            FileInfo AutoDeskTransferInfo = new FileInfo(path);
+            //FileInfo AutoDeskTransferInfo = new FileInfo(path);
+            //if (AutoDeskTransferInfo.IsReadOnly)
+            //{
+            //    AutoDeskTransferInfo.IsReadOnly = false;
+            //}
 
             string infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
-
-            if (AutoDeskTransferInfo.IsReadOnly)
-            {
-                AutoDeskTransferInfo.IsReadOnly = false;
-            }
 
             XElement doc = XElement.Load(path);
 

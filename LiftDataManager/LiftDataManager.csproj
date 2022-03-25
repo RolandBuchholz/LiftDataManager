@@ -11,17 +11,19 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\OrderNumberControl.xaml" />
+    <None Remove="Styles\Combobox.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cogs.Collections" Version="1.9.3" />
+    <PackageReference Include="Cogs.Collections" Version="1.10.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -34,6 +36,9 @@
   <ItemGroup>
     <Page Update="Controls\OrderNumberControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Styles\ComboBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
 </Project>

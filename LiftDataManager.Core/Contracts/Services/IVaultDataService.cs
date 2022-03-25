@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using LiftDataManager.Core.Models;
+using System.Threading.Tasks;
 
 namespace LiftDataManager.Core.Contracts.Services
 {
     public interface IVaultDataService
     {
-        Task<int> GetFileAsync(string auftragsnummer);
-        Task<int> SetFileAsync(string auftragsnummer);
+        Task<DownloadInfo> GetFileAsync(string auftragsnummer,bool readOnly);
+        Task<DownloadInfo> SetFileAsync(string auftragsnummer);
+        Task<DownloadInfo> UndoFileAsync(string auftragsnummer);
     }
 }

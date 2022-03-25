@@ -57,7 +57,23 @@ namespace LiftDataManager.Services
                 return null;
             }
 
-            return (result == ContentDialogResult.Primary);
+            return result == ContentDialogResult.Primary;
+        }
+
+        public static async Task<bool> WarningDialogAsync(this FrameworkElement element, string title, string message, string yesButtonText, string noButtonText)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = yesButtonText,
+                SecondaryButtonText = noButtonText,
+                XamlRoot = element.XamlRoot,
+                RequestedTheme = element.ActualTheme
+            };
+            var result = await dialog.ShowAsync();
+
+            return result == ContentDialogResult.Primary;
         }
 
         public static async Task<string> InputStringDialogAsync(this FrameworkElement element, string title)

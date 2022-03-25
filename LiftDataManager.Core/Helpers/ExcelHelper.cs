@@ -78,6 +78,8 @@ namespace LiftDataManager.Core.Helpers
                     AuswahlParameter _auswahlParameter = new();
                     _auswahlParameter.Name = importAusawahlParameter[i, 2];
 
+                    _auswahlParameter.Auswahlliste.Add("(keine Auswahl)");
+
                     foreach (string par in rowList)
                     {
                         _auswahlParameter.Auswahlliste.Add(par);

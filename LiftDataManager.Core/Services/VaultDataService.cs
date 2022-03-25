@@ -1,66 +1,118 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.Models;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LiftDataManager.Core.Services
 {
     public class VaultDataService : IVaultDataService
     {
+        string starttyp = string.Empty;
         const string pathPowershellScripts = @"C:\Work\Administration\PowerShellScripts\";
+        private DownloadInfo DownloadInfo { get; set; }
+        public int ExitCode { get; private set; }
 
-        public async Task<int> GetFileAsync(string auftragsnummer)
+        public async Task<DownloadInfo> GetFileAsync(string auftragsnummer,bool readOnly)
+        {
+            starttyp = "get";
+
+            Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, readOnly);
+            ExitCode = result.Result;
+            DownloadInfo.ExitCode = ExitCode;
+            await Task.CompletedTask;
+            return DownloadInfo;
+        }
+
+        public async Task<DownloadInfo> SetFileAsync(string auftragsnummer)
+        {
+            starttyp = "set";
+            Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+            ExitCode = result.Result;
+            DownloadInfo.ExitCode = ExitCode;
+            await Task.CompletedTask;
+            return DownloadInfo;
+        }
+
+        public async Task<DownloadInfo> UndoFileAsync(string auftragsnummer)
+        {
+            starttyp = "undo";
+            Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+            ExitCode = result.Result;
+            DownloadInfo.ExitCode = ExitCode;
+            await Task.CompletedTask;
+            return DownloadInfo;
+        }
+
+        private async Task<int> StartPowershellScriptAsync(string pathPowershellScripts, string starttyp, string auftragsnummer, bool readOnly = false)
         {
             string powershellScriptName;
-            powershellScriptName = "GetVaultFile.ps1";
+
+            switch (starttyp)
+            {
+                case "get":
+                    powershellScriptName = "GetVaultFile.ps1";
+                    break;
+                case "set":
+                    powershellScriptName = "SetVaultFile.ps1";
+                    break;
+                case "undo":
+                    powershellScriptName = "UndoVaultFile.ps1";
+                    break;
+                default:
+                    powershellScriptName = "GetVaultFile.ps1";
+                    break;
+            }
+
+            string readOnlyPowershell = readOnly ? "$true" : "$false";
 
             try
             {
-                using Process getFile = new();
-                getFile.StartInfo.UseShellExecute = false;
-                getFile.StartInfo.FileName = "PowerShell.exe";
-                getFile.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer}";
-                getFile.StartInfo.CreateNoWindow = false;
-                getFile.Start();
-                getFile.WaitForExit();
+                using Process psScript = new();
+                psScript.StartInfo.UseShellExecute = false;
+                psScript.StartInfo.FileName = "PowerShell.exe";
+                if (starttyp == "get")
+                {
+                    psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer} {readOnlyPowershell}";
+                }
+                else
+                {
+                    psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer}";
+                }
+                psScript.StartInfo.CreateNoWindow = true;
+                psScript.StartInfo.RedirectStandardOutput = true;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                psScript.StartInfo.StandardOutputEncoding = Encoding.GetEncoding(850);
+                psScript.Start();
+                string downloadResult = psScript.StandardOutput.ReadToEnd();
+                psScript.WaitForExit();
+                
+                if (!string.IsNullOrWhiteSpace(downloadResult))
+                {
+                    try
+                    {
+                        DownloadInfo = JsonSerializer.Deserialize<DownloadInfo>(downloadResult.Split("---DownloadInfo---")[1]);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Keine DownloadInfo gefunden");
+                    }
+                }
 
-                Debug.WriteLine("GetVaultFile finished ......");
+                Console.WriteLine($"Vault PowershellScript: {powershellScriptName} finished ...");
                 await Task.CompletedTask;
-                return getFile.ExitCode;
+                return psScript.ExitCode;
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
                 await Task.CompletedTask;
                 return 4;
             }
         }
 
-        public async Task<int> SetFileAsync(string auftragsnummer)
-        {
-            string powershellScriptName;
-            powershellScriptName = "SetVaultFile.ps1";
-
-            try
-            {
-                using Process setFile = new();
-                setFile.StartInfo.UseShellExecute = false;
-                setFile.StartInfo.FileName = "PowerShell.exe";
-                setFile.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer}";
-                setFile.StartInfo.CreateNoWindow = false;
-                setFile.Start();
-                setFile.WaitForExit();
-
-                Debug.WriteLine("SetVaultFile finished ......");
-                await Task.CompletedTask;
-                return setFile.ExitCode;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await Task.CompletedTask;
-                return 4;
-            }
-        }
     }
 }

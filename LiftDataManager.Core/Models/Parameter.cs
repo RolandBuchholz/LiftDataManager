@@ -172,12 +172,15 @@ namespace LiftDataManager.Core.Models
             get => _DropDownListValue;
             set
             {
-                //if (value != null && value != _DropDownListValue)
-                if (value != _DropDownListValue)
+                if (value != null && value != _DropDownListValue)
                 {
+                    if (value == "(keine Auswahl)")
+                    {
+                        value = null;
+                    }
                     Value = value;
+                    SetProperty(ref _DropDownListValue, value);
                 }
-                SetProperty(ref _DropDownListValue, value);
             }
         }
 

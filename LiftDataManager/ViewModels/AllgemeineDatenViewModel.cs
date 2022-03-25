@@ -28,7 +28,7 @@ namespace LiftDataManager.ViewModels
         {
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
             {
-                if (m is not null && m.Value.IsDirty == true)
+                if (m is not null && m.Value.IsDirty)
                 {
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
                     CheckUnsavedParametres();

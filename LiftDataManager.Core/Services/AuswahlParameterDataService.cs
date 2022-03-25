@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -13,28 +14,13 @@ namespace LiftDataManager.Core.Services
     public class AuswahlParameterDataService : IAuswahlParameterDataService
     {
         public Dictionary<string, AuswahlParameter> AuswahlParameterDictionary { get; set; } = new();
+        private readonly string AuswahlParameterDataPath = @"C:\Work\Administration\Spezifikation\Auswahlparameter.json";
+        private readonly string excelFilePath = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
 
-        public string AuswahlParameterDataPath { get; set; }
 
         public AuswahlParameterDataService()
         {
-            AuswahlParameterDataPath = @"C:\Work\Administration\Spezifikation\Auswahlparameter.json";
-            if(!File.Exists(AuswahlParameterDataPath)) 
-            {
-               Task.Run(()=> UpdateAuswahlparameterAsync());
-            }
-            else
-            {
-                FileInfo AuswahlparameterInfo = new(AuswahlParameterDataPath);
-
-                if (AuswahlparameterInfo.IsReadOnly)
-                {
-                    AuswahlparameterInfo.IsReadOnly = false;
-                }
-            }
-
             FillParameterDictionary();
-
         }
 
         public List<string> GetListeAuswahlparameter(string name)
@@ -42,7 +28,6 @@ namespace LiftDataManager.Core.Services
             var AuswahlParameterListe = AuswahlParameterDictionary[name].Auswahlliste;
             return AuswahlParameterListe;
         }
-
 
         public bool ParameterHasAuswahlliste(string name)
         {
@@ -58,8 +43,6 @@ namespace LiftDataManager.Core.Services
 
         public async Task<string> UpdateAuswahlparameterAsync()
         {
-            string excelFilePath = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
-
             if (!File.Exists(excelFilePath))
             {
                 throw new ArgumentException("Spezifikation nicht vorhanden ", nameof(excelFilePath));
@@ -169,18 +152,15 @@ namespace LiftDataManager.Core.Services
                 { "Daten Steuerung und Antrieb", "Schaltschrankgrößen","var_Schaltschrankgroesse" }
             };
 
-
-
             Task<List<AuswahlParameter>> parameterInfo = ExcelHelper.ReadExcelParameterListeAsync(excelFilePath, importAusawahlParameter);
 
             _data = parameterInfo.Result;
 
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
+            var jsonOptions = new JsonSerializerOptions();
+            jsonOptions.WriteIndented = true;
+            jsonOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-            string json = JsonSerializer.Serialize(_data, options);
+            string json = JsonSerializer.Serialize<List<AuswahlParameter>>(_data, jsonOptions);
             await File.WriteAllTextAsync(AuswahlParameterDataPath, json);
 
             if (!SpezifikationInfo.IsReadOnly)
@@ -191,30 +171,46 @@ namespace LiftDataManager.Core.Services
             return json;
         }
 
-       
-
         private void FillParameterDictionary()
         {
-            var jsonString = File.ReadAllText(AuswahlParameterDataPath);
-            try
-            {
-                var AuswahlParameterList = JsonSerializer.Deserialize<List<AuswahlParameter>>(jsonString);
-                foreach (AuswahlParameter Auswahlpar in AuswahlParameterList)
-                {
-                    if (!AuswahlParameterDictionary.ContainsKey(Auswahlpar.Name))
-                    {
-                        AuswahlParameterDictionary.Add(Auswahlpar.Name, Auswahlpar);
-                    }
-                    else
-                    {
-                        AuswahlParameterDictionary[Auswahlpar.Name].Auswahlliste.AddRange(Auswahlpar.Auswahlliste);
-                    }
+            string jsonString;
 
-                }
-            }
-            catch (Exception ex)
+            if (!File.Exists(AuswahlParameterDataPath))
             {
-                Debug.WriteLine(ex);
+                jsonString = Task.Run(() => UpdateAuswahlparameterAsync()).Result;
+            }
+            else
+            {
+                FileInfo AuswahlparameterInfo = new(AuswahlParameterDataPath);
+
+                if (AuswahlparameterInfo.IsReadOnly)
+                {
+                    AuswahlparameterInfo.IsReadOnly = false;
+                }
+                jsonString = File.ReadAllText(AuswahlParameterDataPath);
+            }
+
+            if (!String.IsNullOrWhiteSpace(jsonString))
+            {
+                try
+                {
+                    var AuswahlParameterList = JsonSerializer.Deserialize<List<AuswahlParameter>>(jsonString);
+                    foreach (AuswahlParameter Auswahlpar in AuswahlParameterList)
+                    {
+                        if (!AuswahlParameterDictionary.ContainsKey(Auswahlpar.Name))
+                        {
+                            AuswahlParameterDictionary.Add(Auswahlpar.Name, Auswahlpar);
+                        }
+                        else
+                        {
+                            AuswahlParameterDictionary[Auswahlpar.Name].Auswahlliste.AddRange(Auswahlpar.Auswahlliste);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
         }
     }
