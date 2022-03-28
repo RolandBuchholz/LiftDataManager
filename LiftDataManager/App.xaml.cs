@@ -51,6 +51,7 @@ namespace LiftDataManager
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISettingService, SettingsService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();

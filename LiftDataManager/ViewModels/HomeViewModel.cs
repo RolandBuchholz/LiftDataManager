@@ -8,7 +8,6 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
-using LiftDataManager.Helpers.Dialogs;
 using LiftDataManager.Services;
 using System.Diagnostics;
 using System.IO;
@@ -19,15 +18,15 @@ namespace LiftDataManager.ViewModels
 {
     public class HomeViewModel : ObservableRecipient, INavigationAware
     {
-
         private readonly IParameterDataService _parameterDataService;
         private readonly ISettingService _settingService;
         private readonly IVaultDataService _vaultDataService;
+        private readonly IDialogService _dialogService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
-        public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService)
+        public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
         {
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
             {
@@ -40,11 +39,11 @@ namespace LiftDataManager.ViewModels
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
             _vaultDataService = vaultDataService;
+            _dialogService = dialogService;
             ClearSpeziData = new AsyncRelayCommand(ClearData, () => CanClearData);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
             UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
             SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
-
         }
 
         public IAsyncRelayCommand ClearSpeziData { get; }
@@ -227,7 +226,7 @@ namespace LiftDataManager.ViewModels
                     }
                     else
                     {
-                        await StandardDialogs.LiftDataManagerdownloadInfo(downloadResult);
+                        await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot , downloadResult);
                         InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                         InfoSidebarPanelText += $"Standard Daten geladen\n";
                         FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -259,7 +258,7 @@ namespace LiftDataManager.ViewModels
                         }
                         else
                         {
-                            await StandardDialogs.LiftDataManagerdownloadInfo(downloadResult);
+                            await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
                             InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -272,7 +271,7 @@ namespace LiftDataManager.ViewModels
                     InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
                     InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
 
-                    var confirmed = await App.MainRoot.ConfirmationDialogAsync(
+                    var confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot,
                                             $"Es wurden mehrere {searchPattern} Dateien gefunden?",
                                              "XML aus Vault herunterladen",
                                                 "Abbrechen");
@@ -288,7 +287,7 @@ namespace LiftDataManager.ViewModels
                         }
                         else
                         {
-                            await StandardDialogs.LiftDataManagerdownloadInfo(downloadResult);
+                            await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
                             InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -308,10 +307,10 @@ namespace LiftDataManager.ViewModels
         private async Task ClearData()
         {
             bool delete = true;
-            
+
             if (CanSaveAllSpeziParameters || CheckOut)
             {
-                delete = await App.MainRoot.WarningDialogAsync(
+                delete = await _dialogService.WarningDialogAsync(App.MainRoot,
                         $"Warnung es droht Datenverlust",
                         $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
                         $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
@@ -347,7 +346,7 @@ namespace LiftDataManager.ViewModels
                     }
                     else
                     {
-                        await StandardDialogs.LiftDataManagerdownloadInfo(downloadResult);
+                        await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
                         InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                     }
                 }
