@@ -8,7 +8,6 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
-using LiftDataManager.Services;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -23,7 +22,8 @@ namespace LiftDataManager.ViewModels
         private readonly IVaultDataService _vaultDataService;
         private readonly IDialogService _dialogService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private bool Adminmode;
+        private bool Adminmode { get; set; }
+        private bool OpenReadOnly { get; set; } = true;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
         public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
@@ -33,32 +33,52 @@ namespace LiftDataManager.ViewModels
                 if (m is not null && m.Value.IsDirty)
                 {
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
-                    CheckUnsavedParametres();
+                    _ = CheckUnsavedParametresAsync();
                 }
             });
             _parameterDataService = parameterDataService;
             _settingService = settingsSelectorService;
             _vaultDataService = vaultDataService;
             _dialogService = dialogService;
-            ClearSpeziData = new AsyncRelayCommand(ClearData, () => CanClearData);
+            CheckOutSpeziDataAsync = new AsyncRelayCommand(CheckOutAsync, () => CanCheckOut);
+            ClearSpeziDataAsync = new AsyncRelayCommand(ClearDataAsync, () => CanClearData);
             LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
             UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
-            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
-        public IAsyncRelayCommand ClearSpeziData { get; }
+        public IAsyncRelayCommand CheckOutSpeziDataAsync { get; }
+        public IAsyncRelayCommand ClearSpeziDataAsync { get; }
         public IAsyncRelayCommand LoadSpeziDataAsync { get; }
         public IAsyncRelayCommand UploadSpeziDataAsync { get; }
-        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
+        public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
 
-        private bool _CanCanClearData;
-        public bool CanClearData
+        private bool _IsBusy;
+        public bool IsBusy
         {
-            get => _CanCanClearData;
+            get => _IsBusy;
+            set => SetProperty(ref _IsBusy, value);
+        }
+
+        private bool _CanCheckOut;
+        public bool CanCheckOut
+        {
+            get => _CanCheckOut;
             set
             {
-                SetProperty(ref _CanCanClearData, value);
-                ClearSpeziData.NotifyCanExecuteChanged();
+                SetProperty(ref _CanCheckOut, value);
+                CheckOutSpeziDataAsync.NotifyCanExecuteChanged();
+            }
+        }
+
+        private bool _CanClearData;
+        public bool CanClearData
+        {
+            get => _CanClearData;
+            set
+            {
+                SetProperty(ref _CanClearData, value);
+                ClearSpeziDataAsync.NotifyCanExecuteChanged();
             }
         }
 
@@ -92,19 +112,42 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _CanSaveAllSpeziParameters, value);
                 CanUpLoadSpeziData = !value;
-                SaveAllSpeziParameters.NotifyCanExecuteChanged();
+                SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
             }
         }
 
-        private void CheckUnsavedParametres()
+        private async Task CheckUnsavedParametresAsync()
         {
-            if (ParamterDictionary.Values.Any(p => p.IsDirty))
+            if (LikeEditParameter && AuftragsbezogeneXml)
             {
-                CanSaveAllSpeziParameters = true;
-            }
-            else
-            {
-                CanSaveAllSpeziParameters = false;
+                bool dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
+
+                if (CheckOut)
+                {
+                    CanSaveAllSpeziParameters = dirty;
+                }
+                else if (dirty)
+                {
+                    bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                                        $"Datei eingechecked (schreibgeschützt)",
+                                        $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
+                                        $"Es sind keine Änderungen möglich!\n" +
+                                        $"\n" +
+                                        $"Soll die AutodeskTransferXml ausgechecked werden?",
+                                        "Auschecken", "Schreibgeschützt bearbeiten");
+                    if (dialogResult)
+                    {
+                        IsBusy = true;
+                        OpenReadOnly = false;
+                        await LoadDataAsync();
+                        IsBusy = false;
+                    }
+                    else
+                    {
+                        LikeEditParameter = false;
+                    }
+                }
+
             }
         }
 
@@ -116,12 +159,12 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _AuftragsbezogeneXml, value);
                 _CurrentSpeziProperties.AuftragsbezogeneXml = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
                 CanClearData = value;
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
-      private bool _CheckOut;
+        private bool _CheckOut;
         public bool CheckOut
         {
             get => _CheckOut;
@@ -129,7 +172,20 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _CheckOut, value);
                 _CurrentSpeziProperties.CheckOut = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                CanUpLoadSpeziData = value;
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            }
+        }
+
+        private bool _LikeEditParameter;
+        public bool LikeEditParameter
+        {
+            get => _LikeEditParameter;
+            set
+            {
+                SetProperty(ref _LikeEditParameter, value);
+                _CurrentSpeziProperties.LikeEditParameter = value;
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -146,7 +202,7 @@ namespace LiftDataManager.ViewModels
                 if (_SpezifikationStatusTyp != value) { SpezifikationName = string.Empty; }
                 SetProperty(ref _SpezifikationStatusTyp, value);
                 _CurrentSpeziProperties.SpezifikationStatusTyp = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -169,7 +225,7 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _FullPathXml, value);
                 _CurrentSpeziProperties.FullPathXml = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -181,7 +237,7 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _SearchInput, value);
                 _CurrentSpeziProperties.SearchInput = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -194,117 +250,136 @@ namespace LiftDataManager.ViewModels
             {
                 SetProperty(ref _InfoSidebarPanelText, value);
                 _CurrentSpeziProperties.InfoSidebarPanelText = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
-        private async Task SetFullPathXmlAsync()
+        private async Task SetFullPathXmlAsync(bool ReadOnly = true)
         {
-            if (!CanLoadSpeziData)
+            if (!AuftragsbezogeneXml && string.IsNullOrEmpty(SpezifikationName))
             {
                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                SpezifikationName = string.Empty;
             }
             else
             {
                 CheckOut = false;
                 string searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
-                var watch = Stopwatch.StartNew();
+                Stopwatch watch = Stopwatch.StartNew();
                 var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
                 var stopTimeMs = watch.ElapsedMilliseconds;
 
-                if (workspaceSearch.Length == 0)
+                switch (workspaceSearch.Length)
                 {
-                    InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
-
-                    var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, true);
-
-                    if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                    {
-                        FullPathXml = downloadResult.FullFileName;
-                        InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                        AuftragsbezogeneXml = true;
-                    }
-                    else
-                    {
-                        await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot , downloadResult);
-                        InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                        InfoSidebarPanelText += $"Standard Daten geladen\n";
-                        FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                        AuftragsbezogeneXml = false;
-                    }
-                }
-
-                else if (workspaceSearch.Length == 1)
-                {
-                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                    string autoDeskTransferpath = workspaceSearch[0];
-                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
-                    if (!AutoDeskTransferInfo.IsReadOnly)
-                    {
-                        FullPathXml = workspaceSearch[0];
-                        InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
-                        AuftragsbezogeneXml = true;
-                        CheckOut = true;
-                    }
-                    else
-                    {
-                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, true);
-
-                        if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                    case 0:
                         {
-                            FullPathXml = downloadResult.FullFileName; 
-                            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                            AuftragsbezogeneXml = true;
-                        }
-                        else
-                        {
-                            await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
-                            InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            AuftragsbezogeneXml = false;
-                        }
-                    }
-                }
-                else
-                {
-                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                    InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
+                            InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
 
-                    var confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot,
-                                            $"Es wurden mehrere {searchPattern} Dateien gefunden?",
-                                             "XML aus Vault herunterladen",
-                                                "Abbrechen");
-                    if (confirmed)
-                    {
-                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, true);
+                            DownloadInfo downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
 
-                        if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                        {
-                            FullPathXml = downloadResult.FullFileName;
-                            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                            AuftragsbezogeneXml = true;
+                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                            {
+                                FullPathXml = downloadResult.FullFileName;
+                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                AuftragsbezogeneXml = true;
+                            }
+                            else
+                            {
+                                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
+                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                AuftragsbezogeneXml = false;
+                            }
+
+                            break;
                         }
-                        else
+
+                    case 1:
                         {
-                            await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
-                            InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            AuftragsbezogeneXml = false;
+                            InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                            string autoDeskTransferpath = workspaceSearch[0];
+                            FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                            if (!AutoDeskTransferInfo.IsReadOnly)
+                            {
+                                FullPathXml = workspaceSearch[0];
+                                InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
+                                AuftragsbezogeneXml = true;
+                                CheckOut = true;
+                            }
+                            else
+                            {
+                                DownloadInfo downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+
+                                if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                                {
+                                    FullPathXml = downloadResult.FullFileName;
+                                    InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                    AuftragsbezogeneXml = true;
+                                    CheckOut = downloadResult.IsCheckOut;
+                                }
+                                else
+                                {
+                                    await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
+                                    InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                                    InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                    AuftragsbezogeneXml = false;
+                                }
+                            }
+
+                            break;
                         }
-                    }
-                    else
-                    {
-                        InfoSidebarPanelText += $"Standard Daten geladen\n";
-                        FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                        AuftragsbezogeneXml = false;
-                    }
+
+                    default:
+                        {
+                            InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                            InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
+
+                            bool confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot,
+                                                    $"Es wurden mehrere {searchPattern} Dateien gefunden?",
+                                                     "XML aus Vault herunterladen",
+                                                        "Abbrechen");
+                            if (confirmed)
+                            {
+                                DownloadInfo downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+
+                                if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                                {
+                                    FullPathXml = downloadResult.FullFileName;
+                                    InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                    AuftragsbezogeneXml = true;
+                                }
+                                else
+                                {
+                                    await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
+                                    InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                                    InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                    AuftragsbezogeneXml = false;
+                                }
+                            }
+                            else
+                            {
+                                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                SpezifikationName = string.Empty;
+                                AuftragsbezogeneXml = false;
+                            }
+
+                            break;
+                        }
                 }
             }
         }
 
-        private async Task ClearData()
+        private async Task CheckOutAsync()
+        {
+            OpenReadOnly = false;
+            await LoadDataAsync();
+        }
+
+        private async Task ClearDataAsync()
         {
             bool delete = true;
 
@@ -316,7 +391,7 @@ namespace LiftDataManager.ViewModels
                         $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
                         $"Der Befehl >Auschecken Rückgänig< wird ausgeführt!\n" +
                         $"\n" +
-                        $"Soll der Forgang fortgesetzt werden?",
+                        $"Soll der Vorgang fortgesetzt werden?",
                         "Fortsetzen", "Abbrechen") ;
             }
 
@@ -326,7 +401,7 @@ namespace LiftDataManager.ViewModels
                 InfoSidebarPanelText += $"----------\n";
                 if (CheckOut)
                 {
-                    var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
+                    DownloadInfo downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
                     if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                     {
                         if (File.Exists(FullPathXml))
@@ -339,10 +414,13 @@ namespace LiftDataManager.ViewModels
                             File.Delete(FullPathXml); 
                         }
                         AuftragsbezogeneXml = false;
+                        SpezifikationName = string.Empty;
                         CanLoadSpeziData = false;
                         CanSaveAllSpeziParameters = false;
                         CheckOut = false;
+                        LikeEditParameter = true;
                         await LoadDataAsync();
+
                     }
                     else
                     {
@@ -356,6 +434,9 @@ namespace LiftDataManager.ViewModels
                     CanLoadSpeziData = false;
                     CanSaveAllSpeziParameters = false;
                     CheckOut = false;
+                    CanCheckOut = false;
+                    LikeEditParameter = true;
+                    SpezifikationName = string.Empty;
                     await LoadDataAsync();
                 }
             }
@@ -363,16 +444,38 @@ namespace LiftDataManager.ViewModels
 
         private async Task UploadDataAsync()
         {
-            InfoSidebarPanelText += $"Spezifikation wird hochgeladen\n";
-            InfoSidebarPanelText += $"----------\n";
-            await ClearData();
+            await Task.Delay(30);
+            if (CheckOut)
+            {
+                Stopwatch watch = Stopwatch.StartNew();
+                DownloadInfo downloadResult = await _vaultDataService.SetFileAsync(SpezifikationName);
+                long stopTimeMs = watch.ElapsedMilliseconds;
+
+                if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                {
+                    InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
+                    InfoSidebarPanelText += $"----------\n";
+                    InfoSidebarPanelText += $"Standard Daten geladen\n";
+                    AuftragsbezogeneXml = false;
+                    CheckOut = false;
+                    LikeEditParameter = true;
+                    SpezifikationName = string.Empty;
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot, downloadResult);
+                    InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                    InfoSidebarPanelText += $"----------\n";
+                }
+            }
         }
 
         private async Task LoadDataAsync()
         {
-            await SetFullPathXmlAsync();
+            await SetFullPathXmlAsync(OpenReadOnly);
 
-            var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
+            System.Collections.Generic.IEnumerable<Parameter> data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
             foreach (var item in data)
             {
@@ -386,17 +489,19 @@ namespace LiftDataManager.ViewModels
                 }
             }
             _CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
             InfoSidebarPanelText += $"----------\n";
-            SpezifikationName = string.Empty;
+            LikeEditParameter = true;
+            OpenReadOnly = true;
+            CanCheckOut = !CheckOut && AuftragsbezogeneXml;
         }
 
         private async Task SaveAllParameterAsync()
         {
-            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            string infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             InfoSidebarPanelText += infotext;
-            CheckUnsavedParametres();
+            await CheckUnsavedParametresAsync();
         }
 
         private void SetAdminmode()
@@ -404,7 +509,7 @@ namespace LiftDataManager.ViewModels
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             Adminmode = _settingService.Adminmode;
             _CurrentSpeziProperties.Adminmode = Adminmode;
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
 
         private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
@@ -421,7 +526,7 @@ namespace LiftDataManager.ViewModels
                 path = @"C:\Work\AUFTRÄGE NEU\Angebote";
             }
 
-            var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
+            string[] searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
             return searchResult;
         }
 
@@ -432,13 +537,18 @@ namespace LiftDataManager.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             CheckOut = _CurrentSpeziProperties.CheckOut;
+            LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
             SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
             SearchInput = _CurrentSpeziProperties.SearchInput;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-            if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
+            if (_CurrentSpeziProperties.FullPathXml is not null)
+            { 
+                FullPathXml = _CurrentSpeziProperties.FullPathXml;
+                _SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
+            }
             if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
             if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
-            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) { CheckUnsavedParametres(); }
+            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) { _ = CheckUnsavedParametresAsync(); }
         }
 
         public void OnNavigatedFrom()

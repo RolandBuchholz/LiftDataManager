@@ -22,6 +22,10 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <converters:BoolToObjectConverter
+            x:Key="InvertBoolToSting"
+            FalseValue="True"
+            TrueValue="False" />
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="5"
@@ -54,6 +58,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -62,6 +67,7 @@
                 Grid.Column="0"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
+                IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}"
                 SelectedItem="{x:Bind ViewModel.SpezifikationStatusTyp, Mode=TwoWay}">
                 <x:String>Auftrag</x:String>
                 <x:String>Angebot</x:String>
@@ -76,6 +82,7 @@
                         MinWidth="125"
                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                         ui:TextBoxExtensions.ValidationType="Number"
+                        IsReadOnly="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
                         MaxLength="7"
                         PlaceholderText="Auftragsnummer"
                         Text="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -87,7 +94,7 @@
                     </TextBox>
                 </controls:Case>
                 <controls:Case Value="Angebot">
-                    <SpeziControls:OrderNumberControl OrderNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <SpeziControls:OrderNumberControl IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}" OrderNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:Case>
             </controls:SwitchPresenter>
             <Button
@@ -112,21 +119,31 @@
                 Grid.Column="4"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.ClearSpeziData}"
+                Command="{x:Bind ViewModel.CheckOutSpeziDataAsync}"
+                Content="CheckOut"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+            <Button
+                Grid.Column="5"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.ClearSpeziDataAsync}"
                 Content="Clear Data"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
             <Button
-                Grid.Column="6"
+                Grid.Column="7"
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.SaveAllSpeziParameters}"
+                Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
             <TextBox
-                Grid.Column="7"
+                Grid.Column="8"
                 Width="250"
                 Margin="5,0,5,0"
                 IsSpellCheckEnabled="False"
@@ -664,21 +681,35 @@
             Height="200"
             Background="Transparent"
             Foreground="Crimson"
-            IsActive="{x:Bind ViewModel.ClearSpeziData.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.ClearSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
             Height="200"
             Background="Transparent"
             Foreground="SpringGreen"
-            IsActive="{x:Bind ViewModel.SaveAllSpeziParameters.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.CheckOutSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
             Height="200"
             Background="Transparent"
             Foreground="SpringGreen"
+            IsActive="{x:Bind ViewModel.SaveAllSpeziParametersAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+        <ProgressRing
+            Grid.Row="2"
+            Width="200"
+            Height="200"
+            Background="Transparent"
+            Foreground="Purple"
             IsActive="{x:Bind ViewModel.UploadSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+        <ProgressRing
+            Grid.Row="2"
+            Width="200"
+            Height="200"
+            Background="Transparent"
+            Foreground="SpringGreen"
+            IsActive="{x:Bind ViewModel.IsBusy, FallbackValue=False, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="3"
