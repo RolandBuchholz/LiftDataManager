@@ -67,7 +67,7 @@ namespace LiftDataManager.Core.Services
                 { "Daten Allgemein", "Aufzugstyp","var_Aufzugstyp" },
                 { "Daten Bausatz", "Bausatz","var_Bausatz" },
                 { "Daten Bausatz", "Führung","var_Fuehrungsart" },
-                { "Daten Bausatz", "Typ","var_TypFuehrung" },
+                { "Daten Bausatz", "Führungstyp","var_TypFuehrung" },
                 { "Daten Bausatz", "Ersatzmaßnahmen","var_Ersatzmassnahmen" },
                 { "Daten Bausatz", "Führungsschienen","var_FuehrungsschieneFahrkorb" },
                 { "Daten Bausatz", "Führungsschienen GGW / Joch","var_FuehrungsschieneGegengewicht" },

@@ -10,6 +10,9 @@
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Images\LiftDataManagerLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Controls\OrderNumberControl.xaml" />
     <None Remove="Styles\Combobox.xaml" />
   </ItemGroup>

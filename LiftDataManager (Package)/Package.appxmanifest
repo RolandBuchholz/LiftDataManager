@@ -9,11 +9,11 @@
   <Identity
     Name="9fc597e6-e70e-41f9-aea2-5cc60781c675"
     Publisher="CN=Buchholz"
-    Version="1.0.0.0" />
+    Version="1.1.9.0" />
 
   <Properties>
     <DisplayName>LiftDataManager (Package)</DisplayName>
-    <PublisherDisplayName>Buchholz</PublisherDisplayName>
+    <PublisherDisplayName>Buchholz Roland</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,12 +31,18 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="LiftDataManager (Package)"
-        Description="LiftDataManager (Package)"
+        DisplayName="LiftDataManager"
+        Description="Tool zur Datenerfassung von Aufzugsanlagen"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
@@ -45,4 +51,13 @@
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
+
+  <Extensions>
+    <Extension Category="windows.certificates">
+      <Certificates>
+        <Certificate StoreName="root" Content="LiftDataManager (Package)_1.1.7.0_x64.cer"/>
+        <TrustFlags ExclusiveTrust="true"/>
+      </Certificates>
+    </Extension>
+  </Extensions>
 </Package>
