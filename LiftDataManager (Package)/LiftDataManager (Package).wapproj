@@ -127,7 +127,6 @@
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Images\Wide310x150Logo.scale-400.png" />
     <Content Include="LiftDataManager %28Package%29_1.1.7.0_x64.cer" />
-    <Content Include="LiftDataManager %28Package%29_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiftDataManager\LiftDataManager.csproj">
@@ -136,7 +135,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.2">
       <IncludeAssets>build</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197">
