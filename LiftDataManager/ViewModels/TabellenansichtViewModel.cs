@@ -20,22 +20,22 @@ namespace LiftDataManager.ViewModels
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private bool Adminmode { get; set; }
-        private bool AuftragsbezogeneXml { get; set; }
-        private bool CheckOut { get; set; }
-        private bool LikeEditParameter { get; set; }
+        public bool Adminmode { get; set; }
+        public bool AuftragsbezogeneXml { get; set; }
+        public bool CheckOut { get; set; }
+        public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
 
         public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
         {
-            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
             {
-                if (m is not null && m.Value.IsDirty == true)
+                if (m is not null && m.Value.IsDirty)
                 {
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
-                    _ = CheckUnsavedParametresAsync();
+                    await CheckUnsavedParametresAsync();
                 }
             });
             _parameterDataService = parameterDataService;
@@ -121,9 +121,10 @@ namespace LiftDataManager.ViewModels
 
                 if (CheckOut)
                 {
+                    CanShowUnsavedParameters = dirty;
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty)
+                else if (dirty && !CheckOut)
                 {
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
@@ -141,7 +142,6 @@ namespace LiftDataManager.ViewModels
                         LikeEditParameter = false;
                     }
                 }
-
             }
         }
 

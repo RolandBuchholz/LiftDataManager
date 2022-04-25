@@ -21,10 +21,10 @@ namespace LiftDataManager.ViewModels
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private bool Adminmode { get; set; }
-        private bool AuftragsbezogeneXml { get; set; }
-        private bool CheckOut { get; set; }
-        private bool LikeEditParameter { get; set; }
+        public bool Adminmode { get; set; }
+        public bool AuftragsbezogeneXml { get; set; }
+        public bool CheckOut { get; set; }
+        public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
@@ -61,11 +61,12 @@ namespace LiftDataManager.ViewModels
 
         public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
         {
-            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
             {
                 if (m is not null && m.Value.IsDirty)
                 {
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    await CheckUnsavedParametresAsync();
                 }
             });
             _parameterDataService = parameterDataService;
@@ -99,8 +100,6 @@ namespace LiftDataManager.ViewModels
             }
 
             SaveParameter.NotifyCanExecuteChanged();
-            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
-
         }
 
         private async Task CheckUnsavedParametresAsync()
@@ -114,7 +113,7 @@ namespace LiftDataManager.ViewModels
                     CanShowUnsavedParameters = dirty;
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty)
+                else if (dirty && !CheckOut)
                 {
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
@@ -135,26 +134,18 @@ namespace LiftDataManager.ViewModels
 
             }
         }
-
-
         private bool _IsUnsavedParametersSelected;
         public bool IsUnsavedParametersSelected
         {
             get => _IsUnsavedParametersSelected;
-            set
-            {
-                SetProperty(ref _IsUnsavedParametersSelected, value);
-            }
+            set => SetProperty(ref _IsUnsavedParametersSelected, value);
         }
 
         private bool _IsItemSelected;
         public bool IsItemSelected
         {
             get => _IsItemSelected;
-            set
-            {
-                SetProperty(ref _IsItemSelected, value);
-            }
+            set => SetProperty(ref _IsItemSelected, value);
         }
 
         private bool _CanSaveParameter;
@@ -205,16 +196,17 @@ namespace LiftDataManager.ViewModels
 
         private async Task SaveParameterAsync()
         {
-            var infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
+            string infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
             InfoSidebarPanelText += infotext;
             CanSaveParameter = false;
             Selected.IsDirty = false;
+            await CheckUnsavedParametresAsync();
             if (IsUnsavedParametersSelected) ShowUnsavedParametersView();
         }
 
         private async Task SaveAllParameterAsync()
         {
-            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            string infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             InfoSidebarPanelText += infotext;
             await CheckUnsavedParametresAsync();
             ShowAllParametersView();

@@ -166,6 +166,7 @@
         <SpeziControls:FooterControl
             Grid.Row="2"
             Margin="0"
+            CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.FilteredParameters.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
         <VisualStateManager.VisualStateGroups>

@@ -21,10 +21,10 @@ namespace LiftDataManager.ViewModels
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private bool Adminmode { get; set; }
-        private bool AuftragsbezogeneXml { get; set; }
-        private bool CheckOut { get; set; }
-        private bool LikeEditParameter { get; set; }
+        public bool Adminmode { get; set; }
+        public bool AuftragsbezogeneXml { get; set; }
+        public bool CheckOut { get; set; }
+        public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
@@ -49,20 +49,14 @@ namespace LiftDataManager.ViewModels
         public bool IsUnsavedParametersSelected
         {
             get => _IsUnsavedParametersSelected;
-            set
-            {
-                SetProperty(ref _IsUnsavedParametersSelected, value);
-            }
+            set => SetProperty(ref _IsUnsavedParametersSelected, value);
         }
 
         private bool _IsItemSelected;
         public bool IsItemSelected
         {
             get => _IsItemSelected;
-            set
-            {
-                SetProperty(ref _IsItemSelected, value);
-            }
+            set => SetProperty(ref _IsItemSelected, value);
         }
 
         private bool _CanSaveAllSpeziParameters;
@@ -98,7 +92,7 @@ namespace LiftDataManager.ViewModels
                     CanShowUnsavedParameters = dirty;
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty)
+                else if (dirty && !CheckOut)
                 {
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",

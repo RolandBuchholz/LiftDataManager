@@ -28,12 +28,12 @@ namespace LiftDataManager.ViewModels
 
         public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
         {
-            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
             {
                 if (m is not null && m.Value.IsDirty)
                 {
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
-                    _ = CheckUnsavedParametresAsync();
+                    await CheckUnsavedParametresAsync();
                 }
             });
             _parameterDataService = parameterDataService;
@@ -126,7 +126,7 @@ namespace LiftDataManager.ViewModels
                 {
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty)
+                else if (dirty && !CheckOut)
                 {
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
@@ -139,7 +139,18 @@ namespace LiftDataManager.ViewModels
                     {
                         IsBusy = true;
                         OpenReadOnly = false;
+                        Parameter storedParmeter = null;
+                        if (ParamterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
+                        {
+                            storedParmeter = ParamterDictionary.Values.First(x => x.IsDirty);
+                        }
                         await LoadDataAsync();
+                        if (storedParmeter != null)
+                        {
+                            ParamterDictionary[storedParmeter.Name] = storedParmeter;
+                            CanSaveAllSpeziParameters = dirty;
+                        };
+
                         IsBusy = false;
                     }
                     else

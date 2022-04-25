@@ -16,7 +16,7 @@ namespace LiftDataManager.ViewModels
     public class QuickLinksViewModel : ObservableRecipient, INavigationAware
     {
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private string FullPathXml { get; set; }
+        public string FullPathXml { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
 
         public QuickLinksViewModel()

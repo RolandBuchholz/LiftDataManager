@@ -17,10 +17,10 @@ namespace LiftDataManager.ViewModels
     {
         private readonly IParameterDataService _parameterDataService;
         private CurrentSpeziProperties _CurrentSpeziProperties;
-        private bool Adminmode { get; set; }
-        private bool AuftragsbezogeneXml { get; set; }
-        private bool CheckOut { get; set; }
-        private bool LikeEditParameter { get; set; }
+        public bool Adminmode { get; set; }
+        public bool AuftragsbezogeneXml { get; set; }
+        public bool CheckOut { get; set; }
+        public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         private Parameter _item;
@@ -50,7 +50,7 @@ namespace LiftDataManager.ViewModels
                     InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
                 }
             });
-            SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
+            SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && CheckOut);
         }
 
         public IAsyncRelayCommand SaveParameter { get; }
