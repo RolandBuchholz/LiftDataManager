@@ -1,5 +1,6 @@
 ﻿using LiftDataManager.Contracts.Services;
 using LiftDataManager.Core.Models;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -131,20 +132,83 @@ namespace LiftDataManager.Services
         public async Task LiftDataManagerdownloadInfoAsync(FrameworkElement element, DownloadInfo downloadResult)
         {
             string title = "LiftDataManager InfoDialog";
-            string content = DownloadInfoEnumToString(downloadResult);
+            
             string closeButtonText = "Ok";
+
+            var infoHeader= new TextBlock
+            {
+                Text = $"DownloadInfos:",
+                Margin = new Thickness(0,0,0,10),
+                FontSize = 16,
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            var detailinfoleft = new TextBlock
+            {
+                Text = "FileName:\n" +
+                       "FullFileName:\n" +
+                       "CheckOutState:\n" +
+                       "IsCheckOut:\n" +
+                       "CheckOutPC:\n" +
+                       "EditedBy:\n" +
+                       "ErrorState:\n",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            var detailinforight = new TextBlock
+            {
+                Text = $"{downloadResult.FileName}\n" +
+                       $"{downloadResult.FullFileName}\n" +
+                       $"{downloadResult.CheckOutState}\n" +
+                       $"{downloadResult.IsCheckOut}\n" +
+                       $"{downloadResult.CheckOutPC}\n" +
+                       $"{downloadResult.EditedBy}\n" +
+                       $"{downloadResult.ErrorState}\n",
+                Margin = new Thickness(25, 0, 0, 0),
+                FontWeight = FontWeights.Medium,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            var infoPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal
+            };
+            infoPanel.Children.Add(detailinfoleft);
+            infoPanel.Children.Add(detailinforight);
+
+            var detailPanel = new StackPanel();
+            detailPanel.Children.Add(infoHeader);
+            detailPanel.Children.Add(infoPanel);
+
+            var exp = new Expander
+            {
+                Header = "Detailinformationen",
+                Margin = new Thickness(0, 20, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Content = detailPanel
+            };
+
+            var mainPanel = new StackPanel();
+            mainPanel.Children.Add(new TextBlock
+            {
+                Margin = new Thickness(0, 10, 0, 0),
+                Text = DownloadInfoEnumToString(downloadResult),
+                TextWrapping = TextWrapping.Wrap,
+            });
+            mainPanel.Children.Add(exp);
 
             var dialog = new ContentDialog
             {
                 Title = title,
-                Content = content,
+                Content = mainPanel,
                 CloseButtonText = closeButtonText,
                 XamlRoot = element.XamlRoot,
                 RequestedTheme = element.ActualTheme
             };
             await dialog.ShowAsync();
         }
-
 
         private string DownloadInfoEnumToString(DownloadInfo downloadResult)
         {
