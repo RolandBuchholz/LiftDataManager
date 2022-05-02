@@ -81,6 +81,8 @@ namespace LiftDataManager.Core.Services
                 { "Daten Bausatz", "Schachtinformation","var_Schachtinformation" },
                 { "Daten Bausatz", "Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer" },
                 { "Daten Normen", "Normen","var_Normen" },
+                { "Daten Normen", "EN81-31 / 41","var_EN8131" },
+                { "Daten Normen", "EN81-71","var_EN8171Cat012" },
                 { "Daten Schacht", "Schacht / Maschinenraum","var_Schachtinformationen" },
                 { "Daten Schacht", "Schachttyp","var_SchachtInformationen" },
                 { "Daten Schacht", "Maschinenraumposition","var_Maschinenraum" },

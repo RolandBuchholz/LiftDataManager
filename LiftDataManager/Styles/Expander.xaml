@@ -12,7 +12,6 @@
         EmptyValue="Collapsed"
         NotEmptyValue="Visible" />
     <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
-
     <Style
         x:Key="HeaderToggleButtonStylePanelStyle"
         x:Name="HeaderToggleButtonStylePanelStyle"
@@ -282,7 +281,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style
         x:Key="ExpanderInfoSidebarPanelStyle"
         x:Name="ExpanderInfoSidebarPanelStyle"
@@ -676,6 +674,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
 </ResourceDictionary>

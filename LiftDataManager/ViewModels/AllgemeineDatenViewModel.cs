@@ -39,26 +39,25 @@ namespace LiftDataManager.ViewModels
             _parameterDataService = parameterDataService;
             _dialogService = dialogService;
             _navigationService = navigationService;
-
-            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
-        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
+        public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
 
-        private bool _CanSaveAllSpeziParameters = false;
+        private bool _CanSaveAllSpeziParameters;
         public bool CanSaveAllSpeziParameters
         {
             get => _CanSaveAllSpeziParameters;
             set
             {
                 SetProperty(ref _CanSaveAllSpeziParameters, value);
-                SaveAllSpeziParameters.NotifyCanExecuteChanged();
+                SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
             }
         }
 
         private async Task SaveAllParameterAsync()
         {
-            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            string infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             InfoSidebarPanelText += infotext;
             await CheckUnsavedParametresAsync();
         }

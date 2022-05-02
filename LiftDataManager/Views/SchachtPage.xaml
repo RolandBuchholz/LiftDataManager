@@ -2,14 +2,91 @@
     x:Class="LiftDataManager.Views.SchachtPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SpeziControls="using:LiftDataManager.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Style="{StaticResource PageStyle}">
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-        </Grid>
+    <Page.Resources>
+        <converters:BoolToObjectConverter
+            x:Key="InvertBoolToObjectConverter"
+            FalseValue="Visible"
+            TrueValue="Collapsed" />
+    </Page.Resources>
+    <Grid
+        x:Name="ContentArea"
+        Margin="5"
+        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+        CornerRadius="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <!--  Parameter  -->
+        <ScrollViewer
+            Grid.Row="0"
+            Margin="5,5,0,5"
+            Padding="10,5,20,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <controls:Expander
+                    x:Name="Stockwerksbezeichnung"
+                    Grid.Row="0"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Stretch"
+                    ExpandDirection="Down"
+                    Header="Stockwerksbezeichnung"
+                    IsExpanded="True" />
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
+                    Style="{StaticResource SaveButton}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="Save All Parameter" />
+                    </ToolTipService.ToolTip>
+                    <SymbolIcon Symbol="Save" />
+                </Button>
+                <controls:Expander
+                    x:Name="AllgemeineSchachtDaten"
+                    Grid.Row="1"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Stretch"
+                    ExpandDirection="Down"
+                    Header="Allgemeine Schachtdaten"
+                    IsExpanded="True" />
+            </Grid>
+        </ScrollViewer>
+        <!--  InfoSidebarPanel  -->
+        <SpeziControls:SidebarPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="0,10,10,10"
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+        <!--  Footer  -->
+        <SpeziControls:FooterControl
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0"
+            CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>
