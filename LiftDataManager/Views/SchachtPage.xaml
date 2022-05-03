@@ -7,6 +7,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -16,6 +17,14 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <converters:BoolToObjectConverter
+            x:Key="NullBoolConverter"
+            FalseValue="False"
+            TrueValue="True" />
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
     </Page.Resources>
     <Grid
         x:Name="ContentArea"
@@ -36,6 +45,11 @@
             Margin="5,5,0,5"
             Padding="10,5,20,5">
             <Grid>
+                <Grid.Resources>
+                    <Style x:Name="TableTextboxStyle" TargetType="TextBox">
+                        <Setter Property="Margin" Value="2,2,0,0" />
+                    </Style>
+                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -47,8 +61,587 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
-                    Header="Stockwerksbezeichnung"
-                    IsExpanded="True" />
+                    Header="Stockwerksbezeichnung / Etagenabstände"
+                    IsExpanded="True">
+                    <Grid
+                        Margin="0,5,0,10"
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                        CornerRadius="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="11"
+                            Height="30"
+                            Margin="0,0,0,5"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Background="{ThemeResource SystemAccentColorDark1}"
+                            CornerRadius="5" />
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="10"
+                            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
+                        <Border
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="10"
+                            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="0" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="1" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="2" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="3" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="5"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="4" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="6"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="5" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="7"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="6" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="8"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="7" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="9"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="8" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="10"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="9" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="Zugänge" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Right"
+                            Content="Zugang A"
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="Position Zugänge" />
+                                    <Image
+                                        Width="325"
+                                        Height="350"
+                                        Source="/Images/carAccesses.png" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </CheckBox>
+                        <CheckBox
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Right"
+                            Content="Zugang B"
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="Position Zugänge" />
+                                    <Image
+                                        Width="325"
+                                        Height="350"
+                                        Source="/Images/carAccesses.png" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </CheckBox>
+                        <CheckBox
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Right"
+                            Content="Zugang C"
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="Position Zugänge" />
+                                    <Image
+                                        Width="325"
+                                        Height="350"
+                                        Source="/Images/carAccesses.png" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </CheckBox>
+                        <CheckBox
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Right"
+                            Content="Zugang D"
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="Position Zugänge" />
+                                    <Image
+                                        Width="325"
+                                        Height="350"
+                                        Source="/Images/carAccesses.png" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </CheckBox>
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="5,5,5,0"
+                            HorizontalAlignment="Right"
+                            Text="Etagenabstand [mm]" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA0'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA1'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA2'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA3'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA4'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA5'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="7"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA6'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="8"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA7'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="9"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA8'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="10"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA9'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB0'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB1'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB2'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="4"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB3'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="5"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB4'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="6"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB5'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="7"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB6'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="8"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB7'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="9"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB8'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="10"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB9'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC0'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC1'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC2'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="4"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC3'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="5"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC4'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="6"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC5'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="7"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC6'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="8"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC7'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="9"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC8'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="10"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC9'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD0'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD1'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="3"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD2'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="4"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD3'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="5"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD4'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="6"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD5'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="7"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD6'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="8"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD7'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="9"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD8'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="10"
+                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD9'].Value, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe0'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 0 und 1</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe1'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 1 und 2</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="3"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe2'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 2 und 3</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="4"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe3'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 3 und 4</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="5"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe4'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 4 und 5</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="6"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe5'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 5 und 6</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="7"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe6'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 6 und 7</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="8"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe7'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 7 und 8</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="9"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Decimal"
+                            Style="{StaticResource TableTextboxStyle}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Etagenhoehe8'].Value, Mode=TwoWay}">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    Stockwerksabstand<LineBreak />
+                                    zwischen 8 und 9</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+
+                    </Grid>
+                </controls:Expander>
                 <Button
                     Grid.Column="0"
                     HorizontalAlignment="Right"
@@ -71,7 +664,139 @@
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
                     Header="Allgemeine Schachtdaten"
-                    IsExpanded="True" />
+                    IsExpanded="True">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
+                        <Grid
+                            Name="Befestigung"
+                            Grid.Row="0"
+                            ColumnDefinitions="*,*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Schacht Information"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownListValue, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Schachtwände"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownListValue, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Befestigung"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownListValue, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Maschinenraum"
+                            Grid.Row="1"
+                            ColumnDefinitions="*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Maschinenraumposition"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownListValue, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Schachtabmessungen1"
+                            Grid.Row="2"
+                            ColumnDefinitions="*,*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Schachtbreite [mm]"
+                                PlaceholderText="SB"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Schachttiefe [mm]"
+                                PlaceholderText="ST"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Schachtabmessungen2"
+                            Grid.Row="3"
+                            ColumnDefinitions="*,*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Schachtgrubentiefe [mm]"
+                                PlaceholderText="SG"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Schachtkopfhöhe [mm]"
+                                PlaceholderText="SK"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Schachtgeruest"
+                            Grid.Row="4"
+                            ColumnDefinitions="*,*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                Header="Schachtgerüst Farbe"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_GeruestFarbe'].Value, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Schachtgerüst Feldfüllung"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownListValue, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Brandschutz"
+                            Grid.Row="5"
+                            ColumnDefinitions="*,*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Brandschutzmaßnahmen an den Schachttüren"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownListValue, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Brandschutz erstellt von"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownListValue, Mode=TwoWay}" />
+                            <CheckBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Brandschutz nach DIN 4102 F90"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BsDin'].BoolValue, Mode=TwoWay}" />
+                        </Grid>
+                    </Grid>
+                </controls:Expander>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->
