@@ -23,6 +23,8 @@
             FalseValue="False"
             TrueValue="True" />
         <helpers:EnumToStringConverter x:Key="EnumToStringConverter" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
         <Style x:Name="GridTextboxStyle" TargetType="TextBox">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -34,6 +36,12 @@
         <Style x:Name="GridCalendarDatePickerStyle" TargetType="CalendarDatePicker">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style x:Name="GridToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Margin" Value="10,-5,10,-5" />
+            <Setter Property="Padding" Value="0,5,0,5" />
         </Style>
     </Page.Resources>
     <Grid
@@ -151,21 +159,23 @@
                                                 HorizontalAlignment="Stretch"
                                                 VerticalAlignment="Stretch"
                                                 CalendarIdentifier="GregorianCalendar"
-                                                Date="{x:Bind Date, Mode=TwoWay}"
+                                                Date="{x:Bind Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                                                 DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                                 Language="de"
                                                 PlaceholderText="Datum auswählen"
                                                 Style="{StaticResource GridCalendarDatePickerStyle}" />
                                         </controls:Case>
                                         <controls:Case Value="Boolean">
-                                            <ComboBox
+                                            <ToggleButton
+                                                x:Name="boolControl"
                                                 HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Stretch"
-                                                SelectedValue="{x:Bind BoolValue, Converter={StaticResource BoolToSting}, Mode=TwoWay}"
-                                                Style="{StaticResource GridComboboxStyle}">
-                                                <x:String>True</x:String>
-                                                <x:String>False</x:String>
-                                            </ComboBox>
+                                                IsChecked="{x:Bind Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                                Style="{StaticResource GridToggleButtonStyle}">
+                                                <StackPanel>
+                                                    <TextBlock Text="Wahr" Visibility="{Binding ElementName=boolControl, Path=IsChecked}" />
+                                                    <TextBlock Text="Falsch" Visibility="{Binding ElementName=boolControl, Path=IsChecked, Converter={StaticResource BoolNegationConverter}}" />
+                                                </StackPanel>
+                                            </ToggleButton>
                                         </controls:Case>
                                         <controls:Case Value="DropDownList">
                                             <ComboBox

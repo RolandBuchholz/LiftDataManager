@@ -6,6 +6,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
@@ -17,14 +18,11 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
-        <converters:BoolToObjectConverter
-            x:Key="NullBoolConverter"
-            FalseValue="False"
-            TrueValue="True" />
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
     <Grid
         x:Name="ContentArea"
@@ -185,12 +183,13 @@
                             VerticalAlignment="Bottom"
                             Text="Zugänge" />
                         <CheckBox
+                            x:Name="chkboxZugangA"
                             Grid.Row="1"
                             Grid.Column="0"
                             Margin="5,0,5,0"
                             HorizontalAlignment="Right"
                             Content="Zugang A"
-                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
                             <ToolTipService.ToolTip>
                                 <StackPanel>
                                     <TextBlock
@@ -208,12 +207,13 @@
                             </ToolTipService.ToolTip>
                         </CheckBox>
                         <CheckBox
+                            x:Name="chkboxZugangB"
                             Grid.Row="2"
                             Grid.Column="0"
                             Margin="5,0,5,0"
                             HorizontalAlignment="Right"
                             Content="Zugang B"
-                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
                             <ToolTipService.ToolTip>
                                 <StackPanel>
                                     <TextBlock
@@ -231,12 +231,13 @@
                             </ToolTipService.ToolTip>
                         </CheckBox>
                         <CheckBox
+                            x:Name="chkboxZugangC"
                             Grid.Row="3"
                             Grid.Column="0"
                             Margin="5,0,5,0"
                             HorizontalAlignment="Right"
                             Content="Zugang C"
-                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
                             <ToolTipService.ToolTip>
                                 <StackPanel>
                                     <TextBlock
@@ -254,12 +255,13 @@
                             </ToolTipService.ToolTip>
                         </CheckBox>
                         <CheckBox
+                            x:Name="chkboxZugangD"
                             Grid.Row="4"
                             Grid.Column="0"
                             Margin="5,0,5,0"
                             HorizontalAlignment="Right"
                             Content="Zugang D"
-                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
                             <ToolTipService.ToolTip>
                                 <StackPanel>
                                     <TextBlock
@@ -285,241 +287,241 @@
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA0'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="2"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA1'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="3"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA2'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="4"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA3'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="5"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA4'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="6"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA5'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="7"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA6'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="8"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA7'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="9"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA8'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="10"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA9'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="1"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB0'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="2"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB1'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="3"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB2'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="4"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB3'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="5"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB4'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="6"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB5'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="7"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB6'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="8"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB7'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="9"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB8'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="10"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB9'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="1"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC0'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="2"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC1'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="3"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC2'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="4"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC3'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="5"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC4'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="6"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC5'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="7"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC6'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="8"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC7'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="9"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC8'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="10"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC9'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="1"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD0'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="2"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD1'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="3"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD2'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="4"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD3'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="5"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD4'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="6"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD5'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="7"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD6'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="8"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD7'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="9"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD8'].Value, Mode=TwoWay}" />
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="10"
-                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Converter={StaticResource NullBoolConverter}, Mode=TwoWay}"
+                            IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
                             Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD9'].Value, Mode=TwoWay}" />
                         <TextBox
@@ -793,7 +795,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="Brandschutz nach DIN 4102 F90"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BsDin'].BoolValue, Mode=TwoWay}" />
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BsDin'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                         </Grid>
                     </Grid>
                 </controls:Expander>

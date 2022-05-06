@@ -26,6 +26,7 @@ namespace LiftDataManager.ViewModels
         public bool CheckOut { get; set; }
         public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
+        public bool CheckoutDialogIsOpen { get; private set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
         private ICommand _itemClickCommand;
@@ -92,8 +93,9 @@ namespace LiftDataManager.ViewModels
                     CanShowUnsavedParameters = dirty;
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty && !CheckOut)
+                else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
                 {
+                    CheckoutDialogIsOpen = true;
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
                                         $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -103,10 +105,12 @@ namespace LiftDataManager.ViewModels
                                         "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                     if (dialogResult)
                     {
+                        CheckoutDialogIsOpen = false;
                         _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                     }
                     else
                     {
+                        CheckoutDialogIsOpen = false;
                         LikeEditParameter = false;
                     }
                 }

@@ -6,6 +6,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
@@ -16,6 +17,8 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
     </Page.Resources>
     <Grid
         x:Name="ContentArea"
@@ -178,7 +181,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="center"
                                 CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'].Date, Mode=TwoWay}"
+                                Date="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                                 DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                 Header="Freigabe erfolgt am"
                                 Language="de"
@@ -189,7 +192,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="center"
                                 CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_Demontage'].Date, Mode=TwoWay}"
+                                Date="{x:Bind ViewModel.ParamterDictionary['var_Demontage'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                                 DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                 Header="Demontage"
                                 Language="de"
@@ -200,7 +203,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'].Date, Mode=TwoWay}"
+                                Date="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                                 DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                 Header="Auslieferung"
                                 Language="de"
@@ -211,7 +214,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'].Date, Mode=TwoWay}"
+                                Date="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                                 DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                                 Header="Fertigstellung"
                                 Language="de"
@@ -419,7 +422,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="Zugang A"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <StackPanel>
                                         <TextBlock
@@ -441,7 +444,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="Zugang B"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <StackPanel>
                                         <TextBlock
@@ -463,7 +466,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="Zugang C"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <StackPanel>
                                         <TextBlock
@@ -485,7 +488,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="Zugang D"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <StackPanel>
                                         <TextBlock
@@ -563,7 +566,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-21"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8121'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -581,7 +584,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="DIN 18040"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18040'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18040'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -624,7 +627,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-58"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8158'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8158'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -642,7 +645,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="DIN 18090"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18090'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18090'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -661,7 +664,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="DIN 18091"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18091'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18091'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -685,7 +688,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="TRBS 1121"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -703,7 +706,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-70"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8170'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8170'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -721,7 +724,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-28"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8128'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8128'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -756,7 +759,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-72"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8172'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8172'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -773,7 +776,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-73"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8173'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8173'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run
@@ -790,7 +793,7 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
                                 Content="EN81-76"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8176'].BoolValue, Mode=TwoWay}">
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8176'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run

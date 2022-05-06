@@ -9,6 +9,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
@@ -30,6 +31,7 @@
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
+        <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
     </Page.Resources>
     <Grid
         Margin="5"
@@ -237,7 +239,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CalendarIdentifier="GregorianCalendar"
-                        Date="{x:Bind ViewModel.ParamterDictionary['var_ErstelltAm'].Date, Mode=TwoWay}"
+                        Date="{x:Bind ViewModel.ParamterDictionary['var_ErstelltAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                         DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                         Header="erstellt am"
                         Language="de"
@@ -256,7 +258,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CalendarIdentifier="GregorianCalendar"
-                        Date="{x:Bind ViewModel.ParamterDictionary['var_StandVom'].Date, Mode=TwoWay}"
+                        Date="{x:Bind ViewModel.ParamterDictionary['var_StandVom'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
                         DateFormat="{}{day.integer}/{month.integer}/{year.full}"
                         Header="Stand vom"
                         Language="de"

@@ -24,6 +24,7 @@ namespace LiftDataManager.ViewModels
         private CurrentSpeziProperties _CurrentSpeziProperties;
         private bool Adminmode { get; set; }
         private bool OpenReadOnly { get; set; } = true;
+        public bool CheckoutDialogIsOpen { get; private set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
         public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
@@ -126,8 +127,9 @@ namespace LiftDataManager.ViewModels
                 {
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty && !CheckOut)
+                else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
                 {
+                    CheckoutDialogIsOpen = true;
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
                                         $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -150,11 +152,12 @@ namespace LiftDataManager.ViewModels
                             ParamterDictionary[storedParmeter.Name] = storedParmeter;
                             CanSaveAllSpeziParameters = dirty;
                         };
-
+                        CheckoutDialogIsOpen = false;
                         IsBusy = false;
                     }
                     else
                     {
+                        CheckoutDialogIsOpen = false;
                         LikeEditParameter = false;
                     }
                 }

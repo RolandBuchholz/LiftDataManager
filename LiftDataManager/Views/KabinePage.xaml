@@ -1,4 +1,5 @@
-﻿<Page
+﻿
+<Page
     x:Class="LiftDataManager.Views.KabinePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,8 +7,8 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -17,19 +18,15 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
-        <media:AttachedCardShadow
-            x:Key="CommonShadow"
-            CornerRadius="5"
-            Offset="5" />
+        <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
-
     <Grid
         x:Name="ContentArea"
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
         CornerRadius="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -37,452 +34,639 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-        </Grid>
         <!--  Parameter  -->
         <ScrollViewer
-            Grid.Row="1"
+            Grid.Row="0"
             Margin="5,5,0,5"
             Padding="10,5,20,5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-
                 </Grid.RowDefinitions>
-                <Rectangle
-                    Grid.Row="0"
-                    Height="35"
-                    Margin="0,5,0,5"
-                    HorizontalAlignment="Stretch"
-                    ui:Effects.Shadow="{StaticResource CommonShadow}"
-                    Fill="{StaticResource SystemControlPageBackgroundListLowBrush}"
-                    RadiusX="5"
-                    RadiusY="5" />
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="10"
-                    VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Text="Allgemeine Aufzugsdaten:" />
-                <TextBox
-                    Grid.Row="1"
-                    Margin="0,10,0,10"
-                    Header="Kennwort"
-                    PlaceholderText="Kennwort"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kennwort'].Value, Mode=TwoWay}" />
-
-                <Grid Grid.Row="2" Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TextBox
-                        Grid.Column="0"
-                        MinHeight="92"
-                        Margin="0,0,5,0"
-                        AcceptsReturn="True"
-                        Header="Bauvorhaben"
-                        PlaceholderText="Bauvorhaben"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Mode=TwoWay}"
-                        TextWrapping="Wrap" />
-                    <TextBox
-                        Grid.Column="1"
-                        MinHeight="92"
-                        Margin="5,0,0,0"
-                        AcceptsReturn="True"
-                        Header="Betreiber"
-                        PlaceholderText="Betreiber"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
-                        TextWrapping="Wrap" />
-                </Grid>
                 <controls:Expander
-                    x:Name="ExpanderAufzugskenndaten"
-                    Grid.Row="3"
+                    x:Name="Fahrkorbgrunddaten"
+                    Grid.Row="0"
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
-                    Header="Aufzugskenndaten"
-                    IsExpanded="False">
-                    <Grid Margin="0,5,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    Header="Fahrkorb Grunddaten"
+                    IsExpanded="True">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
+                            Name="Kabinetyp"
                             Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
+                            ColumnDefinitions="*,2*">
+                            <ComboBox
                                 Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Nutzlast"
-                                PlaceholderText="Nutzlast"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
-                            <TextBlock
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Fahrkorbtyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Fahrkorbtyp'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Fahrkorbtyp'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="kg" />
+                                Margin="5,0,5,0"
+                                Header="Kabinetyp Zusatzinformationen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Kabine_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
-                                Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Fahrkorbgewicht"
-                                PlaceholderText="Fahrkorbgewicht"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="kg" />
-                        </Grid>
-                        <Grid
+                            Name="Abmessungen"
                             Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                            ColumnDefinitions="*,*,*,*,*">
                             <TextBox
                                 Grid.Column="0"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Nenngeschwindigkeit"
-                                PlaceholderText="Nenngeschwindigkeit"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="m/s" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                                Header="Kabinenbreite innen [mm]"
+                                PlaceholderText="KB"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBox
-                                Grid.Column="0"
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Anzahl Personen"
-                                PlaceholderText="Anzahl Personen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="Pers." />
-                        </Grid>
-                    </Grid>
-                </controls:Expander>
-                <controls:Expander
-                    x:Name="ExpanderSchachtabmessungen"
-                    Grid.Row="4"
-                    Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    ExpandDirection="Down"
-                    Header="Schachtabmessungen"
-                    IsExpanded="False">
-                    <Grid Margin="0,5,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                                Header="Kabinentiefe innen [mm]"
+                                PlaceholderText="KT"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBox
-                                Grid.Column="0"
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtbreite"
-                                PlaceholderText="Schachtbreite"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                                Header="Kabinenhöhe im Licht [mm]"
+                                PlaceholderText="KH im Licht"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Fahrkorb Abmessungen" />
+                                        <Image
+                                            Width="300"
+                                            Height="300"
+                                            Source="/Images/carDimensions.png" />
+                                        <TextBlock
+                                            Margin="5"
+                                            FontWeight="Bold"
+                                            Text="Kabinenhöhe innen bis UK abgehängte Decke"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBox
-                                Grid.Column="0"
+                                Grid.Column="3"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachttiefe"
-                                PlaceholderText="Schachttiefe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                                Header="Deckenhöhe [mm]"
+                                PlaceholderText="DH"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KD'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Fahrkorb Abmessungen" />
+                                        <Image
+                                            Width="300"
+                                            Height="300"
+                                            Source="/Images/carDimensions.png" />
+                                        <TextBlock
+                                            Margin="5"
+                                            FontWeight="Bold"
+                                            Text="Deckenhöhe gesamt (Deckenhöhe + abgehängte Decke) "
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBox
-                                Grid.Column="0"
+                                Grid.Column="4"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtgrube"
-                                PlaceholderText="Schachtgrube"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
+                                Header="Kabinenhöhe aussen [mm]"
+                                PlaceholderText="KH aussen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHA'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Fahrkorb Abmessungen" />
+                                        <Image
+                                            Width="300"
+                                            Height="300"
+                                            Source="/Images/carDimensions.png" />
+                                        <TextBlock
+                                            Margin="5"
+                                            FontWeight="Bold"
+                                            Text="Gesamte Höhe der Kabine von Unterkante Boden bis Oberkante Halfensshiene auf dem Kabinendach"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                         </Grid>
                         <Grid
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
-                                Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtkopf"
-                                PlaceholderText="Schachtkopf"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
-                        </Grid>
-                        <Grid
+                            Name="HalsZugang"
                             Grid.Row="2"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
+                            ColumnDefinitions="*,*,*,*">
                             <TextBox
                                 Grid.Column="0"
+                                Margin="5,0,5,0"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Förderhöhe"
-                                PlaceholderText="Förderhöhe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
+                                Header="Hals links Breite L1 [mm]"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=TwoWay}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Hals links Breite R1 [mm]"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=TwoWay}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Hals links Breite L2 [mm]"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=TwoWay}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                            <TextBox
+                                Grid.Column="3"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Hals links Breite R2 [mm]"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=TwoWay}">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Margin="5,5,5,10"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Position Zugänge" />
+                                        <Image
+                                            Width="325"
+                                            Height="350"
+                                            Source="/Images/carAccesses.png" />
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                        </Grid>
+                        <Grid
+                            Name="Seitenwaende"
+                            Grid.Row="3"
+                            ColumnDefinitions="2*,Auto,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Material Seitenwände"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Seitenwaende'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Seitenwaende'].DropDownListValue, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
+                                Margin="5,0,5,5"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
-                                Text="m" />
+                                Text="RAL:" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="RAL-Farbe Kabinenseitenwände"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Seitenwand'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Rueckwand"
+                            Grid.Row="4"
+                            ColumnDefinitions="2*,Auto,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Material Rückwand"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Rueckwand'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Rueckwand'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Bottom"
+                                FontSize="16"
+                                Text="RAL:" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="RAL-Farbe Rückwand"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Rueckwand'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Eingangswand"
+                            Grid.Row="5"
+                            ColumnDefinitions="2*,Auto,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Material Eingangswand"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Eingangswand'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Eingangswand'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Bottom"
+                                FontSize="16"
+                                Text="RAL:" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="RAL-Farbe Eingangswand"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Eingangswand'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="MaterialStaerke"
+                            Grid.Row="6"
+                            ColumnDefinitions="*,2*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Materialstärke Schotten/Hals"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Materialstaerke'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Materialstaerke'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                Header="Schotten Zusatzinformationen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Schotten_ZT'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Antidroehn"
+                            Grid.Row="7"
+                            ColumnDefinitions="*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Antidröhn"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                Header="Antidröhn Zusatzinformationen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn_ZT'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Decke"
+                            Grid.Row="8"
+                            ColumnDefinitions="2*,Auto,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Material Kabinendach"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Decke'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Decke'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Bottom"
+                                FontSize="16"
+                                Text="RAL:" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="RAL-Farbe Kabinendecke"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Decke'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="BelagKabinendach"
+                            Grid.Row="9"
+                            ColumnDefinitions="*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Belag auf dem Kabinendach"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BelagAufDemKabinendach'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BelagAufDemKabinendach'].DropDownListValue, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Bodentyp"
+                            Grid.Row="10"
+                            ColumnDefinitions="2*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Bodentyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Bodentyp'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Bodentyp'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                Header="Kabinenbodenhöhe"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Bodenblech"
+                            Grid.Row="11"
+                            ColumnDefinitions="*,2*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Bodenblechstärke"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Bodenblech'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Bodenblech'].DropDownListValue, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Boden Sonderbleche"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'].DropDownListValue, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Bodenprofil"
+                            Grid.Row="12"
+                            ColumnDefinitions="*,2*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Bodenprofil verstärkt"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                Header="Bodenprofil Zusatzinformationen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenprofil_ZT'].Value, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid
+                            Name="Bodenbelag"
+                            Grid.Row="13"
+                            ColumnDefinitions="3*,*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Bodenbelag"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelag'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelag'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                Header="Gewicht Bodenbelag"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsgewicht'].Value, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="Stärke Bodenbelag"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsdicke'].Value, Mode=TwoWay}" />
+
+                        </Grid>
+                        <Grid
+                            Name="BeschreibungBodenbelag"
+                            Grid.Row="14"
+                            ColumnDefinitions="*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                Header="Beschreibung Bodenbelag "
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_BodenbelagBeschreibung'].Value, Mode=TwoWay}" />
                         </Grid>
                     </Grid>
                 </controls:Expander>
                 <controls:Expander
-                    x:Name="ExpanderKabinenabmessungen"
-                    Grid.Row="5"
+                    x:Name="FahrkorbAusstattung"
+                    Grid.Row="1"
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
-                    Header="Kabinenabmessungen"
-                    IsExpanded="False">
-                    <Grid Margin="0,5,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    Header="Fahrkorb Ausstattung"
+                    IsExpanded="True">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
+                            Name="Beleuchtung"
                             Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
+                            ColumnDefinitions="2*,*">
+                            <ComboBox
                                 Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Kabinenbreite"
-                                PlaceholderText="Kabinenbreite"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}" />
-                            <TextBlock
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Beleuchtung"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Beleuchtung'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Beleuchtung'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Number"
+                                Header="Anzahl Beleuchtungen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlBeleuchtung'].Value, Mode=TwoWay}" />
+
                         </Grid>
                         <Grid
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
-                                Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Kabinentiefe"
-                                PlaceholderText="Kabinentiefe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
-                        </Grid>
-                        <Grid
+                            Name="Beleuchtung2"
                             Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
+                            ColumnDefinitions="*,*,*">
+                            <CheckBox
                                 Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Kabinenhöhe"
-                                PlaceholderText="Kabinenhöhe im Licht"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
+                                Margin="5,0,5,0"
                                 VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="mm" />
+                                Content="abgehängte Decke"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_abgDecke'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <CheckBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Notlicht Kabine"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotlichtKab'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <Grid
+                                Grid.Column="2"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="Auto,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    MinWidth="0"
+                                    VerticalAlignment="Bottom"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_52'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    PlaceholderText="benutzerdefinierte Eingabe"
+                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_52'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                            </Grid>
                         </Grid>
                         <Grid
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox
+                            Name="Beleuchtung3"
+                            Grid.Row="2"
+                            ColumnDefinitions="*,*,*">
+                            <CheckBox
                                 Grid.Column="0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Kabinenfläche"
-                                PlaceholderText="Kabinenfläche"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="0,0,0,5"
-                                HorizontalAlignment="Right"
+                                Margin="5"
                                 VerticalAlignment="Bottom"
-                                FontSize="16"
-                                Text="m²" />
+                                Content="Dimmer"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Dimmer'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <CheckBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Notlicht Tableau"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotlichtTab'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <Grid
+                                Grid.Column="2"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="Auto,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    MinWidth="0"
+                                    VerticalAlignment="Bottom"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_1'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    PlaceholderText="benutzerdefinierte Eingabe"
+                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_1'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </controls:Expander>
-                <TextBox
-                    Grid.Row="6"
-                    Header="Kommentare"
-                    PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
+                    Style="{StaticResource SaveButton}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="Save All Parameter" />
+                    </ToolTipService.ToolTip>
+                    <SymbolIcon Symbol="Save" />
+                </Button>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->
         <SpeziControls:SidebarPanel
             Grid.Row="0"
-            Grid.RowSpan="2"
             Grid.Column="1"
             Margin="0,10,10,10"
             InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"

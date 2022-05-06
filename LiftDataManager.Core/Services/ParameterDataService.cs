@@ -31,12 +31,6 @@ namespace LiftDataManager.Core.Services
 
         public async Task<string> SaveParameterAsync(Parameter parameter, string path)
         {
-            //FileInfo AutoDeskTransferInfo = new FileInfo(path);
-            //if (AutoDeskTransferInfo.IsReadOnly)
-            //{
-            //    AutoDeskTransferInfo.IsReadOnly = false;
-            //}
-
             XElement doc = XElement.Load(path);
 
             // Find a specific customer
@@ -49,14 +43,14 @@ namespace LiftDataManager.Core.Services
 
             switch (parameter.TypeCode.ToLower())
             {
-                case "boolean":
-                    xmlparameter.Element("value").Value = parameter.Value.ToString();
-                    break;
+                //case "boolean":
+                //    xmlparameter.Element("value").Value = parameter.Value.ToString();
+                //    break;
 
-                case "date":
-                    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
-                    xmlparameter.Element("value").Value = exceldate;
-                    break;
+                //case "date":
+                //    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
+                //    xmlparameter.Element("value").Value = exceldate;
+                //    break;
 
                 default:
                     xmlparameter.Element("value").Value = parameter.Value;
@@ -77,12 +71,6 @@ namespace LiftDataManager.Core.Services
 
         public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
         {
-            //FileInfo AutoDeskTransferInfo = new FileInfo(path);
-            //if (AutoDeskTransferInfo.IsReadOnly)
-            //{
-            //    AutoDeskTransferInfo.IsReadOnly = false;
-            //}
-
             string infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
 
             XElement doc = XElement.Load(path);
@@ -101,14 +89,14 @@ namespace LiftDataManager.Core.Services
 
                 switch (parameter.TypeCode.ToLower())
                 {
-                    case "boolean":
-                        xmlparameter.Element("value").Value = parameter.Value.ToString();
-                        break;
+                    //case "boolean":
+                    //    xmlparameter.Element("value").Value = parameter.Value.ToString();
+                    //    break;
 
-                    case "date":
-                        var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
-                        xmlparameter.Element("value").Value = exceldate;
-                        break;
+                    //case "date":
+                    //    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
+                    //    xmlparameter.Element("value").Value = exceldate;
+                    //    break;
 
                     default:
                         xmlparameter.Element("value").Value = parameter.Value;

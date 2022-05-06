@@ -19,10 +19,15 @@ namespace LiftDataManager.Core.Models
             Boolean,
             DropDownList
         }
+
         private readonly IAuswahlParameterDataService _auswahlParameterDataService;
         private bool dataImport = false;
         private ParameterChangeInfo _ParameterChangeInfo { get; set; } = new();
         public List<string> DropDownList { get; } = new();
+        public ParameterTypValue ParameterTyp { get; set; }
+        public char Symbol => (char)SymbolCode;
+        public int SymbolCode { get; set; }
+
         public Parameter( string name, string typeCode, string value)
         {
             dataImport = true;
@@ -32,47 +37,29 @@ namespace LiftDataManager.Core.Models
             SymbolCode = GetSymbolCode(TypeCode);
             _ParameterChangeInfo.ParameterName = name;
             _ParameterChangeInfo.OldValue = value;
-            IsDirty = false;   
-            if (ParameterTyp != ParameterTypValue.Date) Value = value;
+            IsDirty = false;
+            //if (ParameterTyp != ParameterTypValue.Date) Value = value;
+            Value = value;
             Name = name;
-            if (ParameterTyp == ParameterTypValue.Date)
-            {
-                if (string.IsNullOrWhiteSpace(value) || value == "0")
-                {
-                    Date = null;
-                }
-                else
-                {
-                    try
-                    {
-                        double excelDate = Convert.ToDouble(value);
-                        Date = DateTime.FromOADate(excelDate);
-                    }
-                    catch
-                    {
-                        Date = null;
-                    }
-                }
-            }
-
-            if (ParameterTyp == ParameterTypValue.Boolean)
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    BoolValue = null;
-                }
-                else
-                {
-                    if (Value.ToLower() == "false")
-                    {
-                        BoolValue = false;
-                    }
-                    else
-                    {
-                        BoolValue = true;
-                    }
-                }
-            }
+            //if (ParameterTyp == ParameterTypValue.Date)
+            //{
+            //    if (string.IsNullOrWhiteSpace(value) || value == "0")
+            //    {
+            //        Date = null;
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+            //            double excelDate = Convert.ToDouble(value);
+            //            Date = DateTime.FromOADate(excelDate);
+            //        }
+            //        catch
+            //        {
+            //            Date = null;
+            //        }
+            //    }
+            //}
       
             if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
             {
@@ -125,19 +112,19 @@ namespace LiftDataManager.Core.Models
                 SetProperty(ref _Comment, value);
             }
         }
-        private DateTimeOffset? _Date;
-        public DateTimeOffset? Date
-        {
-            get => _Date;
-            set
-            {
-                SetProperty(ref _Date, value);
-                if (_Date != null)
-                {
-                    Value = _Date?.ToString("d");
-                }
-            }
-        }
+        //private DateTimeOffset? _Date;
+        //public DateTimeOffset? Date
+        //{
+        //    get => _Date;
+        //    set
+        //    {
+        //        SetProperty(ref _Date, value);
+        //        if (_Date != null)
+        //        {
+        //            Value = _Date?.ToString("d");
+        //        }
+        //    }
+        //}
         private bool _IsKey;
         public bool IsKey
         {
@@ -150,19 +137,6 @@ namespace LiftDataManager.Core.Models
                 }
                 SetProperty(ref _IsKey, value);
 
-            }
-        }
-        private bool? _BoolValue;
-        public bool? BoolValue
-        {
-            get => _BoolValue;
-            set
-            {
-                if (_BoolValue != null && value != _BoolValue)
-                {
-                    Value = value.ToString();
-                }
-                SetProperty(ref _BoolValue, value);
             }
         }
 
@@ -196,11 +170,8 @@ namespace LiftDataManager.Core.Models
                 {
                     Messenger.Send(new ParameterDirtyMessage(_ParameterChangeInfo));
                 }
-            }          
+            }
         }
-        public ParameterTypValue ParameterTyp { get; set; }
-        public char Symbol => (char)SymbolCode;
-        public int SymbolCode { get; set; }
 
         private int GetSymbolCode(string TypeCode)
         {

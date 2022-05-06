@@ -102,6 +102,7 @@ namespace LiftDataManager.Core.Services
                 { "Daten Kabine", "Bodentyp","var_Bodentyp" },
                 { "Daten Kabine", "Bodenblech","var_Bodenblech" },
                 { "Daten Kabine", "Sonderbleche","var_Sonderbleche" },
+                { "Daten Kabine", "Sonderbleche","var_BelagAufDemKabinendach" },
                 { "Daten Kabine", "Bodenprofile","var_BoPr" },
                 { "Daten Kabine", "Bodenbelag","var_Bodenbelag" },
                 { "Daten Kabine", "Paneele","var_Paneelmaterial" },

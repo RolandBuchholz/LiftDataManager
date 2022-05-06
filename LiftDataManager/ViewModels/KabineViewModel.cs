@@ -8,6 +8,8 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +26,7 @@ namespace LiftDataManager.ViewModels
         public bool CheckOut { get; set; }
         public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
+        public bool CheckoutDialogIsOpen { get; private set; }
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
 
         public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
@@ -39,26 +42,25 @@ namespace LiftDataManager.ViewModels
             _parameterDataService = parameterDataService;
             _dialogService = dialogService;
             _navigationService = navigationService;
-
-            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+            SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
         }
 
-        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
+        public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
 
-        private bool _CanSaveAllSpeziParameters = false;
+        private bool _CanSaveAllSpeziParameters;
         public bool CanSaveAllSpeziParameters
         {
             get => _CanSaveAllSpeziParameters;
             set
             {
                 SetProperty(ref _CanSaveAllSpeziParameters, value);
-                SaveAllSpeziParameters.NotifyCanExecuteChanged();
+                SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
             }
         }
 
         private async Task SaveAllParameterAsync()
         {
-            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+            string infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
             InfoSidebarPanelText += infotext;
             await CheckUnsavedParametresAsync();
         }
@@ -86,8 +88,9 @@ namespace LiftDataManager.ViewModels
                 {
                     CanSaveAllSpeziParameters = dirty;
                 }
-                else if (dirty)
+                else if (dirty && !CheckoutDialogIsOpen)
                 {
+                    CheckoutDialogIsOpen = true;
                     bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                         $"Datei eingechecked (schreibgeschützt)",
                                         $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -97,16 +100,53 @@ namespace LiftDataManager.ViewModels
                                         "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                     if (dialogResult)
                     {
-                        _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                        CheckoutDialogIsOpen = false;
+                        _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel"); 
                     }
                     else
                     {
+                        CheckoutDialogIsOpen = false;
                         LikeEditParameter = false;
+                        _CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                        _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                        
                     }
                 }
-
             }
         }
+
+        //private void CheckDeckenhoehe()
+        //{
+        //    Debug.WriteLine("Kabinendecke wird überprüft");
+        //    decimal bodenHoehe = Convert.ToDecimal(ParamterDictionary["var_KU"].Value);
+        //    decimal kabinenHoeheInnen = Convert.ToDecimal(ParamterDictionary["var_KHLicht"].Value);
+        //    decimal kabinenHoeheAussen = Convert.ToDecimal(ParamterDictionary["var_KHA"].Value);
+        //    decimal deckenhoehe = Convert.ToDecimal(_Deckenhoehe);
+
+        //    if (bodenHoehe > 0 && kabinenHoeheInnen > 0 && kabinenHoeheAussen > 0 && deckenhoehe == 0)
+        //    {
+        //        Debug.WriteLine("Kabinendecke wird berechnet");
+        //        decimal berechneteDeckenhoehe = kabinenHoeheAussen - kabinenHoeheInnen - bodenHoehe;
+        //        _Deckenhoehe = Convert.ToString(berechneteDeckenhoehe);
+        //    }
+
+        //    if (bodenHoehe > 0 && kabinenHoeheInnen > 0 && deckenhoehe > 0 && kabinenHoeheAussen ==0)
+        //    {
+        //        Debug.WriteLine("Kabinenaussen wird berechnet");
+        //        decimal berechneteHoeheAussen = bodenHoehe + kabinenHoeheInnen + deckenhoehe;
+        //        ParamterDictionary["var_KHA"].Value = Convert.ToString(berechneteHoeheAussen);
+        //    }
+
+        //    if (bodenHoehe > 0 && kabinenHoeheInnen > 0 && deckenhoehe > 0 && kabinenHoeheAussen > 0)
+        //    {
+        //        if (bodenHoehe + kabinenHoeheInnen + deckenhoehe != kabinenHoeheAussen)
+        //        {
+        //            Debug.WriteLine("Kabinenaussen wird angepasst");
+        //            decimal berechneteHoeheAussen = bodenHoehe + kabinenHoeheInnen + deckenhoehe;
+        //            ParamterDictionary["var_KHA"].Value = Convert.ToString(berechneteHoeheAussen);
+        //        }
+        //    }
+        //}
 
         public void OnNavigatedTo(object parameter)
         {
@@ -116,8 +156,9 @@ namespace LiftDataManager.ViewModels
             Adminmode = _CurrentSpeziProperties.Adminmode;
             AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
             CheckOut = _CurrentSpeziProperties.CheckOut;
+            LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _= CheckUnsavedParametresAsync();
+            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
         }
 
         public void OnNavigatedFrom()
