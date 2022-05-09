@@ -556,7 +556,7 @@
                     ExpandDirection="Down"
                     Header="Fahrkorb Ausstattung"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
                             Name="Beleuchtung"
                             Grid.Row="0"
@@ -639,6 +639,384 @@
                                     PlaceholderText="benutzerdefinierte Eingabe"
                                     Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_1'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                             </Grid>
+                        </Grid>
+                        <Grid
+                            Name="Spiegel1"
+                            Grid.Row="3"
+                            ColumnDefinitions="2*,*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Spiegeltyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Spiegel'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Spiegel'].DropDownListValue, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="1"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            Name="Spiegel2"
+                            Grid.Row="4"
+                            ColumnDefinitions="*,*,2*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Breite Spiegel"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_BreiteSpiegel'].Value, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="Höhe Spiegel"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheSpiegel'].Value, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                Header="Spiegel Zusatzinformationen"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_InfoSpiegel'].Value, Mode=TwoWay}" />
+
+                        </Grid>
+                        <Grid
+                            Name="Spiegel3"
+                            Grid.Row="5"
+                            ColumnDefinitions="*,*,*,1.5*,1.5*">
+                            <CheckBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Antisplitterfolie"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelAntiKratzf'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <CheckBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Spiegel als Paneel"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelPaneel'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <CheckBox
+                                Grid.Column="2"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Spiegelleiste"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Spiegelleiste'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <Grid
+                                Grid.Column="3"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="Auto,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    MinWidth="0"
+                                    VerticalAlignment="Bottom"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_2'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    PlaceholderText="benutzerdefinierte Eingabe"
+                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_2'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                            </Grid>
+                            <Grid
+                                Grid.Column="4"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="Auto,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    MinWidth="0"
+                                    VerticalAlignment="Bottom"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_3'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    PlaceholderText="benutzerdefinierte Eingabe"
+                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_3'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            Name="Handlauf"
+                            Grid.Row="6"
+                            ColumnDefinitions="2*,*,1.5*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Handlauftyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Number"
+                                Header="Höhe Handlauf"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheHandlauf'].Value, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="2"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            Name="Sockelleiste"
+                            Grid.Row="7"
+                            ColumnDefinitions="3*,1.5*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Sockelleistetyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Sockelleiste'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Sockelleiste'].DropDownListValue, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="1"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            Name="Rammschutz"
+                            Grid.Row="8"
+                            ColumnDefinitions="2*,*,1.5*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Rammschutztyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Rammschutz'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Rammschutz'].DropDownListValue, Mode=TwoWay}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Number"
+                                Header="Höhe Rammschutz"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheRammschutz'].Value, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="2"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            Name="Aussenverkleidung"
+                            Grid.Row="9"
+                            ColumnDefinitions="3*,1.5*">
+                            <TextBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Number"
+                                Header="Aussenverkleidung"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Aussenverkleidung_ZT'].Value, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="1"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            Name="Paneel"
+                            Grid.Row="10"
+                            ColumnDefinitions="3*,1.5*">
+                            <ComboBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Header="Paneeltyp"
+                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Paneelmaterial'].DropDownList, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Paneelmaterial'].DropDownListValue, Mode=TwoWay}" />
+                            <Grid
+                                Grid.Column="1"
+                                Margin="5,10,5,0"
+                                ColumnDefinitions="*,*,*,*">
+                                <CheckBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite A"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite B"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="2"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite C"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="Seite D"
+                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            Name="Ventilator"
+                            Grid.Row="11"
+                            ColumnDefinitions="auto,*">
+                            <CheckBox
+                                Grid.Column="0"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Bottom"
+                                Content="Ventilator 90 m³/h"
+                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VentilatorLuftmenge'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="5,0,5,0"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Number"
+                                Header="Anzahl Ventilator"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_VentilatorAnzahl'].Value, Mode=TwoWay}" />
+
+                        </Grid>
+                        <Grid
+                            Name="SonstigesFahrkorb"
+                            Grid.Row="12"
+                            ColumnDefinitions="*">
+                            <TextBox
+                                Grid.Column="0"
+                                MinHeight="120"
+                                Margin="5,0,5,0"
+                                AcceptsReturn="true"
+                                Header="Sonstiges Fahrkorb"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesFahrkorb'].Value, Mode=TwoWay}"
+                                TextWrapping="Wrap" />
                         </Grid>
                     </Grid>
                 </controls:Expander>
