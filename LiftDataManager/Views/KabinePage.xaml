@@ -576,7 +576,6 @@
                                 ui:TextBoxExtensions.ValidationType="Number"
                                 Header="Anzahl Beleuchtungen"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlBeleuchtung'].Value, Mode=TwoWay}" />
-
                         </Grid>
                         <Grid
                             Name="Beleuchtung2"

@@ -9,7 +9,6 @@ using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
