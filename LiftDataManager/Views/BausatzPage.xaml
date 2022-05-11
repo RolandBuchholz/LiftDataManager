@@ -8,7 +8,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -54,7 +53,7 @@
                     IsExpanded="True">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
-                            Name="Bausatztyp"
+                            x:Name="Bausatztyp"
                             Grid.Row="0"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -72,7 +71,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Bausatz_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="FuehrungFK"
+                            x:Name="FuehrungFK"
                             Grid.Row="1"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -93,7 +92,7 @@
                                 SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung'].DropDownListValue, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="FuehrungGGW"
+                            x:Name="FuehrungGGW"
                             Grid.Row="2"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -114,7 +113,7 @@
                                 SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'].DropDownListValue, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="SchieneFK"
+                            x:Name="SchieneFK"
                             Grid.Row="3"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -135,7 +134,7 @@
                                 SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_StatusFuehrungsschienen'].DropDownListValue, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="SchieneGGW"
+                            x:Name="SchieneGGW"
                             Grid.Row="4"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -156,7 +155,7 @@
                                 SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_StatusGGWSchienen'].DropDownListValue, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Fangvorrichtung"
+                            x:Name="Fangvorrichtung"
                             Grid.Row="5"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -177,7 +176,7 @@
                                 SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_TypFV'].DropDownListValue, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="GB"
+                            x:Name="GB"
                             Grid.Row="6"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -195,7 +194,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbeg_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Ersatzmassnahmen"
+                            x:Name="Ersatzmassnahmen"
                             Grid.Row="7"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -213,7 +212,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmaßnahmen_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Schachtinformation"
+                            x:Name="Schachtinformation"
                             Grid.Row="8"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -231,7 +230,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformation_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Lastmessung"
+                            x:Name="Lastmessung"
                             Grid.Row="9"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -249,7 +248,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung_ZT'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Beschichtung"
+                            x:Name="Beschichtung"
                             Grid.Row="10"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -267,7 +266,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_RALTonTragrahmen'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="SonstigesBausatz"
+                            x:Name="SonstigesBausatz"
                             Grid.Row="11"
                             ColumnDefinitions="*">
                             <TextBox

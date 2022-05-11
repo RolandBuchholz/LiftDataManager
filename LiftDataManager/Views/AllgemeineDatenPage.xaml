@@ -172,7 +172,7 @@
                     IsExpanded="True">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
-                            Name="Termine"
+                            x:Name="Termine"
                             Grid.Row="0"
                             ColumnDefinitions="*,*,*,*">
                             <CalendarDatePicker
@@ -221,7 +221,7 @@
                                 PlaceholderText="Datum auswählen" />
                         </Grid>
                         <Grid
-                            Name="Lieferart"
+                            x:Name="Lieferart"
                             Grid.Row="1"
                             ColumnDefinitions="*,*,*">
                             <ComboBox
@@ -284,7 +284,7 @@
                             </TextBox>
                         </Grid>
                         <Grid
-                            Name="AngabenZumGebaeude"
+                            x:Name="AngabenZumGebaeude"
                             Grid.Row="2"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -302,7 +302,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Aufzugstyp"
+                            x:Name="Aufzugstyp"
                             Grid.Row="3"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -320,7 +320,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Aufzugstyp'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Beladegeraet"
+                            x:Name="Beladegeraet"
                             Grid.Row="4"
                             ColumnDefinitions="*,*">
                             <ComboBox
@@ -338,7 +338,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Beladegeraete'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Grunddaten"
+                            x:Name="Grunddaten"
                             Grid.Row="5"
                             ColumnDefinitions="*,*,*,*">
                             <TextBox
@@ -374,7 +374,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Grunddaten2"
+                            x:Name="Grunddaten2"
                             Grid.Row="6"
                             ColumnDefinitions="*,*,2*">
                             <TextBox
@@ -400,7 +400,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FE_FH'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Zugaenge"
+                            x:Name="Zugaenge"
                             Grid.Row="7"
                             ColumnDefinitions="2*,2*,*,*,*,*">
                             <TextBox
@@ -507,7 +507,7 @@
                             </CheckBox>
                         </Grid>
                         <Grid
-                            Name="Außenhalt_Fahrten"
+                            x:Name="Außenhalt_Fahrten"
                             Grid.Row="8"
                             ColumnDefinitions="*,*">
                             <TextBox
@@ -526,7 +526,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_maxFahrtenStunde'].Value, Mode=TwoWay}" />
                         </Grid>
                         <Grid
-                            Name="Normen"
+                            x:Name="Normen"
                             Grid.Row="9"
                             ColumnDefinitions="*,*,*,*,*,*,*">
                             <ComboBox
@@ -680,7 +680,7 @@
                             </CheckBox>
                         </Grid>
                         <Grid
-                            Name="Normen2"
+                            x:Name="Normen2"
                             Grid.Row="10"
                             ColumnDefinitions="*,*,*,*,*,*,*">
                             <CheckBox

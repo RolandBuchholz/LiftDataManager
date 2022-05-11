@@ -243,7 +243,7 @@ namespace LiftDataManager.ViewModels
                 oXmlWriter.WriteStartElement("ADM", "http://schemas.autodesk.com/msd/plm/ExplorerAutomation/2004-11-01");
 
                 oXmlWriter.WriteStartElement("Server");
-                oXmlWriter.WriteString("192.168.0.1:8080");
+                oXmlWriter.WriteString("192.168.0.1");
                 oXmlWriter.WriteEndElement();
 
                 oXmlWriter.WriteStartElement("Vault");

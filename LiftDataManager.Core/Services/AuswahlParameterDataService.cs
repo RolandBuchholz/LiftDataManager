@@ -152,6 +152,7 @@ namespace LiftDataManager.Core.Services
                 { "Daten Tableau", "Material","var_Material" },
                 { "Daten Steuerung und Antrieb", "Steuerung","var_Steuerungstyp" },
                 { "Daten Steuerung und Antrieb", "Lage Schaltschrank","var_LageSchaltschrank" },
+                { "Daten Steuerung und Antrieb", "Schaltschrankausführung","var_Schaltschrankoberflaeche" },
                 { "Daten Steuerung und Antrieb", "Stromanschluss","var_Stromanschluss" },
                 { "Daten Steuerung und Antrieb", "Aggregat","var_Aggregat" },
                 { "Daten Steuerung und Antrieb", "Getriebe","var_Getriebe" },
