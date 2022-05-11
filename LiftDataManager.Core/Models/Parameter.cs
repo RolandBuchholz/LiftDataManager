@@ -38,29 +38,9 @@ namespace LiftDataManager.Core.Models
             _ParameterChangeInfo.ParameterName = name;
             _ParameterChangeInfo.OldValue = value;
             IsDirty = false;
-            //if (ParameterTyp != ParameterTypValue.Date) Value = value;
             Value = value;
             Name = name;
-            //if (ParameterTyp == ParameterTypValue.Date)
-            //{
-            //    if (string.IsNullOrWhiteSpace(value) || value == "0")
-            //    {
-            //        Date = null;
-            //    }
-            //    else
-            //    {
-            //        try
-            //        {
-            //            double excelDate = Convert.ToDouble(value);
-            //            Date = DateTime.FromOADate(excelDate);
-            //        }
-            //        catch
-            //        {
-            //            Date = null;
-            //        }
-            //    }
-            //}
-      
+
             if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
             {
                 DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
@@ -112,19 +92,7 @@ namespace LiftDataManager.Core.Models
                 SetProperty(ref _Comment, value);
             }
         }
-        //private DateTimeOffset? _Date;
-        //public DateTimeOffset? Date
-        //{
-        //    get => _Date;
-        //    set
-        //    {
-        //        SetProperty(ref _Date, value);
-        //        if (_Date != null)
-        //        {
-        //            Value = _Date?.ToString("d");
-        //        }
-        //    }
-        //}
+
         private bool _IsKey;
         public bool IsKey
         {

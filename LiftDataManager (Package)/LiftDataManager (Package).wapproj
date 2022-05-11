@@ -72,6 +72,7 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
