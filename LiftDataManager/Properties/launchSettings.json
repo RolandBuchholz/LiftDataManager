@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LiftDataManager (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "LiftDataManager (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

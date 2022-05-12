@@ -1,39 +1,85 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>LiftDataManager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
+    <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>801C2B4CFFF516349655979FDDCCAA5C5FF6394B</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampServerUrl>http://timestamp.comodoca.com/</AppxPackageSigningTimestampServerUrl>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Never</AppxBundle>
+    <AppInstallerUri>\\PC000022\Netzwerk %28Vollzugriff für alle%29\LiftDataManager\</AppInstallerUri>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Images\LiftDataManagerLogo.png" />
+    <None Remove="Images\banner.png" />
+    <None Remove="Images\BucherTransparent.png" />
+    <None Remove="Images\carAccesses.png" />
+    <None Remove="Images\carDimensions.png" />
+    <None Remove="Images\CFPTransparent.png" />
+    <None Remove="Images\ExcelTransparent.png" />
+    <None Remove="Images\LiftDataManagerLogo.png" />
+    <None Remove="Images\LiloTransparent.png" />
+    <None Remove="Images\Ordnerblue.png" />
+    <None Remove="Images\Ordnergreen.png" />
+    <None Remove="Images\Ordnerorange.png" />
+    <None Remove="Images\Ordnerpurple.png" />
+    <None Remove="Images\Ordnerred.png" />
+    <None Remove="Images\OrdnerTransparent.png" />
+    <None Remove="Images\Ordneryellow.png" />
+    <None Remove="Images\PdfTransparent.png" />
+    <None Remove="Images\VaultTransparent.png" />
+    <None Remove="Images\Win11.png" />
+    <None Remove="Images\ZiehlAbeggTransparent.png" />
   </ItemGroup>
-  <ItemGroup>
+  
+    <ItemGroup>
     <None Remove="Controls\OrderNumberControl.xaml" />
     <None Remove="Styles\Combobox.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cogs.Collections" Version="1.11.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
-    <Manifest Include="$(ApplicationManifest)" />
+    <ProjectReference Include="..\LiftDataManager.Core\LiftDataManager.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiftDataManager.Core\LiftDataManager.Core.csproj" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Images\banner.png" />
+    <Content Include="Images\BucherTransparent.png" />
+    <Content Include="Images\carAccesses.png" />
+    <Content Include="Images\carDimensions.png" />
+    <Content Include="Images\CFPTransparent.png" />
+    <Content Include="Images\ExcelTransparent.png" />
+    <Content Include="Images\LiftDataManagerLogo.png" />
+    <Content Include="Images\LiloTransparent.png" />
+    <Content Include="Images\Ordnerblue.png" />
+    <Content Include="Images\Ordnergreen.png" />
+    <Content Include="Images\Ordnerorange.png" />
+    <Content Include="Images\Ordnerpurple.png" />
+    <Content Include="Images\Ordnerred.png" />
+    <Content Include="Images\OrdnerTransparent.png" />
+    <Content Include="Images\Ordneryellow.png" />
+    <Content Include="Images\PdfTransparent.png" />
+    <Content Include="Images\VaultTransparent.png" />
+    <Content Include="Images\Win11.png" />
+    <Content Include="Images\ZiehlAbeggTransparent.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,5 +89,28 @@
     <Page Update="Styles\ComboBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.194" />
+    <PackageReference Include="Cogs.Collections" Version="1.11.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+       Tools extension to be activated for this project even if the Windows App SDK Nuget
+       package has not yet been restored -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
   </ItemGroup>
 </Project>
