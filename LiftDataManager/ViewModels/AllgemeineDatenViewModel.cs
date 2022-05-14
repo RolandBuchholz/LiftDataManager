@@ -1,32 +1,22 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
-using LiftDataManager.Core.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LiftDataManager.ViewModels
 {
-    public class AllgemeineDatenViewModel : ObservableRecipient, INavigationAware
+    public class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware
     {
         private readonly IParameterDataService _parameterDataService;
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
-        private CurrentSpeziProperties _CurrentSpeziProperties;
-        public bool Adminmode { get; set; }
-        public bool AuftragsbezogeneXml { get; set; }
-        public bool CheckOut { get; set; }
-        public bool LikeEditParameter { get; set; }
-        public string FullPathXml { get; set; }
-        public bool CheckoutDialogIsOpen { get; private set; }
-        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
 
+        public bool CheckoutDialogIsOpen { get; private set; }
+        
         public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
         {
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
@@ -63,18 +53,6 @@ namespace LiftDataManager.ViewModels
             await CheckUnsavedParametresAsync();
         }
 
-        private string _InfoSidebarPanelText;
-        public string InfoSidebarPanelText
-        {
-            get => _InfoSidebarPanelText;
-
-            set
-            {
-                SetProperty(ref _InfoSidebarPanelText, value);
-                _CurrentSpeziProperties.InfoSidebarPanelText = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            }
-        }
 
         private async Task CheckUnsavedParametresAsync()
         {
@@ -113,20 +91,10 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-
         public void OnNavigatedTo(object parameter)
         {
-            _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-            if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
-            if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
-            Adminmode = _CurrentSpeziProperties.Adminmode;
-            AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-            CheckOut = _CurrentSpeziProperties.CheckOut;
-            LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
-            InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
         }
-
         public void OnNavigatedFrom()
         {
             WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);

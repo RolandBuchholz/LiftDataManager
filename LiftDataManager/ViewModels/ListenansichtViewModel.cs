@@ -15,19 +15,12 @@ using System.Threading.Tasks;
 
 namespace LiftDataManager.ViewModels
 {
-    public class ListenansichtViewModel : ObservableRecipient, INavigationAware
+    public class ListenansichtViewModel : DataViewModelBase, INavigationAware
     {
         private readonly IParameterDataService _parameterDataService;
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
-        private CurrentSpeziProperties _CurrentSpeziProperties;
-        public bool Adminmode { get; set; }
-        public bool AuftragsbezogeneXml { get; set; }
-        public bool CheckOut { get; set; }
-        public bool LikeEditParameter { get; set; }
-        public string FullPathXml { get; set; }
         public bool CheckoutDialogIsOpen { get; private set; }
-        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
 
         private Parameter _selected;
@@ -185,19 +178,6 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        private string _InfoSidebarPanelText;
-        public string InfoSidebarPanelText
-        {
-            get => _InfoSidebarPanelText;
-
-            set
-            {
-                SetProperty(ref _InfoSidebarPanelText, value);
-                _CurrentSpeziProperties.InfoSidebarPanelText = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            }
-        }
-
         private async Task SaveParameterAsync()
         {
             string infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
@@ -277,15 +257,7 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
-            _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-            if (_CurrentSpeziProperties.FullPathXml is not null) FullPathXml = _CurrentSpeziProperties.FullPathXml;
-            if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
-            Adminmode = _CurrentSpeziProperties.Adminmode;
-            AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-            CheckOut = _CurrentSpeziProperties.CheckOut;
-            LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
             SearchInput = _CurrentSpeziProperties.SearchInput;
-            InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
         }
 

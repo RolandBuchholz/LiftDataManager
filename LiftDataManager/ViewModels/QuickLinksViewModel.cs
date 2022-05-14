@@ -13,12 +13,8 @@ using System.Xml;
 
 namespace LiftDataManager.ViewModels
 {
-    public class QuickLinksViewModel : ObservableRecipient, INavigationAware
+    public class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
-        private CurrentSpeziProperties _CurrentSpeziProperties;
-        public string FullPathXml { get; set; }
-        public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
-
         public QuickLinksViewModel()
         {
             OpenSpeziCommand = new RelayCommand(OpenSpezi);
@@ -277,15 +273,11 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
-            _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-            if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
-            if (_CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
             CheckCanOpenFiles();
         }
 
         public void OnNavigatedFrom()
-        {
-           
+        {  
         }
     }
 }
