@@ -53,19 +53,6 @@ namespace LiftDataManager.ViewModels
             await CheckUnsavedParametresAsync();
         }
 
-        private string _InfoSidebarPanelText;
-        public string InfoSidebarPanelText
-        {
-            get => _InfoSidebarPanelText;
-
-            set
-            {
-                SetProperty(ref _InfoSidebarPanelText, value);
-                _CurrentSpeziProperties.InfoSidebarPanelText = value;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            }
-        }
-
         private async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)

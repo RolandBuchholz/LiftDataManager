@@ -8,17 +8,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <Style x:Name="SpeziRowBorderStyle" TargetType="Border">
+            <Setter Property="Margin" Value="0,0,5,5" />
+            <Setter Property="Background" Value="{ThemeResource SystemChromeAltHighColor}" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
     </Page.Resources>
     <Grid
         x:Name="ContentArea"
@@ -53,7 +63,924 @@
                     ExpandDirection="Down"
                     Header="Kabinendruckknopftableau"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*" />
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                        <Grid
+                            x:Name="Kabinentableau"
+                            Grid.Row="0"
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Kabinentableau" />
+                                <Grid
+                                    x:Name="KDKT0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabKabinentableau'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabKabinentableau'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FT_Info1'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT1"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Aufbau"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufbau'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufbau'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FT_Info2'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT2"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Material"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabMaterial'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabMaterial'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Ral-Farbe"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FT_RAL'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Standanzeiger"
+                            Grid.Row="1"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Standanzeiger" />
+                                <Grid
+                                    x:Name="KDKT3"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Farbe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="TFT-Bildschirm Typ "
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KabTabTFTBildschirmTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT4"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile scrollend"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabPfeilescrollend'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile statisch"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabPfeilestat'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="LCDAnzeigeTyp"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KabTabLCDAnzeigeTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="GravurenTexte"
+                            Grid.Row="2"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Gravuren Texte" />
+
+                                <Grid
+                                    x:Name="KDKT5"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Aufzug im Brandfall nicht benutzen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufzugimBrandfall'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Firmenlogo"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFirmenlogo'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Hinweis Notrufbenutzung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabHinweisNotrufbenutzung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT6"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Piktogr EN81-73"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabPiktogrEN8173'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Aufzugdaten"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufzugdaten'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schlüsselschalter"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabSchluesselschalter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Gegensprechanlage"
+                            Grid.Row="3"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Gegensprechanlage" />
+                                <Grid
+                                    x:Name="KDKT7"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Kabine"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabKabine'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Steuerung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabSteuerung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schachtgrube"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabSchachtgr'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="mit Notruf kombiniert"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabmitNotrufkombiniert'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Sprachcomputer"
+                            Grid.Row="4"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Sprachcomputer" />
+                                <Grid
+                                    x:Name="KDKT8"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_24'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_24'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="in Lieferung enthalten"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="kundenseitig"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabkundenseitig'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Leuchtanzeige"
+                            Grid.Row="5"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Leuchtanzeige" />
+                                <Grid
+                                    x:Name="KDKT9"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="3*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Multifunktionsanzeige inklusive TKS / Überlast / Summer / Notlicht"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabMultifunktionsanzeigeinklTKSueLSumNL'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Überlast inklusive Summer"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabueberlastinklSummer'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT10"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Beschriftungsfeld inklusive TKS / Notlicht"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabBeschriftfeldinclTKSNL'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Evakuierung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabEvakuierung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Brandfall"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabBrandfall'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Feuerwehrfahrt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFeuerwfahrt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT11"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Anzeige über Standanzeige"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabAnzeigeueberStandanzeige'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Außer Betrieb"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabAussBetrieb'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_25'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_25'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Vandalenklasse"
+                            Grid.Row="6"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Vandalenklasse" />
+                                <Grid
+                                    x:Name="KDKT12"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="0"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse0'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="1"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse1'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="2"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse2'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_26'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_26'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Tasterprogramm"
+                            Grid.Row="7"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Tasterprogramm" />
+                                <Grid
+                                    x:Name="KDKT13"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,3*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabTaster'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabTaster'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Taster_Info'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Tasterplatten"
+                            Grid.Row="8"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Tasterplatten" />
+                                <Grid
+                                    x:Name="KDKT14"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplatten'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplatten'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Material"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplattenmaterial'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplattenmaterial'].DropDownListValue, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="akustische Quittung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabakustischeQuittung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="FarbeLEDQuittung"
+                            Grid.Row="9"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Farbe LED-Quittung" />
+                                <Grid
+                                    x:Name="KDKT15"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Farbe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ColLedFT'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ColLedFT'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info'].Value, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schutzrosette für Alarmtaster"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schutzrosette'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Funktionstaster"
+                            Grid.Row="10"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Funktionstaster" />
+                                <Grid
+                                    x:Name="KDKT16"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Tür Auf"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabTuerAuf'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Tür Zu"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabTuerZu'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Auf (Halten)"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufHalten'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Ventilatortaste"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabVentilatortaste'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="4"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_27'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_27'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="KDKT17"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Selektivität"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabSelektivitaet'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_28'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_28'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_29'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_29'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_30'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_30'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="4"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_31'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_31'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                        <Grid
+                            x:Name="Schluesselschalter"
+                            Grid.Row="11"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schlüsselschalter" />
+                                <Grid
+                                    x:Name="KDKT18"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Vorzug innen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabVorzugInnen'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Ventilator Schlüsselschalter"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabVentilatorSchalter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Lichttest"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabLichttest'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Profilzylinder Standard"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabPZStd'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="4"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_32'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_32'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="CodeKartenleser"
+                            Grid.Row="12"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Code- Kartenleser" />
+                                <Grid
+                                    x:Name="KDKT19"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            x:Name="chb_CodeKartenleser"
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            Header="Typ"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKartenleserTyp'].Value, Mode=TwoWay}" />
+                                    </Grid>
+                                    <RadioButton
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="in Lieferung enthalten"
+                                        GroupName="CodeKartenleser"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
+                                    <RadioButton
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="kundenseitig"
+                                        GroupName="CodeKartenleser"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
+                                    <RadioButton
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Einbau später"
+                                        GroupName="CodeKartenleser"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
+
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="sonstigesFahrkorbtableau"
+                            Grid.Row="13"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="sonstiges Fahrkorbtableau" />
+                                <Grid
+                                    x:Name="KDKT20"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinHeight="60"
+                                        Margin="5,5,5,0"
+                                        AcceptsReturn="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesKabTab'].Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </controls:Expander>
                 <controls:Expander
                     x:Name="AT"
@@ -64,10 +991,982 @@
                     ExpandDirection="Down"
                     Header="Außendruckknopftableau"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*" />
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                        <Grid
+                            x:Name="Aussentableau"
+                            Grid.Row="0"
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Außentableau" />
+                                <Grid
+                                    x:Name="AT0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Material"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabMaterial'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabMaterial'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Ral-Farbe"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AT_RAL'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="BefestigungAT"
+                            Grid.Row="1"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Befestigung" />
+                                <Grid
+                                    x:Name="AT1"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabATBefestigung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabATBefestigung'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AT_Info'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="StandanzeigerAT"
+                            Grid.Row="2"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Standanzeiger" />
+                                <Grid
+                                    x:Name="AT2"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabPunktmatrixTyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabPunktmatrixTyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Farbe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabFarbe'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabFarbe'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="TFT-Bildschirm Typ "
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AussTabTFTBildschirmTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="AT3"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile scrollend"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabPfeilescrollend'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile statisch"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabPfeilestat'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="LCDAnzeigeTyp"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AussTabLCDAnzeigeTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="GravurenTexteAT"
+                            Grid.Row="3"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Gravuren Texte" />
+                                <Grid
+                                    x:Name="AT4"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Aufzug im Brandfall nicht benutzen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabAufzugimBrandfall'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Firmenlogo"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabFirmenlogo'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Hinweis Notrufbenutzung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabHinweisNotrufbenutzung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="AT5"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Piktogr EN81-73"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabPiktogrEN8173'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schlüsselschalter"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabSchlschalt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_33'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_33'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="LeuchtanzeigeAT"
+                            Grid.Row="4"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Leuchtanzeige" />
+                                <Grid
+                                    x:Name="AT6"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Außer Betrieb"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabAuBetrieb'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Evakuierung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabEvakuierung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="besetzt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabbesetzt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Feuerwehrfahrt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabFeuerwehrfahrt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="AT7"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="individuelle Größe"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabindividuelleGroee'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="analog Taster"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabanalogTast'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_34'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_34'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="AT8"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Anzeige über Standanzeige"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabAnzeigeueberStandanzeige'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Brandfall"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabBrandfall'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_35'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_35'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="RWPfeilAT"
+                            Grid.Row="5"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16">
+                                    Richtungs-<LineBreak />
+                                    Weiterfahrtspfeil</TextBlock>
+                                <Grid
+                                    x:Name="AT9"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="ohne Pfeile"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabohnePfeile'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="analog Taster"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabanalogTaster'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Leuchtfeld Größe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabLeuchtfeldGroee'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabLeuchtfeldGroee'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="VandalenklasseAT"
+                            Grid.Row="6"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Vandalenklasse" />
+                                <Grid
+                                    x:Name="AT10"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="0"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse0'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="1"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse1'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="2"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse2'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_36'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_36'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="TasterprogrammAT"
+                            Grid.Row="7"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Tasterprogramm" />
+                                <Grid
+                                    x:Name="AT11"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,3*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabTaster'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabTaster'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Taster_Info_AT'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="TasterplattenAT"
+                            Grid.Row="8"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Tasterplatten" />
+                                <Grid
+                                    x:Name="AT12"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplatten'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplatten'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Material"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplattenmaterial'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplattenmaterial'].DropDownListValue, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="akustische Quittung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabakustQuitt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="FarbeLEDQuittungAT"
+                            Grid.Row="9"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Farbe LED-Quittung" />
+                                <Grid
+                                    x:Name="AT13"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Farbe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ColLedAT'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ColLedAT'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info_AT'].Value, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_51'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            VerticalAlignment="Bottom"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_51'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="SchluesselschalterAT"
+                            Grid.Row="10"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schlüsselschalter" />
+                                <Grid
+                                    x:Name="AT14"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Abschalten / Haltstelle "
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabAbschaltenHaltstelle'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Abschalten / Haltestellen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AbschaltenWo'].Value, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Vorzug außen / Haltestelle(n)"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabVorzugauenHaltestellen'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        Header="Vorzug / Haltestellen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_VorzugWo'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="AT15"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Profilzylinder Standard"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabPZStd'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Federrückzug"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabFederrueckz'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schlüsselabzug in "
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabSchlAbzSt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="3"
+                                        Margin="5,5,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_StellungenPZ'].Value, Mode=TwoWay}" />
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="14"
+                                        Text="Stellungen" />
+                                </Grid>
+                                <Grid
+                                    x:Name="AT16"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_37'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_37'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_38'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_38'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_39'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_39'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_40'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_40'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="4"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_41'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_41'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="CodeKartenleserAT"
+                            Grid.Row="11"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Code- Kartenleser" />
+                                <Grid
+                                    x:Name="AT17"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            x:Name="chb_CodeKartenleserAT"
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            Header="Typ"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_AussTabCodeKartenleserTyp'].Value, Mode=TwoWay}" />
+                                    </Grid>
+                                    <RadioButton
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="in Lieferung enthalten"
+                                        GroupName="CodeKartenleserAT"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
+                                    <RadioButton
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="kundenseitig"
+                                        GroupName="CodeKartenleserAT"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
+                                    <RadioButton
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Einbau später"
+                                        GroupName="CodeKartenleserAT"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="MontageAT"
+                            Grid.Row="12"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Montage Außentableau" />
+                                <Grid
+                                    x:Name="AT18"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Montage Türzargen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Tuerzargenmontage'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Montage Mauerwerk"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Mauerwerkmontage'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Montage Mauerumfassungszargen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MWUmontage'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_42'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_42'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="AT19"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_43'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_43'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_44'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_44'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_45'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_45'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_46'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_46'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="sonstigesAussentableau"
+                            Grid.Row="13"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="sonstiges Außentableau" />
+                                <Grid
+                                    x:Name="AT20"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinHeight="60"
+                                        Margin="5,5,5,0"
+                                        AcceptsReturn="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesAT'].Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </controls:Expander>
                 <controls:Expander
-                    x:Name="WA"
+                    x:Name="WFA"
                     Grid.Row="2"
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
@@ -75,7 +1974,521 @@
                     ExpandDirection="Down"
                     Header="Weiterfahrtsanzeigen"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*" />
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                        <Grid
+                            x:Name="Weiterfahrtsanzeigen"
+                            Grid.Row="0"
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Weiterfahrtsanzeigen" />
+                                <Grid
+                                    x:Name="WFA0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Material"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Material'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Material'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Ral-Farbe"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WFA_RAL'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="EinbauWFA"
+                            Grid.Row="1"
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Einbau" />
+                                <Grid
+                                    x:Name="WFA1"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Anbauort"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaAnbauortWFA'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaAnbauortWFA'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WFA_Info'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="BefestigungWFA"
+                            Grid.Row="2"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Befestigung" />
+                                <Grid
+                                    x:Name="WFA2"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaWFABefestigung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaWFABefestigung'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_STA_Info_WFA'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="StandanzeigerWFA"
+                            Grid.Row="3"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Standanzeiger" />
+                                <Grid
+                                    x:Name="WFA3"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Typ"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaPunktmatrixTyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaPunktmatrixTyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Punktmatrix Farbe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaFarbe'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaFarbe'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="TFT-Bildschirm Typ "
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WfaTFTBildschirmTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="WFA4"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile scrollend"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaPfeilescrollend'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Pfeile statisch"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaPfeilestat'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="LCDAnzeigeTyp"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WfaLCDAnzeigeTyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="LeuchtanzeigeWFA"
+                            Grid.Row="4"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Leuchtanzeige" />
+                                <Grid
+                                    x:Name="WFA5"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Außer Betrieb"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaAuBetrieb'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Evakuierung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaEvakuierung'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="besetzt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Wfabesetzt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Feuerwehrfahrt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaFeuerwehrfahrt'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="WFA6"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="individuelle Größe"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaIndividuelleGroesse'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WfaTFTBildschirmTyp'].Value, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="analog Taster"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaAnalogTast'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_47'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_47'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="WFA7"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Anzeige über Standanzeige"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaAnzeigeueberStandanzeige'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Brandfall"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaBrandfall'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_48'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_48'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="RWPfeilWFA"
+                            Grid.Row="5"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16">
+                                    Richtungs-<LineBreak />
+                                    Weiterfahrtspfeil</TextBlock>
+                                <Grid
+                                    x:Name="WFA8"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="ohne Pfeile"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaOhnePfeile'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="analog Taster"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaAnalogTaster'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Leuchtfeld Größe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaLeuchtfeldGroee'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaLeuchtfeldGroee'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info_WFA'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="GongWFA"
+                            Grid.Row="6"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Gong" />
+                                <Grid
+                                    x:Name="WFA9"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="1-Klang"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Wfa1Klang'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="2-Klang"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Wfa2Klang'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Leuchtfeld Größe"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_WfaGongposition'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_WfaGongposition'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="WFA10"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBlock FontSize="14" Text="Gong ist bei Einzelaufzügen nicht erforderlich wenn das Türgeräusch ausreichend laut ist" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="IDWFA"
+                            Grid.Row="7"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Aufzugsidentifikation" />
+                                <Grid
+                                    x:Name="WFA11"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="ohne Identifikation"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaohneIdent'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="mit Identifikation"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfamitIdent'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="V2A graviert"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaV2Agraviert'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="PVC-Einlage"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WfaPVCEinl'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    <Grid
+                                        Grid.Column="4"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_49'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_49'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="sonstigesWFA"
+                            Grid.Row="8"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="sonstiges WFA / STA" />
+                                <Grid
+                                    x:Name="WFA12"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinHeight="60"
+                                        Margin="5,5,5,0"
+                                        AcceptsReturn="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesWFA'].Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </controls:Expander>
                 <Button
                     Grid.Column="0"
