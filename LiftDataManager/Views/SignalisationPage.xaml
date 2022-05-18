@@ -24,11 +24,6 @@
             TrueValue="Collapsed" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
-        <Style x:Name="SpeziRowBorderStyle" TargetType="Border">
-            <Setter Property="Margin" Value="0,0,5,5" />
-            <Setter Property="Background" Value="{ThemeResource SystemChromeAltHighColor}" />
-            <Setter Property="CornerRadius" Value="5" />
-        </Style>
     </Page.Resources>
     <Grid
         x:Name="ContentArea"
@@ -1272,21 +1267,26 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,2*">
+                                    ColumnDefinitions="*,*,*,*">
                                     <CheckBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
                                         Content="individuelle Größe"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabindividuelleGroee'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
+                                    <TextBox
                                         Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Groesse_Info_AT'].Value, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
                                         Content="analog Taster"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabanalogTast'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                     <Grid
-                                        Grid.Column="2"
+                                        Grid.Column="3"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="Auto,*">
                                         <CheckBox
@@ -2227,7 +2227,7 @@
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WfaTFTBildschirmTyp'].Value, Mode=TwoWay}" />
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Groesse_Info_WFA'].Value, Mode=TwoWay}" />
                                     <CheckBox
                                         Grid.Column="2"
                                         Margin="5,0,5,0"

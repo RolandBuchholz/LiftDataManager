@@ -8,11 +8,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
@@ -56,6 +61,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -65,11 +71,21 @@
                         <Grid.Resources>
                             <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
                         </Grid.Resources>
+                        <Border
+                            Grid.RowSpan="3"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                        <Border
+                            Grid.RowSpan="3"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="0"
                             MinHeight="92"
-                            Margin="0,0,5,0"
+                            Margin="5,5,10,5"
                             AcceptsReturn="True"
                             Header="Bauvorhaben"
                             PlaceholderText="Bauvorhaben"
@@ -79,7 +95,7 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             MinHeight="92"
-                            Margin="0,0,5,0"
+                            Margin="5,5,10,5"
                             AcceptsReturn="True"
                             Header="Betreiber"
                             PlaceholderText="Betreiber"
@@ -106,41 +122,41 @@
                             Grid.Column="2"
                             Orientation="Vertical">
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Firma Auftraggeber"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Firma'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Name Auftraggeber"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ1'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Straße Hausnummer"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ2'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Postleitzahl Ort"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ3'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ4'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 PlaceholderText="Adresse Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_FP_Adresse'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 ui:TextBoxExtensions.Regex="^\s*\+?\s*([0-9][\s-]*){9,}$"
                                 PlaceholderText="Telefon Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonPhone'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 ui:TextBoxExtensions.Regex="^\s*\+?\s*([0-9][\s-]*){9,}$"
                                 PlaceholderText="Mobiltelefon Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonMobil'].Value, Mode=TwoWay}" />
                             <TextBox
-                                Margin="5,5,0,0"
+                                Margin="5,5,10,0"
                                 ui:TextBoxExtensions.ValidationType="Email"
                                 PlaceholderText="Email Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonMail'].Value, Mode=TwoWay}" />
@@ -170,642 +186,737 @@
                     ExpandDirection="Down"
                     Header="Allgemeine Aufzugsdaten"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
                         <Grid
                             x:Name="Termine"
                             Grid.Row="0"
-                            ColumnDefinitions="*,*,*,*">
-                            <CalendarDatePicker
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="center"
-                                CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                Header="Freigabe erfolgt am"
-                                Language="de"
-                                PlaceholderText="Datum auswählen" />
-                            <CalendarDatePicker
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="center"
-                                CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_Demontage'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                Header="Demontage"
-                                Language="de"
-                                PlaceholderText="Datum auswählen" />
-                            <CalendarDatePicker
-                                Grid.Column="2"
-                                Margin="5,-4,5,-4"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                Header="Auslieferung"
-                                Language="de"
-                                PlaceholderText="Datum auswählen" />
-                            <CalendarDatePicker
-                                Grid.Column="3"
-                                Margin="5,-4,5,-4"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                CalendarIdentifier="GregorianCalendar"
-                                Date="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                Header="Fertigstellung"
-                                Language="de"
-                                PlaceholderText="Datum auswählen" />
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Termine" />
+                                <Grid
+                                    x:Name="Allgemein0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <CalendarDatePicker
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="center"
+                                        CalendarIdentifier="GregorianCalendar"
+                                        Date="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
+                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                                        Header="Freigabe erfolgt am"
+                                        Language="de"
+                                        PlaceholderText="Datum auswählen" />
+                                    <CalendarDatePicker
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="center"
+                                        CalendarIdentifier="GregorianCalendar"
+                                        Date="{x:Bind ViewModel.ParamterDictionary['var_Demontage'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
+                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                                        Header="Demontage"
+                                        Language="de"
+                                        PlaceholderText="Datum auswählen" />
+                                    <CalendarDatePicker
+                                        Grid.Column="2"
+                                        Margin="5,-4,5,-4"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        CalendarIdentifier="GregorianCalendar"
+                                        Date="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
+                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                                        Header="Auslieferung"
+                                        Language="de"
+                                        PlaceholderText="Datum auswählen" />
+                                    <CalendarDatePicker
+                                        Grid.Column="3"
+                                        Margin="5,-4,5,-4"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        CalendarIdentifier="GregorianCalendar"
+                                        Date="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
+                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                                        Header="Fertigstellung"
+                                        Language="de"
+                                        PlaceholderText="Datum auswählen" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            x:Name="Lieferart"
+                            x:Name="GrundDaten"
                             Grid.Row="1"
-                            ColumnDefinitions="*,*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Lieferart"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Lieferart'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Lieferart'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Information Aufzugsanlage"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_InformationAufzug'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_InformationAufzug'].DropDownListValue, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="Neuanlage:" />
-                                        <LineBreak />
-                                        Neue Aufzugsanlage in neuen Schacht.<LineBreak />
-                                        Die Fabriknummer entspricht unserer<LineBreak />
-                                        Auftragsnummer.<LineBreak />
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="Umbau:" />
-                                        <LineBreak />
-                                        Umbau bzw. Modernisierung einer bestehenden<LineBreak />
-                                        Aufzugsanlage,also Ersatz einzelner Komponenten.<LineBreak />
-                                        Die alte Fabriknummer bleibt bestehen.<LineBreak />
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="Ersatzanlage:" />
-                                        <LineBreak />
-                                        Neuer Aufzug in bestehenden Schacht<LineBreak />
-                                        in dem vorher schon ein Aufzug war.<LineBreak />
-                                        Die Fabriknummer entspricht unserer<LineBreak />
-                                        Auftragsnummer,die alte Fabriknummer<LineBreak />
-                                        muss angegeben werden damit der<LineBreak />
-                                        TÜV die ausgebaute Anlage austragen kann.</TextBlock>
-                                </ToolTipService.ToolTip>
-                            </ComboBox>
-                            <TextBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                Header="Fabriknummer Bestandsanlage"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FabriknummerBestand'].Value, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        Fabriknummer der alten Bestandsanlage<LineBreak />
-                                        Wird bei einer Ersatzanlage benötigt.</TextBlock>
-                                </ToolTipService.ToolTip>
-                            </TextBox>
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Grundinformationen" />
+                                <Grid
+                                    x:Name="Allgemein1"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Lieferart"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Lieferart'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Lieferart'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Information Aufzugsanlage"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_InformationAufzug'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_InformationAufzug'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Neuanlage:" />
+                                                <LineBreak />
+                                                Neue Aufzugsanlage in neuen Schacht.<LineBreak />
+                                                Die Fabriknummer entspricht unserer<LineBreak />
+                                                Auftragsnummer.<LineBreak />
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Umbau:" />
+                                                <LineBreak />
+                                                Umbau bzw. Modernisierung einer bestehenden<LineBreak />
+                                                Aufzugsanlage,also Ersatz einzelner Komponenten.<LineBreak />
+                                                Die alte Fabriknummer bleibt bestehen.<LineBreak />
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Ersatzanlage:" />
+                                                <LineBreak />
+                                                Neuer Aufzug in bestehenden Schacht<LineBreak />
+                                                in dem vorher schon ein Aufzug war.<LineBreak />
+                                                Die Fabriknummer entspricht unserer<LineBreak />
+                                                Auftragsnummer,die alte Fabriknummer<LineBreak />
+                                                muss angegeben werden damit der<LineBreak />
+                                                TÜV die ausgebaute Anlage austragen kann.</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="Fabriknummer Bestandsanlage"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FabriknummerBestand'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                Fabriknummer der alten Bestandsanlage<LineBreak />
+                                                Wird bei einer Ersatzanlage benötigt.</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein2"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Gebäudetyp"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Gebäudetyp Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            x:Name="AngabenZumGebaeude"
+                            x:Name="Anlagedaten"
                             Grid.Row="2"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Gebäudetyp"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Gebäudetyp Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            x:Name="Aufzugstyp"
-                            Grid.Row="3"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Aufzugstyp"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Aufzugstyp Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Aufzugstyp'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            x:Name="Beladegeraet"
-                            Grid.Row="4"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Aufzugstyp"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Aufzugstyp Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Beladegeraete'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            x:Name="Grunddaten"
-                            Grid.Row="5"
-                            ColumnDefinitions="*,*,*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Nutzlast Q [kg]"
-                                PlaceholderText="Q"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="reduzierte Nutzlast Q' [kg]"
-                                PlaceholderText="Q'"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Fahrkorbgewicht F [kg]"
-                                PlaceholderText="F"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="3"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="Personenanzahl"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            x:Name="Grunddaten2"
-                            Grid.Row="6"
-                            ColumnDefinitions="*,*,2*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Nenngeschwindigkeit v [m/s]"
-                                PlaceholderText="v"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Förderhöhe FH [m]"
-                                PlaceholderText="FH"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                Header="Förderhöhe Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FE_FH'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            x:Name="Zugaenge"
-                            Grid.Row="7"
-                            ColumnDefinitions="2*,2*,*,*,*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="Anzahl Haltestellen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Haltestellen'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="Anzahl Zugangsstellen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Zugangsstellen'].Value, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Zugang A"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <StackPanel>
-                                        <TextBlock
-                                            Margin="5,5,5,10"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="Position Zugänge" />
-                                        <Image
-                                            Width="325"
-                                            Height="350"
-                                            Source="/Images/carAccesses.png" />
-                                    </StackPanel>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="3"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Zugang B"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <StackPanel>
-                                        <TextBlock
-                                            Margin="5,5,5,10"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="Position Zugänge" />
-                                        <Image
-                                            Width="325"
-                                            Height="350"
-                                            Source="/Images/carAccesses.png" />
-                                    </StackPanel>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="4"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Zugang C"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <StackPanel>
-                                        <TextBlock
-                                            Margin="5,5,5,10"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="Position Zugänge" />
-                                        <Image
-                                            Width="325"
-                                            Height="350"
-                                            Source="/Images/carAccesses.png" />
-                                    </StackPanel>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="5"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Zugang D"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <StackPanel>
-                                        <TextBlock
-                                            Margin="5,5,5,10"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="Position Zugänge" />
-                                        <Image
-                                            Width="325"
-                                            Height="350"
-                                            Source="/Images/carAccesses.png" />
-                                    </StackPanel>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                        </Grid>
-                        <Grid
-                            x:Name="Außenhalt_Fahrten"
-                            Grid.Row="8"
-                            ColumnDefinitions="*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="Anzahl Aussenhaltestellen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Aussenhaltestellen'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="max Fahrten pro Stunde"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_maxFahrtenStunde'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="7"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="6"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Anlagedaten" />
+                                <Grid
+                                    x:Name="Allgemein3"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Aufzugstyp"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Aufzugstyp Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Aufzugstyp'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein4"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Aufzugstyp"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Aufzugstyp Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Beladegeraete'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein5"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Nutzlast Q [kg]"
+                                        PlaceholderText="Q"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="reduzierte Nutzlast Q' [kg]"
+                                        PlaceholderText="Q'"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Fahrkorbgewicht F [kg]"
+                                        PlaceholderText="F"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="Personenanzahl"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein6"
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,2*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Nenngeschwindigkeit v [m/s]"
+                                        PlaceholderText="v"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Förderhöhe FH [m]"
+                                        PlaceholderText="FH"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="Förderhöhe Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_FH'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein7"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,2*,*,*,*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="Anzahl Haltestellen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Haltestellen'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="Anzahl Zugangsstellen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Zugangsstellen'].Value, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Zugang A"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="5,5,5,10"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="Bold"
+                                                    Text="Position Zugänge" />
+                                                <Image
+                                                    Width="325"
+                                                    Height="350"
+                                                    Source="/Images/carAccesses.png" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Zugang B"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="5,5,5,10"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="Bold"
+                                                    Text="Position Zugänge" />
+                                                <Image
+                                                    Width="325"
+                                                    Height="350"
+                                                    Source="/Images/carAccesses.png" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="4"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Zugang C"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="5,5,5,10"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="Bold"
+                                                    Text="Position Zugänge" />
+                                                <Image
+                                                    Width="325"
+                                                    Height="350"
+                                                    Source="/Images/carAccesses.png" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="5"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Zugang D"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="5,5,5,10"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    FontWeight="Bold"
+                                                    Text="Position Zugänge" />
+                                                <Image
+                                                    Width="325"
+                                                    Height="350"
+                                                    Source="/Images/carAccesses.png" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein8"
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="Anzahl Aussenhaltestellen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Aussenhaltestellen'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="max Fahrten pro Stunde"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_maxFahrtenStunde'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
                             x:Name="Normen"
-                            Grid.Row="9"
-                            ColumnDefinitions="*,*,*,*,*,*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Normen"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Normen'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Normen'].DropDownListValue, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-1:" />
-                                        <LineBreak />
-                                        Elektrisch betriebene Personen- und<LineBreak />
-                                        Lastenaufzüge.[ZURÜCKGEZOGEN]<LineBreak />
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-2:" />
-                                        <LineBreak />
-                                        Hydraulisch betriebene Personen- und<LineBreak />
-                                        Lastenaufzüge.[ZURÜCKGEZOGEN]<LineBreak />
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-20:" />
-                                        <LineBreak />
-                                        Personen- und Lastenaufzüge[AKTUELLE NORM]</TextBlock>
-                                </ToolTipService.ToolTip>
-                            </ComboBox>
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-21"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-21:" />
-                                        <LineBreak />
-                                        Neue Personen- und Lastenaufzüge<LineBreak />
-                                        in bestehenden Gebäuden<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="DIN 18040"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18040'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="DIN 18040:" />
-                                        <LineBreak />
-                                        Norm Barrierefreies Bauen<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <ComboBox
-                                Grid.Column="3"
-                                Margin="5,0,5,5"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Bottom"
-                                Header="   "
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_EN8131'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_EN8131'].DropDownListValue, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-31:" />
-                                        <LineBreak />
-                                        Betretbare Güteraufzüge<LineBreak />
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-41:" />
-                                        <LineBreak />
-                                        Vertikale Plattformaufzüge für Personen<LineBreak />
-                                        mit eingeschränkter Beweglichkeit<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </ComboBox>
-                            <CheckBox
-                                Grid.Column="4"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-58"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8158'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-58:" />
-                                        <LineBreak />
-                                        Prüfung der Feuerwiderstandsfähigkeit<LineBreak />
-                                        von Fahrschachttüren<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="5"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="DIN 18090"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18090'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="DIN 18090:" />
-                                        <LineBreak />
-                                        Aufzüge - Fahrschacht-Dreh- und -Falttüren<LineBreak />
-                                        für Fahrschächte mit Wänden der<LineBreak />
-                                        Feuerwiderstandsklasse F 90<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="6"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="DIN 18091"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18091'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="DIN 18091:" />
-                                        <LineBreak />
-                                        Aufzüge; Schacht-Schiebetüren<LineBreak />
-                                        für Fahrschächte mit Wänden der<LineBreak />
-                                        Feuerwiderstandklasse F 90<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                        </Grid>
-                        <Grid
-                            x:Name="Normen2"
-                            Grid.Row="10"
-                            ColumnDefinitions="*,*,*,*,*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="TRBS 1121"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="TRBS 1121:" />
-                                        <LineBreak />
-                                        Änderungen und wesentliche Veränderungen<LineBreak />
-                                        von Aufzugsanlagen[ZURÜCKGEZOGEN]<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-70"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8170'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-70:" />
-                                        <LineBreak />
-                                        Zugänglichkeit von Aufzügen für Personen<LineBreak />
-                                        einschließlich Personen mit Behinderungen<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-28"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8128'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-28:" />
-                                        <LineBreak />
-                                        Fern-Notruf für Personen- und Lastenaufzüge<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <ComboBox
-                                Grid.Column="3"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_EN8171Cat012'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_EN8171Cat012'].DropDownListValue, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-71:" />
-                                        <LineBreak />
-                                        Schutzmaßnahmen gegen mutwillige Zerstörung<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </ComboBox>
-                            <CheckBox
-                                Grid.Column="4"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-72"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8172'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-72:" />
-                                        <LineBreak />
-                                        Feuerwehraufzüge<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="5"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-73"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8173'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-73:" />
-                                        <LineBreak />
-                                        Verhalten von Aufzügen im Brandfall<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
-                            <CheckBox
-                                Grid.Column="6"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="EN81-76"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8176'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock>
-                                        <Run
-                                            FontSize="12"
-                                            FontWeight="Bold"
-                                            Text="EN81-76:" />
-                                        <LineBreak />
-                                        Personenaufzüge für die Evakuierung<LineBreak />
-                                        von Personen mit Behinderungen<LineBreak />
-                                    </TextBlock>
-                                </ToolTipService.ToolTip>
-                            </CheckBox>
+                            Grid.Row="3"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Normen" />
+                                <Grid
+                                    x:Name="Allgemein9"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="1.5*,*,*,1.5*,*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Normen"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Normen'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Normen'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-1:" />
+                                                <LineBreak />
+                                                Elektrisch betriebene Personen- und<LineBreak />
+                                                Lastenaufzüge.[ZURÜCKGEZOGEN]<LineBreak />
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-2:" />
+                                                <LineBreak />
+                                                Hydraulisch betriebene Personen- und<LineBreak />
+                                                Lastenaufzüge.[ZURÜCKGEZOGEN]<LineBreak />
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-20:" />
+                                                <LineBreak />
+                                                Personen- und Lastenaufzüge[AKTUELLE NORM]</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-21"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-21:" />
+                                                <LineBreak />
+                                                Neue Personen- und Lastenaufzüge<LineBreak />
+                                                in bestehenden Gebäuden<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="DIN18040"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18040'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="DIN 18040:" />
+                                                <LineBreak />
+                                                Norm Barrierefreies Bauen<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <ComboBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,5"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Bottom"
+                                        Header="   "
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_EN8131'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_EN8131'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-31:" />
+                                                <LineBreak />
+                                                Betretbare Güteraufzüge<LineBreak />
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-41:" />
+                                                <LineBreak />
+                                                Vertikale Plattformaufzüge für Personen<LineBreak />
+                                                mit eingeschränkter Beweglichkeit<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
+                                    <CheckBox
+                                        Grid.Column="4"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-58"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8158'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-58:" />
+                                                <LineBreak />
+                                                Prüfung der Feuerwiderstandsfähigkeit<LineBreak />
+                                                von Fahrschachttüren<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="5"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="DIN18090"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18090'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="DIN 18090:" />
+                                                <LineBreak />
+                                                Aufzüge - Fahrschacht-Dreh- und -Falttüren<LineBreak />
+                                                für Fahrschächte mit Wänden der<LineBreak />
+                                                Feuerwiderstandsklasse F 90<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="6"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="DIN18091"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18091'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="DIN 18091:" />
+                                                <LineBreak />
+                                                Aufzüge; Schacht-Schiebetüren<LineBreak />
+                                                für Fahrschächte mit Wänden der<LineBreak />
+                                                Feuerwiderstandklasse F 90<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                </Grid>
+                                <Grid
+                                    x:Name="Allgemein10"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="1.5*,*,*,1.5*,*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="TRBS 1121"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="TRBS 1121:" />
+                                                <LineBreak />
+                                                Änderungen und wesentliche Veränderungen<LineBreak />
+                                                von Aufzugsanlagen[ZURÜCKGEZOGEN]<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-70"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8170'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-70:" />
+                                                <LineBreak />
+                                                Zugänglichkeit von Aufzügen für Personen<LineBreak />
+                                                einschließlich Personen mit Behinderungen<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-28"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8128'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-28:" />
+                                                <LineBreak />
+                                                Fern-Notruf für Personen- und Lastenaufzüge<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <ComboBox
+                                        Grid.Column="3"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_EN8171Cat012'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_EN8171Cat012'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-71:" />
+                                                <LineBreak />
+                                                Schutzmaßnahmen gegen mutwillige Zerstörung<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
+                                    <CheckBox
+                                        Grid.Column="4"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-72"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8172'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-72:" />
+                                                <LineBreak />
+                                                Feuerwehraufzüge<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="5"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-73"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8173'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-73:" />
+                                                <LineBreak />
+                                                Verhalten von Aufzügen im Brandfall<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="6"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="EN81-76"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8176'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="EN81-76:" />
+                                                <LineBreak />
+                                                Personenaufzüge für die Evakuierung<LineBreak />
+                                                von Personen mit Behinderungen<LineBreak />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </controls:Expander>

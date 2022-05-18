@@ -167,7 +167,16 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
+                    <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
+                <Border
+                    Grid.RowSpan="2"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                <Border
+                    Grid.Row="2"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -177,7 +186,7 @@
                     <Rectangle
                         Grid.Row="0"
                         Height="35"
-                        Margin="0,5,5,5"
+                        Margin="5,5,5,5"
                         HorizontalAlignment="Stretch"
                         ui:Effects.Shadow="{StaticResource CommonShadow}"
                         Fill="{StaticResource SystemControlPageBackgroundListLowBrush}"
@@ -185,13 +194,13 @@
                         RadiusY="5" />
                     <TextBlock
                         Grid.Column="0"
-                        Margin="10,0,10,0"
+                        Margin="15,0,10,0"
                         VerticalAlignment="Center"
                         FontWeight="Bold"
                         Text="Basis Aufzugsinformationen:" />
                     <TextBox
                         Grid.Column="1"
-                        Margin="10,5,0,5"
+                        Margin="10,5,10,5"
                         FontWeight="Bold"
                         PlaceholderText="Index"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Index'].Value, Mode=TwoWay}"
@@ -211,14 +220,14 @@
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="0,0,5,0"
+                        Margin="5,0,0,0"
                         Header="Auftragsnummer"
                         PlaceholderText="Auftragsnummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_AuftragsNummer'].Value, Mode=TwoWay}" />
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        Margin="5,0,5,0"
+                        Margin="5,0,0,0"
                         Header="Fabriknummer"
                         PlaceholderText="Fabriknummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_FabrikNummer'].Value, Mode=TwoWay}" />
@@ -226,7 +235,7 @@
                         x:Name="var_CeNummer"
                         Grid.Row="0"
                         Grid.Column="2"
-                        Margin="5,0,0,0"
+                        Margin="5,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Header="Prüfstelle"
@@ -235,7 +244,7 @@
                     <CalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="0,0,5,0"
+                        Margin="5,0,5,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CalendarIdentifier="GregorianCalendar"
@@ -254,7 +263,7 @@
                     <CalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="3"
-                        Margin="5,0,0,0"
+                        Margin="5,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         CalendarIdentifier="GregorianCalendar"
@@ -267,7 +276,7 @@
                         Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Margin="0,5,0,0"
+                        Margin="5,5,10,0"
                         Header="Kennwort"
                         PlaceholderText="Kennwort"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Kennwort'].Value, Mode=TwoWay}" />
@@ -280,7 +289,7 @@
                     <TextBox
                         Grid.Column="0"
                         MinHeight="92"
-                        Margin="0,0,5,0"
+                        Margin="5,0,5,0"
                         AcceptsReturn="True"
                         Header="Bauvorhaben"
                         PlaceholderText="Bauvorhaben"
@@ -289,7 +298,7 @@
                     <TextBox
                         Grid.Column="1"
                         MinHeight="92"
-                        Margin="5,0,0,0"
+                        Margin="5,0,10,0"
                         AcceptsReturn="True"
                         Header="Betreiber"
                         PlaceholderText="Betreiber"
@@ -309,15 +318,21 @@
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="2"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <Grid
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -343,7 +358,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -354,7 +369,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -363,7 +378,7 @@
                         <Grid
                             Grid.Row="1"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -389,7 +404,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -400,7 +415,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -422,15 +437,21 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.RowSpan="4"
+                            Grid.ColumnSpan="2"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <Grid
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -456,7 +477,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -467,7 +488,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -476,7 +497,7 @@
                         <Grid
                             Grid.Row="1"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -502,7 +523,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -513,7 +534,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -522,7 +543,7 @@
                         <Grid
                             Grid.Row="2"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -557,15 +578,21 @@
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.RowSpan="3"
+                            Grid.ColumnSpan="2"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <Grid
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -591,7 +618,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -602,7 +629,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -611,7 +638,7 @@
                         <Grid
                             Grid.Row="1"
                             Grid.Column="0"
-                            Margin="0,5,5,0">
+                            Margin="5,5,5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
@@ -637,7 +664,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="05" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -648,7 +675,7 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
@@ -656,11 +683,19 @@
                         </Grid>
                     </Grid>
                 </controls:Expander>
+                <Border
+                    Grid.Row="6"
+                    Grid.RowSpan="2"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                 <TextBox
                     Grid.Row="6"
+                    Margin="5,0,10,0"
+                    AcceptsReturn="True"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}"
+                    TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

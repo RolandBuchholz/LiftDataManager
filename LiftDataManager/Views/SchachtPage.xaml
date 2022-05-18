@@ -61,10 +61,7 @@
                     ExpandDirection="Down"
                     Header="Stockwerksbezeichnung / Etagenabstände"
                     IsExpanded="True">
-                    <Grid
-                        Margin="0,5,0,10"
-                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                        CornerRadius="5">
+                    <Grid Margin="0,5,5,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -72,6 +69,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -85,25 +83,35 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
                         </Grid.ColumnDefinitions>
                         <Border
                             Grid.Row="0"
+                            Grid.RowSpan="7"
                             Grid.Column="0"
-                            Grid.ColumnSpan="11"
+                            Grid.ColumnSpan="12"
+                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                            Style="{StaticResource SpeziRowBorderStyle}" />
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="12"
                             Height="30"
-                            Margin="0,0,0,5"
+                            Margin="0,0,5,5"
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Background="{ThemeResource SystemAccentColorDark1}"
                             CornerRadius="5" />
                         <Border
                             Grid.Row="2"
                             Grid.Column="1"
-                            Grid.ColumnSpan="10"
+                            Grid.ColumnSpan="11"
+                            Margin="0,0,5,0"
                             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
                         <Border
                             Grid.Row="4"
                             Grid.Column="1"
-                            Grid.ColumnSpan="10"
+                            Grid.ColumnSpan="11"
+                            Margin="0,0,5,0"
                             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
                         <TextBlock
                             Grid.Row="0"
@@ -667,135 +675,221 @@
                     ExpandDirection="Down"
                     Header="Allgemeine Schachtdaten"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
                         <Grid
-                            Name="Befestigung"
+                            x:Name="Schacht"
                             Grid.Row="0"
-                            ColumnDefinitions="*,*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Schacht Information"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Schachtwände"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Befestigung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownListValue, Mode=TwoWay}" />
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schacht" />
+                                <Grid
+                                    x:Name="SchachtDaten0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Schacht Information"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchachtInformation'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Schachtwände"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schacht'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Befestigung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Befestigung'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="SchachtDaten1"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Maschinenraumposition"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="Maschinenraum"
+                            x:Name="SchachtAbmessungen"
                             Grid.Row="1"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Maschinenraumposition"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Maschinenraum'].DropDownListValue, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16">
+                                    Schachtabmessungen<LineBreak />
+                                    (innen im Lichten[mm])</TextBlock>
+                                <Grid
+                                    x:Name="SchachtDaten2"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Schachtbreite [mm]"
+                                        PlaceholderText="SB"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Schachttiefe [mm]"
+                                        PlaceholderText="ST"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="SchachtDaten3"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Schachtgrubentiefe [mm]"
+                                        PlaceholderText="SG"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Schachtkopfhöhe [mm]"
+                                        PlaceholderText="SK"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="Schachtabmessungen1"
+                            x:Name="Schachtgeruest"
                             Grid.Row="2"
-                            ColumnDefinitions="*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtbreite [mm]"
-                                PlaceholderText="SB"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachttiefe [mm]"
-                                PlaceholderText="ST"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schachtgerüst" />
+                                <Grid
+                                    x:Name="SchachtDaten4"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Header="Farbe"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_GeruestFarbe'].Value, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Feldfüllung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="Schachtabmessungen2"
+                            x:Name="SchachtBrandschutz"
                             Grid.Row="3"
-                            ColumnDefinitions="*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtgrubentiefe [mm]"
-                                PlaceholderText="SG"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Schachtkopfhöhe [mm]"
-                                PlaceholderText="SK"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="Schachtgeruest"
-                            Grid.Row="4"
-                            ColumnDefinitions="*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                Header="Schachtgerüst Farbe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_GeruestFarbe'].Value, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Schachtgerüst Feldfüllung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'].DropDownListValue, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="Brandschutz"
-                            Grid.Row="5"
-                            ColumnDefinitions="*,*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Brandschutzmaßnahmen an den Schachttüren"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Brandschutz erstellt von"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownListValue, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Brandschutz nach DIN 4102 F90"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BsDin'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Brandschutz Schacht" />
+                                <Grid
+                                    x:Name="SchachtDaten5"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Bottom"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsMit'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Brandschutz erstellt von"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BsLiefer'].DropDownListValue, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Brandschutz nach DIN 4102 F90"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BsDin'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </controls:Expander>

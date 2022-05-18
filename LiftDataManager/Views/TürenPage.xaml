@@ -8,11 +8,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
@@ -53,81 +58,124 @@
                     ExpandDirection="Down"
                     Header="Türen Fabrikat / Brandzulassung"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,*">
                         <Grid
-                            Name="Tuertyp"
+                            x:Name="TuerTyp0"
                             Grid.Row="0"
-                            ColumnDefinitions="*,*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türentyp"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türbezeichnung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türenzulassung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownListValue, Mode=TwoWay}" />
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Türen Fabrikat" />
+                                <Grid
+                                    x:Name="Tuertyp"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türentyp"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türbezeichnung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türenzulassung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="Tuerabmessungen"
+                            x:Name="TuerTyp1"
                             Grid.Row="1"
-                            ColumnDefinitions="*,*,*">
-                            <TextBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Türbreite [mm]"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Türhöhe [mm]"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="Türgewicht [mm]"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="Tuerausfuehrung"
-                            Grid.Row="2"
-                            ColumnDefinitions="2*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türöffnung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                ui:TextBoxExtensions.ValidationType="Number"
-                                Header="Anzahl Türflügel"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Türen Abmessungen" />
+                                <Grid
+                                    Name="Tuerabmessungen"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Türbreite [mm]"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Türhöhe [mm]"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
+                                        Header="Türgewicht [mm]"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="TuerTyp2"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="2*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türöffnung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Header="Anzahl Türflügel"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </controls:Expander>
@@ -140,177 +188,247 @@
                     ExpandDirection="Down"
                     Header="Schachttüre Ausstattung"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,*">
                         <Grid
-                            Name="SchachttuereMaterial"
+                            x:Name="SchachttuerenDetails"
                             Grid.Row="0"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Schachttür Oberfläche"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="RAL Schachttüre"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_RalSchachtuere'].Value, Mode=TwoWay}" />
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Material" />
+                                <Grid
+                                    x:Name="Schachttueren0"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Schachttür Oberfläche"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="RAL Schachttüre"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RalSchachtuere'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="SchachttuerSchwelle"
+                            x:Name="SchachttuerenSchwellen"
                             Grid.Row="1"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Schachttür Schwelle"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Schachttür Schwelle Zusatzinformation"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schwellen" />
+                                <Grid
+                                    x:Name="Schachttueren1"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="SchachttürOptionen1"
+                            x:Name="SchachttuerOptionen"
                             Grid.Row="2"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Schürze V2A"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="durchgehender Schwellenwinkel"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STdghSchwellenwinkel'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="2"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Kontakt Schutzraumüberwachung"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KontaktSchutzraumueberwachung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="SchachttürOptionen2"
-                            Grid.Row="3"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Flüsterrollen"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Hochleistungsrollen"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <Grid
-                                Grid.Column="2"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
-                                    Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="7"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="6"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schachttür Optionen" />
+                                <Grid
+                                    x:Name="Schachttueren2"
+                                    Grid.Row="0"
                                     Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            Name="SchachttürOptionen3"
-                            Grid.Row="4"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Estrichbleche"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Schwellenheizung"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <Grid
-                                Grid.Column="2"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
-                                    Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schürze V2A"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="durchgehender Schwellenwinkel"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STdghSchwellenwinkel'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Kontakt Schutzraumüberwachung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KontaktSchutzraumueberwachung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren3"
+                                    Grid.Row="1"
                                     Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            Name="SchachttürOptionen4"
-                            Grid.Row="5"
-                            ColumnDefinitions="*,2*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Mauerumfassungszargen"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Mauerumfassungszargen Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="SchachttürOptionen5"
-                            Grid.Row="6"
-                            ColumnDefinitions="*,2*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Portale"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Portale Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Portale'].Value, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid
-                            Name="SchachttürOptionen6"
-                            Grid.Row="7"
-                            ColumnDefinitions="*">
-                            <Grid
-                                Grid.Column="0"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
-                                    Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Flüsterrollen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Hochleistungsrollen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren4"
+                                    Grid.Row="2"
                                     Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Estrichbleche"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schwellenheizung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren5"
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Mauerumfassungszargen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Mauerumfassungszargen Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren6"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Portale"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="Portale Zusatzinformationen"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Portale'].Value, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren7"
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -324,190 +442,296 @@
                     ExpandDirection="Down"
                     Header="Kabinentüre Ausstattung"
                     IsExpanded="True">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
-                            Name="KabinentuerAntrieb"
+                            x:Name="KabinentuerAntrieb"
                             Grid.Row="0"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türantrieb"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Türantriebregelung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Frequenzumrichter'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Frequenzumrichter'].DropDownListValue, Mode=TwoWay}" />
+                            Margin="0,5,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Kabinentür Antrieb" />
+                                <Grid
+                                    x:Name="Kabinentuer0_1"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türantrieb"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Türantriebregelung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Frequenzumrichter'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Frequenzumrichter'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Kabinentuer2_3"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Lichtgitter"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownListValue, Mode=TwoWay}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Kabinentürverriegelung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownListValue, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="KabinentuerLichtgitter"
+                            x:Name="KabinentuerMaterial"
                             Grid.Row="1"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Kabinentür Lichtgitter"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownListValue, Mode=TwoWay}" />
-                            <ComboBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Kabinentürverriegelung"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownListValue, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Material" />
+                                <Grid
+                                    x:Name="Kabinentuer4"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Oberfläche"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Header="RAL Kabinentüre"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RalKabinentuere'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="KabinentuereMaterial"
+                            x:Name="KabinentuerSchwellen"
                             Grid.Row="2"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Kabinentür Oberfläche"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="RAL Kabinentüre"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_RalKabinentuere'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Schwellen" />
+                                <Grid
+                                    x:Name="Kabinentuer5"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownListValue, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'].Value, Mode=TwoWay}" />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="KabinentuereSchwelle"
+                            x:Name="KabinentuerOptionen"
                             Grid.Row="3"
-                            ColumnDefinitions="*,*">
-                            <ComboBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                Header="Kabinentür Schwelle"
-                                ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownList, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownListValue, Mode=TwoWay}" />
-                            <TextBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                Header="Kabinentür Schwelle Zusatzinformationen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'].Value, Mode=TwoWay}" />
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="3"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Kabinentür Optionen" />
+                                <Grid
+                                    x:Name="Kabinentuer6"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schürze V2A Kabinentüre"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schürze verstärkt"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Kabinentuer7"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Flüsterrollen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KTflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Hochleistungs Rollen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Kabinentuer8"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Eco +"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EcoPlus'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schwellenheizung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="2"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid
-                            Name="KabinentürOptionen1"
+                            x:Name="KabinentuerSonstiges"
                             Grid.Row="4"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Schürze V2A Kabinentüre"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Schürze verstärkt"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <Grid
-                                Grid.Column="2"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
                                     Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Sonstiges Kabinentüren" />
+                                <Grid
+                                    x:Name="Kabinentuer9"
+                                    Grid.Row="0"
                                     Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    Margin="0,5,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinHeight="120"
+                                        Margin="5,0,5,0"
+                                        AcceptsReturn="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesKabinentuere'].Value, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid
-                            Name="KabinentürOptionen2"
-                            Grid.Row="5"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Flüsterrollen"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KTflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Hochleistungs Rollen"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <Grid
-                                Grid.Column="2"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
-                                    Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
-                                    Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            Name="KabinentürOptionen3"
-                            Grid.Row="6"
-                            ColumnDefinitions="*,*,*">
-                            <CheckBox
-                                Grid.Column="0"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Eco +"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EcoPlus'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <CheckBox
-                                Grid.Column="1"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Bottom"
-                                Content="Schwellenheizung"
-                                IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                            <Grid
-                                Grid.Column="2"
-                                Margin="5,10,5,0"
-                                ColumnDefinitions="Auto,*">
-                                <CheckBox
-                                    Grid.Column="0"
-                                    MinWidth="0"
-                                    VerticalAlignment="Bottom"
-                                    IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                <TextBox
-                                    Grid.Column="1"
-                                    PlaceholderText="benutzerdefinierte Eingabe"
-                                    Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            Name="KabinentürSonstiges"
-                            Grid.Row="7"
-                            ColumnDefinitions="*">
-                            <TextBox
-                                Grid.Column="0"
-                                MinHeight="120"
-                                Margin="5,0,5,0"
-                                AcceptsReturn="True"
-                                Header="Sonstiges Kabinentüren"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesKabinentuere'].Value, Mode=TwoWay}"
-                                TextWrapping="Wrap" />
                         </Grid>
                     </Grid>
                 </controls:Expander>
