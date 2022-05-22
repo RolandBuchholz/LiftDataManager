@@ -6,7 +6,9 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:localcontrols="using:LiftDataManager.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -21,6 +23,72 @@
         <helpers:EnumToStringConverter x:Key="EnumToStringConverter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
+
+        <!--<DataTemplate x:Key="ParameterTypString" x:DataType="models:Parameter">
+            <TextBox
+                AcceptsReturn="True"
+                Header="Parameterwert"
+                Text="{x:Bind Value, Mode=TwoWay}"
+                TextWrapping="Wrap" />
+        </DataTemplate>
+        <DataTemplate x:Key="ParameterTypNumberOnly" x:DataType="models:Parameter">
+            <TextBox
+                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                ui:TextBoxExtensions.ValidationType="Decimal"
+                AcceptsReturn="True"
+                Header="Parameterwert"
+                Text="{x:Bind Value, Mode=TwoWay}"
+                TextWrapping="Wrap" />
+        </DataTemplate>
+        <DataTemplate x:Key="ParameterTypDate" x:DataType="models:Parameter">
+            <CalendarDatePicker
+                HorizontalAlignment="Stretch"
+                CalendarIdentifier="GregorianCalendar"
+                Date="{x:Bind Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
+                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                Header="Parameterwert"
+                Language="de"
+                PlaceholderText="Datum auswählen" />
+        </DataTemplate>
+        <DataTemplate x:Key="ParameterTypBoolean" x:DataType="models:Parameter">
+            <StackPanel>
+                <TextBlock Text="Parameterwert" />
+                <ToggleButton
+                    x:Name="boolControl"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Stretch"
+                    IsChecked="{x:Bind Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="Wahr" Visibility="{Binding ElementName=boolControl, Path=IsChecked}" />
+                        <TextBlock Text="Falsch" Visibility="{Binding ElementName=boolControl, Path=IsChecked, Converter={StaticResource BoolNegationConverter}}" />
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ParameterTypDropDownList" x:DataType="models:Parameter">
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                Header="Parameterwert"
+                ItemsSource="{x:Bind DropDownList, Mode=OneWay}"
+                SelectedValue="{x:Bind DropDownListValue, Mode=TwoWay}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ParameterTypDefault" x:DataType="models:Parameter">
+            <TextBlock
+                FontSize="30"
+                FontWeight="Bold"
+                Foreground="red"
+                Text="Kein bekannter Parametertyp gefunden." />
+        </DataTemplate>-->
+
+
+        <localcontrols:ParameterControlTemplateSelector
+            x:Key="controlTemplateSelector"
+            BooleanTemplate="{StaticResource ParameterTypBoolean}"
+            DateTemplate="{StaticResource ParameterTypDate}"
+            DefaultTemplate="{StaticResource ParameterTypDefault}"
+            DropDownList="{StaticResource ParameterTypDropDownList}"
+            NumberOnlyTemplate="{StaticResource ParameterTypNumberOnly}"
+            StringTemplate="{StaticResource ParameterTypString}" />
     </UserControl.Resources>
 
     <ScrollViewer
@@ -65,68 +133,11 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <controls:SwitchPresenter Value="{x:Bind ListDetailsMenuItem.ParameterTyp, Mode=OneWay, Converter={StaticResource EnumToStringConverter}}">
-                <controls:Case Value="String">
-                    <TextBox
-                        Margin="0,10,0,0"
-                        AcceptsReturn="True"
-                        Header="Parameterwert"
-                        Text="{x:Bind ListDetailsMenuItem.Value, Mode=TwoWay}"
-                        TextWrapping="Wrap" />
-                </controls:Case>
-                <controls:Case Value="NumberOnly">
-                    <TextBox
-                        Margin="0,10,0,0"
-                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                        ui:TextBoxExtensions.ValidationType="Decimal"
-                        AcceptsReturn="True"
-                        Header="Parameterwert"
-                        Text="{x:Bind ListDetailsMenuItem.Value, Mode=TwoWay}"
-                        TextWrapping="Wrap" />
-                </controls:Case>
-                <controls:Case Value="Date">
-                    <CalendarDatePicker
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Stretch"
-                        CalendarIdentifier="GregorianCalendar"
-                        Date="{x:Bind ListDetailsMenuItem.Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                        Header="Parameterwert"
-                        Language="de"
-                        PlaceholderText="Datum auswählen" />
-                </controls:Case>
-                <controls:Case Value="Boolean">
-                    <StackPanel>
-                        <TextBlock Margin="0,10,0,0" Text="Parameterwert" />
-                        <ToggleButton
-                            x:Name="boolControl"
-                            Margin="0,8,0,0"
-                            HorizontalAlignment="Stretch"
-                            IsChecked="{x:Bind ListDetailsMenuItem.Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
-                            <StackPanel>
-                                <TextBlock Text="Wahr" Visibility="{Binding ElementName=boolControl, Path=IsChecked}" />
-                                <TextBlock Text="Falsch" Visibility="{Binding ElementName=boolControl, Path=IsChecked, Converter={StaticResource BoolNegationConverter}}" />
-                            </StackPanel>
-                        </ToggleButton>
-                    </StackPanel>
-                </controls:Case>
-                <controls:Case Value="DropDownList">
-                    <ComboBox
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Stretch"
-                        Header="Parameterwert"
-                        ItemsSource="{x:Bind ListDetailsMenuItem.DropDownList, Mode=OneWay}"
-                        SelectedValue="{x:Bind ListDetailsMenuItem.DropDownListValue, Mode=TwoWay}" />
-                </controls:Case>
-                <controls:Case IsDefault="True">
-                    <TextBlock
-                        Margin="10"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Foreground="red"
-                        Text="Kein bekannter Parametertyp gefunden." />
-                </controls:Case>
-            </controls:SwitchPresenter>
+            <ContentControl
+                Margin="0,10,0,0"
+                HorizontalContentAlignment="Stretch"
+                Content="{x:Bind ListDetailsMenuItem, Mode=OneWay}"
+                ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
             <TextBox
                 Margin="0,10,0,0"
                 Header="Kommentar"

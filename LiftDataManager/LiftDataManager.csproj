@@ -49,6 +49,7 @@
     <None Remove="Controls\OrderNumberControl.xaml" />
     <None Remove="Styles\Border.xaml" />
     <None Remove="Styles\Combobox.xaml" />
+    <None Remove="Styles\ControlDataTemplates.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -113,6 +114,11 @@
        package has not yet been restored -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\ControlDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Styles\Border.xaml">
