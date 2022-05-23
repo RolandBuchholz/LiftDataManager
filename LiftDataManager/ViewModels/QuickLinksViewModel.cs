@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
+using LiftDataManager.Core.Contracts.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +11,8 @@ namespace LiftDataManager.ViewModels
 {
     public class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
-        public QuickLinksViewModel()
+        public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+             base(parameterDataService, dialogService, navigationService)
         {
             OpenSpeziCommand = new RelayCommand(OpenSpezi);
             OpenSpeziPdfCommand = new RelayCommand(OpenSpeziPdf, () => CanOpenSpeziPdf);

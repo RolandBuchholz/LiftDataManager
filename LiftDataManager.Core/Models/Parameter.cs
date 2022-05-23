@@ -4,6 +4,7 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Services;
+using System;
 using System.Collections.Generic;
 
 namespace LiftDataManager.Core.Models
@@ -58,26 +59,20 @@ namespace LiftDataManager.Core.Models
             {
                 if ((_Value != null && value != _Value) || (_Value is null && value != ""))
                 {
-
-                    if (_ParameterChangeInfo.OldValue != value)
+                    if (ParameterTyp == ParameterTypValue.Boolean)
                     {
-                        if (string.IsNullOrWhiteSpace(_ParameterChangeInfo.NewValue))
-                        {
-                            _ParameterChangeInfo.NewValue = value;
-                        }
-                        else
-                        {
-                            _ParameterChangeInfo.OldValue = _ParameterChangeInfo.NewValue;
-                            _ParameterChangeInfo.NewValue = value;
-                        }
-
-                        IsDirty = true;
+                        if (string.Equals((string)value, _Value, StringComparison.OrdinalIgnoreCase)) { return; };
                     }
 
-                }
-                SetProperty(ref _Value, value);
+                    if (SetProperty(ref _Value, value))
+                    {
+                        IsDirty = true;
+                        SendParameterChangeInfo(value);
+                    };
+                } 
             }
         }
+
         private string _Comment;
         public string Comment
         {
@@ -86,9 +81,8 @@ namespace LiftDataManager.Core.Models
             {
                 if ((_Comment != null && value != _Comment) || (_Comment != null && value != ""))
                 {
-                    IsDirty = true;
-                }
-                SetProperty(ref _Comment, value);
+                    if (SetProperty(ref _Comment, value)) { IsDirty = true; };
+                }  
             }
         }
 
@@ -98,12 +92,7 @@ namespace LiftDataManager.Core.Models
             get => _IsKey;
             set
             {
-                if (value != _IsKey)
-                {
-                    IsDirty = true;
-                }
-                SetProperty(ref _IsKey, value);
-
+                if (SetProperty(ref _IsKey, value)) { IsDirty = true; };
             }
         }
 
@@ -136,6 +125,22 @@ namespace LiftDataManager.Core.Models
                 if (value && !dataImport && (Value != _ParameterChangeInfo.NewValue))
                 {
                     Messenger.Send(new ParameterDirtyMessage(_ParameterChangeInfo));
+                }
+            }
+        }
+
+        private void SendParameterChangeInfo(string value)
+        {
+            if (_ParameterChangeInfo.OldValue != value)
+            {
+                if (string.IsNullOrWhiteSpace(_ParameterChangeInfo.NewValue))
+                {
+                    _ParameterChangeInfo.NewValue = value;
+                }
+                else
+                {
+                    _ParameterChangeInfo.OldValue = _ParameterChangeInfo.NewValue;
+                    _ParameterChangeInfo.NewValue = value;
                 }
             }
         }

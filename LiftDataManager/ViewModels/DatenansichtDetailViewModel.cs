@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
@@ -12,8 +13,6 @@ namespace LiftDataManager.ViewModels
 {
     public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
     {
-        private readonly IParameterDataService _parameterDataService;
-
         private Parameter _item;
 
         public Parameter Item
@@ -31,9 +30,9 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        public DatenansichtDetailViewModel(IParameterDataService parameterDataService)
+        public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+             base(parameterDataService, dialogService, navigationService)
         {
-            _parameterDataService = parameterDataService;
             WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
             {
                 if (m is not null && m.Value.IsDirty)

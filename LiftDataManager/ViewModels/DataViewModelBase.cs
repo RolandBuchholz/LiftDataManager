@@ -16,9 +16,9 @@ namespace LiftDataManager.ViewModels
 {
     public class DataViewModelBase : ObservableRecipient
     {
-        private readonly IParameterDataService _parameterDataService;
-        private readonly IDialogService _dialogService;
-        private readonly INavigationService _navigationService;
+        public readonly IParameterDataService _parameterDataService;
+        public readonly IDialogService _dialogService;
+        public readonly INavigationService _navigationService;
 
         private string _InfoSidebarPanelText;
         public bool Adminmode { get; set; }
@@ -26,7 +26,7 @@ namespace LiftDataManager.ViewModels
         public bool CheckOut { get; set; }
         public bool LikeEditParameter { get; set; }
         public string FullPathXml { get; set; }
-        public bool CheckoutDialogIsOpen { get; private set; }
+        public bool CheckoutDialogIsOpen { get; set; }
 
         public CurrentSpeziProperties _CurrentSpeziProperties;
         public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
@@ -47,9 +47,11 @@ namespace LiftDataManager.ViewModels
             _navigationService = navigationService;
 
             SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+
         }
 
         public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
+
 
         public async Task SaveAllParameterAsync()
         {
@@ -58,7 +60,7 @@ namespace LiftDataManager.ViewModels
             await CheckUnsavedParametresAsync();
         }
 
-        public async Task CheckUnsavedParametresAsync()
+        public virtual async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {

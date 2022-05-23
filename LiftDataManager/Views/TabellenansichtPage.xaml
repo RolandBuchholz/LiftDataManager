@@ -62,7 +62,7 @@
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
-                Command="{x:Bind ViewModel.SaveAllSpeziParameters}"
+                Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />

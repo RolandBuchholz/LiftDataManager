@@ -14,26 +14,17 @@ namespace LiftDataManager.ViewModels
 {
     public class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
-        private readonly IParameterDataService _parameterDataService;
-        private readonly IDialogService _dialogService;
-        private readonly INavigationService _navigationService;
-        public bool CheckoutDialogIsOpen { get; private set; }
-
         public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
         private ICommand _itemClickCommand;
         public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
 
-        public DatenansichtViewModel(INavigationService navigationService, IParameterDataService parameterDataService, IDialogService dialogService)
+        public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+             base(parameterDataService, dialogService, navigationService)
         {
-            _navigationService = navigationService;
-            _parameterDataService = parameterDataService;
-            _dialogService = dialogService;
-            SaveAllSpeziParameters = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
             ShowUnsavedParameters = new RelayCommand(ShowUnsavedParametersView, () => CanShowUnsavedParameters);
             ShowAllParameters = new RelayCommand(ShowAllParametersView);
         }
 
-        public IAsyncRelayCommand SaveAllSpeziParameters { get; }
         public IRelayCommand ShowUnsavedParameters { get; }
         public IRelayCommand ShowAllParameters { get; }
 
@@ -51,17 +42,6 @@ namespace LiftDataManager.ViewModels
             set => SetProperty(ref _IsItemSelected, value);
         }
 
-        private bool _CanSaveAllSpeziParameters;
-        public bool CanSaveAllSpeziParameters
-        {
-            get => _CanSaveAllSpeziParameters;
-            set
-            {
-                SetProperty(ref _CanSaveAllSpeziParameters, value);
-                SaveAllSpeziParameters.NotifyCanExecuteChanged();
-            }
-        }
-
         private bool _CanShowUnsavedParameters;
         public bool CanShowUnsavedParameters
         {
@@ -73,7 +53,7 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        private async Task CheckUnsavedParametresAsync()
+        override public async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {
@@ -107,14 +87,6 @@ namespace LiftDataManager.ViewModels
                 }
 
             }
-        }
-
-        private async Task SaveAllParameterAsync()
-        {
-            var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
-            InfoSidebarPanelText += infotext;
-            await CheckUnsavedParametresAsync();
-            ShowAllParametersView();
         }
 
         private void ShowAllParametersView()
