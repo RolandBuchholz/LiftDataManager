@@ -57,7 +57,7 @@
                     ExpandDirection="Down"
                     Header="Kontaktdaten Ansprechpartner"
                     IsExpanded="True">
-                    <Grid>
+                    <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />

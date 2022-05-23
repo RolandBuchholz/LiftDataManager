@@ -1,7 +1,8 @@
 ﻿<Application
     x:Class="LiftDataManager.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:styles="using:LiftDataManager.Styles">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,8 +16,8 @@
                 <ResourceDictionary Source="/Styles/Button.xaml" />
                 <ResourceDictionary Source="/Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="/Styles/Border.xaml" />
-                <ResourceDictionary Source="/Styles/ControlDataTemplates.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.DataGrid/Themes/Generic.xaml" />
+                <styles:ControlDataTemplates />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

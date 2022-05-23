@@ -4,7 +4,6 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Services;
-using System;
 using System.Collections.Generic;
 
 namespace LiftDataManager.Core.Models

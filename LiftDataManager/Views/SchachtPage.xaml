@@ -756,7 +756,7 @@
                                     VerticalAlignment="Center"
                                     FontSize="16">
                                     Schachtabmessungen<LineBreak />
-                                    (innen im Lichten[mm])</TextBlock>
+                                    (innen im Lichten) [mm]</TextBlock>
                                 <Grid
                                     x:Name="SchachtDaten2"
                                     Grid.Row="0"
