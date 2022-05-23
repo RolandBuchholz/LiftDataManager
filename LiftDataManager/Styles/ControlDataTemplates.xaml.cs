@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.Styles
 {
-    public sealed partial class ControlDataTemplates :ResourceDictionary
+    public sealed partial class ControlDataTemplates : ResourceDictionary
     {
         public ControlDataTemplates()
         {

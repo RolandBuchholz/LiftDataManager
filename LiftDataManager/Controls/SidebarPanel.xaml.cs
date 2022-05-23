@@ -13,7 +13,7 @@ namespace LiftDataManager.Controls
         public string InfoText
         {
             get { return (string)GetValue(InfoTextProperty); }
-            set 
+            set
             {
                 SetValue(InfoTextProperty, value);
                 InfoTextScroller.UpdateLayout();

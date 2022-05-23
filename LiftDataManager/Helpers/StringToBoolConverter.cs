@@ -15,7 +15,7 @@ namespace LiftDataManager.Helpers
 
             if (string.Equals((string)value, "true", StringComparison.OrdinalIgnoreCase))
             {
-               return true;
+                return true;
             }
             else if (string.Equals((string)value, "false", StringComparison.OrdinalIgnoreCase))
             {

@@ -2,7 +2,6 @@
 using LiftDataManager.Core.Models;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace LiftDataManager.Core.Services
         private DownloadInfo DownloadInfo { get; set; }
         public int ExitCode { get; private set; }
 
-        public async Task<DownloadInfo> GetFileAsync(string auftragsnummer,bool readOnly)
+        public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly)
         {
             starttyp = "get";
 
@@ -89,7 +88,7 @@ namespace LiftDataManager.Core.Services
                 psScript.Start();
                 string downloadResult = psScript.StandardOutput.ReadToEnd();
                 psScript.WaitForExit();
-                
+
                 if (!string.IsNullOrWhiteSpace(downloadResult))
                 {
                     try

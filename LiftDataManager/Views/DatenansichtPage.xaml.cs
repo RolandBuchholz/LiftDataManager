@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.UI.Xaml.Controls;
 using LiftDataManager.ViewModels;
+using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.Views
 {

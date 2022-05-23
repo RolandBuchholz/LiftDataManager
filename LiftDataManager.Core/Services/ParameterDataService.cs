@@ -3,7 +3,6 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Helpers;
 using LiftDataManager.Core.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -18,7 +17,7 @@ namespace LiftDataManager.Core.Services
 
             List<Parameter> parameterList =
               (from para in doc.Elements("parameters").Elements("ParamWithValue")
-               select new Parameter(para.Element("name").GetAs<string>(),para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
+               select new Parameter(para.Element("name").GetAs<string>(), para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
                {
                    Comment = para.Element("comment").GetAs<string>(),
                    IsKey = para.Element("isKey").GetAs<bool>(),

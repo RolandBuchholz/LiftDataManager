@@ -20,7 +20,7 @@
         public int ExitCode
         {
             get { return _ExitCode; }
-            set 
+            set
             {
                 _ExitCode = value;
                 ExitState = (ExitCodeEnum)_ExitCode;

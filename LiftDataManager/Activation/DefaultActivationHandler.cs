@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
-using LiftDataManager.Contracts.Services;
+﻿using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
+using Microsoft.UI.Xaml;
+using System;
+using System.Threading.Tasks;
 
 namespace LiftDataManager.Activation
 {

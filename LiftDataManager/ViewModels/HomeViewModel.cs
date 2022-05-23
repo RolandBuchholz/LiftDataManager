@@ -406,7 +406,7 @@ namespace LiftDataManager.ViewModels
                         $"Der Befehl >Auschecken Rückgänig< wird ausgeführt!\n" +
                         $"\n" +
                         $"Soll der Vorgang fortgesetzt werden?",
-                        "Fortsetzen", "Abbrechen") ;
+                        "Fortsetzen", "Abbrechen");
             }
 
             if (delete)
@@ -423,9 +423,9 @@ namespace LiftDataManager.ViewModels
                             FileInfo FileInfo = new FileInfo(FullPathXml);
                             if (FileInfo.IsReadOnly)
                             {
-                               FileInfo.IsReadOnly = false;
+                                FileInfo.IsReadOnly = false;
                             }
-                            File.Delete(FullPathXml); 
+                            File.Delete(FullPathXml);
                         }
                         AuftragsbezogeneXml = false;
                         SpezifikationName = string.Empty;
@@ -556,7 +556,7 @@ namespace LiftDataManager.ViewModels
             SearchInput = _CurrentSpeziProperties.SearchInput;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
             if (_CurrentSpeziProperties.FullPathXml is not null)
-            { 
+            {
                 FullPathXml = _CurrentSpeziProperties.FullPathXml;
                 _SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
             }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.UI.Xaml.Controls;
-
-using LiftDataManager.Contracts.Services;
+﻿using LiftDataManager.Contracts.Services;
 using LiftDataManager.Helpers;
 using LiftDataManager.ViewModels;
+using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LiftDataManager.Services
 {

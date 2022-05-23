@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.WinUI.UI.Animations;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.Views
 {

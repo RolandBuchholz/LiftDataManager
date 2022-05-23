@@ -27,7 +27,7 @@ namespace LiftDataManager.Core.Models
         public char Symbol => (char)SymbolCode;
         public int SymbolCode { get; set; }
 
-        public Parameter( string name, string typeCode, string value)
+        public Parameter(string name, string typeCode, string value)
         {
             dataImport = true;
             AuswahlParameterDataService auswahlParameterDataService = new();
@@ -58,7 +58,7 @@ namespace LiftDataManager.Core.Models
             {
                 if ((_Value != null && value != _Value) || (_Value is null && value != ""))
                 {
-                    
+
                     if (_ParameterChangeInfo.OldValue != value)
                     {
                         if (string.IsNullOrWhiteSpace(_ParameterChangeInfo.NewValue))

@@ -132,13 +132,13 @@ namespace LiftDataManager.Services
         public async Task LiftDataManagerdownloadInfoAsync(FrameworkElement element, DownloadInfo downloadResult)
         {
             string title = "LiftDataManager InfoDialog";
-            
+
             string closeButtonText = "Ok";
 
-            var infoHeader= new TextBlock
+            var infoHeader = new TextBlock
             {
                 Text = $"DownloadInfos:",
-                Margin = new Thickness(0,0,0,10),
+                Margin = new Thickness(0, 0, 0, 10),
                 FontSize = 16,
                 FontWeight = FontWeights.Bold,
                 HorizontalAlignment = HorizontalAlignment.Left
@@ -251,5 +251,5 @@ namespace LiftDataManager.Services
             }
             return enumText;
         }
-    }     
+    }
 }

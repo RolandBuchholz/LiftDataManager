@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Microsoft.UI.Xaml;
-
-using LiftDataManager.Contracts.Services;
+﻿using LiftDataManager.Contracts.Services;
 using LiftDataManager.Helpers;
-
+using Microsoft.UI.Xaml;
+using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace LiftDataManager.Services

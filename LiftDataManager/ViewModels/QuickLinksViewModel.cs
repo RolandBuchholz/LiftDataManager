@@ -1,11 +1,5 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Input;
 using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Messenger;
-using LiftDataManager.Core.Messenger.Messages;
-using LiftDataManager.Core.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -86,7 +80,7 @@ namespace LiftDataManager.ViewModels
             {
                 CanOpenSpeziPdf = File.Exists(FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf"));
             }
-           
+
             CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml");
 
             string bausatztyp = "";
@@ -105,14 +99,14 @@ namespace LiftDataManager.ViewModels
             string auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
             string filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
             string startargs = "";
-            
-            if (!string.IsNullOrWhiteSpace(auftragsnummer)) 
+
+            if (!string.IsNullOrWhiteSpace(auftragsnummer))
             {
                 filename = @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE";
                 startargs = @"/e/" + auftragsnummer + @" C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
             }
 
-            if (File.Exists(filename)) 
+            if (File.Exists(filename))
             {
                 StartProgram(filename, startargs);
             }
@@ -165,7 +159,7 @@ namespace LiftDataManager.ViewModels
                 {
                     StartProgram(vaultLink, startargs);
                 }
-            }      
+            }
         }
 
         private void OpenCFP()
@@ -174,7 +168,7 @@ namespace LiftDataManager.ViewModels
             string bausatztyp = ParamterDictionary["var_Bausatz"].Value;
             string user = Environment.GetEnvironmentVariable("userprofile");
             string cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
-            string startargs = auftragsnummer + " "+ bausatztyp;
+            string startargs = auftragsnummer + " " + bausatztyp;
             using Process p = new();
 
             StartProgram(cfpPath, startargs);
@@ -184,11 +178,11 @@ namespace LiftDataManager.ViewModels
         {
             string filename = @"C:\Program Files (x86)\zetalift\Lift.exe";
             string startargs = "";
-            
+
             if (File.Exists(filename))
             {
                 StartProgram(filename, startargs);
-            } 
+            }
         }
 
         private void OpenLilo()
@@ -211,7 +205,7 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        private static void StartProgram(string filename,string startargs)
+        private static void StartProgram(string filename, string startargs)
         {
             using Process p = new();
             p.StartInfo.UseShellExecute = true;
@@ -277,7 +271,7 @@ namespace LiftDataManager.ViewModels
         }
 
         public void OnNavigatedFrom()
-        {  
+        {
         }
     }
 }

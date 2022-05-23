@@ -1,6 +1,6 @@
-﻿using NPOI.SS.UserModel;
+﻿using LiftDataManager.Core.Models;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using LiftDataManager.Core.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace LiftDataManager.Core.Helpers
 {
     public static class ExcelHelper
     {
-        public static async Task<List<AuswahlParameter>> ReadExcelParameterListeAsync(string excelFilePath,string[,] importAusawahlParameter)
+        public static async Task<List<AuswahlParameter>> ReadExcelParameterListeAsync(string excelFilePath, string[,] importAusawahlParameter)
         {
             List<string> rowList = new List<string>();
             ISheet sheet;
@@ -23,7 +23,7 @@ namespace LiftDataManager.Core.Helpers
                 int startRow = 0;
                 int startCell = 0;
                 bool dataParsen = false;
-                
+
                 for (int i = 0; i < (importAusawahlParameter.Length) / 3; i++)
                 {
                     sheetname = importAusawahlParameter[i, 0];

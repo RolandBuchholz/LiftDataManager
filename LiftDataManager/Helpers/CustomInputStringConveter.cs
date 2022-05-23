@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Data;
+using System;
 using System.Diagnostics;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Data;
 
 namespace LiftDataManager.Helpers
 {

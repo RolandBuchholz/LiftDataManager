@@ -9,7 +9,7 @@ namespace LiftDataManager.Controls
     public sealed partial class FooterControl : UserControl
     {
         public FooterControl()
-        { 
+        {
             InitializeComponent();
         }
 
@@ -18,7 +18,7 @@ namespace LiftDataManager.Controls
 
         public string FileInfo
         {
-            get => (string)GetValue(FileInfoProperty); 
+            get => (string)GetValue(FileInfoProperty);
             set => SetValue(FileInfoProperty, value);
         }
 

@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
-
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Windows.System;
 
 namespace LiftDataManager.Views

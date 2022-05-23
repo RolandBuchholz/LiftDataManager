@@ -1,19 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
-using System.Diagnostics;
 
 namespace LiftDataManager.ViewModels
 {
@@ -62,7 +62,7 @@ namespace LiftDataManager.ViewModels
             var watch = Stopwatch.StartNew();
             InfoText += "Daten aus Spezifikation werden geladen\n";
             InfoText += "Loading ...\n";
-            var result = await Task.Run(()=>_auswahlParameterDataService.UpdateAuswahlparameterAsync());
+            var result = await Task.Run(() => _auswahlParameterDataService.UpdateAuswahlparameterAsync());
             var updateDataInfo = new StringBuilder();
             updateDataInfo.AppendLine("Aktualisierte Daten: ");
             updateDataInfo.AppendLine("--------------------");
