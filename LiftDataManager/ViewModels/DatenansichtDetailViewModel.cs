@@ -33,11 +33,12 @@ namespace LiftDataManager.ViewModels
         public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
              base(parameterDataService, dialogService, navigationService)
         {
-            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, (r, m) =>
+            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
             {
                 if (m is not null && m.Value.IsDirty)
                 {
-                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    SetInfoSidebarPanelText(m);
+                    await CheckUnsavedParametresAsync();
                 }
             });
             SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && CheckOut);

@@ -6,10 +6,21 @@
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:models="using:LiftDataManager.Core.Models"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="5"
+            Offset="5" />
+        <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
+    </Page.Resources>
 
     <Grid
         x:Name="ContentArea"
@@ -73,7 +84,7 @@
                 Padding="10,10,10,5"
                 animations:Connected.ListItemElementName="itemThumbnail"
                 animations:Connected.ListItemKey="animationKeyContentGrid"
-                DesiredWidth="180"
+                DesiredWidth="160"
                 IsItemClickEnabled="True"
                 ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 ItemHeight="160"
@@ -84,9 +95,12 @@
                     <DataTemplate x:DataType="models:Parameter">
                         <Grid
                             x:Name="itemThumbnail"
-                            Padding="{StaticResource XSmallLeftTopRightBottomMargin}"
-                            Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                            Padding="0,0,8,8"
                             CornerRadius="10">
+                            <Border
+                                ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                CornerRadius="10" />
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <FontIcon
                                     Height="50"
@@ -96,7 +110,7 @@
                                     Margin="{StaticResource XXSmallTopMargin}"
                                     HorizontalAlignment="Center"
                                     Style="{ThemeResource BodyTextStyle}"
-                                    Text="{x:Bind Name}" />
+                                    Text="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

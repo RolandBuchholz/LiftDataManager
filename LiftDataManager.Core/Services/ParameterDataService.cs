@@ -40,24 +40,9 @@ namespace LiftDataManager.Core.Services
 
             // Modify some of the node values
 
-            switch (parameter.TypeCode.ToLower())
-            {
-                //case "boolean":
-                //    xmlparameter.Element("value").Value = parameter.Value.ToString();
-                //    break;
-
-                //case "date":
-                //    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
-                //    xmlparameter.Element("value").Value = exceldate;
-                //    break;
-
-                default:
-                    xmlparameter.Element("value").Value = parameter.Value;
-                    break;
-            }
-
-            xmlparameter.Element("comment").Value = parameter.Comment;
-            xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
+            xmlparameter.Element("value").Value = parameter.Value is null ? string.Empty : parameter.Value;
+            xmlparameter.Element("comment").Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+            xmlparameter.Element("isKey").Value = parameter.IsKey ? "true" : "false";
 
             doc.Save(path);
             await Task.CompletedTask;
@@ -85,25 +70,9 @@ namespace LiftDataManager.Core.Services
                    select para).SingleOrDefault();
 
                 // Modify some of the node values
-
-                switch (parameter.TypeCode.ToLower())
-                {
-                    //case "boolean":
-                    //    xmlparameter.Element("value").Value = parameter.Value.ToString();
-                    //    break;
-
-                    //case "date":
-                    //    var exceldate = parameter.Date.Value.DateTime.ToOADate().ToString();
-                    //    xmlparameter.Element("value").Value = exceldate;
-                    //    break;
-
-                    default:
-                        xmlparameter.Element("value").Value = parameter.Value;
-                        break;
-                }
-
-                xmlparameter.Element("comment").Value = parameter.Comment;
-                xmlparameter.Element("isKey").Value = parameter.IsKey.ToString().ToLower();
+                xmlparameter.Element("value").Value = parameter.Value is null ? string.Empty : parameter.Value;
+                xmlparameter.Element("comment").Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+                xmlparameter.Element("isKey").Value = parameter.IsKey ? "true" : "false";
 
                 parameter.IsDirty = false;
 

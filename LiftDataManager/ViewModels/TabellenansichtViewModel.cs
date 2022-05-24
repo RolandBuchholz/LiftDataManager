@@ -22,7 +22,7 @@ namespace LiftDataManager.ViewModels
             {
                 if (m is not null && m.Value.IsDirty)
                 {
-                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    SetInfoSidebarPanelText(m);
                     await CheckUnsavedParametresAsync();
                 }
             });
@@ -77,7 +77,7 @@ namespace LiftDataManager.ViewModels
             IsUnsavedParametersSelected = true;
         }
 
-        override public async Task CheckUnsavedParametresAsync()
+        override protected async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {

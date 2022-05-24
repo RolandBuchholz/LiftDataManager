@@ -3,6 +3,8 @@ using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
+using System;
+using System.Globalization;
 
 namespace LiftDataManager.ViewModels
 {
@@ -15,7 +17,7 @@ namespace LiftDataManager.ViewModels
             {
                 if (m is not null && m.Value.IsDirty)
                 {
-                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    SetInfoSidebarPanelText(m);
                     await CheckUnsavedParametresAsync();
                 }
             });

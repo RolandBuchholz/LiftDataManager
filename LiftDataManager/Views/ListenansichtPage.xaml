@@ -3,15 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
-    xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:views="using:LiftDataManager.Views"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>
+        <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
@@ -27,7 +28,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind Name}" />
+                    <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}" />
                     <TextBlock Style="{StaticResource ListSubTitleStyle}" Text="{x:Bind TypeCode}" />
                 </StackPanel>
             </Grid>

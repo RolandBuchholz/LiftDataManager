@@ -8,6 +8,7 @@ using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,7 +61,7 @@ namespace LiftDataManager.ViewModels
             await CheckUnsavedParametresAsync();
         }
 
-        public virtual async Task CheckUnsavedParametresAsync()
+        protected virtual async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {
@@ -94,6 +95,46 @@ namespace LiftDataManager.ViewModels
                         _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
                     }
                 }
+            }
+        }
+
+        protected void SetInfoSidebarPanelText(ParameterDirtyMessage m)
+        {
+            if (m.Value.ParameterTyp == Core.Models.Parameter.ParameterTypValue.Date)
+            {
+                string datetimeOld;
+                string datetimeNew;
+                try
+                {
+                    if (m.Value.OldValue is not null)
+                    {
+                        double excelDateOld = Convert.ToDouble(m.Value.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                        datetimeOld = DateTime.FromOADate(excelDateOld).ToShortDateString();
+                    }
+                    else
+                    {
+                        datetimeOld = string.Empty;
+                    }
+
+                    if (m.Value.NewValue is not null)
+                    {
+                        double excelDateNew = Convert.ToDouble(m.Value.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                        datetimeNew = DateTime.FromOADate(excelDateNew).ToShortDateString();
+                    }
+                    else
+                    {
+                        datetimeNew = string.Empty;
+                    }
+                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {datetimeOld} => {datetimeNew} geändert \n";
+                }
+                catch
+                {
+                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                }
+            }
+            else
+            {
+                InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
             }
         }
 

@@ -21,8 +21,8 @@ namespace LiftDataManager.Core.Models
         }
 
         private readonly IAuswahlParameterDataService _auswahlParameterDataService;
-        private bool dataImport = false;
-        private ParameterChangeInfo _ParameterChangeInfo { get; set; } = new();
+        private readonly bool dataImport;
+        private ParameterChangeInfo ParameterChangeInfo { get; set; } = new();
         public List<string> DropDownList { get; } = new();
         public ParameterTypValue ParameterTyp { get; set; }
         public char Symbol => (char)SymbolCode;
@@ -35,18 +35,18 @@ namespace LiftDataManager.Core.Models
             _auswahlParameterDataService = auswahlParameterDataService;
             TypeCode = typeCode;
             SymbolCode = GetSymbolCode(TypeCode);
-            _ParameterChangeInfo.ParameterName = name;
-            _ParameterChangeInfo.OldValue = value;
-            IsDirty = false;
-            Value = value;
-            Name = name;
-
             if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
             {
                 DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
                 DropDownListValue = value;
                 ParameterTyp = ParameterTypValue.DropDownList;
             }
+            IsDirty = false;
+            Value = value;
+            Name = name;
+            ParameterChangeInfo.ParameterName = name;
+            ParameterChangeInfo.OldValue = value;
+            ParameterChangeInfo.ParameterTyp = ParameterTyp;
             dataImport = false;
         }
         public string Name { get; set; }
@@ -61,15 +61,11 @@ namespace LiftDataManager.Core.Models
                 {
                     if (ParameterTyp == ParameterTypValue.Boolean)
                     {
-                        if (string.Equals((string)value, _Value, StringComparison.OrdinalIgnoreCase)) { return; };
+                        if (string.Equals(value, _Value, StringComparison.OrdinalIgnoreCase)) { return; };
                     }
-
-                    if (SetProperty(ref _Value, value))
-                    {
-                        IsDirty = true;
-                        SendParameterChangeInfo(value);
-                    };
-                } 
+                    SetParameterChangeInfoMessage(value);
+                }
+                SetProperty(ref _Value, value);
             }
         }
 
@@ -81,8 +77,9 @@ namespace LiftDataManager.Core.Models
             {
                 if ((_Comment != null && value != _Comment) || (_Comment != null && value != ""))
                 {
-                    if (SetProperty(ref _Comment, value)) { IsDirty = true; };
-                }  
+                    IsDirty = true;
+                }
+                SetProperty(ref _Comment, value);
             }
         }
 
@@ -92,7 +89,11 @@ namespace LiftDataManager.Core.Models
             get => _IsKey;
             set
             {
-                if (SetProperty(ref _IsKey, value)) { IsDirty = true; };
+                if (value != _IsKey)
+                {
+                    IsDirty = true;
+                }
+                SetProperty(ref _IsKey, value);
             }
         }
 
@@ -121,27 +122,29 @@ namespace LiftDataManager.Core.Models
             set
             {
                 SetProperty(ref _IsDirty, value);
-                _ParameterChangeInfo.IsDirty = value;
-                if (value && !dataImport && (Value != _ParameterChangeInfo.NewValue))
+                ParameterChangeInfo.IsDirty = value;
+                if (value && !dataImport && (Value != ParameterChangeInfo.NewValue))
                 {
-                    Messenger.Send(new ParameterDirtyMessage(_ParameterChangeInfo));
+                    Messenger.Send(new ParameterDirtyMessage(ParameterChangeInfo));
                 }
             }
         }
 
-        private void SendParameterChangeInfo(string value)
+        private void SetParameterChangeInfoMessage(string value)
         {
-            if (_ParameterChangeInfo.OldValue != value)
+            if (ParameterChangeInfo.OldValue != value)
             {
-                if (string.IsNullOrWhiteSpace(_ParameterChangeInfo.NewValue))
+                if (string.IsNullOrWhiteSpace(ParameterChangeInfo.NewValue))
                 {
-                    _ParameterChangeInfo.NewValue = value;
+                    ParameterChangeInfo.NewValue = value;
                 }
                 else
                 {
-                    _ParameterChangeInfo.OldValue = _ParameterChangeInfo.NewValue;
-                    _ParameterChangeInfo.NewValue = value;
+                    ParameterChangeInfo.OldValue = ParameterChangeInfo.NewValue;
+                    ParameterChangeInfo.NewValue = value;
                 }
+
+                IsDirty = true;
             }
         }
 

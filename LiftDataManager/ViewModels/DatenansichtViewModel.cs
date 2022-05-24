@@ -53,7 +53,7 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-        override public async Task CheckUnsavedParametresAsync()
+        override protected async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {

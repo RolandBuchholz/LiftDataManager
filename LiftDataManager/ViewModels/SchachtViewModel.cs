@@ -17,7 +17,7 @@ namespace LiftDataManager.ViewModels
             {
                 if (m is not null && m.Value.IsDirty)
                 {
-                    InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                    SetInfoSidebarPanelText(m);
                     await CheckUnsavedParametresAsync();
                 }
             });

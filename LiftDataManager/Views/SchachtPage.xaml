@@ -46,6 +46,9 @@
                 <Grid.Resources>
                     <Style x:Name="TableTextboxStyle" TargetType="TextBox">
                         <Setter Property="Margin" Value="2,2,0,0" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="TextAlignment" Value="Center" />
                     </Style>
                 </Grid.Resources>
                 <Grid.RowDefinitions>
