@@ -270,6 +270,7 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
+            SynchronizeViewModelParameter();
             CheckCanOpenFiles();
         }
 

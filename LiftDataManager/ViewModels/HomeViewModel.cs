@@ -553,7 +553,6 @@ namespace LiftDataManager.ViewModels
             }
         }
 
-
         private async Task SaveAllParameterAsync()
         {
             string infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);

@@ -34,6 +34,16 @@ namespace LiftDataManager.ViewModels
 
         public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
         {
+            _parameterDataService = parameterDataService;
+            _dialogService = dialogService;
+            _navigationService = navigationService;
+            SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+        }
+
+        public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
+
+        protected virtual void SynchronizeViewModelParameter()
+        {
             _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
             if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
             if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
@@ -42,17 +52,7 @@ namespace LiftDataManager.ViewModels
             CheckOut = _CurrentSpeziProperties.CheckOut;
             LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
             InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-
-            _parameterDataService = parameterDataService;
-            _dialogService = dialogService;
-            _navigationService = navigationService;
-
-            SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
-
         }
-
-        public IAsyncRelayCommand SaveAllSpeziParametersAsync { get; }
-
 
         public async Task SaveAllParameterAsync()
         {

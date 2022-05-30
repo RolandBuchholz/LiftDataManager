@@ -157,6 +157,7 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
+            SynchronizeViewModelParameter();
             SearchInput = _CurrentSpeziProperties.SearchInput;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
         }

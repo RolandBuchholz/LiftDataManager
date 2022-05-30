@@ -3,8 +3,6 @@ using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
-using System;
-using System.Globalization;
 
 namespace LiftDataManager.ViewModels
 {
@@ -25,6 +23,7 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
+            SynchronizeViewModelParameter();
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) { _ = CheckUnsavedParametresAsync(); }
         }
         public void OnNavigatedFrom()

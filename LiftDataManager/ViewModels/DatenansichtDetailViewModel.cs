@@ -86,6 +86,7 @@ namespace LiftDataManager.ViewModels
 
         public void OnNavigatedTo(object parameter)
         {
+            SynchronizeViewModelParameter();
             if (parameter is not null)
             {
                 var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
