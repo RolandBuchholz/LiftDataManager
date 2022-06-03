@@ -13,7 +13,8 @@
             InvalideOrderNumber = 6,
             MissingVaultFile = 7,
             MissingAdskLicensingSDK_5 = 8,
-            MissingVaultClient_DataStandard = 9
+            MissingVaultClient_DataStandard = 9,
+            CheckedOutByOtherUser = 10
         }
 
         private int _ExitCode;

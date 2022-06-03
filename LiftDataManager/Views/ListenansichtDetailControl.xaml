@@ -31,7 +31,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                    CornerRadius="10">
+                    CornerRadius="8">
                     <FontIcon
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -40,12 +40,12 @@
                 </Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock
-                        Margin="10,15,10,5"
+                        Margin="10,5,10,5"
                         VerticalAlignment="Top"
                         FontSize="36"
                         Style="{ThemeResource TitleTextBlockStyle}"
                         Text="{x:Bind ListDetailsMenuItem.Name, Mode=OneWay}" />
-                    <StackPanel x:Name="statusGroup" Margin="{StaticResource SmallTopMargin}">
+                    <StackPanel x:Name="statusGroup" Margin="{StaticResource XSmallTopMargin}">
                         <TextBlock
                             Margin="10,5,10,5"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -55,6 +55,15 @@
                             FontSize="18"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Text="{x:Bind ListDetailsMenuItem.TypeCode, Mode=OneWay}" />
+                        <TextBlock
+                            Margin="10,5,0,0"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Text="Parameterkategorie" />
+                        <TextBlock
+                            Margin="10,5,0,0"
+                            FontSize="18"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="{x:Bind ListDetailsMenuItem.ParameterCategory}" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

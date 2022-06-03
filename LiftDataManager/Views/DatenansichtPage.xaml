@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:collections="using:CommunityToolkit.Common.Collections"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -15,18 +16,25 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        <CollectionViewSource
+            x:Name="ParameterViewSource"
+            IsSourceGrouped="True"
+            Source="{x:Bind ViewModel.GroupedFilteredParameters, Mode=OneWay}" />
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
         <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
     </Page.Resources>
-
     <Grid
         x:Name="ContentArea"
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+        CornerRadius="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -34,47 +42,205 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="250" />
             </Grid.ColumnDefinitions>
-            <Button
-                Grid.Column="1"
-                Width="175"
-                Margin="5,5,5,0"
-                HorizontalAlignment="Right"
-                Command="{x:Bind ViewModel.ShowAllParameters}"
-                Content="All Parameters"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.IsUnsavedParametersSelected, Mode=OneWay}" />
-            <Button
-                Grid.Column="2"
-                Width="175"
-                Margin="5,5,5,0"
-                HorizontalAlignment="Right"
-                Command="{x:Bind ViewModel.ShowUnsavedParameters}"
-                Content="Unsaved Parameters"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
-            <Button
-                Grid.Column="3"
-                Width="175"
-                Margin="5,5,5,0"
+            <!--  CommandBar  -->
+            <Grid
+                Grid.Row="0"
+                Grid.Column="0"
+                Height="52"
+                Margin="0,0,0,10"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
-                Content="Save All Parameter"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
-            <TextBox
-                Grid.Column="4"
-                Margin="5,10,15,5"
-                IsSpellCheckEnabled="False"
-                PlaceholderText="Suche"
-                Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Background="{StaticResource SystemAltMediumColor}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <CommandBar
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        DefaultLabelPosition="Right">
+                        <AppBarButton Icon="Filter" Label="{x:Bind ViewModel.FilterValue, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Center" Text="Aktueller Filter:" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="DarkRed"
+                                        Text="{x:Bind ViewModel.FilterValue, Mode=OneWay}" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                        x:Name="FilterNone"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="None"
+                                        Text="Kein Filter" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterString"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Text"
+                                        Text="Text Parameter" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterNumber"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="NumberOnly"
+                                        Text="Nummer Parameter" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterDate"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Date"
+                                        Text="Datums Parameter" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterBoolean"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Boolean"
+                                        Text="Wahr-Falsch Parameter" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterDropDownList"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="DropDownList"
+                                        Text="Auswahllisten Parameter" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterAllgemeineDaten"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="AllgemeineDaten"
+                                        Text="Allgemeine Daten" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterSchacht"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Schacht"
+                                        Text="Schacht" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterBausatz"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Bausatz"
+                                        Text="Bausatz" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterFahrkorb"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Fahrkorb"
+                                        Text="Fahrkorb" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterTueren"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Tueren"
+                                        Text="Türen" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterAntriebSteuerungNotruf"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="AntriebSteuerungNotruf"
+                                        Text="Antrieb/Steuerung/Notruf" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterSignalisation"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Signalisation"
+                                        Text="Signalisation" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterWartung"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Wartung"
+                                        Text="Wartung" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterMontageTUEV"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="MontageTUEV"
+                                        Text="Montage/TÜV" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterRWA"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="RWA"
+                                        Text="Rauch- und Wärmeabzugsanlage" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterSonstiges"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="Sonstiges"
+                                        Text="Sonstiges" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterKommentareVault"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="KommentareVault"
+                                        Text="Kommentare im Vault" />
+                                    <MenuFlyoutItem
+                                        x:Name="FilterCFP"
+                                        Command="{x:Bind ViewModel.SetParameterFilter}"
+                                        CommandParameter="CFP"
+                                        Text="Car Frame Programm" />
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <AppBarButton Icon="AllApps" Label="{x:Bind ViewModel.GroupingValue, Mode=OneWay}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Center" Text="Aktuelle Gruppierung:" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Foreground="DarkRed"
+                                        Text="{x:Bind ViewModel.GroupingValue, Mode=OneWay}" />
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                        x:Name="Alphabetisch"
+                                        Command="{x:Bind ViewModel.GroupParameter}"
+                                        CommandParameter="abc"
+                                        Text="Alphabetisch" />
+                                    <MenuFlyoutItem
+                                        x:Name="Parametertyp"
+                                        Command="{x:Bind ViewModel.GroupParameter}"
+                                        CommandParameter="typ"
+                                        Text="Parametertyp" />
+                                    <MenuFlyoutItem
+                                        x:Name="Parameterkategorie"
+                                        Command="{x:Bind ViewModel.GroupParameter}"
+                                        CommandParameter="cat"
+                                        Text="Parameterkategorie" />
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                    </CommandBar>
+                    <AutoSuggestBox
+                        MinWidth="250"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        QueryIcon="Find"
+                        Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <CommandBar
+                    Grid.Column="1"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right">
+                    <AppBarButton
+                        Command="{x:Bind ViewModel.ShowAllParameters}"
+                        Icon="AllApps"
+                        Label="All"
+                        ToolTipService.ToolTip="Zeige alle Parameter an"
+                        Visibility="{x:Bind ViewModel.IsUnsavedParametersSelected, Mode=OneWay}" />
+                    <AppBarButton
+                        Command="{x:Bind ViewModel.ShowUnsavedParameters}"
+                        Icon="Sync"
+                        IsEnabled="True"
+                        Label="Unsaved"
+                        ToolTipService.ToolTip="Zeige nicht gespeicherte Parameter an" />
+                    <AppBarButton
+                        Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
+                        Icon="Save"
+                        IsEnabled="True"
+                        Label="Save"
+                        ToolTipService.ToolTip="Speichere alle Parameter" />
+                </CommandBar>
+            </Grid>
         </Grid>
+        <!--  DataView  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -88,9 +254,41 @@
                 IsItemClickEnabled="True"
                 ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 ItemHeight="160"
-                ItemsSource="{x:Bind ViewModel.FilteredParameters, Mode=OneWay}"
+                ItemsSource="{x:Bind ParameterViewSource.View, Mode=OneWay}"
                 SelectionMode="None"
                 StretchContentForSingleRow="False">
+                <GridView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        FontFamily="Segoe UI"
+                                        FontSize="32"
+                                        FontStyle="Normal"
+                                        FontWeight="Bold"
+                                        Foreground="DarkRed"
+                                        Text="{Binding Key}" />
+                                    <TextBlock
+                                        Margin="10,0,0,5"
+                                        VerticalAlignment="Bottom"
+                                        FontFamily="Segoe UI"
+                                        FontSize="16"
+                                        Foreground="DarkRed"
+                                        Text="{Binding Count}" />
+                                    <TextBlock
+                                        Margin="7,0,0,5"
+                                        VerticalAlignment="Bottom"
+                                        FontFamily="Segoe UI"
+                                        FontSize="16"
+                                        Foreground="DarkRed"
+                                        Text="Parameter" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
                 <controls:AdaptiveGridView.ItemTemplate>
                     <DataTemplate x:DataType="models:Parameter">
                         <Grid
@@ -100,7 +298,7 @@
                             <Border
                                 ui:Effects.Shadow="{StaticResource CommonShadow}"
                                 Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                                CornerRadius="10" />
+                                CornerRadius="8" />
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <FontIcon
                                     Height="50"
@@ -114,20 +312,25 @@
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
+
                 </controls:AdaptiveGridView.ItemTemplate>
             </controls:AdaptiveGridView>
-            <!--  InfoSidebarPanel  -->
-            <SpeziControls:SidebarPanel
-                Grid.Column="1"
-                Margin="0,10,10,0"
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         </Grid>
+        <!--  InfoSidebarPanel  -->
+        <SpeziControls:SidebarPanel
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ParameterFound="{x:Bind ViewModel.FilteredParameters.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterFound, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

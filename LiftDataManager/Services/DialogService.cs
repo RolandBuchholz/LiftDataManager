@@ -245,6 +245,9 @@ namespace LiftDataManager.Services
                 case DownloadInfo.ExitCodeEnum.MissingVaultClient_DataStandard:
                     enumText = "Vault Client 2022 oder DataStandard wurde nicht gefunden";
                     break;
+                case DownloadInfo.ExitCodeEnum.CheckedOutByOtherUser:
+                    enumText = "AutoDeskTransferXml durch anderen Benutzer ausgechecked";
+                    break;
                 default:
                     enumText = "keine ExitCode vorhanden";
                     break;

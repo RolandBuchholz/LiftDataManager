@@ -9,6 +9,7 @@
     <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
 
+    <!--  GridStyles  -->
     <Style x:Name="GridTextboxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -29,7 +30,6 @@
     </Style>
 
     <!--  ControlDataTemplates.xaml  -->
-
     <DataTemplate x:Key="ParameterTypString" x:DataType="models:Parameter">
         <TextBox
             AcceptsReturn="True"
@@ -87,7 +87,6 @@
     </DataTemplate>
 
     <!--  GridControlDataTemplates.xaml  -->
-
     <DataTemplate x:Key="GridParameterTypString" x:DataType="models:Parameter">
         <TextBox
             AcceptsReturn="True"

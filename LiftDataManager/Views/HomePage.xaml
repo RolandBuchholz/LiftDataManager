@@ -313,7 +313,7 @@
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
                     Header="Aufzugskenndaten"
-                    IsExpanded="False">
+                    IsExpanded="true">
                     <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -431,7 +431,7 @@
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
                     Header="Schachtabmessungen"
-                    IsExpanded="False">
+                    IsExpanded="True">
                     <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -573,7 +573,7 @@
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
                     Header="Kabinenabmessungen"
-                    IsExpanded="False">
+                    IsExpanded="True">
                     <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition />

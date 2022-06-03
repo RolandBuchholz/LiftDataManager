@@ -1,11 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Common.Collections;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Models;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +14,7 @@ namespace LiftDataManager.ViewModels
 {
     public class ListenansichtViewModel : DataViewModelBase, INavigationAware
     {
-        public ObservableCollection<Parameter> FilteredParameters { get; set; } = new();
-
+        public ObservableGroupedCollection<string, Parameter> GroupedFilteredParameters { get; private set; } = new();
         private Parameter _selected;
 
         public Parameter Selected
@@ -191,38 +190,43 @@ namespace LiftDataManager.ViewModels
 
         private void ShowUnsavedParametersView()
         {
-            FilteredParameters.Clear();
-            var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);
-
-            foreach (var item in unsavedParameter)
+            GroupedFilteredParameters.Clear();
+            var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty).
+                                                             GroupBy(g => g.Name.Replace("var_", "")[0].ToString().ToUpper()).
+                                                             OrderBy(g => g.Key);
+            foreach (var group in unsavedParameter)
             {
-                FilteredParameters.Add(item);
+                GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
             }
             IsUnsavedParametersSelected = true;
-
         }
 
         private void FilterParameter(string searchInput)
         {
             if (string.IsNullOrWhiteSpace(searchInput))
             {
-                FilteredParameters.Clear();
-                var allData = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
+                GroupedFilteredParameters.Clear();
+                var groupedParameters = ParamterDictionary.Values.
+                        GroupBy(g => g.Name.Replace("var_", "")[0].ToString().ToUpper()).
+                        OrderBy(g => g.Key);
 
-                foreach (var item in allData)
+                foreach (var group in groupedParameters)
                 {
-                    FilteredParameters.Add(item);
+                    GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
                 }
             }
             else
             {
-                FilteredParameters.Clear();
-                var filteredData = ParamterDictionary.Values.Where(p => (p.Name != null && p.Name.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
+                GroupedFilteredParameters.Clear();
+                var groupedParameters = ParamterDictionary.Values.Where(p => (p.Name != null && p.Name.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
                                                         || (p.Value != null && p.Value.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))
-                                                        || (p.Comment != null && p.Comment.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase)));
-                foreach (var item in filteredData)
+                                                        || (p.Comment != null && p.Comment.Contains(searchInput, System.StringComparison.CurrentCultureIgnoreCase))).
+                                                        GroupBy(g => g.Name.Replace("var_", "")[0].ToString().ToUpper()).
+                                                        OrderBy(g => g.Key);
+
+                foreach (var group in groupedParameters)
                 {
-                    FilteredParameters.Add(item);
+                    GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
                 }
             }
         }
@@ -240,8 +244,8 @@ namespace LiftDataManager.ViewModels
 
         public void EnsureItemSelected()
         {
-            if (Selected == null && FilteredParameters.Count > 0)
-                Selected = FilteredParameters.First();
+            if (Selected == null && GroupedFilteredParameters.Count > 0)
+                Selected = GroupedFilteredParameters.FirstOrDefault().ElementAt(0);
         }
     }
 }

@@ -12,6 +12,10 @@
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>
+        <CollectionViewSource
+            x:Name="ParameterViewSource"
+            IsSourceGrouped="True"
+            Source="{x:Bind ViewModel.GroupedFilteredParameters, Mode=OneWay}" />
         <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid Height="60">
@@ -126,7 +130,7 @@
                 BorderBrush="Transparent"
                 DetailsTemplate="{StaticResource DetailsTemplate}"
                 ItemTemplate="{StaticResource ItemTemplate}"
-                ItemsSource="{x:Bind ViewModel.FilteredParameters}"
+                ItemsSource="{x:Bind ParameterViewSource.View, Mode=OneWay}"
                 ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
                 NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
                 SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
@@ -168,7 +172,7 @@
             Grid.Row="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ParameterFound="{x:Bind ViewModel.FilteredParameters.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.GroupedFilteredParameters.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

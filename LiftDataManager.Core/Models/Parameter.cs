@@ -6,6 +6,7 @@ using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace LiftDataManager.Core.Models
 {
@@ -13,11 +14,28 @@ namespace LiftDataManager.Core.Models
     {
         public enum ParameterTypValue
         {
-            String,
+            Text,
             NumberOnly,
             Date,
             Boolean,
             DropDownList
+        }
+
+        public enum ParameterCategoryValue
+        {
+            AllgemeineDaten,
+            Schacht,
+            Bausatz,
+            Fahrkorb,
+            Tueren,
+            AntriebSteuerungNotruf,
+            Signalisation,
+            Wartung,
+            MontageTUEV,
+            RWA,
+            Sonstiges,
+            KommentareVault,
+            CFP
         }
 
         private readonly IAuswahlParameterDataService _auswahlParameterDataService;
@@ -25,8 +43,10 @@ namespace LiftDataManager.Core.Models
         private ParameterChangeInfo ParameterChangeInfo { get; set; } = new();
         public List<string> DropDownList { get; } = new();
         public ParameterTypValue ParameterTyp { get; set; }
+        public ParameterCategoryValue ParameterCategory { get; set; }
         public char Symbol => (char)SymbolCode;
         public int SymbolCode { get; set; }
+        public bool DefaultUserEditable { get; set; }
 
         public Parameter(string name, string typeCode, string value)
         {
@@ -150,14 +170,14 @@ namespace LiftDataManager.Core.Models
 
         private int GetSymbolCode(string TypeCode)
         {
-            switch (TypeCode.ToLower())
+            switch (TypeCode.ToLower(new CultureInfo("de-DE", false)))
             {
                 case "mm":
                     ParameterTyp = ParameterTypValue.NumberOnly;
                     return 60220;
 
                 case "string":
-                    ParameterTyp = ParameterTypValue.String;
+                    ParameterTyp = ParameterTypValue.Text;
                     return 59602;
 
                 case "kg":

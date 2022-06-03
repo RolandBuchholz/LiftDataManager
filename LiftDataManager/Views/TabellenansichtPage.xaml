@@ -106,6 +106,10 @@
                             Binding="{Binding TypeCode}"
                             Header="VariablenTyp"
                             IsReadOnly="True" />
+                        <controls:DataGridTextColumn
+                            Binding="{Binding ParameterCategory}"
+                            Header="Kategorie"
+                            IsReadOnly="True" />
                         <controls:DataGridTemplateColumn Header="Parameterwert">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

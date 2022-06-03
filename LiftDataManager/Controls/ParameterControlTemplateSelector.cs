@@ -26,7 +26,7 @@ namespace LiftDataManager.Controls
 
                 switch (parameter.ParameterTyp)
                 {
-                    case Parameter.ParameterTypValue.String:
+                    case Parameter.ParameterTypValue.Text:
                         return StringTemplate;
                     case Parameter.ParameterTypValue.NumberOnly:
                         return NumberOnlyTemplate;
