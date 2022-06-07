@@ -220,7 +220,7 @@ namespace LiftDataManager.ViewModels
                                                     || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase));
 
-                    case "String" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
+                    case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
                         result = Enum.TryParse(FilterValue, true, out Parameter.ParameterTypValue filterTypEnum);
                         if (result)
                         {
