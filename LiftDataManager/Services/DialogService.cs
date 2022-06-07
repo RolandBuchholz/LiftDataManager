@@ -248,6 +248,9 @@ namespace LiftDataManager.Services
                 case DownloadInfo.ExitCodeEnum.CheckedOutByOtherUser:
                     enumText = "AutoDeskTransferXml durch anderen Benutzer ausgechecked";
                     break;
+                case DownloadInfo.ExitCodeEnum.CheckedOutLinkedFilesByOtherUser:
+                    enumText = "AutoDeskTransferXml verbundene Dateien durch anderen Benutzer ausgechecked";
+                    break;
                 default:
                     enumText = "keine ExitCode vorhanden";
                     break;

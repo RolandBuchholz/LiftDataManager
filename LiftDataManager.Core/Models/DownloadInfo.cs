@@ -14,7 +14,8 @@
             MissingVaultFile = 7,
             MissingAdskLicensingSDK_5 = 8,
             MissingVaultClient_DataStandard = 9,
-            CheckedOutByOtherUser = 10
+            CheckedOutByOtherUser = 10,
+            CheckedOutLinkedFilesByOtherUser = 11
         }
 
         private int _ExitCode;
