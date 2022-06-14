@@ -100,7 +100,7 @@ namespace LiftDataManager.ViewModels
 
         protected void SetInfoSidebarPanelText(ParameterDirtyMessage m)
         {
-            if (m.Value.ParameterTyp == Core.Models.Parameter.ParameterTypValue.Date)
+            if (m.Value.ParameterTyp == Parameter.ParameterTypValue.Date)
             {
                 string datetimeOld;
                 string datetimeNew;

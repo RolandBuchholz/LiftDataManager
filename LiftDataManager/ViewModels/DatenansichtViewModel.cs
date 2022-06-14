@@ -94,7 +94,7 @@ namespace LiftDataManager.ViewModels
             set => SetProperty(ref _GroupingValue, value);
         }
 
-        override protected async Task CheckUnsavedParametresAsync()
+        protected override async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {

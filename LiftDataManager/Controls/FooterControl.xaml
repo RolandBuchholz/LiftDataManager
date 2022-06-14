@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <media:AttachedCardShadow
             x:Key="CommonShadow"
-            CornerRadius="5"
+            CornerRadius="4"
             Offset="5" />
     </UserControl.Resources>
 
@@ -22,8 +22,8 @@
             HorizontalAlignment="Stretch"
             ui:Effects.Shadow="{StaticResource CommonShadow}"
             Fill="{StaticResource SystemControlPageBackgroundBaseLowBrush}"
-            RadiusX="5"
-            RadiusY="5" />
+            RadiusX="4"
+            RadiusY="4" />
         <Grid Padding="10,5,10,5" CornerRadius="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
