@@ -1,0 +1,198 @@
+﻿<UserControl
+    x:Class="LiftDataManager.Controls.CommandBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid
+        Height="52"
+        HorizontalAlignment="Stretch"
+        Background="{StaticResource SystemAltMediumColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <CommandBar
+                VerticalAlignment="Center"
+                Background="Transparent"
+                DefaultLabelPosition="Right">
+                <AppBarButton Icon="Filter" Label="{x:Bind FilterValue, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <StackPanel>
+                            <TextBlock HorizontalAlignment="Center" Text="Aktueller Filter:" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                Foreground="DarkRed"
+                                Text="{x:Bind FilterValue, Mode=OneWay}" />
+                        </StackPanel>
+                    </ToolTipService.ToolTip>
+                    <AppBarButton.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="FilterNone"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="None"
+                                Text="Kein Filter" />
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                x:Name="FilterString"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Text"
+                                Text="Text Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="FilterNumber"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="NumberOnly"
+                                Text="Nummer Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="FilterDate"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Date"
+                                Text="Datums Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="FilterBoolean"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Boolean"
+                                Text="Wahr-Falsch Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="FilterDropDownList"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="DropDownList"
+                                Text="Auswahllisten Parameter" />
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                x:Name="FilterAllgemeineDaten"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="AllgemeineDaten"
+                                Text="Allgemeine Daten" />
+                            <MenuFlyoutItem
+                                x:Name="FilterSchacht"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Schacht"
+                                Text="Schacht" />
+                            <MenuFlyoutItem
+                                x:Name="FilterBausatz"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Bausatz"
+                                Text="Bausatz" />
+                            <MenuFlyoutItem
+                                x:Name="FilterFahrkorb"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Fahrkorb"
+                                Text="Fahrkorb" />
+                            <MenuFlyoutItem
+                                x:Name="FilterTueren"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Tueren"
+                                Text="Türen" />
+                            <MenuFlyoutItem
+                                x:Name="FilterAntriebSteuerungNotruf"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="AntriebSteuerungNotruf"
+                                Text="Antrieb/Steuerung/Notruf" />
+                            <MenuFlyoutItem
+                                x:Name="FilterSignalisation"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Signalisation"
+                                Text="Signalisation" />
+                            <MenuFlyoutItem
+                                x:Name="FilterWartung"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Wartung"
+                                Text="Wartung" />
+                            <MenuFlyoutItem
+                                x:Name="FilterMontageTUEV"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="MontageTUEV"
+                                Text="Montage/TÜV" />
+                            <MenuFlyoutItem
+                                x:Name="FilterRWA"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="RWA"
+                                Text="Rauch- und Wärmeabzugsanlage" />
+                            <MenuFlyoutItem
+                                x:Name="FilterSonstiges"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="Sonstiges"
+                                Text="Sonstiges" />
+                            <MenuFlyoutItem
+                                x:Name="FilterKommentareVault"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="KommentareVault"
+                                Text="Kommentare im Vault" />
+                            <MenuFlyoutItem
+                                x:Name="FilterCFP"
+                                Command="{x:Bind SetParameterFilterCommand}"
+                                CommandParameter="CFP"
+                                Text="Car Frame Programm" />
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton Icon="AllApps" Label="{x:Bind GroupingValue, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        <StackPanel>
+                            <TextBlock HorizontalAlignment="Center" Text="Aktuelle Gruppierung:" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                Foreground="DarkRed"
+                                Text="{x:Bind GroupingValue, Mode=OneWay}" />
+                        </StackPanel>
+                    </ToolTipService.ToolTip>
+                    <AppBarButton.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="Alphabetisch"
+                                Command="{x:Bind GroupParameterCommand}"
+                                CommandParameter="abc"
+                                Text="Alphabetisch" />
+                            <MenuFlyoutItem
+                                x:Name="Parametertyp"
+                                Command="{x:Bind GroupParameterCommand}"
+                                CommandParameter="typ"
+                                Text="Parametertyp" />
+                            <MenuFlyoutItem
+                                x:Name="Parameterkategorie"
+                                Command="{x:Bind GroupParameterCommand}"
+                                CommandParameter="cat"
+                                Text="Parameterkategorie" />
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBar>
+            <AutoSuggestBox
+                MinWidth="250"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                QueryIcon="Find"
+                Text="{x:Bind SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <CommandBar
+            Grid.Column="1"
+            Background="Transparent"
+            DefaultLabelPosition="Right">
+            <AppBarButton
+                Command="{x:Bind ShowAllParametersCommand}"
+                Icon="AllApps"
+                Label="All"
+                ToolTipService.ToolTip="Zeige alle Parameter an"
+                Visibility="{x:Bind IsUnsavedParametersSelected, Mode=OneWay}" />
+            <AppBarButton
+                Command="{x:Bind ShowUnsavedParametersCommand}"
+                Icon="Sync"
+                IsEnabled="True"
+                Label="Unsaved"
+                ToolTipService.ToolTip="Zeige nicht gespeicherte Parameter an" />
+            <AppBarButton
+                Command="{x:Bind SaveAllCommand}"
+                Icon="Save"
+                IsEnabled="True"
+                Label="Save"
+                ToolTipService.ToolTip="Speichere alle Parameter" />
+        </CommandBar>
+    </Grid>
+</UserControl>
