@@ -262,21 +262,21 @@
                                         FontSize="32"
                                         FontStyle="Normal"
                                         FontWeight="Bold"
-                                        Foreground="DarkRed"
+                                        Foreground="{StaticResource SystemAccentColor}"
                                         Text="{Binding Key}" />
                                     <TextBlock
                                         Margin="10,0,0,5"
                                         VerticalAlignment="Bottom"
                                         FontFamily="Segoe UI"
                                         FontSize="16"
-                                        Foreground="DarkRed"
+                                        Foreground="{StaticResource SystemAccentColor}"
                                         Text="{Binding Count}" />
                                     <TextBlock
                                         Margin="7,0,0,5"
                                         VerticalAlignment="Bottom"
                                         FontFamily="Segoe UI"
                                         FontSize="16"
-                                        Foreground="DarkRed"
+                                        Foreground="{StaticResource SystemAccentColor}"
                                         Text="Parameter" />
                                 </StackPanel>
                             </DataTemplate>

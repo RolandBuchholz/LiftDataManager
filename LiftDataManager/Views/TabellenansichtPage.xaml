@@ -244,7 +244,8 @@
                     CanUserResizeColumns="True"
                     GridLinesVisibility="All"
                     ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
-                    LoadingRowGroup="DataGrid_LoadingRowGroup">
+                    LoadingRowGroup="DataGrid_LoadingRowGroup"
+                    RowGroupHeaderPropertyNameAlternative="">
                     <controls:DataGrid.Columns>
                         <controls:DataGridTemplateColumn Header="Symbol">
                             <controls:DataGridTemplateColumn.CellTemplate>

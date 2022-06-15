@@ -6,14 +6,14 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 using CommunityToolkit.Common.Collections;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml;
 
 namespace LiftDataManager.Views
 {
     public sealed partial class TabellenansichtPage : Page
     {
         public TabellenansichtViewModel ViewModel { get; }
-
-        private SolidColorBrush GroupColor { get; } = new(Colors.DarkRed);
 
         public TabellenansichtPage()
         {
@@ -25,7 +25,7 @@ namespace LiftDataManager.Views
         {
             ICollectionViewGroup group = e.RowGroupHeader.CollectionViewGroup;
             e.RowGroupHeader.PropertyValue = ((ObservableGroup<string, Parameter>)group.Group).Key;
-            e.RowGroupHeader.Foreground = GroupColor;
+            e.RowGroupHeader.Foreground = new SolidColorBrush((Windows.UI.Color)Application.Current.Resources["SystemAccentColor"]);
         }
     }
 }

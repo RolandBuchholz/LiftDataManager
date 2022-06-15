@@ -13,12 +13,5 @@ namespace LiftDataManager.Views
             ViewModel = Ioc.Default.GetService<ListenansichtViewModel>();
             InitializeComponent();
         }
-        private void OnViewStateChanged(object sender, ListDetailsViewState e)
-        {
-            if (e == ListDetailsViewState.Both)
-            {
-                ViewModel.EnsureItemSelected();
-            }
-        }
     }
 }

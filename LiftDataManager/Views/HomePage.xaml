@@ -36,7 +36,7 @@
     <Grid
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+        CornerRadius="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -189,9 +189,9 @@
                         Margin="5,5,5,5"
                         HorizontalAlignment="Stretch"
                         ui:Effects.Shadow="{StaticResource CommonShadow}"
-                        Fill="{StaticResource SystemControlPageBackgroundListLowBrush}"
-                        RadiusX="5"
-                        RadiusY="5" />
+                        Fill="{StaticResource SystemAccentColor}"
+                        RadiusX="4"
+                        RadiusY="4" />
                     <TextBlock
                         Grid.Column="0"
                         Margin="15,0,10,0"
