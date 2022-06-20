@@ -18,11 +18,16 @@
                 VerticalAlignment="Center"
                 Background="Transparent"
                 DefaultLabelPosition="Right">
-                <AppBarButton Icon="Filter" Label="{x:Bind FilterValue, Mode=OneWay}">
+                <AppBarButton
+                    x:Name="btn_Filter"
+                    Icon="Filter"
+                    IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+                    Label="{x:Bind FilterValue, Mode=OneWay}">
                     <ToolTipService.ToolTip>
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center" Text="Aktueller Filter:" />
                             <TextBlock
+                                x:Name="txb_tooltip_Filter"
                                 HorizontalAlignment="Center"
                                 FontSize="16"
                                 Foreground="DarkRed"
@@ -32,110 +37,96 @@
                     <AppBarButton.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
-                                x:Name="FilterNone"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="None"
+                                x:Name="None"
+                                Click="SetFilter_Click"
                                 Text="Kein Filter" />
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem
-                                x:Name="FilterString"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Text"
+                                x:Name="Text"
+                                Click="SetFilter_Click"
                                 Text="Text Parameter" />
                             <MenuFlyoutItem
-                                x:Name="FilterNumber"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="NumberOnly"
+                                x:Name="NumberOnly"
+                                Click="SetFilter_Click"
                                 Text="Nummer Parameter" />
                             <MenuFlyoutItem
-                                x:Name="FilterDate"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Date"
+                                x:Name="Date"
+                                Click="SetFilter_Click"
                                 Text="Datums Parameter" />
                             <MenuFlyoutItem
-                                x:Name="FilterBoolean"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Boolean"
+                                x:Name="Boolean"
+                                Click="SetFilter_Click"
                                 Text="Wahr-Falsch Parameter" />
                             <MenuFlyoutItem
-                                x:Name="FilterDropDownList"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="DropDownList"
+                                x:Name="DropDownList"
+                                Click="SetFilter_Click"
                                 Text="Auswahllisten Parameter" />
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem
-                                x:Name="FilterAllgemeineDaten"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="AllgemeineDaten"
+                                x:Name="AllgemeineDaten"
+                                Click="SetFilter_Click"
                                 Text="Allgemeine Daten" />
                             <MenuFlyoutItem
-                                x:Name="FilterSchacht"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Schacht"
+                                x:Name="Schacht"
+                                Click="SetFilter_Click"
                                 Text="Schacht" />
                             <MenuFlyoutItem
-                                x:Name="FilterBausatz"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Bausatz"
+                                x:Name="Bausatz"
+                                Click="SetFilter_Click"
                                 Text="Bausatz" />
                             <MenuFlyoutItem
-                                x:Name="FilterFahrkorb"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Fahrkorb"
+                                x:Name="Fahrkorb"
+                                Click="SetFilter_Click"
                                 Text="Fahrkorb" />
                             <MenuFlyoutItem
-                                x:Name="FilterTueren"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Tueren"
+                                x:Name="Tueren"
+                                Click="SetFilter_Click"
                                 Text="Türen" />
                             <MenuFlyoutItem
-                                x:Name="FilterAntriebSteuerungNotruf"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="AntriebSteuerungNotruf"
+                                x:Name="AntriebSteuerungNotruf"
+                                Click="SetFilter_Click"
                                 Text="Antrieb/Steuerung/Notruf" />
                             <MenuFlyoutItem
-                                x:Name="FilterSignalisation"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Signalisation"
+                                x:Name="Signalisation"
+                                Click="SetFilter_Click"
                                 Text="Signalisation" />
                             <MenuFlyoutItem
-                                x:Name="FilterWartung"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Wartung"
+                                x:Name="Wartung"
+                                Click="SetFilter_Click"
                                 Text="Wartung" />
                             <MenuFlyoutItem
-                                x:Name="FilterMontageTUEV"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="MontageTUEV"
+                                x:Name="MontageTUEV"
+                                Click="SetFilter_Click"
                                 Text="Montage/TÜV" />
                             <MenuFlyoutItem
-                                x:Name="FilterRWA"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="RWA"
+                                x:Name="RWA"
+                                Click="SetFilter_Click"
                                 Text="Rauch- und Wärmeabzugsanlage" />
                             <MenuFlyoutItem
                                 x:Name="FilterSonstiges"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="Sonstiges"
+                                Click="SetFilter_Click"
                                 Text="Sonstiges" />
                             <MenuFlyoutItem
-                                x:Name="FilterKommentareVault"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="KommentareVault"
+                                x:Name="KommentareVault"
+                                Click="SetFilter_Click"
                                 Text="Kommentare im Vault" />
                             <MenuFlyoutItem
-                                x:Name="FilterCFP"
-                                Command="{x:Bind SetParameterFilterCommand}"
-                                CommandParameter="CFP"
+                                x:Name="CFP"
+                                Click="SetFilter_Click"
                                 Text="Car Frame Programm" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Icon="AllApps" Label="{x:Bind GroupingValue, Mode=OneWay}">
+                <AppBarButton
+                    x:Name="btn_Grouping"
+                    Icon="AllApps"
+                    IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+                    Label="{x:Bind GroupingValue, Mode=OneWay}">
                     <ToolTipService.ToolTip>
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center" Text="Aktuelle Gruppierung:" />
                             <TextBlock
+                                x:Name="txb_tooltip_Grouping"
                                 HorizontalAlignment="Center"
                                 FontSize="16"
                                 Foreground="DarkRed"
@@ -145,19 +136,16 @@
                     <AppBarButton.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
-                                x:Name="Alphabetisch"
-                                Command="{x:Bind GroupParameterCommand}"
-                                CommandParameter="abc"
+                                x:Name="abc"
+                                Click="GroupParameter_Click"
                                 Text="Alphabetisch" />
                             <MenuFlyoutItem
-                                x:Name="Parametertyp"
-                                Command="{x:Bind GroupParameterCommand}"
-                                CommandParameter="typ"
+                                x:Name="typ"
+                                Click="GroupParameter_Click"
                                 Text="Parametertyp" />
                             <MenuFlyoutItem
-                                x:Name="Parameterkategorie"
-                                Command="{x:Bind GroupParameterCommand}"
-                                CommandParameter="cat"
+                                x:Name="cat"
+                                Click="GroupParameter_Click"
                                 Text="Parameterkategorie" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
@@ -168,6 +156,7 @@
                 Margin="10,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
+                IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                 QueryIcon="Find"
                 Text="{x:Bind SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
@@ -176,21 +165,22 @@
             Background="Transparent"
             DefaultLabelPosition="Right">
             <AppBarButton
-                Command="{x:Bind ShowAllParametersCommand}"
+                x:Name="btn_AllAppsButton"
+                Click="ShowAllAppsButton_Click"
                 Icon="AllApps"
+                IsEnabled="False"
                 Label="All"
-                ToolTipService.ToolTip="Zeige alle Parameter an"
-                Visibility="{x:Bind IsUnsavedParametersSelected, Mode=OneWay}" />
+                ToolTipService.ToolTip="Zeige alle Parameter an" />
             <AppBarButton
-                Command="{x:Bind ShowUnsavedParametersCommand}"
+                x:Name="btn_UnsavedAppsButton"
+                Click="ShowUnsavedAppsButton_Click"
                 Icon="Sync"
-                IsEnabled="True"
+                IsEnabled="{x:Bind CanShowUnsavedParameters, Mode=OneWay}"
                 Label="Unsaved"
                 ToolTipService.ToolTip="Zeige nicht gespeicherte Parameter an" />
             <AppBarButton
                 Command="{x:Bind SaveAllCommand}"
                 Icon="Save"
-                IsEnabled="True"
                 Label="Save"
                 ToolTipService.ToolTip="Speichere alle Parameter" />
         </CommandBar>

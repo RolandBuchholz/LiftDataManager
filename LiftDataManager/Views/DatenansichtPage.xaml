@@ -15,10 +15,6 @@
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>
-        <CollectionViewSource
-            x:Name="ParameterViewSource"
-            IsSourceGrouped="True"
-            Source="{x:Bind ViewModel.GroupedFilteredParameters, Mode=OneWay}" />
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="5"
@@ -30,29 +26,25 @@
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
         CornerRadius="8">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <!--  CommandBar  -->
         <speziControls:CommandBar
             Grid.Row="0"
             Grid.Column="0"
             Margin="0,0,0,5"
-            FilterValue="{x:Bind ViewModel.FilterValue, Mode=OneWay}"
-            GroupParameterCommand="{x:Bind ViewModel.GroupParameter}"
-            GroupingValue="{x:Bind ViewModel.GroupingValue, Mode=OneWay}"
-            IsUnsavedParametersSelected="{x:Bind ViewModel.IsUnsavedParametersSelected, Mode=OneWay}"
+            CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SaveAllCommand="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
             SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SetParameterFilterCommand="{x:Bind ViewModel.SetParameterFilter}"
-            ShowAllParametersCommand="{x:Bind ViewModel.ShowAllParameters}"
-            ShowUnsavedParametersCommand="{x:Bind ViewModel.ShowUnsavedParameters}" />
+            ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <!--  DataView  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -67,7 +59,7 @@
                 IsItemClickEnabled="True"
                 ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 ItemHeight="160"
-                ItemsSource="{x:Bind ParameterViewSource.View, Mode=OneWay}"
+                ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
                 SelectionMode="None"
                 StretchContentForSingleRow="False">
                 <GridView.GroupStyle>
@@ -127,13 +119,12 @@
                     </DataTemplate>
                 </controls:AdaptiveGridView.ItemTemplate>
             </controls:AdaptiveGridView>
+            <!--  InfoSidebarPanel  -->
+            <speziControls:SidebarPanel
+                Grid.Column="1"
+                Margin="0,0,10,0"
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         </Grid>
-        <!--  InfoSidebarPanel  -->
-        <speziControls:SidebarPanel
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,0,10,0"
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <!--  Footer  -->
         <speziControls:FooterControl
             Grid.Row="2"
@@ -141,7 +132,7 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ParameterFound="{x:Bind ViewModel.ParameterFound, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.GroupedItems.View.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

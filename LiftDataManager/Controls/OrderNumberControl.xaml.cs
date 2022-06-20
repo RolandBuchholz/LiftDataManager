@@ -7,7 +7,7 @@ namespace LiftDataManager.Controls
     {
         public OrderNumberControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private string _OrderYear;

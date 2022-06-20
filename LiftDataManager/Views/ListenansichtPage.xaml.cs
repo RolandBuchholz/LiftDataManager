@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.WinUI.UI.Controls;
 using LiftDataManager.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
@@ -12,6 +11,11 @@ namespace LiftDataManager.Views
         {
             ViewModel = Ioc.Default.GetService<ListenansichtViewModel>();
             InitializeComponent();
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.EnsureItemSelected();
         }
     }
 }

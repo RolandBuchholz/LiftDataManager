@@ -40,15 +40,11 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="0,0,0,5"
-                FilterValue="{x:Bind ViewModel.FilterValue, Mode=OneWay}"
-                GroupParameterCommand="{x:Bind ViewModel.GroupParameter}"
-                GroupingValue="{x:Bind ViewModel.GroupingValue, Mode=OneWay}"
-                IsUnsavedParametersSelected="{x:Bind ViewModel.IsUnsavedParametersSelected, Mode=OneWay}"
+                CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
                 SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SetParameterFilterCommand="{x:Bind ViewModel.SetParameterFilter}"
-                ShowAllParametersCommand="{x:Bind ViewModel.ShowAllParameters}"
-                ShowUnsavedParametersCommand="{x:Bind ViewModel.ShowUnsavedParameters}" />
+                ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid Grid.Row="1" Margin="10,5,10,5">
             <Grid.ColumnDefinitions>
@@ -132,8 +128,7 @@
             Grid.Row="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ParameterFound="{x:Bind ViewModel.ParameterFound, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.GroupedItems.View.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
-
     </Grid>
 </Page>

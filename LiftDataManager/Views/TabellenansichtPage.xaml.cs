@@ -1,13 +1,11 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Common.Collections;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using LiftDataManager.Core.Models;
 using LiftDataManager.ViewModels;
-using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
-using CommunityToolkit.Common.Collections;
-using Microsoft.UI.Text;
-using Microsoft.UI.Xaml;
 
 namespace LiftDataManager.Views
 {

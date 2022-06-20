@@ -80,7 +80,6 @@ namespace LiftDataManager.ViewModels
             var infotext = await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
             InfoSidebarPanelText += infotext;
             CanSaveParameter = false;
-            CanSaveParameter = false;
             Item.IsDirty = false;
         }
 
