@@ -17,9 +17,6 @@ namespace LiftDataManager.ViewModels
     {
         public CollectionViewSource GroupedItems { get; set; }
 
-        private ICommand _itemClickCommand;
-        public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
-
         public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
              base(parameterDataService, dialogService, navigationService)
         {
@@ -32,43 +29,16 @@ namespace LiftDataManager.ViewModels
                 }
             });
 
-
             GroupedItems = new CollectionViewSource
             {
                 IsSourceGrouped = true
             };
-
         }
 
-        private bool _IsItemSelected;
-        public bool IsItemSelected
-        {
-            get => _IsItemSelected;
-            set => SetProperty(ref _IsItemSelected, value);
-        }
+        private ICommand _itemClickCommand;
+        public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
 
-        private bool _CanShowUnsavedParameters;
-        public bool CanShowUnsavedParameters
-        {
-            get => _CanShowUnsavedParameters;
-            set => SetProperty(ref _CanShowUnsavedParameters, value);
-        }
-
-        private string _SearchInput;
-
-        public string SearchInput
-        {
-            get => _SearchInput;
-
-            set
-            {
-                SetProperty(ref _SearchInput, value);
-                _CurrentSpeziProperties.SearchInput = SearchInput;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-            }
-        }
-
-        protected override async Task CheckUnsavedParametresAsync()
+        override protected async Task CheckUnsavedParametresAsync()
         {
             if (LikeEditParameter && AuftragsbezogeneXml)
             {
@@ -76,6 +46,7 @@ namespace LiftDataManager.ViewModels
 
                 if (CheckOut)
                 {
+                    CanShowUnsavedParameters = dirty;
                     CanSaveAllSpeziParameters = dirty;
                 }
                 else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
@@ -99,6 +70,27 @@ namespace LiftDataManager.ViewModels
                         LikeEditParameter = false;
                     }
                 }
+
+            }
+        }
+
+        private bool _CanShowUnsavedParameters;
+        public bool CanShowUnsavedParameters
+        {
+            get => _CanShowUnsavedParameters;
+            set => SetProperty(ref _CanShowUnsavedParameters, value);
+        }
+
+        private string _SearchInput;
+        public string SearchInput
+        {
+            get => _SearchInput;
+
+            set
+            {
+                SetProperty(ref _SearchInput, value);
+                _CurrentSpeziProperties.SearchInput = SearchInput;
+                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
             }
         }
 
@@ -107,7 +99,6 @@ namespace LiftDataManager.ViewModels
             SynchronizeViewModelParameter();
             SearchInput = _CurrentSpeziProperties.SearchInput;
             if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
-
         }
 
         public void OnNavigatedFrom()

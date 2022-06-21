@@ -143,7 +143,6 @@ namespace LiftDataManager.Controls
             {
                 ViewSource.Source = GroupedFilteredParameters;
             }
-
         }
 
         private Func<Parameter, bool> FilterViewSearchInput(string searchInput)
@@ -229,6 +228,12 @@ namespace LiftDataManager.Controls
 
         private void ShowUnsavedAppsButton_Click(object sender, RoutedEventArgs e)
         {
+            SetUnsavedParameterView();
+            IsUnsavedParametersSelected = true;
+        }
+
+        private void SetUnsavedParameterView()
+        {
             GroupedFilteredParameters.Clear();
             var unsavedParameters = ItemSource.Values.Where(p => p.IsDirty).
                                                     GroupBy(GroupView()).
@@ -238,7 +243,6 @@ namespace LiftDataManager.Controls
                 GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
             }
             ViewSource.Source = GroupedFilteredParameters;
-            IsUnsavedParametersSelected = true;
         }
     }
 }

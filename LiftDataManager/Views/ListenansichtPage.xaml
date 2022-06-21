@@ -44,7 +44,7 @@
         x:Name="ContentArea"
         Margin="5"
         Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+        CornerRadius="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -57,6 +57,7 @@
             </Grid.ColumnDefinitions>
             <!--  CommandBar  -->
             <speziControls:CommandBar
+                x:Name="ListViewCommandBar"
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="0,0,0,5"
@@ -80,8 +81,8 @@
                     <ListView
                         ItemTemplate="{StaticResource ItemTemplate}"
                         ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
-                        SelectionChanged="ListView_SelectionChanged"
-                        SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionChanged="ListView_SelectionChanged">
                         <ListView.GroupStyle>
                             <GroupStyle HidesIfEmpty="True">
                                 <GroupStyle.HeaderTemplate>

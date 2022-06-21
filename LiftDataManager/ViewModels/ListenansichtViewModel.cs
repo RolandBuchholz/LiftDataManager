@@ -170,6 +170,8 @@ namespace LiftDataManager.ViewModels
             CanSaveParameter = false;
             Selected.IsDirty = false;
             await CheckUnsavedParametresAsync();
+            var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
+            allUnsavedParameters.RemoveItem(allUnsavedParameters.FirstOrDefault(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
         }
 
         public void OnNavigatedTo(object parameter)
@@ -186,7 +188,7 @@ namespace LiftDataManager.ViewModels
 
         public void EnsureItemSelected()
         {
-            if (Selected == null && GroupedItems.View.Count > 0)
+            if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0)
             {
                 Selected = (Parameter)GroupedItems.View.FirstOrDefault();
             }
