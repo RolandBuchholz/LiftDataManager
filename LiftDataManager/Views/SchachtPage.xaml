@@ -43,14 +43,6 @@
             Margin="5,5,0,5"
             Padding="10,5,20,5">
             <Grid>
-                <Grid.Resources>
-                    <Style x:Name="TableTextboxStyle" TargetType="TextBox">
-                        <Setter Property="Margin" Value="2,2,0,0" />
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="TextAlignment" Value="Center" />
-                    </Style>
-                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -62,8 +54,14 @@
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
                     ExpandDirection="Down"
-                    Header="Stockwerksbezeichnung / Etagenabstände"
                     IsExpanded="True">
+                    <controls:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Stockwerksbezeichnung / Etagenabstände" />
+                            <TextBlock Margin="20,0,0,0" Text="Hauptzugang:" />
+                            <TextBlock Margin="10,0,0,0" Text="{x:Bind ViewModel.DisplayNameHauptzugang, Mode=OneWay}" />
+                        </StackPanel>
+                    </controls:Expander.Header>
                     <Grid Margin="0,5,5,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -296,245 +294,651 @@
                             HorizontalAlignment="Right"
                             Text="Etagenabstand [mm]" />
                         <TextBox
+                            x:Name="txtBox_A0"
                             Grid.Row="1"
                             Grid.Column="1"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA0'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA0'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
+                            x:Name="txtBox_A1"
                             Grid.Row="1"
                             Grid.Column="2"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA1'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA1'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A1"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
+                            x:Name="txtBox_A2"
                             Grid.Row="1"
                             Grid.Column="3"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA2'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA2'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A2"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
+                            x:Name="txtBox_A3"
                             Grid.Row="1"
                             Grid.Column="4"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA3'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA3'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A3"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
+                            x:Name="txtBox_A4"
                             Grid.Row="1"
                             Grid.Column="5"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA4'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA4'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A4"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
+                            x:Name="txtBox_A5"
                             Grid.Row="1"
                             Grid.Column="6"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA5'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA5'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A5"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="7"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA6'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA6'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="8"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA7'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA7'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="9"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA8'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA8'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="10"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA9'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangA9'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="1"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB0'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB0'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="2"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB1'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB1'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="3"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB2'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB2'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="4"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB3'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB3'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="5"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB4'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB4'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="6"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB5'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB5'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="7"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB6'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB6'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="8"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB7'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB7'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="9"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB8'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB8'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="10"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB9'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangB9'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="1"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC0'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC0'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="2"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC1'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC1'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="3"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC2'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC2'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="4"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC3'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC3'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="5"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC4'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC4'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="6"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC5'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC5'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="7"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC6'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC6'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="8"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC7'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC7'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="9"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC8'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC8'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="10"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC9'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangC9'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="1"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD0'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD0'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="2"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD1'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD1'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="3"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD2'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD2'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="4"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD3'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD3'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="5"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD4'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD4'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="6"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD5'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD5'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="7"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD6'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD6'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="8"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD7'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD7'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="9"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD8'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD8'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="10"
+                            ContextMenuOpening="textbox_ContextMenuOpening"
                             IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                             Style="{StaticResource TableTextboxStyle}"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD9'].Value, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_ZugangD9'].Value, Mode=TwoWay}">
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout Placement="Right">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.SetHauptzugangCommand}"
+                                        CommandParameter="ZG_A0"
+                                        Text="Setze Hauptzugang" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </TextBox>
                         <TextBox
                             Grid.Row="5"
                             Grid.Column="1"
@@ -652,7 +1056,6 @@
                                     zwischen 8 und 9</TextBlock>
                             </ToolTipService.ToolTip>
                         </TextBox>
-
                     </Grid>
                 </controls:Expander>
                 <Button

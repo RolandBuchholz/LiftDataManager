@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
@@ -21,7 +22,29 @@ namespace LiftDataManager.ViewModels
                     await CheckUnsavedParametresAsync();
                 }
             });
+
+            SetHauptzugangCommand = new RelayCommand<string>(SetHauptzugang);
         }
+
+        public IRelayCommand SetHauptzugangCommand { get; }
+
+        private void SetHauptzugang(string parameter)
+        {
+            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value , parameter, System.StringComparison.OrdinalIgnoreCase))
+            {
+                ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
+            }
+        }
+
+        private string _DisplayNameHauptzugang;
+        public string DisplayNameHauptzugang
+        {
+            get => ParamterDictionary["var_Haupthaltestelle"].Value == "NV"
+                    ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")
+                    : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
+            set => SetProperty(ref _DisplayNameHauptzugang, value);
+        }
+
 
         public void OnNavigatedTo(object parameter)
         {

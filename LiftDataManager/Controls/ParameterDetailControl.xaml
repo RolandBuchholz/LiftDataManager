@@ -43,6 +43,7 @@
                         Margin="10,5,10,5"
                         VerticalAlignment="Top"
                         FontSize="36"
+                        IsTextSelectionEnabled="True"
                         Style="{ThemeResource TitleTextBlockStyle}"
                         Text="{x:Bind ListDetailsMenuItem.Name, Mode=OneWay}" />
                     <StackPanel x:Name="statusGroup" Margin="{StaticResource XSmallTopMargin}">
@@ -53,6 +54,7 @@
                         <TextBlock
                             Margin="10,0,0,0"
                             FontSize="18"
+                            IsTextSelectionEnabled="True"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Text="{x:Bind ListDetailsMenuItem.TypeCode, Mode=OneWay}" />
                         <TextBlock
@@ -62,6 +64,7 @@
                         <TextBlock
                             Margin="10,5,0,0"
                             FontSize="18"
+                            IsTextSelectionEnabled="True"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Text="{x:Bind ListDetailsMenuItem.ParameterCategory}" />
                     </StackPanel>
