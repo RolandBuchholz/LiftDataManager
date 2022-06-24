@@ -4,6 +4,7 @@ using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
+using System;
 
 namespace LiftDataManager.ViewModels
 {
@@ -24,15 +25,27 @@ namespace LiftDataManager.ViewModels
             });
 
             SetHauptzugangCommand = new RelayCommand<string>(SetHauptzugang);
+            ResetHauptzugangCommand = new RelayCommand(ResetHauptzugang);
         }
 
         public IRelayCommand SetHauptzugangCommand { get; }
+        public IRelayCommand ResetHauptzugangCommand { get; }
 
         private void SetHauptzugang(string parameter)
         {
-            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value , parameter, System.StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value , parameter, StringComparison.OrdinalIgnoreCase))
             {
                 ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
+                DisplayNameHauptzugang = parameter;
+            }
+        }
+
+        private void ResetHauptzugang()
+        {
+            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
+            {
+                ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
+                DisplayNameHauptzugang = "NV";
             }
         }
 
@@ -44,7 +57,6 @@ namespace LiftDataManager.ViewModels
                     : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
             set => SetProperty(ref _DisplayNameHauptzugang, value);
         }
-
 
         public void OnNavigatedTo(object parameter)
         {

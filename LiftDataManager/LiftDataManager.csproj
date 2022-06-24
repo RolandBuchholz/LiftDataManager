@@ -25,6 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\CommandBar.xaml" />
+    <None Remove="Controls\EntranceControl.xaml" />
     <None Remove="Images\banner.png" />
     <None Remove="Images\BucherTransparent.png" />
     <None Remove="Images\carAccesses.png" />
@@ -125,6 +126,11 @@
        package has not yet been restored -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\EntranceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\CommandBar.xaml">
