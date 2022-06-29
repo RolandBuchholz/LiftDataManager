@@ -15,6 +15,7 @@
         x:Name="Stockwerksbezeichnung"
         VerticalAlignment="Top"
         HorizontalContentAlignment="Stretch"
+        Background="Transparent"
         ExpandDirection="Down"
         IsExpanded="True">
         <controls:Expander.Resources>
@@ -22,6 +23,10 @@
                 x:Key="InvertBoolToObjectConverter"
                 FalseValue="Visible"
                 TrueValue="Collapsed" />
+            <converters:BoolToObjectConverter
+                x:Key="test"
+                FalseValue="False"
+                TrueValue="True" />
             <media:AttachedCardShadow
                 x:Key="CommonShadow"
                 CornerRadius="5"
@@ -198,7 +203,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang A"
-                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
+                IsChecked="{x:Bind ZugangA, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
@@ -222,7 +227,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang B"
-                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_B'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
+                IsChecked="{x:Bind ZugangB, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
@@ -246,7 +251,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang C"
-                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
+                IsChecked="{x:Bind ZugangC, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
@@ -270,7 +275,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang D"
-                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_D'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToBoolConverter}}">
+                IsChecked="{x:Bind ZugangD, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock

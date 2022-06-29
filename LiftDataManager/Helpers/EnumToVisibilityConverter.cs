@@ -1,12 +1,15 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using System;
 
 namespace LiftDataManager.Helpers
 {
     public class EnumToVisibilityConverter : IValueConverter
     {
-        public Visibility NonVisibleVisibility { get; set; }
+        public Visibility NonVisibleVisibility
+        {
+            get; set;
+        }
 
         public EnumToVisibilityConverter()
         {

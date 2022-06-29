@@ -1,10 +1,10 @@
-﻿using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.Core.Services
 {
@@ -12,8 +12,14 @@ namespace LiftDataManager.Core.Services
     {
         string starttyp = string.Empty;
         const string pathPowershellScripts = @"C:\Work\Administration\PowerShellScripts\";
-        private DownloadInfo DownloadInfo { get; set; }
-        public int ExitCode { get; private set; }
+        private DownloadInfo DownloadInfo
+        {
+            get; set;
+        }
+        public int ExitCode
+        {
+            get; private set;
+        }
 
         public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly)
         {

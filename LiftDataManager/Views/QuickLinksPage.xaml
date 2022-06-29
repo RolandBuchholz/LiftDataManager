@@ -5,29 +5,11 @@
     xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    Style="{StaticResource PageStyle}"
+    behaviors:NavigationViewHeaderBehavior.HeaderContext="Quick Links"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition MinHeight="40" />
-            <RowDefinition Height="auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TextBlock
-            Grid.Row="0"
-            Margin="24,5,0,0"
-            VerticalAlignment="Top"
-            Style="{StaticResource PageTitleStyle}"
-            Text="Quick Links" />
-        <GridView
-            Grid.Row="1"
-            Margin="10"
-            Padding="5"
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-            CornerRadius="10">
-
+        <GridView>
             <Button Command="{x:Bind ViewModel.OpenSpeziCommand}" Style="{StaticResource LinkButton}">
                 <StackPanel>
                     <Image

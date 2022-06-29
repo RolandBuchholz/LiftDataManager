@@ -1,7 +1,7 @@
-﻿using LiftDataManager.Contracts.Services;
-using LiftDataManager.Helpers;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using LiftDataManager.Contracts.Services;
+using LiftDataManager.Helpers;
 using Windows.Storage;
 
 namespace LiftDataManager.Services
@@ -10,7 +10,10 @@ namespace LiftDataManager.Services
     {
 
         private const string SettingsKeyAdminmode = "AppAdminmodeRequested";
-        public bool Adminmode { get; set; }
+        public bool Adminmode
+        {
+            get; set;
+        }
 
         public async Task InitializeAsync()
         {

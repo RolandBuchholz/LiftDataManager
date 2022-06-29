@@ -1,21 +1,20 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class ListenansichtPage : Page
-    {
-        public ListenansichtViewModel ViewModel { get; }
-        public ListenansichtPage()
-        {
-            ViewModel = Ioc.Default.GetService<ListenansichtViewModel>();
-            InitializeComponent();
-        }
+namespace LiftDataManager.Views;
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ViewModel.EnsureItemSelected();
-        }
+public sealed partial class ListenansichtPage : Page
+{
+    public ListenansichtViewModel ViewModel
+    {
+        get;
     }
+
+    public ListenansichtPage()
+    {
+        ViewModel = App.GetService<ListenansichtViewModel>();
+        InitializeComponent();
+    }
+
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => ViewModel.EnsureItemSelected();
 }

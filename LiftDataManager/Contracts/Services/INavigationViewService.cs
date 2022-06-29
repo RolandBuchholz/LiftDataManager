@@ -1,19 +1,25 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace LiftDataManager.Contracts.Services
+using Microsoft.UI.Xaml.Controls;
+
+namespace LiftDataManager.Contracts.Services;
+
+public interface INavigationViewService
 {
-    public interface INavigationViewService
+    IList<object> MenuItems
     {
-        IList<object> MenuItems { get; }
-
-        object SettingsItem { get; }
-
-        void Initialize(NavigationView navigationView);
-
-        void UnregisterEvents();
-
-        NavigationViewItem GetSelectedItem(Type pageType);
+        get;
     }
+
+    object SettingsItem
+    {
+        get;
+    }
+
+    void Initialize(NavigationView navigationView);
+
+    void UnregisterEvents();
+
+    NavigationViewItem GetSelectedItem(Type pageType);
 }

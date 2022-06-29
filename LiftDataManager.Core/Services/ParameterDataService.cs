@@ -1,11 +1,11 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Helpers;
-using LiftDataManager.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Cogs.Collections;
+using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.Helpers;
+using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.Core.Services
 {
@@ -47,7 +47,7 @@ namespace LiftDataManager.Core.Services
             doc.Save(path);
             await Task.CompletedTask;
 
-            string infotext = $"Parameter gespeichet: { parameter.Name} => { parameter.Value}  \n";
+            string infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
             infotext += $"----------\n";
             return infotext;
         }

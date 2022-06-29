@@ -1,16 +1,19 @@
-﻿using Microsoft.UI.Xaml;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace LiftDataManager.Contracts.Services
+using Microsoft.UI.Xaml;
+
+namespace LiftDataManager.Contracts.Services;
+
+public interface IThemeSelectorService
 {
-    public interface IThemeSelectorService
+    ElementTheme Theme
     {
-        ElementTheme Theme { get; }
-
-        Task InitializeAsync();
-
-        Task SetThemeAsync(ElementTheme theme);
-
-        Task SetRequestedThemeAsync();
+        get;
     }
+
+    Task InitializeAsync();
+
+    Task SetThemeAsync(ElementTheme theme);
+
+    Task SetRequestedThemeAsync();
 }

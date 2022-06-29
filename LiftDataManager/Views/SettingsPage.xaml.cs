@@ -1,16 +1,18 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
+namespace LiftDataManager.Views;
+
+public sealed partial class SettingsPage : Page
 {
-    public sealed partial class SettingsPage : Page
+    public SettingsViewModel ViewModel
     {
-        public SettingsViewModel ViewModel { get; }
-        public SettingsPage()
-        {
-            ViewModel = Ioc.Default.GetService<SettingsViewModel>();
-            InitializeComponent();
-        }
+        get;
+    }
+
+    public SettingsPage()
+    {
+        ViewModel = App.GetService<SettingsViewModel>();
+        InitializeComponent();
     }
 }

@@ -15,13 +15,11 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
                         <Rectangle
                             x:Name="BackgroundRectangle"
                             Grid.ColumnSpan="2"
-                            Fill="{ThemeResource DataGridColumnHeaderBackgroundBrush}"
+                            Fill="{ThemeResource SystemChromeAltHighColor}"
                             Stretch="Fill" />
-
                         <Grid
                             Margin="{TemplateBinding Padding}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -30,14 +28,12 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-
                             <FontIcon
                                 Margin="0,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 Glyph="&#xE8D7;" />
-
                         </Grid>
                         <Rectangle
                             x:Name="VerticalSeparator"
@@ -46,7 +42,6 @@
                             VerticalAlignment="Stretch"
                             Fill="{TemplateBinding SeparatorBrush}"
                             Visibility="{TemplateBinding SeparatorVisibility}" />
-
                         <Grid
                             x:Name="FocusVisual"
                             IsHitTestVisible="False"

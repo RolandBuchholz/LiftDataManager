@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace LiftDataManager.Contracts.Services
+namespace LiftDataManager.Contracts.Services;
+
+public interface IPageService
 {
-    public interface IPageService
-    {
-        Type GetPageType(string key);
-    }
+    Type GetPageType(string key);
 }

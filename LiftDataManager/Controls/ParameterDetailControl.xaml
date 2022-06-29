@@ -20,7 +20,7 @@
         Name="ForegroundElement"
         Padding="15,0,10,10"
         HorizontalAlignment="Stretch"
-        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+        Background="Transparent"
         IsTabStop="True"
         VerticalScrollMode="Enabled">
         <StackPanel HorizontalAlignment="Stretch">

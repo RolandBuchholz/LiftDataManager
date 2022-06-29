@@ -5,107 +5,124 @@
     xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    Loaded="OnLoaded"
-    Style="{StaticResource PageStyle}">
+    Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+    Loaded="OnLoaded">
 
-    <NavigationView
-        x:Name="navigationView"
-        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-        ExpandedModeThresholdWidth="1280"
-        Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
-        IsBackButtonVisible="Visible"
-        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-        IsSettingsVisible="True"
-        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
-        <NavigationView.MenuItems>
-            <NavigationViewItem
-                x:Uid="Shell_Home"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.HomeViewModel"
-                Icon="Home" />
-            <NavigationViewItemSeparator />
-            <NavigationViewItem
-                x:Uid="Shell_AllgemeineDaten"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.AllgemeineDatenViewModel"
-                Icon="People" />
-            <NavigationViewItem
-                x:Uid="Shell_Schacht"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SchachtViewModel"
-                Icon="CellPhone" />
-            <NavigationViewItem
-                x:Uid="Shell_Kabine"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.KabineViewModel"
-                Icon="DockBottom" />
-            <NavigationViewItem
-                x:Uid="Shell_Bausatz"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.BausatzViewModel"
-                Icon="Memo" />
-            <NavigationViewItem
-                x:Uid="Shell_Türen"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.TürenViewModel"
-                Icon="ClosePane" />
-            <NavigationViewItem
-                x:Uid="Shell_AntriebSteuerungNotruf"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.AntriebSteuerungNotrufViewModel"
-                Icon="Phone" />
-            <NavigationViewItem
-                x:Uid="Shell_Signalisation"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SignalisationViewModel"
-                Icon="Calculator" />
-            <NavigationViewItem
-                x:Uid="Shell_WartungMontageTüv"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.WartungMontageTüvViewModel"
-                Icon="Repair" />
-            <NavigationViewItem
-                x:Uid="Shell_Sonstiges"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.SonstigesViewModel"
-                Icon="Pin" />
-            <NavigationViewItemSeparator />
-            <NavigationViewItem
-                x:Uid="Shell_Listenansicht"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel"
-                Icon="AllApps" />
-            <NavigationViewItem
-                x:Uid="Shell_Datenansicht"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.DatenansichtViewModel"
-                Icon="PreviewLink" />
-            <NavigationViewItem
-                x:Uid="Shell_Tabellenansicht"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.TabellenansichtViewModel"
-                Icon="List" />
-        </NavigationView.MenuItems>
-        <NavigationView.FooterMenuItems>
-            <NavigationViewItem
-                x:Uid="Shell_QuickLinks"
-                helpers:NavHelper.NavigateTo="LiftDataManager.ViewModels.QuickLinksViewModel"
-                Icon="View" />
-        </NavigationView.FooterMenuItems>
-
-        <NavigationView.HeaderTemplate>
-            <DataTemplate>
-                <Grid>
-                    <TextBlock
-                        Margin="{StaticResource SmallLeftRightMargin}"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="{Binding}" />
-                </Grid>
-            </DataTemplate>
-        </NavigationView.HeaderTemplate>
-        <i:Interaction.Behaviors>
-            <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
-                <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock
-                                Margin="{StaticResource SmallLeftRightMargin}"
-                                Style="{ThemeResource TitleTextBlockStyle}"
-                                Text="{Binding}" />
-                        </Grid>
-                    </DataTemplate>
-                </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-            </behaviors:NavigationViewHeaderBehavior>
-        </i:Interaction.Behaviors>
-        <Grid>
-            <Frame x:Name="shellFrame" />
+    <Grid>
+        <Grid
+            x:Name="AppTitleBar"
+            Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+            VerticalAlignment="Top"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="True">
+            <Image
+                Width="20"
+                Height="20"
+                HorizontalAlignment="Left"
+                Source="/Assets/WindowIcon.png" />
+            <TextBlock
+                x:Name="AppTitleBarText"
+                Margin="32,0,0,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                TextWrapping="NoWrap" />
         </Grid>
-    </NavigationView>
+        <NavigationView
+            x:Name="NavigationViewControl"
+            Canvas.ZIndex="0"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+            ExpandedModeThresholdWidth="1280"
+            Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
+            IsBackButtonVisible="Visible"
+            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IsSettingsVisible="True"
+            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Uid="Shell_Home"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.HomeViewModel"
+                    Icon="Home" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem
+                    x:Uid="Shell_AllgemeineDaten"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.AllgemeineDatenViewModel"
+                    Icon="People" />
+                <NavigationViewItem
+                    x:Uid="Shell_Schacht"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.SchachtViewModel"
+                    Icon="CellPhone" />
+                <NavigationViewItem
+                    x:Uid="Shell_Kabine"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.KabineViewModel"
+                    Icon="DockBottom" />
+                <NavigationViewItem
+                    x:Uid="Shell_Bausatz"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.BausatzViewModel"
+                    Icon="Memo" />
+                <NavigationViewItem
+                    x:Uid="Shell_Türen"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.TürenViewModel"
+                    Icon="ClosePane" />
+                <NavigationViewItem
+                    x:Uid="Shell_AntriebSteuerungNotruf"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.AntriebSteuerungNotrufViewModel"
+                    Icon="Phone" />
+                <NavigationViewItem
+                    x:Uid="Shell_Signalisation"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.SignalisationViewModel"
+                    Icon="Calculator" />
+                <NavigationViewItem
+                    x:Uid="Shell_WartungMontageTüv"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.WartungMontageTüvViewModel"
+                    Icon="Repair" />
+                <NavigationViewItem
+                    x:Uid="Shell_Sonstiges"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.SonstigesViewModel"
+                    Icon="Pin" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem x:Uid="Shell_Listenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Datenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DatenansichtViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Tabellenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.TabellenansichtViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem
+                    x:Uid="Shell_QuickLinks"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.QuickLinksViewModel"
+                    Icon="View" />
+            </NavigationView.FooterMenuItems>
+            <NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate>
+            <i:Interaction.Behaviors>
+                <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                    <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
+                </behaviors:NavigationViewHeaderBehavior>
+            </i:Interaction.Behaviors>
+            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+                <Frame x:Name="NavigationFrame" />
+            </Grid>
+        </NavigationView>
+    </Grid>
 </Page>

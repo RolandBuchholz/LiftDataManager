@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace LiftDataManager.Activation
-{
-    public interface IActivationHandler
-    {
-        bool CanHandle(object args);
+namespace LiftDataManager.Activation;
 
-        Task HandleAsync(object args);
-    }
+public interface IActivationHandler
+{
+    bool CanHandle(object args);
+
+    Task HandleAsync(object args);
 }

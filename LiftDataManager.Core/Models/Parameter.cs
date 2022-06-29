@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace LiftDataManager.Core.Models
 {
@@ -42,11 +42,23 @@ namespace LiftDataManager.Core.Models
         private readonly bool dataImport;
         private ParameterChangeInfo ParameterChangeInfo { get; set; } = new();
         public List<string> DropDownList { get; } = new();
-        public ParameterTypValue ParameterTyp { get; set; }
-        public ParameterCategoryValue ParameterCategory { get; set; }
+        public ParameterTypValue ParameterTyp
+        {
+            get; set;
+        }
+        public ParameterCategoryValue ParameterCategory
+        {
+            get; set;
+        }
         public char Symbol => (char)SymbolCode;
-        public int SymbolCode { get; set; }
-        public bool DefaultUserEditable { get; set; }
+        public int SymbolCode
+        {
+            get; set;
+        }
+        public bool DefaultUserEditable
+        {
+            get; set;
+        }
 
         public Parameter(string name, string typeCode, string value)
         {
@@ -69,8 +81,14 @@ namespace LiftDataManager.Core.Models
             ParameterChangeInfo.ParameterTyp = ParameterTyp;
             dataImport = false;
         }
-        public string Name { get; set; }
-        public string TypeCode { get; set; }
+        public string Name
+        {
+            get; set;
+        }
+        public string TypeCode
+        {
+            get; set;
+        }
         private string _Value;
         public string Value
         {

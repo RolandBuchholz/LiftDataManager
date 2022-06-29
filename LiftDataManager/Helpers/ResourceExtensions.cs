@@ -1,14 +1,10 @@
-﻿using Windows.ApplicationModel.Resources;
+﻿using Microsoft.Windows.ApplicationModel.Resources;
 
-namespace LiftDataManager.Helpers
+namespace LiftDataManager.Helpers;
+
+internal static class ResourceExtensions
 {
-    internal static class ResourceExtensions
-    {
-        private static ResourceLoader _resLoader = new ResourceLoader();
+    private static readonly ResourceLoader _resourceLoader = new();
 
-        public static string GetLocalized(this string resourceKey)
-        {
-            return _resLoader.GetString(resourceKey);
-        }
-    }
+    public static string GetLocalized(this string resourceKey) => _resourceLoader.GetString(resourceKey);
 }

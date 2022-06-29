@@ -10,7 +10,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
-    Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -25,11 +24,7 @@
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
-    <Grid
-        x:Name="ContentArea"
-        Margin="5"
-        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+    <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -41,8 +36,8 @@
         <!--  Parameter  -->
         <ScrollViewer
             Grid.Row="0"
-            Margin="5,5,0,5"
-            Padding="10,5,20,5">
+            Margin="0,0,0,0"
+            Padding="0,0,15,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -54,6 +49,7 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
                     ExpandDirection="Down"
                     Header="Bausatzdaten"
                     IsExpanded="True">
@@ -550,7 +546,7 @@
         <SpeziControls:SidebarPanel
             Grid.Row="0"
             Grid.Column="1"
-            Margin="0,10,10,10"
+            Margin="5,0,0,0"
             InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl

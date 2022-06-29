@@ -10,14 +10,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
-    Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
         <media:AttachedCardShadow
             x:Key="CommonShadow"
-            CornerRadius="5"
-            Offset="5" />
+            CornerRadius="4"
+            Offset="4" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
@@ -25,11 +24,7 @@
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
-    <Grid
-        x:Name="ContentArea"
-        Margin="5"
-        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+    <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -41,8 +36,8 @@
         <!--  Parameter  -->
         <ScrollViewer
             Grid.Row="0"
-            Margin="5,5,0,5"
-            Padding="10,5,20,5">
+            Margin="0,0,0,0"
+            Padding="0,0,15,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -55,6 +50,7 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
                     ExpandDirection="Down"
                     Header="Steuerung / ELT"
                     IsExpanded="True">
@@ -549,6 +545,7 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
                     ExpandDirection="Down"
                     Header="Antrieb"
                     IsExpanded="True">
@@ -664,6 +661,7 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
                     ExpandDirection="Down"
                     Header="Notruf"
                     IsExpanded="True">
@@ -817,10 +815,7 @@
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid
-                            x:Name="sonstigesNotruf"
-                            Grid.Row="1"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="sonstigesNotruf" Grid.Row="1">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -871,7 +866,7 @@
         <SpeziControls:SidebarPanel
             Grid.Row="0"
             Grid.Column="1"
-            Margin="0,10,10,10"
+            Margin="5,0,0,0"
             InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
@@ -882,4 +877,5 @@
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
+
 </Page>

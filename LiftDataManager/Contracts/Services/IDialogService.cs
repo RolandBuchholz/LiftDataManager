@@ -1,6 +1,6 @@
-﻿using LiftDataManager.Core.Models;
+﻿using System.Threading.Tasks;
+using LiftDataManager.Core.Models;
 using Microsoft.UI.Xaml;
-using System.Threading.Tasks;
 
 namespace LiftDataManager.Contracts.Services
 {

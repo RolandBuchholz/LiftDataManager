@@ -8,23 +8,17 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <media:AttachedCardShadow
-            x:Key="CommonShadow"
-            CornerRadius="6"
-            Offset="6" />
+        <media:AttachedCardShadow x:Key="CommonShadow" CornerRadius="8" Offset="8" />
     </UserControl.Resources>
-    <Grid>
+    <Grid CornerRadius="8,8,8,8">
         <Rectangle
             Height="100"
-            Margin="10"
+            Margin="0,0,0,10"
             HorizontalAlignment="Stretch"
+            RadiusX="8"
+            RadiusY="8"
             ui:Effects.Shadow="{StaticResource CommonShadow}"
-            RadiusX="6"
-            RadiusY="6">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/banner.png" Stretch="UniformToFill" />
-            </Rectangle.Fill>
-        </Rectangle>
+            Fill="{ThemeResource SystemChromeAltHighColor}" />
         <StackPanel
             Margin="10,0,10,0"
             HorizontalAlignment="Center"
@@ -34,7 +28,6 @@
                 FontFamily="Segoe UI Variable"
                 FontSize="72"
                 FontWeight="Bold"
-                Foreground="LightSeaGreen"
                 Text="L" />
             <TextBlock
                 Margin="0,0,10,0"
@@ -42,14 +35,12 @@
                 FontFamily="Segoe UI Variable"
                 FontSize="48"
                 FontWeight="Bold"
-                Foreground="WhiteSmoke"
                 Text="ift" />
             <TextBlock
                 VerticalAlignment="Center"
                 FontFamily="Segoe UI Variable"
                 FontSize="72"
                 FontWeight="Bold"
-                Foreground="LightSeaGreen"
                 Text="D" />
             <TextBlock
                 Margin="0,0,10,0"
@@ -57,21 +48,18 @@
                 FontFamily="Segoe UI Variable"
                 FontSize="48"
                 FontWeight="Bold"
-                Foreground="WhiteSmoke"
                 Text="ata" />
             <TextBlock
                 VerticalAlignment="Center"
                 FontFamily="Segoe UI Variable"
                 FontSize="72"
                 FontWeight="Bold"
-                Foreground="LightSeaGreen"
                 Text="M" />
             <TextBlock
                 VerticalAlignment="Center"
                 FontFamily="Segoe UI Variable"
                 FontSize="48"
                 FontWeight="Bold"
-                Foreground="WhiteSmoke"
                 Text="anager" />
         </StackPanel>
     </Grid>

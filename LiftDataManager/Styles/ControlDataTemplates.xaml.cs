@@ -1,12 +1,11 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace LiftDataManager.Styles
+namespace LiftDataManager.Styles;
+
+public sealed partial class ControlDataTemplates : ResourceDictionary
 {
-    public sealed partial class ControlDataTemplates : ResourceDictionary
+    public ControlDataTemplates()
     {
-        public ControlDataTemplates()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

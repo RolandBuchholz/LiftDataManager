@@ -1,13 +1,13 @@
-﻿using Cogs.Collections;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Input;
+using Cogs.Collections;
 using CommunityToolkit.Common.Collections;
 using LiftDataManager.Core.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Input;
 
 namespace LiftDataManager.Controls
 {
@@ -22,8 +22,14 @@ namespace LiftDataManager.Controls
 
         public ObservableDictionary<string, Parameter> ItemSource
         {
-            get { return (ObservableDictionary<string, Parameter>)GetValue(ItemSourceProperty); }
-            set { SetValue(ItemSourceProperty, value); }
+            get
+            {
+                return (ObservableDictionary<string, Parameter>)GetValue(ItemSourceProperty);
+            }
+            set
+            {
+                SetValue(ItemSourceProperty, value);
+            }
         }
 
         public static readonly DependencyProperty ItemSourceProperty =
@@ -31,8 +37,14 @@ namespace LiftDataManager.Controls
 
         public CollectionViewSource ViewSource
         {
-            get { return (CollectionViewSource)GetValue(ViewSourceProperty); }
-            set { SetValue(ViewSourceProperty, value); }
+            get
+            {
+                return (CollectionViewSource)GetValue(ViewSourceProperty);
+            }
+            set
+            {
+                SetValue(ViewSourceProperty, value);
+            }
         }
 
         public static readonly DependencyProperty ViewSourceProperty =
@@ -40,7 +52,10 @@ namespace LiftDataManager.Controls
 
         public string SearchInput
         {
-            get { return (string)GetValue(SearchInputProperty); }
+            get
+            {
+                return (string)GetValue(SearchInputProperty);
+            }
             set
             {
                 SetValue(SearchInputProperty, value);
@@ -53,7 +68,10 @@ namespace LiftDataManager.Controls
 
         public string GroupingValue
         {
-            get { return (string)GetValue(GroupingValueProperty); }
+            get
+            {
+                return (string)GetValue(GroupingValueProperty);
+            }
             set
             {
                 SetValue(GroupingValueProperty, value);
@@ -66,7 +84,10 @@ namespace LiftDataManager.Controls
 
         public string FilterValue
         {
-            get { return (string)GetValue(FilterValueProperty); }
+            get
+            {
+                return (string)GetValue(FilterValueProperty);
+            }
             set
             {
                 SetValue(FilterValueProperty, value);
@@ -79,7 +100,10 @@ namespace LiftDataManager.Controls
 
         public bool CanShowUnsavedParameters
         {
-            get { return (bool)GetValue(CanShowUnsavedParametersProperty); }
+            get
+            {
+                return (bool)GetValue(CanShowUnsavedParametersProperty);
+            }
             set
             {
                 SetValue(CanShowUnsavedParametersProperty, value);
@@ -98,7 +122,10 @@ namespace LiftDataManager.Controls
 
         public bool IsUnsavedParametersSelected
         {
-            get { return (bool)GetValue(IsUnsavedParametersSelectedProperty); }
+            get
+            {
+                return (bool)GetValue(IsUnsavedParametersSelectedProperty);
+            }
             set
             {
                 SetValue(IsUnsavedParametersSelectedProperty, value);
@@ -111,8 +138,14 @@ namespace LiftDataManager.Controls
 
         public ICommand SaveAllCommand
         {
-            get { return (ICommand)GetValue(SaveAllCommandProperty); }
-            set { SetValue(SaveAllCommandProperty, value); }
+            get
+            {
+                return (ICommand)GetValue(SaveAllCommandProperty);
+            }
+            set
+            {
+                SetValue(SaveAllCommandProperty, value);
+            }
         }
 
         public static readonly DependencyProperty SaveAllCommandProperty =

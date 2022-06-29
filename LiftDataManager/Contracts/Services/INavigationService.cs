@@ -1,20 +1,25 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace LiftDataManager.Contracts.Services
+namespace LiftDataManager.Contracts.Services;
+
+public interface INavigationService
 {
-    public interface INavigationService
+    event NavigatedEventHandler Navigated;
+
+    bool CanGoBack
     {
-        event NavigatedEventHandler Navigated;
-
-        bool CanGoBack { get; }
-
-        Frame Frame { get; set; }
-
-        bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false);
-
-        bool GoBack();
-
-        void SetListDataItemForNextConnectedAnimation(object item);
+        get;
     }
+
+    Frame Frame
+    {
+        get; set;
+    }
+
+    bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false);
+
+    bool GoBack();
+
+    void SetListDataItemForNextConnectedAnimation(object item);
 }

@@ -10,7 +10,6 @@
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:xaml="using:Microsoft.UI.Xaml"
-    Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -106,19 +105,13 @@
             </Setter>
         </Style>
     </Page.Resources>
-    <Grid
-        Margin="5"
-        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="10">
+    <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel
-                x:Name="ContentArea"
-                Grid.Column="0"
-                Margin="10,5,10,5">
+            <StackPanel x:Name="ContentArea">
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <TextBlock x:Uid="Settings_Theme" />
@@ -197,7 +190,6 @@
                 Grid.Column="1"
                 MinWidth="400"
                 MaxWidth="800"
-                Margin="10"
                 HorizontalAlignment="Right">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -205,10 +197,13 @@
                 </Grid.RowDefinitions>
                 <TextBlock
                     Grid.Row="0"
+                    Margin="10"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Text="Informations Panel" />
                 <Border
-                    Grid.Row="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Margin="0,0,0,10"
                     VerticalAlignment="Stretch"
                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                     Background="{StaticResource SystemControlPageBackgroundListLowBrush}"
@@ -216,13 +211,10 @@
                 <ScrollViewer
                     Name="InfoTextScroller"
                     Grid.Row="1"
-                    Margin="5,10,5,10"
+                    Margin="5,5,5,15"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Auto">
-                    <TextBlock
-                        Margin="10"
-                        Text="{x:Bind ViewModel.InfoText, Mode=OneWay}"
-                        TextWrapping="Wrap" />
+                    <TextBlock Text="{x:Bind ViewModel.InfoText, Mode=OneWay}" TextWrapping="Wrap" />
                 </ScrollViewer>
             </Grid>
             <ProgressRing

@@ -12,7 +12,10 @@ namespace LiftDataManager.Controls
 
         public string InfoText
         {
-            get { return (string)GetValue(InfoTextProperty); }
+            get
+            {
+                return (string)GetValue(InfoTextProperty);
+            }
             set
             {
                 SetValue(InfoTextProperty, value);
@@ -28,8 +31,14 @@ namespace LiftDataManager.Controls
 
         public bool CanTextClear
         {
-            get { return (bool)GetValue(CanTextClearProperty); }
-            set { SetValue(CanTextClearProperty, value); }
+            get
+            {
+                return (bool)GetValue(CanTextClearProperty);
+            }
+            set
+            {
+                SetValue(CanTextClearProperty, value);
+            }
         }
 
         public static readonly DependencyProperty CanTextClearProperty =

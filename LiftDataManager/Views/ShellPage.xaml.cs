@@ -1,52 +1,81 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using LiftDataManager.Contracts.Services;
+﻿using LiftDataManager.Contracts.Services;
+using LiftDataManager.Helpers;
 using LiftDataManager.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using Windows.System;
 
-namespace LiftDataManager.Views
+namespace LiftDataManager.Views;
+
+public sealed partial class ShellPage : Page
 {
-    public sealed partial class ShellPage : Page
+    public ShellViewModel ViewModel
     {
-        private readonly KeyboardAccelerator _altLeftKeyboardAccelerator = BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu);
-        private readonly KeyboardAccelerator _backKeyboardAccelerator = BuildKeyboardAccelerator(VirtualKey.GoBack);
+        get;
+    }
 
-        public ShellViewModel ViewModel { get; }
+    public ShellPage(ShellViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
 
-        public ShellPage(ShellViewModel viewModel)
+        ViewModel.NavigationService.Frame = NavigationFrame;
+        ViewModel.NavigationViewService.Initialize(NavigationViewControl);
+
+        App.MainWindow.ExtendsContentIntoTitleBar = true;
+        App.MainWindow.SetTitleBar(AppTitleBar);
+        App.MainWindow.Activated += MainWindow_Activated;
+        AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        TitleBarHelper.UpdateTitleBar(RequestedTheme);
+
+        KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
+        KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
+    }
+
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    {
+        var resource = args.WindowActivationState == WindowActivationState.Deactivated ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
+
+        AppTitleBarText.Foreground = (SolidColorBrush)Application.Current.Resources[resource];
+    }
+
+    private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
+    {
+        AppTitleBar.Margin = new Thickness()
         {
-            ViewModel = viewModel;
-            InitializeComponent();
-            ViewModel.NavigationService.Frame = shellFrame;
-            ViewModel.NavigationViewService.Initialize(navigationView);
+            Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
+            Top = AppTitleBar.Margin.Top,
+            Right = AppTitleBar.Margin.Right,
+            Bottom = AppTitleBar.Margin.Bottom
+        };
+    }
+
+    private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
+    {
+        var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
+
+        if (modifiers.HasValue)
+        {
+            keyboardAccelerator.Modifiers = modifiers.Value;
         }
 
-        private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            // Keyboard accelerators are added here to avoid showing 'Alt + left' tooltip on the page.
-            // More info on tracking issue https://github.com/Microsoft/microsoft-ui-xaml/issues/8
-            KeyboardAccelerators.Add(_altLeftKeyboardAccelerator);
-            KeyboardAccelerators.Add(_backKeyboardAccelerator);
-        }
+        keyboardAccelerator.Invoked += OnKeyboardAcceleratorInvoked;
 
-        private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
-        {
-            var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
-            if (modifiers.HasValue)
-            {
-                keyboardAccelerator.Modifiers = modifiers.Value;
-            }
+        return keyboardAccelerator;
+    }
 
-            keyboardAccelerator.Invoked += OnKeyboardAcceleratorInvoked;
-            return keyboardAccelerator;
-        }
+    private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    {
+        var navigationService = App.GetService<INavigationService>();
 
-        private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            var navigationService = Ioc.Default.GetService<INavigationService>();
-            var result = navigationService.GoBack();
-            args.Handled = result;
-        }
+        var result = navigationService.GoBack();
+
+        args.Handled = result;
     }
 }

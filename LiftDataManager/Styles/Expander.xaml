@@ -286,15 +286,17 @@
         x:Key="ExpanderInfoSidebarPanelStyle"
         x:Name="ExpanderInfoSidebarPanelStyle"
         TargetType="controls:Expander">
-        <Setter Property="Header" Value="Header" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HeaderStyle" Value="{StaticResource HeaderToggleButtonStylePanelStyle}" />
-        <Setter Property="Background" Value="{ThemeResource SystemControlPageBackgroundChromeMediumLowBrush}" />
+        <Setter Property="Background" Value="{ThemeResource SystemChromeAltHighColor}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Expander">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid x:Name="PART_RootGrid" CornerRadius="8">
+                        <Grid
+                            x:Name="PART_RootGrid"
+                            Background="{ThemeResource SystemChromeAltHighColor}"
+                            CornerRadius="0,8,8,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition x:Name="RowOne" Height="Auto" />
                                 <RowDefinition x:Name="RowTwo" Height="*" />
@@ -535,7 +537,6 @@
                                         <Setter Target="ColumnTwo.Width" Value="Auto" />
                                         <Setter Target="PART_MainContent.RenderTransformOrigin" Value="1, 0.5" />
                                         <Setter Target="PART_ExpanderToggleButton.Background" Value="Transparent" />
-                                        <!--<Setter Target="PART_ExpanderToggleButton.Background" Value="{Binding ElementName=PART_MainContent, Path=Background}" />-->
                                     </VisualState.Setters>
                                     <Storyboard>
                                         <DoubleAnimation

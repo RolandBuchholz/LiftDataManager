@@ -1,17 +1,19 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
+
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class SchachtPage : Page
-    {
-        public SchachtViewModel ViewModel { get; }
+namespace LiftDataManager.Views;
 
-        public SchachtPage()
-        {
-            ViewModel = Ioc.Default.GetService<SchachtViewModel>();
-            InitializeComponent();
-        }
+public sealed partial class SchachtPage : Page
+{
+    public SchachtViewModel ViewModel
+    {
+        get;
+    }
+
+    public SchachtPage()
+    {
+        ViewModel = App.GetService<SchachtViewModel>();
+        InitializeComponent();
     }
 }

@@ -11,7 +11,7 @@
         x:Name="InfoSidebarPanel"
         ExpandDirection="Left"
         Header="Info Sidebar Panel"
-        Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
+                Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
         <ScrollViewer
             Name="InfoTextScroller"
             MinWidth="250"

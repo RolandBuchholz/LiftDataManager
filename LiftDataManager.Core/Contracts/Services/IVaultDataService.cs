@@ -1,5 +1,5 @@
-﻿using LiftDataManager.Core.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.Core.Contracts.Services
 {

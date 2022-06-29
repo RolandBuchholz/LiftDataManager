@@ -1,19 +1,19 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class AllgemeineDatenPage : Page
-    {
-        public AllgemeineDatenViewModel ViewModel { get; }
+namespace LiftDataManager.Views;
 
-        public AllgemeineDatenPage()
-        {
-            ViewModel = Ioc.Default.GetService<AllgemeineDatenViewModel>();
-            InitializeComponent();
-        }
+public sealed partial class AllgemeineDatenPage : Page
+{
+    public AllgemeineDatenViewModel ViewModel
+    {
+        get;
+    }
+
+    public AllgemeineDatenPage()
+    {
+        ViewModel = App.GetService<AllgemeineDatenViewModel>();
+        InitializeComponent();
     }
 }

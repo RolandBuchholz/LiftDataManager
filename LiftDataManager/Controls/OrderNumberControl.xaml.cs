@@ -13,7 +13,10 @@ namespace LiftDataManager.Controls
         private string _OrderYear;
         public string OrderYear
         {
-            get { return _OrderYear; }
+            get
+            {
+                return _OrderYear;
+            }
             set
             {
                 _OrderYear = value;
@@ -24,7 +27,10 @@ namespace LiftDataManager.Controls
         private string _OrderMonth;
         public string OrderMonth
         {
-            get { return _OrderMonth; }
+            get
+            {
+                return _OrderMonth;
+            }
             set
             {
                 _OrderMonth = value;
@@ -35,7 +41,10 @@ namespace LiftDataManager.Controls
         private string _OrderId;
         public string OrderId
         {
-            get { return _OrderId; }
+            get
+            {
+                return _OrderId;
+            }
             set
             {
                 _OrderId = value;

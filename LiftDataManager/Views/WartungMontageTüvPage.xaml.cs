@@ -1,19 +1,19 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class WartungMontageTüvPage : Page
-    {
-        public WartungMontageTüvViewModel ViewModel { get; }
+namespace LiftDataManager.Views;
 
-        public WartungMontageTüvPage()
-        {
-            ViewModel = Ioc.Default.GetService<WartungMontageTüvViewModel>();
-            InitializeComponent();
-        }
+public sealed partial class WartungMontageTüvPage : Page
+{
+    public WartungMontageTüvViewModel ViewModel
+    {
+        get;
+    }
+
+    public WartungMontageTüvPage()
+    {
+        ViewModel = App.GetService<WartungMontageTüvViewModel>();
+        InitializeComponent();
     }
 }

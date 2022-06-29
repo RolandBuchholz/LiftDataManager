@@ -1,19 +1,19 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class KabinePage : Page
-    {
-        public KabineViewModel ViewModel { get; }
+namespace LiftDataManager.Views;
 
-        public KabinePage()
-        {
-            ViewModel = Ioc.Default.GetService<KabineViewModel>();
-            InitializeComponent();
-        }
+public sealed partial class KabinePage : Page
+{
+    public KabineViewModel ViewModel
+    {
+        get;
+    }
+
+    public KabinePage()
+    {
+        ViewModel = App.GetService<KabineViewModel>();
+        InitializeComponent();
     }
 }

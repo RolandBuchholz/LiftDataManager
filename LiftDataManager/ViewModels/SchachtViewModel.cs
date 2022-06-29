@@ -1,72 +1,77 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Contracts.ViewModels;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
-using System;
 
-namespace LiftDataManager.ViewModels
+namespace LiftDataManager.ViewModels;
+
+public class SchachtViewModel : DataViewModelBase, INavigationAware
 {
-    public class SchachtViewModel : DataViewModelBase, INavigationAware
+
+
+    public SchachtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+         base(parameterDataService, dialogService, navigationService)
     {
-
-
-        public SchachtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-             base(parameterDataService, dialogService, navigationService)
+        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
         {
-            WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
+            if (m is not null && m.Value.IsDirty)
             {
-                if (m is not null && m.Value.IsDirty)
-                {
-                    SetInfoSidebarPanelText(m);
-                    await CheckUnsavedParametresAsync();
-                }
-            });
-
-            SetHauptzugangCommand = new RelayCommand<string>(SetHauptzugang);
-            ResetHauptzugangCommand = new RelayCommand(ResetHauptzugang);
-        }
-
-        public IRelayCommand SetHauptzugangCommand { get; }
-        public IRelayCommand ResetHauptzugangCommand { get; }
-
-        private void SetHauptzugang(string parameter)
-        {
-            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value , parameter, StringComparison.OrdinalIgnoreCase))
-            {
-                ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
-                DisplayNameHauptzugang = parameter;
+                SetInfoSidebarPanelText(m);
+                await CheckUnsavedParametresAsync();
             }
-        }
+        });
 
-        private void ResetHauptzugang()
-        {
-            if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
-            {
-                ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
-                DisplayNameHauptzugang = "NV";
-            }
-        }
+        SetHauptzugangCommand = new RelayCommand<string>(SetHauptzugang);
+        ResetHauptzugangCommand = new RelayCommand(ResetHauptzugang);
+    }
 
-        private string _DisplayNameHauptzugang;
-        public string DisplayNameHauptzugang
-        {
-            get => ParamterDictionary["var_Haupthaltestelle"].Value == "NV"
-                    ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")
-                    : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
-            set => SetProperty(ref _DisplayNameHauptzugang, value);
-        }
+    public IRelayCommand SetHauptzugangCommand
+    {
+        get;
+    }
+    public IRelayCommand ResetHauptzugangCommand
+    {
+        get;
+    }
 
-        public void OnNavigatedTo(object parameter)
+    private void SetHauptzugang(string parameter)
+    {
+        if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
         {
-            SynchronizeViewModelParameter();
-            if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+            ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
+            DisplayNameHauptzugang = parameter;
         }
+    }
 
-        public void OnNavigatedFrom()
+    private void ResetHauptzugang()
+    {
+        if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
         {
-            WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+            ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
+            DisplayNameHauptzugang = "NV";
         }
+    }
+
+    private string _DisplayNameHauptzugang;
+    public string DisplayNameHauptzugang
+    {
+        get => ParamterDictionary["var_Haupthaltestelle"].Value == "NV"
+                ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")
+                : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
+        set => SetProperty(ref _DisplayNameHauptzugang, value);
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        SynchronizeViewModelParameter();
+        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+    }
+
+    public void OnNavigatedFrom()
+    {
+        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
     }
 }

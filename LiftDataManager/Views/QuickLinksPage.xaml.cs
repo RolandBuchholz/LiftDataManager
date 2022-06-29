@@ -1,17 +1,19 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using LiftDataManager.ViewModels;
+﻿using LiftDataManager.ViewModels;
+
 using Microsoft.UI.Xaml.Controls;
 
-namespace LiftDataManager.Views
-{
-    public sealed partial class QuickLinksPage : Page
-    {
-        public QuickLinksViewModel ViewModel { get; }
+namespace LiftDataManager.Views;
 
-        public QuickLinksPage()
-        {
-            ViewModel = Ioc.Default.GetService<QuickLinksViewModel>();
-            InitializeComponent();
-        }
+public sealed partial class QuickLinksPage : Page
+{
+    public QuickLinksViewModel ViewModel
+    {
+        get;
+    }
+
+    public QuickLinksPage()
+    {
+        ViewModel = App.GetService<QuickLinksViewModel>();
+        InitializeComponent();
     }
 }

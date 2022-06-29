@@ -10,7 +10,6 @@
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
     xmlns:views="using:LiftDataManager.Views"
-    Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -40,11 +39,7 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <Grid
-        x:Name="ContentArea"
-        Margin="5"
-        Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-        CornerRadius="8">
+    <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -99,7 +94,7 @@
                 </ScrollViewer>
                 <views:ParameterDetailControl
                     Grid.Column="1"
-                    Margin="10"
+                    Margin="0,5,0,0"
                     ListDetailsMenuItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SaveCommand="{x:Bind ViewModel.SaveParameter}"
                     Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}" />
@@ -117,7 +112,7 @@
             <speziControls:SidebarPanel
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,5,10,0"
+                Margin="0,5,0,0"
                 InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         </Grid>
         <!--  Footer  -->

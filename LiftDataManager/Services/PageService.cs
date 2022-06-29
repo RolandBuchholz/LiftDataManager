@@ -1,72 +1,74 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.ViewModels;
-using LiftDataManager.Views;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LiftDataManager.Services
+using CommunityToolkit.Mvvm.ComponentModel;
+
+using LiftDataManager.Contracts.Services;
+using LiftDataManager.ViewModels;
+using LiftDataManager.Views;
+
+using Microsoft.UI.Xaml.Controls;
+
+namespace LiftDataManager.Services;
+
+public class PageService : IPageService
 {
-    public class PageService : IPageService
+    private readonly Dictionary<string, Type> _pages = new();
+
+    public PageService()
     {
-        private readonly Dictionary<string, Type> _pages = new Dictionary<string, Type>();
+        Configure<HomeViewModel, HomePage>();
+        Configure<ListenansichtViewModel, ListenansichtPage>();
+        Configure<DatenansichtViewModel, DatenansichtPage>();
+        Configure<DatenansichtDetailViewModel, DatenansichtDetailPage>();
+        Configure<TabellenansichtViewModel, TabellenansichtPage>();
+        Configure<AllgemeineDatenViewModel, AllgemeineDatenPage>();
+        Configure<AntriebSteuerungNotrufViewModel, AntriebSteuerungNotrufPage>();
+        Configure<BausatzViewModel, BausatzPage>();
+        Configure<KabineViewModel, KabinePage>();
+        Configure<QuickLinksViewModel, QuickLinksPage>();
+        Configure<SchachtViewModel, SchachtPage>();
+        Configure<SignalisationViewModel, SignalisationPage>();
+        Configure<SonstigesViewModel, SonstigesPage>();
+        Configure<TürenViewModel, TürenPage>();
+        Configure<WartungMontageTüvViewModel, WartungMontageTüvPage>();
+        Configure<SettingsViewModel, SettingsPage>();
+    }
 
-        public PageService()
+    public Type GetPageType(string key)
+    {
+        Type pageType;
+        lock (_pages)
         {
-            Configure<HomeViewModel, HomePage>();
-            Configure<ListenansichtViewModel, ListenansichtPage>();
-            Configure<DatenansichtViewModel, DatenansichtPage>();
-            Configure<DatenansichtDetailViewModel, DatenansichtDetailPage>();
-            Configure<TabellenansichtViewModel, TabellenansichtPage>();
-            Configure<SettingsViewModel, SettingsPage>();
-            Configure<QuickLinksViewModel, QuickLinksPage>();
-            Configure<KabineViewModel, KabinePage>();
-            Configure<AllgemeineDatenViewModel, AllgemeineDatenPage>();
-            Configure<SchachtViewModel, SchachtPage>();
-            Configure<BausatzViewModel, BausatzPage>();
-            Configure<TürenViewModel, TürenPage>();
-            Configure<AntriebSteuerungNotrufViewModel, AntriebSteuerungNotrufPage>();
-            Configure<SignalisationViewModel, SignalisationPage>();
-            Configure<WartungMontageTüvViewModel, WartungMontageTüvPage>();
-            Configure<SonstigesViewModel, SonstigesPage>();
+            if (!_pages.TryGetValue(key, out pageType))
+            {
+                throw new ArgumentException($"Page not found: {key}. Did you forget to call PageService.Configure?");
+            }
         }
 
-        public Type GetPageType(string key)
+        return pageType;
+    }
+
+    private void Configure<VM, V>()
+        where VM : ObservableObject
+        where V : Page
+    {
+        lock (_pages)
         {
-            Type pageType;
-            lock (_pages)
+            var key = typeof(VM).FullName;
+            if (_pages.ContainsKey(key))
             {
-                if (!_pages.TryGetValue(key, out pageType))
-                {
-                    throw new ArgumentException($"Page not found: {key}. Did you forget to call PageService.Configure?");
-                }
+                throw new ArgumentException($"The key {key} is already configured in PageService");
             }
 
-            return pageType;
-        }
-
-        private void Configure<VM, V>()
-            where VM : ObservableObject
-            where V : Page
-        {
-            lock (_pages)
+            var type = typeof(V);
+            if (_pages.Any(p => p.Value == type))
             {
-                var key = typeof(VM).FullName;
-                if (_pages.ContainsKey(key))
-                {
-                    throw new ArgumentException($"The key {key} is already configured in PageService");
-                }
-
-                var type = typeof(V);
-                if (_pages.Any(p => p.Value == type))
-                {
-                    throw new ArgumentException($"This type is already configured with key {_pages.First(p => p.Value == type).Key}");
-                }
-
-                _pages.Add(key, type);
+                throw new ArgumentException($"This type is already configured with key {_pages.First(p => p.Value == type).Key}");
             }
+
+            _pages.Add(key, type);
         }
     }
 }
