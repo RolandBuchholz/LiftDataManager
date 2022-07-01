@@ -39,9 +39,9 @@
                 <TextBlock
                     Margin="20,0,0,0"
                     VerticalAlignment="Center"
-                    Text="Hauptzugang:">
+                    Text="Haupthaltestelle:">
                     <ToolTipService.ToolTip>
-                        <TextBlock Text="Hauptzugang mit rechter Maustaste wählen" />
+                        <TextBlock Text="Haupthaltestelle mit rechter Maustaste wählen" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
                 <TextBlock
@@ -50,7 +50,7 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind DisplayNameHauptzugang, Mode=OneWay}">
                     <ToolTipService.ToolTip>
-                        <TextBlock Text="Hauptzugang mit rechter Maustaste wählen" />
+                        <TextBlock Text="Haupthaltestelle mit rechter Maustaste wählen" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
                 <AppBarButton
@@ -62,7 +62,7 @@
                     Icon="Delete"
                     IsEnabled="True">
                     <ToolTipService.ToolTip>
-                        <TextBlock Text="Reset Hauptzugang" />
+                        <TextBlock Text="Reset Haupthaltestelle" />
                     </ToolTipService.ToolTip>
                 </AppBarButton>
             </StackPanel>
@@ -202,6 +202,7 @@
                 Grid.Column="0"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
+                IsEnabled="False"
                 Content="Zugang A"
                 IsChecked="{x:Bind ZugangA, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -311,7 +312,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A0"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -328,7 +329,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A1"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -345,7 +346,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A2"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -362,7 +363,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A3"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -379,7 +380,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A4"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -396,7 +397,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A5"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -413,7 +414,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A6"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -430,7 +431,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A7"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -447,7 +448,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A8"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -464,7 +465,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_A9"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -481,7 +482,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B0"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -498,7 +499,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B1"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -515,7 +516,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B2"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -532,7 +533,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B3"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -549,7 +550,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B4"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -566,7 +567,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B5"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -583,7 +584,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B6"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -600,7 +601,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B7"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -617,7 +618,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B8"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -634,7 +635,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_B9"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -651,7 +652,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C0"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -668,7 +669,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C1"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -685,7 +686,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C2"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -702,7 +703,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C3"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -719,7 +720,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C4"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -736,7 +737,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C5"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -753,7 +754,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C6"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -770,7 +771,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C7"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -787,7 +788,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C8"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -804,7 +805,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_C9"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -821,7 +822,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D0"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -838,7 +839,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D1"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -855,7 +856,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D2"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -872,7 +873,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D3"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -889,7 +890,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D4"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -906,7 +907,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D5"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -923,7 +924,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D6"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -940,7 +941,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D7"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -957,7 +958,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D8"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>
@@ -974,7 +975,7 @@
                         <MenuFlyoutItem
                             Command="{x:Bind SetHauptzugangCommand}"
                             CommandParameter="ZG_D9"
-                            Text="Setze Hauptzugang" />
+                            Text="Setze Haupthaltestelle" />
                     </MenuFlyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBox>

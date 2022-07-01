@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace LiftDataManager.Core.Messenger.Messages
+namespace LiftDataManager.Core.Messenger.Messages;
+
+public class ParameterDirtyMessage : ValueChangedMessage<ParameterChangeInfo>
 {
-    public class ParameterDirtyMessage : ValueChangedMessage<ParameterChangeInfo>
+    public ParameterDirtyMessage(ParameterChangeInfo value) : base(value)
     {
-        public ParameterDirtyMessage(ParameterChangeInfo value) : base(value)
-        {
-        }
     }
 }

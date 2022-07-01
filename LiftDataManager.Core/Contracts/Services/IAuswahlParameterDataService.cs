@@ -2,16 +2,18 @@
 using System.Threading.Tasks;
 using LiftDataManager.Core.Models;
 
-namespace LiftDataManager.Core.Contracts.Services
+namespace LiftDataManager.Core.Contracts.Services;
+
+public interface IAuswahlParameterDataService
 {
-    public interface IAuswahlParameterDataService
+    Dictionary<string, AuswahlParameter> AuswahlParameterDictionary
     {
-        Dictionary<string, AuswahlParameter> AuswahlParameterDictionary
-        {
-            get; set;
-        }
-        List<string> GetListeAuswahlparameter(string name);
-        Task<string> UpdateAuswahlparameterAsync();
-        bool ParameterHasAuswahlliste(string name);
+        get; set;
     }
+
+    List<string> GetListeAuswahlparameter(string name);
+    
+    Task<string> UpdateAuswahlparameterAsync();
+    
+    bool ParameterHasAuswahlliste(string name);
 }

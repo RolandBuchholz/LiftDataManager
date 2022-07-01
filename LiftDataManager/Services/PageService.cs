@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
 using LiftDataManager.Views;
-
 using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.Services;

@@ -373,7 +373,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                         InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
                         InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
 
-                        bool confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot,
+                        var confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot,
                                                 $"Es wurden mehrere {searchPattern} Dateien gefunden?",
                                                  "XML aus Vault herunterladen",
                                                     "Abbrechen");

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.ViewModels;
-
 using Microsoft.UI.Xaml;
 
 namespace LiftDataManager.Activation;

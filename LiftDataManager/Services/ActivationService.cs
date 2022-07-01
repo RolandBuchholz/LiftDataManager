@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using LiftDataManager.Activation;
 using LiftDataManager.Contracts.Services;
 using LiftDataManager.Views;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -16,13 +14,18 @@ public class ActivationService : IActivationService
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly ISettingService _settingService;
     private UIElement _shell = null;
 
-    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService)
+    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
+        IEnumerable<IActivationHandler> activationHandlers, 
+        IThemeSelectorService themeSelectorService, 
+        ISettingService settingService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
         _themeSelectorService = themeSelectorService;
+        _settingService = settingService;
     }
 
     public async Task ActivateAsync(object activationArgs)
@@ -66,6 +69,7 @@ public class ActivationService : IActivationService
     private async Task InitializeAsync()
     {
         await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
+        await _settingService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;
     }
 

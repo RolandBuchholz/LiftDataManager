@@ -504,7 +504,8 @@
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
                                         Content="Zugang A"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        IsEnabled="False">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock

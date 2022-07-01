@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 
-namespace LiftDataManager.Contracts.Services
+namespace LiftDataManager.Contracts.Services;
+
+public interface ISettingService
 {
-    public interface ISettingService
+    public bool Adminmode
     {
-        public bool Adminmode
-        {
-            get; set;
-        }
-        Task InitializeAsync();
-        Task SetSettingsAsync(bool setting);
+        get; set;
     }
+    Task InitializeAsync();
+    Task SetSettingsAsync(bool setting);
 }
