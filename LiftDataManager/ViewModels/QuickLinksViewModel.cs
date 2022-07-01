@@ -110,7 +110,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
         CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml");
 
-        string bausatztyp = "";
+        var bausatztyp = "";
 
         if (ParamterDictionary["var_Bausatz"].Value is not null)
         {
@@ -123,9 +123,9 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenSpezi()
     {
-        string auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
-        string filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
-        string startargs = "";
+        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
+        var filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
+        var startargs = "";
 
         if (!string.IsNullOrWhiteSpace(auftragsnummer))
         {
@@ -141,8 +141,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenSpeziPdf()
     {
-        string filename = FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
-        string startargs = "";
+        var filename = FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
+        var startargs = "";
 
         if (File.Exists(filename))
         {
@@ -152,8 +152,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenBauer()
     {
-        string auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
-        string filename = @"C:\Work\Administration\Tools\Explorer Start.exe";
+        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
+        var filename = @"C:\Work\Administration\Tools\Explorer Start.exe";
 
         if (File.Exists(FullPathXml))
         {
@@ -165,8 +165,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
         if (!string.IsNullOrWhiteSpace(FullPathXml))
         {
-            string pathXml = Path.GetDirectoryName(FullPathXml);
-            string filename = "explorer.exe";
+            var pathXml = Path.GetDirectoryName(FullPathXml);
+            var filename = "explorer.exe";
 
             if (Directory.Exists(pathXml))
             {
@@ -180,8 +180,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
         {
             MakeVaultLink(FullPathXml);
-            string vaultLink = @"C:\Temp\VaultLink.acr";
-            string startargs = "";
+            var vaultLink = @"C:\Temp\VaultLink.acr";
+            var startargs = "";
             if (File.Exists(FullPathXml))
             {
                 StartProgram(vaultLink, startargs);
@@ -191,11 +191,11 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenCFP()
     {
-        string auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
-        string bausatztyp = ParamterDictionary["var_Bausatz"].Value;
-        string user = Environment.GetEnvironmentVariable("userprofile");
-        string cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
-        string startargs = auftragsnummer + " " + bausatztyp;
+        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
+        var bausatztyp = ParamterDictionary["var_Bausatz"].Value;
+        var user = Environment.GetEnvironmentVariable("userprofile");
+        var cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
+        var startargs = auftragsnummer + " " + bausatztyp;
         using Process p = new();
 
         StartProgram(cfpPath, startargs);
@@ -203,8 +203,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenZiehlAbegg()
     {
-        string filename = @"C:\Program Files (x86)\zetalift\Lift.exe";
-        string startargs = "";
+        var filename = @"C:\Program Files (x86)\zetalift\Lift.exe";
+        var startargs = "";
 
         if (File.Exists(filename))
         {
@@ -214,16 +214,16 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenLilo()
     {
-        string filename = @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE";
-        string startargs = "";
+        var filename = @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE";
+        var startargs = "";
 
         if (File.Exists(filename))
         {
             StartProgram(filename, startargs);
         }
 
-        string user = Environment.GetEnvironmentVariable("userprofile");
-        string cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
+        var user = Environment.GetEnvironmentVariable("userprofile");
+        var cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
         using Process p = new();
 
         if (File.Exists(filename))
@@ -243,7 +243,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private static void MakeVaultLink(string path)
     {
-        string vaultPath = path.Replace(@"C:\Work", "$").Replace(@"\", "/");
+        var vaultPath = path.Replace(@"C:\Work", "$").Replace(@"\", "/");
 
         XmlWriter oXmlWriter = null;
         XmlWriterSettings oXmlWriterSettings = new XmlWriterSettings();

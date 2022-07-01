@@ -41,11 +41,11 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
     private ICommand _itemClickCommand;
     public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
 
-    override protected async Task CheckUnsavedParametresAsync()
+    protected async override Task CheckUnsavedParametresAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            bool dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
+            var dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -55,7 +55,7 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                bool dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +

@@ -12,9 +12,13 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Helpers;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 
 namespace LiftDataManager.ViewModels;
 
@@ -37,6 +41,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 
         PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
         UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
+        SwitchAccentColorCommand = new RelayCommand(SwitchAccentColor);
     }
 
     public IRelayCommand PinDialog
@@ -44,6 +49,10 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         get;
     }
     public IAsyncRelayCommand UpdateAuswahlParameter
+    {
+        get;
+    }
+    public IRelayCommand SwitchAccentColorCommand
     {
         get;
     }
@@ -63,7 +72,6 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         get => _versionDescription;
         set => SetProperty(ref _versionDescription, value);
     }
-
 
     public ICommand SwitchThemeCommand
     {
@@ -104,6 +112,33 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
             }
         }
     }
+
+    private bool _CustomColor;
+    public bool CustomAccentColor
+    {
+        get => _CustomColor;
+        set
+        {
+            SetProperty(ref _CustomColor, value);
+            _settingService.SetSettingsAsync("AccentColor", value);
+            _CurrentSpeziProperties.CustomAccentColor = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+        }
+    }
+
+    private void SwitchAccentColor()
+    {
+ 
+        if (CustomAccentColor)
+        {
+            Application.Current.Resources["SystemAccentColor"] = Color.FromArgb(255, 0, 99, 177);
+        }
+        else
+        {
+            var uiSettings = new UISettings();
+            Application.Current.Resources["SystemAccentColor"] = uiSettings.GetColorValue(UIColorType.Accent);
+        }
+    }
     private async Task UpdateAuswahlParameterAsync()
     {
         var watch = Stopwatch.StartNew();
@@ -127,7 +162,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         set
         {
             SetProperty(ref _Adminmode, value);
-            _settingService.SetSettingsAsync(value);
+            _settingService.SetSettingsAsync("Adminmode", value);
             _CurrentSpeziProperties.Adminmode = value;
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
@@ -219,6 +254,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
+        CustomAccentColor = _settingService.CustomAccentColor;
     }
     public void OnNavigatedFrom()
     {

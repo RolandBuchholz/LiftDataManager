@@ -581,7 +581,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         await CheckUnsavedParametresAsync();
     }
 
-    private void SetAdminmode()
+    private void SetSettings()
     {
         _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
@@ -609,9 +609,8 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        if (_CurrentSpeziProperties is null) { SetAdminmode(); }
+        if (_CurrentSpeziProperties is null) { SetSettings(); }
         _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        Adminmode = _CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = _CurrentSpeziProperties.CheckOut;
         LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
