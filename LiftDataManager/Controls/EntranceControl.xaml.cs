@@ -8,6 +8,8 @@ using LiftDataManager.Core.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media;
+using Windows.UI;
 
 namespace LiftDataManager.Controls;
 
@@ -90,8 +92,16 @@ public sealed partial class EntranceControl : UserControl
 
         if (NewMainEntrance != "NV")
         {
+            
             var borderBox = (TextBox)FindName("txtBox_" + ItemSource["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
             borderBox.BorderThickness = new Thickness(2);
+            object accentColor;
+            var accentColorFound = Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out accentColor);
+            if (accentColorFound)
+            {
+                borderBox.BorderBrush = new SolidColorBrush((Color)accentColor);
+            }
+            
         }
     }
 

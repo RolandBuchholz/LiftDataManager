@@ -44,21 +44,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <controls:Expander
+                <Expander
                     x:Name="Wartung"
                     Grid.Row="0"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Wartung"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Leistungen"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Leistungen" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
                                     Grid.RowSpan="6"
@@ -311,9 +305,10 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
                 <Button
                     Grid.Column="0"
+                    Margin="0,6,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
@@ -326,21 +321,15 @@
                     </ToolTipService.ToolTip>
                     <SymbolIcon Symbol="Save" />
                 </Button>
-                <controls:Expander
+                <Expander
                     x:Name="Montage"
                     Grid.Row="1"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Montage / TÜV"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Potentialausgleich"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Potentialausgleich" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -493,22 +482,16 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
-                <controls:Expander
+                </Expander>
+                <Expander
                     x:Name="RWA"
                     Grid.Row="2"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Rauch- und Wärmeabzugsanlage"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,*">
-                        <Grid
-                            x:Name="Schachtentrauchung"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Schachtentrauchung" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
                                     Grid.RowSpan="4"
@@ -623,7 +606,7 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

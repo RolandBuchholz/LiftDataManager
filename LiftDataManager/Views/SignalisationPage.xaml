@@ -44,21 +44,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <controls:Expander
+                <Expander
                     x:Name="KDKT"
                     Grid.Row="0"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Kabinendruckknopftableau"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Kabinentableau"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Kabinentableau" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
                                     Grid.RowSpan="4"
@@ -972,9 +966,10 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
                 <Button
                     Grid.Column="0"
+                    Margin="0,6,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
@@ -987,21 +982,15 @@
                     </ToolTipService.ToolTip>
                     <SymbolIcon Symbol="Save" />
                 </Button>
-                <controls:Expander
+                <Expander
                     x:Name="AT"
                     Grid.Row="1"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Außendruckknopftableau"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Aussentableau"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Aussentableau" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -1975,22 +1964,16 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
-                <controls:Expander
+                </Expander>
+                <Expander
                     x:Name="WFA"
                     Grid.Row="2"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Weiterfahrtsanzeigen"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Weiterfahrtsanzeigen"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Weiterfahrtsanzeigen" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -2501,7 +2484,7 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

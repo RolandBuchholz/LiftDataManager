@@ -12,13 +12,9 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Helpers;
-using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
-using Windows.UI;
-using Windows.UI.ViewManagement;
 
 namespace LiftDataManager.ViewModels;
 
@@ -30,18 +26,20 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     private CurrentSpeziProperties _CurrentSpeziProperties;
     private readonly ISettingService _settingService;
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
+    private readonly IDialogService _dialogService;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService, IDialogService dialogService)
     {
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
         _settingService = settingsSelectorService;
         _auswahlParameterDataService = auswahlParameterDataService;
+        _dialogService = dialogService;
         VersionDescription = GetVersionDescription();
 
         PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
         UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
-        SwitchAccentColorCommand = new RelayCommand(SwitchAccentColor);
+        SwitchAccentColorCommand = new AsyncRelayCommand(SwitchAccentColorAsync);
     }
 
     public IRelayCommand PinDialog
@@ -52,7 +50,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         get;
     }
-    public IRelayCommand SwitchAccentColorCommand
+    public IAsyncRelayCommand SwitchAccentColorCommand
     {
         get;
     }
@@ -126,18 +124,9 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    private void SwitchAccentColor()
+    private async Task SwitchAccentColorAsync()
     {
- 
-        if (CustomAccentColor)
-        {
-            Application.Current.Resources["SystemAccentColor"] = Color.FromArgb(255, 0, 99, 177);
-        }
-        else
-        {
-            var uiSettings = new UISettings();
-            Application.Current.Resources["SystemAccentColor"] = uiSettings.GetColorValue(UIColorType.Accent);
-        }
+        await _dialogService.MessageDialogAsync(App.MainRoot, "Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
     private async Task UpdateAuswahlParameterAsync()
     {

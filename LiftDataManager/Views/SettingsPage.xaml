@@ -150,7 +150,6 @@
                             </Core:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                     </ToggleSwitch>
-                    <Rectangle Fill="{StaticResource SystemAccentColor}" Height="50" Width="50"></Rectangle>
                     <TextBlock Margin="0,10,0,0" Text="Adminmode" />
                     <ToggleSwitch
                         x:Name="SwitchAdminmode"

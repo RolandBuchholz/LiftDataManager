@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -51,6 +50,7 @@
                     SetHauptzugangCommand="{x:Bind ViewModel.SetHauptzugangCommand}" />
                 <Button
                     Grid.Column="0"
+                    Margin="0,6,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
@@ -63,21 +63,15 @@
                     </ToolTipService.ToolTip>
                     <SymbolIcon Symbol="Save" />
                 </Button>
-                <controls:Expander
+                <Expander
                     x:Name="AllgemeineSchachtDaten"
                     Grid.Row="1"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Allgemeine Schachtdaten"
-                    IsExpanded="True">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
-                        <Grid
-                            x:Name="Schacht"
-                            Grid.Row="0"
-                            Margin="0,5,0,5">
+                        <Grid x:Name="Schacht" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
                                 <Border
                                     Grid.RowSpan="3"
@@ -290,7 +284,7 @@
                             </Grid>
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

@@ -301,17 +301,14 @@
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
-                <controls:Expander
+                <Expander
                     x:Name="ExpanderAufzugskenndaten"
                     Grid.Row="3"
                     Margin="0,0,0,10"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    ExpandDirection="Down"
                     Header="Aufzugskenndaten"
-                    IsExpanded="true">
-                    <Grid Margin="0,5,0,5">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -419,18 +416,15 @@
                                 Text="Pers." />
                         </Grid>
                     </Grid>
-                </controls:Expander>
-                <controls:Expander
+                </Expander>
+                <Expander
                     x:Name="ExpanderSchachtabmessungen"
                     Grid.Row="4"
                     Margin="0,0,0,10"
-                    Background="Transparent"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    ExpandDirection="Down"
                     Header="Schachtabmessungen"
-                    IsExpanded="True">
-                    <Grid Margin="0,5,0,5">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -562,18 +556,15 @@
                                 Text="m" />
                         </Grid>
                     </Grid>
-                </controls:Expander>
-                <controls:Expander
+                </Expander>
+                <Expander
                     x:Name="ExpanderKabinenabmessungen"
                     Grid.Row="5"
                     Margin="0,0,0,10"
-                    Background="Transparent"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Stretch"
-                    ExpandDirection="Down"
                     Header="Kabinenabmessungen"
-                    IsExpanded="True">
-                    <Grid Margin="0,5,0,5">
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -681,7 +672,7 @@
                                 Text="m²" />
                         </Grid>
                     </Grid>
-                </controls:Expander>
+                </Expander>
                 <Border
                     Grid.Row="6"
                     Grid.RowSpan="2"
