@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Helpers;
-using LiftDataManager.Models;
+﻿using LiftDataManager.Models;
 using Microsoft.Extensions.Options;
 
 namespace LiftDataManager.Services;

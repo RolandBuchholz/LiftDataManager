@@ -1,19 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Cogs.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger;
-using LiftDataManager.Core.Messenger.Messages;
-using LiftDataManager.Core.Models;
+﻿using Cogs.Collections;
 
 namespace LiftDataManager.ViewModels;
 

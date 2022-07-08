@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.UI.Xaml.Data;
-
-namespace LiftDataManager.Helpers;
+﻿namespace LiftDataManager.Helpers;
 
 public class StringToBoolConverter : IValueConverter
 {

@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IThemeSelectorService
 {

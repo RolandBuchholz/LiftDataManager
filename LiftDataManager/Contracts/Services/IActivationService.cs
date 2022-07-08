@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IActivationService
 {

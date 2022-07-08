@@ -1,10 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Core.Messenger;
-using LiftDataManager.Core.Messenger.Messages;
-using LiftDataManager.Views;
-using Microsoft.UI.Xaml.Navigation;
+﻿using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.ViewModels;
 

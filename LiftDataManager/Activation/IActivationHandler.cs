@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace LiftDataManager.Activation;
+﻿namespace LiftDataManager.Activation;
 
 public interface IActivationHandler
 {

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Helpers;
-using LiftDataManager.ViewModels;
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Services;
+﻿namespace LiftDataManager.Services;
 
 public class NavigationViewService : INavigationViewService
 {

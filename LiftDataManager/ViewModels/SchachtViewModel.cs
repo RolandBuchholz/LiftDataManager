@@ -1,12 +1,4 @@
-﻿using System;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger.Messages;
-
-namespace LiftDataManager.ViewModels;
+﻿namespace LiftDataManager.ViewModels;
 
 public class SchachtViewModel : DataViewModelBase, INavigationAware
 {

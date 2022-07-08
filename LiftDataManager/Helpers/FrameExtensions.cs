@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Helpers;
+﻿namespace LiftDataManager.Helpers;
 
 public static class FrameExtensions
 {

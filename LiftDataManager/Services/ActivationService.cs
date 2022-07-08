@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LiftDataManager.Activation;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Views;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Services;
+﻿namespace LiftDataManager.Services;
 
 public class ActivationService : IActivationService
 {
@@ -18,8 +9,8 @@ public class ActivationService : IActivationService
     private UIElement _shell = null;
 
     public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
-        IEnumerable<IActivationHandler> activationHandlers, 
-        IThemeSelectorService themeSelectorService, 
+        IEnumerable<IActivationHandler> activationHandlers,
+        IThemeSelectorService themeSelectorService,
         ISettingService settingService)
     {
         _defaultHandler = defaultHandler;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Text;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Text;
 
 namespace LiftDataManager.Services;
 

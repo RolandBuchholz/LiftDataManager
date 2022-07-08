@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-
-namespace LiftDataManager.Styles;
+﻿namespace LiftDataManager.Styles;
 
 public sealed partial class ControlDataTemplates : ResourceDictionary
 {

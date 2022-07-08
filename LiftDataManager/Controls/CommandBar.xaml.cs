@@ -1,13 +1,6 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Cogs.Collections;
 using CommunityToolkit.Common.Collections;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
 
 namespace LiftDataManager.Controls
 {

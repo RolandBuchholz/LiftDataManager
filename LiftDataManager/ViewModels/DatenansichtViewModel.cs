@@ -1,15 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger.Messages;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Xaml.Data;
+﻿using System.Windows.Input;
 
 namespace LiftDataManager.ViewModels;
 

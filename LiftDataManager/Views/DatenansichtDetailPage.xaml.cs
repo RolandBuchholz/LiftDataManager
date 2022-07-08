@@ -1,7 +1,4 @@
 ﻿using CommunityToolkit.WinUI.UI.Animations;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.ViewModels;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.Views;

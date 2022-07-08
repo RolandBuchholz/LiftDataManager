@@ -1,7 +1,4 @@
 ﻿using System.Windows.Input;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.Views;
 

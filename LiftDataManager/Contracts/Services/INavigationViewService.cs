@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface INavigationViewService
 {

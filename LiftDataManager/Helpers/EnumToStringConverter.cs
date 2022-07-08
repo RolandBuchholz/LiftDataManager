@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.UI.Xaml.Data;
-
-namespace LiftDataManager.Helpers
+﻿namespace LiftDataManager.Helpers
 {
     public class EnumToStringConverter : IValueConverter
     {

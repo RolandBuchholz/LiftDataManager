@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cogs.Collections;
-using LiftDataManager.Core.Models;
+﻿using Cogs.Collections;
 
 namespace LiftDataManager.Core.Contracts.Services;
 

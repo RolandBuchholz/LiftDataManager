@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IPageService
 {

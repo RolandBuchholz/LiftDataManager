@@ -1,15 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Cogs.Collections;
 using CommunityToolkit.WinUI.UI;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Media;
-using Windows.UI;
 
 namespace LiftDataManager.Controls;
 
@@ -92,7 +84,7 @@ public sealed partial class EntranceControl : UserControl
 
         if (NewMainEntrance != "NV")
         {
-            
+
             var borderBox = (TextBox)FindName("txtBox_" + ItemSource["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
             borderBox.BorderThickness = new Thickness(2);
             object accentColor;
@@ -101,7 +93,7 @@ public sealed partial class EntranceControl : UserControl
             {
                 borderBox.BorderBrush = new SolidColorBrush((Color)accentColor);
             }
-            
+
         }
     }
 

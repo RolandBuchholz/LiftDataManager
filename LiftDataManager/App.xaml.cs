@@ -1,15 +1,8 @@
-﻿using LiftDataManager.Activation;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Services;
-using LiftDataManager.Helpers;
+﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
-using LiftDataManager.ViewModels;
-using LiftDataManager.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Xaml;
 
 namespace LiftDataManager;
 
@@ -100,7 +93,7 @@ public partial class App : Application
         UnhandledException += App_UnhandledException;
     }
 
-    private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
     }
 

@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using LiftDataManager.Core.Models;
-using Microsoft.UI.Xaml;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IDialogService
 {

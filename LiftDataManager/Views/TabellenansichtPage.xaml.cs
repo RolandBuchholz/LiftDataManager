@@ -1,10 +1,4 @@
 ﻿using CommunityToolkit.Common.Collections;
-using LiftDataManager.Core.Models;
-using LiftDataManager.ViewModels;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media;
 
 namespace LiftDataManager.Views;
 

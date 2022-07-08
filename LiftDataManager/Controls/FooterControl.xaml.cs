@@ -1,10 +1,4 @@
-﻿using System.Linq;
-using Microsoft.UI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-
-namespace LiftDataManager.Controls
+﻿namespace LiftDataManager.Controls
 {
     public sealed partial class FooterControl : UserControl
     {

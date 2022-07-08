@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Controls;
+﻿namespace LiftDataManager.Controls;
 
 public sealed partial class SidebarPanel : UserControl
 {

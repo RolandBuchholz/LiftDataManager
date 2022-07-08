@@ -1,10 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger.Messages;
-
-namespace LiftDataManager.ViewModels;
+﻿namespace LiftDataManager.ViewModels;
 
 public class WartungMontageTüvViewModel : DataViewModelBase, INavigationAware
 {

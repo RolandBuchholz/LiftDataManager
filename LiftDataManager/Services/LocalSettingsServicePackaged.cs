@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Core.Helpers;
-using Windows.Storage;
+﻿using Windows.Storage;
 
 namespace LiftDataManager.Services;
 

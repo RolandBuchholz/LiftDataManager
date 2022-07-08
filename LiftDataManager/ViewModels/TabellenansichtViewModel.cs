@@ -1,14 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger.Messages;
-using Microsoft.UI.Xaml.Data;
-
-namespace LiftDataManager.ViewModels;
+﻿namespace LiftDataManager.ViewModels;
 
 public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
 {

@@ -1,7 +1,4 @@
-﻿using LiftDataManager.ViewModels;
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class ListenansichtPage : Page
 {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using CommunityToolkit.Mvvm.Input;
-using LiftDataManager.Contracts.Services;
-using LiftDataManager.Contracts.ViewModels;
-using LiftDataManager.Core.Contracts.Services;
+﻿using System.Xml;
 
 namespace LiftDataManager.ViewModels;
 

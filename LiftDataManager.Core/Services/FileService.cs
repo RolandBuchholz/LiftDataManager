@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using Newtonsoft.Json;
 
 namespace LiftDataManager.Core.Services;

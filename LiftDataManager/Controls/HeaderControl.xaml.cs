@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Controls
+﻿namespace LiftDataManager.Controls
 {
     public sealed partial class HeaderControl : UserControl
     {
