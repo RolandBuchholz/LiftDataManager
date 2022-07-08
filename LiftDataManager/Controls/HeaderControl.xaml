@@ -8,59 +8,63 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <media:AttachedCardShadow x:Key="CommonShadow" CornerRadius="8" Offset="8" />
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            CornerRadius="8"
+            Offset="8" />
     </UserControl.Resources>
     <Grid CornerRadius="8,8,8,8">
         <Rectangle
-            Height="100"
-            Margin="0,0,0,10"
+            Height="175"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Stretch"
+            ui:Effects.Shadow="{StaticResource CommonShadow}"
+            RadiusX="8"
+            RadiusY="8">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop x:Name="GradientStop1" Offset="0.0" Color="{ThemeResource SystemAccentColorLight3}" />
+                    <GradientStop x:Name="GradientStop2" Offset="1.0" Color="{ThemeResource SystemAccentColorDark3}" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle
+            Height="175"
+            Margin="0,0,10,10"
             HorizontalAlignment="Stretch"
             RadiusX="8"
-            RadiusY="8"
-            ui:Effects.Shadow="{StaticResource CommonShadow}"
-            Fill="{ThemeResource SystemChromeAltHighColor}" />
+            RadiusY="8">
+            <Rectangle.Fill>
+                <AcrylicBrush
+                    Opacity="0.5"
+                    TintColor="{ThemeResource SystemListAccentLowColor}"
+                    TintLuminosityOpacity="0.7"
+                    TintOpacity="0.5" />
+            </Rectangle.Fill>
+        </Rectangle>
         <StackPanel
-            Margin="10,0,10,0"
             HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Orientation="Horizontal">
-            <TextBlock
+            <Image
+                Height="100"
+                Margin="0,0,25,0"
+                Source="\Images\LiftDataManagerLogo.png" />
+            <StackPanel
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="72"
-                FontWeight="Bold"
-                Text="L" />
-            <TextBlock
-                Margin="0,0,10,0"
-                VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="48"
-                FontWeight="Bold"
-                Text="ift" />
-            <TextBlock
-                VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="72"
-                FontWeight="Bold"
-                Text="D" />
-            <TextBlock
-                Margin="0,0,10,0"
-                VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="48"
-                FontWeight="Bold"
-                Text="ata" />
-            <TextBlock
-                VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="72"
-                FontWeight="Bold"
-                Text="M" />
-            <TextBlock
-                VerticalAlignment="Center"
-                FontFamily="Segoe UI Variable"
-                FontSize="48"
-                FontWeight="Bold"
-                Text="anager" />
+                Orientation="Vertical">
+                <TextBlock
+                    Margin="0,0,0,-20"
+                    FontFamily="Segoe UI"
+                    FontSize="72"
+                    Text="LIFT DATA" />
+                <TextBlock
+                    Margin="0,-20,0,0"
+                    FontFamily="Segoe UI"
+                    FontSize="72"
+                    Text="MANAGER" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

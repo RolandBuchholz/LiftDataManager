@@ -96,7 +96,6 @@
     <None Remove="Images\Ordneryellow.png" />
     <None Remove="Images\PdfTransparent.png" />
     <None Remove="Images\VaultTransparent.png" />
-    <None Remove="Images\Win11.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +115,6 @@
     <Content Include="Images\Ordneryellow.png" />
     <Content Include="Images\PdfTransparent.png" />
     <Content Include="Images\VaultTransparent.png" />
-    <Content Include="Images\Win11.png" />
     <Content Include="Images\ZiehlAbeggTransparent.png" />
   </ItemGroup>
   <ItemGroup>
