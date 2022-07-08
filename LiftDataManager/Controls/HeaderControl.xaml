@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <Grid CornerRadius="8,8,8,8">
         <Rectangle
-            Height="175"
+            Height="150"
             Margin="0,0,10,10"
             HorizontalAlignment="Stretch"
             ui:Effects.Shadow="{StaticResource CommonShadow}"
@@ -29,7 +29,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <Rectangle
-            Height="175"
+            Height="150"
             Margin="0,0,10,10"
             HorizontalAlignment="Stretch"
             RadiusX="8"
@@ -43,6 +43,8 @@
             </Rectangle.Fill>
         </Rectangle>
         <StackPanel
+            Height="150"
+            Margin="0,0,10,10"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
