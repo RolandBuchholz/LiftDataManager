@@ -101,20 +101,22 @@
                 Height="30"
                 Margin="0,0,5,5"
                 ui:Effects.Shadow="{StaticResource CommonShadow}"
-                Background="{ThemeResource SystemAccentColorDark1}"
+                Background="{ThemeResource SystemAccentColor}"
                 CornerRadius="5" />
             <Border
                 Grid.Row="2"
                 Grid.Column="1"
                 Grid.ColumnSpan="11"
-                Margin="0,0,5,0"
-                Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
+                Margin="2,2,5,0"
+                Background="{ThemeResource SystemBaseLowColor}"
+                Opacity="0.5" />
             <Border
                 Grid.Row="4"
                 Grid.Column="1"
                 Grid.ColumnSpan="11"
-                Margin="0,0,5,0"
-                Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
+                Margin="2,2,5,0"
+                Background="{ThemeResource SystemBaseLowColor}"
+                Opacity="0.5" />
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="1"
