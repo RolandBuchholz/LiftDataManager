@@ -497,6 +497,79 @@
                                         </ToolTipService.ToolTip>
                                     </TextBox>
                                 </Grid>
+                                <!--  carControl  -->
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.RowSpan="7"
+                                    Grid.Column="2"
+                                    Margin="10,5,10,0"
+                                    Background="Transparent"
+                                    ColumnDefinitions="auto,15,*,15,auto"
+                                    CornerRadius="4"
+                                    RowDefinitions="auto,15,*,15,auto">
+                                    <ToggleButton
+                                        x:Name="ZugangA"
+                                        Grid.Row="4"
+                                        Grid.Column="2"
+                                        Margin="0,5,0,0"
+                                        HorizontalAlignment="Center"
+                                        Content="Zugang A" />
+                                    <ToggleButton
+                                        x:Name="ZugangB"
+                                        Grid.Row="2"
+                                        Grid.Column="4"
+                                        Width="32"
+                                        Height="90"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center">
+                                        <TextBlock Text="Zugang B" />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        x:Name="ZugangC"
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Margin="0,0,0,5"
+                                        HorizontalAlignment="Center"
+                                        Content="Zugang C" />
+                                    <ToggleButton
+                                        x:Name="ZugangD"
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Width="32"
+                                        Height="90"
+                                        Margin="0,0,5,0"
+                                        Content="Zugang B"
+                                        VerticalAlignment="Center"/>
+                                    <Border
+                                        x:Name="CarBody"
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Background="{ThemeResource SystemAccentColorLight1}" />
+                                    <Border
+                                        x:Name="BorderA"
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        Margin="40,0,40,0"
+                                        Background="{ThemeResource SystemAccentColorLight2}" />
+                                    <Border
+                                        x:Name="BorderB"
+                                        Grid.Row="2"
+                                        Grid.Column="3"
+                                        Margin="0,40,0,40"
+                                        Background="{ThemeResource SystemAccentColorLight2}" />
+                                    <Border
+                                        x:Name="BorderC"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Margin="40,0,40,0"
+                                        Background="{ThemeResource SystemAccentColorLight2}" />
+                                    <Border
+                                        x:Name="BorderD"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="0,40,0,40"
+                                        Background="{ThemeResource SystemAccentColorLight2}" />
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid
