@@ -34,7 +34,7 @@
         <TextBox
             AcceptsReturn="True"
             Header="Parameterwert"
-            Text="{Binding Value, Mode=TwoWay}"
+            Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             TextWrapping="Wrap" />
     </DataTemplate>
     <DataTemplate x:Key="ParameterTypNumberOnly" x:DataType="models:Parameter">
@@ -43,7 +43,7 @@
             ui:TextBoxExtensions.ValidationType="Decimal"
             AcceptsReturn="True"
             Header="Parameterwert"
-            Text="{Binding Value, Mode=TwoWay}"
+            Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             TextWrapping="Wrap" />
     </DataTemplate>
     <DataTemplate x:Key="ParameterTypDate" x:DataType="models:Parameter">

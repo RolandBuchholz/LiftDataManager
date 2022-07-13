@@ -58,7 +58,10 @@
                     LoadingRowGroup="DataGrid_LoadingRowGroup"
                     RowGroupHeaderPropertyNameAlternative="">
                     <controls:DataGrid.Columns>
-                        <controls:DataGridTemplateColumn Header="Symbol">
+                        <controls:DataGridTemplateColumn
+                            Width="auto"
+                            CanUserResize="False"
+                            Header="Symbol">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <FontIcon
@@ -69,18 +72,26 @@
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>
                         <controls:DataGridTextColumn
+                            Width="150"
                             Binding="{Binding Name}"
                             Header="Parametername"
                             IsReadOnly="True" />
                         <controls:DataGridTextColumn
+                            Width="80"
                             Binding="{Binding TypeCode}"
+                            CanUserResize="False"
                             Header="VariablenTyp"
                             IsReadOnly="True" />
                         <controls:DataGridTextColumn
+                            Width="140"
                             Binding="{Binding ParameterCategory}"
+                            CanUserResize="False"
                             Header="Kategorie"
                             IsReadOnly="True" />
-                        <controls:DataGridTemplateColumn Header="Parameterwert">
+                        <controls:DataGridTemplateColumn
+                            Width="280"
+                            CanUserResize="True"
+                            Header="Parameterwert">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ContentControl
@@ -94,8 +105,9 @@
                         <controls:DataGridCheckBoxColumn
                             Width="45"
                             Binding="{Binding IsKey}"
+                            CanUserResize="False"
                             HeaderStyle="{StaticResource SymbolHeaderKey}" />
-                        <controls:DataGridTemplateColumn Header="Kommentar">
+                        <controls:DataGridTemplateColumn Width="200" Header="Kommentar">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="models:Parameter">
                                     <StackPanel>

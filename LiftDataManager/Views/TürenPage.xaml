@@ -139,7 +139,7 @@
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türgewicht [mm]"
+                                        Header="Türgewicht [kg]"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid

@@ -80,6 +80,7 @@
     <Content Remove="Assets\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Images\BucherTransparent.png" />
     <None Remove="Images\carAccesses.png" />
     <None Remove="Images\carDimensions.png" />
@@ -205,4 +206,12 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Remove="Controls\CarDesignControl.xaml" />
+  </ItemGroup>
 </Project>

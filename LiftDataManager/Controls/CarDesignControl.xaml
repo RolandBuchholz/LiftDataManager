@@ -1,0 +1,383 @@
+﻿<UserControl
+    x:Class="LiftDataManager.Controls.CarDesignControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        x:Name="CarDesignGrid"
+        MaxWidth="1200"
+        MaxHeight="1000"
+        Background="Transparent"
+        SizeChanged="CarDesignGrid_SizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        </Grid.Resources>
+        <!--  Zugangs Buttons  -->
+        <ToggleButton
+            x:Name="ZugangA"
+            Grid.Row="5"
+            Grid.Column="3"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Content="Zugang A"
+            IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+            IsEnabled="False" />
+        <controls:LayoutTransformControl
+            Grid.Row="3"
+            Grid.Column="5"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <ToggleButton
+                x:Name="ZugangB"
+                Content="Zugang B"
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+        </controls:LayoutTransformControl>
+        <ToggleButton
+            x:Name="ZugangC"
+            Grid.Row="1"
+            Grid.Column="3"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Content="Zugang C"
+            IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+        <controls:LayoutTransformControl
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <ToggleButton
+                x:Name="ZugangD"
+                Content="Zugang D"
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+        </controls:LayoutTransformControl>
+        <!--  Kabine  -->
+        <Border
+            x:Name="CarBody"
+            Grid.Row="3"
+            Grid.Column="3"
+            Width="{x:Bind DisplayWidthCar, Mode=OneWay}"
+            Height="{x:Bind DisplayHeightCar, Mode=OneWay}"
+            MinWidth="115"
+            MinHeight="115"
+            Background="{ThemeResource SystemAccentColorLight1}" />
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon
+                    Height="32"
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Symbol="Map" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    Text="{x:Bind ItemSource['var_A_Kabine'].Value}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text=" m²" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon
+                    Height="32"
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Symbol="People" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    Text="{x:Bind ItemSource['var_Personen'].Value}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    Text=" Personen" />
+            </StackPanel>
+        </StackPanel>
+        <!--  Eingänge  -->
+        <Border
+            x:Name="BorderA"
+            Grid.Row="4"
+            Grid.Column="3"
+            Width="180"
+            Margin="40,0,0,0"
+            HorizontalAlignment="Left"
+            Background="{ThemeResource SystemAccentColorLight1}"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{x:Bind ItemSource['var_TB'].Value}" />
+        </Border>
+        <Border
+            x:Name="BorderB"
+            Grid.Row="3"
+            Grid.Column="4"
+            Height="180"
+            Margin="0,0,0,40"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource SystemAccentColorLight1}"
+            Visibility="{Binding ElementName=ZugangB, Path=IsChecked}">
+            <controls:LayoutTransformControl>
+                <controls:LayoutTransformControl.Transform>
+                    <RotateTransform Angle="270" />
+                </controls:LayoutTransformControl.Transform>
+                <Grid>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ItemSource['var_TB_B'].Value}" />
+                </Grid>
+            </controls:LayoutTransformControl>
+        </Border>
+        <Border
+            x:Name="BorderC"
+            Grid.Row="2"
+            Grid.Column="3"
+            Width="180"
+            Margin="0,0,40,0"
+            HorizontalAlignment="Right"
+            Background="{ThemeResource SystemAccentColorLight1}"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{x:Bind ItemSource['var_TB_C'].Value}" />
+        </Border>
+        <Border
+            x:Name="BorderD"
+            Grid.Row="3"
+            Grid.Column="2"
+            Height="180"
+            Margin="0,40,0,0"
+            VerticalAlignment="Top"
+            Background="{ThemeResource SystemAccentColorLight1}"
+            Visibility="{Binding ElementName=ZugangD, Path=IsChecked}">
+            <controls:LayoutTransformControl>
+                <controls:LayoutTransformControl.Transform>
+                    <RotateTransform Angle="270" />
+                </controls:LayoutTransformControl.Transform>
+                <Grid>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ItemSource['var_TB_D'].Value}" />
+                </Grid>
+            </controls:LayoutTransformControl>
+        </Border>
+        <!--  Beschriftung  -->
+        <!--  | -> Zugang A  -->
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Text="L1"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Text="TB (A)"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="0,0,10,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Text="R1"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="{x:Bind ItemSource['var_L1'].Value, Mode=OneWay}"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="{x:Bind ItemSource['var_R1'].Value, Mode=OneWay}"
+            Visibility="{Binding ElementName=ZugangA, Path=IsChecked}" />
+        <!--  | -> Zugang B  -->
+        <controls:LayoutTransformControl Grid.Row="3" Grid.Column="3">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <Grid>
+                <TextBlock
+                    Margin="20,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Text="L3"
+                    Visibility="{Binding ElementName=ZugangB, Path=IsChecked}" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Text="TB (B)"
+                    Visibility="{Binding ElementName=ZugangB, Path=IsChecked}" />
+                <TextBlock
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Text="R3"
+                    Visibility="{Binding ElementName=ZugangB, Path=IsChecked}" />
+            </Grid>
+        </controls:LayoutTransformControl>
+        <controls:LayoutTransformControl
+            Grid.Row="3"
+            Grid.Column="4"
+            HorizontalAlignment="Center">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <Grid>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ItemSource['var_L3'].Value, Mode=OneWay}"
+                    Visibility="{Binding ElementName=ZugangB, Path=IsChecked}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ItemSource['var_R3'].Value, Mode=OneWay}"
+                    Visibility="{Binding ElementName=ZugangB, Path=IsChecked}" />
+            </Grid>
+        </controls:LayoutTransformControl>
+        <!--  | -> Zugang C  -->
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="top"
+            Text="R2"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="TB (C)"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Margin="0,0,10,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="top"
+            Text="L2"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="{x:Bind ItemSource['var_L2'].Value, Mode=OneWay}"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="3"
+            Margin="0,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="{x:Bind ItemSource['var_R2'].Value, Mode=OneWay}"
+            Visibility="{Binding ElementName=ZugangC, Path=IsChecked}" />
+        <!--  | -> Zugang D  -->
+        <controls:LayoutTransformControl Grid.Row="3" Grid.Column="3">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <Grid>
+                <TextBlock
+                    Margin="20,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="R4"
+                    Visibility="{Binding ElementName=ZugangD, Path=IsChecked}" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Text="TB (D)"
+                    Visibility="{Binding ElementName=ZugangD, Path=IsChecked}" />
+                <TextBlock
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Text="L4"
+                    Visibility="{Binding ElementName=ZugangD, Path=IsChecked}" />
+            </Grid>
+        </controls:LayoutTransformControl>
+        <controls:LayoutTransformControl
+            Grid.Row="3"
+            Grid.Column="2"
+            HorizontalAlignment="Center">
+            <controls:LayoutTransformControl.Transform>
+                <RotateTransform Angle="270" />
+            </controls:LayoutTransformControl.Transform>
+            <Grid>
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ItemSource['var_L4'].Value, Mode=OneWay}"
+                    Visibility="{Binding ElementName=ZugangD, Path=IsChecked}" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ItemSource['var_R4'].Value, Mode=OneWay}"
+                    Visibility="{Binding ElementName=ZugangD, Path=IsChecked}" />
+            </Grid>
+        </controls:LayoutTransformControl>
+    </Grid>
+</UserControl>

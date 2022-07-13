@@ -113,7 +113,7 @@
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Kabinenbreite [mm]"
                                         PlaceholderText="KB"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}">
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -138,7 +138,7 @@
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Kabinentiefe [mm]"
                                         PlaceholderText="KT"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -236,27 +236,18 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Bodenhöhe [mm]"
-                                        IsEnabled="False"
+                                        IsReadOnly="True"
                                         PlaceholderText="BH"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
-                                                    Margin="5,5,5,10"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Fahrkorb Abmessungen" />
-                                                <Image
-                                                    Width="300"
-                                                    Height="300"
-                                                    Source="/Images/carDimensions.png" />
-                                                <TextBlock
-                                                    Margin="5"
-                                                    FontWeight="Bold"
-                                                    Text="Gesamte Höhe der Kabine von Unterkante Boden bis Oberkante Halfensshiene auf dem Kabinendach"
-                                                    TextWrapping="Wrap" />
+                                                    FontSize="12"
+                                                    FontWeight="Bold">
+                                                    Bodenhöhe automatisch berechnet
+                                                </TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
@@ -304,6 +295,7 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals A (L1)"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
@@ -328,20 +320,18 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals A (R1)"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        IsReadOnly="True"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
-                                                    Margin="5,5,5,10"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
+                                                    FontSize="12"
+                                                    FontWeight="Bold">
+                                                    Hals R1 wird automatisch berechnet<LineBreak />
+                                                    (Kabinenbreite - Türbreite - Hals L1)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
@@ -352,6 +342,7 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals C (L2)"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
@@ -376,20 +367,18 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals C (R2)"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        IsReadOnly="True"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
-                                                    Margin="5,5,5,10"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
+                                                    FontSize="12"
+                                                    FontWeight="Bold">
+                                                    Hals R2 wird automatisch berechnet<LineBreak />
+                                                    (Kabinenbreite - Türbreite - Hals L2)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
@@ -407,7 +396,8 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals B (L3)"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=TwoWay}">
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -431,20 +421,18 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals B (R3)"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=TwoWay}">
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
-                                                    Margin="5,5,5,10"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
+                                                    FontSize="12"
+                                                    FontWeight="Bold">
+                                                    Hals R3 wird automatisch berechnet<LineBreak />
+                                                    (Kabinentiefe - Türbreite - Hals L3)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
@@ -455,7 +443,8 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals D (L4)"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=TwoWay}">
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -479,97 +468,29 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Hals D (R4)"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=TwoWay}">
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
-                                                    Margin="5,5,5,10"
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
+                                                    FontSize="12"
+                                                    FontWeight="Bold">
+                                                    Hals R4 wird automatisch berechnet<LineBreak />
+                                                    (Kabinentiefe - Türbreite - Hals L4)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
                                 </Grid>
                                 <!--  carControl  -->
-                                <Grid
+                                <SpeziControls:CarDesignControl
                                     Grid.Row="0"
                                     Grid.RowSpan="7"
                                     Grid.Column="2"
                                     Margin="10,5,10,0"
-                                    Background="Transparent"
-                                    ColumnDefinitions="auto,15,*,15,auto"
-                                    CornerRadius="4"
-                                    RowDefinitions="auto,15,*,15,auto">
-                                    <ToggleButton
-                                        x:Name="ZugangA"
-                                        Grid.Row="4"
-                                        Grid.Column="2"
-                                        Margin="0,5,0,0"
-                                        HorizontalAlignment="Center"
-                                        Content="Zugang A" />
-                                    <ToggleButton
-                                        x:Name="ZugangB"
-                                        Grid.Row="2"
-                                        Grid.Column="4"
-                                        Width="32"
-                                        Height="90"
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center">
-                                        <TextBlock Text="Zugang B" />
-                                    </ToggleButton>
-                                    <ToggleButton
-                                        x:Name="ZugangC"
-                                        Grid.Row="0"
-                                        Grid.Column="2"
-                                        Margin="0,0,0,5"
-                                        HorizontalAlignment="Center"
-                                        Content="Zugang C" />
-                                    <ToggleButton
-                                        x:Name="ZugangD"
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Width="32"
-                                        Height="90"
-                                        Margin="0,0,5,0"
-                                        Content="Zugang B"
-                                        VerticalAlignment="Center"/>
-                                    <Border
-                                        x:Name="CarBody"
-                                        Grid.Row="2"
-                                        Grid.Column="2"
-                                        Background="{ThemeResource SystemAccentColorLight1}" />
-                                    <Border
-                                        x:Name="BorderA"
-                                        Grid.Row="3"
-                                        Grid.Column="2"
-                                        Margin="40,0,40,0"
-                                        Background="{ThemeResource SystemAccentColorLight2}" />
-                                    <Border
-                                        x:Name="BorderB"
-                                        Grid.Row="2"
-                                        Grid.Column="3"
-                                        Margin="0,40,0,40"
-                                        Background="{ThemeResource SystemAccentColorLight2}" />
-                                    <Border
-                                        x:Name="BorderC"
-                                        Grid.Row="1"
-                                        Grid.Column="2"
-                                        Margin="40,0,40,0"
-                                        Background="{ThemeResource SystemAccentColorLight2}" />
-                                    <Border
-                                        x:Name="BorderD"
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="0,40,0,40"
-                                        Background="{ThemeResource SystemAccentColorLight2}" />
-                                </Grid>
+                                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Grid>
                         <Grid

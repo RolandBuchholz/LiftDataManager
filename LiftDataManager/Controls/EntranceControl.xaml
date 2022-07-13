@@ -19,10 +19,6 @@
                 x:Key="InvertBoolToObjectConverter"
                 FalseValue="Visible"
                 TrueValue="Collapsed" />
-            <converters:BoolToObjectConverter
-                x:Key="test"
-                FalseValue="False"
-                TrueValue="True" />
             <media:AttachedCardShadow
                 x:Key="CommonShadow"
                 CornerRadius="5"
@@ -201,7 +197,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang A"
-                IsChecked="{x:Bind ZugangA, Mode=TwoWay}"
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                 IsEnabled="False">
                 <ToolTipService.ToolTip>
                     <StackPanel>
@@ -226,7 +222,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang B"
-                IsChecked="{x:Bind ZugangB, Mode=TwoWay}">
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
@@ -250,7 +246,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang C"
-                IsChecked="{x:Bind ZugangC, Mode=TwoWay}">
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
@@ -274,7 +270,7 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Right"
                 Content="Zugang D"
-                IsChecked="{x:Bind ZugangD, Mode=TwoWay}">
+                IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock
