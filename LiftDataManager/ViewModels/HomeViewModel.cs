@@ -125,6 +125,31 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+
+    //ToDo Logic für Türgewichte bei verschieden Zugängen fehlt noch
+    private double _CarDoorWeight;
+    public double CarDoorWeight
+    {
+        get => _CarDoorWeight;
+        set => SetProperty(ref _CarDoorWeight, value);
+    }
+
+    //ToDo Logic für Kabiengewicht fehlt noch (Kabinengewichtsberechnung)
+    private double _CarWeight;
+    public double CarWeight
+    {
+        get => _CarWeight;
+        set => SetProperty(ref _CarWeight, value);
+    }
+
+    //ToDo Logic für Fangramengewicht fehlt noch (Gewichte aus Liste oder errechnetes Gewicht)
+    private double _CarFrameWeight;
+    public double CarFrameWeight
+    {
+        get => _CarFrameWeight;
+        set => SetProperty(ref _CarFrameWeight, value);
+    }
+
     private async Task CheckUnsavedParametresAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -497,7 +522,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
     {
         await SetFullPathXmlAsync(OpenReadOnly);
 
-        System.Collections.Generic.IEnumerable<Parameter> data = await _parameterDataService.LoadParameterAsync(FullPathXml);
+        IEnumerable<Parameter> data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
         {

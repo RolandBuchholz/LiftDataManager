@@ -61,6 +61,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <!--  Control Panel  -->
             <ComboBox
                 Grid.Column="0"
                 Margin="0,0,5,0"
@@ -165,16 +166,11 @@
                     <RowDefinition />
                     <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
-                <Border
-                    Grid.RowSpan="2"
-                    ui:Effects.Shadow="{StaticResource CommonShadow}"
-                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                <Border
-                    Grid.Row="2"
-                    ui:Effects.Shadow="{StaticResource CommonShadow}"
-                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-
-                <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="100" />
@@ -202,6 +198,11 @@
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Index'].Value, Mode=TwoWay}"
                         TextAlignment="Center" />
                 </Grid>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                 <Grid Grid.Row="1" Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -277,6 +278,10 @@
                         PlaceholderText="Kennwort"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Kennwort'].Value, Mode=TwoWay}" />
                 </Grid>
+                <Border
+                    Grid.Row="2"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                 <Grid Grid.Row="2" Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -301,9 +306,167 @@
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
+                <!--  Datafield carweight  -->
+                <Border
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="0,0,5,5"
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                <Grid
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="15,10,15,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+                    </Grid.Resources>
+                    <Border
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="-5,3,0,0"
+                        Background="{ThemeResource SystemAltLowColor}"
+                        CornerRadius="4" />
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="Anlagedaten:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="0,5,0,5"
+                        FontSize="16"
+                        FontWeight="Medium"
+                        Text="Gewichtsdaten:" />
+                    <TextBlock
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        Text="Fangrahmengewicht errechnet:" />
+                    <TextBlock
+                        Grid.Row="3"
+                        VerticalAlignment="Center"
+                        Text="Kabinenkorrekturgewicht:" />
+                    <TextBlock
+                        Grid.Row="4"
+                        VerticalAlignment="Center"
+                        Text="Kabinengewicht komplett:" />
+                    <TextBlock
+                        Grid.Row="5"
+                        VerticalAlignment="Center"
+                        Text="Kabinentürgewicht:" />
+                    <TextBlock
+                        Grid.Row="6"
+                        VerticalAlignment="Center"
+                        Text="Fangrahmengewicht:" />
+                    <TextBlock
+                        Grid.Row="7"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        Text="Fahrkorbgewicht:" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="0,1,0,1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Rahmengewicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        TextAlignment="Right" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="0,1,0,1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_F_Korr'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        TextAlignment="Right" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="0,0,6,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.CarWeight, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="0,0,6,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.CarDoorWeight, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Margin="0,0,6,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.CarFrameWeight, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Margin="0,0,6,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        Text="kg" />
+                </Grid>
                 <Expander
                     x:Name="ExpanderAufzugskenndaten"
                     Grid.Row="3"
+                    Grid.ColumnSpan="2"
                     Margin="0,0,0,10"
                     Header="Aufzugskenndaten"
                     IsExpanded="True"
@@ -337,7 +500,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Nutzlast"
                                 PlaceholderText="Nutzlast"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -359,8 +523,22 @@
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Fahrkorbgewicht"
+                                IsReadOnly="True"
                                 PlaceholderText="Fahrkorbgewicht"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}"
+                                TextAlignment="Right">
+                                <ToolTipService.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            FontWeight="Bold">
+                                            Fahrkorbgewicht wird automatisch berechnet
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -383,7 +561,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Nenngeschwindigkeit"
                                 PlaceholderText="Nenngeschwindigkeit"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -406,20 +585,22 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Anzahl Personen"
                                 PlaceholderText="Anzahl Personen"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 FontSize="16"
-                                Text="Pers." />
+                                Text="Per." />
                         </Grid>
                     </Grid>
                 </Expander>
                 <Expander
                     x:Name="ExpanderSchachtabmessungen"
                     Grid.Row="4"
+                    Grid.ColumnSpan="2"
                     Margin="0,0,0,10"
                     Header="Schachtabmessungen"
                     IsExpanded="True"
@@ -454,7 +635,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtbreite"
                                 PlaceholderText="Schachtbreite"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -477,7 +659,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachttiefe"
                                 PlaceholderText="Schachttiefe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -500,7 +683,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtgrube"
                                 PlaceholderText="Schachtgrube"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -523,7 +707,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Schachtkopf"
                                 PlaceholderText="Schachtkopf"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -546,7 +731,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Förderhöhe"
                                 PlaceholderText="Förderhöhe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -560,6 +746,7 @@
                 <Expander
                     x:Name="ExpanderKabinenabmessungen"
                     Grid.Row="5"
+                    Grid.ColumnSpan="2"
                     Margin="0,0,0,10"
                     Header="Kabinenabmessungen"
                     IsExpanded="True"
@@ -593,7 +780,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenbreite"
                                 PlaceholderText="Kabinenbreite"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -616,7 +804,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinentiefe"
                                 PlaceholderText="Kabinentiefe"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -639,7 +828,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenhöhe"
                                 PlaceholderText="Kabinenhöhe im Licht"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
@@ -654,7 +844,7 @@
                             Margin="5,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="05" />
+                                <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -662,7 +852,8 @@
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenfläche"
                                 PlaceholderText="Kabinenfläche"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -676,10 +867,12 @@
                 <Border
                     Grid.Row="6"
                     Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                 <TextBox
                     Grid.Row="6"
+                    Grid.ColumnSpan="2"
                     Margin="5,0,10,0"
                     AcceptsReturn="True"
                     Header="Kommentare"
