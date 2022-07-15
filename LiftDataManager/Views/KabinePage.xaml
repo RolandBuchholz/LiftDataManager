@@ -852,7 +852,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,*">
+                                    ColumnDefinitions="2*,0.5*,0.75*">
                                     <ComboBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
@@ -866,8 +866,13 @@
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Beleuchtungen"
+                                        Header="Anzahl"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlBeleuchtung'].Value, Mode=TwoWay}" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="Farbtemperatur"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FarbtemperaturBeleuchtung'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung1"
