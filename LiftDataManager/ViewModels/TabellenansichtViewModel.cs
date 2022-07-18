@@ -85,7 +85,10 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
     {
         SynchronizeViewModelParameter();
         SearchInput = _CurrentSpeziProperties.SearchInput;
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     public void OnNavigatedFrom()

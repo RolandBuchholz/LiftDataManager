@@ -22,12 +22,12 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         _dialogService = dialogService;
         VersionDescription = GetVersionDescription();
 
-        PinDialog = new RelayCommand<ContentDialog>(PinDialogAsync);
+        PinDialog = new AsyncRelayCommand<ContentDialog>(PinDialogAsync);
         UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
         SwitchAccentColorCommand = new AsyncRelayCommand(SwitchAccentColorAsync);
     }
 
-    public IRelayCommand PinDialog
+    public IAsyncRelayCommand PinDialog
     {
         get;
     }
@@ -77,7 +77,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    private async void PinDialogAsync(ContentDialog pwdDialog)
+    private async Task PinDialogAsync(ContentDialog pwdDialog)
     {
         if (!Adminmode)
         {
@@ -94,6 +94,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
                 InfoText += "Adminmode deaktiviert\n";
             }
         }
+        await Task.CompletedTask;
     }
 
     private bool _CustomColor;

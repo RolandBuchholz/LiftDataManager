@@ -18,7 +18,10 @@ public class SonstigesViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     public void OnNavigatedFrom()
