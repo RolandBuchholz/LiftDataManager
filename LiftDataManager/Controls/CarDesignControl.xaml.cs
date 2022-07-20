@@ -32,18 +32,19 @@ public sealed partial class CarDesignControl : UserControl
         ItemSource["var_L4"].PropertyChanged -= CarDesign_PropertyChanged;
     }
 
-    public double Kabinenbreite => !string.IsNullOrWhiteSpace(ItemSource["var_KBI"].Value) ? Convert.ToDouble(ItemSource["var_KBI"].Value, CultureInfo.CurrentCulture) : 0;
-    public double Kabinentiefe => !string.IsNullOrWhiteSpace(ItemSource["var_KTI"].Value) ? Convert.ToDouble(ItemSource["var_KTI"].Value, CultureInfo.CurrentCulture) : 0;
+    public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KBI");
+    public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KTI");
 
-    public double TuerbreiteA => !string.IsNullOrWhiteSpace(ItemSource["var_TB"].Value) ? Convert.ToDouble(ItemSource["var_TB"].Value, CultureInfo.CurrentCulture) : 0;
-    public double TuerbreiteB => !string.IsNullOrWhiteSpace(ItemSource["var_TB_B"].Value) ? Convert.ToDouble(ItemSource["var_TB_B"].Value, CultureInfo.CurrentCulture) : 0;
-    public double TuerbreiteC => !string.IsNullOrWhiteSpace(ItemSource["var_TB_C"].Value) ? Convert.ToDouble(ItemSource["var_TB_C"].Value, CultureInfo.CurrentCulture) : 0;
-    public double TuerbreiteD => !string.IsNullOrWhiteSpace(ItemSource["var_TB_C"].Value) ? Convert.ToDouble(ItemSource["var_TB_C"].Value, CultureInfo.CurrentCulture) : 0;
 
-    public double HalsL1 => !string.IsNullOrWhiteSpace(ItemSource["var_L1"].Value) ? Convert.ToDouble(ItemSource["var_L1"].Value, CultureInfo.CurrentCulture) : 0;
-    public double HalsL2 => !string.IsNullOrWhiteSpace(ItemSource["var_L2"].Value) ? Convert.ToDouble(ItemSource["var_L2"].Value, CultureInfo.CurrentCulture) : 0;
-    public double HalsL3 => !string.IsNullOrWhiteSpace(ItemSource["var_L3"].Value) ? Convert.ToDouble(ItemSource["var_L3"].Value, CultureInfo.CurrentCulture) : 0;
-    public double HalsL4 => !string.IsNullOrWhiteSpace(ItemSource["var_L4"].Value) ? Convert.ToDouble(ItemSource["var_L4"].Value, CultureInfo.CurrentCulture) : 0;
+    public double TuerbreiteA => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB");
+    public double TuerbreiteB => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB_B");
+    public double TuerbreiteC => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB_C");
+    public double TuerbreiteD => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB_D");
+
+    public double HalsL1 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L1");
+    public double HalsL2 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L2");
+    public double HalsL3 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L3");
+    public double HalsL4 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L4");
 
     public double DisplayWidthCar
     {

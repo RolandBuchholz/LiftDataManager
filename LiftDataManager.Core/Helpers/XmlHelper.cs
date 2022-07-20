@@ -7,7 +7,7 @@ public static class XmlHelper
 {
     public static T GetAs<T>(this XElement elem, T defaultValue = default)
     {
-        T ret = defaultValue;
+        var ret = defaultValue;
 
         if (elem != null && !string.IsNullOrEmpty(elem.Value))
         {
@@ -19,7 +19,7 @@ public static class XmlHelper
 
     public static T GetAs<T>(this XAttribute attr, T defaultValue = default)
     {
-        T ret = defaultValue;
+        var ret = defaultValue;
 
         if (attr != null && !string.IsNullOrEmpty(attr.Value))
         {

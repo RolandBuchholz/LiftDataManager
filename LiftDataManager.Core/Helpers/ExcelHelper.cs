@@ -7,13 +7,13 @@ public static class ExcelHelper
 {
     public static async Task<List<AuswahlParameter>> ReadExcelParameterListeAsync(string excelFilePath, string[,] importAusawahlParameter)
     {
-        List<string> rowList = new List<string>();
+        var rowList = new List<string>();
         ISheet sheet;
-        List<AuswahlParameter> _data = new List<AuswahlParameter>();
+        var _data = new List<AuswahlParameter>();
         await using (var stream = new FileStream(excelFilePath, FileMode.Open))
         {
             stream.Position = 0;
-            XSSFWorkbook xssWorkbook = new XSSFWorkbook(stream);
+            var xssWorkbook = new XSSFWorkbook(stream);
             string sheetname;
             var startRow = 0;
             var startCell = 0;
@@ -27,8 +27,12 @@ public static class ExcelHelper
 
                 for (var j = (sheet.FirstRowNum); j <= sheet.LastRowNum; j++)
                 {
-                    IRow row = sheet.GetRow(j);
-                    if (row == null) continue;
+                    var row = sheet.GetRow(j);
+                    if (row == null)
+                    {
+                        continue;
+                    }
+
                     var startIndex = row.Cells.SingleOrDefault(d => d.CellType == CellType.String && d.StringCellValue == auswahlParameterName);
                     if (startIndex != null)
                     {
@@ -43,7 +47,7 @@ public static class ExcelHelper
 
                 while (dataParsen)
                 {
-                    IRow row = sheet.GetRow(startRow + 1);
+                    var row = sheet.GetRow(startRow + 1);
                     if (row == null)
                     {
                         dataParsen = false;
@@ -70,8 +74,10 @@ public static class ExcelHelper
                     }
                 }
 
-                AuswahlParameter _auswahlParameter = new();
-                _auswahlParameter.Name = importAusawahlParameter[i, 2];
+                AuswahlParameter _auswahlParameter = new()
+                {
+                    Name = importAusawahlParameter[i, 2]
+                };
 
                 _auswahlParameter.Auswahlliste.Add("(keine Auswahl)");
 

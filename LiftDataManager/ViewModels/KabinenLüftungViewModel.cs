@@ -24,33 +24,36 @@ public class KabinenLüftungViewModel : DataViewModelBase, INavigationAware
 
     public int Tuerspalt => tuerspalt;
     public int Luftspaltoeffnung => luftspaltoeffnung;
+    public double A_Kabine => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary,"var_A_Kabine");
+    public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
+    public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
+    public double Tuerbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
+    public double Tuerhoehe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TH");
+    public bool ZugangA => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_A");
+    public bool ZugangB => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_B");
+    public bool ZugangC => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_C");
+    public bool ZugangD => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D");
+    public int AnzahlKabinentueren => Convert.ToInt32(ZugangA) + Convert.ToInt32(ZugangB) + Convert.ToInt32(ZugangC) + Convert.ToInt32(ZugangD);
+    public int AnzahlKabinentuerfluegel => LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_AnzahlTuerfluegel");
 
-    public double A_Kabine_1Pozent => (!string.IsNullOrWhiteSpace(ParamterDictionary["var_A_Kabine"].Value) ? Convert.ToDouble(ParamterDictionary["var_A_Kabine"].Value, CultureInfo.CurrentCulture) : 0) * 10000;
-    public double Belueftung_1Seite => (!string.IsNullOrWhiteSpace(ParamterDictionary["var_KTI"].Value) ? Convert.ToDouble(ParamterDictionary["var_KTI"].Value, CultureInfo.CurrentCulture) : 0) * Luftspaltoeffnung;
-    public double Belueftung_2Seiten => (!string.IsNullOrWhiteSpace(ParamterDictionary["var_KTI"].Value) ? Convert.ToDouble(ParamterDictionary["var_KTI"].Value, CultureInfo.CurrentCulture) : 0) * Luftspaltoeffnung * 2;
+    public double A_Kabine_1Pozent => A_Kabine * 10000;
+    public double Belueftung_1Seite => Kabinentiefe * Luftspaltoeffnung;
+    public double Belueftung_2Seiten => Kabinentiefe * Luftspaltoeffnung * 2;
     
     public string ErgebnisBelueftungDecke => (Belueftung_2Seiten > A_Kabine_1Pozent) ? "Vorschrift erfüllt !" : "Vorschrift nicht erfüllt !";
     public SolidColorBrush ErgebnisBelueftungDeckeColor => (Belueftung_2Seiten > A_Kabine_1Pozent) ? successColor : failureColor;
 
-    public bool ZugangA => !string.IsNullOrWhiteSpace(ParamterDictionary["var_ZUGANSSTELLEN_A"].Value) && Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_A"].Value, CultureInfo.CurrentCulture);
-    public bool ZugangB => !string.IsNullOrWhiteSpace(ParamterDictionary["var_ZUGANSSTELLEN_B"].Value) && Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_B"].Value, CultureInfo.CurrentCulture);
-    public bool ZugangC => !string.IsNullOrWhiteSpace(ParamterDictionary["var_ZUGANSSTELLEN_C"].Value) && Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_C"].Value, CultureInfo.CurrentCulture);
-    public bool ZugangD => !string.IsNullOrWhiteSpace(ParamterDictionary["var_ZUGANSSTELLEN_D"].Value) && Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_D"].Value, CultureInfo.CurrentCulture);
-
-    public int AnzahlKabinentueren => Convert.ToInt32(ZugangA) + Convert.ToInt32(ZugangB) + Convert.ToInt32(ZugangC) + Convert.ToInt32(ZugangD);
-    public int AnzahlKabinentuerfluegel => (!string.IsNullOrWhiteSpace(ParamterDictionary["var_AnzahlTuerfluegel"].Value) ? Convert.ToInt32(ParamterDictionary["var_AnzahlTuerfluegel"].Value, CultureInfo.CurrentCulture) : 0);
-
     public int AnzahlLuftspaltoeffnungenTB => AnzahlKabinentueren * 2;
     public int AnzahlLuftspaltoeffnungenTH => AnzahlKabinentueren * AnzahlKabinentuerfluegel;
-    public double FlaecheLuftspaltoeffnungenTB => AnzahlLuftspaltoeffnungenTB * tuerspalt * (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB"].Value) ? Convert.ToDouble(ParamterDictionary["var_TB"].Value, CultureInfo.CurrentCulture) : 0);
-    public double FlaecheLuftspaltoeffnungenTH => AnzahlLuftspaltoeffnungenTH * tuerspalt * (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH"].Value) ? Convert.ToDouble(ParamterDictionary["var_TH"].Value, CultureInfo.CurrentCulture) : 0);
+    public double FlaecheLuftspaltoeffnungenTB => AnzahlLuftspaltoeffnungenTB * tuerspalt * Tuerbreite;
+    public double FlaecheLuftspaltoeffnungenTH => AnzahlLuftspaltoeffnungenTH * tuerspalt * Tuerhoehe;
     public double EntlueftungTuerspalten50Pozent => (FlaecheLuftspaltoeffnungenTB + FlaecheLuftspaltoeffnungenTH) * 0.5;
 
     public int AnzahlLuftspaltoeffnungenFB => (AnzahlKabinentueren > 1) ? 0 : 1;
     public int AnzahlLuftspaltoeffnungenFT => anzahlLuftspaltoeffnungenFT;
 
-    public double FlaecheLuftspaltoeffnungenFB => Math.Round(((!string.IsNullOrWhiteSpace(ParamterDictionary["var_KBI"].Value) ? Convert.ToInt32(ParamterDictionary["var_KBI"].Value, CultureInfo.CurrentCulture) : 0) /50) * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
-    public double FlaecheLuftspaltoeffnungenFT => Math.Round(((!string.IsNullOrWhiteSpace(ParamterDictionary["var_KTI"].Value) ? Convert.ToInt32(ParamterDictionary["var_KTI"].Value, CultureInfo.CurrentCulture) : 0) / 50) * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
+    public double FlaecheLuftspaltoeffnungenFB => Math.Round((Kabinenbreite / 50) * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
+    public double FlaecheLuftspaltoeffnungenFT => Math.Round((Kabinentiefe / 50) * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
 
     public double FlaecheLuftspaltoeffnungenFBGesamt => AnzahlLuftspaltoeffnungenFB * FlaecheLuftspaltoeffnungenFB;
     public double FlaecheLuftspaltoeffnungenFTGesamt => AnzahlLuftspaltoeffnungenFT * FlaecheLuftspaltoeffnungenFT;
