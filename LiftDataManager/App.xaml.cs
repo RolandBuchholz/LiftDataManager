@@ -42,6 +42,8 @@ public partial class App : Application
             services.AddTransient<WartungMontageTüvPage>();
             services.AddTransient<TürenViewModel>();
             services.AddTransient<TürenPage>();
+            services.AddTransient<EinreichunterlagenViewModel>();
+            services.AddTransient<EinreichunterlagenPage>();
             services.AddTransient<SonstigesViewModel>();
             services.AddTransient<SonstigesPage>();
             services.AddTransient<SignalisationViewModel>();
@@ -54,6 +56,12 @@ public partial class App : Application
             services.AddTransient<KabinePage>();
             services.AddTransient<BausatzViewModel>();
             services.AddTransient<BausatzPage>();
+            services.AddTransient<KabinengewichtViewModel>();
+            services.AddTransient<KabinengewichtPage>();
+            services.AddTransient<NutzlastberechnungViewModel>();
+            services.AddTransient<NutzlastberechnungPage>();
+            services.AddTransient<KabinenLüftungViewModel>();
+            services.AddTransient<KabinenLüftungPage>();
             services.AddTransient<AntriebSteuerungNotrufViewModel>();
             services.AddTransient<AntriebSteuerungNotrufPage>();
             services.AddTransient<AllgemeineDatenViewModel>();

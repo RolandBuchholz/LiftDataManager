@@ -80,6 +80,26 @@
                     helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.SonstigesViewModel"
                     Icon="Pin" />
                 <NavigationViewItemSeparator />
+                <NavigationViewItem x:Uid="Shell_Berechnungen" Icon="Calculator">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem
+                            x:Uid="Shell_Einreichunterlagen"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.EinreichunterlagenViewModel"
+                            Icon="Refresh" />
+                        <NavigationViewItem
+                            x:Uid="Shell_Kabinengewicht"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.KabinengewichtViewModel"
+                            Icon="Calculator" />
+                        <NavigationViewItem
+                            x:Uid="Shell_Nutzlastberechnung"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.NutzlastberechnungViewModel"
+                            Icon="Calculator" />
+                        <NavigationViewItem
+                            x:Uid="Shell_KabinenLüftung"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.KabinenLüftungViewModel"
+                            Icon="Calculator" />
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Listenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;" />

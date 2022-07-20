@@ -32,7 +32,7 @@ public sealed partial class CarDesignControl : UserControl
         ItemSource["var_L4"].PropertyChanged -= CarDesign_PropertyChanged;
     }
 
-    public double Kabinenbreite => !string.IsNullOrWhiteSpace(ItemSource["var_KBI"].Value) ? Convert.ToDouble(ItemSource["var_KBI"].Value) : 0;
+    public double Kabinenbreite => !string.IsNullOrWhiteSpace(ItemSource["var_KBI"].Value) ? Convert.ToDouble(ItemSource["var_KBI"].Value, CultureInfo.CurrentCulture) : 0;
     public double Kabinentiefe => !string.IsNullOrWhiteSpace(ItemSource["var_KTI"].Value) ? Convert.ToDouble(ItemSource["var_KTI"].Value, CultureInfo.CurrentCulture) : 0;
 
     public double TuerbreiteA => !string.IsNullOrWhiteSpace(ItemSource["var_TB"].Value) ? Convert.ToDouble(ItemSource["var_TB"].Value, CultureInfo.CurrentCulture) : 0;

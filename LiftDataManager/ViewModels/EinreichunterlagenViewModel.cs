@@ -1,8 +1,8 @@
 ﻿namespace LiftDataManager.ViewModels;
 
-public class BausatzViewModel : DataViewModelBase, INavigationAware
+public class EinreichunterlagenViewModel : DataViewModelBase, INavigationAware
 {
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
         WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>

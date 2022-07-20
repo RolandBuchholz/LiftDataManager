@@ -15,12 +15,16 @@ public class PageService : IPageService
         Configure<AntriebSteuerungNotrufViewModel, AntriebSteuerungNotrufPage>();
         Configure<BausatzViewModel, BausatzPage>();
         Configure<KabineViewModel, KabinePage>();
+        Configure<KabinengewichtViewModel, KabinengewichtPage>();
+        Configure<NutzlastberechnungViewModel, NutzlastberechnungPage>();
+        Configure<KabinenLüftungViewModel, KabinenLüftungPage>();
         Configure<QuickLinksViewModel, QuickLinksPage>();
         Configure<SchachtViewModel, SchachtPage>();
         Configure<SignalisationViewModel, SignalisationPage>();
         Configure<SonstigesViewModel, SonstigesPage>();
         Configure<TürenViewModel, TürenPage>();
         Configure<WartungMontageTüvViewModel, WartungMontageTüvPage>();
+        Configure<EinreichunterlagenViewModel, EinreichunterlagenPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 

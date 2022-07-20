@@ -98,6 +98,10 @@
     <None Remove="Images\PdfTransparent.png" />
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
+    <None Remove="Views\EinreichunterlagenPage.xaml" />
+    <None Remove="Views\KabinengewichtPage.xaml" />
+    <None Remove="Views\KabinenLüftungPage.xaml" />
+    <None Remove="Views\NutzlastberechnungPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\BucherTransparent.png" />
@@ -173,6 +177,18 @@
     <Page Update="Controls\CommandBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Views\KabinenLüftungPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NutzlastberechnungPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\KabinengewichtPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="Styles\Border.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -213,5 +229,9 @@
   
   <ItemGroup>
     <Resource Remove="Controls\CarDesignControl.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Strings\en-us\" />
   </ItemGroup>
 </Project>
