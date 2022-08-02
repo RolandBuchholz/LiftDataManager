@@ -45,13 +45,15 @@
             VerticalAlignment="Top"
             Content="Zugang A"
             IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-            IsEnabled="False" />
+            IsEnabled="False"
+            Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}" />
         <controls:LayoutTransformControl
             Grid.Row="3"
             Grid.Column="5"
             Margin="10,0,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}">
             <controls:LayoutTransformControl.Transform>
                 <RotateTransform Angle="270" />
             </controls:LayoutTransformControl.Transform>
@@ -68,13 +70,15 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Content="Zugang C"
-            IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+            IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+            Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}" />
         <controls:LayoutTransformControl
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,0,10,0"
             HorizontalAlignment="Right"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}">
             <controls:LayoutTransformControl.Transform>
                 <RotateTransform Angle="270" />
             </controls:LayoutTransformControl.Transform>

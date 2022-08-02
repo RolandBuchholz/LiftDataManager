@@ -35,7 +35,6 @@ public sealed partial class CarDesignControl : UserControl
     public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KBI");
     public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KTI");
 
-
     public double TuerbreiteA => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB");
     public double TuerbreiteB => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB_B");
     public double TuerbreiteC => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_TB_C");
@@ -45,6 +44,7 @@ public sealed partial class CarDesignControl : UserControl
     public double HalsL2 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L2");
     public double HalsL3 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L3");
     public double HalsL4 => LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_L4");
+
 
     public double DisplayWidthCar
     {
@@ -64,6 +64,14 @@ public sealed partial class CarDesignControl : UserControl
     public static readonly DependencyProperty DisplayHeightCarProperty =
         DependencyProperty.Register("DisplayHeightCar", typeof(double), typeof(CarDesignControl), new PropertyMetadata((double)250));
 
+    public bool ShowEntranceButtons
+    {
+        get => (bool)GetValue(ShowEntranceButtonsProperty);
+        set => SetValue(ShowEntranceButtonsProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowEntranceButtonsProperty =
+        DependencyProperty.Register("ShowEntranceButtons", typeof(bool), typeof(CarDesignControl), new PropertyMetadata(false));
 
     public ObservableDictionary<string, Parameter> ItemSource
     {

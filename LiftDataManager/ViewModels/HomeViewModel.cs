@@ -26,6 +26,11 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         {
             if (m is not null && m.Value.IsDirty)
             {
+                if (m.Value.ParameterName == "var_Rahmengewicht")
+                {
+                    CarFrameWeight = Convert.ToDouble(m.Value.NewValue);
+                    _CurrentSpeziProperties.FangrahmenGewicht = CarFrameWeight;
+                };
                 SetInfoSidebarPanelText(m);
                 await CheckUnsavedParametresAsync();
             }
@@ -125,16 +130,12 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    public double CarDoorWeight => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht") +
+                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_B") +
+                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_C") +
+                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_D");
 
-    //ToDo Logic für Türgewichte bei verschieden Zugängen fehlt noch
-    private double _CarDoorWeight;
-    public double CarDoorWeight
-    {
-        get => _CarDoorWeight;
-        set => SetProperty(ref _CarDoorWeight, value);
-    }
-
-    //ToDo Logic für Kabiengewicht fehlt noch (Kabinengewichtsberechnung)
+    //ToDo Logic für Kabinengewicht fehlt noch (Kabinengewichtsberechnung)
     private double _CarWeight;
     public double CarWeight
     {
@@ -142,7 +143,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         set => SetProperty(ref _CarWeight, value);
     }
 
-    //ToDo Logic für Fangramengewicht fehlt noch (Gewichte aus Liste oder errechnetes Gewicht)
     private double _CarFrameWeight;
     public double CarFrameWeight
     {
@@ -260,7 +260,9 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         set
         {
             SetProperty(ref _SpezifikationName, value);
-            CanLoadSpeziData = ((SpezifikationName.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) || ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Angebot"));
+            CanLoadSpeziData = ((SpezifikationName.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) ||
+                               ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Angebot")) ||
+                               ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Vorplanung"));
         }
     }
 
@@ -627,6 +629,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
         SearchInput = _CurrentSpeziProperties.SearchInput;
         InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
+        CarFrameWeight = _CurrentSpeziProperties.FangrahmenGewicht;
         if (_CurrentSpeziProperties.FullPathXml is not null)
         {
             FullPathXml = _CurrentSpeziProperties.FullPathXml;

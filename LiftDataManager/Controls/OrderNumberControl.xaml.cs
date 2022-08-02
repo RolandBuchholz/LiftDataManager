@@ -1,82 +1,72 @@
-﻿namespace LiftDataManager.Controls
+﻿namespace LiftDataManager.Controls;
+
+public sealed partial class OrderNumberControl : UserControl
 {
-    public sealed partial class OrderNumberControl : UserControl
+    public OrderNumberControl()
     {
-        public OrderNumberControl()
+        InitializeComponent();
+    }
+
+    private string _OrderYear;
+    public string OrderYear
+    {
+        get => _OrderYear;
+        set
         {
-            InitializeComponent();
+            _OrderYear = value;
+            SetOrderNumber();
+        }
+    }
+
+    private string _OrderMonth;
+    public string OrderMonth
+    {
+        get => _OrderMonth;
+        set
+        {
+            _OrderMonth = value;
+            SetOrderNumber();
+        }
+    }
+
+    private string _OrderId;
+    public string OrderId
+    {
+        get => _OrderId;
+        set
+        {
+            _OrderId = value;
+            SetOrderNumber();
+        }
+    }
+
+    public string OrderNumber
+    {
+        get => (string)GetValue(OrderNumberProperty);
+        set => SetValue(OrderNumberProperty, value);
+    }
+
+    public static readonly DependencyProperty OrderNumberProperty =
+        DependencyProperty.Register("OrderNumber", typeof(string), typeof(OrderNumberControl), new PropertyMetadata(string.Empty));
+
+    private void SetOrderNumber()
+    {
+        string fullOrderId;
+
+        if (OrderId is null)
+        {
+            fullOrderId = "0000";
+        }
+        else
+        {
+            fullOrderId = OrderId;
         }
 
-        private string _OrderYear;
-        public string OrderYear
+        while (fullOrderId.Length < 4)
         {
-            get
-            {
-                return _OrderYear;
-            }
-            set
-            {
-                _OrderYear = value;
-                SetOrderNumber();
-            }
+            fullOrderId = "0" + fullOrderId;
         }
 
-        private string _OrderMonth;
-        public string OrderMonth
-        {
-            get
-            {
-                return _OrderMonth;
-            }
-            set
-            {
-                _OrderMonth = value;
-                SetOrderNumber();
-            }
-        }
-
-        private string _OrderId;
-        public string OrderId
-        {
-            get
-            {
-                return _OrderId;
-            }
-            set
-            {
-                _OrderId = value;
-                SetOrderNumber();
-            }
-        }
-
-        public string OrderNumber
-        {
-            get => (string)GetValue(OrderNumberProperty);
-            set => SetValue(OrderNumberProperty, value);
-        }
-
-        public static readonly DependencyProperty OrderNumberProperty =
-            DependencyProperty.Register("OrderNumber", typeof(string), typeof(OrderNumberControl), new PropertyMetadata(string.Empty));
-
-        private void SetOrderNumber()
-        {
-            string fullOrderId;
-
-            if (OrderId is null)
-            {
-                fullOrderId = "0000";
-            }
-            else
-            {
-                fullOrderId = OrderId;
-            }
-
-            while (fullOrderId.Length < 4)
-            {
-                fullOrderId = "0" + fullOrderId;
-            }
-
-            OrderNumber = OrderYear.Substring(2, 2) + "-" + OrderMonth + "-" + fullOrderId;
-        }
+        OrderNumber = OrderYear.Substring(2, 2) + "-" + OrderMonth + "-" + fullOrderId;
     }
 }

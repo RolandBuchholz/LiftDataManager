@@ -70,6 +70,7 @@
                 SelectedItem="{x:Bind ViewModel.SpezifikationStatusTyp, Mode=TwoWay}">
                 <x:String>Auftrag</x:String>
                 <x:String>Angebot</x:String>
+                <x:String>Vorplanung</x:String>
             </ComboBox>
             <controls:SwitchPresenter
                 Grid.Column="1"
@@ -94,6 +95,9 @@
                 </controls:Case>
                 <controls:Case Value="Angebot">
                     <SpeziControls:OrderNumberControl IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}" OrderNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </controls:Case>
+                <controls:Case Value="Vorplanung">
+                    <SpeziControls:PrePlanningNumberControl IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}" PrePlanningNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </controls:Case>
             </controls:SwitchPresenter>
             <Button

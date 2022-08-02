@@ -34,36 +34,1263 @@
             Margin="0,0,0,0"
             Padding="0,0,15,0">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Expander
-                    x:Name="Einreichunterlagen"
+                <TextBlock
                     Grid.Row="0"
-                    Margin="0,0,0,10"
-                    Header="Einreichunterlagen"
-                    IsExpanded="True"
-                    Style="{StaticResource ExpanderContentStyle}">
-                    <Grid>
-                        <TextBlock FontSize="36" Text="coming soon" />
-                    </Grid>
-                </Expander>
-                <Button
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource PageTitleStyle}"
+                    Text="Daten der Aufzugkabine C100" />
+                <!--  Kabinenabmessungen  -->
+                <Grid Grid.Row="1" Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbbreite (KB)" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbtiefe (KT)" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbhöhe (KH)" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türbreite (TB)" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türhöhe (TH)" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl Kabinentüren" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Stk." />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türtyp" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="{x:Bind ViewModel.AnzahlKabinentuerfluegel, Mode=OneWay}" />
+                        <Run Text="-flügelig" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Öffnungsrichtung" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals A (L1)"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals A (R1)"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals C (L2)"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals C (R2)"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals B (L3)"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals B (R3)"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals D (L4)"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals D (R4)"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                </Grid>
+                <!--  CarDesignControl  -->
+                <SpeziControls:CarDesignControl
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="-40,-40,-40,-40"
+                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowEntranceButtons="False" />
+                <!--  Kabinenboden  -->
+                <Grid Grid.Row="2" Margin="20,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Bodenauführung (" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Bodentyp'].Value, Mode=OneWay}" />
+                        <Run Text=")" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.KabinenBodengewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Bodenblechstärke" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Bodenblech, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Bodenprofile" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].Value, Mode=OneWay}" />
+                        <Run Text=" (" />
+                        <Run Text="{x:Bind ViewModel.BodenProfilGewicht, Mode=OneWay}" />
+                        <Run Text="kg/m)" />
+                    </TextBlock>
+                </Grid>
+                <!--  KabinenAusführung  -->
+                <Grid
+                    Grid.Row="3"
                     Grid.Column="0"
-                    Margin="0,6,50,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
-                    Style="{StaticResource SaveButton}">
-                    <ToolTipService.ToolTip>
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Save All Parameter" />
-                    </ToolTipService.ToolTip>
-                    <SymbolIcon Symbol="Save" />
-                </Button>
+                    Grid.ColumnSpan="2"
+                    Margin="20,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="auto" MinWidth="175" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Bodebelag (" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelag'].Value, Mode=OneWay}" />
+                        <Run Text=")" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.BodenBelagGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.BodenBelagGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Schotten (" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Materialstaerke'].Value, Mode=OneWay}" />
+                        <Run Text=" mm)" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Schottengewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Hälse (" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Materialstaerke'].Value, Mode=OneWay}" />
+                        <Run Text=" mm)" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Haelsegewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Antidröhn" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AndidroehnGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Schürze (Standard) "
+                        Visibility="{x:Bind ViewModel.SchuerzeVerstaerkt, Converter={StaticResource InvertBoolToObjectConverter}}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Schürze (verstärkt) "
+                        Visibility="{x:Bind ViewModel.SchuerzeVerstaerkt}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SchuerzeGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Decke" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Deckegewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="abgehängte Decke" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AbgehaengteDeckeGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AbgehaengteDeckeGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Decke Sichtseite belegt" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.DeckeBelegtGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.DeckeBelegtGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Belag auf dem Kabinendach" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.BelagAufDerDeckeGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.BelagAufDerDeckeGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                </Grid>
+                <!--  KabinenAussattung  -->
+                <Grid
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="auto" MinWidth="175" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Spiegel (Standard)" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SpiegelGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SpiegelGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SpiegelQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Paneele" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Paneele (Spiegel)" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleSpiegelGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleSpiegelGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PaneeleSpiegelQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Glaswände" />
+                        <Run Text="{x:Bind ViewModel.VSGTyp, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.VSGGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.VSGGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.VSGQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Außenverkleidung" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AussenVerkleidungGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AussenVerkleidungGewichtproQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m²" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AussenVerkleidungQm, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Stoßleiste " />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Rammschutz'].Value, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.StossleisteGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.StossleisteGewichtproMeter, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.StossleisteLaenge, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Handlauf " />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].Value, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.HandlaufGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.HandlaufGewichtproMeter, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.HandlaufLaenge, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Sockelleiste " />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Sockelleiste'].Value, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SockelleisteGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SockelleisteGewichtproMeter, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="4"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg/m" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="5"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SockelleisteLaenge, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="6"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m" />
+                </Grid>
+                <!--  KabinenZubehör  -->
+                <Grid
+                    Grid.Row="5"
+                    Grid.ColumnSpan="2"
+                    Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="auto" MinWidth="175" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Schutzgeländer" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SchutzgelaenderGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Anzahl Pfosten : " />
+                        <Run Text="{x:Bind ViewModel.SchutzgelaenderAnzahlPfosten, Mode=OneWay}" />
+                        <Run Text=" Stk" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Klemmkasten" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.KlemmkastenGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Schraubenzubehör" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.SchraubenZubehoerGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Tableau" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.TableauGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="Abzug Tableaubreite (" />
+                        <Run Text="{x:Bind ViewModel.TableauBreite, Mode=OneWay}" />
+                        <Run Text="mm) für Paneel- und Glasberechnung" />
+                    </TextBlock>
+                </Grid>
+                <!--  KabinenGewichtDetail  -->
+                <Grid Grid.Row="6" Margin="20,20,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="*" MinWidth="175" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Grid.Row="0"
+                        Grid.RowSpan="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="-5,2,0,0"
+                        Background="{ThemeResource ListBoxDisabledForegroundThemeBrush}" />
+                    <Border
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="-5,7,0,0"
+                        Background="{ThemeResource ListBoxDisabledForegroundThemeBrush}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Kabinengewicht gesamt" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.KabinenGewichtGesamt, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Kabinenkorrekturgewicht" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.KabinenKorrekturGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Kabinentürgewicht" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.KabinenTuerGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fangrahmengewicht" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.FangrahmenGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="0,5,0,0"
+                        FontWeight="SemiBold"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Gesamtgewicht [F]" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Right"
+                        FontWeight="SemiBold"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.FahrkorbGewicht, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                </Grid>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

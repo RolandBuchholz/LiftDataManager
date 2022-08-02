@@ -490,7 +490,8 @@
                                     Grid.RowSpan="7"
                                     Grid.Column="2"
                                     Margin="10,5,10,0"
-                                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ShowEntranceButtons="True" />
                             </Grid>
                         </Grid>
                         <Grid
@@ -744,8 +745,19 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Header="Boden Sonderbleche"
+                                        IsEnabled="False"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'].DropDownListValue, Mode=TwoWay}" />
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock
+                                                Margin="5,5,5,10"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="Auswahl Sonderbleche über Bodenbelag" />
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine12"
@@ -1664,7 +1676,7 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1686,7 +1698,7 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1708,7 +1720,7 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock

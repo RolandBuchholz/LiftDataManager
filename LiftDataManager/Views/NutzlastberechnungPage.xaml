@@ -34,36 +34,344 @@
             Margin="0,0,0,0"
             Padding="0,0,15,0">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Expander
-                    x:Name="Einreichunterlagen"
+                <TextBlock
                     Grid.Row="0"
-                    Margin="0,0,0,10"
-                    Header="Einreichunterlagen"
-                    IsExpanded="True"
-                    Style="{StaticResource ExpanderContentStyle}">
-                    <Grid>
-                        <TextBlock FontSize="36" Text="coming soon" />
-                    </Grid>
-                </Expander>
-                <Button
-                    Grid.Column="0"
-                    Margin="0,6,50,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
-                    Style="{StaticResource SaveButton}">
-                    <ToolTipService.ToolTip>
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Save All Parameter" />
-                    </ToolTipService.ToolTip>
-                    <SymbolIcon Symbol="Save" />
-                </Button>
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource PageTitleStyle}"
+                    Text="Nutzfläche des Fahrkorbs, Nennlast, Anzahl der Personen (EN81:20 - 5.4.2)" />
+                <!--  Kabinenabmessungen  -->
+                <Grid Grid.Row="1" Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbbreite (KB)" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbtiefe (KT)" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbhöhe (KH)" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türbreite (TB)" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türhöhe (TH)" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl Kabinentüren" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Stk." />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türtyp" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="{x:Bind ViewModel.AnzahlKabinentuerfluegel, Mode=OneWay}" />
+                        <Run Text="-flügelig" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Öffnungsrichtung" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].Value, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals A (L1)"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals A (R1)"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals C (L2)"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="10"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals C (R2)"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="11"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals B (L3)"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals B (R3)"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="13"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals D (L4)"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="14"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Hals D (R4)"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="15"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                </Grid>
+                <!--  CarDesignControl  -->
+                <SpeziControls:CarDesignControl
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="-40,-40,-40,-40"
+                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ShowEntranceButtons="False" />
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->
