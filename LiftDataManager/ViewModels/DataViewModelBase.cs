@@ -9,36 +9,15 @@ public class DataViewModelBase : ObservableRecipient
     public readonly INavigationService _navigationService;
 
     private string _InfoSidebarPanelText;
-    public bool Adminmode
-    {
-        get; set;
-    }
-    public bool AuftragsbezogeneXml
-    {
-        get; set;
-    }
-    public bool CheckOut
-    {
-        get; set;
-    }
-    public bool LikeEditParameter
-    {
-        get; set;
-    }
-    public string FullPathXml
-    {
-        get; set;
-    }
-    public bool CheckoutDialogIsOpen
-    {
-        get; set;
-    }
+    public bool Adminmode{get; set;}
+    public bool AuftragsbezogeneXml{get; set;}
+    public bool CheckOut{get; set;}
+    public bool LikeEditParameter{get; set;}
+    public string FullPathXml{ get; set;}
+    public bool CheckoutDialogIsOpen{ get; set;}
 
     public CurrentSpeziProperties _CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter> ParamterDictionary
-    {
-        get; set;
-    }
+    public ObservableDictionary<string, Parameter> ParamterDictionary{get; set;}
 
     public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
     {
@@ -48,10 +27,7 @@ public class DataViewModelBase : ObservableRecipient
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync
-    {
-        get;
-    }
+    public IAsyncRelayCommand SaveAllSpeziParametersAsync{get;}
 
     protected virtual void SynchronizeViewModelParameter()
     {

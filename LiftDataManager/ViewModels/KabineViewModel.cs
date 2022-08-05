@@ -17,7 +17,14 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
                 await CheckUnsavedParametresAsync();
             }
         });
+
+        GoToKabineDetailCommand = new RelayCommand(GoToKabineDetail);
     }
+
+    public IRelayCommand GoToKabineDetailCommand {get;}
+
+    private void GoToKabineDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+    
     //private void CheckDeckenhoehe()
     //{
     //    Debug.WriteLine("Kabinendecke wird überprüft");

@@ -54,6 +54,8 @@ public partial class App : Application
             services.AddTransient<QuickLinksPage>();
             services.AddTransient<KabineViewModel>();
             services.AddTransient<KabinePage>();
+            services.AddTransient<KabineDetailViewModel>();
+            services.AddTransient<KabineDetailPage>();
             services.AddTransient<BausatzViewModel>();
             services.AddTransient<BausatzPage>();
             services.AddTransient<KabinengewichtViewModel>();

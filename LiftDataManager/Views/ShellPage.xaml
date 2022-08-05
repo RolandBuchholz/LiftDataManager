@@ -100,6 +100,14 @@
                             Icon="Calculator" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_LiftDetailData" Icon="Edit">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem
+                            x:Uid="Shell_KabineDetail"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.KabineDetailViewModel"
+                            Icon="PreviewLink" />
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Listenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;" />

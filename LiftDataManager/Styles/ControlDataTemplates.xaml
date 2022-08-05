@@ -140,5 +140,4 @@
             Foreground="red"
             Text="Kein bekannter Parametertyp gefunden." />
     </DataTemplate>
-
 </ResourceDictionary>

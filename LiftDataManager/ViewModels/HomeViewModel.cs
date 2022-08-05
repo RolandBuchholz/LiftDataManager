@@ -46,27 +46,11 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand CheckOutSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand ClearSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand LoadSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand UploadSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync
-    {
-        get;
-    }
-
+    public IAsyncRelayCommand CheckOutSpeziDataAsync{get;}
+    public IAsyncRelayCommand ClearSpeziDataAsync{get;}
+    public IAsyncRelayCommand LoadSpeziDataAsync{get;}
+    public IAsyncRelayCommand UploadSpeziDataAsync{get;}
+    public IAsyncRelayCommand SaveAllSpeziParametersAsync{get;}
     private bool _IsBusy;
     public bool IsBusy
     {

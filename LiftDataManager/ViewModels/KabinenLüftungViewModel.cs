@@ -62,7 +62,6 @@ public class KabinenLüftungViewModel : DataViewModelBase, INavigationAware
     public double FlaecheEntLueftungGesamt => Math.Round(FlaecheEntLueftungSockelleisten + EntlueftungTuerspalten50Pozent);
 
     public string ErgebnisEntlueftung => (FlaecheEntLueftungGesamt > A_Kabine_1Pozent) ? "Vorschrift erfüllt !" : "Vorschrift nicht erfüllt !";
-
     public SolidColorBrush ErgebnisEntlueftungColor => (FlaecheEntLueftungGesamt > A_Kabine_1Pozent) ? successColor : failureColor;
 
     public void OnNavigatedTo(object parameter)

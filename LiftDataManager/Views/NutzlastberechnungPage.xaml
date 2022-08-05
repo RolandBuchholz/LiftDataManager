@@ -41,6 +41,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock
@@ -48,7 +51,6 @@
                     Grid.ColumnSpan="2"
                     Style="{StaticResource PageTitleStyle}"
                     Text="Nutzfläche des Fahrkorbs, Nennlast, Anzahl der Personen (EN81:20 - 5.4.2)" />
-                <!--  Kabinenabmessungen  -->
                 <Grid Grid.Row="1" Margin="20,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -72,297 +74,682 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,10,0,10"
+                        FontSize="20"
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run Text="{x:Bind ViewModel.AufzugsArt}" />
+                        <Run FontSize="18" Text="{x:Bind ViewModel.AufzugsArt2}" />
+                        <Run FontSize="12" Text="{x:Bind ViewModel.Aufzugstyp}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Fahrkorbbreite (KB)" />
                     <TextBlock
-                        Grid.Row="0"
+                        Grid.Row="1"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="0"
+                        Grid.Row="1"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm" />
                     <TextBlock
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Fahrkorbtiefe (KT)" />
                     <TextBlock
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Grid.Column="2"
                         HorizontalAlignment="center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm" />
                     <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="Fahrkorbhöhe (KH)" />
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm" />
-                    <TextBlock
                         Grid.Row="3"
-                        Grid.Column="0"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="Türbreite (TB)" />
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm" />
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="Türhöhe (TH)" />
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        HorizontalAlignment="center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm" />
-                    <TextBlock
-                        Grid.Row="5"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Anzahl Kabinentüren" />
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="3"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="3"
                         Grid.Column="2"
                         HorizontalAlignment="center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Stk." />
+                    <!--  ZugangA  -->
                     <TextBlock
-                        Grid.Row="6"
+                        Grid.Row="4"
                         Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Türtyp" />
+                        Text="Zugang A"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlKabinentuerfluegel, Mode=OneWay}" />
-                        <Run Text="-flügelig" />
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.TuertypA, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.TuerbezeichnungA, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türbreite (TB)" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.TuerbreiteA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm" />
+                    <TextBlock
                         Grid.Row="7"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Öffnungsrichtung" />
+                        Text="Türeinbaumaß"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Margin="0,0,10,0"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].Value, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="8"
-                        Grid.Column="0"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="Hals A (L1)"
+                        Text="{x:Bind ViewModel.TuerEinbauA, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="8"
+                        Grid.Row="7"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
                         Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <!--  ZugangB  -->
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,10,0,0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Zugang B"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="9"
                         Grid.Column="0"
+                        Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals A (R1)"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="9"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="9"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.TuertypB, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.TuerbezeichnungB, Mode=OneWay}" />
+                    </TextBlock>
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals C (L2)"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="Türbreite"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.TuerbreiteB, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals C (R2)"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="Türeinbaumaß"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.TuerEinbauB, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <!--  ZugangC  -->
+                    <TextBlock
+                        Grid.Row="12"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,10,0,0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Zugang C"
                         Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
-                        Grid.Row="12"
-                        Grid.Column="0"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="Hals B (L3)"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="12"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="12"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
-                    <TextBlock
                         Grid.Row="13"
                         Grid.Column="0"
+                        Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals B (R3)"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="13"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
-                    <TextBlock
-                        Grid.Row="13"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.TuertypC, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.TuerbezeichnungC, Mode=OneWay}" />
+                    </TextBlock>
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals D (L4)"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="Türbreite"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.TuerbreiteC, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="Hals D (R4)"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="Türeinbaumaß"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.TuerEinbauC, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <!--  ZugangD  -->
+                    <TextBlock
+                        Grid.Row="16"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,10,0,0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Zugang D"
                         Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="17"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.TuertypD, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.TuerbezeichnungD, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="18"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türbreite"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="18"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.TuerbreiteD, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="18"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="19"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Türeinbaumaß"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="19"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.TuerEinbauD, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="19"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="mm"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                </Grid>
+                <!--  Nutzfläche  -->
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        FontSize="18"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Kabinen Nutzfläche" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbfläche" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheKabine, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}">
+                        Fläche Zugang A*<Run Text="{x:Bind ViewModel.InfoZugangA, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheZugangA, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²"
+                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}">
+                        Fläche Zugang B*<Run Text="{x:Bind ViewModel.InfoZugangB, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheZugangB, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²"
+                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}">
+                        Fläche Zugang C*<Run Text="{x:Bind ViewModel.InfoZugangC, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheZugangC, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²"
+                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}">
+                        Fläche Zugang D*<Run Text="{x:Bind ViewModel.InfoZugangD, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheZugangD, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²"
+                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Fahrkorbfläche Gesamt" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NutzflaecheGesamt, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="m²" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        MaxWidth="400"
+                        Margin="0,5,0,0"
+                        FontSize="12"
+                        Style="{StaticResource BodyTextStyle}"
+                        TextWrapping="WrapWholeWords">
+                        * 5.4.2.1.3<LineBreak />
+                        <Run FontSize="10" Text="a) Flächen mit einer Tiefe zu einem Türblatt von 100 mm oder weniger (einschließlich schneller und langsamer Türblätter bei mehrblättrigen Türen) dürfen bei der Grundfläche nicht berücksichtigt werden." /><LineBreak />
+                        <Run FontSize="10" Text="b) Bei Flächen, die mehr als 100 mm tief sind, muss die gesamte Nutzfläche zur Grundfläche hinzugefügt werden." />
+                    </TextBlock>
+                </Grid>
+                <!--  Nutzlast  -->
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,0,5"
+                        FontSize="18"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Nennlast und größte Nutzfläche des Fahrkorbs" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,0,0"
+                        FontSize="13"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Nutzfläche des Fahrkorbs für Personenaufzüge" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="minimale Nennlast (Tabelle 6)" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NennlastTabelle6, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,5,0,0"
+                        FontSize="13"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="reduzierte Nutzfläche (für hydraulisch angetriebene Lastenaufzüge)" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="minimale Nennlast (Tabelle 7)" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.NennlastTabelle7, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <Border
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="-5,5,10,-2"
+                        HorizontalAlignment="Stretch"
+                        Background="{x:Bind ViewModel.ErgebnisNennlastColor, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="0,5,0,0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Nennlast (gewählt)" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Nennlast, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="kg" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        Foreground="{x:Bind ViewModel.ErgebnisNennlastColor, Mode=OneWay}"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.ErgebnisNennlast, Mode=OneWay}" />
+                </Grid>
+                <!--  Personenanzahl  -->
+                <Grid
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MinWidth="150" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,0,5"
+                        FontSize="18"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl der Personen (5.4.2.3)" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,0,0"
+                        FontSize="13"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl der Personen berechnet (Nutzlast / 75) " />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl Personen" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.Personen75kg, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Per." />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="0,5,0,0"
+                        FontSize="13"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl der Personen und kleinste Nutzfläche des Fahrkorbs" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl Personen (Tabelle 8)" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PersonenFlaeche, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Per." />
+                    <Border
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="-5,5,10,-2"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource ListBoxDisabledForegroundThemeBrush}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="0,5,0,0"
+                        FontSize="20"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Anzahl Personen" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Right"
+                        FontSize="20"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Bind ViewModel.PersonenBerechnet, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        FontSize="20"
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="Per." />
                 </Grid>
                 <!--  CarDesignControl  -->
                 <SpeziControls:CarDesignControl

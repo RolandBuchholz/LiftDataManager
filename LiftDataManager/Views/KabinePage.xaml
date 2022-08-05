@@ -820,21 +820,31 @@
                         </Grid>
                     </Grid>
                 </Expander>
-                <Button
+                <StackPanel
                     Grid.Column="0"
-                    Margin="0,6,50,0"
+                    Margin="0,4,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
-                    Style="{StaticResource SaveButton}">
-                    <ToolTipService.ToolTip>
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Save All Parameter" />
-                    </ToolTipService.ToolTip>
-                    <SymbolIcon Symbol="Save" />
-                </Button>
+                    Orientation="Horizontal">
+                    <Button Command="{x:Bind ViewModel.GoToKabineDetailCommand}" Style="{StaticResource SaveButton}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Detaileingaben Kabine" />
+                        </ToolTipService.ToolTip>
+                        <SymbolIcon Symbol="PostUpdate" />
+                    </Button>
+                    <Button Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}" Style="{StaticResource SaveButton}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Save All Parameter" />
+                        </ToolTipService.ToolTip>
+                        <SymbolIcon Symbol="Save" />
+                    </Button>
+                </StackPanel>
                 <Expander
                     x:Name="FahrkorbAusstattung"
                     Grid.Row="1"

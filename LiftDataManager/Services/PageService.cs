@@ -15,6 +15,7 @@ public class PageService : IPageService
         Configure<AntriebSteuerungNotrufViewModel, AntriebSteuerungNotrufPage>();
         Configure<BausatzViewModel, BausatzPage>();
         Configure<KabineViewModel, KabinePage>();
+        Configure<KabineDetailViewModel, KabineDetailPage>();
         Configure<KabinengewichtViewModel, KabinengewichtPage>();
         Configure<NutzlastberechnungViewModel, NutzlastberechnungPage>();
         Configure<KabinenLüftungViewModel, KabinenLüftungPage>();

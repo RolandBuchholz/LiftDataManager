@@ -17,6 +17,7 @@ global using LiftDataManager.Core.Helpers;
 global using LiftDataManager.Core.Messenger;
 global using LiftDataManager.Core.Messenger.Messages;
 global using LiftDataManager.Core.Models;
+global using LiftDataManager.Core.Models.ComponentModels;
 global using LiftDataManager.Helpers;
 global using LiftDataManager.ViewModels;
 global using LiftDataManager.Views;
