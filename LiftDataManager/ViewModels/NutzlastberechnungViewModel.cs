@@ -5,9 +5,9 @@ namespace LiftDataManager.ViewModels;
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 {
 
-    private Dictionary<int, double> Tabelle6 { get; set; } = new();
-    private Dictionary<int, double> Tabelle7 { get; set; } = new();
-    private Dictionary<int, double> Tabelle8 { get; set; } = new();
+    public Dictionary<int, double> Tabelle6 { get; set; } = new();
+    public Dictionary<int, double> Tabelle7 { get; set; } = new();
+    public Dictionary<int, double> Tabelle8 { get; set; } = new();
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)

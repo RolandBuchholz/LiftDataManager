@@ -174,7 +174,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
     public double VSGQm => Math.Round(((glasLaengeWandA > 0.1 ? glasLaengeWandA - 0.1 : 0) + 
                                        (glasLaengeWandB > 0.1 ? glasLaengeWandB - 0.1 : 0) + 
                                        (glasLaengeWandC > 0.1 ? glasLaengeWandC - 0.1 : 0) + 
-                                       (glasLaengeWandD > 0.1 ? glasLaengeWandD - 0.1 : 0)) * (Kabinenhoehe - 200) / 1000, 2);
+                                       (glasLaengeWandD > 0.1 ? glasLaengeWandD - 0.1 : 0)) * (Kabinenhoehe > 0 ? (Kabinenhoehe - 200) / 1000 :0), 2);
     public double VSGGewicht => Math.Round(VSGQm * VSGGewichtproQm, 1);
 
     public double AussenVerkleidungGewichtproQm => gewichtAussenVerkleidung;
@@ -202,7 +202,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
 
     //<!--  KabinenZubehör  -->
     public double SchutzgelaenderAnzahlPfosten => Math.Ceiling(Kabinentiefe / 400 * 2 + Kabinenbreite / 400 + 2);
-    public double SchutzgelaenderGewicht => Math.Round((2 * 3 * 1.5 * (Kabinentiefe - 250) * 137 +
+    public double SchutzgelaenderGewicht => Math.Round((2 * 3 * 1.5 * (Kabinentiefe > 0 ? (Kabinentiefe - 250) : 0) * 137 +
                                            (AnzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * Kabinenbreite * 137) * 8 / Math.Pow(10,6) +
                                             (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10,6) * SchutzgelaenderAnzahlPfosten);
     public double KlemmkastenGewicht => gewichtKlemmkasten;
