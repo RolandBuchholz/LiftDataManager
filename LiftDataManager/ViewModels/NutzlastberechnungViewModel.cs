@@ -5,9 +5,9 @@ namespace LiftDataManager.ViewModels;
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 {
 
-    public Dictionary<int, TableRowIntDouble> Tabelle6 { get; set; } = new();
-    public Dictionary<int, TableRowIntDouble> Tabelle7 { get; set; } = new();
-    public Dictionary<int, TableRowIntDouble> Tabelle8 { get; set; } = new();
+    public Dictionary<int, TableRow<int,double>> Tabelle6 { get; set; } = new();
+    public Dictionary<int, TableRow<int,double>> Tabelle7 { get; set; } = new();
+    public Dictionary<int, TableRow<int,double>> Tabelle8 { get; set; } = new();
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -87,9 +87,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public string ErgebnisNennlast => ValdidateNennlast() ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
     public SolidColorBrush ErgebnisNennlastColor => ValdidateNennlast() ? successColor : failureColor;
 
-    private double GetLoadFromTable(Dictionary<int, TableRowIntDouble> table, [CallerMemberName] string membername = "")
+    private double GetLoadFromTable(Dictionary<int, TableRow<int,double> > table, [CallerMemberName] string membername = "")
     {
-        TableRowIntDouble nutzlast = null;
+        TableRow<int,double> nutzlast = null;
         if (table == null) { return 0; };
         if (NutzflaecheGesamt <= 0) { return 0; };
 
@@ -173,9 +173,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public int PersonenFlaeche => GetPersonenFromTable(Tabelle8);
     public int PersonenBerechnet => (Personen75kg > PersonenFlaeche) ? PersonenFlaeche : Personen75kg;
 
-    private int GetPersonenFromTable(Dictionary<int, TableRowIntDouble> table)
+    private int GetPersonenFromTable(Dictionary<int, TableRow<int, double>> table)
     {
-        TableRowIntDouble personenAnzahl = null;
+        TableRow<int,double> personenAnzahl = null;
         if (table == null) { return 0; };
         if (NutzflaecheGesamt < 0.28) { return 0; };
 
@@ -316,13 +316,13 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         Tabelle8 = SetTableData(tabelle8, "Pers.", "m²");
     }
 
-    private Dictionary<int, TableRowIntDouble> SetTableData(KeyValuePair<int,double>[] tabledata,string firstUnit,string secondUnit)
+    private Dictionary<int, TableRow<int, double>> SetTableData(KeyValuePair<int,double>[] tabledata,string firstUnit,string secondUnit)
     {
-        var dic = new Dictionary<int, TableRowIntDouble>();
+        var dic = new Dictionary<int, TableRow<int,double>>();
 
         foreach (var item in tabledata)
         {
-            dic.Add(item.Key,new TableRowIntDouble 
+            dic.Add(item.Key,new TableRow<int,double> 
             {
                 FirstValue = item.Key,
                 SecondValue = item.Value,

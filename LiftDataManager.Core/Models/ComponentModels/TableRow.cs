@@ -1,15 +1,15 @@
 ﻿namespace LiftDataManager.Core.Models.ComponentModels;
-public class TableRowIntDouble
+public class TableRow<T1 , T2>
 {
     public bool IsSelected
     {
         get; set;
     }
-    public int FirstValue
+    public T1 FirstValue
     {
         get; set;
     }
-    public double SecondValue
+    public T2 SecondValue
     {
         get; set;
     }
