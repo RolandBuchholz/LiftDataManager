@@ -5,9 +5,9 @@ namespace LiftDataManager.ViewModels;
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 {
 
-    public Dictionary<int, double> Tabelle6 { get; set; } = new();
-    public Dictionary<int, double> Tabelle7 { get; set; } = new();
-    public Dictionary<int, double> Tabelle8 { get; set; } = new();
+    public Dictionary<int, TableRowIntDouble> Tabelle6 { get; set; } = new();
+    public Dictionary<int, TableRowIntDouble> Tabelle7 { get; set; } = new();
+    public Dictionary<int, TableRowIntDouble> Tabelle8 { get; set; } = new();
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -20,9 +20,8 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
                 await CheckUnsavedParametresAsync();
             }
         });
-        FillTabelle6WithData();
-        FillTabelle7WithData();
-        FillTabelle8WithData();
+
+       FillTablesWithData();
     }
 
     private readonly SolidColorBrush successColor = new(Colors.LightGreen);
@@ -67,19 +66,18 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public CarDoor KabinenTuerC => ZugangC ? GetCarDoorDetails() : null;
     public CarDoor KabinenTuerD => ZugangD ? GetCarDoorDetails() : null;
 
-    public string InfoZugangA => NutzflaecheZugangA == 0 && ZugangA ? " Tiefe < 100" : string.Empty ;
+    public string InfoZugangA => NutzflaecheZugangA == 0 && ZugangA ? " Tiefe < 100" : string.Empty;
     public string InfoZugangB => NutzflaecheZugangB == 0 && ZugangB ? " Tiefe < 100" : string.Empty;
     public string InfoZugangC => NutzflaecheZugangC == 0 && ZugangC ? " Tiefe < 100" : string.Empty;
     public string InfoZugangD => NutzflaecheZugangD == 0 && ZugangD ? " Tiefe < 100" : string.Empty;
 
 
     public double NutzflaecheKabine => Math.Round(Kabinenbreite * Kabinentiefe / Math.Pow(10, 6), 2);
-    public double NutzflaecheZugangA => ZugangA ? GetCarDoorArea(KabinenTuerA) : 0 ;
-    public double NutzflaecheZugangB => ZugangB ? GetCarDoorArea(KabinenTuerB) : 0 ;
-    public double NutzflaecheZugangC => ZugangC ? GetCarDoorArea(KabinenTuerC) : 0 ;
-    public double NutzflaecheZugangD => ZugangD ? GetCarDoorArea(KabinenTuerD) : 0 ;
-    public double NutzflaecheGesamt => Math.Round(NutzflaecheKabine + NutzflaecheZugangA + NutzflaecheZugangB + NutzflaecheZugangC + NutzflaecheZugangD, 2) ;
-
+    public double NutzflaecheZugangA => ZugangA ? GetCarDoorArea(KabinenTuerA) : 0;
+    public double NutzflaecheZugangB => ZugangB ? GetCarDoorArea(KabinenTuerB) : 0;
+    public double NutzflaecheZugangC => ZugangC ? GetCarDoorArea(KabinenTuerC) : 0;
+    public double NutzflaecheZugangD => ZugangD ? GetCarDoorArea(KabinenTuerD) : 0;
+    public double NutzflaecheGesamt => Math.Round(NutzflaecheKabine + NutzflaecheZugangA + NutzflaecheZugangB + NutzflaecheZugangC + NutzflaecheZugangD, 2);
 
     public double NennlastTabelle6 => GetLoadFromTable(Tabelle6);
     public double NennlastTabelle7 => GetLoadFromTable(Tabelle7);
@@ -89,10 +87,11 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public string ErgebnisNennlast => ValdidateNennlast() ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
     public SolidColorBrush ErgebnisNennlastColor => ValdidateNennlast() ? successColor : failureColor;
 
-    private double GetLoadFromTable(Dictionary<int,double> table, [CallerMemberName] string membername = "")
+    private double GetLoadFromTable(Dictionary<int, TableRowIntDouble> table, [CallerMemberName] string membername = "")
     {
+        TableRowIntDouble nutzlast = null;
         if (table == null) { return 0; };
-        if (NutzflaecheGesamt <=0) { return 0; };
+        if (NutzflaecheGesamt <= 0) { return 0; };
 
         if (membername == nameof(NennlastTabelle6) && NutzflaecheGesamt > 5.0)
         {
@@ -109,27 +108,30 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             return 1600 + (NutzflaecheGesamt - 5.04) / 0.40 * 100;
         };
 
-        if (membername == nameof(NennlastTabelle7) && NutzflaecheGesamt < 1.68) 
+        if (membername == nameof(NennlastTabelle7) && NutzflaecheGesamt < 1.68)
         {
             return 0;
         };
 
-        if (table.Any(x => x.Value == NutzflaecheGesamt))
+        if (table.Any(x => x.Value.SecondValue == NutzflaecheGesamt))
         {
-            return table.FirstOrDefault(x => x.Value == NutzflaecheGesamt).Key;
+            nutzlast = table.FirstOrDefault(x => x.Value.SecondValue == NutzflaecheGesamt).Value;
+            nutzlast.IsSelected = true;
+            return nutzlast.FirstValue;
         };
 
-        var lowTableEntry = table.Where(x => x.Value < NutzflaecheGesamt).Last();
-        var highTableEntry = table.Where(x => x.Value > NutzflaecheGesamt).First();
-        return Math.Round(lowTableEntry.Key + (highTableEntry.Key - lowTableEntry.Key) / (highTableEntry.Value - lowTableEntry.Value) * (NutzflaecheGesamt - lowTableEntry.Value));
+        var lowTableEntry = table.Where(x => x.Value.SecondValue < NutzflaecheGesamt).Last();
+        lowTableEntry.Value.IsSelected = true;
+        var highTableEntry = table.Where(x => x.Value.SecondValue > NutzflaecheGesamt).First();
+        highTableEntry.Value.IsSelected = true;
+        return Math.Round(lowTableEntry.Value.FirstValue + (highTableEntry.Value.FirstValue - lowTableEntry.Value.FirstValue) / 
+                (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (NutzflaecheGesamt - lowTableEntry.Value.SecondValue));
     }
-
-
     private bool ValdidateNennlast()
     {
-        if (Nennlast >= NennlastTabelle6){return true;}
-        if (AufzugsArt == "Lastenaufzug" && AufzugsArt2== "(Hydraulik)" && Nennlast >= NennlastTabelle7){return true;}
-        return false;    
+        if (Nennlast >= NennlastTabelle6) { return true; }
+        if (AufzugsArt == "Lastenaufzug" && AufzugsArt2 == "(Hydraulik)" && Nennlast >= NennlastTabelle7) { return true; }
+        return false;
     }
 
     private double GetCarDoorArea(CarDoor kabinenTuer, [CallerMemberName] string membername = "")
@@ -143,7 +145,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             _ => 0,
         };
 
-        if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100) 
+        if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
             return 0;
         }
@@ -153,16 +155,16 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             2 => Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
 
-            3 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) + 
+            3 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
-                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + 2*kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
 
             4 => Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
 
             6 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
-                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel /2 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
             _ => 0,
         };
     }
@@ -171,22 +173,26 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public int PersonenFlaeche => GetPersonenFromTable(Tabelle8);
     public int PersonenBerechnet => (Personen75kg > PersonenFlaeche) ? PersonenFlaeche : Personen75kg;
 
-    private int GetPersonenFromTable(Dictionary<int, double> table)
+    private int GetPersonenFromTable(Dictionary<int, TableRowIntDouble> table)
     {
+        TableRowIntDouble personenAnzahl = null;
         if (table == null) { return 0; };
         if (NutzflaecheGesamt < 0.28) { return 0; };
 
-        if ( NutzflaecheGesamt > 3.13)
+        if (NutzflaecheGesamt > 3.13)
         {
             return Convert.ToInt32(20 + (NutzflaecheGesamt - 3.13) / 0.115);
         };
 
-        if (table.Any(x => x.Value == NutzflaecheGesamt))
+        if (table.Any(x => x.Value.SecondValue == NutzflaecheGesamt))
         {
-            return table.FirstOrDefault(x => x.Value == NutzflaecheGesamt).Key;
+            personenAnzahl = table.FirstOrDefault(x => x.Value.SecondValue == NutzflaecheGesamt).Value;
+            personenAnzahl.IsSelected = true;
+            return personenAnzahl.FirstValue;
         };
-
-        return table.Where(x => x.Value < NutzflaecheGesamt).Last().Key;
+        personenAnzahl = table.Where(x => x.Value.SecondValue < NutzflaecheGesamt).Last().Value;
+        personenAnzahl.IsSelected = true;
+        return personenAnzahl.FirstValue;
     }
 
     // ToDo RequestMessage für Personenanzahl
@@ -211,7 +217,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             nameof(KabinenTuerD) => TuerbreiteD,
             _ => 0,
         };
-        
+
         return new CarDoor
         {
             Name = "Meiller TTK 25",
@@ -226,85 +232,106 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private void FillTabelle6WithData()
+    private void FillTablesWithData()
     {
-        Tabelle6.Add(100, 0.37);
-        Tabelle6.Add(180, 0.58);
-        Tabelle6.Add(225, 0.70);
-        Tabelle6.Add(300, 0.90);
-        Tabelle6.Add(375, 1.10); 
-        Tabelle6.Add(400, 1.17);
-        Tabelle6.Add(450, 1.30);
-        Tabelle6.Add(525, 1.45);
-        Tabelle6.Add(600, 1.60);
-        Tabelle6.Add(630, 1.66);
-        Tabelle6.Add(675, 1.75);
-        Tabelle6.Add(750, 1.90);
-        Tabelle6.Add(800, 2.00);
-        Tabelle6.Add(825, 2.05);
-        Tabelle6.Add(900, 2.20);
-        Tabelle6.Add(975, 2.35);
-        Tabelle6.Add(1000, 2.40);
-        Tabelle6.Add(1050, 2.50);
-        Tabelle6.Add(1125, 2.65);
-        Tabelle6.Add(1200, 2.80);
-        Tabelle6.Add(1250, 2.90);
-        Tabelle6.Add(1275, 2.95);
-        Tabelle6.Add(1350, 3.10);
-        Tabelle6.Add(1425, 3.25);
-        Tabelle6.Add(1500, 3.40);
-        Tabelle6.Add(1600, 3.56);
-        Tabelle6.Add(2000, 4.20);
-        Tabelle6.Add(2500, 5.00);
+        var tabelle6 = new KeyValuePair<int , double>[]
+        {
+        new KeyValuePair<int, double>(100, 0.37),
+        new KeyValuePair<int, double>(180, 0.58),
+        new KeyValuePair<int, double>(225, 0.70),
+        new KeyValuePair<int, double>(300, 0.90),
+        new KeyValuePair<int, double>(375, 1.10),
+        new KeyValuePair<int, double>(400, 1.17),
+        new KeyValuePair<int, double>(450, 1.30),
+        new KeyValuePair<int, double>(525, 1.45),
+        new KeyValuePair<int, double>(600, 1.60),
+        new KeyValuePair<int, double>(630, 1.66),
+        new KeyValuePair<int, double>(675, 1.75),
+        new KeyValuePair<int, double>(750, 1.90),
+        new KeyValuePair<int, double>(800, 2.00),
+        new KeyValuePair<int, double>(825, 2.05),
+        new KeyValuePair<int, double>(900, 2.20),
+        new KeyValuePair<int, double>(975, 2.35),
+        new KeyValuePair<int, double>(1000, 2.40),
+        new KeyValuePair<int, double>(1050, 2.50),
+        new KeyValuePair<int, double>(1125, 2.65),
+        new KeyValuePair<int, double>(1200, 2.80),
+        new KeyValuePair<int, double>(1250, 2.90),
+        new KeyValuePair<int, double>(1275, 2.95),
+        new KeyValuePair<int, double>(1350, 3.10),
+        new KeyValuePair<int, double>(1425, 3.25),
+        new KeyValuePair<int, double>(1500, 3.40),
+        new KeyValuePair<int, double>(1600, 3.56),
+        new KeyValuePair<int, double>(2000, 4.20),
+        new KeyValuePair<int, double>(2500, 5.00)
+        };
+        var tabelle7 = new KeyValuePair<int , double>[] {
+        new KeyValuePair<int, double>(400, 1.68),
+        new KeyValuePair<int, double>(450, 1.84),
+        new KeyValuePair<int, double>(525, 2.08),
+        new KeyValuePair<int, double>(600, 2.32),
+        new KeyValuePair<int, double>(630, 2.42),
+        new KeyValuePair<int, double>(675, 2.56),
+        new KeyValuePair<int, double>(750, 2.80),
+        new KeyValuePair<int, double>(800, 2.96),
+        new KeyValuePair<int, double>(825, 3.04),
+        new KeyValuePair<int, double>(900, 3.28),
+        new KeyValuePair<int, double>(975, 3.52),
+        new KeyValuePair<int, double>(1000, 3.60),
+        new KeyValuePair<int, double>(1050, 3.72),
+        new KeyValuePair<int, double>(1125, 3.90),
+        new KeyValuePair<int, double>(1200, 4.08),
+        new KeyValuePair<int, double>(1250, 4.20),
+        new KeyValuePair<int, double>(1275, 4.26),
+        new KeyValuePair<int, double>(1350, 4.44),
+        new KeyValuePair<int, double>(1425, 4.62),
+        new KeyValuePair<int, double>(1500, 4.80),
+        new KeyValuePair<int, double>(1600, 5.04)
+    };
+        var tabelle8 = new KeyValuePair<int , double>[] {
+        new KeyValuePair<int, double>(1, 0.28),
+        new KeyValuePair<int, double>(2, 0.49),
+        new KeyValuePair<int, double>(3, 0.60),
+        new KeyValuePair<int, double>(4, 0.79),
+        new KeyValuePair<int, double>( 5, 0.98),
+        new KeyValuePair<int, double>( 6, 1.17),
+        new KeyValuePair<int, double>( 7, 1.31),
+        new KeyValuePair<int, double>(8, 1.45),
+        new KeyValuePair<int, double>(9, 1.59),
+        new KeyValuePair<int, double>(10, 1.73),
+        new KeyValuePair<int, double>(11, 1.87),
+        new KeyValuePair<int, double>(12, 2.01),
+        new KeyValuePair<int, double>(13, 2.15),
+        new KeyValuePair<int, double>(14, 2.29),
+        new KeyValuePair<int, double>(15, 2.43),
+        new KeyValuePair<int, double>(16, 2.57),
+        new KeyValuePair<int, double>(17, 2.71),
+        new KeyValuePair<int, double>(18, 2.85),
+        new KeyValuePair<int, double>(19, 2.99),
+        new KeyValuePair<int, double>(20, 3.13)
+    };
+
+        Tabelle6 = SetTableData(tabelle6, "kg", "m²");
+        Tabelle7 = SetTableData(tabelle7, "kg", "m²");
+        Tabelle8 = SetTableData(tabelle8, "Pers.", "m²");
     }
 
-    private void FillTabelle7WithData()
+    private Dictionary<int, TableRowIntDouble> SetTableData(KeyValuePair<int,double>[] tabledata,string firstUnit,string secondUnit)
     {
-        Tabelle7.Add(400, 1.68);
-        Tabelle7.Add(450, 1.84);
-        Tabelle7.Add(525, 2.08);
-        Tabelle7.Add(600, 2.32);
-        Tabelle7.Add(630, 2.42);
-        Tabelle7.Add(675, 2.56);
-        Tabelle7.Add(750, 2.80);
-        Tabelle7.Add(800, 2.96);
-        Tabelle7.Add(825, 3.04);
-        Tabelle7.Add(900, 3.28);
-        Tabelle7.Add(975, 3.52);
-        Tabelle7.Add(1000, 3.60);
-        Tabelle7.Add(1050, 3.72);
-        Tabelle7.Add(1125, 3.90);
-        Tabelle7.Add(1200, 4.08);
-        Tabelle7.Add(1250, 4.20);
-        Tabelle7.Add(1275, 4.26);
-        Tabelle7.Add(1350, 4.44);
-        Tabelle7.Add(1425, 4.62);
-        Tabelle7.Add(1500, 4.80);
-        Tabelle7.Add(1600, 5.04);
-    }
+        var dic = new Dictionary<int, TableRowIntDouble>();
 
-    private void FillTabelle8WithData()
-    {
-        Tabelle8.Add(1, 0.28);
-        Tabelle8.Add(2, 0.49);
-        Tabelle8.Add(3, 0.60);
-        Tabelle8.Add(4, 0.79);
-        Tabelle8.Add(5, 0.98);
-        Tabelle8.Add(6, 1.17);
-        Tabelle8.Add(7, 1.31);
-        Tabelle8.Add(8, 1.45);
-        Tabelle8.Add(9, 1.59);
-        Tabelle8.Add(10, 1.73);
-        Tabelle8.Add(11, 1.87);
-        Tabelle8.Add(12, 2.01);
-        Tabelle8.Add(13, 2.15);
-        Tabelle8.Add(14, 2.29);
-        Tabelle8.Add(15, 2.43);
-        Tabelle8.Add(16, 2.57);
-        Tabelle8.Add(17, 2.71);
-        Tabelle8.Add(18, 2.85);
-        Tabelle8.Add(19, 2.99);
-        Tabelle8.Add(20, 3.13);
+        foreach (var item in tabledata)
+        {
+            dic.Add(item.Key,new TableRowIntDouble 
+            {
+                FirstValue = item.Key,
+                SecondValue = item.Value,
+                FirstUnit = firstUnit,
+                SecondUnit = secondUnit
+            });
+        }
+
+        return dic;
     }
 
     public void OnNavigatedTo(object parameter)

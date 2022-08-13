@@ -7,10 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
+    xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <speziControls:ParameterControlTemplateSelector
+        <selectors:ParameterControlTemplateSelector
             x:Key="controlTemplateSelector"
             BooleanTemplate="{StaticResource GridParameterTypBoolean}"
             DateTemplate="{StaticResource GridParameterTypDate}"

@@ -1,4 +1,4 @@
-﻿namespace LiftDataManager.Controls;
+﻿namespace LiftDataManager.Controls.TemplateSelectors;
 
 public class ParameterControlTemplateSelector : DataTemplateSelector
 {
@@ -36,7 +36,7 @@ public class ParameterControlTemplateSelector : DataTemplateSelector
     {
         if (item is not null)
         {
-            Parameter parameter = (Parameter)item;
+            var parameter = (Parameter)item;
 
             switch (parameter.ParameterTyp)
             {
