@@ -17,7 +17,7 @@ internal class RowTemplateSelector : DataTemplateSelector
 
     protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
     {
-        if (((TableRowIntDouble)item).IsSelected)
+        if (((TableRow<int,double>)item).IsSelected)
         {
             return Selected;
         }

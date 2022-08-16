@@ -25,23 +25,23 @@
             x:Key="RowTemplateSelector"
             Selected="{StaticResource SelectedRowTemplate}"
             Standard="{StaticResource StandardRowTemplate}" />
-        <DataTemplate x:Key="StandardRowTemplate" x:DataType="componentmodels:TableRowIntDouble">
+        <DataTemplate x:Key="StandardRowTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" HorizontalAlignment="center">
-                    <Run Text="{x:Bind FirstValue}" />
-                    <Run Text="{x:Bind FirstUnit}" />
+                    <Run Text="{Binding FirstValue}" />
+                    <Run Text="{Binding FirstUnit}" />
                 </TextBlock>
                 <TextBlock Grid.Column="1" HorizontalAlignment="Center">
-                    <Run Text="{x:Bind SecondValue}" />
-                    <Run Text="{x:Bind SecondUnit}" />
+                    <Run Text="{Binding SecondValue}" />
+                    <Run Text="{Binding SecondUnit}" />
                 </TextBlock>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="SelectedRowTemplate" x:DataType="componentmodels:TableRowIntDouble">
+        <DataTemplate x:Key="SelectedRowTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -52,12 +52,12 @@
                     Background="{ThemeResource SystemAccentColorLight3}"
                     Opacity="0.5" />
                 <TextBlock Grid.Column="0" HorizontalAlignment="center">
-                    <Run Text="{x:Bind FirstValue}" />
-                    <Run Text="{x:Bind FirstUnit}" />
+                    <Run Text="{Binding FirstValue}" />
+                    <Run Text="{Binding FirstUnit}" />
                 </TextBlock>
                 <TextBlock Grid.Column="1" HorizontalAlignment="Center">
-                    <Run Text="{x:Bind SecondValue}" />
-                    <Run Text="{x:Bind SecondUnit}" />
+                    <Run Text="{Binding SecondValue}" />
+                    <Run Text="{Binding SecondUnit}" />
                 </TextBlock>
             </Grid>
         </DataTemplate>
