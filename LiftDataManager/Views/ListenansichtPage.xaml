@@ -75,10 +75,8 @@
                 <ListView
                     ItemTemplate="{StaticResource ItemTemplate}"
                     ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
-                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionChanged="ListView_SelectionChanged"
-                    ShowsScrollingPlaceholders="True">
+                    SelectionChanged="ListView_SelectionChanged">
                     <ListView.GroupStyle>
                         <GroupStyle HidesIfEmpty="True">
                             <GroupStyle.HeaderTemplate>
