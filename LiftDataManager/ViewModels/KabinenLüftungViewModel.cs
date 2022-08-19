@@ -24,7 +24,7 @@ public class KabinenLüftungViewModel : DataViewModelBase, INavigationAware
 
     public int Tuerspalt => tuerspalt;
     public int Luftspaltoeffnung => luftspaltoeffnung;
-    public double A_Kabine => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary,"var_A_Kabine");
+    public double A_Kabine => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_A_Kabine");
     public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
     public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
     public double Tuerbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
@@ -39,7 +39,7 @@ public class KabinenLüftungViewModel : DataViewModelBase, INavigationAware
     public double A_Kabine_1Pozent => A_Kabine * 10000;
     public double Belueftung_1Seite => Kabinentiefe * Luftspaltoeffnung;
     public double Belueftung_2Seiten => Kabinentiefe * Luftspaltoeffnung * 2;
-    
+
     public string ErgebnisBelueftungDecke => (Belueftung_2Seiten > A_Kabine_1Pozent) ? "Vorschrift erfüllt !" : "Vorschrift nicht erfüllt !";
     public SolidColorBrush ErgebnisBelueftungDeckeColor => (Belueftung_2Seiten > A_Kabine_1Pozent) ? successColor : failureColor;
 

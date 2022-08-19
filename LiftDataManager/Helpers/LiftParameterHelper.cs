@@ -26,7 +26,7 @@ public class LiftParameterHelper
         }
         else
         {
-            return null;
+            return string.Empty;
         }
     }
 }

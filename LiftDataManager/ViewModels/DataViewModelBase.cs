@@ -8,16 +8,36 @@ public class DataViewModelBase : ObservableRecipient
     public readonly IDialogService _dialogService;
     public readonly INavigationService _navigationService;
 
-    private string _InfoSidebarPanelText;
-    public bool Adminmode{get; set;}
-    public bool AuftragsbezogeneXml{get; set;}
-    public bool CheckOut{get; set;}
-    public bool LikeEditParameter{get; set;}
-    public string FullPathXml{ get; set;}
-    public bool CheckoutDialogIsOpen{ get; set;}
+    public bool Adminmode
+    {
+        get; set;
+    }
+    public bool AuftragsbezogeneXml
+    {
+        get; set;
+    }
+    public bool CheckOut
+    {
+        get; set;
+    }
+    public bool LikeEditParameter
+    {
+        get; set;
+    }
+    public string? FullPathXml
+    {
+        get; set;
+    }
+    public bool CheckoutDialogIsOpen
+    {
+        get; set;
+    }
 
-    public CurrentSpeziProperties _CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter> ParamterDictionary{get; set;}
+    public CurrentSpeziProperties? _CurrentSpeziProperties;
+    public ObservableDictionary<string, Parameter>? ParamterDictionary
+    {
+        get; set;
+    }
 
     public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
     {
@@ -27,7 +47,10 @@ public class DataViewModelBase : ObservableRecipient
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync{get;}
+    public IAsyncRelayCommand SaveAllSpeziParametersAsync
+    {
+        get;
+    }
 
     protected virtual void SynchronizeViewModelParameter()
     {
@@ -52,7 +75,7 @@ public class DataViewModelBase : ObservableRecipient
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
+            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -61,7 +84,7 @@ public class DataViewModelBase : ObservableRecipient
             else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -78,7 +101,10 @@ public class DataViewModelBase : ObservableRecipient
                 {
                     CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
-                    _CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                    if (_CurrentSpeziProperties is not null)
+                    {
+                        _CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                    }
                     _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
                 }
             }
@@ -89,8 +115,8 @@ public class DataViewModelBase : ObservableRecipient
     {
         if (m.Value.ParameterTyp == Parameter.ParameterTypValue.Date)
         {
-            string datetimeOld;
-            string datetimeNew;
+            string? datetimeOld;
+            string? datetimeNew;
             try
             {
                 if (m.Value.OldValue is not null)
@@ -135,15 +161,18 @@ public class DataViewModelBase : ObservableRecipient
             SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
         }
     }
-
-    public string InfoSidebarPanelText
+    private string? _InfoSidebarPanelText;
+    public string? InfoSidebarPanelText
     {
         get => _InfoSidebarPanelText;
 
         set
         {
             SetProperty(ref _InfoSidebarPanelText, value);
-            _CurrentSpeziProperties.InfoSidebarPanelText = value;
+            if (_CurrentSpeziProperties is not null)
+            {
+                _CurrentSpeziProperties.InfoSidebarPanelText = value;
+            }
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }

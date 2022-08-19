@@ -5,9 +5,9 @@ namespace LiftDataManager.ViewModels;
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 {
 
-    public Dictionary<int, TableRow<int,double>> Tabelle6 { get; set; } = new();
-    public Dictionary<int, TableRow<int,double>> Tabelle7 { get; set; } = new();
-    public Dictionary<int, TableRow<int,double>> Tabelle8 { get; set; } = new();
+    public Dictionary<int, TableRow<int, double>> Tabelle6 { get; set; } = new();
+    public Dictionary<int, TableRow<int, double>> Tabelle7 { get; set; } = new();
+    public Dictionary<int, TableRow<int, double>> Tabelle8 { get; set; } = new();
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -21,7 +21,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             }
         });
 
-       FillTablesWithData();
+        FillTablesWithData();
     }
 
     private readonly SolidColorBrush successColor = new(Colors.LightGreen);
@@ -61,10 +61,10 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public double TuerEinbauC => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TuerEinbauC");
     public double TuerEinbauD => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TuerEinbauD");
 
-    public CarDoor KabinenTuerA => ZugangA ? GetCarDoorDetails() : null;
-    public CarDoor KabinenTuerB => ZugangB ? GetCarDoorDetails() : null;
-    public CarDoor KabinenTuerC => ZugangC ? GetCarDoorDetails() : null;
-    public CarDoor KabinenTuerD => ZugangD ? GetCarDoorDetails() : null;
+    public CarDoor? KabinenTuerA => ZugangA ? GetCarDoorDetails() : null;
+    public CarDoor? KabinenTuerB => ZugangB ? GetCarDoorDetails() : null;
+    public CarDoor? KabinenTuerC => ZugangC ? GetCarDoorDetails() : null;
+    public CarDoor? KabinenTuerD => ZugangD ? GetCarDoorDetails() : null;
 
     public string InfoZugangA => NutzflaecheZugangA == 0 && ZugangA ? " Tiefe < 100" : string.Empty;
     public string InfoZugangB => NutzflaecheZugangB == 0 && ZugangB ? " Tiefe < 100" : string.Empty;
@@ -87,9 +87,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public string ErgebnisNennlast => ValdidateNennlast() ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
     public SolidColorBrush ErgebnisNennlastColor => ValdidateNennlast() ? successColor : failureColor;
 
-    private double GetLoadFromTable(Dictionary<int, TableRow<int,double> > table, [CallerMemberName] string membername = "")
+    private double GetLoadFromTable(Dictionary<int, TableRow<int, double>> table, [CallerMemberName] string membername = "")
     {
-        TableRow<int,double> nutzlast = null;
+        TableRow<int, double>? nutzlast = null;
         if (table == null) { return 0; };
         if (NutzflaecheGesamt <= 0) { return 0; };
 
@@ -124,7 +124,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         lowTableEntry.Value.IsSelected = true;
         var highTableEntry = table.Where(x => x.Value.SecondValue > NutzflaecheGesamt).First();
         highTableEntry.Value.IsSelected = true;
-        return Math.Round(lowTableEntry.Value.FirstValue + (highTableEntry.Value.FirstValue - lowTableEntry.Value.FirstValue) / 
+        return Math.Round(lowTableEntry.Value.FirstValue + (highTableEntry.Value.FirstValue - lowTableEntry.Value.FirstValue) /
                 (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (NutzflaecheGesamt - lowTableEntry.Value.SecondValue));
     }
     private bool ValdidateNennlast()
@@ -134,7 +134,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         return false;
     }
 
-    private double GetCarDoorArea(CarDoor kabinenTuer, [CallerMemberName] string membername = "")
+    private double GetCarDoorArea(CarDoor? kabinenTuer, [CallerMemberName] string membername = "")
     {
         var tuerEinbau = membername switch
         {
@@ -144,6 +144,11 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
             nameof(NutzflaecheZugangD) => TuerEinbauD,
             _ => 0,
         };
+
+        if (kabinenTuer is null)
+        {
+            return 0;
+        }
 
         if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
@@ -175,7 +180,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 
     private int GetPersonenFromTable(Dictionary<int, TableRow<int, double>> table)
     {
-        TableRow<int,double> personenAnzahl = null;
+        TableRow<int, double>? personenAnzahl = null;
         if (table == null) { return 0; };
         if (NutzflaecheGesamt < 0.28) { return 0; };
 
@@ -234,7 +239,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 
     private void FillTablesWithData()
     {
-        var tabelle6 = new KeyValuePair<int , double>[]
+        var tabelle6 = new KeyValuePair<int, double>[]
         {
         new KeyValuePair<int, double>(100, 0.37),
         new KeyValuePair<int, double>(180, 0.58),
@@ -265,7 +270,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         new KeyValuePair<int, double>(2000, 4.20),
         new KeyValuePair<int, double>(2500, 5.00)
         };
-        var tabelle7 = new KeyValuePair<int , double>[] {
+        var tabelle7 = new KeyValuePair<int, double>[] {
         new KeyValuePair<int, double>(400, 1.68),
         new KeyValuePair<int, double>(450, 1.84),
         new KeyValuePair<int, double>(525, 2.08),
@@ -288,7 +293,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         new KeyValuePair<int, double>(1500, 4.80),
         new KeyValuePair<int, double>(1600, 5.04)
     };
-        var tabelle8 = new KeyValuePair<int , double>[] {
+        var tabelle8 = new KeyValuePair<int, double>[] {
         new KeyValuePair<int, double>(1, 0.28),
         new KeyValuePair<int, double>(2, 0.49),
         new KeyValuePair<int, double>(3, 0.60),
@@ -316,13 +321,13 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         Tabelle8 = SetTableData(tabelle8, "Pers.", "m²");
     }
 
-    private Dictionary<int, TableRow<int, double>> SetTableData(KeyValuePair<int,double>[] tabledata,string firstUnit,string secondUnit)
+    private Dictionary<int, TableRow<int, double>> SetTableData(KeyValuePair<int, double>[] tabledata, string firstUnit, string secondUnit)
     {
-        var dic = new Dictionary<int, TableRow<int,double>>();
+        var dic = new Dictionary<int, TableRow<int, double>>();
 
         foreach (var item in tabledata)
         {
-            dic.Add(item.Key,new TableRow<int,double> 
+            dic.Add(item.Key, new TableRow<int, double>
             {
                 FirstValue = item.Key,
                 SecondValue = item.Value,

@@ -2,37 +2,37 @@
 
 public class ParameterControlTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate StringTemplate
+    public DataTemplate? StringTemplate
     {
         get; set;
     }
-    public DataTemplate NumberOnlyTemplate
+    public DataTemplate? NumberOnlyTemplate
     {
         get; set;
     }
-    public DataTemplate DateTemplate
+    public DataTemplate? DateTemplate
     {
         get; set;
     }
-    public DataTemplate BooleanTemplate
+    public DataTemplate? BooleanTemplate
     {
         get; set;
     }
-    public DataTemplate DropDownList
+    public DataTemplate? DropDownList
     {
         get; set;
     }
-    public DataTemplate DefaultTemplate
+    public DataTemplate? DefaultTemplate
     {
         get; set;
     }
 
-    protected override DataTemplate SelectTemplateCore(object item)
+    protected override DataTemplate? SelectTemplateCore(object item)
     {
         return SelectTemplateCore(item, null);
     }
 
-    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+    protected override DataTemplate? SelectTemplateCore(object item, DependencyObject? container)
     {
         if (item is not null)
         {

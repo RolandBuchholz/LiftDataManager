@@ -36,12 +36,15 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
     }
 
 
-    private void CheckIsDirty(object sender, PropertyChangedEventArgs e)
+    private void CheckIsDirty(object? sender, PropertyChangedEventArgs e)
     {
+        if (sender is not null)
+        {
         CheckIsDirty((Parameter)sender);
+        }
     }
 
-    private void CheckIsDirty(Parameter Item)
+    private void CheckIsDirty(Parameter? Item)
     {
         if (Item is not null && Item.IsDirty)
         {
@@ -69,7 +72,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -91,8 +94,8 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    private Parameter _selected;
-    public Parameter Selected
+    private Parameter? _selected;
+    public Parameter? Selected
     {
         get
         {
@@ -110,7 +113,9 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
         set
         {
             if (Selected is not null)
+            {
                 Selected.PropertyChanged -= CheckIsDirty;
+            }
 
             SetProperty(ref _selected, value);
             if (_selected is not null)
@@ -145,8 +150,8 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    private string _SearchInput;
-    public string SearchInput
+    private string? _SearchInput;
+    public string? SearchInput
     {
         get => _SearchInput;
 
@@ -163,10 +168,16 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
         var infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
-        Selected.IsDirty = false;
+        if (Selected is not null)
+        {
+            Selected.IsDirty = false;
+        }
         await CheckUnsavedParametresAsync();
         var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
-        allUnsavedParameters.RemoveItem(allUnsavedParameters.FirstOrDefault(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
+        if (Selected is not null)
+        {
+        allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
+        }
     }
 
     public void OnNavigatedTo(object parameter)
@@ -185,7 +196,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
     {
         if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0)
         {
-            Selected = (Parameter)GroupedItems.View.FirstOrDefault();
+            Selected = (Parameter?)GroupedItems.View.FirstOrDefault();
         }
     }
 }

@@ -2,12 +2,12 @@
 
 public interface INavigationViewService
 {
-    IList<object> MenuItems
+    IList<object>? MenuItems
     {
         get;
     }
 
-    object SettingsItem
+    object? SettingsItem
     {
         get;
     }
@@ -16,5 +16,5 @@ public interface INavigationViewService
 
     void UnregisterEvents();
 
-    NavigationViewItem GetSelectedItem(Type pageType);
+    NavigationViewItem? GetSelectedItem(Type pageType);
 }

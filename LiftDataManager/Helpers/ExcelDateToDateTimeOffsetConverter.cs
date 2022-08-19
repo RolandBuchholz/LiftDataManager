@@ -2,7 +2,7 @@
 
 public class ExcelDateToDateTimeOffsetConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, string language)
+    public object? Convert(object value, Type targetType, object parameter, string language)
     {
         DateTimeOffset? date;
 
@@ -14,7 +14,7 @@ public class ExcelDateToDateTimeOffsetConverter : IValueConverter
         {
             try
             {
-                double excelDate = System.Convert.ToDouble(value, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                var excelDate = System.Convert.ToDouble(value, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
                 date = DateTime.FromOADate(excelDate);
                 return date;
             }
@@ -26,7 +26,7 @@ public class ExcelDateToDateTimeOffsetConverter : IValueConverter
         }
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    public object? ConvertBack(object value, Type targetType, object parameter, string language)
     {
         string date;
 

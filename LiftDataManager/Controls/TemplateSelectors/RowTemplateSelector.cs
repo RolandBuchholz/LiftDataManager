@@ -1,23 +1,23 @@
 ﻿namespace LiftDataManager.Controls.TemplateSelectors;
 internal class RowTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate Standard
+    public DataTemplate? Standard
     {
         get; set;
     }
-    public DataTemplate Selected
+    public DataTemplate? Selected
     {
         get; set;
     }
 
-    protected override DataTemplate SelectTemplateCore(object item)
+    protected override DataTemplate? SelectTemplateCore(object item)
     {
         return SelectTemplateCore(item, null);
     }
 
-    protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+    protected override DataTemplate? SelectTemplateCore(object item, DependencyObject? container)
     {
-        if (((TableRow<int,double>)item).IsSelected)
+        if (((TableRow<int, double>)item).IsSelected)
         {
             return Selected;
         }

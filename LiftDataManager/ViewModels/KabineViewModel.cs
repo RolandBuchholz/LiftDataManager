@@ -9,9 +9,9 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
         {
             if (m is not null && m.Value.IsDirty)
             {
-                if (m.Value.ParameterName == "var_Bodenbelag") 
-                { 
-                    SetGewichtBodenbelag(m.Value.NewValue); 
+                if (m.Value.ParameterName == "var_Bodenbelag")
+                {
+                    SetGewichtBodenbelag(m.Value.NewValue);
                 };
                 SetInfoSidebarPanelText(m);
                 await CheckUnsavedParametresAsync();
@@ -21,10 +21,13 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
         GoToKabineDetailCommand = new RelayCommand(GoToKabineDetail);
     }
 
-    public IRelayCommand GoToKabineDetailCommand {get;}
+    public IRelayCommand GoToKabineDetailCommand
+    {
+        get;
+    }
 
     private void GoToKabineDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
-    
+
     //private void CheckDeckenhoehe()
     //{
     //    Debug.WriteLine("Kabinendecke wird überprüft");

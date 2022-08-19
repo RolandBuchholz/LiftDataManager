@@ -8,6 +8,8 @@
     <Platforms>x64</Platforms>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
@@ -33,6 +35,7 @@
     <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
     <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
     <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Remove="Assets\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\BadgeLogo.scale-100.png" />
@@ -99,6 +102,7 @@
     <None Remove="Images\PdfTransparent.png" />
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
+    <None Remove="MainWindow.xaml" />
     <None Remove="Views\EinreichunterlagenPage.xaml" />
     <None Remove="Views\KabinengewichtPage.xaml" />
     <None Remove="Views\KabinenLüftungPage.xaml" />
@@ -148,6 +152,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.4" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.8" />
+    <PackageReference Include="WinUIEx" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -157,6 +162,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\PrePlanningNumberControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

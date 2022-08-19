@@ -8,9 +8,37 @@ namespace LiftDataManager;
 
 public partial class App : Application
 {
-    private static readonly IHost _host = Host
-        .CreateDefaultBuilder()
-        .ConfigureServices((context, services) =>
+    public IHost Host
+    {
+        get;
+    }
+
+    public static T GetService<T>()
+        where T : class
+    {
+        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        {
+            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
+        }
+
+        return service;
+    }
+
+    public static WindowEx MainWindow { get; } = new MainWindow();
+
+    public static FrameworkElement? MainRoot
+    {
+        get; set;
+    }
+
+    public App()
+    {
+        InitializeComponent();
+
+        Host = Microsoft.Extensions.Hosting.Host.
+        CreateDefaultBuilder().
+        UseContentRoot(AppContext.BaseDirectory).
+        ConfigureServices((context, services) =>
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
@@ -18,7 +46,7 @@ public partial class App : Application
             // Other Activation Handlers
 
             // Services
-            services.AddSingleton<ILocalSettingsService, LocalSettingsServicePackaged>();
+            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
 
@@ -83,34 +111,22 @@ public partial class App : Application
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-        })
-        .Build();
+        }).
+        Build();
 
-    public static T GetService<T>()
-        where T : class
-    {
-        return _host.Services.GetService(typeof(T)) as T;
-    }
-
-    public static Window MainWindow { get; set; } = new Window() { Title = "AppDisplayName".GetLocalized() };
-    public static FrameworkElement MainRoot
-    {
-        get; set;
-    }
-    public App()
-    {
-        InitializeComponent();
         UnhandledException += App_UnhandledException;
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
+        // TODO: Log and handle exceptions as appropriate.
+        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-        var activationService = App.GetService<IActivationService>();
-        await activationService.ActivateAsync(args);
+
+        await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }

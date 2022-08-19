@@ -12,7 +12,7 @@ public sealed partial class CarDesignControl : UserControl
         Unloaded += OnUnLoadCarDesignControl;
     }
 
-    private void OnLoadCarDesignControl(object sender, RoutedEventArgs e)
+    private void OnLoadCarDesignControl(object? sender, RoutedEventArgs e)
     {
         ItemSource["var_KTI"].PropertyChanged += CarDesign_PropertyChanged;
         ItemSource["var_KBI"].PropertyChanged += CarDesign_PropertyChanged;
@@ -22,7 +22,7 @@ public sealed partial class CarDesignControl : UserControl
         ItemSource["var_L4"].PropertyChanged += CarDesign_PropertyChanged;
     }
 
-    private void OnUnLoadCarDesignControl(object sender, RoutedEventArgs e)
+    private void OnUnLoadCarDesignControl(object? sender, RoutedEventArgs e)
     {
         ItemSource["var_KTI"].PropertyChanged -= CarDesign_PropertyChanged;
         ItemSource["var_KBI"].PropertyChanged -= CarDesign_PropertyChanged;
@@ -82,12 +82,12 @@ public sealed partial class CarDesignControl : UserControl
     public static readonly DependencyProperty ItemSourceProperty =
         DependencyProperty.Register("ItemSource", typeof(ObservableDictionary<string, Parameter>), typeof(CarDesignControl), new PropertyMetadata(null));
 
-    private void CarDesignGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+    private void CarDesignGrid_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         UpdateCarDesign();
     }
 
-    private void CarDesign_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void CarDesign_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         UpdateCarDesign();
     }

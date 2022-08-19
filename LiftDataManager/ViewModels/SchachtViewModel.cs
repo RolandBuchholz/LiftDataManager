@@ -29,7 +29,7 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
         get;
     }
 
-    private void SetHauptzugang(string parameter)
+    private void SetHauptzugang(string? parameter)
     {
         if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
         {
@@ -47,8 +47,8 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    private string _DisplayNameHauptzugang;
-    public string DisplayNameHauptzugang
+    private string? _DisplayNameHauptzugang;
+    public string? DisplayNameHauptzugang
     {
         get => ParamterDictionary["var_Haupthaltestelle"].Value == "NV"
                 ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")

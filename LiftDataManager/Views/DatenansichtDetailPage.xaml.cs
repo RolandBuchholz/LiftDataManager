@@ -28,7 +28,10 @@ public sealed partial class DatenansichtDetailPage : Page
         if (e.NavigationMode == NavigationMode.Back)
         {
             var navigationService = App.GetService<INavigationService>();
+            if (ViewModel.Item is not null)
+            {
             navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     private const string adminpasswort = "2342";
     private readonly IThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
-    private CurrentSpeziProperties _CurrentSpeziProperties;
+    private CurrentSpeziProperties? _CurrentSpeziProperties;
     private readonly ISettingService _settingService;
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IDialogService _dialogService;
@@ -21,6 +21,16 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         _auswahlParameterDataService = auswahlParameterDataService;
         _dialogService = dialogService;
         VersionDescription = GetVersionDescription();
+
+        SwitchThemeCommand = new RelayCommand<ElementTheme>(
+            async (param) =>
+            {
+                if (ElementTheme != param)
+                {
+                    ElementTheme = param;
+                    await _themeSelectorService.SetThemeAsync(param);
+                }
+            });
 
         PinDialog = new AsyncRelayCommand<ContentDialog>(PinDialogAsync);
         UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
@@ -39,8 +49,6 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         get;
     }
-    private ICommand _switchThemeCommand;
-
 
     public ElementTheme ElementTheme
     {
@@ -48,9 +56,9 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         set => SetProperty(ref _elementTheme, value);
     }
 
-    private string _versionDescription;
+    private string ?_versionDescription;
 
-    public string VersionDescription
+    public string? VersionDescription
     {
         get => _versionDescription;
         set => SetProperty(ref _versionDescription, value);
@@ -58,30 +66,14 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public ICommand SwitchThemeCommand
     {
-        get
-        {
-            if (_switchThemeCommand == null)
-            {
-                _switchThemeCommand = new RelayCommand<ElementTheme>(
-                    async (param) =>
-                    {
-                        if (ElementTheme != param)
-                        {
-                            ElementTheme = param;
-                            await _themeSelectorService.SetThemeAsync(param);
-                        }
-                    });
-            }
-
-            return _switchThemeCommand;
-        }
+        get;
     }
 
-    private async Task PinDialogAsync(ContentDialog pwdDialog)
+    private async Task PinDialogAsync(ContentDialog? pwdDialog)
     {
         if (!Adminmode)
         {
-            var result = await pwdDialog.ShowAsync();
+            var result = await pwdDialog?.ShowAsync();
 
             if (result == ContentDialogResult.Primary)
             {
@@ -105,14 +97,17 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             SetProperty(ref _CustomColor, value);
             _settingService.SetSettingsAsync("AccentColor", value);
+            if (_CurrentSpeziProperties is not null)
+            {
             _CurrentSpeziProperties.CustomAccentColor = value;
+            }
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }
 
     private async Task SwitchAccentColorAsync()
     {
-        await _dialogService.MessageDialogAsync(App.MainRoot, "Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
+        await _dialogService.MessageDialogAsync(App.MainRoot!, "Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
     private async Task UpdateAuswahlParameterAsync()
     {
@@ -138,7 +133,10 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             SetProperty(ref _Adminmode, value);
             _settingService.SetSettingsAsync("Adminmode", value);
-            _CurrentSpeziProperties.Adminmode = value;
+            if (_CurrentSpeziProperties is not null)
+            {
+                _CurrentSpeziProperties.Adminmode = value;
+            }
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }
@@ -149,22 +147,22 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         get => _CanSwitchToAdminmode;
         set => SetProperty(ref _CanSwitchToAdminmode, value);
     }
-    private string _PasswortInfoText = "Kein PIN eingegeben";
-    public string PasswortInfoText
+    private string? _PasswortInfoText = "Kein PIN eingegeben";
+    public string? PasswortInfoText
     {
         get => _PasswortInfoText;
         set => SetProperty(ref _PasswortInfoText, value);
     }
 
-    private string _InfoText;
-    public string InfoText
+    private string? _InfoText;
+    public string? InfoText
     {
         get => _InfoText;
         set => SetProperty(ref _InfoText, value);
     }
 
-    private string _PasswortInput;
-    public string PasswortInput
+    private string? _PasswortInput;
+    public string? PasswortInput
     {
         get => _PasswortInput;
         set

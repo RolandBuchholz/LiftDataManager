@@ -16,7 +16,10 @@ public class KabineDetailViewModel : DataViewModelBase, INavigationAware
         GoToKabineCommand = new RelayCommand(GoToKabine);
     }
 
-    public IRelayCommand GoToKabineCommand{get;}
+    public IRelayCommand GoToKabineCommand
+    {
+        get;
+    }
 
     private void GoToKabine() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
 

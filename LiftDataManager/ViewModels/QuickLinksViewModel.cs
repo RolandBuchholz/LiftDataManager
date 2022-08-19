@@ -105,7 +105,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
         var bausatztyp = "";
 
-        if (ParamterDictionary["var_Bausatz"].Value is not null)
+        if (ParamterDictionary!["var_Bausatz"].Value is not null)
         {
             bausatztyp = ParamterDictionary["var_Bausatz"].Value;
         }
@@ -116,7 +116,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenSpezi()
     {
-        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
+        var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
         var startargs = "";
 
@@ -134,7 +134,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenSpeziPdf()
     {
-        var filename = FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
+        var filename = FullPathXml?.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
         var startargs = "";
 
         if (File.Exists(filename))
@@ -145,12 +145,15 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenBauer()
     {
-        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
+        var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var filename = @"C:\Work\Administration\Tools\Explorer Start.exe";
 
         if (File.Exists(FullPathXml))
         {
-            StartProgram(filename, auftragsnummer);
+            if (auftragsnummer != null)
+            {
+                StartProgram(filename, auftragsnummer);
+            }
         }
     }
 
@@ -184,8 +187,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OpenCFP()
     {
-        var auftragsnummer = ParamterDictionary["var_AuftragsNummer"].Value;
-        var bausatztyp = ParamterDictionary["var_Bausatz"].Value;
+        var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
+        var bausatztyp = ParamterDictionary?["var_Bausatz"].Value;
         var user = Environment.GetEnvironmentVariable("userprofile");
         var cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
         var startargs = auftragsnummer + " " + bausatztyp;
@@ -238,8 +241,8 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
         var vaultPath = path.Replace(@"C:\Work", "$").Replace(@"\", "/");
 
-        XmlWriter oXmlWriter = null;
-        XmlWriterSettings oXmlWriterSettings = new XmlWriterSettings();
+        XmlWriter? oXmlWriter = null;
+        var oXmlWriterSettings = new XmlWriterSettings();
 
         try
         {
@@ -280,7 +283,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
         finally
         {
-            oXmlWriter.Close();
+            oXmlWriter?.Close(); 
         }
     }
 

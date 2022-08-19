@@ -27,14 +27,14 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private ICommand _itemClickCommand;
-    public ICommand ItemClickCommand => _itemClickCommand ?? (_itemClickCommand = new RelayCommand<Parameter>(OnItemClick));
+    private ICommand? _itemClickCommand;
+    public ICommand ItemClickCommand => _itemClickCommand ??= new RelayCommand<Parameter>(OnItemClick);
 
     protected async override Task CheckUnsavedParametresAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
+            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -44,7 +44,7 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -62,7 +62,6 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
                     LikeEditParameter = false;
                 }
             }
-
         }
     }
 
@@ -73,15 +72,18 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
         set => SetProperty(ref _CanShowUnsavedParameters, value);
     }
 
-    private string _SearchInput;
-    public string SearchInput
+    private string? _SearchInput;
+    public string? SearchInput
     {
         get => _SearchInput;
 
         set
         {
             SetProperty(ref _SearchInput, value);
-            _CurrentSpeziProperties.SearchInput = SearchInput;
+            if (_CurrentSpeziProperties != null)
+            {
+                _CurrentSpeziProperties.SearchInput = SearchInput;
+            }
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }
@@ -89,8 +91,14 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        SearchInput = _CurrentSpeziProperties.SearchInput;
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+        if (_CurrentSpeziProperties is not null)
+        {
+            SearchInput = _CurrentSpeziProperties.SearchInput;
+        }
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     public void OnNavigatedFrom()
@@ -98,12 +106,12 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware
         WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
     }
 
-    private void OnItemClick(Parameter clickedItem)
+    private void OnItemClick(Parameter? clickedItem)
     {
         if (clickedItem != null)
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName, clickedItem.Name);
+            _navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, clickedItem.Name);
         }
     }
 }

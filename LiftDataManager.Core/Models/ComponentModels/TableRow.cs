@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.Models.ComponentModels;
-public class TableRow<T1 , T2>
+public class TableRow<T1, T2>
 {
     public bool IsSelected
     {

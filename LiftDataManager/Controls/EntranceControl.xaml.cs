@@ -7,7 +7,7 @@ namespace LiftDataManager.Controls;
 
 public sealed partial class EntranceControl : UserControl
 {
-    public string NewMainEntrance
+    public string? NewMainEntrance
     {
         get; private set;
     }
@@ -57,9 +57,9 @@ public sealed partial class EntranceControl : UserControl
     public static readonly DependencyProperty DisplayNameHauptzugangProperty =
         DependencyProperty.Register("DisplayNameHauptzugang", typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
 
-    private void Textbox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+    private void Textbox_ContextMenuOpening(object? sender, ContextMenuEventArgs e)
     {
-        FrameworkElement senderElement = sender as FrameworkElement;
+        FrameworkElement? senderElement = sender as FrameworkElement;
         FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
         flyoutBase.ShowAt(senderElement);
 
@@ -87,13 +87,15 @@ public sealed partial class EntranceControl : UserControl
 
             var borderBox = (TextBox)FindName("txtBox_" + ItemSource["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
             borderBox.BorderThickness = new Thickness(2);
-            object accentColor;
+            object? accentColor;
             var accentColorFound = Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out accentColor);
             if (accentColorFound)
             {
-                borderBox.BorderBrush = new SolidColorBrush((Color)accentColor);
+                if (accentColor is not null)
+                {
+                    borderBox.BorderBrush = new SolidColorBrush((Color)accentColor);
+                }
             }
-
         }
     }
 }

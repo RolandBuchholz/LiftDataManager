@@ -7,8 +7,8 @@ public sealed partial class OrderNumberControl : UserControl
         InitializeComponent();
     }
 
-    private string _OrderYear;
-    public string OrderYear
+    private string? _OrderYear;
+    public string? OrderYear
     {
         get => _OrderYear;
         set
@@ -18,8 +18,8 @@ public sealed partial class OrderNumberControl : UserControl
         }
     }
 
-    private string _OrderMonth;
-    public string OrderMonth
+    private string? _OrderMonth;
+    public string? OrderMonth
     {
         get => _OrderMonth;
         set
@@ -29,8 +29,8 @@ public sealed partial class OrderNumberControl : UserControl
         }
     }
 
-    private string _OrderId;
-    public string OrderId
+    private string? _OrderId;
+    public string? OrderId
     {
         get => _OrderId;
         set
@@ -51,7 +51,7 @@ public sealed partial class OrderNumberControl : UserControl
 
     private void SetOrderNumber()
     {
-        string fullOrderId;
+        string? fullOrderId;
 
         if (OrderId is null)
         {
@@ -66,7 +66,9 @@ public sealed partial class OrderNumberControl : UserControl
         {
             fullOrderId = "0" + fullOrderId;
         }
-
-        OrderNumber = OrderYear.Substring(2, 2) + "-" + OrderMonth + "-" + fullOrderId;
+        if (OrderYear is not null)
+        {
+            OrderNumber = OrderYear.Substring(2, 2) + "-" + OrderMonth + "-" + fullOrderId;
+        }
     }
 }

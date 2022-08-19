@@ -4,9 +4,9 @@ namespace LiftDataManager.ViewModels;
 
 public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
 {
-    private Parameter _item;
+    private Parameter? _item;
 
-    public Parameter Item
+    public Parameter? Item
     {
         get
         {
@@ -17,7 +17,10 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
         set
         {
             SetProperty(ref _item, value);
-            _item.PropertyChanged += OnPropertyChanged;
+            if (_item != null)
+            {
+                _item.PropertyChanged += OnPropertyChanged;
+            }
         }
     }
 
@@ -40,12 +43,12 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
         get;
     }
 
-    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
     {
-        CheckIsDirty((Parameter)sender);
+        CheckIsDirty((Parameter?)sender);
     }
 
-    private void CheckIsDirty(Parameter Item)
+    private void CheckIsDirty(Parameter? Item)
     {
         if (Item is not null && Item.IsDirty)
         {
@@ -74,7 +77,10 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
         var infotext = await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
-        Item.IsDirty = false;
+        if (Item != null)
+        {
+            Item.IsDirty = false;
+        }
     }
 
     public void OnNavigatedTo(object parameter)
@@ -89,6 +95,9 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        Item.PropertyChanged -= OnPropertyChanged;
+        if (Item != null)
+        {
+            Item.PropertyChanged -= OnPropertyChanged;
+        }
     }
 }

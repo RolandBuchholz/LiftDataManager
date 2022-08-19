@@ -9,7 +9,7 @@ public sealed partial class ParameterDetailControl : UserControl
         InitializeComponent();
     }
 
-    public Parameter ListDetailsMenuItem
+    public Parameter? ListDetailsMenuItem
     {
         get => GetValue(ListDetailsMenuItemProperty) as Parameter;
         set => SetValue(ListDetailsMenuItemProperty, value);
@@ -29,6 +29,6 @@ public sealed partial class ParameterDetailControl : UserControl
     private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = d as ParameterDetailControl;
-        control.ForegroundElement.ChangeView(0, 0, 1);
+        control?.ForegroundElement.ChangeView(0, 0, 1);
     }
 }

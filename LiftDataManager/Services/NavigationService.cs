@@ -1,19 +1,18 @@
-﻿using CommunityToolkit.WinUI.UI.Animations;
+﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.Services;
 
-// For more information on navigation between pages see
-// https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;
-    private object _lastParameterUsed;
-    private Frame _frame;
+    private object? _lastParameterUsed;
+    private Frame? _frame;
 
-    public event NavigatedEventHandler Navigated;
+    public event NavigatedEventHandler? Navigated;
 
-    public Frame Frame
+    public Frame? Frame
     {
         get
         {
@@ -34,7 +33,8 @@ public class NavigationService : INavigationService
         }
     }
 
-    public bool CanGoBack => Frame.CanGoBack;
+    [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
+    public bool CanGoBack => Frame != null && Frame.CanGoBack;
 
     public NavigationService(IPageService pageService)
     {
@@ -74,11 +74,11 @@ public class NavigationService : INavigationService
         return false;
     }
 
-    public bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false)
+    public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
 
-        if (_frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParameterUsed)))
+        if (_frame != null && (_frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParameterUsed))))
         {
             _frame.Tag = clearNavigation;
             var vmBeforeNavigation = _frame.GetPageViewModel();
@@ -116,6 +116,5 @@ public class NavigationService : INavigationService
             Navigated?.Invoke(sender, e);
         }
     }
-
     public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
 }

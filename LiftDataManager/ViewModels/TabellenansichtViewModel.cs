@@ -32,9 +32,9 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
         set => SetProperty(ref _CanShowUnsavedParameters, value);
     }
 
-    private string _SearchInput;
+    private string? _SearchInput;
 
-    public string SearchInput
+    public string? SearchInput
     {
         get => _SearchInput;
 
@@ -60,7 +60,7 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot,
+                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +

@@ -1,14 +1,12 @@
-﻿using System;
-
-namespace LiftDataManager.Controls;
+﻿namespace LiftDataManager.Controls;
 public sealed partial class PrePlanningNumberControl : UserControl
 {
     public PrePlanningNumberControl()
     {
         InitializeComponent();
     }
-    private string _PrePlanningYear;
-    public string PrePlanningYear
+    private string? _PrePlanningYear;
+    public string? PrePlanningYear
     {
         get => _PrePlanningYear;
         set
@@ -18,8 +16,8 @@ public sealed partial class PrePlanningNumberControl : UserControl
         }
     }
 
-    private string _PrePlanningId;
-    public string PrePlanningId
+    private string? _PrePlanningId;
+    public string? PrePlanningId
     {
         get => _PrePlanningId;
         set
@@ -29,7 +27,7 @@ public sealed partial class PrePlanningNumberControl : UserControl
         }
     }
 
-    public string PrePlanningNumber
+    public string? PrePlanningNumber
     {
         get => (string)GetValue(PrePlanningNumberProperty);
         set => SetValue(PrePlanningNumberProperty, value);
@@ -40,7 +38,7 @@ public sealed partial class PrePlanningNumberControl : UserControl
 
     private void SetPrePlanningNumber()
     {
-        string fullPrePlanningId;
+        string? fullPrePlanningId;
 
         if (PrePlanningId is null)
         {
