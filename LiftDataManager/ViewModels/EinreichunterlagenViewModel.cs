@@ -18,7 +18,7 @@ public class EinreichunterlagenViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }

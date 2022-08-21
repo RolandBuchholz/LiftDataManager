@@ -91,7 +91,7 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
             "bauseits Stein 25 mm" => "62,5",
             "bauseits Stein 30 mm" => "75",
             "Alu Quintett 3,5/5" => "10,34",
-            "bauseits lt. Beschreibung" => ParamterDictionary["var_Bodenbelagsgewicht"].Value,
+            "bauseits lt. Beschreibung" => ParamterDictionary!["var_Bodenbelagsgewicht"].Value,
             _ => "0",
         };
 
@@ -119,18 +119,21 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
             "bauseits Stein 25 mm" => "25",
             "bauseits Stein 30 mm" => "30",
             "Alu Quintett 3,5/5" => "5",
-            "bauseits lt. Beschreibung" => ParamterDictionary["var_Bodenbelagsdicke"].Value,
+            "bauseits lt. Beschreibung" => ParamterDictionary!["var_Bodenbelagsdicke"].Value,
             _ => "0",
         };
 
-        ParamterDictionary["var_Bodenbelagsgewicht"].Value = bodenbelagGewicht;
-        ParamterDictionary["var_Bodenbelagsdicke"].Value = bodenbelagDicke;
+        ParamterDictionary!["var_Bodenbelagsgewicht"].Value = bodenbelagGewicht;
+        ParamterDictionary!["var_Bodenbelagsdicke"].Value = bodenbelagDicke;
     }
 
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     public void OnNavigatedFrom()

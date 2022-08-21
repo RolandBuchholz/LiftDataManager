@@ -4,9 +4,14 @@ namespace LiftDataManager.Helpers;
 
 public class LiftParameterHelper
 {
-    internal static dynamic GetLiftParameterValue<T>(ObservableDictionary<string, Parameter> ParamterDictionary, string parametername)
+    internal static dynamic GetLiftParameterValue<T>(ObservableDictionary<string, Parameter>? ParamterDictionary, string parametername)
     {
-        var value = ParamterDictionary[parametername].Value;
+        var value = string.Empty;
+
+        if (ParamterDictionary is not null)
+        {
+            value = ParamterDictionary[parametername].Value;
+        }
 
         if (typeof(T) == typeof(int))
         {

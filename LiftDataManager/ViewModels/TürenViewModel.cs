@@ -56,7 +56,7 @@ public class TürenViewModel : DataViewModelBase, INavigationAware
 
     private async Task SetVariableCarDoorDataAsync()
     {
-        var currentVariableCarDoorData = Convert.ToBoolean(ParamterDictionary["var_Variable_Tuerdaten"].Value);
+        var currentVariableCarDoorData = Convert.ToBoolean(ParamterDictionary!["var_Variable_Tuerdaten"].Value);
         ParamterDictionary["var_Variable_Tuerdaten"].Value = (currentVariableCarDoorData) ? "false" : "true";
         SetCarDoorDataVisibility();
         await Task.CompletedTask;
@@ -64,7 +64,7 @@ public class TürenViewModel : DataViewModelBase, INavigationAware
 
     private void SetCarDoorDataVisibility()
     {
-        var variableCarDoorData = Convert.ToBoolean(ParamterDictionary["var_Variable_Tuerdaten"].Value);
+        var variableCarDoorData = Convert.ToBoolean(ParamterDictionary!["var_Variable_Tuerdaten"].Value);
         var zugangB = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_B"].Value);
         var zugangC = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_C"].Value);
         var zugangD = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_D"].Value);
@@ -79,7 +79,7 @@ public class TürenViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }

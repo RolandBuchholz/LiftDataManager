@@ -86,7 +86,7 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (parameter is not null)
+        if (parameter is not null && ParamterDictionary is not null)
         {
             var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
             Item = data.First(i => i.Name == (string)parameter);

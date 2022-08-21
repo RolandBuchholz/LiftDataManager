@@ -204,7 +204,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 
     public void SetPersonen()
     {
-        ParamterDictionary["var_Personen"].Value = Convert.ToString(PersonenBerechnet);
+        ParamterDictionary!["var_Personen"].Value = Convert.ToString(PersonenBerechnet);
     }
 
     // ToDo Türdaten aus Datenbankladen Beispieldaten einer TTK 25
@@ -342,7 +342,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }

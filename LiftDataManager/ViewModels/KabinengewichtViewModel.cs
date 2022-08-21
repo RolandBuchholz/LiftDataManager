@@ -218,7 +218,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
                                           StossleisteGewicht + HandlaufGewicht + SockelleisteGewicht + SchutzgelaenderGewicht + KlemmkastenGewicht + SchraubenZubehoerGewicht + TableauGewicht);
     public double KabinenKorrekturGewicht => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F_Korr");
     public double KabinenTuerGewicht => KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD;
-    public double FangrahmenGewicht => _CurrentSpeziProperties.FangrahmenGewicht;
+    public double FangrahmenGewicht => _CurrentSpeziProperties!.FangrahmenGewicht;
     public double FahrkorbGewicht => Math.Round(KabinenGewichtGesamt + KabinenKorrekturGewicht + KabinenTuerGewicht + FangrahmenGewicht);
 
     // ToDo Parameter aus Datenbank abrufen
@@ -420,7 +420,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }

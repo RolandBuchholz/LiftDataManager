@@ -41,7 +41,10 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
         set
         {
             SetProperty(ref _SearchInput, value);
-            _CurrentSpeziProperties.SearchInput = SearchInput;
+            if (_CurrentSpeziProperties is not null)
+            {
+                _CurrentSpeziProperties.SearchInput = SearchInput;
+            }
             Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }
@@ -50,7 +53,7 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
+            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -84,8 +87,11 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        SearchInput = _CurrentSpeziProperties.SearchInput;
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null)
+        {
+            SearchInput = _CurrentSpeziProperties.SearchInput;
+        }
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }

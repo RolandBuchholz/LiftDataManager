@@ -24,7 +24,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware
     {
         get
         {
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Rahmengewicht"].Value))
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
             {
                 return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
             }
@@ -40,7 +40,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware
 
     private void SetFangrahmengewicht(string fangrahmenTyp)
     {
-        ParamterDictionary["var_Rahmengewicht"].Value = "";
+        ParamterDictionary!["var_Rahmengewicht"].Value = "";
 
         FangrahmenGewicht = fangrahmenTyp switch
         {
@@ -86,19 +86,24 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware
             "BT2-170" => 1620,
             _ => 0,
         };
-
-        _CurrentSpeziProperties.FangrahmenGewicht = FangrahmenGewicht;
+        if (_CurrentSpeziProperties is not null)
+        {
+            _CurrentSpeziProperties.FangrahmenGewicht = FangrahmenGewicht;
+        }
         _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
     }
 
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }
-        FangrahmenGewicht = _CurrentSpeziProperties.FangrahmenGewicht;
+        if (_CurrentSpeziProperties is not null)
+        {
+            FangrahmenGewicht = _CurrentSpeziProperties.FangrahmenGewicht;
+        }
     }
 
     public void OnNavigatedFrom()

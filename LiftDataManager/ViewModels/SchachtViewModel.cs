@@ -31,7 +31,7 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
 
     private void SetHauptzugang(string? parameter)
     {
-        if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
         {
             ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
             DisplayNameHauptzugang = parameter;
@@ -40,7 +40,7 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
 
     private void ResetHauptzugang()
     {
-        if (!string.Equals(ParamterDictionary["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
         {
             ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
             DisplayNameHauptzugang = "NV";
@@ -50,7 +50,7 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
     private string? _DisplayNameHauptzugang;
     public string? DisplayNameHauptzugang
     {
-        get => ParamterDictionary["var_Haupthaltestelle"].Value == "NV"
+        get => ParamterDictionary!["var_Haupthaltestelle"].Value == "NV"
                 ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")
                 : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
         set => SetProperty(ref _DisplayNameHauptzugang, value);
@@ -59,7 +59,10 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = CheckUnsavedParametresAsync();
+        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     public void OnNavigatedFrom()
