@@ -6,22 +6,16 @@ namespace LiftDataManager.Core.Services;
 
 public class VaultDataService : IVaultDataService
 {
-    string starttyp = string.Empty;
-    const string pathPowershellScripts = @"C:\Work\Administration\PowerShellScripts\";
-    private DownloadInfo DownloadInfo
-    {
-        get; set;
-    }
-    public int ExitCode
-    {
-        get; private set;
-    }
+    private string starttyp = string.Empty;
+    private const string pathPowershellScripts = @"C:\Work\Administration\PowerShellScripts\";
+    private DownloadInfo DownloadInfo { get; set; } = new DownloadInfo();
+    public int ExitCode { get; private set;}
 
     public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly)
     {
         starttyp = "get";
 
-        Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, readOnly);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, readOnly);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -31,7 +25,7 @@ public class VaultDataService : IVaultDataService
     public async Task<DownloadInfo> SetFileAsync(string auftragsnummer)
     {
         starttyp = "set";
-        Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -41,7 +35,7 @@ public class VaultDataService : IVaultDataService
     public async Task<DownloadInfo> UndoFileAsync(string auftragsnummer)
     {
         starttyp = "undo";
-        Task<int> result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -50,25 +44,14 @@ public class VaultDataService : IVaultDataService
 
     private async Task<int> StartPowershellScriptAsync(string pathPowershellScripts, string starttyp, string auftragsnummer, bool readOnly = false)
     {
-        string powershellScriptName;
-
-        switch (starttyp)
+        var powershellScriptName = starttyp switch
         {
-            case "get":
-                powershellScriptName = "GetVaultFile.ps1";
-                break;
-            case "set":
-                powershellScriptName = "SetVaultFile.ps1";
-                break;
-            case "undo":
-                powershellScriptName = "UndoVaultFile.ps1";
-                break;
-            default:
-                powershellScriptName = "GetVaultFile.ps1";
-                break;
-        }
-
-        string readOnlyPowershell = readOnly ? "$true" : "$false";
+            "get" => "GetVaultFile.ps1",
+            "set" => "SetVaultFile.ps1",
+            "undo" => "UndoVaultFile.ps1",
+            _ => "GetVaultFile.ps1",
+        };
+        var readOnlyPowershell = readOnly ? "$true" : "$false";
 
         try
         {
@@ -88,7 +71,7 @@ public class VaultDataService : IVaultDataService
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             psScript.StartInfo.StandardOutputEncoding = Encoding.GetEncoding(850);
             psScript.Start();
-            string downloadResult = psScript.StandardOutput.ReadToEnd();
+            var downloadResult = psScript.StandardOutput.ReadToEnd();
             psScript.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(downloadResult))
