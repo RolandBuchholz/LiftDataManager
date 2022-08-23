@@ -588,9 +588,17 @@
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Anzahl Personen"
+                                IsReadOnly="True"
                                 PlaceholderText="Anzahl Personen"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}"
-                                TextAlignment="Right" />
+                                TextAlignment="Right" >
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text ="Schreibgeschützer Parameter:"></Run><LineBreak />
+                                        Personenanzahl wird automatisch berechnet
+                                    </TextBlock>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"
@@ -855,9 +863,17 @@
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
                                 Header="Kabinenfläche"
+                                IsReadOnly="True"
                                 PlaceholderText="Kabinenfläche"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'].Value, Mode=TwoWay}"
-                                TextAlignment="Right" />
+                                TextAlignment="Right">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text ="Schreibgeschützer Parameter:"></Run><LineBreak />
+                                        Kabinenfläche wird automatisch berechnet
+                                    </TextBlock>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="0,0,15,5"

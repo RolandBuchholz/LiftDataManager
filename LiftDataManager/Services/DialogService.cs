@@ -206,49 +206,22 @@ public class DialogService : IDialogService
 
     private static string DownloadInfoEnumToString(DownloadInfo downloadResult)
     {
-        string enumText;
-        switch (downloadResult.ExitState)
+        var enumText = downloadResult.ExitState switch
         {
-            case DownloadInfo.ExitCodeEnum.NoError:
-                enumText = "kein Fehler";
-                break;
-            case DownloadInfo.ExitCodeEnum.UpDownLoadError:
-                enumText = "Datei - Upload /Download/Reservierung enfernen fehlgeschlagen";
-                break;
-            case DownloadInfo.ExitCodeEnum.LoginError:
-                enumText = "Login Fehler im Vault";
-                break;
-            case DownloadInfo.ExitCodeEnum.UpdatePropertiesError:
-                enumText = "Eigenschaftsabgleich mit Vault fehlgeschlagen";
-                break;
-            case DownloadInfo.ExitCodeEnum.PowerShellStartError:
-                enumText = "Interner Fehler in der PowerShellStart Programm";
-                break;
-            case DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml:
-                enumText = "AutoDeskTransferXml mehrfach im Arbeitsbereich vorhanden";
-                break;
-            case DownloadInfo.ExitCodeEnum.InvalideOrderNumber:
-                enumText = "Invalide Auftrags bzw. Angebotsnummer";
-                break;
-            case DownloadInfo.ExitCodeEnum.MissingVaultFile:
-                enumText = "Datei im Vault oder Arbeitsbereich nicht gefunden";
-                break;
-            case DownloadInfo.ExitCodeEnum.MissingAdskLicensingSDK_5:
-                enumText = "Fehlende AdskLicensingSDK_5.dll im Powershell Ordner";
-                break;
-            case DownloadInfo.ExitCodeEnum.MissingVaultClient_DataStandard:
-                enumText = "Vault Client 2022 oder DataStandard wurde nicht gefunden";
-                break;
-            case DownloadInfo.ExitCodeEnum.CheckedOutByOtherUser:
-                enumText = "AutoDeskTransferXml durch anderen Benutzer ausgechecked";
-                break;
-            case DownloadInfo.ExitCodeEnum.CheckedOutLinkedFilesByOtherUser:
-                enumText = "AutoDeskTransferXml verbundene Dateien durch anderen Benutzer ausgechecked";
-                break;
-            default:
-                enumText = "keine ExitCode vorhanden";
-                break;
-        }
+            DownloadInfo.ExitCodeEnum.NoError => "kein Fehler",
+            DownloadInfo.ExitCodeEnum.UpDownLoadError => "Datei - Upload /Download/Reservierung enfernen fehlgeschlagen",
+            DownloadInfo.ExitCodeEnum.LoginError => "Login Fehler im Vault",
+            DownloadInfo.ExitCodeEnum.UpdatePropertiesError => "Eigenschaftsabgleich mit Vault fehlgeschlagen",
+            DownloadInfo.ExitCodeEnum.PowerShellStartError => "Interner Fehler in der PowerShellStart Programm",
+            DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml => "AutoDeskTransferXml mehrfach im Arbeitsbereich vorhanden",
+            DownloadInfo.ExitCodeEnum.InvalideOrderNumber => "Invalide Auftrags bzw. Angebotsnummer",
+            DownloadInfo.ExitCodeEnum.MissingVaultFile => "Datei im Vault oder Arbeitsbereich nicht gefunden",
+            DownloadInfo.ExitCodeEnum.MissingAdskLicensingSDK_5 => "Fehlende AdskLicensingSDK_5.dll im Powershell Ordner",
+            DownloadInfo.ExitCodeEnum.MissingVaultClient_DataStandard => "Vault Client 2022 oder DataStandard wurde nicht gefunden",
+            DownloadInfo.ExitCodeEnum.CheckedOutByOtherUser => "AutoDeskTransferXml durch anderen Benutzer ausgechecked",
+            DownloadInfo.ExitCodeEnum.CheckedOutLinkedFilesByOtherUser => "AutoDeskTransferXml verbundene Dateien durch anderen Benutzer ausgechecked",
+            _ => "keine ExitCode vorhanden",
+        };
         return enumText;
     }
 }

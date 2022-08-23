@@ -1,4 +1,5 @@
 ﻿using Cogs.Collections;
+using LiftDataManager.Core.Messenger.Messages;
 
 namespace LiftDataManager.ViewModels;
 
@@ -384,7 +385,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                         }
                         else
                         {
-                            DownloadInfo downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
 
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                             {
@@ -417,7 +418,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                                                     "Abbrechen");
                         if (confirmed)
                         {
-                            DownloadInfo downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
 
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                             {
@@ -476,12 +477,12 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
             InfoSidebarPanelText += $"----------\n";
             if (CheckOut)
             {
-                DownloadInfo downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml)?.Replace("-AutoDeskTransfer", ""));
+                var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml)?.Replace("-AutoDeskTransfer", ""));
                 if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                 {
                     if (File.Exists(FullPathXml))
                     {
-                        FileInfo FileInfo = new FileInfo(FullPathXml);
+                        var FileInfo = new FileInfo(FullPathXml);
                         if (FileInfo.IsReadOnly)
                         {
                             FileInfo.IsReadOnly = false;
@@ -521,8 +522,8 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         await Task.Delay(30);
         if (CheckOut)
         {
-            Stopwatch watch = Stopwatch.StartNew();
-            DownloadInfo downloadResult = await _vaultDataService.SetFileAsync(SpezifikationName);
+            var watch = Stopwatch.StartNew();
+            var downloadResult = await _vaultDataService.SetFileAsync(SpezifikationName);
             var stopTimeMs = watch.ElapsedMilliseconds;
 
             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
@@ -549,7 +550,7 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
     {
         await SetFullPathXmlAsync(OpenReadOnly);
 
-        IEnumerable<Parameter> data = await _parameterDataService.LoadParameterAsync(FullPathXml);
+        var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
         {
@@ -571,12 +572,13 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
         OpenReadOnly = true;
+        SetAreaPersons();
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
     }
 
     private void SetInfoSidebarPanelText(ParameterDirtyMessage m)
     {
-        if (m.Value.ParameterTyp == Core.Models.Parameter.ParameterTypValue.Date)
+        if (m.Value.ParameterTyp == Parameter.ParameterTypValue.Date)
         {
             string? datetimeOld;
             string? datetimeNew;
@@ -656,6 +658,17 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         return searchResult;
     }
 
+    private void SetAreaPersons()
+    {
+        var requestMessageResult = WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessage>();
+        if (requestMessageResult.HasReceivedResponse)
+        {
+            ParamterDictionary!["var_Personen"].Value = Convert.ToString(requestMessageResult.Response.Personen);
+            ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(requestMessageResult.Response.NutzflaecheKabine);
+        }
+        requestMessageResult.Sender.IsActive = false;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         if (_CurrentSpeziProperties is null) { SetSettings(); }
@@ -674,11 +687,15 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         }
         if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
         if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
+        
+        SetAreaPersons();
+
         if (_CurrentSpeziProperties is not null &&
             _CurrentSpeziProperties.ParamterDictionary is not null &&
             _CurrentSpeziProperties.ParamterDictionary.Values is not null) { _ = CheckUnsavedParametresAsync(); }
     }
 
+  
     public void OnNavigatedFrom()
     {
         WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);

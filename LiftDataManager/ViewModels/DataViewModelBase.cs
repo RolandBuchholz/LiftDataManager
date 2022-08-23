@@ -4,9 +4,9 @@ namespace LiftDataManager.ViewModels;
 
 public class DataViewModelBase : ObservableRecipient
 {
-    public readonly IParameterDataService _parameterDataService;
-    public readonly IDialogService _dialogService;
-    public readonly INavigationService _navigationService;
+    public readonly IParameterDataService? _parameterDataService;
+    public readonly IDialogService? _dialogService;
+    public readonly INavigationService? _navigationService;
 
     public bool Adminmode
     {
@@ -39,6 +39,10 @@ public class DataViewModelBase : ObservableRecipient
         get; set;
     }
 
+    public DataViewModelBase()
+    {
+    }
+
     public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
     {
         _parameterDataService = parameterDataService;
@@ -47,7 +51,7 @@ public class DataViewModelBase : ObservableRecipient
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync
+    public IAsyncRelayCommand? SaveAllSpeziParametersAsync
     {
         get;
     }
@@ -66,7 +70,7 @@ public class DataViewModelBase : ObservableRecipient
 
     public async Task SaveAllParameterAsync()
     {
-        var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
         InfoSidebarPanelText += infotext;
         await CheckUnsavedParametresAsync();
     }
@@ -84,7 +88,7 @@ public class DataViewModelBase : ObservableRecipient
             else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
+                var dialogResult = await _dialogService!.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -94,7 +98,7 @@ public class DataViewModelBase : ObservableRecipient
                 if (dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
 
                 }
                 else
@@ -158,7 +162,7 @@ public class DataViewModelBase : ObservableRecipient
         set
         {
             SetProperty(ref _CanSaveAllSpeziParameters, value);
-            SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
+            SaveAllSpeziParametersAsync!.NotifyCanExecuteChanged();
         }
     }
     private string? _InfoSidebarPanelText;

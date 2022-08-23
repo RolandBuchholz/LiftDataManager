@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-
+using LiftDataManager.Core.Messenger.Messages;
 namespace LiftDataManager.ViewModels;
 
-public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
+public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware , IRecipient<AreaPersonsRequestMessage>
 {
 
     public Dictionary<int, TableRow<int, double>> Tabelle6 { get; set; } = new();
@@ -22,6 +22,27 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         });
 
         FillTablesWithData();
+    }
+
+    public NutzlastberechnungViewModel()
+    {
+        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+
+        if (_CurrentSpeziProperties.ParamterDictionary is not null)
+        {
+            ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+        }
+
+        FillTablesWithData();
+    }
+
+    public void Receive(AreaPersonsRequestMessage message)
+    {
+        message.Reply(new CalculatedValues
+        {
+            Personen = PersonenBerechnet, 
+            NutzflaecheKabine = NutzflaecheGesamt 
+        });
     }
 
     private readonly SolidColorBrush successColor = new(Colors.LightGreen);
@@ -200,8 +221,6 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
         return personenAnzahl.FirstValue;
     }
 
-    // ToDo RequestMessage für Personenanzahl
-
     public void SetPersonen()
     {
         ParamterDictionary!["var_Personen"].Value = Convert.ToString(PersonenBerechnet);
@@ -342,12 +361,11 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
+        SetPersonen();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
         }
-        // ToDo RequestMessage für Personenanzahl
-        SetPersonen();
     }
 
     public void OnNavigatedFrom()
