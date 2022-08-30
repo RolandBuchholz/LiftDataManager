@@ -22,10 +22,13 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
 
     public void Receive(CarFrameWeightRequestMessageAsync message)
     {
-        message.Reply(new CalculatedValues
+        if (!message.HasReceivedResponse)
         {
-            FangrahmenGewicht = FangrahmenGewicht
-        });
+            message.Reply(new CalculatedValues
+            {
+                FangrahmenGewicht = FangrahmenGewicht
+            });
+        }
         IsActive=false;
     }
 

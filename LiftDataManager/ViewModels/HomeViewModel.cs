@@ -665,6 +665,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
             CarFrameWeight = carWeightRequestMessageMessageResult.FangrahmenGewicht;
             CarWeight = carWeightRequestMessageMessageResult.KabinenGewicht;
         }
+        await Task.CompletedTask;
     }
 
     public void OnNavigatedTo(object parameter)

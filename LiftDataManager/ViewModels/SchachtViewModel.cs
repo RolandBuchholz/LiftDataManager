@@ -26,7 +26,7 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware, IRecipient<
     {
         if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
         {
-            ParamterDictionary["var_Haupthaltestelle"].Value = parameter;
+            ParamterDictionary["var_Haupthaltestelle"].Value = parameter is not null ? parameter : string.Empty;
             DisplayNameHauptzugang = parameter;
         }
     }

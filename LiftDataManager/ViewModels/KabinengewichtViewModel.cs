@@ -19,19 +19,20 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
         }
     }
 
-
     public void Receive(CarWeightRequestMessageAsync message)
     {
-        message.Reply(new CalculatedValues
+        if (!message.HasReceivedResponse)
         {
-            KabinenGewicht = KabinenGewichtGesamt,
-            KabinenTuerenGewicht = KabinenTuerGewicht,
-            FangrahmenGewicht = FangrahmenGewicht,
-            Fahrkorbgewicht = FahrkorbGewicht
-        });
+            message.Reply(new CalculatedValues
+            {
+                KabinenGewicht = KabinenGewichtGesamt,
+                KabinenTuerenGewicht = KabinenTuerGewicht,
+                FangrahmenGewicht = FangrahmenGewicht,
+                Fahrkorbgewicht = FahrkorbGewicht
+            });
+        }
         IsActive = false;
     }
-
 
     private readonly double gewichtAbgehaengteDecke = 24;
     private readonly double gewichtDeckebelegt = 12;
@@ -248,8 +249,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
 #pragma warning restore CA1822 // Member als statisch markieren
     {
         var requestMessageResult = await WeakReferenceMessenger.Default.Send<CarFrameWeightRequestMessageAsync>();
-        var fangrahmenGewicht = requestMessageResult.FangrahmenGewicht;
-        return fangrahmenGewicht;
+        return requestMessageResult.FangrahmenGewicht;
     }
 
     public double FahrkorbGewicht
