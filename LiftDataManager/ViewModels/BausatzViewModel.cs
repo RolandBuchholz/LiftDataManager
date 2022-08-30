@@ -1,47 +1,77 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class BausatzViewModel : DataViewModelBase, INavigationAware
+namespace LiftDataManager.ViewModels;
+
+public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<CarFrameWeightRequestMessageAsync>,IRecipient<PropertyChangedMessage<string>>
 {
     public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
+    }
+
+    public BausatzViewModel()
+    {
+        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+
+        if (_CurrentSpeziProperties.ParamterDictionary is not null)
         {
-            if (m is not null && m.Value.IsDirty)
-            {
-                if (m.Value.ParameterName == "var_Bausatz")
-                {
-                    SetFangrahmengewicht(m.Value.NewValue);
-                };
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
+            ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+        }
+        SetCarWeight();
+    }
+
+    public void Receive(CarFrameWeightRequestMessageAsync message)
+    {
+        message.Reply(new CalculatedValues
+        {
+            FangrahmenGewicht = FangrahmenGewicht
         });
+        IsActive=false;
+    }
+
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is not null)
+        {
+            // ToDo Validation Service integrieren
+            if (message.PropertyName == "var_Bausatz")
+            {
+                ParamterDictionary!["var_Rahmengewicht"].Value = "";
+                GetFangrahmengewicht(message.NewValue);
+            };
+            SetInfoSidebarPanelText(message);
+            //TODO Make Async
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
     private double _FangrahmenGewicht;
     public double FangrahmenGewicht
     {
-        get
-        {
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
-            {
-                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
-            }
-            else
-            {
-                return _FangrahmenGewicht;
-            }
-        }
+        get => _FangrahmenGewicht;
         set => SetProperty(ref _FangrahmenGewicht, value);
+    }
+
+    private void SetCarWeight()
+    {
+        if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
+        {
+            FangrahmenGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
+        }
+        else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
+        {
+            GetFangrahmengewicht(ParamterDictionary!["var_Bausatz"].Value);
+        }
+        else
+        {
+            FangrahmenGewicht = 0;
+        }
     }
 
     // ToDo Parameter aus Datenbank abrufen
 
-    private void SetFangrahmengewicht(string fangrahmenTyp)
+    private void GetFangrahmengewicht(string fangrahmenTyp)
     {
-        ParamterDictionary!["var_Rahmengewicht"].Value = "";
-
         FangrahmenGewicht = fangrahmenTyp switch
         {
             "BRR-15 MK2" => 165,
@@ -86,28 +116,21 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware
             "BT2-170" => 1620,
             _ => 0,
         };
-        if (_CurrentSpeziProperties is not null)
-        {
-            _CurrentSpeziProperties.FangrahmenGewicht = FangrahmenGewicht;
-        }
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
     }
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
+        SetCarWeight();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
             _ = CheckUnsavedParametresAsync();
-        }
-        if (_CurrentSpeziProperties is not null)
-        {
-            FangrahmenGewicht = _CurrentSpeziProperties.FangrahmenGewicht;
         }
     }
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

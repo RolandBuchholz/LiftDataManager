@@ -1,14 +1,11 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger;
-using LiftDataManager.Core.Messenger.Messages;
 using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.Core.Models;
 
-public class Parameter : ObservableRecipient
+public partial class Parameter : ObservableRecipient
 {
     public enum ParameterTypValue
     {
@@ -38,31 +35,20 @@ public class Parameter : ObservableRecipient
 
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly bool dataImport;
-    private ParameterChangeInfo ParameterChangeInfo { get; set; } = new();
     public List<string> DropDownList { get; } = new();
-    public ParameterTypValue ParameterTyp
-    {
-        get; set;
-    }
-    public ParameterCategoryValue ParameterCategory
-    {
-        get; set;
-    }
+    public ParameterTypValue ParameterTyp {get; set; }
+    public ParameterCategoryValue ParameterCategory{get; set;}
     public char Symbol => (char)SymbolCode;
-    public int SymbolCode
-    {
-        get; set;
-    }
-    public bool DefaultUserEditable
-    {
-        get; set;
-    }
+    public int SymbolCode {get; set;}
+    public bool DefaultUserEditable {get; set;}
 
     public Parameter(string name, string typeCode, string value)
     {
         dataImport = true;
         AuswahlParameterDataService auswahlParameterDataService = new();
         _auswahlParameterDataService = auswahlParameterDataService;
+        IsDirty = false;
+        Name = name;
         TypeCode = typeCode;
         SymbolCode = GetSymbolCode(TypeCode);
         if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
@@ -71,117 +57,59 @@ public class Parameter : ObservableRecipient
             DropDownListValue = value;
             ParameterTyp = ParameterTypValue.DropDownList;
         }
-        IsDirty = false;
-        Value = value;
-        Name = name;
-        ParameterChangeInfo.ParameterName = name;
-        ParameterChangeInfo.OldValue = value;
-        ParameterChangeInfo.ParameterTyp = ParameterTyp;
+
+        Value = ParameterTyp switch
+        {
+            ParameterTypValue.Text => (value is not null) ? value : "",
+            ParameterTypValue.NumberOnly => (value is not null) ? value : "",
+            ParameterTypValue.Date => value,
+            ParameterTypValue.Boolean => value.ToLower(),
+            ParameterTypValue.DropDownList => value,
+            _ => value,
+        };
         dataImport = false;
     }
-    public string Name
+
+    public string Name{get; set; }
+    public string TypeCode {get ; set;}
+
+    [ObservableProperty]
+    private bool isDirty;
+
+    [ObservableProperty]
+    private string comment;
+    partial void OnCommentChanged(string value) => IsDirty = true;
+
+    [ObservableProperty]
+    private bool isKey;
+    partial void OnIsKeyChanged(bool value) => IsDirty = true;
+
+    [ObservableProperty]
+    private string value;
+    private string oldTempValue;
+    partial void OnValueChanging(string value)
     {
-        get; set;
+        oldTempValue = Value;
     }
-    public string TypeCode
+    partial void OnValueChanged(string value)
     {
-        get; set;
-    }
-    private string _Value;
-    public string Value
-    {
-        get => _Value;
-        set
+        if (!dataImport)
         {
-            if ((_Value != null && value != _Value) || (_Value is null && value != ""))
-            {
-                if (ParameterTyp == ParameterTypValue.Boolean)
-                {
-                    if (string.Equals(value, _Value, StringComparison.OrdinalIgnoreCase)) { return; };
-                }
-                SetParameterChangeInfoMessage(value);
-            }
-            SetProperty(ref _Value, value);
-        }
+            isDirty = true;
+            Broadcast(oldTempValue, value, Name);
+        } 
     }
 
-    private string _Comment;
-    public string Comment
+    [ObservableProperty]
+    private string dropDownListValue;
+    partial void OnDropDownListValueChanged(string value)
     {
-        get => _Comment;
-        set
+        dropDownListValue = (value != "(keine Auswahl)") ? value : null;
+        if (value is null && Value is not null)
         {
-            if ((_Comment != null && value != _Comment) || (_Comment != null && value != ""))
-            {
-                IsDirty = true;
-            }
-            SetProperty(ref _Comment, value);
+            dropDownListValue = Value;
         }
-    }
-
-    private bool _IsKey;
-    public bool IsKey
-    {
-        get => _IsKey;
-        set
-        {
-            if (value != _IsKey)
-            {
-                IsDirty = true;
-            }
-            SetProperty(ref _IsKey, value);
-        }
-    }
-
-    private string _DropDownListValue;
-    public string DropDownListValue
-    {
-        get => _DropDownListValue;
-        set
-        {
-            if (value != null && value != _DropDownListValue)
-            {
-                if (value == "(keine Auswahl)")
-                {
-                    value = null;
-                }
-                Value = value;
-                SetProperty(ref _DropDownListValue, value);
-            }
-        }
-    }
-
-    private bool _IsDirty;
-    public bool IsDirty
-    {
-        get => _IsDirty;
-        set
-        {
-            SetProperty(ref _IsDirty, value);
-            ParameterChangeInfo.IsDirty = value;
-            if (value && !dataImport && (Value != ParameterChangeInfo.NewValue))
-            {
-                Messenger.Send(new ParameterDirtyMessage(ParameterChangeInfo));
-            }
-        }
-    }
-
-    private void SetParameterChangeInfoMessage(string value)
-    {
-        if (ParameterChangeInfo.OldValue != value)
-        {
-            if (string.IsNullOrWhiteSpace(ParameterChangeInfo.NewValue))
-            {
-                ParameterChangeInfo.NewValue = value;
-            }
-            else
-            {
-                ParameterChangeInfo.OldValue = ParameterChangeInfo.NewValue;
-                ParameterChangeInfo.NewValue = value;
-            }
-
-            IsDirty = true;
-        }
+        Value = dropDownListValue;
     }
 
     private int GetSymbolCode(string TypeCode)
@@ -191,39 +119,30 @@ public class Parameter : ObservableRecipient
             case "mm":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 60220;
-
             case "string":
                 ParameterTyp = ParameterTypValue.Text;
                 return 59602;
-
             case "kg":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 59394;
-
             case "oe":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 60032;
-
             case "boolean":
                 ParameterTyp = ParameterTypValue.Boolean;
                 return 62250;
-
             case "mps":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 60490;
-
             case "m":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 60614;
-
             case "n":
                 ParameterTyp = ParameterTypValue.NumberOnly;
                 return 59394;
-
             case "date":
                 ParameterTyp = ParameterTypValue.Date;
                 return 57699;
-
             default:
                 return 59412;
         }

@@ -1,9 +1,9 @@
 ﻿using Cogs.Collections;
-using LiftDataManager.Core.Messenger.Messages;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class HomeViewModel : ObservableRecipient, INavigationAware
+public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly IParameterDataService _parameterDataService;
     private readonly ISettingService _settingService;
@@ -23,22 +23,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
 
     public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                if (m.Value.ParameterName == "var_Rahmengewicht")
-                {
-                    CarFrameWeight = Convert.ToDouble(m.Value.NewValue);
-                    if (_CurrentSpeziProperties is not null) 
-                    {
-                        _CurrentSpeziProperties.FangrahmenGewicht = CarFrameWeight; 
-                    }
-                };
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
         _parameterDataService = parameterDataService;
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
@@ -50,33 +34,32 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand CheckOutSpeziDataAsync
+    public void Receive(PropertyChangedMessage<string> message)
     {
-        get;
-    }
-    public IAsyncRelayCommand ClearSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand LoadSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand UploadSpeziDataAsync
-    {
-        get;
-    }
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync
-    {
-        get;
-    }
-    private bool _IsBusy;
-    public bool IsBusy
-    {
-        get => _IsBusy;
-        set => SetProperty(ref _IsBusy, value);
+        if (message is not null )
+        {
+            // ToDo Validation Service integrieren
+            if (message.PropertyName == "var_Rahmengewicht" ||
+                message.PropertyName == "var_F_Korr" ||
+                message.PropertyName == "var_Q" ||
+                message.PropertyName == "var_KBI" ||
+                message.PropertyName == "var_KTI" ||
+                message.PropertyName == "var_KHLicht")
+            {
+                _ = SetCalculatedValuesAsync();
+            };
+
+            SetInfoSidebarPanelText(message);
+            _ = CheckUnsavedParametresAsync();
+        }
     }
 
+    public IAsyncRelayCommand CheckOutSpeziDataAsync { get; }
+    public IAsyncRelayCommand ClearSpeziDataAsync { get; }
+    public IAsyncRelayCommand LoadSpeziDataAsync{ get; }
+    public IAsyncRelayCommand UploadSpeziDataAsync { get; }
+    public IAsyncRelayCommand SaveAllSpeziParametersAsync { get;}
+     
     private bool _CanCheckOut;
     public bool CanCheckOut
     {
@@ -133,25 +116,17 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public double CarDoorWeight => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht") +
-                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_B") +
-                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_C") +
-                                   LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_D");
+    [ObservableProperty]
+    private bool isBusy;
 
-    //ToDo Logic für Kabinengewicht fehlt noch (Kabinengewichtsberechnung)
-    private double _CarWeight;
-    public double CarWeight
-    {
-        get => _CarWeight;
-        set => SetProperty(ref _CarWeight, value);
-    }
+    [ObservableProperty]
+    private double carFrameWeight;
 
-    private double _CarFrameWeight;
-    public double CarFrameWeight
-    {
-        get => _CarFrameWeight;
-        set => SetProperty(ref _CarFrameWeight, value);
-    }
+    [ObservableProperty]
+    private double carDoorWeight;
+
+    [ObservableProperty]
+    private double carWeight;
 
     private async Task CheckUnsavedParametresAsync()
     {
@@ -403,7 +378,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                                 AuftragsbezogeneXml = false;
                             }
                         }
-
                         break;
                     }
 
@@ -442,7 +416,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                             SpezifikationName = string.Empty;
                             AuftragsbezogeneXml = false;
                         }
-
                         break;
                     }
             }
@@ -572,21 +545,28 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
         OpenReadOnly = true;
-        SetAreaPersons();
+        _ = SetCalculatedValuesAsync();
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
     }
 
-    private void SetInfoSidebarPanelText(ParameterDirtyMessage m)
+    private void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        if (m.Value.ParameterTyp == Parameter.ParameterTypValue.Date)
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
+            return;
+        }
+
+        var Sender = (Parameter)message.Sender;
+
+        if (Sender.ParameterTyp == Parameter.ParameterTypValue.Date)
         {
             string? datetimeOld;
             string? datetimeNew;
             try
             {
-                if (m.Value.OldValue is not null)
+                if (message.OldValue is not null)
                 {
-                    var excelDateOld = Convert.ToDouble(m.Value.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                    var excelDateOld = Convert.ToDouble(message.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
                     datetimeOld = DateTime.FromOADate(excelDateOld).ToShortDateString();
                 }
                 else
@@ -594,25 +574,25 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
                     datetimeOld = string.Empty;
                 }
 
-                if (m.Value.NewValue is not null)
+                if (message.NewValue is not null)
                 {
-                    var excelDateNew = Convert.ToDouble(m.Value.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                    var excelDateNew = Convert.ToDouble(message.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
                     datetimeNew = DateTime.FromOADate(excelDateNew).ToShortDateString();
                 }
                 else
                 {
                     datetimeNew = string.Empty;
                 }
-                InfoSidebarPanelText += $"{m.Value.ParameterName} : {datetimeOld} => {datetimeNew} geändert \n";
+                InfoSidebarPanelText += $"{message.PropertyName} : {datetimeOld} => {datetimeNew} geändert \n";
             }
             catch
             {
-                InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
             }
         }
         else
         {
-            InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+            InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
         }
     }
 
@@ -658,19 +638,38 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         return searchResult;
     }
 
-    private void SetAreaPersons()
+    private async Task SetCalculatedValuesAsync()
     {
-        var requestMessageResult = WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessage>();
-        if (requestMessageResult.HasReceivedResponse)
+        var areaPersonsRequestMessageResult = await WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
+
+        if (areaPersonsRequestMessageResult is not null)
         {
-            ParamterDictionary!["var_Personen"].Value = Convert.ToString(requestMessageResult.Response.Personen);
-            ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(requestMessageResult.Response.NutzflaecheKabine);
+            var person = areaPersonsRequestMessageResult.Personen;
+            var nutzflaecheKabine = areaPersonsRequestMessageResult.NutzflaecheKabine;
+
+            if (person > 0)
+            {
+                ParamterDictionary["var_Personen"].Value = Convert.ToString(person);
+            }
+            if (nutzflaecheKabine > 0)
+            {
+                ParamterDictionary["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
+            }
         }
-        requestMessageResult.Sender.IsActive = false;
+
+        var carWeightRequestMessageMessageResult = await WeakReferenceMessenger.Default.Send<CarWeightRequestMessageAsync>();
+
+        if (carWeightRequestMessageMessageResult is not null)
+        {
+            CarDoorWeight = carWeightRequestMessageMessageResult.KabinenTuerenGewicht;
+            CarFrameWeight = carWeightRequestMessageMessageResult.FangrahmenGewicht;
+            CarWeight = carWeightRequestMessageMessageResult.KabinenGewicht;
+        }
     }
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         if (_CurrentSpeziProperties is null) { SetSettings(); }
         _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
@@ -679,7 +678,6 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
         SearchInput = _CurrentSpeziProperties.SearchInput;
         InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-        CarFrameWeight = _CurrentSpeziProperties.FangrahmenGewicht;
         if (_CurrentSpeziProperties.FullPathXml is not null)
         {
             FullPathXml = _CurrentSpeziProperties.FullPathXml;
@@ -687,17 +685,16 @@ public class HomeViewModel : ObservableRecipient, INavigationAware
         }
         if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
         if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
-        
-        SetAreaPersons();
+
+        _ =  SetCalculatedValuesAsync();
 
         if (_CurrentSpeziProperties is not null &&
             _CurrentSpeziProperties.ParamterDictionary is not null &&
             _CurrentSpeziProperties.ParamterDictionary.Values is not null) { _ = CheckUnsavedParametresAsync(); }
     }
 
-  
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

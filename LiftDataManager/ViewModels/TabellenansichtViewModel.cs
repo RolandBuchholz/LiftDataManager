@@ -1,6 +1,8 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
+namespace LiftDataManager.ViewModels;
+
+public class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public CollectionViewSource GroupedItems
     {
@@ -10,15 +12,6 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
     public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
-
         GroupedItems = new CollectionViewSource
         {
             IsSourceGrouped = true
@@ -63,7 +56,7 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
+                var dialogResult = await _dialogService!.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -73,7 +66,7 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
                 if (dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
@@ -86,6 +79,7 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (_CurrentSpeziProperties is not null)
         {
@@ -99,6 +93,6 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

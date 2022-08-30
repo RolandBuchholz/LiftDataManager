@@ -1,23 +1,12 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class KabineViewModel : DataViewModelBase, INavigationAware
+namespace LiftDataManager.ViewModels;
+
+public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                if (m.Value.ParameterName == "var_Bodenbelag")
-                {
-                    SetGewichtBodenbelag(m.Value.NewValue);
-                };
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
-
         GoToKabineDetailCommand = new RelayCommand(GoToKabineDetail);
     }
 
@@ -26,7 +15,22 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
         get;
     }
 
-    private void GoToKabineDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is not null)
+        {
+            // ToDo Validation Service integrieren
+            if (message.PropertyName == "var_Bodenbelag")
+            {
+                SetGewichtBodenbelag(message.NewValue);
+            };
+            SetInfoSidebarPanelText(message);
+            //TODO Make Async
+            _ = CheckUnsavedParametresAsync();
+        }
+    }
+
+    private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
 
     //private void CheckDeckenhoehe()
     //{
@@ -129,6 +133,7 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
@@ -138,6 +143,6 @@ public class KabineViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

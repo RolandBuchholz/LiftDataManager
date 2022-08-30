@@ -1,22 +1,17 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class SonstigesViewModel : DataViewModelBase, INavigationAware
+namespace LiftDataManager.ViewModels;
+
+public class SonstigesViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public SonstigesViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
     }
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
@@ -26,6 +21,6 @@ public class SonstigesViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

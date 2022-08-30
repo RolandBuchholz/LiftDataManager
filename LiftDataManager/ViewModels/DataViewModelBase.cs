@@ -1,4 +1,5 @@
 ﻿using Cogs.Collections;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
@@ -49,6 +50,16 @@ public class DataViewModelBase : ObservableRecipient
         _dialogService = dialogService;
         _navigationService = navigationService;
         SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+    }
+
+    public virtual void Receive(PropertyChangedMessage<string> message)
+    {
+            if (message is not null)
+            {
+                SetInfoSidebarPanelText(message);
+            //TODO Make Async
+                _ = CheckUnsavedParametresAsync();
+            }
     }
 
     public IAsyncRelayCommand? SaveAllSpeziParametersAsync
@@ -115,17 +126,24 @@ public class DataViewModelBase : ObservableRecipient
         }
     }
 
-    protected void SetInfoSidebarPanelText(ParameterDirtyMessage m)
+    protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        if (m.Value.ParameterTyp == Parameter.ParameterTypValue.Date)
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
+            return;
+        }
+
+        var Sender = (Parameter)message.Sender;
+
+        if (Sender.ParameterTyp == Parameter.ParameterTypValue.Date)
         {
             string? datetimeOld;
             string? datetimeNew;
             try
             {
-                if (m.Value.OldValue is not null)
+                if (message.OldValue is not null)
                 {
-                    var excelDateOld = Convert.ToDouble(m.Value.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                    var excelDateOld = Convert.ToDouble(message.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
                     datetimeOld = DateTime.FromOADate(excelDateOld).ToShortDateString();
                 }
                 else
@@ -133,25 +151,25 @@ public class DataViewModelBase : ObservableRecipient
                     datetimeOld = string.Empty;
                 }
 
-                if (m.Value.NewValue is not null)
+                if (message.NewValue is not null)
                 {
-                    var excelDateNew = Convert.ToDouble(m.Value.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
+                    var excelDateNew = Convert.ToDouble(message.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
                     datetimeNew = DateTime.FromOADate(excelDateNew).ToShortDateString();
                 }
                 else
                 {
                     datetimeNew = string.Empty;
                 }
-                InfoSidebarPanelText += $"{m.Value.ParameterName} : {datetimeOld} => {datetimeNew} geändert \n";
+                InfoSidebarPanelText += $"{message.PropertyName} : {datetimeOld} => {datetimeNew} geändert \n";
             }
             catch
             {
-                InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+                InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
             }
         }
         else
         {
-            InfoSidebarPanelText += $"{m.Value.ParameterName} : {m.Value.OldValue} => {m.Value.NewValue} geändert \n";
+            InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
         }
     }
 

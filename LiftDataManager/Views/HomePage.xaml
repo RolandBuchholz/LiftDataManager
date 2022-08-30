@@ -532,15 +532,9 @@
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}"
                                 TextAlignment="Right">
                                 <ToolTipService.ToolTip>
-                                    <StackPanel>
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="12"
-                                            FontWeight="Bold">
-                                            Fahrkorbgewicht wird automatisch berechnet
-                                        </TextBlock>
-                                    </StackPanel>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Fahrkorbgewicht wird automatisch berechnet</TextBlock>
                                 </ToolTipService.ToolTip>
                             </TextBox>
                             <TextBlock
@@ -591,12 +585,11 @@
                                 IsReadOnly="True"
                                 PlaceholderText="Anzahl Personen"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}"
-                                TextAlignment="Right" >
+                                TextAlignment="Right">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
-                                        <Run FontSize="16" Text ="Schreibgeschützer Parameter:"></Run><LineBreak />
-                                        Personenanzahl wird automatisch berechnet
-                                    </TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Personenanzahl wird automatisch berechnet</TextBlock>
                                 </ToolTipService.ToolTip>
                             </TextBox>
                             <TextBlock
@@ -869,9 +862,8 @@
                                 TextAlignment="Right">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
-                                        <Run FontSize="16" Text ="Schreibgeschützer Parameter:"></Run><LineBreak />
-                                        Kabinenfläche wird automatisch berechnet
-                                    </TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Kabinenfläche wird automatisch berechnet</TextBlock>
                                 </ToolTipService.ToolTip>
                             </TextBox>
                             <TextBlock

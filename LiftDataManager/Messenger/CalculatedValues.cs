@@ -21,4 +21,8 @@ public class CalculatedValues
     {
         get; set;
     }
+    public double Fahrkorbgewicht
+    {
+        get; set;
+    }
 }

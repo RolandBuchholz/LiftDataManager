@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using CommunityToolkit.Common.Collections;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class ListenansichtViewModel : DataViewModelBase, INavigationAware
+public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public CollectionViewSource GroupedItems
     {
@@ -13,15 +14,6 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
-
         GroupedItems = new CollectionViewSource
         {
             IsSourceGrouped = true
@@ -72,7 +64,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
+                var dialogResult = await _dialogService!.WarningDialogAsync(App.MainRoot!,
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -82,7 +74,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
                 if (dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
@@ -168,7 +160,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
 
     private async Task SaveParameterAsync()
     {
-        var infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
+        var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
         if (Selected is not null)
@@ -185,6 +177,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (_CurrentSpeziProperties is not null)
         {
@@ -198,7 +191,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 
     public void EnsureItemSelected()

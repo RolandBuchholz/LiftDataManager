@@ -1,19 +1,37 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
+namespace LiftDataManager.ViewModels;
+
+public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRecipient<CarWeightRequestMessageAsync>, IRecipient<PropertyChangedMessage<string>>
 {
     public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
     }
+
+    public KabinengewichtViewModel()
+    {
+        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+
+        if (_CurrentSpeziProperties.ParamterDictionary is not null)
+        {
+            ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+        }
+    }
+
+
+    public void Receive(CarWeightRequestMessageAsync message)
+    {
+        message.Reply(new CalculatedValues
+        {
+            KabinenGewicht = KabinenGewichtGesamt,
+            KabinenTuerenGewicht = KabinenTuerGewicht,
+            FangrahmenGewicht = FangrahmenGewicht,
+            Fahrkorbgewicht = FahrkorbGewicht
+        });
+        IsActive = false;
+    }
+
 
     private readonly double gewichtAbgehaengteDecke = 24;
     private readonly double gewichtDeckebelegt = 12;
@@ -116,9 +134,9 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
     public double BodenBelagGewicht => Math.Round(Kabinenbreite * Kabinentiefe * BodenBelagGewichtproQm / Math.Pow(10, 6));
 
     public double SchottenStaerke => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Materialstaerke");
-    public double SchottenLaenge => (!ZugangB ? glasLaengeWandB > 0 ? 0 : Kabinentiefe : 0) +
-                                     (!ZugangC ? glasLaengeWandC > 0 ? 0 : Kabinenbreite : 0) +
-                                     (!ZugangD ? glasLaengeWandD > 0 ? 0 : Kabinentiefe : 0);
+    public double SchottenLaenge => (!ZugangB ? GlasLaengeWandB > 0 ? 0 : Kabinentiefe : 0) +
+                                     (!ZugangC ? GlasLaengeWandC > 0 ? 0 : Kabinenbreite : 0) +
+                                     (!ZugangD ? GlasLaengeWandD > 0 ? 0 : Kabinentiefe : 0);
     public double Schottengewicht => SchottenLaenge > 0 ? Math.Round(SchottenStaerke * (Kabinenhoehe + 161) * 339 * 8 / Math.Pow(10, 6) * (SchottenLaenge / 275)) : 0;
 
     public double Haelsegewicht => Math.Round(SchottenStaerke * ((Kabinenhoehe + 86) *
@@ -128,9 +146,10 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
 
     public double AndidroehnGewicht => Math.Round(2 * 1000 * 150 * 1.36 / Math.Pow(10, 6) * (SchottenLaenge / 275));
 
-    public double SchuerzeGewicht => Math.Round(AnzahlKabinentueren * (((SchuerzeVerstaerkt ? 5 : 3) * 1.5 * (Tuerbreite - 100) *
+    public double SchuerzeGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0) ?
+                                     (Math.Round(AnzahlKabinentueren * (((SchuerzeVerstaerkt ? 5 : 3) * 1.5 * (Tuerbreite - 100) *
                                      266 + 1.5 * Tuerbreite * 800 + (Tuerbreite / 300 + 1) *
-                                     1.5 * 380 * 109 + 7 * (SchuerzeVerstaerkt ? 5 : 3) * 100 * 81) * 8 / Math.Pow(10, 6)));
+                                     1.5 * 380 * 109 + 7 * (SchuerzeVerstaerkt ? 5 : 3) * 100 * 81) * 8 / Math.Pow(10, 6)))) : 0;
 
     public double Deckegewicht => Math.Round(Kabinenbreite * Kabinentiefe * 42.6 / Math.Pow(10, 6));
 
@@ -161,21 +180,21 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
                                                  : 0, 2);
     public double PaneeleSpiegelGewicht => Math.Round(PaneeleSpiegelGewichtproQm * PaneeleSpiegelQm, 1);
 
-    public double glasLaengeWandA => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Eingangswand")).StartsWith("VSG")
+    public double GlasLaengeWandA => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Eingangswand")).StartsWith("VSG")
                                      ? (Kabinenbreite - Convert.ToInt32(ZugangA) * Tuerbreite) / 1000 : 0;
-    public double glasLaengeWandB => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Seitenwaende")).Contains("Seite B")
+    public double GlasLaengeWandB => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Seitenwaende")).Contains("Seite B")
                                      ? (Kabinentiefe - Convert.ToInt32(ZugangB) * Tuerbreite) / 1000 : 0;
-    public double glasLaengeWandC => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Rueckwand")).StartsWith("VSG")
+    public double GlasLaengeWandC => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Rueckwand")).StartsWith("VSG")
                                      ? (Kabinenbreite - Convert.ToInt32(ZugangC) * Tuerbreite) / 1000 : 0;
-    public double glasLaengeWandD => (((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Seitenwaende")).Contains("Seite D") ||
+    public double GlasLaengeWandD => (((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Seitenwaende")).Contains("Seite D") ||
                                      ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Seitenwaende")).Contains("Seite B/D"))
                                      ? (Kabinentiefe - Convert.ToInt32(ZugangD) * Tuerbreite) / 1000 : 0;
-    public string VSGTyp => (glasLaengeWandA > 1 || glasLaengeWandB > 1 || glasLaengeWandC > 1 || glasLaengeWandD > 1) ? "VSG 12" : "VSG 10";
+    public string VSGTyp => (GlasLaengeWandA > 1 || GlasLaengeWandB > 1 || GlasLaengeWandC > 1 || GlasLaengeWandD > 1) ? "VSG 12" : "VSG 10";
     public double VSGGewichtproQm => (VSGTyp == "VSG 10") ? 25.0 : 30.0;
-    public double VSGQm => Math.Round(((glasLaengeWandA > 0.1 ? glasLaengeWandA - 0.1 : 0) +
-                                       (glasLaengeWandB > 0.1 ? glasLaengeWandB - 0.1 : 0) +
-                                       (glasLaengeWandC > 0.1 ? glasLaengeWandC - 0.1 : 0) +
-                                       (glasLaengeWandD > 0.1 ? glasLaengeWandD - 0.1 : 0)) * (Kabinenhoehe > 0 ? (Kabinenhoehe - 200) / 1000 : 0), 2);
+    public double VSGQm => Math.Round(((GlasLaengeWandA > 0.1 ? GlasLaengeWandA - 0.1 : 0) +
+                                       (GlasLaengeWandB > 0.1 ? GlasLaengeWandB - 0.1 : 0) +
+                                       (GlasLaengeWandC > 0.1 ? GlasLaengeWandC - 0.1 : 0) +
+                                       (GlasLaengeWandD > 0.1 ? GlasLaengeWandD - 0.1 : 0)) * (Kabinenhoehe > 0 ? (Kabinenhoehe - 200) / 1000 : 0), 2);
     public double VSGGewicht => Math.Round(VSGQm * VSGGewichtproQm, 1);
 
     public double AussenVerkleidungGewichtproQm => gewichtAussenVerkleidung;
@@ -203,11 +222,12 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
 
     //<!--  KabinenZubehör  -->
     public double SchutzgelaenderAnzahlPfosten => Math.Ceiling(Kabinentiefe / 400 * 2 + Kabinenbreite / 400 + 2);
-    public double SchutzgelaenderGewicht => Math.Round((2 * 3 * 1.5 * (Kabinentiefe > 0 ? (Kabinentiefe - 250) : 0) * 137 +
-                                           (AnzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * Kabinenbreite * 137) * 8 / Math.Pow(10, 6) +
-                                            (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * SchutzgelaenderAnzahlPfosten);
-    public double KlemmkastenGewicht => gewichtKlemmkasten;
-    public double SchraubenZubehoerGewicht => gewichtSchraubenZubehoer;
+    public double SchutzgelaenderGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0) ?
+                                            (Math.Round((2 * 3 * 1.5 * (Kabinentiefe > 0 ? (Kabinentiefe - 250) : 0) * 137 +
+                                            (AnzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * Kabinenbreite * 137) * 8 / Math.Pow(10, 6) +
+                                            (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * SchutzgelaenderAnzahlPfosten)) : 0;
+    public double KlemmkastenGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0) ? gewichtKlemmkasten :0;
+    public double SchraubenZubehoerGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0 ) ? gewichtSchraubenZubehoer : 0;
     public double TableauGewicht => GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_KabTabKabinentableau"));
     public double TableauBreite => GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_KabTabKabinentableau"));
 
@@ -217,13 +237,34 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
                                           DeckeBelegtGewicht + BelagAufDerDeckeGewicht + SpiegelGewicht + PaneeleGewicht + PaneeleSpiegelGewicht + VSGGewicht + AussenVerkleidungGewicht +
                                           StossleisteGewicht + HandlaufGewicht + SockelleisteGewicht + SchutzgelaenderGewicht + KlemmkastenGewicht + SchraubenZubehoerGewicht + TableauGewicht);
     public double KabinenKorrekturGewicht => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F_Korr");
-    public double KabinenTuerGewicht => KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD;
-    public double FangrahmenGewicht => _CurrentSpeziProperties!.FangrahmenGewicht;
-    public double FahrkorbGewicht => Math.Round(KabinenGewichtGesamt + KabinenKorrekturGewicht + KabinenTuerGewicht + FangrahmenGewicht);
+
+    public bool VariableTuerdaten => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
+    public double KabinenTuerGewicht => VariableTuerdaten ?  KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD : KabinentuerGewichtA * AnzahlKabinentueren ;
+
+    public double FangrahmenGewicht => GetFangrahmengewichtAsync().Result;
+
+#pragma warning disable CA1822 // Member als statisch markieren
+    private async Task<double> GetFangrahmengewichtAsync()
+#pragma warning restore CA1822 // Member als statisch markieren
+    {
+        var requestMessageResult = await WeakReferenceMessenger.Default.Send<CarFrameWeightRequestMessageAsync>();
+        var fangrahmenGewicht = requestMessageResult.FangrahmenGewicht;
+        return fangrahmenGewicht;
+    }
+
+    public double FahrkorbGewicht
+    {
+        get
+        {
+            var fahrkorbGewicht = Math.Round(KabinenGewichtGesamt + KabinenKorrekturGewicht + KabinenTuerGewicht + FangrahmenGewicht);
+            ParamterDictionary!["var_F"].Value = Convert.ToString(fahrkorbGewicht);
+            return fahrkorbGewicht;
+        }
+    }
 
     // ToDo Parameter aus Datenbank abrufen
 
-    private double GetGewichtSonderblech(string bodenblech)
+    private static double GetGewichtSonderblech(string bodenblech)
     {
         return bodenblech switch
         {
@@ -240,7 +281,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtBodenprofil(string bodenprofil)
+    private static double GetGewichtBodenprofil(string bodenprofil)
     {
         return bodenprofil switch
         {
@@ -255,7 +296,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtPaneele(string paneele)
+    private static double GetGewichtPaneele(string paneele)
     {
         return paneele switch
         {
@@ -271,7 +312,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtRammschutz(string rammschutz)
+    private static double GetGewichtRammschutz(string rammschutz)
     {
         return rammschutz switch
         {
@@ -318,7 +359,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtHandlauf(string sockelleiste)
+    private static double GetGewichtHandlauf(string sockelleiste)
     {
         return sockelleiste switch
         {
@@ -343,7 +384,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtSockelleiste(string sockelleiste)
+    private static double GetGewichtSockelleiste(string sockelleiste)
     {
         return sockelleiste switch
         {
@@ -359,7 +400,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetHoeheSockelleiste(string sockelleiste)
+    private static double GetHoeheSockelleiste(string sockelleiste)
     {
         return sockelleiste switch
         {
@@ -375,7 +416,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetGewichtTableau(string tableau)
+    private static double GetGewichtTableau(string tableau)
     {
         return tableau switch
         {
@@ -396,7 +437,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private double GetBreiteTableau(string tableau)
+    private static double GetBreiteTableau(string tableau)
     {
         return tableau switch
         {
@@ -419,6 +460,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
@@ -428,6 +470,6 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }

@@ -53,9 +53,4 @@ public class CurrentSpeziProperties
     {
         get; set;
     }
-
-    public double FangrahmenGewicht
-    {
-        get; set;
-    }
 }

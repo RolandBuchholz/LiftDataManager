@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
+public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private Parameter? _item;
 
@@ -27,14 +28,6 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
     public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
         SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && CheckOut);
     }
 
@@ -74,7 +67,7 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
 
     private async Task SaveParameterAsync()
     {
-        var infotext = await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
+        var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
         if (Item != null)
@@ -85,6 +78,7 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         if (parameter is not null && ParamterDictionary is not null)
         {
@@ -95,6 +89,7 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
+        IsActive = false;
         if (Item != null)
         {
             Item.PropertyChanged -= OnPropertyChanged;

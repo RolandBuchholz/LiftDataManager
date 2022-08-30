@@ -1,8 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using LiftDataManager.Core.Messenger.Messages;
 namespace LiftDataManager.ViewModels;
 
-public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware , IRecipient<AreaPersonsRequestMessage>
+public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware , IRecipient<AreaPersonsRequestMessageAsync>
 {
 
     public Dictionary<int, TableRow<int, double>> Tabelle6 { get; set; } = new();
@@ -12,15 +11,6 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        WeakReferenceMessenger.Default.Register<ParameterDirtyMessage>(this, async (r, m) =>
-        {
-            if (m is not null && m.Value.IsDirty)
-            {
-                SetInfoSidebarPanelText(m);
-                await CheckUnsavedParametresAsync();
-            }
-        });
-
         FillTablesWithData();
     }
 
@@ -36,13 +26,14 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         FillTablesWithData();
     }
 
-    public void Receive(AreaPersonsRequestMessage message)
+    public void Receive(AreaPersonsRequestMessageAsync message)
     {
         message.Reply(new CalculatedValues
         {
-            Personen = PersonenBerechnet, 
-            NutzflaecheKabine = NutzflaecheGesamt 
+            Personen = PersonenBerechnet,
+            NutzflaecheKabine = NutzflaecheGesamt
         });
+        IsActive = false;
     }
 
     private readonly SolidColorBrush successColor = new(Colors.LightGreen);
@@ -360,6 +351,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
 
     public void OnNavigatedTo(object parameter)
     {
+        IsActive = true;
         SynchronizeViewModelParameter();
         SetPersonen();
         if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
@@ -370,6 +362,6 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
 
     public void OnNavigatedFrom()
     {
-        WeakReferenceMessenger.Default.Unregister<ParameterDirtyMessage>(this);
+        IsActive = false;
     }
 }
