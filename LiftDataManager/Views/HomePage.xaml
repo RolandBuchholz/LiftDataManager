@@ -10,6 +10,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:sys="using:System"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
@@ -406,21 +407,21 @@
                         Margin="0,0,6,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ViewModel.CarWeight, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeight), Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="1"
                         Margin="0,0,6,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ViewModel.CarDoorWeight, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarDoorWeight), Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="1"
                         Margin="0,0,6,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ViewModel.CarFrameWeight, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarFrameWeight), Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="1"
@@ -905,7 +906,7 @@
             Width="200"
             Height="200"
             Background="Transparent"
-            Foreground="{StaticResource SystemAccentColor}"
+            Foreground="{StaticResource SystemAccentColorLight2}"
             IsActive="{x:Bind ViewModel.LoadSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
