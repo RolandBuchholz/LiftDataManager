@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
-    xmlns:views="using:LiftDataManager.Views"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -90,7 +89,7 @@
                         </GroupStyle>
                     </ListView.GroupStyle>
                 </ListView>
-                <views:ParameterDetailControl
+                <speziControls:ParameterDetailControl
                     Grid.Column="1"
                     Margin="0,5,0,0"
                     ListDetailsMenuItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

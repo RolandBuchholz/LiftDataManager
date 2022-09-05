@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace LiftDataManager.Views;
+namespace LiftDataManager.Controls;
 
 public sealed partial class ParameterDetailControl : UserControl
 {

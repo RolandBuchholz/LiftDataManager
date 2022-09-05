@@ -1,10 +1,9 @@
-﻿namespace LiftDataManager.Controls
+﻿namespace LiftDataManager.Controls;
+
+public sealed partial class HeaderControl : UserControl
 {
-    public sealed partial class HeaderControl : UserControl
+    public HeaderControl()
     {
-        public HeaderControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
