@@ -18,6 +18,16 @@ public class DownloadInfo
         CheckedOutLinkedFilesByOtherUser = 11
     }
 
+    public bool Success { get; set; }
+    public string FileName { get; set; }
+    public string FullFileName { get; set; }
+    public string CheckOutState { get; set; }
+    public bool IsCheckOut { get; set; }
+    public string CheckOutPC { get; set; }
+    public string EditedBy { get; set; }
+    public string ErrorState { get; set; }
+    public ExitCodeEnum ExitState { get; set; }
+
     private int _ExitCode;
     public int ExitCode
     {
@@ -27,42 +37,5 @@ public class DownloadInfo
             _ExitCode = value;
             ExitState = (ExitCodeEnum)_ExitCode;
         }
-    }
-
-    public bool Success
-    {
-        get; set;
-    }
-    public string FileName
-    {
-        get; set;
-    }
-    public string FullFileName
-    {
-        get; set;
-    }
-    public string CheckOutState
-    {
-        get; set;
-    }
-    public bool IsCheckOut
-    {
-        get; set;
-    }
-    public string CheckOutPC
-    {
-        get; set;
-    }
-    public string EditedBy
-    {
-        get; set;
-    }
-    public string ErrorState
-    {
-        get; set;
-    }
-    public ExitCodeEnum ExitState
-    {
-        get; set;
     }
 }

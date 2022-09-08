@@ -2,18 +2,28 @@
 using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Helpers;
+using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.Core.Services;
 
 public class ParameterDataService : IParameterDataService
 {
+    private readonly IAuswahlParameterDataService _auswahlParameterDataService;
+    private readonly IValidationParameterDataService _validationParameterDataService;
+
+    public ParameterDataService(IAuswahlParameterDataService auswahlParameterDataService, IValidationParameterDataService validationParameterDataService)
+    {
+        _auswahlParameterDataService = auswahlParameterDataService;
+        _validationParameterDataService = validationParameterDataService;
+    }
+
     public async Task<IEnumerable<Parameter>> LoadParameterAsync(string path)
     {
         XElement doc = XElement.Load(path);
 
         List<Parameter> parameterList =
           (from para in doc.Elements("parameters").Elements("ParamWithValue")
-           select new Parameter(para.Element("name").GetAs<string>(), para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>())
+           select new Parameter(para.Element("name").GetAs<string>(), para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>(), _auswahlParameterDataService, _validationParameterDataService)
            {
                Comment = para.Element("comment").GetAs<string>(),
                IsKey = para.Element("isKey").GetAs<bool>(),

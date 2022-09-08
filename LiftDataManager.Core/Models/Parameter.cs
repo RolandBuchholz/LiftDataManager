@@ -1,52 +1,21 @@
-﻿using System.Globalization;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.Core.Models;
 
-public partial class Parameter : ObservableRecipient
+public partial class Parameter : ParameterBase
 {
-    public enum ParameterTypValue
-    {
-        Text,
-        NumberOnly,
-        Date,
-        Boolean,
-        DropDownList
-    }
-
-    public enum ParameterCategoryValue
-    {
-        AllgemeineDaten,
-        Schacht,
-        Bausatz,
-        Fahrkorb,
-        Tueren,
-        AntriebSteuerungNotruf,
-        Signalisation,
-        Wartung,
-        MontageTUEV,
-        RWA,
-        Sonstiges,
-        KommentareVault,
-        CFP
-    }
-
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
-    private readonly bool dataImport;
+    private readonly IValidationParameterDataService _validationParameterDataService;
     public List<string> DropDownList { get; } = new();
-    public ParameterTypValue ParameterTyp {get; set; }
-    public ParameterCategoryValue ParameterCategory{get; set;}
-    public char Symbol => (char)SymbolCode;
-    public int SymbolCode {get; set;}
-    public bool DefaultUserEditable {get; set;}
+    private readonly bool dataImport;
+    public bool DefaultUserEditable{get; set;}
 
-    public Parameter(string name, string typeCode, string value)
+    public Parameter(string name, string typeCode, string value, IAuswahlParameterDataService auswahlParameterDataService, IValidationParameterDataService validationParameterDataService) 
     {
         dataImport = true;
-        AuswahlParameterDataService auswahlParameterDataService = new();
         _auswahlParameterDataService = auswahlParameterDataService;
+        _validationParameterDataService = validationParameterDataService;
         IsDirty = false;
         Name = name;
         TypeCode = typeCode;
@@ -67,11 +36,12 @@ public partial class Parameter : ObservableRecipient
             ParameterTypValue.DropDownList => value,
             _ => value,
         };
+
         dataImport = false;
     }
 
-    public string Name{get; set; }
-    public string TypeCode {get ; set;}
+    public string Name {get; set;}
+    public string TypeCode {get; set;}
 
     [ObservableProperty]
     private bool isDirty;
@@ -95,13 +65,15 @@ public partial class Parameter : ObservableRecipient
     {
         if (!dataImport)
         {
+            _ = ValidateParameterAsync();
             isDirty = true;
             Broadcast(oldTempValue, value, Name);
-        } 
+        }
     }
 
     [ObservableProperty]
     private string dropDownListValue;
+
     partial void OnDropDownListValueChanged(string value)
     {
         dropDownListValue = (value != "(keine Auswahl)") ? value : null;
@@ -112,39 +84,17 @@ public partial class Parameter : ObservableRecipient
         Value = dropDownListValue;
     }
 
-    private int GetSymbolCode(string TypeCode)
+    private async Task ValidateParameterAsync()
     {
-        switch (TypeCode.ToLower(new CultureInfo("de-DE", false)))
+        ClearErrors(Name);
+        var result = await _validationParameterDataService.ValidateParameterAsync(Name, Value);
+
+        if (!result.First().IsValid)
         {
-            case "mm":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 60220;
-            case "string":
-                ParameterTyp = ParameterTypValue.Text;
-                return 59602;
-            case "kg":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 59394;
-            case "oe":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 60032;
-            case "boolean":
-                ParameterTyp = ParameterTypValue.Boolean;
-                return 62250;
-            case "mps":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 60490;
-            case "m":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 60614;
-            case "n":
-                ParameterTyp = ParameterTypValue.NumberOnly;
-                return 59394;
-            case "date":
-                ParameterTyp = ParameterTypValue.Date;
-                return 57699;
-            default:
-                return 59412;
+            foreach (var error in result)
+            {
+                AddError(Name, error);
+            }
         }
     }
 }

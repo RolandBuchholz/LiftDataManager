@@ -2,10 +2,7 @@
 
 public interface IAuswahlParameterDataService
 {
-    Dictionary<string, AuswahlParameter> AuswahlParameterDictionary
-    {
-        get; set;
-    }
+    Dictionary<string, AuswahlParameter> AuswahlParameterDictionary { get; set; }
 
     List<string> GetListeAuswahlparameter(string name);
 

@@ -10,9 +10,9 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
-    xmlns:sys="using:System"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:sys="using:System"
     xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
@@ -224,6 +224,7 @@
                         Grid.Column="0"
                         Margin="5,0,0,0"
                         Header="Auftragsnummer"
+                        IsReadOnly="True"
                         PlaceholderText="Auftragsnummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_AuftragsNummer'].Value, Mode=TwoWay}" />
                     <TextBox
