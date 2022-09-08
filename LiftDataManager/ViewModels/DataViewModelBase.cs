@@ -3,42 +3,22 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class DataViewModelBase : ObservableRecipient
+public partial class DataViewModelBase : ObservableRecipient
 {
     public readonly IParameterDataService? _parameterDataService;
     public readonly IDialogService? _dialogService;
     public readonly INavigationService? _navigationService;
 
-    public bool Adminmode
-    {
-        get; set;
-    }
-    public bool AuftragsbezogeneXml
-    {
-        get; set;
-    }
-    public bool CheckOut
-    {
-        get; set;
-    }
-    public bool LikeEditParameter
-    {
-        get; set;
-    }
-    public string? FullPathXml
-    {
-        get; set;
-    }
-    public bool CheckoutDialogIsOpen
-    {
-        get; set;
-    }
+    public bool Adminmode {get; set;}
+    public bool AuftragsbezogeneXml {get; set;}
+    public bool CheckOut {get; set;}
+    public bool LikeEditParameter {get; set;}
+    public string? FullPathXml { get; set;}
+    public bool CheckoutDialogIsOpen {get; set;}
 
-    public CurrentSpeziProperties? _CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter>? ParamterDictionary
-    {
-        get; set;
-    }
+    public CurrentSpeziProperties? CurrentSpeziProperties;
+    public ObservableDictionary<string, Parameter>? ParamterDictionary {get; set;}
+    public ObservableDictionary<string, List<ParameterStateInfo>>? ParamterErrorDictionary { get; set; }
 
     public DataViewModelBase()
     {
@@ -49,7 +29,6 @@ public class DataViewModelBase : ObservableRecipient
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
         _navigationService = navigationService;
-        SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
     public virtual void Receive(PropertyChangedMessage<string> message)
@@ -58,43 +37,73 @@ public class DataViewModelBase : ObservableRecipient
             {
                 SetInfoSidebarPanelText(message);
             //TODO Make Async
-                _ = CheckUnsavedParametresAsync();
+                _ = SetModelStateAsync();
             }
     }
 
-    public IAsyncRelayCommand? SaveAllSpeziParametersAsync
+    [ObservableProperty]
+    private bool hasErrors;
+
+    [ObservableProperty]
+    private string? infoSidebarPanelText;
+    partial void OnInfoSidebarPanelTextChanged(string? value)
     {
-        get;
+        if (CurrentSpeziProperties is not null)
+            CurrentSpeziProperties.InfoSidebarPanelText = value;
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
     }
 
-    protected virtual void SynchronizeViewModelParameter()
-    {
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (_CurrentSpeziProperties.FullPathXml is not null) { FullPathXml = _CurrentSpeziProperties.FullPathXml; }
-        if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
-        Adminmode = _CurrentSpeziProperties.Adminmode;
-        AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-        CheckOut = _CurrentSpeziProperties.CheckOut;
-        LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
-        InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveAllParameterCommand))]
+    private bool canSaveAllSpeziParameters;
 
+    [RelayCommand(CanExecute = nameof(CanSaveAllSpeziParameters))]
     public async Task SaveAllParameterAsync()
     {
         var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
         InfoSidebarPanelText += infotext;
-        await CheckUnsavedParametresAsync();
+        await SetModelStateAsync();
     }
 
-    protected async virtual Task CheckUnsavedParametresAsync()
+    protected virtual void SynchronizeViewModelParameter()
     {
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (CurrentSpeziProperties.FullPathXml is not null)
+        { FullPathXml = CurrentSpeziProperties.FullPathXml; }
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
+        { ParamterDictionary = CurrentSpeziProperties.ParamterDictionary; }
+        Adminmode = CurrentSpeziProperties.Adminmode;
+        AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
+        CheckOut = CurrentSpeziProperties.CheckOut;
+        LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
+        InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
+    }
+
+    protected async virtual Task SetModelStateAsync()
+    {
+        if (AuftragsbezogeneXml)
+        {
+            HasErrors = false;
+            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
+            ParamterErrorDictionary ??= new();
+            ParamterErrorDictionary.Clear();
+            if (HasErrors)
+            {
+                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                foreach (var error in errors)
+                {
+                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                }
+            }
+        }
+
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
             var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
-                CanSaveAllSpeziParameters = dirty;
+                CanSaveAllSpeziParameters = dirty && Adminmode;
             }
             else if (dirty && !CheckoutDialogIsOpen)
             {
@@ -116,14 +125,15 @@ public class DataViewModelBase : ObservableRecipient
                 {
                     CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
-                    if (_CurrentSpeziProperties is not null)
+                    if (CurrentSpeziProperties is not null)
                     {
-                        _CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
                     }
-                    _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                    _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
                 }
             }
         }
+        await Task.CompletedTask;
     }
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
@@ -170,32 +180,6 @@ public class DataViewModelBase : ObservableRecipient
         else
         {
             InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
-        }
-    }
-
-    private bool _CanSaveAllSpeziParameters;
-    public bool CanSaveAllSpeziParameters
-    {
-        get => _CanSaveAllSpeziParameters;
-        set
-        {
-            SetProperty(ref _CanSaveAllSpeziParameters, value);
-            SaveAllSpeziParametersAsync!.NotifyCanExecuteChanged();
-        }
-    }
-    private string? _InfoSidebarPanelText;
-    public string? InfoSidebarPanelText
-    {
-        get => _InfoSidebarPanelText;
-
-        set
-        {
-            SetProperty(ref _InfoSidebarPanelText, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.InfoSidebarPanelText = value;
-            }
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
         }
     }
 }

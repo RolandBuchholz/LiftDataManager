@@ -11,11 +11,11 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
 
     public BausatzViewModel()
     {
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-        if (_CurrentSpeziProperties.ParamterDictionary is not null)
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
         {
-            ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
         }
         SetCarWeight();
     }
@@ -44,7 +44,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
             };
             SetInfoSidebarPanelText(message);
             //TODO Make Async
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 
@@ -126,9 +126,9 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
         IsActive = true;
         SynchronizeViewModelParameter();
         SetCarWeight();
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

@@ -31,7 +31,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
         ClearSpeziDataAsync = new AsyncRelayCommand(ClearDataAsync, () => CanClearData);
         LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
         UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
-        SaveAllSpeziParametersAsync = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+        SaveAllParameterCommand = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
     }
 
     public void Receive(PropertyChangedMessage<string> message)
@@ -58,7 +58,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
     public IAsyncRelayCommand ClearSpeziDataAsync { get; }
     public IAsyncRelayCommand LoadSpeziDataAsync{ get; }
     public IAsyncRelayCommand UploadSpeziDataAsync { get; }
-    public IAsyncRelayCommand SaveAllSpeziParametersAsync { get;}
+    public IAsyncRelayCommand SaveAllParameterCommand { get;}
      
     private bool _CanCheckOut;
     public bool CanCheckOut
@@ -112,7 +112,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
         {
             SetProperty(ref _CanSaveAllSpeziParameters, value);
             CanUpLoadSpeziData = !value;
-            SaveAllSpeziParametersAsync.NotifyCanExecuteChanged();
+            SaveAllParameterCommand.NotifyCanExecuteChanged();
         }
     }
 

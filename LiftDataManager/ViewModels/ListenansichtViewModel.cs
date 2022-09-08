@@ -50,7 +50,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
         SaveParameter.NotifyCanExecuteChanged();
     }
 
-    protected async override Task CheckUnsavedParametresAsync()
+    protected async override Task SetModelStateAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
@@ -150,10 +150,10 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
         set
         {
             SetProperty(ref _SearchInput, value);
-            if (_CurrentSpeziProperties is not null)
+            if (CurrentSpeziProperties is not null)
             {
-                _CurrentSpeziProperties.SearchInput = SearchInput;
-                Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+                CurrentSpeziProperties.SearchInput = SearchInput;
+                Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
             }
         }
     }
@@ -167,7 +167,7 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
         {
             Selected.IsDirty = false;
         }
-        await CheckUnsavedParametresAsync();
+        await SetModelStateAsync();
         var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
         if (Selected is not null)
         {
@@ -179,13 +179,13 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties is not null)
+        if (CurrentSpeziProperties is not null)
         {
-            SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInput = CurrentSpeziProperties.SearchInput;
         }
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

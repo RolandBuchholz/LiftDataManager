@@ -142,7 +142,7 @@
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}"
+                Command="{x:Bind ViewModel.SaveAllParameterCommand}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
@@ -929,7 +929,7 @@
             Height="200"
             Background="Transparent"
             Foreground="SpringGreen"
-            IsActive="{x:Bind ViewModel.SaveAllSpeziParametersAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.SaveAllParameterCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"

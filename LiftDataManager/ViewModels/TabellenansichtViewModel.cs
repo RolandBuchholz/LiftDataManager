@@ -34,15 +34,15 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRe
         set
         {
             SetProperty(ref _SearchInput, value);
-            if (_CurrentSpeziProperties is not null)
+            if (CurrentSpeziProperties is not null)
             {
-                _CurrentSpeziProperties.SearchInput = SearchInput;
+                CurrentSpeziProperties.SearchInput = SearchInput;
             }
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
 
-    protected async override Task CheckUnsavedParametresAsync()
+    protected async override Task SetModelStateAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
@@ -81,13 +81,13 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRe
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties is not null)
+        if (CurrentSpeziProperties is not null)
         {
-            SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInput = CurrentSpeziProperties.SearchInput;
         }
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

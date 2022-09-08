@@ -16,11 +16,11 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
 
     public NutzlastberechnungViewModel()
     {
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-        if (_CurrentSpeziProperties.ParamterDictionary is not null)
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
         {
-            ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary;
+            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
         }
 
         FillTablesWithData();
@@ -354,9 +354,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         IsActive = true;
         SynchronizeViewModelParameter();
         SetPersonen();
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

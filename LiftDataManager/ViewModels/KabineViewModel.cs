@@ -26,7 +26,7 @@ public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<P
             };
             SetInfoSidebarPanelText(message);
             //TODO Make Async
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 
@@ -135,9 +135,9 @@ public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<P
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

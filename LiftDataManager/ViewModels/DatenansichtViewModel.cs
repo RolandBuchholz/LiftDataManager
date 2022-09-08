@@ -22,7 +22,7 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecip
     private ICommand? _itemClickCommand;
     public ICommand ItemClickCommand => _itemClickCommand ??= new RelayCommand<Parameter>(OnItemClick);
 
-    protected async override Task CheckUnsavedParametresAsync()
+    protected async override Task SetModelStateAsync()
     {
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
@@ -72,11 +72,11 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecip
         set
         {
             SetProperty(ref _SearchInput, value);
-            if (_CurrentSpeziProperties != null)
+            if (CurrentSpeziProperties != null)
             {
-                _CurrentSpeziProperties.SearchInput = SearchInput;
+                CurrentSpeziProperties.SearchInput = SearchInput;
             }
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
 
@@ -84,13 +84,13 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (_CurrentSpeziProperties is not null)
+        if (CurrentSpeziProperties is not null)
         {
-            SearchInput = _CurrentSpeziProperties.SearchInput;
+            SearchInput = CurrentSpeziProperties.SearchInput;
         }
-        if (_CurrentSpeziProperties is not null && _CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
-            _ = CheckUnsavedParametresAsync();
+            _ = SetModelStateAsync();
         }
     }
 

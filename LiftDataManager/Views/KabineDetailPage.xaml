@@ -112,7 +112,7 @@
                         </ToolTipService.ToolTip>
                         <SymbolIcon Symbol="PostUpdate" />
                     </Button>
-                    <Button Command="{x:Bind ViewModel.SaveAllSpeziParametersAsync}" Style="{StaticResource SaveButton}">
+                    <Button Command="{x:Bind ViewModel.SaveAllParameterCommand}" Style="{StaticResource SaveButton}">
                         <ToolTipService.ToolTip>
                             <TextBlock
                                 FontSize="14"
