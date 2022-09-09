@@ -13,7 +13,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
-        //UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -242,6 +241,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (CheckOut)
             {
                 CanSaveAllSpeziParameters = dirty && Adminmode;
+                CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
             }
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
