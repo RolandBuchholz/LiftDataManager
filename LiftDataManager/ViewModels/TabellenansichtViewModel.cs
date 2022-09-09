@@ -2,12 +2,9 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems
-    {
-        get; set;
-    }
+    public CollectionViewSource GroupedItems{get; set;}
 
     public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -18,28 +15,18 @@ public class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRe
         };
     }
 
-    private bool _CanShowUnsavedParameters;
-    public bool CanShowUnsavedParameters
+    [ObservableProperty]
+    private bool canShowUnsavedParameters;
+
+    [ObservableProperty]
+    private string? searchInput;
+    partial void OnSearchInputChanged(string? value)
     {
-        get => _CanShowUnsavedParameters;
-        set => SetProperty(ref _CanShowUnsavedParameters, value);
-    }
-
-    private string? _SearchInput;
-
-    public string? SearchInput
-    {
-        get => _SearchInput;
-
-        set
+        if (CurrentSpeziProperties != null)
         {
-            SetProperty(ref _SearchInput, value);
-            if (CurrentSpeziProperties is not null)
-            {
-                CurrentSpeziProperties.SearchInput = SearchInput;
-            }
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            CurrentSpeziProperties.SearchInput = SearchInput;
         }
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
     }
 
     protected async override Task SetModelStateAsync()

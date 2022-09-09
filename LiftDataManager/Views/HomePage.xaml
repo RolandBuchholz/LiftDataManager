@@ -89,7 +89,7 @@
                         Text="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Interactivity:Interaction.Behaviors>
                             <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadSpeziDataAsync}" />
+                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}" />
                             </toolkitbehaviors:KeyDownTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                     </TextBox>
@@ -105,7 +105,7 @@
                 Grid.Column="2"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.LoadSpeziDataAsync}"
+                Command="{x:Bind ViewModel.LoadDataCommand}"
                 Content="Load Data"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
@@ -114,7 +114,7 @@
                 Grid.Column="3"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.UploadSpeziDataAsync}"
+                Command="{x:Bind ViewModel.UploadDataCommand}"
                 Content="Upload Vault"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
@@ -123,7 +123,7 @@
                 Grid.Column="4"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.CheckOutSpeziDataAsync}"
+                Command="{x:Bind ViewModel.CheckOutCommand}"
                 Content="CheckOut"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
@@ -132,7 +132,7 @@
                 Grid.Column="5"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.ClearSpeziDataAsync}"
+                Command="{x:Bind ViewModel.ClearDataCommand}"
                 Content="Clear Data"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
@@ -146,14 +146,6 @@
                 Content="Save All Parameter"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
-            <TextBox
-                Grid.Column="8"
-                Width="250"
-                Margin="5,0,5,0"
-                IsSpellCheckEnabled="False"
-                PlaceholderText="Suche"
-                Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="Collapsed" />
         </Grid>
         <!--  Parameter  -->
         <ScrollViewer
@@ -226,7 +218,13 @@
                         Header="Auftragsnummer"
                         IsReadOnly="True"
                         PlaceholderText="Auftragsnummer"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_AuftragsNummer'].Value, Mode=TwoWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_AuftragsNummer'].Value, Mode=TwoWay}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Auftragsnummer wird automatisch gesetzt</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </TextBox>
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="1"
@@ -908,21 +906,21 @@
             Height="200"
             Background="Transparent"
             Foreground="{StaticResource SystemAccentColorLight2}"
-            IsActive="{x:Bind ViewModel.LoadSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.LoadDataCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
             Height="200"
             Background="Transparent"
             Foreground="Crimson"
-            IsActive="{x:Bind ViewModel.ClearSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.ClearDataCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
             Height="200"
             Background="Transparent"
             Foreground="SpringGreen"
-            IsActive="{x:Bind ViewModel.CheckOutSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.CheckOutCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
@@ -936,7 +934,7 @@
             Height="200"
             Background="Transparent"
             Foreground="Purple"
-            IsActive="{x:Bind ViewModel.UploadSpeziDataAsync.IsRunning, FallbackValue=False, Mode=OneWay}" />
+            IsActive="{x:Bind ViewModel.UploadDataCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"

@@ -93,7 +93,7 @@
                     Grid.Column="1"
                     Margin="0,5,0,0"
                     ListDetailsMenuItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SaveCommand="{x:Bind ViewModel.SaveParameter}"
+                    SaveCommand="{x:Bind ViewModel.SaveParameterCommand}"
                     Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}" />
                 <TextBlock
                     Grid.Column="1"

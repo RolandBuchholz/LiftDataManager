@@ -1,42 +1,24 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    private readonly IParameterDataService _parameterDataService;
-    private readonly ISettingService _settingService;
     private readonly IVaultDataService _vaultDataService;
-    private readonly IDialogService _dialogService;
-    private CurrentSpeziProperties? _CurrentSpeziProperties;
-    private bool Adminmode
-    {
-        get; set;
-    }
+    private readonly ISettingService _settingService;
     private bool OpenReadOnly { get; set; } = true;
-    public bool CheckoutDialogIsOpen
-    {
-        get; private set;
-    }
-    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
 
-    public HomeViewModel(IParameterDataService parameterDataService, ISettingService settingsSelectorService, IVaultDataService vaultDataService, IDialogService dialogService)
+    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ISettingService settingsSelectorService, IVaultDataService vaultDataService)
+        : base(parameterDataService, dialogService, navigationService)
     {
-        _parameterDataService = parameterDataService;
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
-        _dialogService = dialogService;
-        CheckOutSpeziDataAsync = new AsyncRelayCommand(CheckOutAsync, () => CanCheckOut);
-        ClearSpeziDataAsync = new AsyncRelayCommand(ClearDataAsync, () => CanClearData);
-        LoadSpeziDataAsync = new AsyncRelayCommand(LoadDataAsync, () => CanLoadSpeziData);
-        UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
-        SaveAllParameterCommand = new AsyncRelayCommand(SaveAllParameterAsync, () => CanSaveAllSpeziParameters && Adminmode && AuftragsbezogeneXml);
+        //UploadSpeziDataAsync = new AsyncRelayCommand(UploadDataAsync, () => CanUpLoadSpeziData && AuftragsbezogeneXml);
     }
 
-    public void Receive(PropertyChangedMessage<string> message)
+    public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is not null )
+        if (message is not null)
         {
             // ToDo Validation Service integrieren
             if (message.PropertyName == "var_Rahmengewicht" ||
@@ -48,71 +30,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
             {
                 _ = SetCalculatedValuesAsync();
             };
-
             SetInfoSidebarPanelText(message);
-            _ = CheckUnsavedParametresAsync();
-        }
-    }
-
-    public IAsyncRelayCommand CheckOutSpeziDataAsync { get; }
-    public IAsyncRelayCommand ClearSpeziDataAsync { get; }
-    public IAsyncRelayCommand LoadSpeziDataAsync{ get; }
-    public IAsyncRelayCommand UploadSpeziDataAsync { get; }
-    public IAsyncRelayCommand SaveAllParameterCommand { get;}
-     
-    private bool _CanCheckOut;
-    public bool CanCheckOut
-    {
-        get => _CanCheckOut;
-        set
-        {
-            SetProperty(ref _CanCheckOut, value);
-            CheckOutSpeziDataAsync.NotifyCanExecuteChanged();
-        }
-    }
-
-    private bool _CanClearData;
-    public bool CanClearData
-    {
-        get => _CanClearData;
-        set
-        {
-            SetProperty(ref _CanClearData, value);
-            ClearSpeziDataAsync.NotifyCanExecuteChanged();
-        }
-    }
-
-    private bool _CanLoadSpeziData;
-    public bool CanLoadSpeziData
-    {
-        get => _CanLoadSpeziData;
-        set
-        {
-            SetProperty(ref _CanLoadSpeziData, value);
-            LoadSpeziDataAsync.NotifyCanExecuteChanged();
-        }
-    }
-
-    private bool _CanUpLoadSpeziData;
-    public bool CanUpLoadSpeziData
-    {
-        get => _CanUpLoadSpeziData;
-        set
-        {
-            SetProperty(ref _CanUpLoadSpeziData, value);
-            UploadSpeziDataAsync.NotifyCanExecuteChanged();
-        }
-    }
-
-    private bool _CanSaveAllSpeziParameters;
-    public bool CanSaveAllSpeziParameters
-    {
-        get => _CanSaveAllSpeziParameters;
-        set
-        {
-            SetProperty(ref _CanSaveAllSpeziParameters, value);
-            CanUpLoadSpeziData = !value;
-            SaveAllParameterCommand.NotifyCanExecuteChanged();
+            //TODO Make Async
+            _ = SetModelStateAsync();
         }
     }
 
@@ -128,313 +48,88 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
     [ObservableProperty]
     private double carWeight;
 
-    private async Task CheckUnsavedParametresAsync()
+    [ObservableProperty]
+    private string? spezifikationStatusTyp;
+    partial void OnSpezifikationStatusTypChanged(string? value)
     {
-        if (LikeEditParameter && AuftragsbezogeneXml)
+        SpezifikationName = string.Empty;
+    }
+
+    [ObservableProperty]
+    private string? spezifikationName;
+    partial void OnSpezifikationNameChanged(string? value)
+    {
+        if (value is not null)
         {
-            var dirty = ParamterDictionary.Values.Any(p => p.IsDirty);
-
-            if (CheckOut)
-            {
-                CanSaveAllSpeziParameters = dirty;
-            }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
-            {
-                CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService.WarningDialogAsync(App.MainRoot!,
-                                    $"Datei eingechecked (schreibgeschützt)",
-                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                                    $"Es sind keine Änderungen möglich!\n" +
-                                    $"\n" +
-                                    $"Soll die AutodeskTransferXml ausgechecked werden?",
-                                    "Auschecken", "Schreibgeschützt bearbeiten");
-                if (dialogResult)
-                {
-                    IsBusy = true;
-                    OpenReadOnly = false;
-                    Parameter? storedParmeter = null;
-                    if (ParamterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
-                    {
-                        storedParmeter = ParamterDictionary.Values.First(x => x.IsDirty);
-                    }
-                    await LoadDataAsync();
-                    if (storedParmeter != null)
-                    {
-                        ParamterDictionary[storedParmeter.Name] = storedParmeter;
-                        CanSaveAllSpeziParameters = dirty;
-                    };
-                    CheckoutDialogIsOpen = false;
-                    IsBusy = false;
-                }
-                else
-                {
-                    CheckoutDialogIsOpen = false;
-                    LikeEditParameter = false;
-                }
-            }
-
+            CanLoadSpeziData = ((value.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) ||
+                               ((value.Length == 10) && (SpezifikationStatusTyp == "Angebot")) ||
+                               ((value.Length == 10) && (SpezifikationStatusTyp == "Vorplanung"));
         }
     }
 
-    private bool _AuftragsbezogeneXml;
-    public bool AuftragsbezogeneXml
-    {
-        get => _AuftragsbezogeneXml;
-        set
-        {
-            SetProperty(ref _AuftragsbezogeneXml, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-            _CurrentSpeziProperties.AuftragsbezogeneXml = value;
-            }
-            CanClearData = value;
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoadDataCommand))]
+    private bool canLoadSpeziData;
 
-    private bool _CheckOut;
-    public bool CheckOut
-    {
-        get => _CheckOut;
-        set
-        {
-            SetProperty(ref _CheckOut, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.CheckOut = value;
-            }
-            CanUpLoadSpeziData = value;
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CheckOutCommand))]
+    private bool canCheckOut;
 
-    private bool _LikeEditParameter;
-    public bool LikeEditParameter
-    {
-        get => _LikeEditParameter;
-        set
-        {
-            SetProperty(ref _LikeEditParameter, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.LikeEditParameter = value;
-            }
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ClearDataCommand))]
+    private bool canClearData;
 
-    private string? _SpezifikationStatusTyp;
-    public string? SpezifikationStatusTyp
-    {
-        get
-        {
-            _SpezifikationStatusTyp ??= "Auftrag";
-            return _SpezifikationStatusTyp;
-        }
-        set
-        {
-            if (_SpezifikationStatusTyp != value) { SpezifikationName = string.Empty; }
-            SetProperty(ref _SpezifikationStatusTyp, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.SpezifikationStatusTyp = value;
-            }
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(UploadDataCommand))]
+    private bool canUpLoadSpeziData;
 
-    private string? _SpezifikationName;
-    public string? SpezifikationName
+    [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
+    private async Task LoadDataAsync()
     {
-        get => _SpezifikationName;
-        set
+        await SetFullPathXmlAsync(OpenReadOnly);
+
+        var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
+
+        foreach (var item in data)
         {
-            SetProperty(ref _SpezifikationName, value);
-            if (SpezifikationName is not null)
+            if (ParamterDictionary!.ContainsKey(item.Name))
             {
-            CanLoadSpeziData = ((SpezifikationName.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) ||
-                               ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Angebot")) ||
-                               ((SpezifikationName.Length == 10) && (SpezifikationStatusTyp == "Vorplanung"));
+                ParamterDictionary[item.Name] = item;
+            }
+            else
+            {
+                ParamterDictionary.Add(item.Name, item);
             }
         }
+        if (CurrentSpeziProperties is not null)
+        {
+            CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+        }
+        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
+        InfoSidebarPanelText += $"----------\n";
+        LikeEditParameter = true;
+        OpenReadOnly = true;
+        await UpdateCurrentSpeziPropertiesAsync();
+        await SetCalculatedValuesAsync();
+        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
     }
 
-    private string? _FullPathXml;
-    public string? FullPathXml
-    {
-        get => _FullPathXml;
-        set
-        {
-            SetProperty(ref _FullPathXml, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.FullPathXml = value;
-            }
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
-
-    private string? _SearchInput;
-    public string? SearchInput
-    {
-        get => _SearchInput;
-        set
-        {
-            SetProperty(ref _SearchInput, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.SearchInput = value;
-            }
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
-
-    private string? _InfoSidebarPanelText;
-    public string? InfoSidebarPanelText
-    {
-        get => _InfoSidebarPanelText;
-
-        set
-        {
-            SetProperty(ref _InfoSidebarPanelText, value);
-            if (_CurrentSpeziProperties is not null)
-            {
-                _CurrentSpeziProperties.InfoSidebarPanelText = value;
-            }
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        }
-    }
-
-    private async Task SetFullPathXmlAsync(bool ReadOnly = true)
-    {
-        if (!AuftragsbezogeneXml && string.IsNullOrEmpty(SpezifikationName))
-        {
-            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-            SpezifikationName = string.Empty;
-        }
-        else
-        {
-            CheckOut = false;
-            var searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
-            var watch = Stopwatch.StartNew();
-            var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
-            var stopTimeMs = watch.ElapsedMilliseconds;
-
-            switch (workspaceSearch.Length)
-            {
-                case 0:
-                    {
-                        InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
-
-                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
-
-                        if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                        {
-                            FullPathXml = downloadResult.FullFileName;
-                            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                            AuftragsbezogeneXml = true;
-                        }
-                        else
-                        {
-                            await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
-                            InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            AuftragsbezogeneXml = false;
-                        }
-
-                        break;
-                    }
-
-                case 1:
-                    {
-                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                        var autoDeskTransferpath = workspaceSearch[0];
-                        FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
-                        if (!AutoDeskTransferInfo.IsReadOnly)
-                        {
-                            FullPathXml = workspaceSearch[0];
-                            InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
-                            AuftragsbezogeneXml = true;
-                            CheckOut = true;
-                        }
-                        else
-                        {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
-
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                            {
-                                FullPathXml = downloadResult.FullFileName;
-                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                                AuftragsbezogeneXml = true;
-                                CheckOut = downloadResult.IsCheckOut;
-                            }
-                            else
-                            {
-                                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
-                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                                InfoSidebarPanelText += $"Standard Daten geladen\n";
-                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                                AuftragsbezogeneXml = false;
-                            }
-                        }
-                        break;
-                    }
-
-                default:
-                    {
-                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                        InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
-
-                        var confirmed = await _dialogService.ConfirmationDialogAsync(App.MainRoot!,
-                                                $"Es wurden mehrere {searchPattern} Dateien gefunden?",
-                                                 "XML aus Vault herunterladen",
-                                                    "Abbrechen");
-                        if (confirmed)
-                        {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
-
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                            {
-                                FullPathXml = downloadResult.FullFileName;
-                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                                AuftragsbezogeneXml = true;
-                            }
-                            else
-                            {
-                                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
-                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                                InfoSidebarPanelText += $"Standard Daten geladen\n";
-                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                                AuftragsbezogeneXml = false;
-                            }
-                        }
-                        else
-                        {
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            SpezifikationName = string.Empty;
-                            AuftragsbezogeneXml = false;
-                        }
-                        break;
-                    }
-            }
-        }
-    }
-
+    [RelayCommand(CanExecute = nameof(CanCheckOut))]
     private async Task CheckOutAsync()
     {
         OpenReadOnly = false;
         await LoadDataAsync();
     }
 
+    [RelayCommand(CanExecute = nameof(CanClearData))]
     private async Task ClearDataAsync()
     {
         var delete = true;
 
         if (CanSaveAllSpeziParameters || CheckOut)
         {
-            delete = await _dialogService.WarningDialogAsync(App.MainRoot!,
+            delete = await _dialogService!.WarningDialogAsync(App.MainRoot!,
                     $"Warnung es droht Datenverlust",
                     $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
                     $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
@@ -472,7 +167,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
                 }
                 else
                 {
-                    await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                    await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
                     InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 }
             }
@@ -488,8 +183,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
                 await LoadDataAsync();
             }
         }
+        await UpdateCurrentSpeziPropertiesAsync();
     }
 
+    [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
     private async Task UploadDataAsync()
     {
         await Task.Delay(30);
@@ -512,103 +209,198 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
             }
             else
             {
-                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 InfoSidebarPanelText += $"----------\n";
             }
         }
+        await UpdateCurrentSpeziPropertiesAsync();
     }
 
-    private async Task LoadDataAsync()
+    protected override async Task SetModelStateAsync()
     {
-        await SetFullPathXmlAsync(OpenReadOnly);
-
-        var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
-
-        foreach (var item in data)
+        if (AuftragsbezogeneXml)
         {
-            if (ParamterDictionary.ContainsKey(item.Name))
+            HasErrors = false;
+            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
+            ParamterErrorDictionary ??= new();
+            ParamterErrorDictionary.Clear();
+            if (HasErrors)
             {
-                ParamterDictionary[item.Name] = item;
-            }
-            else
-            {
-                ParamterDictionary.Add(item.Name, item);
-            }
-        }
-        if (_CurrentSpeziProperties is not null)
-        {
-        _CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
-        }
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
-        InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
-        InfoSidebarPanelText += $"----------\n";
-        LikeEditParameter = true;
-        OpenReadOnly = true;
-        _ = SetCalculatedValuesAsync();
-        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-    }
-
-    private void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
-    {
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-        {
-            return;
-        }
-
-        var Sender = (Parameter)message.Sender;
-
-        if (Sender.ParameterTyp == Parameter.ParameterTypValue.Date)
-        {
-            string? datetimeOld;
-            string? datetimeNew;
-            try
-            {
-                if (message.OldValue is not null)
+                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                foreach (var error in errors)
                 {
-                    var excelDateOld = Convert.ToDouble(message.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                    datetimeOld = DateTime.FromOADate(excelDateOld).ToShortDateString();
+                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                }
+            }
+        }
+
+        if (LikeEditParameter && AuftragsbezogeneXml)
+        {
+            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
+
+            if (CheckOut)
+            {
+                CanSaveAllSpeziParameters = dirty && Adminmode;
+            }
+            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            {
+                CheckoutDialogIsOpen = true;
+                var dialogResult = await _dialogService!.WarningDialogAsync(App.MainRoot!,
+                                    $"Datei eingechecked (schreibgeschützt)",
+                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
+                                    $"Es sind keine Änderungen möglich!\n" +
+                                    $"\n" +
+                                    $"Soll die AutodeskTransferXml ausgechecked werden?",
+                                    "Auschecken", "Schreibgeschützt bearbeiten");
+                if (dialogResult)
+                {
+                    IsBusy = true;
+                    OpenReadOnly = false;
+                    Parameter? storedParmeter = null;
+                    if (ParamterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
+                    {
+                        storedParmeter = ParamterDictionary.Values.First(x => x.IsDirty);
+                    }
+                    await LoadDataAsync();
+                    if (storedParmeter != null)
+                    {
+                        ParamterDictionary[storedParmeter.Name] = storedParmeter;
+                        CanSaveAllSpeziParameters = dirty;
+                    };
+                    CheckoutDialogIsOpen = false;
+                    IsBusy = false;
                 }
                 else
                 {
-                    datetimeOld = string.Empty;
+                    CheckoutDialogIsOpen = false;
+                    LikeEditParameter = false;
                 }
+            }
+             await UpdateCurrentSpeziPropertiesAsync();
+        }
+    }
 
-                if (message.NewValue is not null)
-                {
-                    var excelDateNew = Convert.ToDouble(message.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                    datetimeNew = DateTime.FromOADate(excelDateNew).ToShortDateString();
-                }
-                else
-                {
-                    datetimeNew = string.Empty;
-                }
-                InfoSidebarPanelText += $"{message.PropertyName} : {datetimeOld} => {datetimeNew} geändert \n";
-            }
-            catch
-            {
-                InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
-            }
+    private async Task SetFullPathXmlAsync(bool ReadOnly = true)
+    {
+        if (!AuftragsbezogeneXml && string.IsNullOrEmpty(SpezifikationName))
+        {
+            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+            SpezifikationName = string.Empty;
         }
         else
         {
-            InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
-        }
-    }
+            CheckOut = false;
+            var searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
+            var watch = Stopwatch.StartNew();
+            var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
+            var stopTimeMs = watch.ElapsedMilliseconds;
 
-    private async Task SaveAllParameterAsync()
-    {
-        var infotext = await _parameterDataService.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
-        InfoSidebarPanelText += infotext;
-        await CheckUnsavedParametresAsync();
+            switch (workspaceSearch.Length)
+            {
+                case 0:
+                    {
+                        InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
+
+                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+
+                        if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                        {
+                            FullPathXml = downloadResult.FullFileName;
+                            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                            AuftragsbezogeneXml = true;
+                        }
+                        else
+                        {
+                            await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                            InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                            InfoSidebarPanelText += $"Standard Daten geladen\n";
+                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                            AuftragsbezogeneXml = false;
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                        var autoDeskTransferpath = workspaceSearch[0];
+                        FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                        if (!AutoDeskTransferInfo.IsReadOnly)
+                        {
+                            FullPathXml = workspaceSearch[0];
+                            InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
+                            AuftragsbezogeneXml = true;
+                            CheckOut = true;
+                        }
+                        else
+                        {
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+
+                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                            {
+                                FullPathXml = downloadResult.FullFileName;
+                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                AuftragsbezogeneXml = true;
+                                CheckOut = downloadResult.IsCheckOut;
+                            }
+                            else
+                            {
+                                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                AuftragsbezogeneXml = false;
+                            }
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                        InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
+
+                        var confirmed = await _dialogService!.ConfirmationDialogAsync(App.MainRoot!,
+                                                $"Es wurden mehrere {searchPattern} Dateien gefunden?",
+                                                 "XML aus Vault herunterladen",
+                                                    "Abbrechen");
+                        if (confirmed)
+                        {
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+
+                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                            {
+                                FullPathXml = downloadResult.FullFileName;
+                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                AuftragsbezogeneXml = true;
+                            }
+                            else
+                            {
+                                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                                AuftragsbezogeneXml = false;
+                            }
+                        }
+                        else
+                        {
+                            InfoSidebarPanelText += $"Standard Daten geladen\n";
+                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                            SpezifikationName = string.Empty;
+                            AuftragsbezogeneXml = false;
+                        }
+                        break;
+                    }
+            }
+        }
     }
 
     private void SetSettings()
     {
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
-        _CurrentSpeziProperties.Adminmode = Adminmode;
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+        CurrentSpeziProperties.Adminmode = Adminmode;
+        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
     }
 
     private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
@@ -616,7 +408,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
         InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
 
         string? path;
-        
+
         if (SpezifikationStatusTyp == "Auftrag")
         {
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
@@ -649,11 +441,11 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
 
             if (person > 0)
             {
-                ParamterDictionary["var_Personen"].Value = Convert.ToString(person);
+                ParamterDictionary!["var_Personen"].Value = Convert.ToString(person);
             }
             if (nutzflaecheKabine > 0)
             {
-                ParamterDictionary["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
+                ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
             }
         }
 
@@ -668,34 +460,50 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware, IRec
         await Task.CompletedTask;
     }
 
+    private async Task UpdateCurrentSpeziPropertiesAsync()
+    {
+        CurrentSpeziProperties ??= new();
+        CurrentSpeziProperties.FullPathXml = FullPathXml;
+        CurrentSpeziProperties.AuftragsbezogeneXml = AuftragsbezogeneXml;
+        CurrentSpeziProperties.CheckOut = CheckOut;
+        CurrentSpeziProperties.Adminmode = Adminmode;
+        CurrentSpeziProperties.SpezifikationStatusTyp = SpezifikationStatusTyp;
+        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        await Task.CompletedTask;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
-        if (_CurrentSpeziProperties is null) { SetSettings(); }
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        AuftragsbezogeneXml = _CurrentSpeziProperties.AuftragsbezogeneXml;
-        CheckOut = _CurrentSpeziProperties.CheckOut;
-        LikeEditParameter = _CurrentSpeziProperties.LikeEditParameter;
-        SpezifikationStatusTyp = _CurrentSpeziProperties.SpezifikationStatusTyp;
-        SearchInput = _CurrentSpeziProperties.SearchInput;
-        InfoSidebarPanelText = _CurrentSpeziProperties.InfoSidebarPanelText;
-        if (_CurrentSpeziProperties.FullPathXml is not null)
+        if (CurrentSpeziProperties is null)
+        { SetSettings(); }
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
+        CheckOut = CurrentSpeziProperties.CheckOut;
+        LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
+        SpezifikationStatusTyp = (CurrentSpeziProperties.SpezifikationStatusTyp is not null) ? CurrentSpeziProperties.SpezifikationStatusTyp : "Auftrag";
+        InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
+        if (CurrentSpeziProperties.FullPathXml is not null)
         {
-            FullPathXml = _CurrentSpeziProperties.FullPathXml;
-            _SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
+            FullPathXml = CurrentSpeziProperties.FullPathXml;
+            SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
-        if (_CurrentSpeziProperties.ParamterDictionary is not null) { ParamterDictionary = _CurrentSpeziProperties.ParamterDictionary; }
-        if (ParamterDictionary.Values.Count == 0) { _ = LoadDataAsync(); }
-
-        _ =  SetCalculatedValuesAsync();
-
-        if (_CurrentSpeziProperties is not null &&
-            _CurrentSpeziProperties.ParamterDictionary is not null &&
-            _CurrentSpeziProperties.ParamterDictionary.Values is not null) { _ = CheckUnsavedParametresAsync(); }
+        ParamterDictionary ??= new();
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
+        { ParamterDictionary = CurrentSpeziProperties.ParamterDictionary; }
+        if (ParamterDictionary.Values.Count == 0)
+        { _ = LoadDataAsync(); }
+        _ = SetCalculatedValuesAsync();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        { _ = SetModelStateAsync(); }  
     }
 
     public void OnNavigatedFrom()
     {
+        _ = UpdateCurrentSpeziPropertiesAsync();
         IsActive = false;
     }
 }

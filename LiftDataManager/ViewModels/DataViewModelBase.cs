@@ -10,10 +10,6 @@ public partial class DataViewModelBase : ObservableRecipient
     public readonly INavigationService? _navigationService;
 
     public bool Adminmode {get; set;}
-    public bool AuftragsbezogeneXml {get; set;}
-    public bool CheckOut {get; set;}
-    public bool LikeEditParameter {get; set;}
-    public string? FullPathXml { get; set;}
     public bool CheckoutDialogIsOpen {get; set;}
 
     public CurrentSpeziProperties? CurrentSpeziProperties;
@@ -40,6 +36,18 @@ public partial class DataViewModelBase : ObservableRecipient
                 _ = SetModelStateAsync();
             }
     }
+
+    [ObservableProperty]
+    private string? fullPathXml;
+
+    [ObservableProperty]
+    private bool auftragsbezogeneXml;
+
+    [ObservableProperty]
+    private bool checkOut;
+
+    [ObservableProperty]
+    private bool likeEditParameter;
 
     [ObservableProperty]
     private bool hasErrors;

@@ -3,12 +3,9 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems
-    {
-        get; set;
-    }
+    public CollectionViewSource GroupedItems{get; set;}
 
     public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -21,6 +18,20 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private ICommand? _itemClickCommand;
     public ICommand ItemClickCommand => _itemClickCommand ??= new RelayCommand<Parameter>(OnItemClick);
+
+    [ObservableProperty]
+    private bool canShowUnsavedParameters;
+
+    [ObservableProperty]
+    private string? searchInput;
+    partial void OnSearchInputChanged(string? value)
+    {
+        if (CurrentSpeziProperties != null)
+        {
+            CurrentSpeziProperties.SearchInput = SearchInput;
+        }
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+    }
 
     protected async override Task SetModelStateAsync()
     {
@@ -54,29 +65,6 @@ public class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecip
                     LikeEditParameter = false;
                 }
             }
-        }
-    }
-
-    private bool _CanShowUnsavedParameters;
-    public bool CanShowUnsavedParameters
-    {
-        get => _CanShowUnsavedParameters;
-        set => SetProperty(ref _CanShowUnsavedParameters, value);
-    }
-
-    private string? _SearchInput;
-    public string? SearchInput
-    {
-        get => _SearchInput;
-
-        set
-        {
-            SetProperty(ref _SearchInput, value);
-            if (CurrentSpeziProperties != null)
-            {
-                CurrentSpeziProperties.SearchInput = SearchInput;
-            }
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
 

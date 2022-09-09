@@ -4,12 +4,9 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems
-    {
-        get; set;
-    }
+    public CollectionViewSource GroupedItems{get; set;}
 
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -18,15 +15,77 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
         {
             IsSourceGrouped = true
         };
-
-        SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && AuftragsbezogeneXml);
     }
 
-    public IAsyncRelayCommand SaveParameter
+    [ObservableProperty]
+    private bool isItemSelected;
+
+    [ObservableProperty]
+    private bool canShowUnsavedParameters;
+
+    [ObservableProperty]
+    private string? searchInput;
+    partial void OnSearchInputChanged(string? value)
     {
-        get;
+        if (CurrentSpeziProperties != null)
+        {
+            CurrentSpeziProperties.SearchInput = SearchInput;
+        }
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
     }
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveParameterCommand))]
+    private bool canSaveParameter;
+
+    private Parameter? _selected;
+    public Parameter? Selected
+    {
+        get
+        {
+            CheckIsDirty(_selected);
+            if (_selected is not null)
+            {
+                IsItemSelected = true;
+            }
+            else
+            {
+                IsItemSelected = false;
+            }
+            return _selected;
+        }
+        set
+        {
+            if (Selected is not null)
+            {
+                Selected.PropertyChanged -= CheckIsDirty;
+            }
+
+            SetProperty(ref _selected, value);
+            if (_selected is not null)
+            {
+                _selected.PropertyChanged += CheckIsDirty;
+            }
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSaveParameter))]
+    private async Task SaveParameterAsync()
+    {
+        var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
+        InfoSidebarPanelText += infotext;
+        CanSaveParameter = false;
+        if (Selected is not null)
+        {
+            Selected.IsDirty = false;
+        }
+        await SetModelStateAsync();
+        var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
+        if (Selected is not null)
+        {
+            allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
+        }
+    }
 
     private void CheckIsDirty(object? sender, PropertyChangedEventArgs e)
     {
@@ -40,14 +99,14 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
     {
         if (Item is not null && Item.IsDirty)
         {
-            CanSaveParameter = true;
+            CanSaveParameter = true && Adminmode && CheckOut;
         }
         else
         {
             CanSaveParameter = false;
         }
 
-        SaveParameter.NotifyCanExecuteChanged();
+        SaveParameterCommand.NotifyCanExecuteChanged();
     }
 
     protected async override Task SetModelStateAsync()
@@ -83,95 +142,6 @@ public class ListenansichtViewModel : DataViewModelBase, INavigationAware, IReci
                 }
             }
 
-        }
-    }
-
-    private Parameter? _selected;
-    public Parameter? Selected
-    {
-        get
-        {
-            CheckIsDirty(_selected);
-            if (_selected is not null)
-            {
-                IsItemSelected = true;
-            }
-            else
-            {
-                IsItemSelected = false;
-            }
-            return _selected;
-        }
-        set
-        {
-            if (Selected is not null)
-            {
-                Selected.PropertyChanged -= CheckIsDirty;
-            }
-
-            SetProperty(ref _selected, value);
-            if (_selected is not null)
-            {
-                _selected.PropertyChanged += CheckIsDirty;
-            }
-        }
-    }
-
-    private bool _CanShowUnsavedParameters;
-    public bool CanShowUnsavedParameters
-    {
-        get => _CanShowUnsavedParameters;
-        set => SetProperty(ref _CanShowUnsavedParameters, value);
-    }
-
-    private bool _IsItemSelected;
-    public bool IsItemSelected
-    {
-        get => _IsItemSelected;
-        set => SetProperty(ref _IsItemSelected, value);
-    }
-
-    private bool _CanSaveParameter;
-    public bool CanSaveParameter
-    {
-        get => _CanSaveParameter;
-        set
-        {
-            SetProperty(ref _CanSaveParameter, value);
-            SaveParameter.NotifyCanExecuteChanged();
-        }
-    }
-
-    private string? _SearchInput;
-    public string? SearchInput
-    {
-        get => _SearchInput;
-
-        set
-        {
-            SetProperty(ref _SearchInput, value);
-            if (CurrentSpeziProperties is not null)
-            {
-                CurrentSpeziProperties.SearchInput = SearchInput;
-                Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
-            }
-        }
-    }
-
-    private async Task SaveParameterAsync()
-    {
-        var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
-        InfoSidebarPanelText += infotext;
-        CanSaveParameter = false;
-        if (Selected is not null)
-        {
-            Selected.IsDirty = false;
-        }
-        await SetModelStateAsync();
-        var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
-        if (Selected is not null)
-        {
-        allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
         }
     }
 

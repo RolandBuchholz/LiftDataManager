@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace LiftDataManager.ViewModels;
 
-public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private Parameter? _item;
 
@@ -28,12 +28,6 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, 
     public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        SaveParameter = new AsyncRelayCommand(SaveParameterAsync, () => CanSaveParameter && Adminmode && CheckOut);
-    }
-
-    public IAsyncRelayCommand SaveParameter
-    {
-        get;
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
@@ -45,26 +39,20 @@ public class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, 
     {
         if (Item is not null && Item.IsDirty)
         {
-            CanSaveParameter = true;
+            CanSaveParameter = true && Adminmode && CheckOut ;
         }
         else
         {
             CanSaveParameter = false;
         }
-        SaveParameter.NotifyCanExecuteChanged();
+        SaveParameterCommand.NotifyCanExecuteChanged();
     }
 
-    private bool _CanSaveParameter;
-    public bool CanSaveParameter
-    {
-        get => _CanSaveParameter;
-        set
-        {
-            SetProperty(ref _CanSaveParameter, value);
-            SaveParameter.NotifyCanExecuteChanged();
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveParameterCommand))]
+    private bool canSaveParameter;
 
+    [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
         var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
