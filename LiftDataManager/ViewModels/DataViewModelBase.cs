@@ -38,27 +38,61 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
+    private bool hasErrors;
+
+    [ObservableProperty]
     private string? fullPathXml;
+    partial void OnFullPathXmlChanged(string? value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<string>.Default.Equals(CurrentSpeziProperties.FullPathXml, value))
+        {
+            CurrentSpeziProperties.FullPathXml = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+    }
 
     [ObservableProperty]
     private bool auftragsbezogeneXml;
+    partial void OnAuftragsbezogeneXmlChanged(bool value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.AuftragsbezogeneXml, value))
+        {
+            CurrentSpeziProperties.AuftragsbezogeneXml = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+    }
 
     [ObservableProperty]
     private bool checkOut;
+    partial void OnCheckOutChanged(bool value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.CheckOut, value))
+        {
+            CurrentSpeziProperties.CheckOut = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+    }
 
     [ObservableProperty]
     private bool likeEditParameter;
-
-    [ObservableProperty]
-    private bool hasErrors;
+    partial void OnLikeEditParameterChanged(bool value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.LikeEditParameter, value))
+        {
+            CurrentSpeziProperties.LikeEditParameter = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+    }
 
     [ObservableProperty]
     private string? infoSidebarPanelText;
     partial void OnInfoSidebarPanelTextChanged(string? value)
     {
         if (CurrentSpeziProperties is not null)
+        {
             CurrentSpeziProperties.InfoSidebarPanelText = value;
-        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
     }
 
     [ObservableProperty]
@@ -76,10 +110,8 @@ public partial class DataViewModelBase : ObservableRecipient
     protected virtual void SynchronizeViewModelParameter()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.FullPathXml is not null)
-        { FullPathXml = CurrentSpeziProperties.FullPathXml; }
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-        { ParamterDictionary = CurrentSpeziProperties.ParamterDictionary; }
+        if (CurrentSpeziProperties.FullPathXml is not null) FullPathXml = CurrentSpeziProperties.FullPathXml; 
+        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;

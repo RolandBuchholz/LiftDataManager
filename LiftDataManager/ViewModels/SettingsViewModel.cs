@@ -3,12 +3,11 @@ using Windows.ApplicationModel;
 
 namespace LiftDataManager.ViewModels;
 
-public class SettingsViewModel : ObservableRecipient, INavigationAware
+public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 {
     private const string adminpasswort = "2342";
     private readonly IThemeSelectorService _themeSelectorService;
-    private ElementTheme _elementTheme;
-    private CurrentSpeziProperties? _CurrentSpeziProperties;
+    private CurrentSpeziProperties? CurrentSpeziProperties;
     private readonly ISettingService _settingService;
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IDialogService _dialogService;
@@ -16,7 +15,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService, IDialogService dialogService)
     {
         _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
+        elementTheme = _themeSelectorService.Theme;
         _settingService = settingsSelectorService;
         _auswahlParameterDataService = auswahlParameterDataService;
         _dialogService = dialogService;
@@ -37,37 +36,19 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         SwitchAccentColorCommand = new AsyncRelayCommand(SwitchAccentColorAsync);
     }
 
-    public IAsyncRelayCommand PinDialog
-    {
-        get;
-    }
-    public IAsyncRelayCommand UpdateAuswahlParameter
-    {
-        get;
-    }
-    public IAsyncRelayCommand SwitchAccentColorCommand
-    {
-        get;
-    }
+    public IAsyncRelayCommand PinDialog { get; }
+    public IAsyncRelayCommand UpdateAuswahlParameter { get;}
+    public IAsyncRelayCommand SwitchAccentColorCommand{ get;}
+    public ICommand SwitchThemeCommand{get;}
 
-    public ElementTheme ElementTheme
-    {
-        get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
-    }
+    [ObservableProperty]
+    private ElementTheme elementTheme;
 
-    private string ?_versionDescription;
+    [ObservableProperty]
+    private string ? versionDescription;
 
-    public string? VersionDescription
-    {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
-    }
-
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
+    [ObservableProperty]
+    private string? infoText;
 
     private async Task PinDialogAsync(ContentDialog? pwdDialog)
     {
@@ -97,11 +78,11 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             SetProperty(ref _CustomColor, value);
             _settingService.SetSettingsAsync("AccentColor", value);
-            if (_CurrentSpeziProperties is not null)
+            if (CurrentSpeziProperties is not null)
             {
-            _CurrentSpeziProperties.CustomAccentColor = value;
+            CurrentSpeziProperties.CustomAccentColor = value;
             }
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
 
@@ -133,11 +114,11 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             SetProperty(ref _Adminmode, value);
             _settingService.SetSettingsAsync("Adminmode", value);
-            if (_CurrentSpeziProperties is not null)
+            if (CurrentSpeziProperties is not null)
             {
-                _CurrentSpeziProperties.Adminmode = value;
+                CurrentSpeziProperties.Adminmode = value;
             }
-            Messenger.Send(new SpeziPropertiesChangedMassage(_CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
 
@@ -152,13 +133,6 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         get => _PasswortInfoText;
         set => SetProperty(ref _PasswortInfoText, value);
-    }
-
-    private string? _InfoText;
-    public string? InfoText
-    {
-        get => _InfoText;
-        set => SetProperty(ref _InfoText, value);
     }
 
     private string? _PasswortInput;
@@ -225,7 +199,7 @@ public class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        _CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
     }

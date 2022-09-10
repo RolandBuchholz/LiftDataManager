@@ -2,51 +2,28 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class TürenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        SetVariableCarDoorDataAsyncCommand = new AsyncRelayCommand(SetVariableCarDoorDataAsync, () => CanSetVariableCarDoorData);
+
     }
 
-    public IAsyncRelayCommand SetVariableCarDoorDataAsyncCommand
-    {
-        get;
-    }
+    [ObservableProperty]
+    private bool showCarDoorDataB;
 
-    private bool _CanSetVariableCarDoorData;
-    public bool CanSetVariableCarDoorData
-    {
-        get => _CanSetVariableCarDoorData;
-        set
-        {
-            SetProperty(ref _CanSetVariableCarDoorData, value);
-            SetVariableCarDoorDataAsyncCommand.NotifyCanExecuteChanged();
-        }
-    }
+    [ObservableProperty]
+    private bool showCarDoorDataC;
 
-    private bool _ShowCarDoorDataB;
-    public bool ShowCarDoorDataB
-    {
-        get => _ShowCarDoorDataB;
-        set => SetProperty(ref _ShowCarDoorDataB, value);
-    }
+    [ObservableProperty]
+    private bool showCarDoorDataD;
 
-    private bool _ShowCarDoorDataC;
-    public bool ShowCarDoorDataC
-    {
-        get => _ShowCarDoorDataC;
-        set => SetProperty(ref _ShowCarDoorDataC, value);
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SetVariableCarDoorDataCommand))]
+    private bool canSetVariableCarDoorData;
 
-    private bool _ShowCarDoorDataD;
-    public bool ShowCarDoorDataD
-    {
-        get => _ShowCarDoorDataD;
-        set => SetProperty(ref _ShowCarDoorDataD, value);
-    }
-
+    [RelayCommand(CanExecute = nameof(CanSetVariableCarDoorData))]
     private async Task SetVariableCarDoorDataAsync()
     {
         var currentVariableCarDoorData = Convert.ToBoolean(ParamterDictionary!["var_Variable_Tuerdaten"].Value);
@@ -73,10 +50,7 @@ public class TürenViewModel : DataViewModelBase, INavigationAware, IRecipient<P
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
         SetCarDoorDataVisibility();
     }
 

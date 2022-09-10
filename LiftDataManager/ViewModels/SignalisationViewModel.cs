@@ -13,10 +13,7 @@ public class SignalisationViewModel : DataViewModelBase, INavigationAware, IReci
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

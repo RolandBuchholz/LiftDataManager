@@ -109,7 +109,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
         OpenReadOnly = true;
-        await UpdateCurrentSpeziPropertiesAsync();
         await SetCalculatedValuesAsync();
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
     }
@@ -182,7 +181,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 await LoadDataAsync();
             }
         }
-        await UpdateCurrentSpeziPropertiesAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
@@ -213,7 +211,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"----------\n";
             }
         }
-        await UpdateCurrentSpeziPropertiesAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -277,7 +274,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     LikeEditParameter = false;
                 }
             }
-             await UpdateCurrentSpeziPropertiesAsync();
         }
     }
 
@@ -460,24 +456,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         await Task.CompletedTask;
     }
 
-    private async Task UpdateCurrentSpeziPropertiesAsync()
-    {
-        CurrentSpeziProperties ??= new();
-        CurrentSpeziProperties.FullPathXml = FullPathXml;
-        CurrentSpeziProperties.AuftragsbezogeneXml = AuftragsbezogeneXml;
-        CurrentSpeziProperties.CheckOut = CheckOut;
-        CurrentSpeziProperties.Adminmode = Adminmode;
-        CurrentSpeziProperties.SpezifikationStatusTyp = SpezifikationStatusTyp;
-        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
-        await Task.CompletedTask;
-    }
-
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
-        if (CurrentSpeziProperties is null)
-        { SetSettings(); }
+        if (CurrentSpeziProperties is null) SetSettings();
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
@@ -490,20 +472,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
         ParamterDictionary ??= new();
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-        { ParamterDictionary = CurrentSpeziProperties.ParamterDictionary; }
-        if (ParamterDictionary.Values.Count == 0)
-        { _ = LoadDataAsync(); }
+        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (ParamterDictionary.Values.Count == 0) _ = LoadDataAsync(); 
         _ = SetCalculatedValuesAsync();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        { _ = SetModelStateAsync(); }  
+            _ = SetModelStateAsync();    
     }
 
     public void OnNavigatedFrom()
     {
-        _ = UpdateCurrentSpeziPropertiesAsync();
         IsActive = false;
     }
 }

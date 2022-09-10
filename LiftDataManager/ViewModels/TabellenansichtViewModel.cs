@@ -68,14 +68,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null)
-        {
-            SearchInput = CurrentSpeziProperties.SearchInput;
-        }
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null) SearchInput = CurrentSpeziProperties.SearchInput;
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

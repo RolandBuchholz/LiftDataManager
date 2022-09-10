@@ -118,7 +118,7 @@
                                     Grid.RowSpan="2"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Bottom"
-                                    Command="{x:Bind ViewModel.SetVariableCarDoorDataAsyncCommand}"
+                                    Command="{x:Bind ViewModel.SetVariableCarDoorDataCommand}"
                                     Content="variable Türdaten"
                                     Style="{StaticResource AccentButtonStyle}" />
                                 <Grid

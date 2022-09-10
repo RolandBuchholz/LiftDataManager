@@ -32,7 +32,7 @@ public partial class Parameter : ParameterBase
             ParameterTypValue.Text => (value is not null) ? value : "",
             ParameterTypValue.NumberOnly => (value is not null) ? value : "",
             ParameterTypValue.Date => value,
-            ParameterTypValue.Boolean => value.ToLower(),
+            ParameterTypValue.Boolean => (value is not null) ? value.ToLower() : "false",
             ParameterTypValue.DropDownList => value,
             _ => value,
         };

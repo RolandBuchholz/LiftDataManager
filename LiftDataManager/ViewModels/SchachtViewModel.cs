@@ -2,42 +2,11 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class SchachtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class SchachtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-
-
     public SchachtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        SetHauptzugangCommand = new RelayCommand<string>(SetHauptzugang);
-        ResetHauptzugangCommand = new RelayCommand(ResetHauptzugang);
-    }
-
-    public IRelayCommand SetHauptzugangCommand
-    {
-        get;
-    }
-    public IRelayCommand ResetHauptzugangCommand
-    {
-        get;
-    }
-
-    private void SetHauptzugang(string? parameter)
-    {
-        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
-        {
-            ParamterDictionary["var_Haupthaltestelle"].Value = parameter is not null ? parameter : string.Empty;
-            DisplayNameHauptzugang = parameter;
-        }
-    }
-
-    private void ResetHauptzugang()
-    {
-        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
-        {
-            ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
-            DisplayNameHauptzugang = "NV";
-        }
     }
 
     private string? _DisplayNameHauptzugang;
@@ -49,14 +18,30 @@ public class SchachtViewModel : DataViewModelBase, INavigationAware, IRecipient<
         set => SetProperty(ref _DisplayNameHauptzugang, value);
     }
 
+    [RelayCommand]
+    private void SetHauptzugang(string? parameter)
+    {
+        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, parameter, StringComparison.OrdinalIgnoreCase))
+        {
+            ParamterDictionary["var_Haupthaltestelle"].Value = parameter is not null ? parameter : string.Empty;
+            DisplayNameHauptzugang = parameter;
+        }
+    }
+    [RelayCommand]
+    private void ResetHauptzugang()
+    {
+        if (!string.Equals(ParamterDictionary!["var_Haupthaltestelle"].Value, "NV", StringComparison.OrdinalIgnoreCase))
+        {
+            ParamterDictionary["var_Haupthaltestelle"].Value = "NV";
+            DisplayNameHauptzugang = "NV";
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

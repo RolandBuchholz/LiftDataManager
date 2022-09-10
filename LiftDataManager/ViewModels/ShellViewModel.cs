@@ -2,31 +2,17 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class ShellViewModel : ObservableRecipient
+public partial class ShellViewModel : ObservableRecipient
 {
-    private bool _isBackEnabled;
-    private object? _selected;
     private CurrentSpeziProperties _CurrentSpeziProperties = new();
-    public INavigationService NavigationService
-    {
-        get;
-    }
-    public INavigationViewService NavigationViewService
-    {
-        get;
-    }
+    public INavigationService NavigationService {get;}
+    public INavigationViewService NavigationViewService{get;}
 
-    public bool IsBackEnabled
-    {
-        get => _isBackEnabled;
-        set => SetProperty(ref _isBackEnabled, value);
-    }
+    [ObservableProperty]
+    private bool isBackEnabled;
 
-    public object? Selected
-    {
-        get => _selected;
-        set => SetProperty(ref _selected, value);
-    }
+    [ObservableProperty]
+    private object? selected;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
     {
