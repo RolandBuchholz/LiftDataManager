@@ -12,11 +12,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public KabinengewichtViewModel()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-        {
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        }
+        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
     }
 
     public void Receive(CarWeightRequestMessageAsync message)
@@ -462,10 +458,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

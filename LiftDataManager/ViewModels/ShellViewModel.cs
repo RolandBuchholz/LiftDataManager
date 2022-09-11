@@ -4,7 +4,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
-    private CurrentSpeziProperties _CurrentSpeziProperties = new();
+    private CurrentSpeziProperties CurrentSpeziProperties = new();
     public INavigationService NavigationService {get;}
     public INavigationViewService NavigationViewService{get;}
 
@@ -21,12 +21,12 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewService = navigationViewService;
         Messenger.Register<SpeziPropertiesRequestMessage>(this, (r, m) =>
         {
-            m.Reply(_CurrentSpeziProperties);
+            m.Reply(CurrentSpeziProperties);
         });
 
         Messenger.Register<SpeziPropertiesChangedMassage>(this, (r, m) =>
         {
-            _CurrentSpeziProperties = m.Value;
+            CurrentSpeziProperties = m.Value;
         });
     }
 

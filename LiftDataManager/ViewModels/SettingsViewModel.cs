@@ -15,34 +15,24 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService, IDialogService dialogService)
     {
         _themeSelectorService = themeSelectorService;
-        elementTheme = _themeSelectorService.Theme;
         _settingService = settingsSelectorService;
         _auswahlParameterDataService = auswahlParameterDataService;
         _dialogService = dialogService;
+        ElementTheme = _themeSelectorService.Theme;
         VersionDescription = GetVersionDescription();
-
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
-
-        PinDialog = new AsyncRelayCommand<ContentDialog>(PinDialogAsync);
-        UpdateAuswahlParameter = new AsyncRelayCommand(UpdateAuswahlParameterAsync, () => true);
-        SwitchAccentColorCommand = new AsyncRelayCommand(SwitchAccentColorAsync);
     }
-
-    public IAsyncRelayCommand PinDialog { get; }
-    public IAsyncRelayCommand UpdateAuswahlParameter { get;}
-    public IAsyncRelayCommand SwitchAccentColorCommand{ get;}
-    public ICommand SwitchThemeCommand{get;}
 
     [ObservableProperty]
     private ElementTheme elementTheme;
+
+    [ObservableProperty]
+    private bool customAccentColor;
+    partial void OnCustomAccentColorChanged(bool value)
+    {
+        _settingService.SetSettingsAsync("AccentColor", value);
+        if (CurrentSpeziProperties is not null) CurrentSpeziProperties.CustomAccentColor = value;
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+    }
 
     [ObservableProperty]
     private string ? versionDescription;
@@ -50,6 +40,47 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private string? infoText;
 
+    [ObservableProperty]
+    private bool canSwitchToAdminmode;
+
+    [ObservableProperty]
+    private string? passwortInfoText = "Kein PIN eingegeben";
+
+    [ObservableProperty]
+    private string? passwortInput;
+    partial void OnPasswortInputChanged(string? value)
+    {
+        CheckpasswortInput();
+    }
+
+    [ObservableProperty]
+    private bool adminmode;
+    partial void OnAdminmodeChanged(bool value)
+    {
+        _settingService.SetSettingsAsync("Adminmode", value);
+        if (CurrentSpeziProperties is not null) CurrentSpeziProperties.Adminmode = value;  
+        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+    }
+
+    [ObservableProperty]
+    private bool adminmodeWarningAccepted;
+    partial void OnAdminmodeWarningAcceptedChanged(bool value)
+    {
+        CanSwitchToAdminmode = (AdminmodeWarningAccepted == true
+                        && PasswortInfoText == "Adminmode Pin korrekt Zugriff gewährt");
+    }
+
+    [RelayCommand]
+    private async Task SwitchThemeAsync(ElementTheme param)
+    {
+        if (ElementTheme != param)
+        {
+            ElementTheme = param;
+            await _themeSelectorService.SetThemeAsync(param);
+        }
+    }
+
+    [RelayCommand]
     private async Task PinDialogAsync(ContentDialog? pwdDialog)
     {
         if (!Adminmode)
@@ -70,26 +101,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         await Task.CompletedTask;
     }
 
-    private bool _CustomColor;
-    public bool CustomAccentColor
-    {
-        get => _CustomColor;
-        set
-        {
-            SetProperty(ref _CustomColor, value);
-            _settingService.SetSettingsAsync("AccentColor", value);
-            if (CurrentSpeziProperties is not null)
-            {
-            CurrentSpeziProperties.CustomAccentColor = value;
-            }
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
-        }
-    }
-
+    [RelayCommand]
     private async Task SwitchAccentColorAsync()
     {
         await _dialogService.MessageDialogAsync(App.MainRoot!, "Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
+
+    [RelayCommand]
     private async Task UpdateAuswahlParameterAsync()
     {
         var watch = Stopwatch.StartNew();
@@ -106,86 +124,22 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         InfoText += "Daten erfolgreich geladen\n";
     }
 
-    private bool _Adminmode;
-    public bool Adminmode
-    {
-        get => _Adminmode;
-        set
-        {
-            SetProperty(ref _Adminmode, value);
-            _settingService.SetSettingsAsync("Adminmode", value);
-            if (CurrentSpeziProperties is not null)
-            {
-                CurrentSpeziProperties.Adminmode = value;
-            }
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
-        }
-    }
-
-    private bool _CanSwitchToAdminmode = false;
-    public bool CanSwitchToAdminmode
-    {
-        get => _CanSwitchToAdminmode;
-        set => SetProperty(ref _CanSwitchToAdminmode, value);
-    }
-    private string? _PasswortInfoText = "Kein PIN eingegeben";
-    public string? PasswortInfoText
-    {
-        get => _PasswortInfoText;
-        set => SetProperty(ref _PasswortInfoText, value);
-    }
-
-    private string? _PasswortInput;
-    public string? PasswortInput
-    {
-        get => _PasswortInput;
-        set
-        {
-            SetProperty(ref _PasswortInput, value);
-            CheckpasswortInput();
-        }
-    }
-    private bool _AdminmodeWarningAccepted;
-    public bool AdminmodeWarningAccepted
-    {
-        get => _AdminmodeWarningAccepted;
-        set
-        {
-            SetProperty(ref _AdminmodeWarningAccepted, value);
-            CheckCanSwitchToAdminmode();
-        }
-    }
-
     private void CheckpasswortInput()
     {
-
         switch (PasswortInput)
         {
             case "":
                 PasswortInfoText = "Kein PIN eingegeben";
-                CheckCanSwitchToAdminmode();
+                CanSwitchToAdminmode = false;
                 break;
             case adminpasswort:
                 PasswortInfoText = "Adminmode Pin korrekt Zugriff gewährt";
-                CheckCanSwitchToAdminmode();
+                CanSwitchToAdminmode = AdminmodeWarningAccepted;
                 break;
             default:
                 PasswortInfoText = "Incorrecter Adminmode Pin";
-                CheckCanSwitchToAdminmode();
+                CanSwitchToAdminmode = false;
                 break;
-        }
-
-    }
-    private void CheckCanSwitchToAdminmode()
-    {
-
-        if (AdminmodeWarningAccepted == true && PasswortInfoText == "Adminmode Pin korrekt Zugriff gewährt")
-        {
-            CanSwitchToAdminmode = true;
-        }
-        else
-        {
-            CanSwitchToAdminmode = false;
         }
     }
 
@@ -199,7 +153,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (CurrentSpeziProperties is not null) CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
     }
@@ -207,4 +161,3 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
     }
 }
-

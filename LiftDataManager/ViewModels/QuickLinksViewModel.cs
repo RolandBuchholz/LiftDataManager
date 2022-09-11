@@ -2,96 +2,28 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class QuickLinksViewModel : DataViewModelBase, INavigationAware
+public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 {
     public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        OpenSpeziCommand = new RelayCommand(OpenSpezi);
-        OpenSpeziPdfCommand = new RelayCommand(OpenSpeziPdf, () => CanOpenSpeziPdf);
-        OpenBauerCommand = new RelayCommand(OpenBauer);
-        OpenWorkspaceCommand = new RelayCommand(OpenWorkspace);
-        OpenVaultCommand = new RelayCommand(OpenVault, () => CanOpenVault);
-        OpenCFPCommand = new RelayCommand(OpenCFP, () => CanOpenCFP);
-        OpenZiehlAbeggCommand = new RelayCommand(OpenZiehlAbegg);
-        OpenLiloCommand = new RelayCommand(OpenLilo, () => CanOpenLilo);
     }
 
-    public IRelayCommand OpenSpeziCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenSpeziPdfCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenBauerCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenWorkspaceCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenVaultCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenCFPCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenZiehlAbeggCommand
-    {
-        get;
-    }
-    public IRelayCommand OpenLiloCommand
-    {
-        get;
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
+    private bool canOpenSpeziPdf;
 
-    private bool _CanOpenSpeziPdf;
-    public bool CanOpenSpeziPdf
-    {
-        get => _CanOpenSpeziPdf;
-        set
-        {
-            SetProperty(ref _CanOpenSpeziPdf, value);
-            OpenSpeziPdfCommand.NotifyCanExecuteChanged();
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenVaultCommand))]
+    private bool canOpenVault;
 
-    private bool _CanOpenVault;
-    public bool CanOpenVault
-    {
-        get => _CanOpenVault;
-        set
-        {
-            SetProperty(ref _CanOpenVault, value);
-            OpenVaultCommand.NotifyCanExecuteChanged();
-        }
-    }
-    private bool _CanOpenCFP;
-    public bool CanOpenCFP
-    {
-        get => _CanOpenCFP;
-        set
-        {
-            SetProperty(ref _CanOpenCFP, value);
-            OpenCFPCommand.NotifyCanExecuteChanged();
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenCFPCommand))]
+    private bool canOpenCFP;
 
-    private bool _CanOpenLilo;
-    public bool CanOpenLilo
-    {
-        get => _CanOpenLilo;
-        set
-        {
-            SetProperty(ref _CanOpenLilo, value);
-            OpenLiloCommand.NotifyCanExecuteChanged();
-        }
-    }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
+    private bool canOpenLilo;
 
     private void CheckCanOpenFiles()
     {
@@ -114,6 +46,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         CanOpenLilo = bausatztyp.StartsWith("BR1") || bausatztyp.StartsWith("BR2") || bausatztyp.StartsWith("BT") || bausatztyp.StartsWith("TG");
     }
 
+    [RelayCommand]
     private void OpenSpezi()
     {
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
@@ -132,6 +65,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanOpenSpeziPdf))]
     private void OpenSpeziPdf()
     {
         var filename = FullPathXml?.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
@@ -143,6 +77,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand]
     private void OpenBauer()
     {
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
@@ -157,6 +92,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand]
     private void OpenWorkspace()
     {
         if (!string.IsNullOrWhiteSpace(FullPathXml))
@@ -171,6 +107,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanOpenVault))]
     private void OpenVault()
     {
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
@@ -185,6 +122,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanOpenCFP))]
     private void OpenCFP()
     {
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
@@ -197,6 +135,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         StartProgram(cfpPath, startargs);
     }
 
+    [RelayCommand]
     private void OpenZiehlAbegg()
     {
         var filename = @"C:\Program Files (x86)\zetalift\Lift.exe";
@@ -208,6 +147,7 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanOpenLilo))]
     private void OpenLilo()
     {
         var filename = @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE";
@@ -283,10 +223,9 @@ public class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
         finally
         {
-            oXmlWriter?.Close(); 
+            oXmlWriter?.Close();
         }
     }
-
 
     public void OnNavigatedTo(object parameter)
     {

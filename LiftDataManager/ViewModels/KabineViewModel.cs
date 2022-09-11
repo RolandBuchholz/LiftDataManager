@@ -2,17 +2,11 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        GoToKabineDetailCommand = new RelayCommand(GoToKabineDetail);
-    }
-
-    public IRelayCommand GoToKabineDetailCommand
-    {
-        get;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -30,6 +24,7 @@ public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<P
         }
     }
 
+    [RelayCommand]
     private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
 
     //private void CheckDeckenhoehe()
@@ -135,10 +130,7 @@ public class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<P
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

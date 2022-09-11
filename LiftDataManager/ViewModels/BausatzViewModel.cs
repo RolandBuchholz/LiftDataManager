@@ -12,11 +12,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
     public BausatzViewModel()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-        {
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        }
+        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
         SetCarWeight();
     }
 

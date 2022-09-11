@@ -149,14 +149,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null)
-        {
-            SearchInput = CurrentSpeziProperties.SearchInput;
-        }
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null) SearchInput = CurrentSpeziProperties.SearchInput;
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()
@@ -166,9 +160,6 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     public void EnsureItemSelected()
     {
-        if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0)
-        {
-            Selected = (Parameter?)GroupedItems.View.FirstOrDefault();
-        }
+        if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0) Selected = (Parameter?)GroupedItems.View.FirstOrDefault();
     }
 }

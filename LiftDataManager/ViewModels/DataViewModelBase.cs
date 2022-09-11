@@ -165,10 +165,7 @@ public partial class DataViewModelBase : ObservableRecipient
                 {
                     CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
-                    if (CurrentSpeziProperties is not null)
-                    {
-                        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-                    }
+                    if (CurrentSpeziProperties is not null) CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
                     _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
                 }
             }

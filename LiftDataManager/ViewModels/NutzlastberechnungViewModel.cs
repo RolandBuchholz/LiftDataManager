@@ -354,10 +354,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         IsActive = true;
         SynchronizeViewModelParameter();
         SetPersonen();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
-        }
+        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()
