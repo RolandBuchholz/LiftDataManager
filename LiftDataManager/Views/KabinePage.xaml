@@ -1846,6 +1846,8 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>

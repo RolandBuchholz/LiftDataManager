@@ -14,7 +14,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public CurrentSpeziProperties? CurrentSpeziProperties;
     public ObservableDictionary<string, Parameter>? ParamterDictionary {get; set;}
-    public ObservableDictionary<string, List<ParameterStateInfo>>? ParamterErrorDictionary { get; set; }
+    public ObservableDictionary<string, List<ParameterStateInfo>>? ParamterErrorDictionary { get; set; } = new();
 
     public DataViewModelBase()
     {

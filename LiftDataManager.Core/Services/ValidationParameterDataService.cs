@@ -8,9 +8,10 @@ using LiftDataManager.Core.Messenger.Messages;
 namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
-    private Dictionary<string, List<Tuple<Delegate, string, string>>> ValidationDictionary { get; set; }
+    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
+    private Dictionary<string, List<Tuple<Delegate, string, string>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
-    private CurrentSpeziProperties CurrentSpeziProperties { get; set; }
+    private CurrentSpeziProperties CurrentSpeziProperties { get; set; } = new();
 
     public ValidationParameterDataService()
     {
@@ -25,8 +26,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        //TODO Do something
-        //message
+        if (message is not null)
+        {
+            ParamterDictionary = message.Response.ParamterDictionary;
+        }
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string name, string value)
@@ -58,13 +61,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void GetValidationDictionary()
     {
-        ValidationDictionary ??= new();
         ValidationDictionary.Add("var_AuftragsNummer", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Error", null) });
         ValidationDictionary.Add("var_FabrikNummer", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null),
                                                                                                  new Tuple<Delegate, string, string>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
         ValidationDictionary.Add("var_Q", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Error", null) });
         ValidationDictionary.Add("var_Kennwort", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
-        ValidationDictionary.Add("var_Betreiber", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warningr", null) });
+        ValidationDictionary.Add("var_Betreiber", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
         ValidationDictionary.Add("var_Projekt", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
         ValidationDictionary.Add("var_InformationAufzug", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", "(keine Auswahl)") });
         ValidationDictionary.Add("var_Aufzugstyp", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Error", "(keine Auswahl)") });
@@ -81,14 +83,6 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         };
     }
 
-    private ObservableDictionary<string, Parameter> GetParamterDictionary()
-    {
-        var test = Messenger.Send<SpeziPropertiesRequestMessage>();
-
-        return CurrentSpeziProperties.ParamterDictionary;
-    }
-
-
     private void NotEmpty(string name, string value, string severity, string optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, optionalCondition))
@@ -99,7 +93,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateJobNumber(string name, string value, string severity, string odernummerName)
     {
-        var paramterDictionary = GetParamterDictionary();
+        var test = ParamterDictionary["var_Betreiber"].Value;
 
         //if (string.IsNullOrWhiteSpace(value))
         //{

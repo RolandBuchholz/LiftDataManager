@@ -3,27 +3,65 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     x:Name="root"
     mc:Ignorable="d">
+
     <UserControl.Resources>
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="4"
             Offset="4" />
+        <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
+        <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
+        <DataTemplate x:Key="ErrorItemTemplate" x:DataType="models:ParameterStateInfo">
+            <InfoBar
+                Title="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}"
+                Margin="0,2,0,3"
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Message="{x:Bind Severity}"
+                Severity="{x:Bind Severity, Converter={StaticResource ParameterSeverityConverter}}">
+                <TextBlock Margin="0,-10,0,5" Text="{x:Bind ErrorMessage}" />
+            </InfoBar>
+        </DataTemplate>
     </UserControl.Resources>
-
     <Grid Margin="0,10,0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <InfoBar
+            x:Name="LiftDataManagerInfobar"
+            Title="Lift Data Manager Infobar"
+            Grid.Row="0"
+            Margin="0,0,0,5"
+            IsClosable="True"
+            IsIconVisible="True"
+            IsOpen="{x:Bind HasErrors, Mode=TwoWay}"
+            Message="{x:Bind ErrorMessage, Mode=OneWay}"
+            Severity="{x:Bind InfoBarState, Mode=OneWay}">
+            <InfoBar.ActionButton>
+                <Button
+                    HorizontalAlignment="Right"
+                    Command="{x:Bind ErrorDialogCommand}"
+                    Content="Alle Meldungen anzeigen" />
+            </InfoBar.ActionButton>
+        </InfoBar>
         <Rectangle
+            Grid.Row="1"
             Height="35"
             HorizontalAlignment="Stretch"
             ui:Effects.Shadow="{StaticResource CommonShadow}"
             Fill="{ThemeResource SystemChromeAltHighColor}"
             RadiusX="4"
             RadiusY="4" />
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -60,5 +98,80 @@
                     Text=" Parameter gefunden." />
             </StackPanel>
         </Grid>
+        <ContentDialog
+            x:Name="DetailErrorDialog"
+            Title="Infobar Detailansicht"
+            MaxWidth="{Binding ActualWidth, ElementName=pageRoot}"
+            VerticalAlignment="Stretch"
+            PrimaryButtonText="OK">
+            <StackPanel>
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <FontIcon
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="30"
+                        Foreground="IndianRed"
+                        Glyph="&#xE730;" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{x:Bind ErrorCount, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="Fehler" />
+                    <FontIcon
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="30"
+                        Foreground="Orange"
+                        Glyph="&#xE7BA;" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{x:Bind WarningCount, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="Warnungen" />
+                    <FontIcon
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="30"
+                        Foreground="Gray"
+                        Glyph="&#xE946;" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="{x:Bind InfoCount, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="Informationen" />
+                </StackPanel>
+                <ListView
+                    MaxHeight="400"
+                    ItemTemplate="{StaticResource ErrorItemTemplate}"
+                    ItemsSource="{x:Bind ErrorsList, Mode=OneWay}" />
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </UserControl>
