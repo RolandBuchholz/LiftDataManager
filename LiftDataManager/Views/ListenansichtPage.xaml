@@ -55,6 +55,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="0,0,0,5"
+                CanShowErrorsParameters="{x:Bind ViewModel.HasErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"

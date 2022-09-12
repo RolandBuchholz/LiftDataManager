@@ -35,6 +35,22 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
 
     protected async override Task SetModelStateAsync()
     {
+        if (AuftragsbezogeneXml)
+        {
+            HasErrors = false;
+            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
+            ParamterErrorDictionary ??= new();
+            ParamterErrorDictionary.Clear();
+            if (HasErrors)
+            {
+                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                foreach (var error in errors)
+                {
+                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                }
+            }
+        }
+
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
             var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);

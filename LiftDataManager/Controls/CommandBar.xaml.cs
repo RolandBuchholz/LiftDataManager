@@ -102,6 +102,25 @@ public sealed partial class CommandBar : UserControl
     public static readonly DependencyProperty IsUnsavedParametersSelectedProperty =
         DependencyProperty.Register("IsUnsavedParametersSelected", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
+    public bool CanShowErrorsParameters
+    {
+        get => (bool)GetValue(CanShowErrorsParametersProperty);
+        set
+        {
+            SetValue(CanShowErrorsParametersProperty, value);
+
+            //if (!value && IsUnsavedParametersSelected)
+            //{
+            //    SearchInput = string.Empty;
+            //    FilterParameter(SearchInput);
+            //    IsUnsavedParametersSelected = false;
+            //}
+        }
+    }
+
+    public static readonly DependencyProperty CanShowErrorsParametersProperty =
+        DependencyProperty.Register("CanShowErrorsParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
     public ICommand SaveAllCommand
     {
         get => (ICommand)GetValue(SaveAllCommandProperty);
@@ -219,6 +238,12 @@ public sealed partial class CommandBar : UserControl
         IsUnsavedParametersSelected = false;
     }
 
+    private void ShowErrorsAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetErrorsParameterView();
+        IsUnsavedParametersSelected = true;
+    }
+
     private void ShowUnsavedAppsButton_Click(object sender, RoutedEventArgs e)
     {
         SetUnsavedParameterView();
@@ -229,6 +254,19 @@ public sealed partial class CommandBar : UserControl
     {
         GroupedFilteredParameters.Clear();
         var unsavedParameters = ItemSource.Values.Where(p => p.IsDirty).
+                                                GroupBy(GroupView()).
+                                                OrderBy(g => g.Key);
+        foreach (var group in unsavedParameters)
+        {
+            GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
+        }
+        ViewSource.Source = GroupedFilteredParameters;
+    }
+
+    private void SetErrorsParameterView()
+    {
+        GroupedFilteredParameters.Clear();
+        var unsavedParameters = ItemSource.Values.Where(p => p.HasErrors).
                                                 GroupBy(GroupView()).
                                                 OrderBy(g => g.Key);
         foreach (var group in unsavedParameters)

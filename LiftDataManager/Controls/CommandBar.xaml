@@ -173,6 +173,13 @@
                 Label="All"
                 ToolTipService.ToolTip="Zeige alle Parameter an" />
             <AppBarButton
+                x:Name="btn_ErrorsAppsButton"
+                Click="ShowErrorsAppsButton_Click"
+                Icon="ReportHacked"
+                IsEnabled="{x:Bind CanShowErrorsParameters, Mode=OneWay}"
+                Label="Validation Errors"
+                ToolTipService.ToolTip="Zeige Parameter mit Validierungsfehleren an" />
+            <AppBarButton
                 x:Name="btn_UnsavedAppsButton"
                 Click="ShowUnsavedAppsButton_Click"
                 Icon="Sync"
