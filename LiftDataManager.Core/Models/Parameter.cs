@@ -43,6 +43,8 @@ public partial class Parameter : ParameterBase
     public string Name {get; set;}
     public string TypeCode {get; set;}
 
+    public string Errors => (GetErrors(Name) != null) ? string.Join(" ", GetErrors(Name).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
+        
     [ObservableProperty]
     private bool isDirty;
 

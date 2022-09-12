@@ -109,6 +109,25 @@
                             FontWeight="Bold"
                             Style="{StaticResource AccentButtonStyle}" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.Item.HasErrors, Mode=OneWay}">
+                        <SymbolIcon
+                            Margin="10"
+                            Foreground="IndianRed"
+                            Symbol="ReportHacked" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="IndianRed"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Text="Validierungsfehler" />
+                    </StackPanel>
+                    <TextBlock
+                        Margin="10,0,0,0"
+                        FontSize="18"
+                        Foreground="IndianRed"
+                        Style="{ThemeResource BodyTextBlockStyle}"
+                        Text="{x:Bind ViewModel.Item.Errors, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.Item.HasErrors, Mode=OneWay}" />
                 </StackPanel>
             </ScrollViewer>
             <!--  InfoSidebarPanel  -->

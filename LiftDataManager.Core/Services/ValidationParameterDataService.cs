@@ -2,21 +2,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Messenger;
 using LiftDataManager.Core.Messenger.Messages;
 
 namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
-    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; } = new();
+    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
     private Dictionary<string, List<Tuple<Delegate, string, string>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
-    private CurrentSpeziProperties CurrentSpeziProperties { get; set; } = new();
 
     public ValidationParameterDataService()
     {
         IsActive = true;
         GetValidationDictionary();
+        ParamterDictionary ??= new();
     }
 
     ~ValidationParameterDataService()
@@ -26,10 +25,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        if (message is not null)
-        {
+        if (message == null) return;
+        if (!message.HasReceivedResponse) return;
+        if (message.Response is null)return;
+        if (message.Response.ParamterDictionary is null) return;
+        if (ParamterDictionary.Any()) return;
             ParamterDictionary = message.Response.ParamterDictionary;
-        }
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string name, string value)
@@ -68,8 +69,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Kennwort", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
         ValidationDictionary.Add("var_Betreiber", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
         ValidationDictionary.Add("var_Projekt", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", null) });
-        ValidationDictionary.Add("var_InformationAufzug", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", "(keine Auswahl)") });
+        ValidationDictionary.Add("var_InformationAufzug", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Warning", "(keine Auswahl)"),
+                                                                                                      new Tuple<Delegate, string, string>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
         ValidationDictionary.Add("var_Aufzugstyp", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Error", "(keine Auswahl)") });
+        ValidationDictionary.Add("var_FabriknummerBestand", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string severity)
@@ -93,11 +96,28 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateJobNumber(string name, string value, string severity, string odernummerName)
     {
-        var test = ParamterDictionary["var_Betreiber"].Value;
+        var fabriknummer = ParamterDictionary["var_FabrikNummer"].Value;
 
-        //if (string.IsNullOrWhiteSpace(value))
-        //{
-        //    ValidationResult.Add(new ParameterStateInfo(name, $"{name} darf nicht leer sein", SetSeverity(severity)));
-        //}
+        if (string.IsNullOrWhiteSpace(fabriknummer)) return;
+        ParamterDictionary["var_FabrikNummer"].ClearErrors("var_FabrikNummer");
+
+        var auftragsnummer = ParamterDictionary[odernummerName].Value;
+        var informationAufzug = ParamterDictionary["var_InformationAufzug"].Value;
+        var fabriknummerBestand = ParamterDictionary["var_FabriknummerBestand"].Value;
+
+        switch (informationAufzug)
+        {
+            case "Neuanlage" or "Ersatzanlage":
+                if (auftragsnummer != fabriknummer)
+                    ValidationResult.Add(new ParameterStateInfo("var_FabrikNummer", $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity)));
+                return;
+            case "Umbau":
+                if (string.IsNullOrWhiteSpace(fabriknummerBestand) && auftragsnummer != fabriknummer) return;
+                if (fabriknummerBestand != fabriknummer)
+                    ValidationResult.Add(new ParameterStateInfo("var_FabrikNummer", $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity)));
+                return;
+            default:
+                return;
+        }
     }
 }

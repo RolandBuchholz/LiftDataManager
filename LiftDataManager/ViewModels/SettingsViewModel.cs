@@ -7,7 +7,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 {
     private const string adminpasswort = "2342";
     private readonly IThemeSelectorService _themeSelectorService;
-    private CurrentSpeziProperties? CurrentSpeziProperties;
+    private CurrentSpeziProperties? CurrentSpeziProperties = new();
     private readonly ISettingService _settingService;
     private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IDialogService _dialogService;
