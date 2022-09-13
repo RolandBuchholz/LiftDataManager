@@ -13,6 +13,8 @@ public class ParameterStateInfo
     public bool IsValid { get; set; }
     public string ErrorMessage { get; set; }
     public ErrorLevel Severity {get; set;}
+    public bool HasDependentParameters => DependentParameter.Any();
+    public string[] DependentParameter { get; set; } = new string[0];
 
     public ParameterStateInfo(bool isvalid)
     {

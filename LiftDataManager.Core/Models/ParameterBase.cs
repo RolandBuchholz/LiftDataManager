@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Models;
@@ -47,7 +46,6 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     public readonly Dictionary<string, List<ParameterStateInfo>> parameterErrors = new();
 
-    //public IEnumerable GetErrors(string propertyName) => parameterErrors.GetValueOrDefault(propertyName, null)?.Select(e => e.ErrorMessage);
     public IEnumerable GetErrors(string propertyName) => parameterErrors.GetValueOrDefault(propertyName, null);
 
     public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;

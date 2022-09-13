@@ -67,7 +67,14 @@ public partial class Parameter : ParameterBase
     {
         if (!dataImport)
         {
-            _ = ValidateParameterAsync();
+            var result = ValidateParameterAsync().Result;
+            foreach (var item in result.ToList())
+            {
+                if (item.HasDependentParameters)
+                {
+                    _ = AfterValidateRangeParameterAsync(item.DependentParameter);
+                }
+            }
             isDirty = true;
             Broadcast(oldTempValue, value, Name);
         }
@@ -86,17 +93,23 @@ public partial class Parameter : ParameterBase
         Value = dropDownListValue;
     }
 
-    public async Task ValidateParameterAsync()
+    public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
     {
         ClearErrors(Name);
         var result = await _validationParameterDataService.ValidateParameterAsync(Name, Value);
 
-        if (!result.First().IsValid)
+        if (!result.Any(r => r.IsValid))
         {
-            foreach (var error in result)
+            foreach (var parameterState in result)
             {
-                AddError(Name, error);
+                if(!parameterState.IsValid) AddError(Name, parameterState);
             }
         }
+        return result;
+    }
+
+    public async Task AfterValidateRangeParameterAsync(string[] dependentParameters)
+    {
+        await _validationParameterDataService.ValidateRangeOfParameterAsync(dependentParameters);
     }
 }

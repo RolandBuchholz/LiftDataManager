@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Messenger.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -56,6 +57,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             rule.Item1.DynamicInvoke(name, value, rule.Item2, rule.Item3);
         }
+
+        if (!ValidationResult.Any())
+        {
+            ValidationResult.Add(new ParameterStateInfo(true));
+        }
+
         await Task.CompletedTask;
         return ValidationResult;
     }
@@ -65,6 +72,20 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         foreach (var par in ParamterDictionary)
         {
           _ = par.Value.ValidateParameterAsync();
+        }
+
+        await Task.CompletedTask;
+    }
+
+    public async Task ValidateRangeOfParameterAsync(string[] range)
+    {
+        if (range == null) return;
+        if (range.Length == 0) return;
+
+        foreach (var par in ParamterDictionary)
+        {
+            if (range.Any(r =>  string.Equals(r, par.Value.Name)))
+            _ = par.Value.ValidateParameterAsync();
         }
 
         await Task.CompletedTask;
@@ -119,12 +140,26 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             case "Neuanlage" or "Ersatzanlage":
                 if (auftragsnummer != fabriknummer)
-                    ValidationResult.Add(new ParameterStateInfo("var_FabrikNummer", $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity)));
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity))
+                    { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                }
                 return;
             case "Umbau":
                 if (string.IsNullOrWhiteSpace(fabriknummerBestand) && auftragsnummer != fabriknummer) return;
                 if (fabriknummerBestand != fabriknummer)
-                    ValidationResult.Add(new ParameterStateInfo("var_FabrikNummer", $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity)));
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
+                    { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                }
                 return;
             default:
                 return;

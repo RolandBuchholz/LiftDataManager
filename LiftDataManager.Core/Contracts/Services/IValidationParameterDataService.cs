@@ -3,4 +3,5 @@ public interface IValidationParameterDataService
 {
     Task<List<ParameterStateInfo>> ValidateParameterAsync(string name, string value);
     Task ValidateAllParameterAsync();
+    Task ValidateRangeOfParameterAsync(string[] range);
 }

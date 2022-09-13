@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.ViewModels;
 
