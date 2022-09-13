@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.ViewModels;
 
@@ -6,13 +7,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 {
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
+    private readonly IValidationParameterDataService _validationParameterDataService;
     private bool OpenReadOnly { get; set; } = true;
 
-    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ISettingService settingsSelectorService, IVaultDataService vaultDataService)
+    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
+                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
+        _validationParameterDataService = validationParameterDataService;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -81,6 +85,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadDataCommand))]
     private bool canUpLoadSpeziData;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ValidateAllParameterCommand))]
+    private bool canValidateAllParameter;
 
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
@@ -156,6 +164,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         File.Delete(FullPathXml);
                     }
                     AuftragsbezogeneXml = false;
+                    CanValidateAllParameter = false;
                     SpezifikationName = string.Empty;
                     CanLoadSpeziData = false;
                     CanSaveAllSpeziParameters = false;
@@ -172,6 +181,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else
             {
                 AuftragsbezogeneXml = false;
+                CanValidateAllParameter = false;
                 CanLoadSpeziData = false;
                 CanSaveAllSpeziParameters = false;
                 CheckOut = false;
@@ -199,6 +209,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"----------\n";
                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                 AuftragsbezogeneXml = false;
+                CanValidateAllParameter = false;
                 CheckOut = false;
                 LikeEditParameter = true;
                 SpezifikationName = string.Empty;
@@ -211,6 +222,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"----------\n";
             }
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
+    private async Task ValidateAllParameterAsync()
+    {
+        await _validationParameterDataService.ValidateAllParameterAsync();
+        await SetModelStateAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -305,6 +323,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             FullPathXml = downloadResult.FullFileName;
                             InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                             AuftragsbezogeneXml = true;
+                            CanValidateAllParameter = true;
                         }
                         else
                         {
@@ -313,6 +332,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                             AuftragsbezogeneXml = false;
+                            CanValidateAllParameter = false;
                         }
                         break;
                     }
@@ -326,6 +346,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             FullPathXml = workspaceSearch[0];
                             InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
                             AuftragsbezogeneXml = true;
+                            CanValidateAllParameter = true;
                             CheckOut = true;
                         }
                         else
@@ -337,6 +358,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                 FullPathXml = downloadResult.FullFileName;
                                 InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
+                                CanValidateAllParameter = true;
                                 CheckOut = downloadResult.IsCheckOut;
                             }
                             else
@@ -346,6 +368,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                                 AuftragsbezogeneXml = false;
+                                CanValidateAllParameter = true;
                             }
                         }
                         break;
@@ -368,6 +391,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                 FullPathXml = downloadResult.FullFileName;
                                 InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
+                                CanValidateAllParameter = true;
                             }
                             else
                             {
@@ -376,6 +400,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                                 AuftragsbezogeneXml = false;
+                                CanValidateAllParameter = false;
                             }
                         }
                         else
@@ -384,6 +409,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                             SpezifikationName = string.Empty;
                             AuftragsbezogeneXml = false;
+                            CanValidateAllParameter = false;
                         }
                         break;
                     }
@@ -462,6 +488,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (CurrentSpeziProperties is null) SetSettings();
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
+        canValidateAllParameter = AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
         SpezifikationStatusTyp = (CurrentSpeziProperties.SpezifikationStatusTyp is not null) ? CurrentSpeziProperties.SpezifikationStatusTyp : "Auftrag";

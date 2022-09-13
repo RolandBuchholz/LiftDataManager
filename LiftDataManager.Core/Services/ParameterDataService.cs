@@ -2,7 +2,6 @@
 using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Helpers;
-using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.Core.Services;
 
@@ -14,6 +13,7 @@ public class ParameterDataService : IParameterDataService
     public ParameterDataService(IAuswahlParameterDataService auswahlParameterDataService, IValidationParameterDataService validationParameterDataService)
     {
         _auswahlParameterDataService = auswahlParameterDataService;
+        _validationParameterDataService = validationParameterDataService;
         _validationParameterDataService = validationParameterDataService;
     }
 

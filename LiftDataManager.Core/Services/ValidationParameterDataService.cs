@@ -60,6 +60,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         return ValidationResult;
     }
 
+    public async Task ValidateAllParameterAsync()
+    {
+        foreach (var par in ParamterDictionary)
+        {
+          _ = par.Value.ValidateParameterAsync();
+        }
+
+        await Task.CompletedTask;
+    }
+
     private void GetValidationDictionary()
     {
         ValidationDictionary.Add("var_AuftragsNummer", new List<Tuple<Delegate, string, string>> { new Tuple<Delegate, string, string>(NotEmpty, "Error", null) });

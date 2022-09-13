@@ -27,7 +27,10 @@
                 IsOpen="True"
                 Message="{x:Bind Severity}"
                 Severity="{x:Bind Severity, Converter={StaticResource ParameterSeverityConverter}}">
-                <TextBlock Margin="0,-10,0,5" Text="{x:Bind ErrorMessage}" />
+                <TextBlock
+                    Margin="0,-10,0,5"
+                    Text="{x:Bind ErrorMessage}"
+                    TextWrapping="WrapWholeWords" />
             </InfoBar>
         </DataTemplate>
     </UserControl.Resources>

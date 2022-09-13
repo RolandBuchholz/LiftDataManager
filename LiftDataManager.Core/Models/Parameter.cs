@@ -86,7 +86,7 @@ public partial class Parameter : ParameterBase
         Value = dropDownListValue;
     }
 
-    private async Task ValidateParameterAsync()
+    public async Task ValidateParameterAsync()
     {
         ClearErrors(Name);
         var result = await _validationParameterDataService.ValidateParameterAsync(Name, Value);

@@ -142,6 +142,15 @@
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.ValidateAllParameterCommand}"
+                Content="Validate All Parameter"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+            <Button
+                Grid.Column="8"
+                Width="175"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.SaveAllParameterCommand}"
                 Content="Save All Parameter"
                 FontWeight="Bold"
@@ -935,6 +944,13 @@
             Background="Transparent"
             Foreground="Purple"
             IsActive="{x:Bind ViewModel.UploadDataCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
+        <ProgressRing
+            Grid.Row="2"
+            Width="200"
+            Height="200"
+            Background="Transparent"
+            Foreground="Orange"
+            IsActive="{x:Bind ViewModel.ValidateAllParameterCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"
