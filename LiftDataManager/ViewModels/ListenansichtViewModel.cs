@@ -1,12 +1,12 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Common.Collections;
+﻿using CommunityToolkit.Common.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems{get; set;}
+    public CollectionViewSource GroupedItems { get; set; }
 
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -30,8 +30,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (CurrentSpeziProperties != null)
         {
             CurrentSpeziProperties.SearchInput = SearchInput;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
-        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
     }
 
     [ObservableProperty]
@@ -72,26 +72,22 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
+        if(Selected is null) return;
+        if (FullPathXml is null) return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
-        if (Selected is not null)
-        {
-            Selected.IsDirty = false;
-        }
+        Selected.IsDirty = false;
         await SetModelStateAsync();
         var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
-        if (Selected is not null)
-        {
-            allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
-        }
+        allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
     }
 
     private void CheckIsDirty(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not null)
         {
-        CheckIsDirty((Parameter)sender);
+            CheckIsDirty((Parameter)sender);
         }
     }
 
@@ -165,8 +161,12 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null) SearchInput = CurrentSpeziProperties.SearchInput;
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+        if (CurrentSpeziProperties is not null)
+            SearchInput = CurrentSpeziProperties.SearchInput;
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()
@@ -176,6 +176,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     public void EnsureItemSelected()
     {
-        if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0) Selected = (Parameter?)GroupedItems.View.FirstOrDefault();
+        if (Selected == null && GroupedItems.View != null && GroupedItems.View.Count > 0)
+            Selected = (Parameter?)GroupedItems.View.FirstOrDefault();
     }
 }

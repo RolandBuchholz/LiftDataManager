@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.core.Helpers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -69,7 +70,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
 
     // ToDo Parameter aus Datenbank abrufen
 
-    private void GetFangrahmengewicht(string fangrahmenTyp)
+    private void GetFangrahmengewicht(string? fangrahmenTyp)
     {
         FangrahmenGewicht = fangrahmenTyp switch
         {
@@ -122,7 +123,9 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
         IsActive = true;
         SynchronizeViewModelParameter();
         SetCarWeight();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

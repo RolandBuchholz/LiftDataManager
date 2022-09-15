@@ -14,7 +14,7 @@ public partial class SchachtViewModel : DataViewModelBase, INavigationAware, IRe
     {
         get => ParamterDictionary!["var_Haupthaltestelle"].Value == "NV"
                 ? (_DisplayNameHauptzugang = "Kein Hauptzugang gewählt")
-                : (_DisplayNameHauptzugang = ParamterDictionary["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
+                : (_DisplayNameHauptzugang = !string.IsNullOrEmpty(ParamterDictionary["var_Haupthaltestelle"].Value) ? ParamterDictionary["var_Haupthaltestelle"].Value!.Replace("ZG_", "") : "Kein Hauptzugang gewählt");
         set => SetProperty(ref _DisplayNameHauptzugang, value);
     }
 
@@ -41,7 +41,9 @@ public partial class SchachtViewModel : DataViewModelBase, INavigationAware, IRe
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

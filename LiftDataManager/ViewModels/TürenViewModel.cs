@@ -50,7 +50,9 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRec
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)_ = SetModelStateAsync();
         SetCarDoorDataVisibility();
     }
 

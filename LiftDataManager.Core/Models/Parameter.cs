@@ -41,29 +41,29 @@ public partial class Parameter : ParameterBase
     }
 
     public string Name {get; set;}
-    public string TypeCode {get; set;}
+    public string TypeCode {get; set; }
 
-    public string Errors => (GetErrors(Name) != null) ? string.Join(" ", GetErrors(Name).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
-        
+    public string? Errors => (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
+
     [ObservableProperty]
     private bool isDirty;
 
     [ObservableProperty]
-    private string comment;
-    partial void OnCommentChanged(string value) => IsDirty = true;
+    private string? comment;
+    partial void OnCommentChanged(string? value) => IsDirty = true;
 
     [ObservableProperty]
     private bool isKey;
     partial void OnIsKeyChanged(bool value) => IsDirty = true;
 
     [ObservableProperty]
-    private string value;
-    private string oldTempValue;
-    partial void OnValueChanging(string value)
+    private string? value;
+    private string? oldTempValue;
+    partial void OnValueChanging(string? value)
     {
         oldTempValue = Value;
     }
-    partial void OnValueChanged(string value)
+    partial void OnValueChanged(string? value)
     {
         if (!dataImport)
         {
@@ -81,9 +81,9 @@ public partial class Parameter : ParameterBase
     }
 
     [ObservableProperty]
-    private string dropDownListValue;
+    private string? dropDownListValue;
 
-    partial void OnDropDownListValueChanged(string value)
+    partial void OnDropDownListValueChanged(string? value)
     {
         dropDownListValue = (value != "(keine Auswahl)") ? value : null;
         if (value is null && Value is not null)
@@ -95,17 +95,17 @@ public partial class Parameter : ParameterBase
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
     {
-        ClearErrors(Name);
+        ClearErrors(nameof(Value));
         var result = await _validationParameterDataService.ValidateParameterAsync(Name, Value);
 
         if (!result.Any(r => r.IsValid))
         {
             foreach (var parameterState in result)
             {
-                if(!parameterState.IsValid) AddError(Name, parameterState);
+                if(!parameterState.IsValid) AddError(nameof(Value), parameterState);
             }
         }
-        return result;
+       return result;
     }
 
     public async Task AfterValidateRangeParameterAsync(string[] dependentParameters)

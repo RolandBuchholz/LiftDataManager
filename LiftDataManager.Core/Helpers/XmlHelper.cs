@@ -5,7 +5,7 @@ namespace LiftDataManager.Core.Helpers;
 
 public static class XmlHelper
 {
-    public static T GetAs<T>(this XElement elem, T defaultValue = default)
+    public static T? GetAs<T>(this XElement elem, T? defaultValue = default)
     {
         var ret = defaultValue;
 
@@ -17,7 +17,7 @@ public static class XmlHelper
         return ret;
     }
 
-    public static T GetAs<T>(this XAttribute attr, T defaultValue = default)
+    public static T? GetAs<T>(this XAttribute attr, T? defaultValue = default)
     {
         var ret = defaultValue;
 

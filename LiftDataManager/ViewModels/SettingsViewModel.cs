@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Windows.ApplicationModel;
+﻿using Windows.ApplicationModel;
 
 namespace LiftDataManager.ViewModels;
 
@@ -30,12 +29,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnCustomAccentColorChanged(bool value)
     {
         _settingService.SetSettingsAsync("AccentColor", value);
-        if (CurrentSpeziProperties is not null) CurrentSpeziProperties.CustomAccentColor = value;
-        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        if (CurrentSpeziProperties is not null)
+        {
+            CurrentSpeziProperties.CustomAccentColor = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
     }
 
     [ObservableProperty]
-    private string ? versionDescription;
+    private string? versionDescription;
 
     [ObservableProperty]
     private string? infoText;
@@ -58,8 +60,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnAdminmodeChanged(bool value)
     {
         _settingService.SetSettingsAsync("Adminmode", value);
-        if (CurrentSpeziProperties is not null) CurrentSpeziProperties.Adminmode = value;  
-        Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        if (CurrentSpeziProperties is not null)
+        {
+            CurrentSpeziProperties.Adminmode = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
     }
 
     [ObservableProperty]
@@ -153,7 +158,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        if (CurrentSpeziProperties is not null) CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (CurrentSpeziProperties is not null)
+            CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
     }

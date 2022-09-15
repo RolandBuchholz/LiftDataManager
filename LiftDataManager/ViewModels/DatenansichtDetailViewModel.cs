@@ -49,6 +49,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
+        if (Item is null) return;
+        if (FullPathXml == null) return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;

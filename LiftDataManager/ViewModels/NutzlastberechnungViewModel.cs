@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using LiftDataManager.core.Helpers;
+using System.Runtime.CompilerServices;
 namespace LiftDataManager.ViewModels;
 
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware , IRecipient<AreaPersonsRequestMessageAsync>
@@ -331,7 +332,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         Tabelle8 = SetTableData(tabelle8, "Pers.", "m²");
     }
 
-    private Dictionary<int, TableRow<int, double>> SetTableData(KeyValuePair<int, double>[] tabledata, string firstUnit, string secondUnit)
+    private static Dictionary<int, TableRow<int, double>> SetTableData(KeyValuePair<int, double>[] tabledata, string firstUnit, string secondUnit)
     {
         var dic = new Dictionary<int, TableRow<int, double>>();
 
@@ -354,7 +355,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         IsActive = true;
         SynchronizeViewModelParameter();
         SetPersonen();
-        if (CurrentSpeziProperties is not null && CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParamterDictionary is not null &&
+            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

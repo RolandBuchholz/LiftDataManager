@@ -34,6 +34,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     public ParameterTypValue ParameterTyp { get; set; }
     public ParameterCategoryValue ParameterCategory { get; set; }
+    public readonly Dictionary<string, List<ParameterStateInfo>> parameterErrors = new();
     public char Symbol => (char)SymbolCode;
     public int SymbolCode { get; set; }
 
@@ -44,11 +45,25 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     [ObservableProperty]
     private bool hasErrors;
 
-    public readonly Dictionary<string, List<ParameterStateInfo>> parameterErrors = new();
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        var errors = new List<ParameterStateInfo>();
+        if (string.IsNullOrWhiteSpace(propertyName))
+        {
+            foreach (var errorList in parameterErrors.Values)
+            {
+                errors.AddRange(errorList);
+            }
+            return  errors;
+        }
+        else
+        {
+            if (parameterErrors.ContainsKey(propertyName)) errors.AddRange(parameterErrors[propertyName]);
+            return errors;
+        }
+    }
 
-    public IEnumerable GetErrors(string propertyName) => parameterErrors.GetValueOrDefault(propertyName, null);
-
-    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
     protected void AddError(string propertyName, ParameterStateInfo errorMessage)
     {

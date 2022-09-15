@@ -76,19 +76,18 @@ public sealed partial class EntranceControl : UserControl
 
         foreach (var entranceBox in allEntranceBoxes)
         {
-            if (entranceBox is TextBox)
+            if (entranceBox is TextBox box)
             {
-                ((TextBox)entranceBox).BorderThickness = new Thickness(0);
+                box.BorderThickness = new Thickness(0);
             }
         }
 
         if (NewMainEntrance != "NV")
         {
-
-            var borderBox = (TextBox)FindName("txtBox_" + ItemSource["var_Haupthaltestelle"].Value.Replace("ZG_", ""));
+            var nameHaupthaltestelle = !string.IsNullOrWhiteSpace(ItemSource["var_Haupthaltestelle"].Value) ? ItemSource["var_Haupthaltestelle"].Value!.Replace("ZG_", "") : "Kein Hauptzugang gewählt";
+            var borderBox = (TextBox)FindName("txtBox_" + nameHaupthaltestelle);
             borderBox.BorderThickness = new Thickness(2);
-            object? accentColor;
-            var accentColorFound = Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out accentColor);
+            var accentColorFound = Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out object? accentColor);
             if (accentColorFound)
             {
                 if (accentColor is not null)

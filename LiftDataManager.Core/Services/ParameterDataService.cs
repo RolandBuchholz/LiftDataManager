@@ -23,10 +23,15 @@ public class ParameterDataService : IParameterDataService
 
         List<Parameter> parameterList =
           (from para in doc.Elements("parameters").Elements("ParamWithValue")
-           select new Parameter(para.Element("name").GetAs<string>(), para.Element("typeCode").GetAs<string>(), para.Element("value").GetAs<string>(), _auswahlParameterDataService, _validationParameterDataService)
+           select new Parameter(
+                                para.Element("name")!.GetAs<string>()!,
+                                para.Element("typeCode")!.GetAs<string>()!,
+                                para.Element("value")!.GetAs<string>()!,
+                                _auswahlParameterDataService,
+                                _validationParameterDataService)
            {
-               Comment = para.Element("comment").GetAs<string>(),
-               IsKey = para.Element("isKey").GetAs<bool>(),
+               Comment = !string.IsNullOrWhiteSpace(para.Element("comment")?.GetAs<string>()) ? para.Element("comment")!.GetAs<string>() : string.Empty,
+               IsKey =  para.Element("isKey")!.GetAs<bool>(),
                IsDirty = false,
            }).ToList();
 
@@ -39,16 +44,18 @@ public class ParameterDataService : IParameterDataService
         XElement doc = XElement.Load(path);
 
         // Find a specific customer
-        XElement xmlparameter =
+        XElement? xmlparameter =
           (from para in doc.Elements("parameters").Elements("ParamWithValue")
-           where para.Element("name").Value == parameter.Name
+           where para.Element("name")!.Value == parameter.Name
            select para).SingleOrDefault();
 
         // Modify some of the node values
-
-        xmlparameter.Element("value").Value = parameter.Value is null ? string.Empty : parameter.Value;
-        xmlparameter.Element("comment").Value = parameter.Comment is null ? string.Empty : parameter.Comment;
-        xmlparameter.Element("isKey").Value = parameter.IsKey ? "true" : "false";
+        if (xmlparameter is not null)
+        {
+            xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+            xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+        }
 
         doc.Save(path);
         await Task.CompletedTask;
@@ -69,15 +76,18 @@ public class ParameterDataService : IParameterDataService
         foreach (var parameter in unsavedParameter)
         {
             // Find a specific customer
-            XElement xmlparameter =
+            XElement? xmlparameter =
               (from para in doc.Elements("parameters").Elements("ParamWithValue")
-               where para.Element("name").Value == parameter.Name
+               where para.Element("name")!.Value == parameter.Name
                select para).SingleOrDefault();
 
             // Modify some of the node values
-            xmlparameter.Element("value").Value = parameter.Value is null ? string.Empty : parameter.Value;
-            xmlparameter.Element("comment").Value = parameter.Comment is null ? string.Empty : parameter.Comment;
-            xmlparameter.Element("isKey").Value = parameter.IsKey ? "true" : "false";
+            if (xmlparameter is not null)
+            {
+                xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+                xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+                xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+            }
 
             parameter.IsDirty = false;
 

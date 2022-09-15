@@ -1,10 +1,11 @@
 ﻿using Cogs.Collections;
+using System.Globalization;
 
-namespace LiftDataManager.Helpers;
+namespace LiftDataManager.core.Helpers;
 
 public class LiftParameterHelper
 {
-    internal static dynamic GetLiftParameterValue<T>(ObservableDictionary<string, Parameter>? ParamterDictionary, string parametername)
+    public static dynamic GetLiftParameterValue<T>(ObservableDictionary<string, Parameter>? ParamterDictionary, string parametername)
     {
         var value = string.Empty;
 

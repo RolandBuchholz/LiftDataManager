@@ -93,7 +93,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task LoadDataAsync()
     {
         await SetFullPathXmlAsync(OpenReadOnly);
-
+        if (FullPathXml is null) return;
         var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
@@ -110,8 +110,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+            _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
@@ -130,6 +130,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanClearData))]
     private async Task ClearDataAsync()
     {
+        if (FullPathXml is null) return;
         var delete = true;
 
         if (CanSaveAllSpeziParameters || CheckOut)
@@ -150,7 +151,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             InfoSidebarPanelText += $"----------\n";
             if (CheckOut)
             {
-                var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml)?.Replace("-AutoDeskTransfer", ""));
+                var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
                 if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                 {
                     if (File.Exists(FullPathXml))
@@ -196,6 +197,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task UploadDataAsync()
     {
         await Task.Delay(30);
+        if (SpezifikationName is null) return;
         if (CheckOut)
         {
             var watch = Stopwatch.StartNew();
@@ -243,7 +245,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                    if (!ParamterErrorDictionary.ContainsKey(error.Name))
+                    {
+                        var errorList = new List<ParameterStateInfo>();
+                        errorList.AddRange(error.parameterErrors["Value"].ToList());
+                        ParamterErrorDictionary.Add(error.Name, errorList);
+                    }
+                    else
+                    {
+                        ParamterErrorDictionary[error.Name].AddRange(error.parameterErrors["Value"].ToList());
+                    }
                 }
             }
         }
@@ -315,12 +326,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     {
                         InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
 
-                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 
                         if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                         {
                             FullPathXml = downloadResult.FullFileName;
-                            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                            InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                             AuftragsbezogeneXml = true;
                             CanValidateAllParameter = true;
                         }
@@ -350,12 +361,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         }
                         else
                         {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                             {
                                 FullPathXml = downloadResult.FullFileName;
-                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
                                 CanValidateAllParameter = true;
                                 CheckOut = downloadResult.IsCheckOut;
@@ -383,12 +394,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                                     "Abbrechen");
                         if (confirmed)
                         {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, ReadOnly);
+                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                             {
                                 FullPathXml = downloadResult.FullFileName;
-                                InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
                                 CanValidateAllParameter = true;
                             }

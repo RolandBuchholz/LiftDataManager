@@ -78,7 +78,9 @@ public class VaultDataService : IVaultDataService
             {
                 try
                 {
-                    DownloadInfo = JsonSerializer.Deserialize<DownloadInfo>(downloadResult.Split("---DownloadInfo---")[1]);
+                    var result = JsonSerializer.Deserialize<DownloadInfo>(downloadResult.Split("---DownloadInfo---")[1]);
+                    if (result is not null)
+                        DownloadInfo = result;
                 }
                 catch
                 {

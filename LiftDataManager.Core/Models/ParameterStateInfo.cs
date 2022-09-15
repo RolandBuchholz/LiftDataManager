@@ -11,13 +11,14 @@ public class ParameterStateInfo
 
     public string Name { get; set; }
     public bool IsValid { get; set; }
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
     public ErrorLevel Severity {get; set;}
     public bool HasDependentParameters => DependentParameter.Any();
-    public string[] DependentParameter { get; set; } = new string[0];
+    public string[] DependentParameter { get; set; } = Array.Empty<string>();
 
-    public ParameterStateInfo(bool isvalid)
+    public ParameterStateInfo(string name, bool isvalid)
     {
+        Name = name;
         IsValid = isvalid;
     }
 

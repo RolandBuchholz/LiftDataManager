@@ -43,7 +43,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
 
         CanOpenCFP = bausatztyp is "BRR-15 MK2" or "BRR-25 MK2" or "ZZE-S1600";
-        CanOpenLilo = bausatztyp.StartsWith("BR1") || bausatztyp.StartsWith("BR2") || bausatztyp.StartsWith("BT") || bausatztyp.StartsWith("TG");
+        if(bausatztyp is not null) CanOpenLilo = bausatztyp.StartsWith("BR1") || bausatztyp.StartsWith("BR2") || bausatztyp.StartsWith("BT") || bausatztyp.StartsWith("TG");
     }
 
     [RelayCommand]

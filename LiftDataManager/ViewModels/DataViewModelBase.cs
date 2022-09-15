@@ -9,11 +9,11 @@ public partial class DataViewModelBase : ObservableRecipient
     public readonly IDialogService? _dialogService;
     public readonly INavigationService? _navigationService;
 
-    public bool Adminmode {get; set;}
-    public bool CheckoutDialogIsOpen {get; set;}
+    public bool Adminmode { get; set; }
+    public bool CheckoutDialogIsOpen { get; set; }
 
     public CurrentSpeziProperties? CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter>? ParamterDictionary {get; set;}
+    public ObservableDictionary<string, Parameter>? ParamterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>>? ParamterErrorDictionary { get; set; } = new();
 
     public DataViewModelBase()
@@ -29,12 +29,12 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
-            if (message is not null)
-            {
-                SetInfoSidebarPanelText(message);
+        if (message is not null)
+        {
+            SetInfoSidebarPanelText(message);
             //TODO Make Async
-                _ = SetModelStateAsync();
-            }
+            _ = SetModelStateAsync();
+        }
     }
 
     [ObservableProperty]
@@ -102,6 +102,8 @@ public partial class DataViewModelBase : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanSaveAllSpeziParameters))]
     public async Task SaveAllParameterAsync()
     {
+        if (ParamterDictionary is null) return;
+        if (FullPathXml is null) return;
         var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
@@ -110,8 +112,10 @@ public partial class DataViewModelBase : ObservableRecipient
     protected virtual void SynchronizeViewModelParameter()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.FullPathXml is not null) FullPathXml = CurrentSpeziProperties.FullPathXml; 
-        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.FullPathXml is not null)
+            FullPathXml = CurrentSpeziProperties.FullPathXml;
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
+            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
@@ -132,7 +136,16 @@ public partial class DataViewModelBase : ObservableRecipient
                 var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                    if (!ParamterErrorDictionary.ContainsKey(error.Name))
+                    {
+                        var errorList = new List<ParameterStateInfo>();
+                        errorList.AddRange(error.parameterErrors["Value"].ToList());
+                        ParamterErrorDictionary.Add(error.Name, errorList);
+                    }
+                    else
+                    {
+                        ParamterErrorDictionary[error.Name].AddRange(error.parameterErrors["Value"].ToList());
+                    }
                 }
             }
         }
@@ -165,8 +178,11 @@ public partial class DataViewModelBase : ObservableRecipient
                 {
                     CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
-                    if (CurrentSpeziProperties is not null) CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-                    _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+                    if (CurrentSpeziProperties is not null)
+                    {
+                        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+                    }
                 }
             }
         }

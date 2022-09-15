@@ -57,7 +57,7 @@ public sealed partial class FooterControl : UserControl
                 ErrorCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Error);
                 WarningCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Warning);
                 InfoCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Informational);
-                ErrorMessage = ErrorsList.First()!.ErrorMessage;
+                ErrorMessage = !string.IsNullOrWhiteSpace(ErrorsList.First()!.ErrorMessage) ? ErrorsList.First()!.ErrorMessage! : string.Empty ;
             }
             catch
             {
@@ -67,7 +67,7 @@ public sealed partial class FooterControl : UserControl
             InfoBarState = GetInfoBarState();
         }
         else
-        {
+        { 
             ErrorMessage = string.Empty;
         }
     }

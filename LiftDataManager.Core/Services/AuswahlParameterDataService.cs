@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Helpers;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace LiftDataManager.Core.Services;
 
@@ -41,14 +41,14 @@ public class AuswahlParameterDataService : IAuswahlParameterDataService
             throw new ArgumentException("Spezifikation nicht vorhanden ", nameof(excelFilePath));
         }
 
-        FileInfo SpezifikationInfo = new FileInfo(excelFilePath);
+        FileInfo SpezifikationInfo = new(excelFilePath);
 
         if (SpezifikationInfo.IsReadOnly)
         {
             SpezifikationInfo.IsReadOnly = false;
         }
 
-        List<AuswahlParameter> _data = new List<AuswahlParameter>();
+        _ = new List<AuswahlParameter>();
 
         string[,] importAusawahlParameter =
         {
@@ -171,7 +171,7 @@ public class AuswahlParameterDataService : IAuswahlParameterDataService
 
         Task<List<AuswahlParameter>> parameterInfo = ExcelHelper.ReadExcelParameterListeAsync(excelFilePath, importAusawahlParameter);
 
-        _data = parameterInfo.Result;
+        List<AuswahlParameter> _data = parameterInfo.Result;
 
         var jsonOptions = new JsonSerializerOptions();
         jsonOptions.WriteIndented = true;
@@ -207,20 +207,23 @@ public class AuswahlParameterDataService : IAuswahlParameterDataService
             jsonString = File.ReadAllText(AuswahlParameterDataPath);
         }
 
-        if (!String.IsNullOrWhiteSpace(jsonString))
+        if (!string.IsNullOrWhiteSpace(jsonString))
         {
             try
             {
                 var AuswahlParameterList = JsonSerializer.Deserialize<List<AuswahlParameter>>(jsonString);
-                foreach (AuswahlParameter Auswahlpar in AuswahlParameterList)
+                if (AuswahlParameterList is not null)
                 {
-                    if (!AuswahlParameterDictionary.ContainsKey(Auswahlpar.Name))
+                    foreach (AuswahlParameter Auswahlpar in AuswahlParameterList)
                     {
-                        AuswahlParameterDictionary.Add(Auswahlpar.Name, Auswahlpar);
-                    }
-                    else
-                    {
-                        AuswahlParameterDictionary[Auswahlpar.Name].Auswahlliste.AddRange(Auswahlpar.Auswahlliste);
+                        if (!AuswahlParameterDictionary.ContainsKey(Auswahlpar.Name))
+                        {
+                            AuswahlParameterDictionary.Add(Auswahlpar.Name, Auswahlpar);
+                        }
+                        else
+                        {
+                            AuswahlParameterDictionary[Auswahlpar.Name].Auswahlliste.AddRange(Auswahlpar.Auswahlliste);
+                        }
                     }
                 }
             }

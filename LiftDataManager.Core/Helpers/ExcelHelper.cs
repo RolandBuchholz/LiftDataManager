@@ -7,7 +7,7 @@ public static class ExcelHelper
 {
     public static async Task<List<AuswahlParameter>> ReadExcelParameterListeAsync(string excelFilePath, string[,] importAusawahlParameter)
     {
-        var rowList = new List<string>();
+        var rowList = new List<string?>();
         ISheet sheet;
         var _data = new List<AuswahlParameter>();
         await using (var stream = new FileStream(excelFilePath, FileMode.Open))
@@ -74,16 +74,11 @@ public static class ExcelHelper
                     }
                 }
 
-                AuswahlParameter _auswahlParameter = new()
-                {
-                    Name = importAusawahlParameter[i, 2]
-                };
-
+                AuswahlParameter _auswahlParameter = new(importAusawahlParameter[i, 2]);
                 _auswahlParameter.Auswahlliste.Add("(keine Auswahl)");
-
                 foreach (var par in rowList)
                 {
-                    _auswahlParameter.Auswahlliste.Add(par);
+                    if (par is not null) _auswahlParameter.Auswahlliste.Add(par);
                 }
                 _data.Add(_auswahlParameter);
             }

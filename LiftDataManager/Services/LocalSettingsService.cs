@@ -1,5 +1,4 @@
 ﻿using LiftDataManager.Models;
-
 using Microsoft.Extensions.Options;
 using Windows.Storage;
 
