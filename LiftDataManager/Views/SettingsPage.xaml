@@ -215,10 +215,52 @@
                             Width="125"
                             Margin="25,0,25,0"
                             HorizontalAlignment="Left"
-                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
                             Content="Einstellungen"
                             FontWeight="Bold"
-                            Style="{StaticResource AccentButtonStyle}" />
+                            Style="{StaticResource AccentButtonStyle}">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock Text="Programmpfade" />
+                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                            <TextBox
+                                                MinWidth="150"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Berchtenbreiter CFP"
+                                                Text="\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe" />
+                                            <Button
+                                                Margin="5,0,0,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Content="Picker" />
+                                        </StackPanel>
+                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                            <TextBox
+                                                MinWidth="150"
+                                                HorizontalAlignment="Stretch"
+
+                                                Header="Ziehl Abegg Zetalift"
+                                                Text="C:\Program Files (x86)\zetalift\Lift.exe" />
+                                            <Button
+                                                Margin="5,0,0,0"
+                                                VerticalAlignment="Bottom"
+                                                Content="Picker" />
+                                        </StackPanel>
+                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                            <TextBox
+                                                MinWidth="150"
+                                                HorizontalAlignment="Stretch"
+                                                Header="BucherHydraulics Lilo"
+                                                Text="C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE" />
+                                            <Button
+                                                Margin="5,0,0,0"
+                                                VerticalAlignment="Bottom"
+                                                Content="Picker" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                     </labs:SettingsCard>
                 </StackPanel>
                 <TextBlock
