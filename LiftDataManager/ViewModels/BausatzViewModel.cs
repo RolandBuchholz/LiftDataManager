@@ -33,7 +33,6 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
     {
         if (message is not null)
         {
-            // ToDo Validation Service integrieren
             if (message.PropertyName == "var_Bausatz")
             {
                 ParamterDictionary!["var_Rahmengewicht"].Value = "";

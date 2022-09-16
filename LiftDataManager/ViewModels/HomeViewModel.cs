@@ -22,7 +22,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         if (message is not null)
         {
-            // ToDo Validation Service integrieren
             if (message.PropertyName == "var_Rahmengewicht" ||
                 message.PropertyName == "var_F_Korr" ||
                 message.PropertyName == "var_Q" ||
