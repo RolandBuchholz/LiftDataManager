@@ -6,6 +6,7 @@
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
@@ -104,91 +105,140 @@
             <StackPanel x:Name="ContentArea">
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock x:Uid="Settings_Theme" />
-                    <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                        <RadioButton
-                            x:Uid="Settings_Theme_Light"
-                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                            FontSize="15"
-                            GroupName="AppTheme"
-                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
-                            <RadioButton.CommandParameter>
-                                <xaml:ElementTheme>Light</xaml:ElementTheme>
-                            </RadioButton.CommandParameter>
-                        </RadioButton>
-                        <RadioButton
-                            x:Uid="Settings_Theme_Dark"
-                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                            FontSize="15"
-                            GroupName="AppTheme"
-                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
-                            <RadioButton.CommandParameter>
-                                <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                            </RadioButton.CommandParameter>
-                        </RadioButton>
-                        <RadioButton
-                            x:Uid="Settings_Theme_Default"
-                            Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                            FontSize="15"
-                            GroupName="AppTheme"
-                            IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
-                            <RadioButton.CommandParameter>
-                                <xaml:ElementTheme>Default</xaml:ElementTheme>
-                            </RadioButton.CommandParameter>
-                        </RadioButton>
-                    </StackPanel>
-                    <TextBlock Margin="0,10,0,0" Text="App AccentColor" />
-                    <ToggleSwitch
-                        x:Name="SwitchAccentColor"
-                        Margin="0,5,0,5"
-                        IsOn="{x:Bind ViewModel.CustomAccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        OffContent="AccentColor Blue"
-                        OnContent="AccentColor Default">
-                        <Interactivity:Interaction.Behaviors>
-                            <Core:EventTriggerBehavior EventName="Toggled">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.SwitchAccentColorCommand}" />
-                            </Core:EventTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
-                    </ToggleSwitch>
-                    <TextBlock Margin="0,10,0,0" Text="Adminmode" />
-                    <ToggleSwitch
-                        x:Name="SwitchAdminmode"
-                        Margin="0,5,0,5"
-                        IsOn="{x:Bind ViewModel.Adminmode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        OffContent="Adminmode deaktiviert"
-                        OnContent="Adminmode aktiviert">
-                        <Interactivity:Interaction.Behaviors>
-                            <Core:EventTriggerBehavior EventName="Toggled">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
-                            </Core:EventTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
-                    </ToggleSwitch>
-                    <TextBlock Margin="0,10,0,0" Text="Wartung und Updates" />
-                    <Button
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Left"
-                        Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
-                        Content="Update Auswahlparmeter"
-                        FontWeight="Bold"
-                        Style="{StaticResource AccentButtonStyle}"
-                        ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
-                </StackPanel>
-                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Beschreibung der App" />
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                    <labs:SettingsCard
+                        Description="Auswahl Theme"
+                        Header="Theme"
+                        Icon="&#xE12B;">
+                        <StackPanel Margin="0,0,100,0">
+                            <RadioButton
+                                x:Uid="Settings_Theme_Light"
+                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                FontSize="15"
+                                GroupName="AppTheme"
+                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Light</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                            <RadioButton
+                                x:Uid="Settings_Theme_Dark"
+                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                FontSize="15"
+                                GroupName="AppTheme"
+                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                            <RadioButton
+                                x:Uid="Settings_Theme_Default"
+                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                FontSize="15"
+                                GroupName="AppTheme"
+                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Default</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                        </StackPanel>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard
+                        Description="Auswahl AccentColor"
+                        Header="AccentColor"
+                        Icon="&#xE193;">
+                        <ToggleSwitch
+                            x:Name="SwitchAccentColor"
+                            Margin="0,0,50,0"
+                            IsOn="{x:Bind ViewModel.CustomAccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            OffContent="AccentColor Blue"
+                            OnContent="AccentColor Default">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Toggled">
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.SwitchAccentColorCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </ToggleSwitch>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard
+                        Description="Adminmode für mehr Berechtigungen"
+                        Header="Adminmode"
+                        Icon="&#xE1A7;">
+                        <ToggleSwitch
+                            x:Name="SwitchAdminmode"
+                            Margin="0,0,20,0"
+                            IsOn="{x:Bind ViewModel.Adminmode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            OffContent="Adminmode deactivated"
+                            OnContent="Adminmode activated">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Toggled">
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </ToggleSwitch>
+                    </labs:SettingsCard>
                     <TextBlock
-                        Margin="0,10,0,0"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
-                    <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
-                        Anwendung zum schnellen überprüfen und bearbeiten der AutoDeskTranfer.xml Datei.<LineBreak />
-                        Das Speichern der geänderten Daten ist nur im Adminmode möglich.</TextBlock>
-                    <TextBlock
-                        Margin="0,10,0,0"
-                        Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="©Buchholz Roland" />
+                        Margin="5,5,0,5"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Maintenance and updates" />
+                    <labs:SettingsCard
+                        Description="Es werden die AuswahlParameter aus der Spezifikation aktualisiert"
+                        Header="Update Auswahlparamter"
+                        Icon="&#xE117;">
+                        <Button
+                            Width="125"
+                            Margin="25,0,25,0"
+                            HorizontalAlignment="Left"
+                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
+                            Content="Update"
+                            FontWeight="Bold"
+                            Style="{StaticResource AccentButtonStyle}"
+                            ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
+                    </labs:SettingsCard>
+                    <labs:SettingsCard
+                        Description="Einstellungen der Datenbank"
+                        Header="Database"
+                        Icon="&#xEE94;">
+                        <Button
+                            Width="125"
+                            Margin="25,0,25,0"
+                            HorizontalAlignment="Left"
+                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
+                            Content="Einstellungen"
+                            FontWeight="Bold"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </labs:SettingsCard>
+                    <labs:SettingsCard
+                        Description="Pfade der externen Programme"
+                        Header="externe Programme"
+                        Icon="&#xE118;">
+                        <Button
+                            Width="125"
+                            Margin="25,0,25,0"
+                            HorizontalAlignment="Left"
+                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
+                            Content="Einstellungen"
+                            FontWeight="Bold"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </labs:SettingsCard>
                 </StackPanel>
+                <TextBlock
+                    Margin="5,5,0,5"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Text="Description" />
+                <labs:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Icon="&#xE128;">
+                    <labs:SettingsCard.Description>
+                        <StackPanel>
+                            <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
+                                Anwendung zum schnellen Überprüfen und Bearbeiten der AutoDeskTranfer.xml.<LineBreak />
+                                Das änderen von schreibgeschützen Parametern ist im Adninmode möglich.</TextBlock>
+                            <TextBlock
+                                Margin="0,10,0,0"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="©Buchholz Roland" />
+                        </StackPanel>
+                    </labs:SettingsCard.Description>
+                </labs:SettingsCard>
             </StackPanel>
-
             <Grid
                 Grid.Column="1"
                 MinWidth="400"
