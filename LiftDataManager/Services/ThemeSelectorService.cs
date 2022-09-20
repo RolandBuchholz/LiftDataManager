@@ -3,7 +3,7 @@
 public class ThemeSelectorService : IThemeSelectorService
 {
     private const string SettingsKey = "AppBackgroundRequestedTheme";
-    private const string SettingsKeyDefaultAccentColor = "AppDefaultAccentColorRequested";
+    private const string SettingsKeyCustomAccentColor = "AppCustomAccentColorRequested";
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
@@ -23,7 +23,7 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task SetAccentColorAsync()
     {
-        var defaultAccentColor = Convert.ToBoolean(await _localSettingsService.ReadSettingAsync<string>(SettingsKeyDefaultAccentColor));
+        var defaultAccentColor = Convert.ToBoolean(await _localSettingsService.ReadSettingAsync<string>(SettingsKeyCustomAccentColor));
 
         if (!defaultAccentColor)
         {

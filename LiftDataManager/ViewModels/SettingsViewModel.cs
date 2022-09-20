@@ -28,7 +28,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private bool customAccentColor;
     partial void OnCustomAccentColorChanged(bool value)
     {
-        _settingService.SetSettingsAsync("AccentColor", value);
+        _settingService.SetSettingsAsync("CustomAccentColor", value);
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.CustomAccentColor = value;
