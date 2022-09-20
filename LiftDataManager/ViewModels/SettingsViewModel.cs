@@ -59,9 +59,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private bool adminmode;
     partial void OnAdminmodeChanged(bool value)
     {
-        _settingService.SetSettingsAsync("Adminmode", value);
-        if (CurrentSpeziProperties is not null)
+        if (CurrentSpeziProperties is not null && value != CurrentSpeziProperties.Adminmode)
         {
+            _settingService.SetSettingsAsync("Adminmode", value);
             CurrentSpeziProperties.Adminmode = value;
             Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
@@ -73,6 +73,38 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         CanSwitchToAdminmode = (AdminmodeWarningAccepted == true
                         && PasswortInfoText == "Adminmode Pin korrekt Zugriff gewährt");
+    }
+
+    [ObservableProperty]
+    private string? pathCFP;
+    partial void OnPathCFPChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value,_settingService.PathCFP)) _settingService.SetSettingsAsync("PathCFP", value);
+    }
+
+    [ObservableProperty]
+    private string? pathZALift;
+    partial void OnPathZALiftChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathZALift)) _settingService.SetSettingsAsync("PathZALift", value);
+    }
+
+    [ObservableProperty]
+    private string? pathLilo;
+    partial void OnPathLiloChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathLilo)) _settingService.SetSettingsAsync("PathLilo", value);
+    }
+
+    [ObservableProperty]
+    private string? pathExcel;
+    partial void OnPathExcelChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathExcel)) _settingService.SetSettingsAsync("PathExcel", value);
     }
 
     [RelayCommand]
@@ -162,6 +194,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
+        PathCFP = _settingService.PathCFP;
+        PathZALift = _settingService.PathZALift;
+        PathLilo = _settingService.PathLilo;
+        PathExcel = _settingService.PathExcel;
     }
     public void OnNavigatedFrom()
     {

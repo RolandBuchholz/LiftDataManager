@@ -29,7 +29,7 @@ public class ThemeSelectorService : IThemeSelectorService
         {
             var systemAccentColor = Color.FromArgb(255, 0, 85, 173);
             var systemAccentColorLight1 = Color.FromArgb(255, 0, 100, 190);
-            var systemAccentColorLight2 = Color.FromArgb(255, 0, 115, 207);
+            var systemAccentColorLight2 = Color.FromArgb(255, 72, 178, 234);
             var systemAccentColorLight3 = Color.FromArgb(255, 29, 133, 215);
             var systemAccentColorDark1 = Color.FromArgb(255, 0, 69, 157);
             var systemAccentColorDark2 = Color.FromArgb(255, 0, 54, 140);

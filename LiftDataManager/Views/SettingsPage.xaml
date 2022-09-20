@@ -221,42 +221,80 @@
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock Text="Programmpfade" />
-                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Programmpfade" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
                                             <TextBox
-                                                MinWidth="150"
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Width="350"
+                                                Margin="0,15,0,0"
                                                 HorizontalAlignment="Stretch"
                                                 Header="Berchtenbreiter CFP"
-                                                Text="\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe" />
+                                                Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
                                             <Button
+                                                Grid.Row="0"
+                                                Grid.Column="1"
                                                 Margin="5,0,0,0"
                                                 HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                                Content="Picker" />
-                                        </StackPanel>
-                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                                VerticalAlignment="Bottom">
+                                                <SymbolIcon Symbol="Share" />
+                                            </Button>
                                             <TextBox
-                                                MinWidth="150"
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Width="350"
+                                                Margin="0,5,0,0"
                                                 HorizontalAlignment="Stretch"
-
                                                 Header="Ziehl Abegg Zetalift"
-                                                Text="C:\Program Files (x86)\zetalift\Lift.exe" />
+                                                Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
                                             <Button
+                                                Grid.Row="1"
+                                                Grid.Column="1"
                                                 Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom"
-                                                Content="Picker" />
-                                        </StackPanel>
-                                        <StackPanel Margin="10" Orientation="Horizontal">
+                                                VerticalAlignment="Bottom">
+                                                <SymbolIcon Symbol="Share" />
+                                            </Button>
                                             <TextBox
-                                                MinWidth="150"
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                Width="350"
+                                                Margin="0,5,0,0"
                                                 HorizontalAlignment="Stretch"
                                                 Header="BucherHydraulics Lilo"
-                                                Text="C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE" />
+                                                Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
                                             <Button
+                                                Grid.Row="2"
+                                                Grid.Column="1"
                                                 Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom"
-                                                Content="Picker" />
-                                        </StackPanel>
+                                                VerticalAlignment="Bottom">
+                                                <SymbolIcon Symbol="Share" />
+                                            </Button>
+                                            <TextBox
+                                                Grid.Row="3"
+                                                Grid.Column="0"
+                                                Width="350"
+                                                Margin="0,5,0,0"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Microsoft Excel"
+                                                Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
+                                            <Button
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                Margin="5,0,0,0"
+                                                VerticalAlignment="Bottom">
+                                                <SymbolIcon Symbol="Share" />
+                                            </Button>
+                                        </Grid>
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>

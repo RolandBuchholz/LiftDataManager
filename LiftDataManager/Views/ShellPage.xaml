@@ -5,7 +5,6 @@
     xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
     Loaded="OnLoaded">
 
     <Grid>

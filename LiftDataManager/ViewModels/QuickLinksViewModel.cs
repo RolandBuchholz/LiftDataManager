@@ -4,10 +4,16 @@ namespace LiftDataManager.ViewModels;
 
 public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 {
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+    private readonly ISettingService _settingService;
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ISettingService settingsSelectorService) :
          base(parameterDataService, dialogService, navigationService)
     {
+        _settingService = settingsSelectorService;
     }
+    public string? PathCFP { get; set; }
+    public string? PathZALift { get; set; }
+    public string? PathLilo { get; set; }
+    public string? PathExcel { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
@@ -55,7 +61,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
         if (!string.IsNullOrWhiteSpace(auftragsnummer))
         {
-            filename = @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE";
+            filename = PathExcel;
             startargs = @"/e/" + auftragsnummer + @" C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
         }
 
@@ -127,44 +133,34 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var bausatztyp = ParamterDictionary?["var_Bausatz"].Value;
-        var user = Environment.GetEnvironmentVariable("userprofile");
-        var cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
         var startargs = auftragsnummer + " " + bausatztyp;
         using Process p = new();
 
-        StartProgram(cfpPath, startargs);
+        if (File.Exists(PathCFP))
+        {
+            StartProgram(PathCFP!, startargs);
+        }
     }
 
     [RelayCommand]
     private void OpenZiehlAbegg()
     {
-        var filename = @"C:\Program Files (x86)\zetalift\Lift.exe";
         var startargs = "";
 
-        if (File.Exists(filename))
+        if (File.Exists(PathZALift))
         {
-            StartProgram(filename, startargs);
+            StartProgram(PathZALift!, startargs);
         }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenLilo))]
     private void OpenLilo()
     {
-        var filename = @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE";
         var startargs = "";
 
-        if (File.Exists(filename))
+        if (File.Exists(PathLilo))
         {
-            StartProgram(filename, startargs);
-        }
-
-        var user = Environment.GetEnvironmentVariable("userprofile");
-        var cfpPath = user + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe";
-        using Process p = new();
-
-        if (File.Exists(filename))
-        {
-            StartProgram(cfpPath, startargs);
+            StartProgram(PathLilo, startargs);
         }
     }
 
@@ -230,6 +226,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         SynchronizeViewModelParameter();
+        PathCFP = _settingService.PathCFP;
+        PathZALift = _settingService.PathZALift;
+        PathLilo = _settingService.PathLilo;
+        PathExcel = _settingService.PathExcel;
         CheckCanOpenFiles();
     }
 
