@@ -1,4 +1,6 @@
 ﻿using Windows.ApplicationModel;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -61,7 +63,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         if (CurrentSpeziProperties is not null && value != CurrentSpeziProperties.Adminmode)
         {
-            _settingService.SetSettingsAsync("Adminmode", value);
+            _settingService.SetSettingsAsync(nameof(Adminmode), value);
             CurrentSpeziProperties.Adminmode = value;
             Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
@@ -80,7 +82,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathCFPChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value,_settingService.PathCFP)) _settingService.SetSettingsAsync("PathCFP", value);
+        if (!string.Equals(value,_settingService.PathCFP)) _settingService.SetSettingsAsync(nameof(PathCFP), value);
     }
 
     [ObservableProperty]
@@ -88,7 +90,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathZALiftChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathZALift)) _settingService.SetSettingsAsync("PathZALift", value);
+        if (!string.Equals(value, _settingService.PathZALift)) _settingService.SetSettingsAsync(nameof(PathZALift), value);
     }
 
     [ObservableProperty]
@@ -96,7 +98,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathLiloChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathLilo)) _settingService.SetSettingsAsync("PathLilo", value);
+        if (!string.Equals(value, _settingService.PathLilo)) _settingService.SetSettingsAsync(nameof(PathLilo), value);
     }
 
     [ObservableProperty]
@@ -104,7 +106,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathExcelChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathExcel)) _settingService.SetSettingsAsync("PathExcel", value);
+        if (!string.Equals(value, _settingService.PathExcel)) _settingService.SetSettingsAsync(nameof(PathExcel), value);
     }
 
     [RelayCommand]
@@ -159,6 +161,37 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         var stopTimeMs = watch.ElapsedMilliseconds;
         InfoText += $"Downloadtime:  {stopTimeMs} ms\n";
         InfoText += "Daten erfolgreich geladen\n";
+    }
+
+    [RelayCommand]
+    private async Task UpdateFilePathAsync(string program)
+    {
+        var filePicker = App.MainWindow.CreateOpenFilePicker();
+        filePicker.ViewMode = PickerViewMode.Thumbnail;
+        filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        filePicker.FileTypeFilter.Add("*");
+        StorageFile file = await filePicker.PickSingleFileAsync();
+
+        var newFilePath = (file is not null) ? file.Path : string.Empty;
+
+        switch (program)
+        {
+            case nameof(PathCFP):
+                PathCFP = newFilePath;
+                break;
+            case nameof(PathZALift):
+                PathZALift = newFilePath;
+                break;
+            case nameof(PathLilo):
+                PathLilo = newFilePath;
+                break;
+            case nameof(PathExcel):
+                PathExcel = newFilePath;
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void CheckpasswortInput()

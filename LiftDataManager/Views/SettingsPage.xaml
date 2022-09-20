@@ -246,7 +246,9 @@
                                                 Grid.Column="1"
                                                 Margin="5,0,0,0"
                                                 HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom">
+                                                VerticalAlignment="Bottom"
+                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                                CommandParameter="PathCFP">
                                                 <SymbolIcon Symbol="Share" />
                                             </Button>
                                             <TextBox
@@ -261,7 +263,9 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom">
+                                                VerticalAlignment="Bottom"
+                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                                CommandParameter="PathZALift">
                                                 <SymbolIcon Symbol="Share" />
                                             </Button>
                                             <TextBox
@@ -276,7 +280,9 @@
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom">
+                                                VerticalAlignment="Bottom"
+                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                                CommandParameter="PathLilo">
                                                 <SymbolIcon Symbol="Share" />
                                             </Button>
                                             <TextBox
@@ -291,7 +297,9 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom">
+                                                VerticalAlignment="Bottom"
+                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                                CommandParameter="PathExcel">
                                                 <SymbolIcon Symbol="Share" />
                                             </Button>
                                         </Grid>
