@@ -115,8 +115,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
         OpenReadOnly = true;
-        await SetCalculatedValuesAsync();
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
+        await SetCalculatedValuesAsync();
+        await SetModelStateAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
@@ -266,6 +267,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 CanSaveAllSpeziParameters = dirty && Adminmode;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
+                CanClearData = CheckOut;
             }
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {

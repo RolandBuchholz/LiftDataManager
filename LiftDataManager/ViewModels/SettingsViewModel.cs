@@ -191,7 +191,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             default:
                 break;
         }
-
     }
 
     private void CheckpasswortInput()
