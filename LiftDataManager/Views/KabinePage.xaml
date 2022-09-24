@@ -724,7 +724,7 @@
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         Header="Kabinenbodenhöhe"
-                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].DropDownListValue,'extern') ,Mode=OneWay}"
+                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'extern') ,Mode=OneWay}"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
@@ -739,7 +739,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Header="Bodenblechstärke"
-                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].DropDownListValue,'verstärkt') ,Mode=OneWay}"
+                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Bodenblech'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Bodenblech'].DropDownListValue, Mode=TwoWay}" />
                                     <ComboBox
@@ -774,7 +774,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Header="Bodenprofil verstärkt"
-                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].DropDownListValue,'verstärkt') ,Mode=OneWay}"
+                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].DropDownListValue, Mode=TwoWay}" />
                                     <TextBox
