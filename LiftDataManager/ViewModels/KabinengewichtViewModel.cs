@@ -282,6 +282,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     {
         return bodenprofil switch
         {
+            "80 x 40 x 3" => 3.67,
             "80 x 50 x 5" => 6.28,
             "100 x 50 x 5" => 7.065,
             "120 x 60 x 6" => 10.1736,

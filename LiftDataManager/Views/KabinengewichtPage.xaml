@@ -812,7 +812,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.PaneeleSpiegelGewicht, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.PaneeleSpiegelGewicht)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -1015,7 +1015,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}',ViewModel.HandlaufLaenge)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.HandlaufLaenge)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="6"

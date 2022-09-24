@@ -517,6 +517,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     {
         double kabinenBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
         double kabinenTiefe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D");
         double linkeSeite;
         double tuerBreite;
 
@@ -534,21 +537,24 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                     return;
                 linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L2");
                 tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_C");
-                ParamterDictionary["var_R2"].Value = Convert.ToString(kabinenBreite - (linkeSeite + tuerBreite));
+                double r2 = zugangC ? kabinenBreite - (linkeSeite + tuerBreite) : 0;
+                ParamterDictionary["var_R2"].Value = Convert.ToString(r2);
                 return;
             case "var_L3" or "var_TB_B" or "var_KTI":
                 if (!(kabinenTiefe > 0))
                     return;
                 linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L3");
                 tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_B");
-                ParamterDictionary["var_R3"].Value = Convert.ToString(kabinenTiefe - (linkeSeite + tuerBreite));
+                double r3 = zugangB ? kabinenTiefe - (linkeSeite + tuerBreite) : 0 ;
+                ParamterDictionary["var_R3"].Value = Convert.ToString(r3);
                 return;
             case "var_L4" or "var_TB_D" or "var_KTI":
                 if (!(kabinenTiefe > 0))
                     return;
                 linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L4");
                 tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_D");
-                ParamterDictionary["var_R4"].Value = Convert.ToString(kabinenTiefe - (linkeSeite + tuerBreite));
+                double r4 = zugangD ? kabinenTiefe - (linkeSeite + tuerBreite) : 0;
+                ParamterDictionary["var_R4"].Value = Convert.ToString(r4);
                 return;
             default:
                 return;
