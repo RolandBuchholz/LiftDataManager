@@ -32,6 +32,19 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
         CFP
     }
 
+    public enum TypeCodeValue
+    {
+        String,
+        Boolean,
+        Date,
+        N,
+        mm,
+        m,
+        kg,
+        oE,
+        mps
+    }
+
     public ParameterTypValue ParameterTyp { get; set; }
     public ParameterCategoryValue ParameterCategory { get; set; }
     public readonly Dictionary<string, List<ParameterStateInfo>> parameterErrors = new();

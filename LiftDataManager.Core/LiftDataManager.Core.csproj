@@ -6,6 +6,7 @@
     <RootNamespace>LiftDataManager.Core</RootNamespace>
     <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

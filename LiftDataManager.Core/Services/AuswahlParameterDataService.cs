@@ -125,6 +125,7 @@ public class AuswahlParameterDataService : IAuswahlParameterDataService
             //{ "Daten Türen", "Türsteuerung mit V3F-Antrieb","var_Frequenzumrichter" },
             { "Daten Türen", "Türüberwachung","var_Lichtgitter" },
             { "Daten Türen", "Schwellenprofile","var_Schwellenprofil" },
+            { "Daten Türen", "Schwellenprofile","var_SchwellenprofilKabTuere" },
             { "Daten Türen", "Türzulassung","var_ZulassungTuere" },
             { "Daten Türen", "Türzulassung","var_ZulassungTuere_B" },
             { "Daten Türen", "Türzulassung","var_ZulassungTuere_C" },
