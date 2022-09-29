@@ -6,3 +6,7 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using LiftDataManager.Core.Models;
 global using LiftDataManager.core.Helpers;
+global using Microsoft.EntityFrameworkCore;
+global using LiftDataManager.Core.DataAccessLayer.Models;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;

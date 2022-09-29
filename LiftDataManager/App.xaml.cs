@@ -1,4 +1,5 @@
-﻿using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,13 +50,14 @@ public partial class App : Application
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
+
+            // DataBase Services
+            services.AddDbContext<ParameterContext>();
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();

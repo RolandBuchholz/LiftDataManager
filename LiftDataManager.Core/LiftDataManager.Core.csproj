@@ -1,20 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>LiftDataManager.Core</RootNamespace>
     <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Cogs.Collections" Version="1.11.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccessLayer\Configuration\AntriebSteuerungNotruf\" />
+    <Folder Include="DataAccessLayer\Configuration\Fahrkorb\" />
+    <Folder Include="DataAccessLayer\Configuration\MontageTUEV\" />
+    <Folder Include="DataAccessLayer\Configuration\RWA\" />
+    <Folder Include="DataAccessLayer\Configuration\Signalisation\" />
+    <Folder Include="DataAccessLayer\Configuration\Sonstiges\" />
+    <Folder Include="DataAccessLayer\Configuration\Tueren\" />
+    <Folder Include="DataAccessLayer\Configuration\Wartung\" />
+    <Folder Include="DataAccessLayer\Models\AntriebSteuerungNotruf\" />
+    <Folder Include="DataAccessLayer\Models\Fahrkorb\" />
+    <Folder Include="DataAccessLayer\Models\MontageTUEV\" />
+    <Folder Include="DataAccessLayer\Models\RWA\" />
+    <Folder Include="DataAccessLayer\Models\Signalisation\" />
+    <Folder Include="DataAccessLayer\Models\Sonstiges\" />
+    <Folder Include="DataAccessLayer\Models\Tueren\" />
+    <Folder Include="DataAccessLayer\Models\Wartung\" />
   </ItemGroup>
 </Project>
