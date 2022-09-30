@@ -1,4 +1,4 @@
-﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration;
+﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration.AllgemeineDaten;
 
 public class DeliveryTypeConfig : BaseModelBuilder<DeliveryType>
 {

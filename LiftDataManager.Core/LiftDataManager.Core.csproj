@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="DataAccessLayer\Configuration\AntriebSteuerungNotruf\" />
-    <Folder Include="DataAccessLayer\Configuration\Fahrkorb\" />
     <Folder Include="DataAccessLayer\Configuration\MontageTUEV\" />
     <Folder Include="DataAccessLayer\Configuration\RWA\" />
     <Folder Include="DataAccessLayer\Configuration\Signalisation\" />
@@ -33,7 +32,6 @@
     <Folder Include="DataAccessLayer\Configuration\Tueren\" />
     <Folder Include="DataAccessLayer\Configuration\Wartung\" />
     <Folder Include="DataAccessLayer\Models\AntriebSteuerungNotruf\" />
-    <Folder Include="DataAccessLayer\Models\Fahrkorb\" />
     <Folder Include="DataAccessLayer\Models\MontageTUEV\" />
     <Folder Include="DataAccessLayer\Models\RWA\" />
     <Folder Include="DataAccessLayer\Models\Signalisation\" />
