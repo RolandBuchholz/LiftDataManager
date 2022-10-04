@@ -2,7 +2,7 @@
 
 public class ParameterContext : DbContext
 {
-    public DbSet<ParameterDTO> Parameters { get; set; }
+    public DbSet<ParameterDto> Parameters { get; set; }
     public DbSet<DeliveryType> ParameterTyps { get; set; }
     public DbSet<ParameterCategory> ParameterCategorys { get; set; }
     public DbSet<ParameterTypeCode> TypeCodes { get; set; }

@@ -1,8 +1,10 @@
-﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration.Fahrkorb;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class CarFrameTypeConfig : BaseModelBuilder<CarFrameType>
+namespace LiftDataManager.Core.DataAccessLayer.Configuration.Fahrkorb;
+
+public class LiftPositionSystemConfig : BaseModelBuilder<LiftPositionSystem>
 {
-    public override void Configure(EntityTypeBuilder<CarFrameType> builder)
+    public override void Configure(EntityTypeBuilder<LiftPositionSystem> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)

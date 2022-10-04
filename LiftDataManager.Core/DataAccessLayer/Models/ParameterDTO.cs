@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Models;
 
-public class ParameterDTO : BaseEntity
+public class ParameterDto : BaseEntity
 {
     public ParameterTypValue ParameterTyp { get; set; }
     public ParameterCategoryValue ParameterCategory { get; set; }

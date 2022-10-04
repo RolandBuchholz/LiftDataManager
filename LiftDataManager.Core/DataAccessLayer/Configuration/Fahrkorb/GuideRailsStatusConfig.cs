@@ -2,9 +2,9 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration.Fahrkorb;
 
-public class LiftPositionSystemConfig : BaseModelBuilder<LiftPositionSystem>
+public class GuideRailsStatusConfig : BaseModelBuilder<GuideRailsStatus>
 {
-    public override void Configure(EntityTypeBuilder<LiftPositionSystem> builder)
+    public override void Configure(EntityTypeBuilder<GuideRailsStatus> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)

@@ -2,9 +2,9 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration;
 
-public class ParameterDTOConfig : BaseModelBuilder<ParameterDTO>
+public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
 {
-    public override void Configure(EntityTypeBuilder<ParameterDTO> builder)
+    public override void Configure(EntityTypeBuilder<ParameterDto> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.ParameterTyp)

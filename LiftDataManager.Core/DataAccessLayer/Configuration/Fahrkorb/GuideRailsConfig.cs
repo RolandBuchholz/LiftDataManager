@@ -10,5 +10,7 @@ public class GuideRailsConfig : BaseModelBuilder<GuideRails>
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
+        builder.Property(x => x.UsageAsCarRail);
+        builder.Property(x => x.UsageAsCwtRail);
     }
 }

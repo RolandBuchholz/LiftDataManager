@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221004050141_CarFrameModels")]
+    partial class CarFrameModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -288,21 +290,11 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CarFrameBaseType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("CarFrameWeight")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("DriveType")
-                        .IsRequired()
-                        .HasMaxLength(20)
+                    b.Property<string>("DriveTyp")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("HasMachineRoom")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsCFPControlled")
                         .HasColumnType("INTEGER");
@@ -359,12 +351,6 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("UsageAsCarRail")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("UsageAsCwtRail")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
