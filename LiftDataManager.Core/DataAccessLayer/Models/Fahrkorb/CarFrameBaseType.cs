@@ -1,7 +1,7 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class GuideType : BaseEntity
+public class CarFrameBaseType : BaseEntity
 {
     public string? Name { get; set; }
-    public IEnumerable<GuideModelType>? GuideModelTypes { get; set; }
+    public IEnumerable<CarFrameType>? CarFrameTypes { get; set; }
 }

@@ -8,7 +8,10 @@ public class SafetyGearTypeConfig : BaseModelBuilder<SafetyGearType>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
+        builder.HasMany(t => t.SafetyGearModelTypes)
+               .WithOne(g => g.SafetyGearType)
+               .HasForeignKey(t => t.SafetyGearTypeId);
     }
 }

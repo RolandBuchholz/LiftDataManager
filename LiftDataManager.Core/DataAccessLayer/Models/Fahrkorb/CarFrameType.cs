@@ -6,6 +6,8 @@ public class CarFrameType : BaseEntity
     public int CarFrameWeight { get; set; }
     public bool IsCFPControlled { get; set; }
     public bool HasMachineRoom  { get; set; }
-    public string? DriveType { get; set; }
-    public string? CarFrameBaseType { get; set; }
+    public int DriveTypeId { get; set; }
+    public DriveType? DriveType { get; set; }
+    public int CarFrameBaseTypeId { get; set; }
+    public CarFrameBaseType? CarFrameBaseType { get; set; }
 }

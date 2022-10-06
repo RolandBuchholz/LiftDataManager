@@ -7,21 +7,9 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
     public override void Configure(EntityTypeBuilder<ParameterDto> builder)
     {
         base.Configure(builder);
-        builder.Property(x => x.ParameterTyp)
-                         .IsRequired()
-                         .HasConversion(
-                          v => v.ToString(),
-                          v => (ParameterTypValue)Enum.Parse(typeof(ParameterTypValue), v));
-        builder.Property(x => x.ParameterCategory)
-                 .IsRequired()
-                 .HasConversion(
-                 v => v.ToString(),
-                 v => (ParameterCategoryValue)Enum.Parse(typeof(ParameterCategoryValue), v));
-        builder.Property(x => x.TypeCode)
-                 .IsRequired()
-                 .HasConversion(
-                 v => v.ToString(),
-                 v => (TypeCodeValue)Enum.Parse(typeof(TypeCodeValue), v));
+        builder.Property(x => x.ParameterTypId);
+        builder.Property(x => x.ParameterCategoryId);
+        builder.Property(x => x.ParameterTypeCodeId);
         builder.Property(x => x.Name)
                  .HasMaxLength(50)
                  .IsRequired();

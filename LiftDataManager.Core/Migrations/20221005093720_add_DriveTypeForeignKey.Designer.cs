@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221005093720_add_DriveTypeForeignKey")]
+    partial class add_DriveTypeForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -30,22 +32,6 @@ namespace LiftDataManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BuildingTypes", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CargoTypes", (string)null);
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CENumber", b =>
@@ -166,8 +152,10 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CargoTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CargoType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DriveTypeId")
                         .HasColumnType("INTEGER");
@@ -178,8 +166,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CargoTypeId");
 
                     b.HasIndex("DriveTypeId");
 
@@ -314,30 +300,16 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("DriveTypes", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameBaseType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarFrameBaseTypes", (string)null);
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CarFrameBaseTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CarFrameBaseType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CarFrameWeight")
                         .HasColumnType("INTEGER");
@@ -357,8 +329,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarFrameBaseTypeId");
 
                     b.HasIndex("DriveTypeId");
 
@@ -565,7 +535,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -600,25 +570,22 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterCategoryId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ParameterCategory")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterTypId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ParameterTyp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterTypeCodeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("TypeCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParameterCategoryId");
-
-                    b.HasIndex("ParameterTypId");
-
-                    b.HasIndex("ParameterTypeCodeId");
 
                     b.ToTable("ParameterDtos", (string)null);
                 });
@@ -631,7 +598,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -647,7 +614,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -701,38 +668,22 @@ namespace LiftDataManager.Core.Migrations
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.LiftType", b =>
                 {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", "CargoType")
-                        .WithMany("LiftTypes")
-                        .HasForeignKey("CargoTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.DriveType", "DriveType")
                         .WithMany("LiftTypes")
                         .HasForeignKey("DriveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CargoType");
 
                     b.Navigation("DriveType");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameType", b =>
                 {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameBaseType", "CarFrameBaseType")
-                        .WithMany("CarFrameTypes")
-                        .HasForeignKey("CarFrameBaseTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.DriveType", "DriveType")
                         .WithMany("CarFrameTypes")
                         .HasForeignKey("DriveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CarFrameBaseType");
 
                     b.Navigation("DriveType");
                 });
@@ -759,48 +710,11 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("SafetyGearType");
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterDto", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterCategory", "ParameterCategory")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterTyp", "ParameterTyp")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterTypId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterTypeCode", "ParameterTypeCode")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterTypeCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ParameterCategory");
-
-                    b.Navigation("ParameterTyp");
-
-                    b.Navigation("ParameterTypeCode");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
-                {
-                    b.Navigation("LiftTypes");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.DriveType", b =>
                 {
                     b.Navigation("CarFrameTypes");
 
                     b.Navigation("LiftTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameBaseType", b =>
-                {
-                    b.Navigation("CarFrameTypes");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.GuideType", b =>
@@ -811,21 +725,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearType", b =>
                 {
                     b.Navigation("SafetyGearModelTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterCategory", b =>
-                {
-                    b.Navigation("ParameterDtos");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterTyp", b =>
-                {
-                    b.Navigation("ParameterDtos");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterTypeCode", b =>
-                {
-                    b.Navigation("ParameterDtos");
                 });
 #pragma warning restore 612, 618
         }

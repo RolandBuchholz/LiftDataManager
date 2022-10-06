@@ -198,7 +198,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
         var Sender = (Parameter)message.Sender;
 
-        if (Sender.ParameterTyp == Parameter.ParameterTypValue.Date)
+        if (Sender.ParameterTyp == ParameterBase.ParameterTypValue.Date)
         {
             string? datetimeOld;
             string? datetimeNew;

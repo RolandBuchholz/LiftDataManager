@@ -3,6 +3,8 @@
 public class LiftType : BaseEntity
 {
     public string? Name { get; set; }
-    public string? DriveType { get; set; }
-    public string? CargoType { get; set; }
+    public int DriveTypeId { get; set; }
+    public DriveType? DriveType { get; set; }
+    public int CargoTypeId { get; set; }
+    public CargoType? CargoType { get; set; }
 }

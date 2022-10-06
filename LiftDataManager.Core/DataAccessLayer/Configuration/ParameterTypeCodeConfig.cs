@@ -6,7 +6,10 @@ public class ParameterTypeCodeConfig : BaseModelBuilder<ParameterTypeCode>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .IsRequired();
+        builder.HasMany(t => t.ParameterDtos)
+               .WithOne(g => g.ParameterTypeCode)
+               .HasForeignKey(t => t.ParameterTypeCodeId);
     }
 }

@@ -6,7 +6,10 @@ public class ParameterCategoryConfig : BaseModelBuilder<ParameterCategory>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();   
+                    .HasMaxLength(20)
+                    .IsRequired();
+        builder.HasMany(t => t.ParameterDtos)
+                .WithOne(g => g.ParameterCategory)
+       .HasForeignKey(t => t.ParameterCategoryId);
     }
 }

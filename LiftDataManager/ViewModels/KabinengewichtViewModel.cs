@@ -41,7 +41,8 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
 
     public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
     public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
-    public double Kabinenhoehe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht");
+    public double KabineundAbgehaengteDeckeHoehe => AbgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht") + 50 : 
+                                                                       LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht");
     public double KabinenhoeheAussen => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHA");
     public double Tuerbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
     public double Tuerhoehe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TH");
@@ -54,6 +55,8 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public bool SchuerzeVerstaerkt => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Schuerzeverstaerkt");
     public bool AbgehaengteDecke => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_abgDecke");
     public bool BelegteDecke => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Decke")).StartsWith("Sichtseite belegt");
+
+
     
     public bool BelagAufDerDecke => !(((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BelagAufDemKabinendach")).StartsWith("kein") ||
                                     string.IsNullOrEmpty((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BelagAufDemKabinendach")));
@@ -135,12 +138,12 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double SchottenLaenge => (!ZugangB ? GlasLaengeWandB > 0 ? 0 : Kabinentiefe : 0) +
                                      (!ZugangC ? GlasLaengeWandC > 0 ? 0 : Kabinenbreite : 0) +
                                      (!ZugangD ? GlasLaengeWandD > 0 ? 0 : Kabinentiefe : 0);
-    public double Schottengewicht => SchottenLaenge > 0 ? SchottenStaerke * (Kabinenhoehe + 161) * 339 * 8 / Math.Pow(10, 6) * (SchottenLaenge / 275) : 0;
+    public double Schottengewicht => SchottenLaenge > 0 ? SchottenStaerke * (KabineundAbgehaengteDeckeHoehe + 161) * 339 * 8 / Math.Pow(10, 6) * (SchottenLaenge / 275) : 0;
 
-    public double Haelsegewicht => SchottenStaerke * ((Kabinenhoehe + 86) *
+    public double Haelsegewicht => SchottenStaerke * ((KabineundAbgehaengteDeckeHoehe + 86) *
                                    ((HalsL1 + HalsR1 + HalsL2 + HalsR2 + HalsL3 + HalsR3 + HalsL4 + HalsR4) + AnzahlKabinentueren * 214 +
                                    AnzahlKabinentueren * (Oeffnungsrichtung == "einseitig öffnend" ? AnzahlKabinentuerfluegel * 45 : 0))
-                                   + AnzahlKabinentueren * (Tuerbreite + 104) * (Kabinenhoehe - Tuerhoehe + 99)) * 8 / Math.Pow(10, 6);
+                                   + AnzahlKabinentueren * (Tuerbreite + 104) * (KabineundAbgehaengteDeckeHoehe - Tuerhoehe + 99)) * 8 / Math.Pow(10, 6);
 
     public double AndidroehnGewicht => 2 * 1000 * 150 * 1.36 / Math.Pow(10, 6) * (SchottenLaenge / 275);
 
@@ -168,13 +171,13 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double PaneeleGewichtproQm => GetGewichtPaneele(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Paneelmaterial"));
     public double PaneeleQm => (PaneelPosA || PaneelPosB || PaneelPosC || PaneelPosD) ?
                                 (((Convert.ToInt32(PaneelPosA) + Convert.ToInt32(PaneelPosC) * Kabinenbreite / 1000) +
-                               ((Convert.ToInt32(PaneelPosB) + Convert.ToInt32(PaneelPosD)) * Kabinentiefe / 1000) - TableauBreite / 1000)) * (Kabinenhoehe - SockelleisteHoehe) / 1000 - SpiegelQm : 0;
+                               ((Convert.ToInt32(PaneelPosB) + Convert.ToInt32(PaneelPosD)) * Kabinentiefe / 1000) - TableauBreite / 1000)) * (KabineundAbgehaengteDeckeHoehe - SockelleisteHoehe) / 1000 - SpiegelQm : 0;
     public double PaneeleGewicht => PaneeleGewichtproQm * PaneeleQm;
 
     public double PaneeleSpiegelGewichtproQm => gewichtSpiegelPaneele;
     public double PaneeleSpiegelQm => SpiegelPaneel ?
                                                  SpiegelHoehe > 0 ? ((Convert.ToInt32(SpiegelA) + Convert.ToInt32(SpiegelC)) * Kabinenbreite / 1000 + (Convert.ToInt32(SpiegelD) + Convert.ToInt32(SpiegelB)) * Kabinentiefe / 1000) * SpiegelHoehe / 1000
-                                                 : ((Convert.ToInt32(SpiegelA) + Convert.ToInt32(SpiegelC)) * Kabinenbreite / 1000 + (Convert.ToInt32(SpiegelD) + Convert.ToInt32(SpiegelB)) * Kabinentiefe / 1000) * ((Kabinenhoehe - SockelleisteHoehe) / 1000)
+                                                 : ((Convert.ToInt32(SpiegelA) + Convert.ToInt32(SpiegelC)) * Kabinenbreite / 1000 + (Convert.ToInt32(SpiegelD) + Convert.ToInt32(SpiegelB)) * Kabinentiefe / 1000) * ((KabineundAbgehaengteDeckeHoehe - SockelleisteHoehe) / 1000)
                                                  : 0;
     public double PaneeleSpiegelGewicht => PaneeleSpiegelGewichtproQm * PaneeleSpiegelQm;
 
@@ -192,7 +195,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double VSGQm => ((GlasLaengeWandA > 0.1 ? GlasLaengeWandA - 0.1 : 0) +
                                        (GlasLaengeWandB > 0.1 ? GlasLaengeWandB - 0.1 : 0) +
                                        (GlasLaengeWandC > 0.1 ? GlasLaengeWandC - 0.1 : 0) +
-                                       (GlasLaengeWandD > 0.1 ? GlasLaengeWandD - 0.1 : 0)) * (Kabinenhoehe > 0 ? (Kabinenhoehe - 200) / 1000 : 0);
+                                       (GlasLaengeWandD > 0.1 ? GlasLaengeWandD - 0.1 : 0)) * (KabineundAbgehaengteDeckeHoehe > 0 ? (KabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
     public double VSGGewicht => VSGQm * VSGGewichtproQm;
 
     public double AussenVerkleidungGewichtproQm => gewichtAussenVerkleidung;

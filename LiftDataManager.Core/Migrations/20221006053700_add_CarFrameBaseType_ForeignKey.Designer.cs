@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221006053700_add_CarFrameBaseType_ForeignKey")]
+    partial class add_CarFrameBaseType_ForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -565,7 +567,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -600,25 +602,22 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterCategoryId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ParameterCategory")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterTypId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ParameterTyp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ParameterTypeCodeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("TypeCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParameterCategoryId");
-
-                    b.HasIndex("ParameterTypId");
-
-                    b.HasIndex("ParameterTypeCodeId");
 
                     b.ToTable("ParameterDtos", (string)null);
                 });
@@ -631,7 +630,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -647,7 +646,7 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -759,33 +758,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("SafetyGearType");
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterDto", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterCategory", "ParameterCategory")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterTyp", "ParameterTyp")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterTypId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.ParameterTypeCode", "ParameterTypeCode")
-                        .WithMany("ParameterDtos")
-                        .HasForeignKey("ParameterTypeCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ParameterCategory");
-
-                    b.Navigation("ParameterTyp");
-
-                    b.Navigation("ParameterTypeCode");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
                 {
                     b.Navigation("LiftTypes");
@@ -811,21 +783,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearType", b =>
                 {
                     b.Navigation("SafetyGearModelTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterCategory", b =>
-                {
-                    b.Navigation("ParameterDtos");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterTyp", b =>
-                {
-                    b.Navigation("ParameterDtos");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.ParameterTypeCode", b =>
-                {
-                    b.Navigation("ParameterDtos");
                 });
 #pragma warning restore 612, 618
         }
