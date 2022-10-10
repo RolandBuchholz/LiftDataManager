@@ -11,5 +11,6 @@ public class SafetyGearModelTypeConfig : BaseModelBuilder<SafetyGearModelType>
                     .HasMaxLength(50)
                     .IsRequired();
         builder.Property(x => x.SafetyGearTypeId);
+        builder.Property(x => x.TypeExaminationCertificateId);
     }
 }

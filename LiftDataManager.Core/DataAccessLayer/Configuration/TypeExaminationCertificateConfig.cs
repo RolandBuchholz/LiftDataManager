@@ -11,8 +11,14 @@ public class TypeExaminationCertificateConfig : BaseModelBuilder<TypeExamination
         builder.Property(x => x.ManufacturerName)
             .HasMaxLength(50)
             .IsRequired();
-        builder.Property(x => x.ProductId);
-        builder.Property(x => x.ProductName)
-            .HasMaxLength(50);
+        builder.HasMany(t => t.SafetyGearModelTypes)
+               .WithOne(g => g.TypeExaminationCertificate)
+               .HasForeignKey(t => t.TypeExaminationCertificateId);
+        builder.HasMany(t => t.OverspeedGovernors)
+               .WithOne(g => g.TypeExaminationCertificate)
+               .HasForeignKey(t => t.TypeExaminationCertificateId);
+        builder.HasMany(t => t.LiftPositionSystems)
+               .WithOne(g => g.TypeExaminationCertificate)
+               .HasForeignKey(t => t.TypeExaminationCertificateId);
     }
 }
