@@ -3,10 +3,7 @@
 namespace LiftDataManager.Core.Messenger.Messages;
 public sealed class AreaPersonsRequestMessageAsync : AsyncRequestMessage<CalculatedValues>
 {
-    public NutzlastberechnungViewModel Sender
-    {
-        get; set;
-    }
+    public NutzlastberechnungViewModel Sender {get; set;}
 
     public AreaPersonsRequestMessageAsync()
     {

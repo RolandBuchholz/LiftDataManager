@@ -13,6 +13,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     {
         if (message is not null)
         {
+            if ( message.PropertyName == "var_KBI" ||
+                 message.PropertyName == "var_KTI")
+            {
+                _ = SetCalculatedValuesAsync();
+
+            };
             SetInfoSidebarPanelText(message);
             //TODO Make Async
             _ = SetModelStateAsync();
@@ -21,6 +27,27 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     [RelayCommand]
     private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+
+    private async Task SetCalculatedValuesAsync()
+    {
+        var areaPersonsRequestMessageResult = await WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
+
+        if (areaPersonsRequestMessageResult is not null)
+        {
+            var person = areaPersonsRequestMessageResult.Personen;
+            var nutzflaecheKabine = areaPersonsRequestMessageResult.NutzflaecheKabine;
+
+            if (person > 0)
+            {
+                ParamterDictionary!["var_Personen"].Value = Convert.ToString(person);
+            }
+            if (nutzflaecheKabine > 0)
+            {
+                ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
+            }
+        }
+        await Task.CompletedTask;
+    }
 
     public void OnNavigatedTo(object parameter)
     {

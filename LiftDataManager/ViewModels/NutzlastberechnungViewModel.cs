@@ -29,11 +29,14 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
 
     public void Receive(AreaPersonsRequestMessageAsync message)
     {
-        message.Reply(new CalculatedValues
+        if (!message.HasReceivedResponse)
         {
-            Personen = PersonenBerechnet,
-            NutzflaecheKabine = NutzflaecheGesamt
-        });
+            message.Reply(new CalculatedValues
+            {
+                Personen = PersonenBerechnet,
+                NutzflaecheKabine = NutzflaecheGesamt
+            });
+        }
         IsActive = false;
     }
 

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
 
@@ -7,15 +8,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private readonly ParameterContext _parametercontext;
     private bool OpenReadOnly { get; set; } = true;
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
-                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService)
+                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService, ParameterContext parametercontext)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
+        _parametercontext = parametercontext;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -30,10 +33,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 message.PropertyName == "var_KHLicht")
             {
                 _ = SetCalculatedValuesAsync();
+               //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
             };
             SetInfoSidebarPanelText(message);
-            //TODO Make Async
             _ = SetModelStateAsync();
+            //Task.Run(async () => await SetModelStateAsync());
         }
     }
 
@@ -228,7 +232,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
     private async Task ValidateAllParameterAsync()
     {
-        await _validationParameterDataService.ValidateAllParameterAsync();
+        //var test2 = _parametercontext.Set<GuideModelType>()
+        //        .Where(x => x.Name == "HSM 140")
+        //        .FirstOrDefault();
+
+        //var test = _parametercontext.Set<GuideModelType>()
+        //    .Include(t => t.GuideType)
+        //    .ToList();
+
+        _ = _validationParameterDataService.ValidateAllParameterAsync();
+        _ = _dialogService!.MessageDialogAsync(App.MainRoot!, "Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
+                                                                                    $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
         await SetModelStateAsync();
     }
 
@@ -364,13 +378,25 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         {
                             var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError &&  !string.Equals(downloadResult.CheckOutState,"CheckedOutByOtherUser"))
                             {
                                 FullPathXml = downloadResult.FullFileName;
                                 InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
                                 CanValidateAllParameter = true;
                                 CheckOut = downloadResult.IsCheckOut;
+                            }
+                            else if (string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
+                            {
+                                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                FullPathXml = downloadResult.FullFileName;
+                                InfoSidebarPanelText += $"Achtung Datei wird von {downloadResult.EditedBy} bearbeitet\n";
+                                InfoSidebarPanelText += $"Kein speichern möglich!\n";
+                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                                AuftragsbezogeneXml = true;
+                                CanValidateAllParameter = true;
+                                CheckOut = false;
+                                LikeEditParameter = false;
                             }
                             else
                             {

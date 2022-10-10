@@ -111,7 +111,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     FontSize="22"
-                    Text="{x:Bind ItemSource['var_A_Kabine'].Value}" />
+                    Text="{x:Bind ItemSource['var_A_Kabine'].Value, Mode=TwoWay}" />
                 <TextBlock
                     VerticalAlignment="Center"
                     FontSize="18"
@@ -126,7 +126,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     FontSize="22"
-                    Text="{x:Bind ItemSource['var_Personen'].Value}" />
+                    Text="{x:Bind ItemSource['var_Personen'].Value, Mode=TwoWay}" />
                 <TextBlock
                     VerticalAlignment="Center"
                     FontSize="18"

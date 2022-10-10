@@ -223,7 +223,7 @@
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="5,0,0,0"
+                        Margin="5,0,5,0"
                         Header="Auftragsnummer"
                         IsReadOnly="True"
                         PlaceholderText="Auftragsnummer"
@@ -237,7 +237,7 @@
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        Margin="5,0,0,0"
+                        Margin="5,0,5,0"
                         Header="Fabriknummer"
                         PlaceholderText="Fabriknummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_FabrikNummer'].Value, Mode=TwoWay}" />
@@ -506,6 +506,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="35" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="35" />
                             </Grid.ColumnDefinitions>
                             <TextBox
                                 Grid.Column="0"
@@ -517,6 +519,21 @@
                                 TextAlignment="Right" />
                             <TextBlock
                                 Grid.Column="1"
+                                Margin="0,0,5,5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                FontSize="16"
+                                Text="kg" />
+                            <TextBox
+                                Grid.Column="2"
+                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                Header="reduzierte Nutzlast Q' [kg]"
+                                PlaceholderText="Q'"
+                                Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Column="3"
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"

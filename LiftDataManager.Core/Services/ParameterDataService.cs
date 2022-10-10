@@ -41,6 +41,12 @@ public class ParameterDataService : IParameterDataService
 
     public async Task<string> SaveParameterAsync(Parameter parameter, string path)
     {
+        FileInfo AutoDeskTransferInfo = new(path);
+        if (AutoDeskTransferInfo.IsReadOnly)
+        {
+            return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
+        }
+
         XElement doc = XElement.Load(path);
 
         // Find a specific customer
@@ -67,6 +73,12 @@ public class ParameterDataService : IParameterDataService
 
     public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
     {
+        FileInfo AutoDeskTransferInfo = new(path);
+        if (AutoDeskTransferInfo.IsReadOnly)
+        {
+            return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
+        }
+
         var infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
 
         XElement doc = XElement.Load(path);
