@@ -25,17 +25,13 @@ public class CustomInputStringConveter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        string convertedString;
-
-        if (value == null)
+        if  (string.IsNullOrWhiteSpace((string)value))
         {
-            return string.Empty;
+            return "Benutzerdefinierte Variable: 0";
         }
         else if (!((string)value).StartsWith("Benutzerdefinierte Variable: "))
         {
-            convertedString = "Benutzerdefinierte Variable: " + value;
-
-            return convertedString;
+            return "Benutzerdefinierte Variable: " + value;
         }
         return value;
     }
