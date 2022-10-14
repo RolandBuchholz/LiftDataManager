@@ -4,7 +4,6 @@ namespace LiftDataManager.ViewModels;
 
 public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware , IRecipient<AreaPersonsRequestMessageAsync>
 {
-
     public Dictionary<int, TableRow<int, double>> Tabelle6 { get; set; } = new();
     public Dictionary<int, TableRow<int, double>> Tabelle7 { get; set; } = new();
     public Dictionary<int, TableRow<int, double>> Tabelle8 { get; set; } = new();
@@ -77,10 +76,10 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
     public double TuerEinbauC => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TuerEinbauC");
     public double TuerEinbauD => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TuerEinbauD");
 
-    public CarDoor? KabinenTuerA => ZugangA ? GetCarDoorDetails() : null;
-    public CarDoor? KabinenTuerB => ZugangB ? GetCarDoorDetails() : null;
-    public CarDoor? KabinenTuerC => ZugangC ? GetCarDoorDetails() : null;
-    public CarDoor? KabinenTuerD => ZugangD ? GetCarDoorDetails() : null;
+    public CarDoorDesignParameter? KabinenTuerA => ZugangA ? GetCarDoorDetails() : null;
+    public CarDoorDesignParameter? KabinenTuerB => ZugangB ? GetCarDoorDetails() : null;
+    public CarDoorDesignParameter? KabinenTuerC => ZugangC ? GetCarDoorDetails() : null;
+    public CarDoorDesignParameter? KabinenTuerD => ZugangD ? GetCarDoorDetails() : null;
 
     public string InfoZugangA => NutzflaecheZugangA == 0 && ZugangA ? " Tiefe < 100" : string.Empty;
     public string InfoZugangB => NutzflaecheZugangB == 0 && ZugangB ? " Tiefe < 100" : string.Empty;
@@ -150,7 +149,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
         return false;
     }
 
-    private double GetCarDoorArea(CarDoor? kabinenTuer, [CallerMemberName] string membername = "")
+    private double GetCarDoorArea(CarDoorDesignParameter? kabinenTuer, [CallerMemberName] string membername = "")
     {
         var tuerEinbau = membername switch
         {
@@ -225,7 +224,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
     // Logic zur Auswahl fehlt noch 
     // CarDoor Model am sinnvollsten schon bei der AuswahlTüren erstellen und in einem ComponentModelsdictionary verwalten
 
-    private CarDoor GetCarDoorDetails([CallerMemberName] string membername = "")
+    private CarDoorDesignParameter GetCarDoorDetails([CallerMemberName] string membername = "")
     {
         // Workaround da TürModell aktuell noch keine Türbreite besitzt
         var tuerbreite = membername switch
@@ -237,7 +236,7 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
             _ => 0,
         };
 
-        return new CarDoor
+        return new CarDoorDesignParameter
         {
             Name = "Meiller TTK 25",
             Hersteller = "Meiller",

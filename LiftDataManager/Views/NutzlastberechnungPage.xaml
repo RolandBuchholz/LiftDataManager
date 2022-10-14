@@ -3,12 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
-    xmlns:componentmodels="using:LiftDataManager.Core.Models.ComponentModels"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:sys="using:System"
     xmlns:templateselectors="using:LiftDataManager.Controls.TemplateSelectors"
     mc:Ignorable="d">
 
@@ -618,7 +618,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NennlastTabelle6, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.NennlastTabelle6)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -643,7 +643,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NennlastTabelle7, Mode=OneWay}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.NennlastTabelle7)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"

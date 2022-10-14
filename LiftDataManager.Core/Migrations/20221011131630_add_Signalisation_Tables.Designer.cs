@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221011131630_add_Signalisation_Tables")]
+    partial class add_Signalisation_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -1366,215 +1368,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("StylusPlateMaterials", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.CarDoor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DoorPanelCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("DoorPanelSpace")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("DoorPanelWidth")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Manufacturer")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("MinimalMountingSpace")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("SillWidth")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("TypeExaminationCertificateId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TypeExaminationCertificateId");
-
-                    b.ToTable("CarDoors", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorControl", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorControls", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DoorOpeningType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("DoorPanelCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorGroups", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorGuard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorGuards", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorLockingDevice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorLockingDevices", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorMaterials", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorSill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorSills", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorStandard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorStandards", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftDoorTypes", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.ShaftDoor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DoorPanelCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Manufacturer")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("SillWidth")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("TypeExaminationCertificateId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TypeExaminationCertificateId");
-
-                    b.ToTable("ShaftDoors", (string)null);
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.TypeExaminationCertificate", b =>
                 {
                     b.Property<int>("Id")
@@ -1713,28 +1506,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("ParameterTypeCode");
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.CarDoor", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.TypeExaminationCertificate", "TypeExaminationCertificate")
-                        .WithMany("CarDoors")
-                        .HasForeignKey("TypeExaminationCertificateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TypeExaminationCertificate");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.ShaftDoor", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.TypeExaminationCertificate", "TypeExaminationCertificate")
-                        .WithMany("ShaftDoors")
-                        .HasForeignKey("TypeExaminationCertificateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TypeExaminationCertificate");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
                 {
                     b.Navigation("LiftTypes");
@@ -1779,15 +1550,11 @@ namespace LiftDataManager.Core.Migrations
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.TypeExaminationCertificate", b =>
                 {
-                    b.Navigation("CarDoors");
-
                     b.Navigation("LiftPositionSystems");
 
                     b.Navigation("OverspeedGovernors");
 
                     b.Navigation("SafetyGearModelTypes");
-
-                    b.Navigation("ShaftDoors");
                 });
 #pragma warning restore 612, 618
         }

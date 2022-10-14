@@ -241,8 +241,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         //    .ToList();
 
         _ = _validationParameterDataService.ValidateAllParameterAsync();
-        _ = _dialogService!.MessageDialogAsync(App.MainRoot!, "Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
-                                                                                    $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
+        if (!CheckoutDialogIsOpen)
+        {
+            _ = _dialogService!.MessageDialogAsync(App.MainRoot!, "Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
+                                                                                       $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
+        }
         await SetModelStateAsync();
     }
 

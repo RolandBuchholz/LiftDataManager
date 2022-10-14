@@ -10,5 +10,6 @@ public class OverspeedGovernorConfig : BaseModelBuilder<OverspeedGovernor>
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
+        builder.Property(x => x.TypeExaminationCertificateId);
     }
 }

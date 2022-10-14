@@ -1,6 +1,6 @@
-﻿using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
-namespace LiftDataManager.Core.DataAccessLayer.Configuration.Kabine;
+namespace LiftDataManager.Core.DataAccessLayer.Configuration.Signalisation;
 
 public class CarPanelConfig : BaseModelBuilder<CarPanel>
 {
@@ -10,7 +10,9 @@ public class CarPanelConfig : BaseModelBuilder<CarPanel>
         builder.Property(x => x.Name)
                .HasMaxLength(50)
                .IsRequired();
-        builder.Property(x => x.WeightPerSquareMeter)
+        builder.Property(x => x.Weight)
+               .IsRequired();
+        builder.Property(x => x.Weight)
                .IsRequired();
     }
 }

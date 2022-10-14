@@ -22,13 +22,4 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataAccessLayer\Configuration\Signalisation\" />
-    <Folder Include="DataAccessLayer\Configuration\Tueren\" />
-    <Folder Include="DataAccessLayer\Models\Signalisation\" />
-    <Folder Include="DataAccessLayer\Models\Sonstiges\" />
-    <Folder Include="DataAccessLayer\Models\Tueren\" />
-    <Folder Include="DataAccessLayer\Models\Wartung\" />
-  </ItemGroup>
 </Project>

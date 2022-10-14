@@ -6,11 +6,11 @@ public class TypeExaminationCertificateConfig : BaseModelBuilder<TypeExamination
     {
         base.Configure(builder);
         builder.Property(x => x.CertificateNumber)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
         builder.Property(x => x.ManufacturerName)
-            .HasMaxLength(50)
-            .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
         builder.HasMany(t => t.SafetyGearModelTypes)
                .WithOne(g => g.TypeExaminationCertificate)
                .HasForeignKey(t => t.TypeExaminationCertificateId);
@@ -18,6 +18,12 @@ public class TypeExaminationCertificateConfig : BaseModelBuilder<TypeExamination
                .WithOne(g => g.TypeExaminationCertificate)
                .HasForeignKey(t => t.TypeExaminationCertificateId);
         builder.HasMany(t => t.LiftPositionSystems)
+               .WithOne(g => g.TypeExaminationCertificate)
+               .HasForeignKey(t => t.TypeExaminationCertificateId);
+        builder.HasMany(t => t.CarDoors)
+               .WithOne(g => g.TypeExaminationCertificate)
+               .HasForeignKey(t => t.TypeExaminationCertificateId);
+        builder.HasMany(t => t.ShaftDoors)
                .WithOne(g => g.TypeExaminationCertificate)
                .HasForeignKey(t => t.TypeExaminationCertificateId);
     }

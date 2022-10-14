@@ -1,7 +1,8 @@
 ﻿namespace LiftDataManager.Core.Models.ComponentModels;
 
-public class CarDoor
+public class CarDoorDesignParameter
 {
+    //TODO Use DataBaseModel
     public string? Name{get; set;}
     public string? Hersteller{get; set;}
     public string? Typ{get; set;}

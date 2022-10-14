@@ -81,10 +81,10 @@
                     <TextBox
                         x:Name="AuftragsTextbox"
                         MinWidth="125"
+                        ui:TextBoxExtensions.Regex="[0-9-VP]"
                         ui:TextBoxExtensions.ValidationMode="Dynamic"
-                        ui:TextBoxExtensions.ValidationType="Number"
                         IsReadOnly="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
-                        MaxLength="7"
+                        MaxLength="10"
                         PlaceholderText="Auftragsnummer"
                         Text="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Interactivity:Interaction.Behaviors>
