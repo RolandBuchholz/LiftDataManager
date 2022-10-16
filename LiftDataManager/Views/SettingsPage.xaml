@@ -100,233 +100,198 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" MinWidth="400" />
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="ContentArea">
-                <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <labs:SettingsCard
-                        Description="Auswahl Theme"
-                        Header="Theme"
-                        Icon="&#xE12B;">
-                        <StackPanel Margin="0,0,100,0">
-                            <RadioButton
-                                x:Uid="Settings_Theme_Light"
-                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                FontSize="15"
-                                GroupName="AppTheme"
-                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
-                                <RadioButton.CommandParameter>
-                                    <xaml:ElementTheme>Light</xaml:ElementTheme>
-                                </RadioButton.CommandParameter>
-                            </RadioButton>
-                            <RadioButton
-                                x:Uid="Settings_Theme_Dark"
-                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                FontSize="15"
-                                GroupName="AppTheme"
-                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
-                                <RadioButton.CommandParameter>
-                                    <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                                </RadioButton.CommandParameter>
-                            </RadioButton>
-                            <RadioButton
-                                x:Uid="Settings_Theme_Default"
-                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                FontSize="15"
-                                GroupName="AppTheme"
-                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
-                                <RadioButton.CommandParameter>
-                                    <xaml:ElementTheme>Default</xaml:ElementTheme>
-                                </RadioButton.CommandParameter>
-                            </RadioButton>
-                        </StackPanel>
-                    </labs:SettingsCard>
-                    <labs:SettingsCard
-                        Description="Auswahl AccentColor"
-                        Header="AccentColor"
-                        Icon="&#xE193;">
-                        <ToggleSwitch
-                            x:Name="SwitchAccentColor"
-                            Margin="0,0,50,0"
-                            IsOn="{x:Bind ViewModel.CustomAccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OffContent="AccentColor Blue"
-                            OnContent="AccentColor Default">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Toggled">
-                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.SwitchAccentColorCommand}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </ToggleSwitch>
-                    </labs:SettingsCard>
-                    <labs:SettingsCard
-                        Description="Adminmode für mehr Berechtigungen"
-                        Header="Adminmode"
-                        Icon="&#xE1A7;">
-                        <ToggleSwitch
-                            x:Name="SwitchAdminmode"
-                            Margin="0,0,20,0"
-                            IsOn="{x:Bind ViewModel.Adminmode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OffContent="Adminmode deactivated"
-                            OnContent="Adminmode activated">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Toggled">
-                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </ToggleSwitch>
-                    </labs:SettingsCard>
+            <ScrollViewer>
+                <StackPanel x:Name="ContentArea" Margin="0,0,5,0">
+                    <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                    <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                        <labs:SettingsCard Description="Auswahl Theme" Header="Theme">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE12B;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <StackPanel Margin="0,0,100,0">
+                                <RadioButton
+                                    x:Uid="Settings_Theme_Light"
+                                    Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                    FontSize="15"
+                                    GroupName="AppTheme"
+                                    IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
+                                    <RadioButton.CommandParameter>
+                                        <xaml:ElementTheme>Light</xaml:ElementTheme>
+                                    </RadioButton.CommandParameter>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Uid="Settings_Theme_Dark"
+                                    Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                    FontSize="15"
+                                    GroupName="AppTheme"
+                                    IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
+                                    <RadioButton.CommandParameter>
+                                        <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                                    </RadioButton.CommandParameter>
+                                </RadioButton>
+                                <RadioButton
+                                    x:Uid="Settings_Theme_Default"
+                                    Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                    FontSize="15"
+                                    GroupName="AppTheme"
+                                    IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
+                                    <RadioButton.CommandParameter>
+                                        <xaml:ElementTheme>Default</xaml:ElementTheme>
+                                    </RadioButton.CommandParameter>
+                                </RadioButton>
+                            </StackPanel>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard Description="Auswahl AccentColor" Header="AccentColor">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE193;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch
+                                x:Name="SwitchAccentColor"
+                                Margin="0,0,50,0"
+                                IsOn="{x:Bind ViewModel.CustomAccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="AccentColor Blue"
+                                OnContent="AccentColor Default">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="Toggled">
+                                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.SwitchAccentColorCommand}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </ToggleSwitch>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard Description="Adminmode für mehr Berechtigungen" Header="Adminmode">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE1A7;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch
+                                x:Name="SwitchAdminmode"
+                                Margin="0,0,20,0"
+                                IsOn="{x:Bind ViewModel.Adminmode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="Adminmode deactivated"
+                                OnContent="Adminmode activated">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="Toggled">
+                                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </ToggleSwitch>
+                        </labs:SettingsCard>
+                        <TextBlock
+                            Margin="5,5,0,5"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Text="Maintenance and updates" />
+                        <labs:SettingsCard Description="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" Header="Update Auswahlparamter">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE117;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <Button
+                                Width="125"
+                                Margin="25,0,25,0"
+                                HorizontalAlignment="Left"
+                                Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
+                                Content="Update"
+                                FontWeight="Bold"
+                                Style="{StaticResource AccentButtonStyle}"
+                                ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
+                        </labs:SettingsCard>
+                        <labs:SettingsExpander Description="Einstellungen der Datenbank" Header="Database">
+                            <labs:SettingsExpander.HeaderIcon>
+                                <FontIcon Glyph="&#xEE94;" />
+                            </labs:SettingsExpander.HeaderIcon>
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard Header="Database Path">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Bottom"
+                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                            CommandParameter="PathZALift">
+                                            <SymbolIcon Symbol="Share" />
+                                        </Button>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
+                        <labs:SettingsExpander Description="Pfade der externen Programme" Header="externe Programme">
+                            <labs:SettingsExpander.HeaderIcon>
+                                <FontIcon Glyph="&#xE118;" />
+                            </labs:SettingsExpander.HeaderIcon>
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard Header="Berchtenbreiter CFP">
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Bottom"
+                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                            CommandParameter="PathCFP">
+                                            <SymbolIcon Symbol="Share" />
+                                        </Button>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Header="Ziehl Abegg Zetalift">
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Bottom"
+                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                            CommandParameter="PathZALift">
+                                            <SymbolIcon Symbol="Share" />
+                                        </Button>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Header="BucherHydraulics Lilo">
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Bottom"
+                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                            CommandParameter="PathLilo">
+                                            <SymbolIcon Symbol="Share" />
+                                        </Button>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Header="Microsoft Excel">
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Bottom"
+                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                            CommandParameter="PathExcel">
+                                            <SymbolIcon Symbol="Share" />
+                                        </Button>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
+                    </StackPanel>
                     <TextBlock
                         Margin="5,5,0,5"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="Maintenance and updates" />
-                    <labs:SettingsCard
-                        Description="Es werden die AuswahlParameter aus der Spezifikation aktualisiert"
-                        Header="Update Auswahlparamter"
-                        Icon="&#xE117;">
-                        <Button
-                            Width="125"
-                            Margin="25,0,25,0"
-                            HorizontalAlignment="Left"
-                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
-                            Content="Update"
-                            FontWeight="Bold"
-                            Style="{StaticResource AccentButtonStyle}"
-                            ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
-                    </labs:SettingsCard>
-                    <labs:SettingsCard
-                        Description="Einstellungen der Datenbank"
-                        Header="Database"
-                        Icon="&#xEE94;">
-                        <Button
-                            Width="125"
-                            Margin="25,0,25,0"
-                            HorizontalAlignment="Left"
-                            Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
-                            Content="Einstellungen"
-                            FontWeight="Bold"
-                            Style="{StaticResource AccentButtonStyle}" />
-                    </labs:SettingsCard>
-                    <labs:SettingsCard
-                        Description="Pfade der externen Programme"
-                        Header="externe Programme"
-                        Icon="&#xE118;">
-                        <Button
-                            Width="125"
-                            Margin="25,0,25,0"
-                            HorizontalAlignment="Left"
-                            Content="Einstellungen"
-                            FontWeight="Bold"
-                            Style="{StaticResource AccentButtonStyle}">
-                            <Button.Flyout>
-                                <Flyout>
-                                    <StackPanel>
-                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Programmpfade" />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <TextBox
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="350"
-                                                Margin="0,15,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                Header="Berchtenbreiter CFP"
-                                                Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
-                                            <Button
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,0"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
-                                                CommandParameter="PathCFP">
-                                                <SymbolIcon Symbol="Share" />
-                                            </Button>
-                                            <TextBox
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Width="350"
-                                                Margin="0,5,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                Header="Ziehl Abegg Zetalift"
-                                                Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
-                                            <Button
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom"
-                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
-                                                CommandParameter="PathZALift">
-                                                <SymbolIcon Symbol="Share" />
-                                            </Button>
-                                            <TextBox
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Width="350"
-                                                Margin="0,5,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                Header="BucherHydraulics Lilo"
-                                                Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
-                                            <Button
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom"
-                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
-                                                CommandParameter="PathLilo">
-                                                <SymbolIcon Symbol="Share" />
-                                            </Button>
-                                            <TextBox
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Width="350"
-                                                Margin="0,5,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                Header="Microsoft Excel"
-                                                Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
-                                            <Button
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,0"
-                                                VerticalAlignment="Bottom"
-                                                Command="{x:Bind ViewModel.UpdateFilePathCommand}"
-                                                CommandParameter="PathExcel">
-                                                <SymbolIcon Symbol="Share" />
-                                            </Button>
-                                        </Grid>
-                                    </StackPanel>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
+                        Text="Description" />
+                    <labs:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE128;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Description>
+                            <StackPanel>
+                                <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
+                                    Anwendung zum schnellen Überprüfen und Bearbeiten der AutoDeskTranfer.xml.<LineBreak />
+                                    Das änderen von schreibgeschützen Parametern ist im Adninmode möglich.</TextBlock>
+                                <TextBlock
+                                    Margin="0,10,0,0"
+                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                    Text="©Buchholz Roland" />
+                            </StackPanel>
+                        </labs:SettingsCard.Description>
                     </labs:SettingsCard>
                 </StackPanel>
-                <TextBlock
-                    Margin="5,5,0,5"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Text="Description" />
-                <labs:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Icon="&#xE128;">
-                    <labs:SettingsCard.Description>
-                        <StackPanel>
-                            <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
-                                Anwendung zum schnellen Überprüfen und Bearbeiten der AutoDeskTranfer.xml.<LineBreak />
-                                Das änderen von schreibgeschützen Parametern ist im Adninmode möglich.</TextBlock>
-                            <TextBlock
-                                Margin="0,10,0,0"
-                                Style="{ThemeResource BodyTextBlockStyle}"
-                                Text="©Buchholz Roland" />
-                        </StackPanel>
-                    </labs:SettingsCard.Description>
-                </labs:SettingsCard>
-            </StackPanel>
+            </ScrollViewer>
             <Grid
                 Grid.Column="1"
                 MinWidth="400"
