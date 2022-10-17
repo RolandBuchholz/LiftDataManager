@@ -109,6 +109,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         if (!string.Equals(value, _settingService.PathExcel)) _settingService.SetSettingsAsync(nameof(PathExcel), value);
     }
 
+    [ObservableProperty]
+    private string? pathDataBase;
+    partial void OnPathDataBaseChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathDataBase)) _settingService.SetSettingsAsync(nameof(PathDataBase), value);
+    }
+
     [RelayCommand]
     private async Task SwitchThemeAsync(ElementTheme param)
     {
@@ -188,6 +196,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             case nameof(PathExcel):
                 PathExcel = newFilePath;
                 break;
+            case nameof(PathDataBase):
+                PathDataBase = newFilePath;
+                break;
             default:
                 break;
         }
@@ -230,6 +241,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         PathZALift = _settingService.PathZALift;
         PathLilo = _settingService.PathLilo;
         PathExcel = _settingService.PathExcel;
+        PathDataBase = _settingService.PathDataBase;
     }
     public void OnNavigatedFrom()
     {

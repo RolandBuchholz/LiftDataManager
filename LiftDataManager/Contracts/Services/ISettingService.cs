@@ -8,6 +8,7 @@ public interface ISettingService
     public string? PathZALift { get; set; }
     public string? PathLilo { get; set; }
     public string? PathExcel { get; set; }
+    public string? PathDataBase { get; set; }
 
     Task InitializeAsync();
     Task SetSettingsAsync(string key, object setting);

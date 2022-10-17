@@ -8,6 +8,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyPathZALift = "AppPathZALiftRequested";
     private const string SettingsKeyPathLilo = "AppPathLiloRequested";
     private const string SettingsKeyPathExcel = "AppPathExcelRequested";
+    private const string SettingsKeyPathDataBase = "AppPathDataBaseRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -22,6 +23,7 @@ public class SettingsService : ISettingService
     public string? PathZALift { get; set; }
     public string? PathLilo { get; set; }
     public string? PathExcel { get; set; }
+    public string? PathDataBase { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -56,6 +58,10 @@ public class SettingsService : ISettingService
             case nameof(PathExcel):
                 PathExcel = (string)value;
                 await SaveSettingsAsync(key, PathExcel);
+                return;
+            case nameof(PathDataBase):
+                PathDataBase = (string)value;
+                await SaveSettingsAsync(key, PathDataBase);
                 return;
             default:
                 return;
@@ -110,6 +116,16 @@ public class SettingsService : ISettingService
         {
             PathExcel = @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE";
         }
+
+        var storedPathDataBase = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathDataBase);
+        if (!string.IsNullOrWhiteSpace(storedPathDataBase))
+        {
+            PathDataBase = storedPathDataBase;
+        }
+        else
+        {
+            PathDataBase = @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db";
+        }
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -133,6 +149,9 @@ public class SettingsService : ISettingService
                 return;
             case nameof(PathExcel):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyPathExcel, value);
+                return;
+            case nameof(PathDataBase):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyPathDataBase, value);
                 return;
             default:
                 return;
