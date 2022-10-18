@@ -232,14 +232,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
     private async Task ValidateAllParameterAsync()
     {
-        //var test2 = _parametercontext.Set<GuideModelType>()
-        //        .Where(x => x.Name == "HSM 140")
-        //        .FirstOrDefault();
-
-        //var test = _parametercontext.Set<GuideModelType>()
-        //    .Include(t => t.GuideType)
-        //    .ToList();
-
         _ = _validationParameterDataService.ValidateAllParameterAsync();
         if (!CheckoutDialogIsOpen)
         {
@@ -247,6 +239,20 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                                                                        $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
         }
         await SetModelStateAsync();
+    }
+
+    public async Task InitializParametereAsync()
+    {
+        var test2 = _parametercontext.Set<GuideModelType>()
+        .Where(x => x.Name == "HSM 140")
+        .FirstOrDefault();
+
+        var test = _parametercontext.Set<GuideModelType>()
+            .Include(t => t.GuideType)
+            .ToList();
+
+
+        await LoadDataAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -540,7 +546,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
         ParamterDictionary ??= new();
         if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        if (ParamterDictionary.Values.Count == 0) _ = LoadDataAsync(); 
+        if (ParamterDictionary.Values.Count == 0) _ = InitializParametereAsync();
         _ = SetCalculatedValuesAsync();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&

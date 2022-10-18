@@ -1,14 +1,7 @@
 ﻿namespace LiftDataManager.Models;
 
-public class LocalSettingsOptions
-{
-    public string? ApplicationDataFolder
+    public class LocalSettingsOptions
     {
-        get; set;
+        public string? ApplicationDataFolder {get; set;}
+        public string? LocalSettingsFile {get; set;}
     }
-
-    public string? LocalSettingsFile
-    {
-        get; set;
-    }
-}

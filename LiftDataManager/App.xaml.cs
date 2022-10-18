@@ -1,18 +1,18 @@
-﻿using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Windows.Storage;
+
 
 namespace LiftDataManager;
 
 public partial class App : Application
 {
-    public IHost Host
-    {
-        get;
-    }
+    public IHost Host {get;}
 
     public static T GetService<T>()
         where T : class
@@ -27,11 +27,7 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static FrameworkElement? MainRoot
-    {
-        get; set;
-    }
-
+    public static FrameworkElement? MainRoot {get; set;}
     public App()
     {
         InitializeComponent();
@@ -57,7 +53,7 @@ public partial class App : Application
             services.AddSingleton<IDialogService, DialogService>();
 
             // DataBase Services
-            services.AddDbContext<ParameterContext>();
+            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString()));
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
@@ -118,6 +114,35 @@ public partial class App : Application
         Build();
 
         UnhandledException += App_UnhandledException;
+    }
+    private string GetConnectionString()
+    {
+        string? dbPath;
+
+        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var obj))
+        {
+            if (string.IsNullOrWhiteSpace((string)obj))
+            {
+                dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+            }
+            else
+            {
+                dbPath = JsonConvert.DeserializeObject<string>((string)obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+            } 
+        }
+        else
+        {
+            dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+        }
+
+        var connectionString = new SqliteConnectionStringBuilder()
+        {
+            DataSource = dbPath,
+            Mode = SqliteOpenMode.ReadOnly,
+            ForeignKeys = true,
+        }.ToString();
+
+        return connectionString;
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
