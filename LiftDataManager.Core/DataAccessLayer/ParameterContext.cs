@@ -6,14 +6,9 @@ public class ParameterContext : DbContext
     public DbSet<ParameterCategory>? ParameterCategorys { get; set; }
     public DbSet<ParameterTypeCode>? TypeCodes { get; set; }
 
-    private readonly string connectionString = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db;foreign keys = true;";
-
     public ParameterContext(DbContextOptions options) : base(options)
     {
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    => options.UseSqlite($"Data Source={connectionString}");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
