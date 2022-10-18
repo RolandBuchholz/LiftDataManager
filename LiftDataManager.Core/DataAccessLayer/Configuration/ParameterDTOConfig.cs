@@ -1,6 +1,4 @@
-﻿using static LiftDataManager.Core.Models.ParameterBase;
-
-namespace LiftDataManager.Core.DataAccessLayer.Configuration;
+﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration;
 
 public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
 {
@@ -22,6 +20,5 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
         builder.Property(x => x.Comment)
                  .IsRequired()
                  .HasMaxLength(50);
-        //parameter.Property(x => x.DropDownList);
     }
 }
