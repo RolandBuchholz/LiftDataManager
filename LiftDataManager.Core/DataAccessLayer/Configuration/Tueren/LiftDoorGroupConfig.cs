@@ -14,5 +14,7 @@ public class LiftDoorGroupConfig : BaseModelBuilder<LiftDoorGroup>
                .HasMaxLength(20)
                .IsRequired();
         builder.Property(x => x.DoorPanelCount);
+        builder.Property(x => x.CarDoorId);
+        builder.Property(x => x.ShaftDoorId);
     }
 }

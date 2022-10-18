@@ -19,6 +19,9 @@ public class CarDoorConfig : BaseModelBuilder<CarDoor>
         builder.Property(x => x.DoorPanelSpace);
         builder.Property(x => x.DoorPanelCount);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.HasMany(t => t.LiftDoorGroups)
+               .WithOne(g => g.CarDoor)
+               .HasForeignKey(t => t.CarDoorId);
     }
 }
 

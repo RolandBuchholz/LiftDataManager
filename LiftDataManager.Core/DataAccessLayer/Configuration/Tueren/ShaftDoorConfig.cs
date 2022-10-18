@@ -16,5 +16,8 @@ public class ShaftDoorConfig : BaseModelBuilder<ShaftDoor>
         builder.Property(x => x.SillWidth);
         builder.Property(x => x.DoorPanelCount);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.HasMany(t => t.LiftDoorGroups)
+               .WithOne(g => g.ShaftDoor)
+               .HasForeignKey(t => t.ShaftDoorId);
     }
 }
