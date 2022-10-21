@@ -44,8 +44,12 @@
                         VerticalAlignment="Top"
                         FontSize="36"
                         IsTextSelectionEnabled="True"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="{x:Bind ListDetailsMenuItem.Name, Mode=OneWay}" />
+                        Style="{ThemeResource TitleTextBlockStyle}">
+                        <Run Text="{x:Bind ListDetailsMenuItem.DisplayName, Mode=OneWay}" />
+                        <Run FontSize="18" Text="(" />
+                        <Run FontSize="18" Text="{x:Bind ListDetailsMenuItem.Name, Mode=OneWay}" />
+                        <Run FontSize="18" Text=")" />
+                    </TextBlock>
                     <StackPanel x:Name="statusGroup" Margin="{StaticResource XSmallTopMargin}">
                         <TextBlock
                             Margin="10,5,10,5"
@@ -66,7 +70,7 @@
                             FontSize="18"
                             IsTextSelectionEnabled="True"
                             Style="{ThemeResource BodyTextBlockStyle}"
-                            Text="{x:Bind ListDetailsMenuItem.ParameterCategory}" />
+                            Text="{x:Bind ListDetailsMenuItem.ParameterCategory, Mode=OneWay}" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -107,25 +111,24 @@
                     FontWeight="Bold"
                     Style="{StaticResource AccentButtonStyle}" />
             </StackPanel>
-            <StackPanel  Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal" Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}">
                 <SymbolIcon
                     Margin="10"
                     Foreground="IndianRed"
-                    Symbol="ReportHacked">                  
-                </SymbolIcon>
+                    Symbol="ReportHacked" />
                 <TextBlock
-                    FontSize="22"
                     VerticalAlignment="Center"
+                    FontSize="22"
                     Foreground="IndianRed"
                     Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="Validierungsfehler"/>
+                    Text="Validierungsfehler" />
             </StackPanel>
             <TextBlock
-                FontSize="18"
                 Margin="10,0,0,0"
+                FontSize="18"
                 Foreground="IndianRed"
                 Style="{ThemeResource BodyTextBlockStyle}"
-                Text= "{x:Bind ListDetailsMenuItem.Errors, Mode=OneWay}"
+                Text="{x:Bind ListDetailsMenuItem.Errors, Mode=OneWay}"
                 Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
         </StackPanel>
     </ScrollViewer>

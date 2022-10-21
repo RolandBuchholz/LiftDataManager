@@ -57,7 +57,6 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
-            services.AddSingleton<IAuswahlParameterDataService, AuswahlParameterDataService>();
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();
             services.AddSingleton<IVaultDataService, VaultDataService>();
             services.AddSingleton<IFileService, FileService>();
@@ -115,7 +114,7 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
     }
-    private string GetConnectionString()
+    private static string GetConnectionString()
     {
         string? dbPath;
 

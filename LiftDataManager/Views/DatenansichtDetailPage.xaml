@@ -52,8 +52,12 @@
                             IsTextSelectionEnabled="True"
                             RelativePanel.AlignTopWithPanel="True"
                             RelativePanel.RightOf="itemHero"
-                            Style="{ThemeResource TitleTextBlockStyle}"
-                            Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" />
+                            Style="{ThemeResource TitleTextBlockStyle}">
+                            <Run Text="{x:Bind ViewModel.Item.DisplayName, Mode=OneWay}" />
+                            <Run FontSize="18" Text="(" />
+                            <Run FontSize="18" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" />
+                            <Run FontSize="18" Text=")" />
+                        </TextBlock>
                         <StackPanel x:Name="propertiesGroup1" RelativePanel.Below="itemHero">
                             <StackPanel x:Name="statusGroup" Margin="{StaticResource XSmallTopMargin}">
                                 <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Parametertyp" />
@@ -62,7 +66,7 @@
                                     FontSize="18"
                                     IsTextSelectionEnabled="True"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Text="{x:Bind ViewModel.Item.TypeCode}" />
+                                    Text="{x:Bind ViewModel.Item.TypeCode, Mode=OneWay}" />
                                 <TextBlock
                                     Margin="0,10,0,0"
                                     Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -72,7 +76,7 @@
                                     FontSize="18"
                                     IsTextSelectionEnabled="True"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Text="{x:Bind ViewModel.Item.ParameterCategory}" />
+                                    Text="{x:Bind ViewModel.Item.ParameterCategory, Mode=OneWay}" />
                             </StackPanel>
                         </StackPanel>
                     </RelativePanel>

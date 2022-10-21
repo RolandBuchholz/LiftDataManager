@@ -9,16 +9,18 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
         builder.Property(x => x.ParameterCategoryId);
         builder.Property(x => x.ParameterTypeCodeId);
         builder.Property(x => x.Name)
-                 .HasMaxLength(50)
-                 .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
         builder.Property(x => x.DisplayName)
-                 .HasMaxLength(50)
-                 .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
         builder.Property(x => x.Value);
         builder.Property(x => x.IsKey);
         builder.Property(x => x.DefaultUserEditable);
         builder.Property(x => x.Comment)
-                 .IsRequired()
-                 .HasMaxLength(50);
+               .IsRequired()
+               .HasMaxLength(50);
+        builder.Property(x => x.DropdownList)
+               .HasMaxLength(50);
     }
 }

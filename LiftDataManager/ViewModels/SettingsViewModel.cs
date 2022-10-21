@@ -10,14 +10,12 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private readonly IThemeSelectorService _themeSelectorService;
     private CurrentSpeziProperties? CurrentSpeziProperties = new();
     private readonly ISettingService _settingService;
-    private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IDialogService _dialogService;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IAuswahlParameterDataService auswahlParameterDataService, IDialogService dialogService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService)
     {
         _themeSelectorService = themeSelectorService;
         _settingService = settingsSelectorService;
-        _auswahlParameterDataService = auswahlParameterDataService;
         _dialogService = dialogService;
         ElementTheme = _themeSelectorService.Theme;
         VersionDescription = GetVersionDescription();
@@ -157,18 +155,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [RelayCommand]
     private async Task UpdateAuswahlParameterAsync()
     {
-        var watch = Stopwatch.StartNew();
-        InfoText += "Daten aus Spezifikation werden geladen\n";
-        InfoText += "Loading ...\n";
-        var result = await Task.Run(() => _auswahlParameterDataService.UpdateAuswahlparameterAsync());
-        var updateDataInfo = new StringBuilder();
-        updateDataInfo.AppendLine("Aktualisierte Daten: ");
-        updateDataInfo.AppendLine("--------------------");
-        updateDataInfo.AppendLine(result);
-        InfoText += updateDataInfo;
-        var stopTimeMs = watch.ElapsedMilliseconds;
-        InfoText += $"Downloadtime:  {stopTimeMs} ms\n";
-        InfoText += "Daten erfolgreich geladen\n";
+        InfoText += "Datentransfer zwischen Excel-Spezifikation und \n";
+        InfoText += "LiftDataManager wurde durch SQLite ersetzt \n";
+        InfoText += "Setzen Sie den Pfad zur Datenbank! \n";
+        await Task.CompletedTask;
     }
 
     [RelayCommand]

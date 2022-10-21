@@ -2,9 +2,8 @@
 
 public class ParameterContext : DbContext
 {
-    public DbSet<ParameterDto>? Parameters { get; set; }
-    public DbSet<ParameterCategory>? ParameterCategorys { get; set; }
-    public DbSet<ParameterTypeCode>? TypeCodes { get; set; }
+    public DbSet<ParameterDto>? ParameterDtos { get; set; }
+    public DbSet<DropdownValue>? DropdownValues { get; set; }
 
     public ParameterContext(DbContextOptions options) : base(options)
     {

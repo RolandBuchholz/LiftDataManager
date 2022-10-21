@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
-    xmlns:speziControls="using:LiftDataManager.Controls"
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
+    xmlns:speziControls="using:LiftDataManager.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -75,14 +75,14 @@
                         </controls:DataGridTemplateColumn>
                         <controls:DataGridTextColumn
                             Width="150"
-                            Binding="{Binding Name}"
-                            Header="Parametername"
+                            Binding="{Binding DisplayName}"
+                            Header="Displayname"
                             IsReadOnly="True" />
                         <controls:DataGridTextColumn
                             Width="80"
                             Binding="{Binding TypeCode}"
                             CanUserResize="False"
-                            Header="VariablenTyp"
+                            Header="Typ"
                             IsReadOnly="True" />
                         <controls:DataGridTextColumn
                             Width="140"
@@ -123,6 +123,11 @@
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>
+                        <controls:DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding Name}"
+                            Header="interner Name"
+                            IsReadOnly="True" />
                     </controls:DataGrid.Columns>
                 </controls:DataGrid>
             </Grid>

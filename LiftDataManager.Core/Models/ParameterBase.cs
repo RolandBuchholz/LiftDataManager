@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections;
 using System.ComponentModel;
-using System.Globalization;
 
 namespace LiftDataManager.Core.Models;
 public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
@@ -47,6 +46,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     public ParameterTypValue ParameterTyp { get; set; }
     public ParameterCategoryValue ParameterCategory { get; set; }
+    public TypeCodeValue TypeCode { get; set; }
     public readonly Dictionary<string, List<ParameterStateInfo>> parameterErrors = new();
     public char Symbol => (char)SymbolCode;
     public int SymbolCode { get; set; }
@@ -102,36 +102,27 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
 
-    protected int GetSymbolCode(string TypeCode)
+    protected static int GetSymbolCode(TypeCodeValue TypeCode)
     {
-        switch (TypeCode.ToLower(new CultureInfo("de-DE", false)))
+        switch (TypeCode)
         {
-            case "mm":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.mm:
                 return 60220;
-            case "string":
-                ParameterTyp = ParameterTypValue.Text;
+            case TypeCodeValue.String:
                 return 59602;
-            case "kg":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.kg:
                 return 59394;
-            case "oe":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.oE:
                 return 60032;
-            case "boolean":
-                ParameterTyp = ParameterTypValue.Boolean;
+            case TypeCodeValue.Boolean:
                 return 62250;
-            case "mps":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.mps:
                 return 60490;
-            case "m":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.m:
                 return 60614;
-            case "n":
-                ParameterTyp = ParameterTypValue.NumberOnly;
+            case TypeCodeValue.N:
                 return 59394;
-            case "date":
-                ParameterTyp = ParameterTypValue.Date;
+            case TypeCodeValue.Date:
                 return 57699;
             default:
                 return 59412;

@@ -5,7 +5,6 @@
     xmlns:collections="using:CommunityToolkit.Common.Collections"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
@@ -16,7 +15,6 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
-        <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
@@ -32,7 +30,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}" />
+                    <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind DisplayName}" />
                     <TextBlock Style="{StaticResource ListSubTitleStyle}" Text="{x:Bind TypeCode}" />
                 </StackPanel>
             </Grid>

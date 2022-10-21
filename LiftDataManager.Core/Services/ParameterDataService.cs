@@ -1,39 +1,81 @@
 ﻿using System.Xml.Linq;
 using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Helpers;
+using LiftDataManager.Core.DataAccessLayer;
 
 namespace LiftDataManager.Core.Services;
 
 public class ParameterDataService : IParameterDataService
 {
-    private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private readonly ParameterContext _parametercontext;
 
-    public ParameterDataService(IAuswahlParameterDataService auswahlParameterDataService, IValidationParameterDataService validationParameterDataService)
+    public ParameterDataService( IValidationParameterDataService validationParameterDataService, ParameterContext parametercontext)
     {
-        _auswahlParameterDataService = auswahlParameterDataService;
         _validationParameterDataService = validationParameterDataService;
-        _validationParameterDataService = validationParameterDataService;
+        _parametercontext = parametercontext;
+    }
+
+    public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
+    {
+        List<Parameter> parameterList = new();
+
+        var parameterDtos = _parametercontext.ParameterDtos!
+                                             .AsNoTracking()
+                                             .ToList();
+
+        var dropdownValues = _parametercontext.DropdownValues!
+                                              .AsNoTracking()
+                                              .ToList()
+                                              .GroupBy(x => x.Base);
+        foreach (var par in parameterDtos)
+        {
+            var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)
+            {
+                Name = par.Name,
+                DisplayName = par.DisplayName,
+                ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
+                DefaultUserEditable = par.DefaultUserEditable,
+                Comment = par.Comment,
+                IsKey = par.IsKey
+            };
+
+            if (par.DropdownList is not null)
+            {
+                var dropdownList = dropdownValues.FirstOrDefault(x => x.Key == par.DropdownList);
+
+                if (dropdownList != null)
+                {
+                    var dropdownListValues = dropdownList.Select(x => x.Name);
+                    newParameter.DropDownList.Add("(keine Auswahl)");
+                    if (dropdownListValues is not null) newParameter.DropDownList.AddRange(dropdownListValues!);
+                }
+            }
+
+            parameterList.Add(newParameter);    
+        }
+
+        await Task.CompletedTask;
+
+        return parameterList;
     }
 
     public async Task<IEnumerable<Parameter>> LoadParameterAsync(string path)
     {
         XElement doc = XElement.Load(path);
 
-        List<Parameter> parameterList =
-          (from para in doc.Elements("parameters").Elements("ParamWithValue")
-           select new Parameter(
-                                para.Element("name")!.GetAs<string>()!,
-                                para.Element("typeCode")!.GetAs<string>()!,
-                                para.Element("value")!.GetAs<string>()!,
-                                _auswahlParameterDataService,
-                                _validationParameterDataService)
-           {
-               Comment = !string.IsNullOrWhiteSpace(para.Element("comment")?.GetAs<string>()) ? para.Element("comment")!.GetAs<string>() : string.Empty,
-               IsKey =  para.Element("isKey")!.GetAs<bool>(),
-               IsDirty = false,
-           }).ToList();
+        List<Parameter> parameterList = new();
+        //  (from para in doc.Elements("parameters").Elements("ParamWithValue")
+        //   select new Parameter(
+        //                        para.Element("name")!.GetAs<string>()!,
+        //                        para.Element("typeCode")!.GetAs<string>()!,
+        //                        para.Element("value")!.GetAs<string>()!,
+        //                        _validationParameterDataService)
+        //   {
+        //       Comment = !string.IsNullOrWhiteSpace(para.Element("comment")?.GetAs<string>()) ? para.Element("comment")!.GetAs<string>() : string.Empty,
+        //       IsKey =  para.Element("isKey")!.GetAs<bool>(),
+        //       IsDirty = false,
+        //   }).ToList();
 
         await Task.CompletedTask;
         return parameterList;

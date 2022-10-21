@@ -14,4 +14,5 @@ public class ParameterDto : BaseEntity
     public string? Comment;
     public bool IsKey;
     public bool DefaultUserEditable { get; set; }
+    public string? DropdownList { get; set; }
 }

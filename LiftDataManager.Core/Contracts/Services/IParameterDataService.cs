@@ -6,6 +6,8 @@ public interface IParameterDataService
 {
     Task<IEnumerable<Parameter>> LoadParameterAsync(string path);
 
+    Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();
+
     Task<string> SaveParameterAsync(Parameter parameter, string path);
 
     Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path);

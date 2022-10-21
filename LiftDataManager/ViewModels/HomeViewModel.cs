@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
 
@@ -8,17 +7,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
-    private readonly ParameterContext _parametercontext;
     private bool OpenReadOnly { get; set; } = true;
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
-                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService, ParameterContext parametercontext)
+                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
-        _parametercontext = parametercontext;
+
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -101,13 +99,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         foreach (var item in data)
         {
-            if (ParamterDictionary!.ContainsKey(item.Name))
+            if (ParamterDictionary!.ContainsKey(item.Name!))
             {
-                ParamterDictionary[item.Name] = item;
+                ParamterDictionary[item.Name!] = item;
             }
             else
             {
-                ParamterDictionary.Add(item.Name, item);
+                ParamterDictionary.Add(item.Name!, item);
             }
         }
         if (CurrentSpeziProperties is not null)
@@ -241,18 +239,31 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         await SetModelStateAsync();
     }
 
-    public async Task InitializParametereAsync()
+    public async Task InitializeParametereAsync()
     {
-        var test2 = _parametercontext.Set<GuideModelType>()
-        .Where(x => x.Name == "HSM 140")
-        .FirstOrDefault();
+        var data = await _parameterDataService!.InitializeParametereFromDbAsync();
 
-        var test = _parametercontext.Set<GuideModelType>()
-            .Include(t => t.GuideType)
-            .ToList();
-
-
-        await LoadDataAsync();
+        foreach (var item in data)
+        {
+            if (ParamterDictionary!.ContainsKey(item.Name!))
+            {
+                ParamterDictionary[item.Name!] = item;
+            }
+            else
+            {
+                ParamterDictionary.Add(item.Name!, item);
+            }
+        }
+        if (CurrentSpeziProperties is not null)
+        {
+            CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+            _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+        LikeEditParameter = true;
+        OpenReadOnly = true;
+        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
+        await SetCalculatedValuesAsync();
+        await SetModelStateAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -546,7 +557,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
         ParamterDictionary ??= new();
         if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        if (ParamterDictionary.Values.Count == 0) _ = InitializParametereAsync();
+        if (ParamterDictionary.Values.Count == 0) _ = InitializeParametereAsync();
         _ = SetCalculatedValuesAsync();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&

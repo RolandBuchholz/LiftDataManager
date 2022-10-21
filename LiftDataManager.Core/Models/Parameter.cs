@@ -5,27 +5,20 @@ namespace LiftDataManager.Core.Models;
 
 public partial class Parameter : ParameterBase
 {
-    private readonly IAuswahlParameterDataService _auswahlParameterDataService;
     private readonly IValidationParameterDataService _validationParameterDataService;
     public List<string> DropDownList { get; } = new();
     private readonly bool dataImport;
     public bool DefaultUserEditable{get; set;}
 
-    public Parameter(string name, string typeCode, string value, IAuswahlParameterDataService auswahlParameterDataService, IValidationParameterDataService validationParameterDataService) 
+    
+    public Parameter(string value,int parameterTypeCodeId,int parameterTypId, IValidationParameterDataService validationParameterDataService)
     {
-        dataImport = true;
-        _auswahlParameterDataService = auswahlParameterDataService;
         _validationParameterDataService = validationParameterDataService;
+        dataImport = true;
         IsDirty = false;
-        Name = name;
-        TypeCode = typeCode;
+        TypeCode = (TypeCodeValue)parameterTypeCodeId;
+        ParameterTyp = (ParameterTypValue)parameterTypId;
         SymbolCode = GetSymbolCode(TypeCode);
-        if (_auswahlParameterDataService.ParameterHasAuswahlliste(name))
-        {
-            DropDownList = _auswahlParameterDataService.GetListeAuswahlparameter(name);
-            DropDownListValue = value;
-            ParameterTyp = ParameterTypValue.DropDownList;
-        }
 
         Value = ParameterTyp switch
         {
@@ -36,13 +29,12 @@ public partial class Parameter : ParameterBase
             ParameterTypValue.DropDownList => value,
             _ => value,
         };
-
         dataImport = false;
     }
 
-    public string Name {get; set;}
-    public string TypeCode {get; set; }
-
+    public string? Name {get; set;}
+    public string? DisplayName { get; set; }
+    
     public string? Errors => (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
 
     [ObservableProperty]

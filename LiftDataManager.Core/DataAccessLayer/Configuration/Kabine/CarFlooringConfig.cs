@@ -14,5 +14,6 @@ public class CarFlooringConfig : BaseModelBuilder<CarFlooring>
                .IsRequired();
         builder.Property(x => x.Thickness)
                .IsRequired();
+        builder.Property(x => x.SpecialSheet);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221020132002_add_View_DropdownValues")]
+    partial class add_View_DropdownValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -478,17 +480,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("DriveTypes", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.DropdownValue", b =>
-                {
-                    b.Property<string>("Base")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.ToView("DropdownValues");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameBaseType", b =>
                 {
                     b.Property<int>("Id")
@@ -794,9 +785,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("SpecialSheet")
-                        .HasColumnType("INTEGER");
-
                     b.Property<double?>("Thickness")
                         .IsRequired()
                         .HasColumnType("REAL");
@@ -1077,10 +1065,6 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DropdownList")
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
