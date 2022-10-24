@@ -117,10 +117,6 @@ namespace LiftDataManager.Core.Migrations
                        Name
                   FROM Displays
                 UNION ALL
-                SELECT 'DriveSystems' AS Base,
-                       Name
-                  FROM DriveSystems
-                UNION ALL
                 SELECT 'DriveTypes' AS Base,
                        Name
                   FROM DriveTypes

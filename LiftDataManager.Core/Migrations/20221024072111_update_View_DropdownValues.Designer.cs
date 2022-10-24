@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221024072111_update_View_DropdownValues")]
+    partial class update_View_DropdownValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -353,7 +355,7 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DriveSystemTypeId")
+                    b.Property<bool>("IsGearbox")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -362,8 +364,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DriveSystemTypeId");
 
                     b.ToTable("DriveSystems", (string)null);
                 });
@@ -1638,17 +1638,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("DriveType");
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystem", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystemType", "DriveSystemType")
-                        .WithMany("DriveSystems")
-                        .HasForeignKey("DriveSystemTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DriveSystemType");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameType", b =>
                 {
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.CarFrameBaseType", "CarFrameBaseType")
@@ -1799,11 +1788,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
                 {
                     b.Navigation("LiftTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystemType", b =>
-                {
-                    b.Navigation("DriveSystems");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.DriveType", b =>

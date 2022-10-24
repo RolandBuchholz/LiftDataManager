@@ -10,7 +10,6 @@ public class DriveSystemPositionConfig : BaseModelBuilder<DriveSystem>
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
-        builder.Property(x => x.IsGearbox)
-            .IsRequired();
+        builder.Property(x => x.DriveSystemTypeId);
     }
 }

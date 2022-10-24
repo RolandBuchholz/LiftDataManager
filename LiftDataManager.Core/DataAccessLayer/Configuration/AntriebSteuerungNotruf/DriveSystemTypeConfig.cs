@@ -10,5 +10,8 @@ public class DriveSystemTypeConfig : BaseModelBuilder<DriveSystemType>
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
+        builder.HasMany(t => t.DriveSystems)
+               .WithOne(g => g.DriveSystemType)
+               .HasForeignKey(t => t.DriveSystemTypeId);
     }
 }

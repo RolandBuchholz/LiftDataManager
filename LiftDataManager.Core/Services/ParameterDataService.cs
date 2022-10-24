@@ -25,9 +25,11 @@ public class ParameterDataService : IParameterDataService
                                              .ToList();
 
         var dropdownValues = _parametercontext.DropdownValues!
-                                              .AsNoTracking()
-                                              .ToList()
-                                              .GroupBy(x => x.Base);
+                              .AsNoTracking()
+                              .ToList()
+                              .GroupBy(x => x.Base);
+
+
         foreach (var par in parameterDtos)
         {
             var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)

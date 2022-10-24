@@ -3,5 +3,6 @@
 public class DriveSystem : BaseEntity
 {
     public string? Name { get; set; }
-    public bool IsGearbox { get; set; }
+    public DriveSystemType? DriveSystemType { get; set; }
+    public int DriveSystemTypeId { get; set; }
 }
