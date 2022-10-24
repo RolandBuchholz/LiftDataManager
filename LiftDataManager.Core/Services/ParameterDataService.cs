@@ -48,7 +48,8 @@ public class ParameterDataService : IParameterDataService
                 {
                     var dropdownListValues = dropdownList.Select(x => x.Name);
                     newParameter.DropDownList.Add("(keine Auswahl)");
-                    if (dropdownListValues is not null) newParameter.DropDownList.AddRange(dropdownListValues!);
+                    if (dropdownListValues is not null)
+                        newParameter.DropDownList.AddRange(dropdownListValues!);
                 }
             }
 
