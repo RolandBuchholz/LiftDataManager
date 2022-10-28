@@ -272,12 +272,20 @@
                                     Grid.Row="7"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Ersatzmaßnahmen SK"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ErsatzmassnahmenSK'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Ersatzmaßnahmen SK"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ErsatzmassnahmenSK'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                            IsHitTestVisible="False" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Bausatzauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,2,5,2"
@@ -312,12 +320,20 @@
                                     Grid.Row="8"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Ersatzmaßnahmen SG"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ErsatzmassnahmenSG'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Ersatzmaßnahmen SG"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ErsatzmassnahmenSG'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                            IsHitTestVisible="False" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Bausatzauswahl  gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,2,5,2"

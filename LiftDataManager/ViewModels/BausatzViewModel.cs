@@ -39,7 +39,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
                 GetFangrahmengewicht(message.NewValue);
             };
             SetInfoSidebarPanelText(message);
-            //TODO Make Async
+
             _ = SetModelStateAsync();
         }
     }

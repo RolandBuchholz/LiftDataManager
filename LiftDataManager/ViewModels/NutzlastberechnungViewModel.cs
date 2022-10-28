@@ -92,12 +92,19 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
     public double NutzflaecheZugangB => ZugangB ? GetCarDoorArea(KabinenTuerB) : 0;
     public double NutzflaecheZugangC => ZugangC ? GetCarDoorArea(KabinenTuerC) : 0;
     public double NutzflaecheZugangD => ZugangD ? GetCarDoorArea(KabinenTuerD) : 0;
-    public double NutzflaecheGesamt => Math.Round(NutzflaecheKabine + NutzflaecheZugangA + NutzflaecheZugangB + NutzflaecheZugangC + NutzflaecheZugangD, 2);
+    public double NutzflaecheGesamt
+    {
+        get
+        {
+            var nutzflaeche = Math.Round(NutzflaecheKabine + NutzflaecheZugangA + NutzflaecheZugangB + NutzflaecheZugangC + NutzflaecheZugangD, 2);
+            ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaeche);
+            return nutzflaeche;
+        }
+    }
 
     public double NennlastTabelle6 => GetLoadFromTable(Tabelle6);
     public double NennlastTabelle7 => GetLoadFromTable(Tabelle7);
     public double Nennlast => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
-
 
     public string ErgebnisNennlast => ValdidateNennlast() ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
     public SolidColorBrush ErgebnisNennlastColor => ValdidateNennlast() ? successColor : failureColor;

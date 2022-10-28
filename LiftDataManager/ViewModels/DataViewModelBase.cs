@@ -32,7 +32,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (message is not null)
         {
             SetInfoSidebarPanelText(message);
-            //TODO Make Async
+
             _ = SetModelStateAsync();
         }
     }
@@ -104,7 +104,7 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         if (ParamterDictionary is null) return;
         if (FullPathXml is null) return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml);
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml,Adminmode);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
     }
@@ -156,7 +156,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
             if (CheckOut)
             {
-                CanSaveAllSpeziParameters = dirty && Adminmode;
+                CanSaveAllSpeziParameters = dirty;
             }
             else if (dirty && !CheckoutDialogIsOpen)
             {

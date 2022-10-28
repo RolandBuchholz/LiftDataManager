@@ -20,7 +20,7 @@
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
         <DataTemplate x:Key="ErrorItemTemplate" x:DataType="models:ParameterStateInfo">
             <InfoBar
-                Title="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}"
+                Title="{x:Bind DisplayName}"
                 Margin="0,2,0,3"
                 IsClosable="False"
                 IsIconVisible="True"

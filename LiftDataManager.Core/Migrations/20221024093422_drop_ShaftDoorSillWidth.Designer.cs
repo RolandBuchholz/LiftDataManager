@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20221024093422_drop_ShaftDoorSillWidth")]
+    partial class drop_ShaftDoorSillWidth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");

@@ -99,13 +99,25 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         foreach (var item in data)
         {
-            if (ParamterDictionary!.ContainsKey(item.Name!))
+            if (ParamterDictionary!.ContainsKey(item.Name))
             {
-                ParamterDictionary[item.Name!] = item;
+                var updatedParameter = ParamterDictionary[item.Name];
+                updatedParameter.DataImport = true;
+                updatedParameter.Value = item.Value;
+                updatedParameter.Comment = item.Comment;
+                updatedParameter.IsKey = item.IsKey;
+                if (updatedParameter.Value is not null && updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                {
+                    updatedParameter.DropDownListValue = updatedParameter.Value;
+                }
+                updatedParameter.DataImport = false;
             }
             else
             {
-                ParamterDictionary.Add(item.Name!, item);
+                InfoSidebarPanelText += $"----------\n";
+                InfoSidebarPanelText += $"Parameter {item.Name} wird nicht unterstützt\n";
+                InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
+                InfoSidebarPanelText += $"----------\n";
             }
         }
         if (CurrentSpeziProperties is not null)
@@ -119,7 +131,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         OpenReadOnly = true;
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
         await SetCalculatedValuesAsync();
-        await SetModelStateAsync();
+        await ValidateAllParameterAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
@@ -299,7 +311,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             if (CheckOut)
             {
-                CanSaveAllSpeziParameters = dirty && Adminmode;
+                CanSaveAllSpeziParameters = dirty;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
                 CanClearData = CheckOut;
             }
@@ -325,7 +337,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     await LoadDataAsync();
                     if (storedParmeter != null)
                     {
-                        ParamterDictionary[storedParmeter.Name] = storedParmeter;
+                        ParamterDictionary[storedParmeter.Name!] = storedParmeter;
                         CanSaveAllSpeziParameters = dirty;
                     };
                     CheckoutDialogIsOpen = false;

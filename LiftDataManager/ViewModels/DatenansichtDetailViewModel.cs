@@ -34,7 +34,10 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
 
     private void CheckIsDirty(Parameter? Item)
     {
-        if (Item is not null && Item.IsDirty) CanSaveParameter = true && Adminmode && CheckOut;
+        if (Item is not null && Item.IsDirty)
+        {
+            CanSaveParameter = Item.DefaultUserEditable ? CheckOut : Adminmode && CheckOut;
+        }
         else
         {
             CanSaveParameter = false;

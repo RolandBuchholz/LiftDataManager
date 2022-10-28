@@ -165,7 +165,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
 
     //<!--  KabinenAussattung  -->
     public double SpiegelGewichtproQm => gewichtSpiegel;
-    public double SpiegelQm => (Convert.ToInt32(SpiegelA) + Convert.ToInt32(SpiegelB) + Convert.ToInt32(SpiegelC) + Convert.ToInt32(SpiegelD)) * SpiegelHoehe * SpiegelBreite / Math.Pow(10, 6);
+    public double SpiegelQm => !SpiegelPaneel ? (Convert.ToInt32(SpiegelA) + Convert.ToInt32(SpiegelB) + Convert.ToInt32(SpiegelC) + Convert.ToInt32(SpiegelD)) * SpiegelHoehe * SpiegelBreite / Math.Pow(10, 6) : 0;
     public double SpiegelGewicht => SpiegelGewichtproQm * SpiegelQm;
 
     public double PaneeleGewichtproQm => GetGewichtPaneele(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Paneelmaterial"));

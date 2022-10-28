@@ -17,12 +17,21 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                  message.PropertyName == "var_KTI")
             {
                 _ = SetCalculatedValuesAsync();
-
             };
+            if (message.PropertyName == "var_Bodenbelag") SetCanEditFlooringProperties();
+            
             SetInfoSidebarPanelText(message);
-            //TODO Make Async
+
             _ = SetModelStateAsync();
         }
+    }
+
+    [ObservableProperty]
+    public bool canEditFlooringProperties;
+
+    public void SetCanEditFlooringProperties()
+    {
+        CanEditFlooringProperties = ParamterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParamterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
     }
 
     [RelayCommand]

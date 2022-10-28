@@ -618,7 +618,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.NennlastTabelle6)}" />
+                        Text="{x:Bind sys:String.Format('{0:N1}', ViewModel.NennlastTabelle6)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -643,7 +643,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.NennlastTabelle7)}" />
+                        Text="{x:Bind sys:String.Format('{0:N1}', ViewModel.NennlastTabelle7)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
@@ -661,6 +661,8 @@
                         Grid.Row="5"
                         Grid.Column="0"
                         Margin="0,5,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Nennlast (gewählt)" />
                     <TextBlock
@@ -668,12 +670,16 @@
                         Grid.Column="1"
                         Margin="0,5,0,0"
                         HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="20"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.Nennlast, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
                         Margin="0,5,0,0"
+                        FontSize="20"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="kg" />

@@ -9,7 +9,7 @@ namespace LiftDataManager.Core.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE VIEW DropdownValues(Base , Name) AS SELECT 'AntiDrums',
+                CREATE VIEW IF NOT EXISTS DropdownValues(Base , Name) AS SELECT 'AntiDrums',
                        Name
                   FROM AntiDrums
                 UNION ALL

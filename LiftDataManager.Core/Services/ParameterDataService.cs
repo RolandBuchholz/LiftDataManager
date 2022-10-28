@@ -2,6 +2,7 @@
 using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.Helpers;
 
 namespace LiftDataManager.Core.Services;
 
@@ -29,7 +30,6 @@ public class ParameterDataService : IParameterDataService
                               .ToList()
                               .GroupBy(x => x.Base);
 
-
         foreach (var par in parameterDtos)
         {
             var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)
@@ -39,12 +39,13 @@ public class ParameterDataService : IParameterDataService
                 ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
                 DefaultUserEditable = par.DefaultUserEditable,
                 Comment = par.Comment,
-                IsKey = par.IsKey
+                IsKey = par.IsKey,
+                IsDirty = false
             };
 
             if (par.DropdownList is not null)
             {
-                var dropdownList = dropdownValues.FirstOrDefault(x => x.Key == par.DropdownList);
+                var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key,par.DropdownList));
 
                 if (dropdownList != null)
                 {
@@ -54,7 +55,6 @@ public class ParameterDataService : IParameterDataService
                         newParameter.DropDownList.AddRange(dropdownListValues!);
                 }
             }
-
             parameterList.Add(newParameter);    
         }
 
@@ -63,25 +63,18 @@ public class ParameterDataService : IParameterDataService
         return parameterList;
     }
 
-    public async Task<IEnumerable<Parameter>> LoadParameterAsync(string path)
+    public async Task<IEnumerable<TransferData>> LoadParameterAsync(string path)
     {
         XElement doc = XElement.Load(path);
-
-        List<Parameter> parameterList = new();
-        //  (from para in doc.Elements("parameters").Elements("ParamWithValue")
-        //   select new Parameter(
-        //                        para.Element("name")!.GetAs<string>()!,
-        //                        para.Element("typeCode")!.GetAs<string>()!,
-        //                        para.Element("value")!.GetAs<string>()!,
-        //                        _validationParameterDataService)
-        //   {
-        //       Comment = !string.IsNullOrWhiteSpace(para.Element("comment")?.GetAs<string>()) ? para.Element("comment")!.GetAs<string>() : string.Empty,
-        //       IsKey =  para.Element("isKey")!.GetAs<bool>(),
-        //       IsDirty = false,
-        //   }).ToList();
-
+        var TransferDataList = (from para in doc.Elements("parameters").Elements("ParamWithValue")
+             select new TransferData(
+                                  para.Element("name")!.GetAs<string>()!,
+                                  para.Element("value")!.GetAs<string>()!,
+                                  para.Element("comment")!.GetAs<string>()!,
+                                  para.Element("isKey")!.GetAs<bool>()))
+                                  .ToList();
         await Task.CompletedTask;
-        return parameterList;
+        return TransferDataList;
     }
 
     public async Task<string> SaveParameterAsync(Parameter parameter, string path)
@@ -116,7 +109,7 @@ public class ParameterDataService : IParameterDataService
         return infotext;
     }
 
-    public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path)
+    public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode)
     {
         FileInfo AutoDeskTransferInfo = new(path);
         if (AutoDeskTransferInfo.IsReadOnly)
@@ -132,23 +125,33 @@ public class ParameterDataService : IParameterDataService
 
         foreach (var parameter in unsavedParameter)
         {
-            // Find a specific customer
-            XElement? xmlparameter =
-              (from para in doc.Elements("parameters").Elements("ParamWithValue")
-               where para.Element("name")!.Value == parameter.Name
-               select para).SingleOrDefault();
-
-            // Modify some of the node values
-            if (xmlparameter is not null)
+            if (parameter.DefaultUserEditable || adminmode)
             {
-                xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
-                xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
-                xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+                // Find a specific customer
+                XElement? xmlparameter =
+                  (from para in doc.Elements("parameters").Elements("ParamWithValue")
+                   where para.Element("name")!.Value == parameter.Name
+                   select para).SingleOrDefault();
+
+                // Modify some of the node values
+                if (xmlparameter is not null)
+                {
+                    xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+                    xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+                    xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+                }
+
+                parameter.IsDirty = false;
+
+                infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
             }
-
-            parameter.IsDirty = false;
-
-            infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
+            else
+            {
+                infotext += $"----------\n";
+                infotext += $"Parameter: {parameter.Name} ist scheibgeschützt! \n";
+                infotext += $"Speichern nur im Adminmode möglich!\n";
+                infotext += $"----------\n";
+            }
         }
 
         doc.Save(path);

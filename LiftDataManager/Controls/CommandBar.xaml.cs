@@ -168,7 +168,7 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    result = Enum.TryParse(FilterValue, true, out Parameter.ParameterTypValue filterTypEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterTypValue filterTypEnum);
                     if (result)
                     {
                         return p => p.Name != null && p.ParameterTyp == filterTypEnum;
@@ -176,7 +176,7 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 default:
-                    result = Enum.TryParse(FilterValue, true, out Parameter.ParameterCategoryValue filterCatEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterCategoryValue filterCatEnum);
                     if (result)
                     {
                         return p => p.Name != null && p.ParameterCategory == filterCatEnum;
@@ -191,14 +191,16 @@ public sealed partial class CommandBar : UserControl
             {
                 case "None":
                     return p => (p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
+                                                || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                 || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                 || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase));
 
                 case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    result = Enum.TryParse(FilterValue, true, out Parameter.ParameterTypValue filterTypEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterTypValue filterTypEnum);
                     if (result)
                     {
                         return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
+                                                    || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))
                                                     && p.ParameterTyp == filterTypEnum;
@@ -207,10 +209,11 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 default:
-                    result = Enum.TryParse(FilterValue, true, out Parameter.ParameterCategoryValue filterCatEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterCategoryValue filterCatEnum);
                     if (result)
                     {
-                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
+                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)) 
+                                                    || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))
                                                     && p.ParameterCategory == filterCatEnum;
@@ -224,10 +227,10 @@ public sealed partial class CommandBar : UserControl
     {
         return GroupingValue switch
         {
-            "abc" => g => g.Name.Replace("var_", "")[0].ToString().ToUpper(new CultureInfo("de-DE", false)),
+            "abc" => g => g.DisplayName![0].ToString().ToUpper(new CultureInfo("de-DE", false)),
             "typ" => g => g.ParameterTyp.ToString(),
             "cat" => g => g.ParameterCategory.ToString(),
-            _ => g => g.Name.Replace("var_", "")[0].ToString().ToUpper(new CultureInfo("de-DE", false)),
+            _ => g => g.DisplayName![0].ToString().ToUpper(new CultureInfo("de-DE", false)),
         };
     }
 

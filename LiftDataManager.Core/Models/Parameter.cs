@@ -7,15 +7,14 @@ public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
     public List<string> DropDownList { get; } = new();
-    private readonly bool dataImport;
-    public bool DefaultUserEditable{get; set;}
+    public bool DataImport { get; set; }
+    public bool DefaultUserEditable {get; set;}
 
     
     public Parameter(string value,int parameterTypeCodeId,int parameterTypId, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
-        dataImport = true;
-        IsDirty = false;
+        DataImport = true;
         TypeCode = (TypeCodeValue)parameterTypeCodeId;
         ParameterTyp = (ParameterTypValue)parameterTypId;
         SymbolCode = GetSymbolCode(TypeCode);
@@ -29,7 +28,13 @@ public partial class Parameter : ParameterBase
             ParameterTypValue.DropDownList => value,
             _ => value,
         };
-        dataImport = false;
+
+        if (Value is not null && ParameterTyp == ParameterTypValue.DropDownList)
+        {
+            DropDownListValue = Value;
+        }
+
+        DataImport = false;
     }
 
     public string? Name {get; set;}
@@ -42,11 +47,17 @@ public partial class Parameter : ParameterBase
 
     [ObservableProperty]
     private string? comment;
-    partial void OnCommentChanged(string? value) => IsDirty = true;
+    partial void OnCommentChanged(string? value)
+    {
+        if (!DataImport) IsDirty = true;
+    }
 
     [ObservableProperty]
     private bool isKey;
-    partial void OnIsKeyChanged(bool value) => IsDirty = true;
+    partial void OnIsKeyChanged(bool value)
+    {
+        if (!DataImport) IsDirty = true;
+    }
 
     [ObservableProperty]
     private string? value;
@@ -57,7 +68,7 @@ public partial class Parameter : ParameterBase
     }
     partial void OnValueChanged(string? value)
     {
-        if (!dataImport)
+        if (!DataImport)
         {
             var result = ValidateParameterAsync().Result;
             foreach (var item in result.ToList())
@@ -88,7 +99,7 @@ public partial class Parameter : ParameterBase
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
     {
         ClearErrors(nameof(Value));
-        var result = await _validationParameterDataService.ValidateParameterAsync(Name, Value);
+        var result = await _validationParameterDataService.ValidateParameterAsync(Name!,DisplayName!, Value);
 
         if (!result.Any(r => r.IsValid))
         {

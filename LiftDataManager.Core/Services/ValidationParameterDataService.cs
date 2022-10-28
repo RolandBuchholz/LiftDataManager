@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.Messenger.Messages;
 using System.Globalization;
 
@@ -9,15 +12,17 @@ namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
     public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
-    private Dictionary<string, List<Tuple<Action<string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = new();
+    private Dictionary<string, List<Tuple<Action<string,string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
+    private readonly ParameterContext _parametercontext;
 
-    public ValidationParameterDataService()
+    public ValidationParameterDataService(ParameterContext parametercontext)
     {
         IsActive = true;
         GetValidationDictionary();
         ParamterDictionary ??= new();
         ValidationResult ??= new();
+        _parametercontext = parametercontext;
     }
 
     ~ValidationParameterDataService()
@@ -40,32 +45,32 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ParamterDictionary = message.Response.ParamterDictionary;
     }
 
-    public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? value)
+    public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
     {
         ValidationResult.Clear();
 
-        if (name is null)
+        if (name is null || displayname is null)
         {
-            ValidationResult.Add(new ParameterStateInfo("Parameter not found", true));
+            ValidationResult.Add(new ParameterStateInfo("Parameter","Parameter not found", true));
             await Task.CompletedTask;
             return ValidationResult;
         }
 
         if (!ValidationDictionary.ContainsKey(key: name))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, true));
+            ValidationResult.Add(new ParameterStateInfo(name,displayname, true));
             await Task.CompletedTask;
             return ValidationResult;
         }
 
         foreach (var rule in ValidationDictionary[name])
         {
-            rule.Item1.Invoke(name, value, rule.Item2, rule.Item3);
+            rule.Item1.Invoke(name, displayname, value, rule.Item2, rule.Item3);
         }
 
         if (!ValidationResult.Any())
         {
-            ValidationResult.Add(new ParameterStateInfo(name, true));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
         }
 
         await Task.CompletedTask;
@@ -100,117 +105,120 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void GetValidationDictionary()
     {
-        ValidationDictionary.Add("var_AuftragsNummer", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null) });
-        ValidationDictionary.Add("var_FabrikNummer", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string ?, string?>(NotEmpty, "Warning", null),
-                              new Tuple<Action<string, string?, string?, string?>, string ?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
-        ValidationDictionary.Add("var_Q", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null) });
-        ValidationDictionary.Add("var_Kennwort", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
-        ValidationDictionary.Add("var_Betreiber", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
-        ValidationDictionary.Add("var_Projekt", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
-        ValidationDictionary.Add("var_InformationAufzug", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", "(keine Auswahl)"),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
-        ValidationDictionary.Add("var_Aufzugstyp", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", "(keine Auswahl)") });
-        ValidationDictionary.Add("var_FabriknummerBestand", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
-        ValidationDictionary.Add("var_ZUGANSSTELLEN_A", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbau") });
-        ValidationDictionary.Add("var_ZUGANSSTELLEN_B", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauB"),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_ZUGANSSTELLEN_C", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauC"),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_ZUGANSSTELLEN_D", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauD"),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_TuerEinbau", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
-        ValidationDictionary.Add("var_TuerEinbauB", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B") });
-        ValidationDictionary.Add("var_TuerEinbauC", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C") });
-        ValidationDictionary.Add("var_TuerEinbauD", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D") });
-        ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateJungblutOSG, "Informational", null) });
-        ValidationDictionary.Add("var_FH", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(NotEmptyOr0, "Error", null),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe0", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe1", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe2", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe3", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe4", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe5", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe6", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe7", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Etagenhoehe8", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
-        ValidationDictionary.Add("var_Bodentyp", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
-        ValidationDictionary.Add("var_Bodenblech", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
-        ValidationDictionary.Add("var_BoPr", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
-        ValidationDictionary.Add("var_Bodenbelagsdicke", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
-        ValidationDictionary.Add("var_Bodenbelag", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
-        ValidationDictionary.Add("var_KU", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
-        ValidationDictionary.Add("var_KHLicht", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
-        ValidationDictionary.Add("var_KHA", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
-        ValidationDictionary.Add("var_KD", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
-        ValidationDictionary.Add("var_KBI", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_KTI", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_L1", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_L2", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_L3", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_L4", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
-        ValidationDictionary.Add("var_TB", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null),
-                              new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
-        ValidationDictionary.Add("var_TB_B", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            {new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
-        ValidationDictionary.Add("var_TB_C", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            {new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
-        ValidationDictionary.Add("var_TB_D", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            {new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
-        ValidationDictionary.Add("var_Variable_Tuerdaten", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_TH", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_Tuertyp", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_Tuerbezeichnung", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
-        ValidationDictionary.Add("var_Tuergewicht", new List<Tuple<Action<string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_AuftragsNummer", new List<Tuple<Action<string,string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string,string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null) });
+        ValidationDictionary.Add("var_FabrikNummer", new List<Tuple<Action<string,string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string ?, string?>(NotEmpty, "Warning", null),
+                              new Tuple<Action<string, string, string?, string?, string?>, string ?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
+        ValidationDictionary.Add("var_Q", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null) });
+        ValidationDictionary.Add("var_Kennwort", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
+        ValidationDictionary.Add("var_Betreiber", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
+        ValidationDictionary.Add("var_Projekt", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
+        ValidationDictionary.Add("var_InformationAufzug", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", "(keine Auswahl)"),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
+        ValidationDictionary.Add("var_Aufzugstyp", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", "(keine Auswahl)"),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFrameSelection, "None", null)});
+        ValidationDictionary.Add("var_FabriknummerBestand", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
+        ValidationDictionary.Add("var_ZUGANSSTELLEN_A", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbau") });
+        ValidationDictionary.Add("var_ZUGANSSTELLEN_B", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauB"),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_ZUGANSSTELLEN_C", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauC"),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_ZUGANSSTELLEN_D", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauD"),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_TuerEinbau", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
+        ValidationDictionary.Add("var_TuerEinbauB", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B") });
+        ValidationDictionary.Add("var_TuerEinbauC", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C") });
+        ValidationDictionary.Add("var_TuerEinbauD", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D") });
+        ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateJungblutOSG, "Informational", null) });
+        ValidationDictionary.Add("var_FH", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmptyOr0, "Error", null),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe0", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe1", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe2", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe3", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe4", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe5", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe6", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe7", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Etagenhoehe8", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateTravel, "Error", null) });
+        ValidationDictionary.Add("var_Bodentyp", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
+        ValidationDictionary.Add("var_Bodenblech", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
+        ValidationDictionary.Add("var_BoPr", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
+        ValidationDictionary.Add("var_Bodenbelagsdicke", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
+        ValidationDictionary.Add("var_Bodenbelag", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFlooring, "None", null) });
+        ValidationDictionary.Add("var_KU", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
+        ValidationDictionary.Add("var_KHLicht", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
+        ValidationDictionary.Add("var_KHA", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
+        ValidationDictionary.Add("var_KD", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarHeight, "None", null) });
+        ValidationDictionary.Add("var_KBI", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_KTI", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_L1", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_L2", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_L3", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_L4", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null) });
+        ValidationDictionary.Add("var_TB", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
+        ValidationDictionary.Add("var_TB_B", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            {new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
+        ValidationDictionary.Add("var_TB_C", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            {new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
+        ValidationDictionary.Add("var_TB_D", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            {new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarEntranceRightSide, "None", null)});
+        ValidationDictionary.Add("var_Variable_Tuerdaten", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_TH", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_Tuertyp", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_Tuerbezeichnung", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_Tuergewicht", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
+        ValidationDictionary.Add("var_Ersatzmassnahmen", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateReducedProtectionSpaces, "None", null) });
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -229,39 +237,39 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     // Standard validationrules
 
-    private void NotEmpty(string name, string? value, string? severity, string? optionalCondition = null)
+    private void NotEmpty(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, optionalCondition))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"{name} darf nicht leer sein", SetSeverity(severity)));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein", SetSeverity(severity)));
         }
     }
 
-    private void NotEmptyOr0(string name, string? value, string? severity, string? optionalCondition = null)
+    private void NotEmptyOr0(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0") || string.Equals(value, optionalCondition))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"{name} darf nicht leer sein", SetSeverity(severity)));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein", SetSeverity(severity)));
         }
     }
 
-    private void NotEmptyOr0WhenAnotherTrue(string name, string? value, string? severity, string? anotherBoolean)
+    private void NotEmptyOr0WhenAnotherTrue(string name, string displayname, string? value, string? severity, string? anotherBoolean)
     {
         if (string.IsNullOrWhiteSpace(anotherBoolean))
             return;
         var anotherParameter = Convert.ToBoolean(ParamterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
         if ((string.IsNullOrWhiteSpace(value) || value == "0") && anotherParameter)
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
             { DependentParameter = new string[] { anotherBoolean } });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, true) { DependentParameter = new string[] { anotherBoolean } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
         }
     }
 
-    private void MustBeTrueWhenAnotherNotEmtyOr0(string name, string? value, string? severity, string? anotherString)
+    private void MustBeTrueWhenAnotherNotEmtyOr0(string name, string displayname, string? value, string? severity, string? anotherString)
     {
         if (string.IsNullOrWhiteSpace(anotherString))
             return;
@@ -270,18 +278,18 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         if (valueToBool && (string.IsNullOrWhiteSpace(stringValue) || stringValue == "0"))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"{name} gesetzt (wahr) ist, darf {anotherString} nicht leer sein oder 0 sein", SetSeverity(severity))
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} gesetzt (wahr) ist, darf {anotherString} nicht leer sein oder 0 sein", SetSeverity(severity))
             { DependentParameter = new string[] { anotherString } });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, true) { DependentParameter = new string[] { anotherString } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherString } });
         }
     }
 
     // Spezial validationrules
 
-    private void ValidateJobNumber(string name, string? value, string? severity, string? odernummerName)
+    private void ValidateJobNumber(string name,string displayname, string? value, string? severity, string? odernummerName)
     {
         if (string.IsNullOrWhiteSpace(odernummerName))
             return;
@@ -300,12 +308,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             case "Neuanlage" or "Ersatzanlage":
                 if (auftragsnummer != fabriknummer)
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity))
+                    ValidationResult.Add(new ParameterStateInfo(name,displayname, $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity))
                     { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
                 }
                 else
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
                 }
                 return;
             case "Umbau":
@@ -313,12 +321,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                     return;
                 if (fabriknummerBestand != fabriknummer)
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
                     { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
                 }
                 else
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
                 }
                 return;
             default:
@@ -326,19 +334,19 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
-    private void ValidateJungblutOSG(string name, string? value, string? severity, string? optional = null)
+    private void ValidateJungblutOSG(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (value is null)
             return;
         if (value.StartsWith("Jungblut"))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"{value} bei diesem Geschwindigkeitsbegrenzer wir gegebenfals eine Sicherheitsschaltung in der Steuerung benötigt.\n" +
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{value} bei diesem Geschwindigkeitsbegrenzer wir gegebenfals eine Sicherheitsschaltung in der Steuerung benötigt.\n" +
                                                               $"Halten sie Rücksprache mit ihrem Steuerungshersteller.\n" +
                                                               $"Alternativ einen Geschwindigkeitsbegrenzer mit elektromagentischer Rückstellung verwenden.", SetSeverity(severity)));
         }
     }
 
-    private void ValidateTravel(string name, string? value, string? severity, string? optional = null)
+    private void ValidateTravel(string name,string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
             return;
@@ -360,22 +368,21 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         if (etagenhoeheTotal != foerderhoehe)
         {
-            ValidationResult.Add(new ParameterStateInfo(name, $"Die Förderhöhe ({foerderhoehe} mm) stimmt nicht mit Etagenabständen ({etagenhoeheTotal} mm) überein.", SetSeverity(severity))
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Die Förderhöhe ({foerderhoehe} mm) stimmt nicht mit Etagenabständen ({etagenhoeheTotal} mm) überein.", SetSeverity(severity))
             { DependentParameter = new string[] { "var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8" } });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, true) { DependentParameter = new string[] { "var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8" } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8" } });
         }
     }
 
-    private void ValidateCarFlooring(string name, string? value, string? severity, string? optional = null)
+    private void ValidateCarFlooring(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         string bodentyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodentyp");
         string bodenProfil = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BoPr");
         string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelag");
         double bodenBlech = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenblech");
-        double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
         double bodenBelagHoehe = GetFlooringHeight(bodenBelag);
         double bodenHoehe = 0;
 
@@ -387,6 +394,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 break;
             case "verstärkt":
+                double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
                 break;
             case "standard mit Wanne":
@@ -397,7 +405,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             case "extern":
                 ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
                 ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
-                return;
+                break;
             default:
                 ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
                 ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
@@ -408,88 +416,40 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ParamterDictionary["var_KU"].Value = Convert.ToString(bodenHoehe + bodenBelagHoehe);
         ParamterDictionary["var_Bodenbelagsdicke"].Value = Convert.ToString(bodenBelagHoehe);
 
-        // ToDo Parameter aus Datenbank abrufen
-
-        static double GetFloorProfilHeight(string bodenProfil)
+        double GetFloorProfilHeight(string bodenProfil)
         {
-            return bodenProfil switch
-            {
-                "80 x 40 x 3" => 80,
-                "80 x 50 x 5" => 80,
-                "100 x 50 x 5" => 100,
-                "120 x 60 x 6" => 120,
-                "140 x 60 x 6" => 140,
-                "UNP 140" => 140,
-                "UNP 160" => 160,
-                "UNP 180" => 180,
-                _ => 0,
-            };
+            if (string.IsNullOrEmpty(bodenProfil)) return 0;
+            var profile = _parametercontext.Set<CarFloorProfile>().FirstOrDefault(x => x.Name == bodenProfil);
+            if (profile is null) return 0;
+            return (double)profile.Height!;
         }
 
         string GetFloorWeight(string bodenBelag)
         {
-            return bodenBelag switch
-            {
-                "kein" => "0",
-                "4/6 Träneblech grundiert" => "33,4",
-                "6/8 Tränenblech grundiert" => "49,1",
-                "4/6 Träneblech feuerverzinkt" => "33,4",
-                "6/8 Tränenblech feuerverzinkt" => "49,1",
-                "4/6 Träneblech Edelstahl" => "33,4",
-                "6/8 Tränenblech Edelstahl" => "49,1",
-                "3,0 SE-TB1 R11 Edelstahl" => "10,25",
-                "3,5/5 Alu Quintett" => "10,34",
-                "PVC-Mipolam" => "3",
-                "PVC-Mipolam 1010" => "3",
-                "PVC-Mipolam 1060" => "3",
-                "Mondo" => "3",
-                "Linoleum" => "3",
-                "Norament 926/354" => "3",
-                "Norament 926 grano" => "3",
-                "Grama Blend" => "18",
-                "bauseits Stein 10 mm" => "25",
-                "bauseits Stein 20 mm" => "50",
-                "bauseits Stein 25 mm" => "62,5",
-                "bauseits Stein 30 mm" => "75",
-                "Alu Quintett 3,5/5" => "10,34",
-                "bauseits lt. Beschreibung" => LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsgewicht"),
-                _ => "0",
-            };
+            if (string.IsNullOrEmpty(bodenBelag)) return "0";
+            if (string.Equals(bodenBelag, "bauseits lt. Beschreibung")) return LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsgewicht");
+            if (string.Equals(bodenBelag, "Nach Beschreibung")) return LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsgewicht");
+            var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
+            if (boden is null) return "0";
+            return boden.WeightPerSquareMeter.ToString()!;
         }
 
         double GetFlooringHeight(string bodenBelag)
         {
-            return bodenBelag switch
-            {
-                "kein" => 0,
-                "4/6 Träneblech grundiert" => 6,
-                "6/8 Tränenblech grundiert" => 8,
-                "4/6 Träneblech feuerverzinkt" => 6,
-                "6/8 Tränenblech feuerverzinkt" => 8,
-                "4/6 Träneblech Edelstahl" => 6,
-                "6/8 Tränenblech Edelstahl" => 8,
-                "3,0 SE-TB1 R11 Edelstahl" => 5,
-                "3,5/5 Alu Quintett" => 5,
-                "PVC-Mipolam" => 3,
-                "PVC-Mipolam 1010" => 3,
-                "PVC-Mipolam 1060" => 3,
-                "Mondo" => 2,
-                "Linoleum" => 4,
-                "Norament 926/354" => 3,
-                "Norament 926 grano" => 3,
-                "Grama Blend" => 10,
-                "bauseits Stein 10 mm" => 10,
-                "bauseits Stein 20 mm" => 20,
-                "bauseits Stein 25 mm" => 25,
-                "bauseits Stein 30 mm" => 30,
-                "Alu Quintett 3,5/5" => 5,
-                "bauseits lt. Beschreibung" => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke"),
-                _ => 0,
-            };
+            if (string.IsNullOrEmpty(bodenBelag))
+                return 0;
+            if (string.Equals(bodenBelag, "bauseits lt. Beschreibung"))
+                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
+            if (string.Equals(bodenBelag, "Nach Beschreibung"))
+                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
+            var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
+            if (boden is null)
+                return 0;
+            return (double)boden.Thickness!;
         }
     }
 
-    private void ValidateCarHeight(string name, string? value, string? severity, string? optional = null)
+    private void ValidateCarHeight(string name,string displayname, string? value, string? severity, string? optional = null)
     {
         double bodenHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KU");
         double kabinenHoeheInnen = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht");
@@ -512,7 +472,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
-    private void ValidateCarEntranceRightSide(string name, string? value, string? severity, string? optional = null)
+    private void ValidateCarEntranceRightSide(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         double kabinenBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
         double kabinenTiefe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
@@ -560,7 +520,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
-    private void ValidateCarDoorData(string name, string? value, string? severity, string? optional = null)
+    private void ValidateCarDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         bool variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
         if (variableTuerdaten)
@@ -602,6 +562,55 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TB_D"].Value = Convert.ToString(tuerBreite);
             ParamterDictionary["var_TH_D"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_D"].Value = Convert.ToString(tuerGewicht);
+        }
+    }
+
+    private void ValidateCarFrameSelection(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var liftTypes = _parametercontext.Set<LiftType>().ToList();
+        var currentLiftType = liftTypes.FirstOrDefault(x => x.Name == value);
+
+        var driveTypeId = currentLiftType is not null ? currentLiftType.DriveTypeId : 1;
+
+        var carframes = _parametercontext.Set<CarFrameType>().ToList();
+
+        var availableCarframes = carframes.Where(x=> x.DriveTypeId == driveTypeId).Select(s => s.Name);
+
+        if (availableCarframes is not null)
+        {
+            ParamterDictionary["var_Bausatz"].DropDownList.Clear();
+            ParamterDictionary["var_Bausatz"].DropDownList.AddRange(availableCarframes!);
+        }
+    }
+
+    private void ValidateReducedProtectionSpaces(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        switch (value)
+        {
+            case "keine":
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                break;
+            case "Schachtkopf":
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                break;
+            case "Schachtgrube":
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                break;
+            case "Schachtkopf und Schachtgrube":
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                break;
+            case "Vorausgelöstes Anhaltesystem":
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                break;
+            default:
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                break;
         }
     }
 }
