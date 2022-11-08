@@ -3,16 +3,10 @@
 namespace LiftDataManager.Core.Messenger.Messages;
 public sealed class CarWeightRequestMessageAsync : AsyncRequestMessage<CalculatedValues>
 {
-    public KabinengewichtViewModel Sender
-    {
-        get; set;
-    }
-
+    public KabinengewichtViewModel Sender {get; set;}
     public CarWeightRequestMessageAsync()
     {
-        Sender = new KabinengewichtViewModel()
-        {
-            IsActive = true
-        };
+        Sender = App.GetService<KabinengewichtViewModel>();
+        Sender.IsActive = true;
     }
 }

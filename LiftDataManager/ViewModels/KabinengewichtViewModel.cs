@@ -1,17 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
+using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
 namespace LiftDataManager.ViewModels;
 
 public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRecipient<CarWeightRequestMessageAsync>, IRecipient<PropertyChangedMessage<string>>
 {
-    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+    private readonly ParameterContext _parametercontext;
+
+    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
-    }
-
-    public KabinengewichtViewModel()
-    {
+        _parametercontext = parametercontext;
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
     }
@@ -242,14 +244,26 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public bool VariableTuerdaten => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
     public double KabinenTuerGewicht => VariableTuerdaten ?  KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD : KabinentuerGewichtA * AnzahlKabinentueren ;
 
-    public double FangrahmenGewicht => GetFangrahmengewichtAsync().Result;
+    public double FangrahmenGewicht => GetFangrahmengewichtAsync();
 
-#pragma warning disable CA1822 // Member als statisch markieren
-    private async Task<double> GetFangrahmengewichtAsync()
-#pragma warning restore CA1822 // Member als statisch markieren
+    private double GetFangrahmengewichtAsync()
     {
-        var requestMessageResult = await WeakReferenceMessenger.Default.Send<CarFrameWeightRequestMessageAsync>();
-        return requestMessageResult.FangrahmenGewicht;
+
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
+            {
+                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
+            }
+            else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
+            {
+                var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == ParamterDictionary!["var_Bausatz"].Value);
+                if (carFrameType is null)
+                    return 0;
+                return carFrameType.CarFrameWeight;
+            }
+            else
+            {
+                return 0;
+            }
     }
 
     public double FahrkorbGewicht
@@ -262,201 +276,78 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
         }
     }
 
-    // ToDo Parameter aus Datenbank abrufen
+    //Database
 
-    private static double GetGewichtSonderblech(string bodenblech)
+    private double? GetGewichtSonderblech(string bodenblech)
     {
-        return bodenblech switch
-        {
-            "kein" => 0,
-            "4/6 Träneblech grundiert" => 33.4,
-            "6/8 Tränenblech grundiert" => 49.1,
-            "4/6 Träneblech feuerverzinkt" => 33.4,
-            "6/8 Tränenblech feuerverzinkt" => 49.1,
-            "4/6 Träneblech Edelstahl" => 33.4,
-            "6/8 Tränenblech Edelstahl" => 49.1,
-            "3,0 SE-TB1 R11 Edelstahl" => 10.25,
-            "3,5/5 Alu quintett" => 10.34,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(bodenblech)) return 0;
+        var blech = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenblech && x.SpecialSheet == true);
+        if (blech is null) return 0;
+        return blech.WeightPerSquareMeter;
     }
 
-    private static double GetGewichtBodenprofil(string bodenprofil)
+    private double? GetGewichtBodenprofil(string bodenprofil)
     {
-        return bodenprofil switch
-        {
-            "80 x 40 x 3" => 3.67,
-            "80 x 50 x 5" => 6.28,
-            "100 x 50 x 5" => 7.065,
-            "120 x 60 x 6" => 10.1736,
-            "140 x 60 x 6" => 11.1156,
-            "UNP 140" => 16,
-            "UNP 160" => 18.8,
-            "UNP 180" => 22,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(bodenprofil)) return 0;
+        var profil = _parametercontext.Set<CarFloorProfile>().FirstOrDefault(x => x.Name == bodenprofil);
+        if (profil is null) return 0;
+        return profil.WeightPerMeter;
     }
 
-    private static double GetGewichtPaneele(string paneele)
+    private double? GetGewichtPaneele(string paneele)
     {
-        return paneele switch
-        {
-            "V2A 240 Korn auf Holzkern" => 27.145,
-            "V2A Leinen auf Holzkern" => 27.145,
-            "V2A Karo auf Holzkern" => 27.145,
-            "V2A Raute auf Holzkern" => 27.145,
-            "Glas 4 mm auf Holzkern" => 22.55,
-            "ESG 6 mm auf Alu geklebt" => 20.46,
-            "ESG 6 mm direkt geklebt" => 15,
-            "HPL auf ALU" => 6.55,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(paneele)) return 0;
+        var coverPanel = _parametercontext.Set<CarCoverPanel>().FirstOrDefault(x => x.Name == paneele);
+        if (coverPanel is null) return 0;
+        return coverPanel.WeightPerSquareMeter;
     }
 
-    private static double GetGewichtRammschutz(string rammschutz)
+    private double? GetGewichtRammschutz(string rammschutz)
     {
-        return rammschutz switch
-        {
-            "Holz 100x22 1-reihig" => 2.2,
-            "Holz 100x22 2-reihig" => 4.4,
-            "Holz 100x22 3-reihig" => 6.6,
-            "Holz 200x22 1-reihig" => 4.4,
-            "Holz 200x22 2-reihig" => 8.8,
-            "Holz 200x22 3-reihig" => 13.2,
-            "V2A 100x20 1-reihig" => 3.632,
-            "V2A 100x20 2-reihig" => 7.264,
-            "V2A 100x20 3-reihig" => 10.896,
-            "V2A 200x20 1-reihig" => 6.832,
-            "V2A 200x20 2-reihig" => 13.664,
-            "V2A 200x20 3-reihig" => 20.496,
-            "V4A 100x20 1-reihig" => 3.632,
-            "V4A 100x20 2-reihig" => 7.264,
-            "V4A 100x20 3-reihig" => 10.896,
-            "V4A 200x20 1-reihig" => 6.832,
-            "V4A 200x20 2-reihig" => 13.664,
-            "V4A 200x20 3-reihig" => 20.496,
-            "Kunststoff 100 x 20 1-reihig" => 2.72,
-            "Kunststoff 100 x 20 2-reihig" => 5.44,
-            "Kunststoff 100 x 20 3-reihig" => 8.16,
-            "Kunststoff 200 x 20 1-reihig" => 5.44,
-            "Kunststoff 200 x 20 2-reihig" => 10.88,
-            "Kunststoff 200 x 20 3-reihig" => 16.32,
-            "V2A - HL 13 / D 30" => 6,
-            "V2A - HL 13 / D 30 umlfd./Bogen" => 6,
-            "V2A - HL 14 / D 30" => 6,
-            "V2A - HL 14 / D 30 mit Endbogen" => 6,
-            "V2A - HL 13 / D 40" => 6,
-            "V2A - HL 13 / D 40 umlfd./Bogen" => 6,
-            "V2A - HL 14 / D 40" => 6,
-            "V2A - HL 14 / D 40 mit Endbogen" => 6,
-            "V4A - HL 13 / D 30" => 6,
-            "V4A - HL 13 / D 30 umlfd./Bogen" => 6,
-            "V4A - HL 14 / D 30" => 6,
-            "V4A - HL 14 / D 30 mit Endbogen" => 6,
-            "V4A - HL 13 / D 40" => 6,
-            "V4A - HL 13 / D 40 umlfd./Bogen" => 6,
-            "V4A - HL 14 / D 40" => 6,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(rammschutz))return 0;
+        var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammschutz);
+        if (rammingProtection is null)return 0;
+        return rammingProtection.WeightPerMeter;
     }
 
-    private static double GetGewichtHandlauf(string sockelleiste)
+    private double? GetGewichtHandlauf(string handlauf)
     {
-        return sockelleiste switch
-        {
-            "V2A - HL 13 / D 30" => 6,
-            "V2A - HL 13 / D 30 umlfd./Bogen" => 6,
-            "V2A - HL 14 / D 30" => 6,
-            "V2A - HL 14 / D 30 mit Endbogen" => 6,
-            "V2A - HL 13 / D 40" => 6,
-            "V2A - HL 13 / D 40 umlfd./Bogen" => 6,
-            "V2A - HL 14 / D 40" => 6,
-            "V2A - HL 14 / D 40 mit Endbogen" => 6,
-            "V4A - HL 13 / D 30" => 6,
-            "V4A - HL 13 / D 30 umlfd./Bogen" => 6,
-            "V4A - HL 14 / D 30" => 6,
-            "V4A - HL 14 / D 30 mit Endbogen" => 6,
-            "V4A - HL 13 / D 40" => 6,
-            "V4A - HL 13 / D 40 umlfd./Bogen" => 6,
-            "V4A - HL 14 / D 40" => 6,
-            "V4A - HL 14 / D 40 mit Endbogen" => 6,
-            "Buche - HL 18" => 3,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(handlauf)) return 0;
+        var handrail = _parametercontext.Set<Handrail>().FirstOrDefault(x => x.Name == handlauf);
+        if (handrail is null) return 0;
+        return handrail.WeightPerMeter;
     }
 
-    private static double GetGewichtSockelleiste(string sockelleiste)
+    private double? GetGewichtSockelleiste(string sockelleiste)
     {
-        return sockelleiste switch
-        {
-            "V2A 90 x 15" => 1.056,
-            "V2A 85 x 22" => 1.936,
-            "V2A 70 x 4" => 2.24,
-            "V2A 100 x 15" => 1.136,
-            "V4A 90 x 15" => 1.056,
-            "V4A 85 x 22" => 1.936,
-            "V4A 70 x 4" => 2.24,
-            "V4A 100 x 15" => 1.136,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(sockelleiste)) return 0;
+        var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
+        if (skirtingBoard is null) return 0;
+        return skirtingBoard.WeightPerMeter;
     }
 
-    private static double GetHoeheSockelleiste(string sockelleiste)
+    private double? GetHoeheSockelleiste(string sockelleiste)
     {
-        return sockelleiste switch
-        {
-            "V2A 90 x 15" => 90,
-            "V2A 85 x 22" => 85,
-            "V2A 70 x 4" => 70,
-            "V2A 100 x 15" => 100,
-            "V4A 90 x 15" => 90,
-            "V4A 85 x 22" => 85,
-            "V4A 70 x 4" => 70,
-            "V4A 100 x 15" => 100,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(sockelleiste)) return 0;
+        var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
+        if (skirtingBoard is null) return 0;
+        return skirtingBoard.Height;
     }
 
-    private static double GetGewichtTableau(string tableau)
+    private double? GetGewichtTableau(string tableau)
     {
-        return tableau switch
-        {
-            "Drehtableau / 1 Stück" => 21,
-            "Drehtableau / 2 Stück" => 42,
-            "Pulttableau" => 6,
-            "Münchner-Standard 1 Stück" => 25,
-            "Münchner-Standard 2 Stück" => 50,
-            "Klapptableau / 1 Stück" => 20,
-            "Klapptableau / 2 Stück" => 40,
-            "aufgesetzte Tafel / 1 Stück" => 10,
-            "aufgesetzte Tafel / 2 Stück" => 20,
-            "Drehtableau / 1 Stück & Pulttableau" => 27,
-            "Drehtableau / 2 Stück & Pulttableau" => 49,
-            "Klapptableau / 1 Stück & Pulttableau" => 26,
-            "Klapptableau / 2 Stück & Pulttableau" => 46,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(tableau)) return 0;
+        var carPanel = _parametercontext.Set<CarPanel>().FirstOrDefault(x => x.Name == tableau);
+        if (carPanel is null) return 0;
+        return carPanel.Weight;
     }
 
-    private static double GetBreiteTableau(string tableau)
+    private double? GetBreiteTableau(string tableau)
     {
-        return tableau switch
-        {
-            "Drehtableau / 1 Stück" => 250,
-            "Drehtableau / 2 Stück" => 500,
-            "Pulttableau" => 0,
-            "Münchner-Standard 1 Stück" => 250,
-            "Münchner-Standard 2 Stück" => 500,
-            "Klapptableau / 1 Stück" => 250,
-            "Klapptableau / 2 Stück" => 500,
-            "aufgesetzte Tafel / 1 Stück" => 0,
-            "aufgesetzte Tafel / 2 Stück" => 0,
-            "Drehtableau / 1 Stück & Pulttableau" => 250,
-            "Drehtableau / 2 Stück & Pulttableau" => 500,
-            "Klapptableau / 1 Stück & Pulttableau" => 250,
-            "Klapptableau / 2 Stück & Pulttableau" => 500,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(tableau)) return 0;
+        var carPanel = _parametercontext.Set<CarPanel>().FirstOrDefault(x => x.Name == tableau);
+        if (carPanel is null) return 0;
+        return carPanel.Width;
     }
 
     public void OnNavigatedTo(object parameter)

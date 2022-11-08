@@ -16,7 +16,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
-
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -291,15 +290,15 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    if (!ParamterErrorDictionary.ContainsKey(error.Name))
+                    if (!ParamterErrorDictionary.ContainsKey(error.Name!))
                     {
                         var errorList = new List<ParameterStateInfo>();
                         errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParamterErrorDictionary.Add(error.Name, errorList);
+                        ParamterErrorDictionary.Add(error.Name!, errorList);
                     }
                     else
                     {
-                        ParamterErrorDictionary[error.Name].AddRange(error.parameterErrors["Value"].ToList());
+                        ParamterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
                     }
                 }
             }

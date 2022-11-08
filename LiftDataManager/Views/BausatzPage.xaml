@@ -300,6 +300,7 @@
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Fangvorrichtung'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Fangvorrichtung'].DropDownListValue, Mode=TwoWay}" />
                                     <ComboBox
+                                        x:Name="Fangvorrichtung_Auswahl"
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         HorizontalAlignment="Stretch"

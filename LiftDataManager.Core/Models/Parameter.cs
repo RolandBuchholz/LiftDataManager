@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
+using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Core.Models;
 
 public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
-    public List<string> DropDownList { get; } = new();
+    public ObservableCollection<string> DropDownList = new();
     public bool DataImport { get; set; }
     public bool DefaultUserEditable {get; set;}
-
-    
+ 
     public Parameter(string value,int parameterTypeCodeId,int parameterTypId, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;

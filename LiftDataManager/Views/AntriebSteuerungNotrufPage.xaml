@@ -609,14 +609,22 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                        <ComboBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Header="Antriebstyp"
+                                        IsHitTestVisible="False"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownListValue, Mode=TwoWay}" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Antriebsauswahl  gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
                                         <CheckBox
                                             Grid.Column="0"

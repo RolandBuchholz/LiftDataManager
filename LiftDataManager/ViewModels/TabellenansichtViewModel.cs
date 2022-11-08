@@ -42,7 +42,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
                 var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    ParamterErrorDictionary.Add(error.Name, error.parameterErrors[error.Name]);
+                    ParamterErrorDictionary.Add(error.Name!, error.parameterErrors[error.Name!]);
                 }
             }
         }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.Messenger.Messages;
@@ -111,7 +112,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                             { new Tuple<Action<string, string, string?, string?, string?>, string ?, string?>(NotEmpty, "Warning", null),
                               new Tuple<Action<string, string, string?, string?, string?>, string ?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
         ValidationDictionary.Add("var_Q", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
-                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null) });
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", null),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarArea, "Error", null)});
         ValidationDictionary.Add("var_Kennwort", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
                             { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Warning", null) });
         ValidationDictionary.Add("var_Betreiber", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
@@ -219,6 +221,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                             { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarDoorData, "None", null) });
         ValidationDictionary.Add("var_Ersatzmassnahmen", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
                             { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateReducedProtectionSpaces, "None", null) });
+        ValidationDictionary.Add("var_Fangvorrichtung", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateSafetyGear, "None", null) });
+        ValidationDictionary.Add("var_Aggregat", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateDriveSystemTypes, "None", null) });
+        ValidationDictionary.Add("var_A_Kabine", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
+                            { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarArea, "Error", null) });
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -579,7 +587,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (availableCarframes is not null)
         {
             ParamterDictionary["var_Bausatz"].DropDownList.Clear();
-            ParamterDictionary["var_Bausatz"].DropDownList.AddRange(availableCarframes!);
+            foreach (var item in availableCarframes)
+            {
+                ParamterDictionary["var_Bausatz"].DropDownList.Add(item!);
+            }
         }
     }
 
@@ -611,6 +622,52 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
                 ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
                 break;
+        }
+    }
+
+    private void ValidateSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
+        var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
+        IEnumerable<string?> availablseafetyGears = value switch
+        {
+            "keine" => Enumerable.Empty<string?>(),
+            "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(s => s.Name),
+            "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(s => s.Name),
+            _ => safetyGears.Select(s => s.Name),
+        };
+        if (availablseafetyGears is not null)
+        {
+            ParamterDictionary["var_TypFV"].DropDownList.Clear();
+            foreach (var item in availablseafetyGears)
+            {
+                ParamterDictionary["var_TypFV"].DropDownList.Add(item!);
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Contains(selectedSafetyGear))
+            {
+                ParamterDictionary["var_TypFV"].Value = string.Empty;
+                ParamterDictionary["var_TypFV"].DropDownListValue = null;
+            }
+        }
+    }
+
+    private void ValidateDriveSystemTypes(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var driveSystems = _parametercontext.Set<DriveSystem>().Include(i => i.DriveSystemType)
+                                                               .ToList();
+        var currentdriveSystem = driveSystems.FirstOrDefault(x => x.Name == value);
+        ParamterDictionary["var_Getriebe"].Value = currentdriveSystem is not null ? currentdriveSystem.DriveSystemType!.Name : string.Empty;
+        ParamterDictionary["var_Getriebe"].DropDownListValue = ParamterDictionary["var_Getriebe"].Value;
+    }
+
+    private void ValidateCarArea(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        var areaPersonsRequestMessageResult = WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
+
+        if (string.IsNullOrWhiteSpace(value) || string.Equals(value, optionalCondition))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)));
         }
     }
 }

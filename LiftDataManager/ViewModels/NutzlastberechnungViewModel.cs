@@ -11,18 +11,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware ,
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
-        FillTablesWithData();
-    }
-
-    public NutzlastberechnungViewModel()
-    {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-
         if (CurrentSpeziProperties.ParamterDictionary is not null)
-        {
             ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        }
-
         FillTablesWithData();
     }
 

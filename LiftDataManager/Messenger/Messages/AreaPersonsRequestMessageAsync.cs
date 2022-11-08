@@ -7,10 +7,7 @@ public sealed class AreaPersonsRequestMessageAsync : AsyncRequestMessage<Calcula
 
     public AreaPersonsRequestMessageAsync()
     {
-        Sender = new NutzlastberechnungViewModel()
-        {
-            IsActive = true
-        };
+        Sender = App.GetService<NutzlastberechnungViewModel>();
+        Sender.IsActive = true;
     }
-
 }

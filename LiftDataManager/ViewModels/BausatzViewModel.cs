@@ -1,32 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Services;
+using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.ViewModels;
 
-public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<CarFrameWeightRequestMessageAsync>,IRecipient<PropertyChangedMessage<string>>
+public class BausatzViewModel : DataViewModelBase, INavigationAware,IRecipient<PropertyChangedMessage<string>>
 {
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+    private readonly ParameterContext _parametercontext;
+
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
-    }
-
-    public BausatzViewModel()
-    {
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        SetCarWeight();
-    }
-
-    public void Receive(CarFrameWeightRequestMessageAsync message)
-    {
-        if (!message.HasReceivedResponse)
-        {
-            message.Reply(new CalculatedValues
-            {
-                FangrahmenGewicht = FangrahmenGewicht
-            });
-        }
-        IsActive=false;
+        _parametercontext = parametercontext;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -36,7 +23,11 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
             if (message.PropertyName == "var_Bausatz")
             {
                 ParamterDictionary!["var_Rahmengewicht"].Value = "";
-                GetFangrahmengewicht(message.NewValue);
+                FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
+            };
+            if (message.PropertyName == "var_Fangvorrichtung")
+            {
+                //ParamterDictionary!["var_TypFV"].DropDownList.
             };
             SetInfoSidebarPanelText(message);
 
@@ -59,7 +50,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
         }
         else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
         {
-            GetFangrahmengewicht(ParamterDictionary!["var_Bausatz"].Value);
+            FangrahmenGewicht = GetFangrahmengewicht(ParamterDictionary!["var_Bausatz"].Value);
         }
         else
         {
@@ -67,54 +58,12 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
         }
     }
 
-    // ToDo Parameter aus Datenbank abrufen
-
-    private void GetFangrahmengewicht(string? fangrahmenTyp)
+    private double GetFangrahmengewicht(string? fangrahmenTyp)
     {
-        FangrahmenGewicht = fangrahmenTyp switch
-        {
-            "BRR-15 MK2" => 165,
-            "BRR-25 MK2" => 255,
-            "EZE-SR1250" => 195,
-            "EZE-SR1400" => 200,
-            "EZE-SR1600" => 280,
-            "EZE-SR3200" => 580,
-            "ZZE-S2600" => 430,
-            "ZZE-S3200" => 500,
-            "ZZE-S3600" => 700,
-            "ZZE-S4200" => 850,
-            "ZZE-S6200" => 900,
-            "DZE-S8600" => 1680,
-            "VZE-S10000" => 1950,
-            "EZE-S1250" => 170,
-            "EZE-S1600" => 220,
-            "EZE-S2600" => 340,
-            "EZE-S3600" => 550,
-            "EZE-S4200" => 650,
-            "BR1-15 MK2" => 165,
-            "BR1-25 MK2" => 255,
-            "BR1-35 MK2" => 389,
-            "BR2-15 MK2" => 165,
-            "BR2-25 MK2" => 255,
-            "BR2-35 MK2" => 389,
-            "TG2-15 MK2" => 131,
-            "TG2-25 MK2" => 171,
-            "BT1-40" => 765,
-            "BT1-50" => 790,
-            "BT1-60" => 812,
-            "BT1-75" => 922,
-            "BT1-90" => 1194,
-            "BT1-150" => 1260,
-            "BT1-170" => 1260,
-            "BT2-40" => 765,
-            "BT2-50" => 790,
-            "BT2-60" => 812,
-            "BT2-75" => 922,
-            "BT2-90" => 1194,
-            "BT2-120" => 1260,
-            "BT2-170" => 1620,
-            _ => 0,
-        };
+        if (string.IsNullOrEmpty(fangrahmenTyp)) return 0;
+        var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
+        if (carFrameType is null) return 0;
+        return carFrameType.CarFrameWeight;
     }
 
     public void OnNavigatedTo(object parameter)
