@@ -9,7 +9,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly IValidationParameterDataService _validationParameterDataService;
     private bool OpenReadOnly { get; set; } = true;
 
-    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
+    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
                          ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService)
         : base(parameterDataService, dialogService, navigationService)
     {
@@ -30,7 +30,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 message.PropertyName == "var_KHLicht")
             {
                 _ = SetCalculatedValuesAsync();
-               //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
+                //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
             };
             SetInfoSidebarPanelText(message);
             _ = SetModelStateAsync();
@@ -93,7 +93,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task LoadDataAsync()
     {
         await SetFullPathXmlAsync(OpenReadOnly);
-        if (FullPathXml is null) return;
+        if (FullPathXml is null)
+            return;
         var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
@@ -143,7 +144,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanClearData))]
     private async Task ClearDataAsync()
     {
-        if (FullPathXml is null) return;
+        if (FullPathXml is null)
+            return;
         var delete = true;
 
         if (CanSaveAllSpeziParameters || CheckOut)
@@ -210,7 +212,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task UploadDataAsync()
     {
         await Task.Delay(30);
-        if (SpezifikationName is null) return;
+        if (SpezifikationName is null)
+            return;
         if (CheckOut)
         {
             var watch = Stopwatch.StartNew();
@@ -409,7 +412,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         {
                             var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError &&  !string.Equals(downloadResult.CheckOutState,"CheckedOutByOtherUser"))
+                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError && !string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
                             {
                                 FullPathXml = downloadResult.FullFileName;
                                 InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
@@ -553,7 +556,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
-        if (CurrentSpeziProperties is null) SetSettings();
+        if (CurrentSpeziProperties is null)
+            SetSettings();
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         canValidateAllParameter = AuftragsbezogeneXml;
@@ -567,13 +571,15 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
         ParamterDictionary ??= new();
-        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
-        if (ParamterDictionary.Values.Count == 0) _ = InitializeParametereAsync();
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
+            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (ParamterDictionary.Values.Count == 0)
+            _ = InitializeParametereAsync();
         _ = SetCalculatedValuesAsync();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
-            _ = SetModelStateAsync();    
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

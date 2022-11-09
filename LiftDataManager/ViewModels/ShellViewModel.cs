@@ -5,8 +5,8 @@ namespace LiftDataManager.ViewModels;
 public partial class ShellViewModel : ObservableRecipient
 {
     private CurrentSpeziProperties CurrentSpeziProperties = new();
-    public INavigationService NavigationService {get;}
-    public INavigationViewService NavigationViewService{get;}
+    public INavigationService NavigationService { get; }
+    public INavigationViewService NavigationViewService { get; }
 
     [ObservableProperty]
     private bool isBackEnabled;

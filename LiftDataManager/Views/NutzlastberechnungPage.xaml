@@ -129,8 +129,10 @@
                         Margin="0,10,0,10"
                         FontSize="20"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AufzugsArt}" />
-                        <Run FontSize="18" Text="{x:Bind ViewModel.AufzugsArt2}" />
+                        <Run Text="{x:Bind ViewModel.CargoTyp}" />
+                        <Run FontSize="18" Text="(" />
+                        <Run FontSize="18" Text="{x:Bind ViewModel.DriveSystem}" />
+                        <Run FontSize="18" Text=")" />
                         <Run FontSize="12" Text="{x:Bind ViewModel.Aufzugstyp}" />
                     </TextBlock>
                     <TextBlock
@@ -678,9 +680,9 @@
                         Grid.Row="5"
                         Grid.Column="2"
                         Margin="0,5,0,0"
-                        FontSize="20"
-                        VerticalAlignment="Center"
                         HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
                         Style="{StaticResource BodyTextStyle}"
                         Text="kg" />
                     <TextBlock

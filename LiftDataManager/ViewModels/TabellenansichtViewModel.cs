@@ -4,7 +4,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems{get; set;}
+    public CollectionViewSource GroupedItems { get; set; }
 
     public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -84,10 +84,12 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null) SearchInput = CurrentSpeziProperties.SearchInput;
-        if (CurrentSpeziProperties is not null && 
+        if (CurrentSpeziProperties is not null)
+            SearchInput = CurrentSpeziProperties.SearchInput;
+        if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

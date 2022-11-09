@@ -16,14 +16,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     private Dictionary<string, List<Tuple<Action<string,string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
     private readonly ParameterContext _parametercontext;
+    private readonly ICalculationsModule _calculationsModuleService;
 
-    public ValidationParameterDataService(ParameterContext parametercontext)
+    public ValidationParameterDataService(ParameterContext parametercontext, ICalculationsModule calculationsModuleService)
     {
         IsActive = true;
         GetValidationDictionary();
         ParamterDictionary ??= new();
         ValidationResult ??= new();
         _parametercontext = parametercontext;
+        _calculationsModuleService = calculationsModuleService;
     }
 
     ~ValidationParameterDataService()
@@ -663,11 +665,24 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateCarArea(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        var areaPersonsRequestMessageResult = WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
-
-        if (string.IsNullOrWhiteSpace(value) || string.Equals(value, optionalCondition))
+        if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value,"0"))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)));
+            var load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
+            var area = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_A_Kabine");
+            var lift = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Aufzugstyp");
+            var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
+                                                            .ToList()
+                                                            .FirstOrDefault(x => x.Name == lift);
+            var cargotyp = cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
+            var driveSystemDB = _parametercontext.Set<LiftType>().Include(i => i.DriveType)
+                                                               .ToList()
+                                                               .FirstOrDefault(x => x.Name == lift);
+            var drivesystem = driveSystemDB is not null ? driveSystemDB.DriveType!.Name! : "";
+
+            if (!_calculationsModuleService.ValdidateLiftLoad(load, area, cargotyp, drivesystem))
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)));
+            }
         }
     }
 }

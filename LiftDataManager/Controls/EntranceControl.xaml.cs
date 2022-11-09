@@ -1,7 +1,7 @@
-﻿using System.Windows.Input;
-using Cogs.Collections;
+﻿using Cogs.Collections;
 using CommunityToolkit.WinUI.UI;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 
@@ -68,7 +68,8 @@ public sealed partial class EntranceControl : UserControl
 
     private void SetBorderHauptZugang()
     {
-        if (ItemSource["var_Haupthaltestelle"].Value is null) return;
+        if (ItemSource["var_Haupthaltestelle"].Value is null)
+            return;
 
         NewMainEntrance = ItemSource["var_Haupthaltestelle"].Value;
 

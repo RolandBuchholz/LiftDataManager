@@ -1,6 +1,6 @@
-﻿using System.Windows.Input;
-using Cogs.Collections;
+﻿using Cogs.Collections;
 using CommunityToolkit.Common.Collections;
+using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 
@@ -212,7 +212,7 @@ public sealed partial class CommandBar : UserControl
                     result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterCategoryValue filterCatEnum);
                     if (result)
                     {
-                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)) 
+                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                                                     || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))

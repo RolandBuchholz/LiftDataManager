@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
@@ -18,7 +18,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         set
         {
             SetProperty(ref _item, value);
-            if (_item != null) _item.PropertyChanged += OnPropertyChanged;
+            if (_item != null)
+                _item.PropertyChanged += OnPropertyChanged;
         }
     }
 
@@ -52,12 +53,15 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
-        if (Item is null) return;
-        if (FullPathXml == null) return;
+        if (Item is null)
+            return;
+        if (FullPathXml == null)
+            return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
-        if (Item != null) Item.IsDirty = false;
+        if (Item != null)
+            Item.IsDirty = false;
     }
 
     public void OnNavigatedTo(object parameter)
@@ -74,6 +78,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     public void OnNavigatedFrom()
     {
         IsActive = false;
-        if (Item != null) Item.PropertyChanged -= OnPropertyChanged;
+        if (Item != null)
+            Item.PropertyChanged -= OnPropertyChanged;
     }
 }

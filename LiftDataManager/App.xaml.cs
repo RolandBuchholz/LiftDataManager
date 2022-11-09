@@ -12,7 +12,7 @@ namespace LiftDataManager;
 
 public partial class App : Application
 {
-    public IHost Host {get;}
+    public IHost Host { get; }
 
     public static T GetService<T>()
         where T : class
@@ -27,7 +27,7 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static FrameworkElement? MainRoot {get; set;}
+    public static FrameworkElement? MainRoot { get; set; }
     public App()
     {
         InitializeComponent();
@@ -60,6 +60,7 @@ public partial class App : Application
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();
             services.AddSingleton<IVaultDataService, VaultDataService>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
 
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
@@ -127,7 +128,7 @@ public partial class App : Application
             else
             {
                 dbPath = JsonConvert.DeserializeObject<string>((string)obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-            } 
+            }
         }
         else
         {

@@ -72,8 +72,10 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
-        if(Selected is null) return;
-        if (FullPathXml is null) return;
+        if (Selected is null)
+            return;
+        if (FullPathXml is null)
+            return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;

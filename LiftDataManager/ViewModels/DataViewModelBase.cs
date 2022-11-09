@@ -32,7 +32,6 @@ public partial class DataViewModelBase : ObservableRecipient
         if (message is not null)
         {
             SetInfoSidebarPanelText(message);
-
             _ = SetModelStateAsync();
         }
     }
@@ -102,9 +101,11 @@ public partial class DataViewModelBase : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanSaveAllSpeziParameters))]
     public async Task SaveAllParameterAsync()
     {
-        if (ParamterDictionary is null) return;
-        if (FullPathXml is null) return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml,Adminmode);
+        if (ParamterDictionary is null)
+            return;
+        if (FullPathXml is null)
+            return;
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml, Adminmode);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
     }

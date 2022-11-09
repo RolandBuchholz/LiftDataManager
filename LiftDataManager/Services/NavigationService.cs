@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.WinUI.UI.Animations;
+﻿using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LiftDataManager.Services;
 

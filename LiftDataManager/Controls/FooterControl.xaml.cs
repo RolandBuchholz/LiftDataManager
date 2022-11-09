@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using Cogs.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Cogs.Collections;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl
 {
-    public ObservableCollection<ParameterStateInfo> ErrorsList {get; set; }
+    public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
 
     public FooterControl()
     {
@@ -57,7 +57,7 @@ public sealed partial class FooterControl : UserControl
                 ErrorCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Error);
                 WarningCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Warning);
                 InfoCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Informational);
-                ErrorMessage = !string.IsNullOrWhiteSpace(ErrorsList.First()!.ErrorMessage) ? ErrorsList.First()!.ErrorMessage! : string.Empty ;
+                ErrorMessage = !string.IsNullOrWhiteSpace(ErrorsList.First()!.ErrorMessage) ? ErrorsList.First()!.ErrorMessage! : string.Empty;
             }
             catch
             {
@@ -67,16 +67,19 @@ public sealed partial class FooterControl : UserControl
             InfoBarState = GetInfoBarState();
         }
         else
-        { 
+        {
             ErrorMessage = string.Empty;
         }
     }
 
     private InfoBarSeverity GetInfoBarState()
     {
-        if (ErrorCount > 0) {return InfoBarSeverity.Error;}
-        if (WarningCount > 0) {return InfoBarSeverity.Warning;}
-        if (InfoCount > 0) {return  InfoBarSeverity.Informational;}
+        if (ErrorCount > 0)
+        { return InfoBarSeverity.Error; }
+        if (WarningCount > 0)
+        { return InfoBarSeverity.Warning; }
+        if (InfoCount > 0)
+        { return InfoBarSeverity.Informational; }
         return InfoBarState = InfoBarSeverity.Success;
     }
 

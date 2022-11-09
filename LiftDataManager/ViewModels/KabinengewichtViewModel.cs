@@ -15,7 +15,8 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     {
         _parametercontext = parametercontext;
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.ParamterDictionary is not null) ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.ParamterDictionary is not null)
+            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
     }
 
     public void Receive(CarWeightRequestMessageAsync message)
@@ -43,7 +44,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
 
     public double Kabinenbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
     public double Kabinentiefe => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
-    public double KabineundAbgehaengteDeckeHoehe => AbgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht") + 50 : 
+    public double KabineundAbgehaengteDeckeHoehe => AbgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht") + 50 :
                                                                        LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht");
     public double KabinenhoeheAussen => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHA");
     public double Tuerbreite => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
@@ -59,7 +60,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public bool BelegteDecke => ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Decke")).StartsWith("Sichtseite belegt");
 
 
-    
+
     public bool BelagAufDerDecke => !(((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BelagAufDemKabinendach")).StartsWith("kein") ||
                                     string.IsNullOrEmpty((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BelagAufDemKabinendach")));
     public double HalsL1 => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L1");
@@ -230,7 +231,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
                                             (AnzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * Kabinenbreite * 137) * 8 / Math.Pow(10, 6) +
                                             (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * SchutzgelaenderAnzahlPfosten) : 0;
     public double KlemmkastenGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0) ? gewichtKlemmkasten : 0;
-    public double SchraubenZubehoerGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0 ) ? gewichtSchraubenZubehoer : 0;
+    public double SchraubenZubehoerGewicht => (Kabinenbreite > 0 && Kabinenbreite > 0) ? gewichtSchraubenZubehoer : 0;
     public double TableauGewicht => GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_KabTabKabinentableau"));
     public double TableauBreite => GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_KabTabKabinentableau"));
 
@@ -242,28 +243,28 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double KabinenKorrekturGewicht => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F_Korr");
 
     public bool VariableTuerdaten => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
-    public double KabinenTuerGewicht => VariableTuerdaten ?  KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD : KabinentuerGewichtA * AnzahlKabinentueren ;
+    public double KabinenTuerGewicht => VariableTuerdaten ? KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD : KabinentuerGewichtA * AnzahlKabinentueren;
 
     public double FangrahmenGewicht => GetFangrahmengewichtAsync();
 
     private double GetFangrahmengewichtAsync()
     {
 
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
-            {
-                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
-            }
-            else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
-            {
-                var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == ParamterDictionary!["var_Bausatz"].Value);
-                if (carFrameType is null)
-                    return 0;
-                return carFrameType.CarFrameWeight;
-            }
-            else
-            {
+        if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
+        {
+            return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
+        }
+        else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
+        {
+            var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == ParamterDictionary!["var_Bausatz"].Value);
+            if (carFrameType is null)
                 return 0;
-            }
+            return carFrameType.CarFrameWeight;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public double FahrkorbGewicht
@@ -280,73 +281,91 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
 
     private double? GetGewichtSonderblech(string bodenblech)
     {
-        if (string.IsNullOrEmpty(bodenblech)) return 0;
+        if (string.IsNullOrEmpty(bodenblech))
+            return 0;
         var blech = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenblech && x.SpecialSheet == true);
-        if (blech is null) return 0;
+        if (blech is null)
+            return 0;
         return blech.WeightPerSquareMeter;
     }
 
     private double? GetGewichtBodenprofil(string bodenprofil)
     {
-        if (string.IsNullOrEmpty(bodenprofil)) return 0;
+        if (string.IsNullOrEmpty(bodenprofil))
+            return 0;
         var profil = _parametercontext.Set<CarFloorProfile>().FirstOrDefault(x => x.Name == bodenprofil);
-        if (profil is null) return 0;
+        if (profil is null)
+            return 0;
         return profil.WeightPerMeter;
     }
 
     private double? GetGewichtPaneele(string paneele)
     {
-        if (string.IsNullOrEmpty(paneele)) return 0;
+        if (string.IsNullOrEmpty(paneele))
+            return 0;
         var coverPanel = _parametercontext.Set<CarCoverPanel>().FirstOrDefault(x => x.Name == paneele);
-        if (coverPanel is null) return 0;
+        if (coverPanel is null)
+            return 0;
         return coverPanel.WeightPerSquareMeter;
     }
 
     private double? GetGewichtRammschutz(string rammschutz)
     {
-        if (string.IsNullOrEmpty(rammschutz))return 0;
+        if (string.IsNullOrEmpty(rammschutz))
+            return 0;
         var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammschutz);
-        if (rammingProtection is null)return 0;
+        if (rammingProtection is null)
+            return 0;
         return rammingProtection.WeightPerMeter;
     }
 
     private double? GetGewichtHandlauf(string handlauf)
     {
-        if (string.IsNullOrEmpty(handlauf)) return 0;
+        if (string.IsNullOrEmpty(handlauf))
+            return 0;
         var handrail = _parametercontext.Set<Handrail>().FirstOrDefault(x => x.Name == handlauf);
-        if (handrail is null) return 0;
+        if (handrail is null)
+            return 0;
         return handrail.WeightPerMeter;
     }
 
     private double? GetGewichtSockelleiste(string sockelleiste)
     {
-        if (string.IsNullOrEmpty(sockelleiste)) return 0;
+        if (string.IsNullOrEmpty(sockelleiste))
+            return 0;
         var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
-        if (skirtingBoard is null) return 0;
+        if (skirtingBoard is null)
+            return 0;
         return skirtingBoard.WeightPerMeter;
     }
 
     private double? GetHoeheSockelleiste(string sockelleiste)
     {
-        if (string.IsNullOrEmpty(sockelleiste)) return 0;
+        if (string.IsNullOrEmpty(sockelleiste))
+            return 0;
         var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
-        if (skirtingBoard is null) return 0;
+        if (skirtingBoard is null)
+            return 0;
         return skirtingBoard.Height;
     }
 
     private double? GetGewichtTableau(string tableau)
     {
-        if (string.IsNullOrEmpty(tableau)) return 0;
+        if (string.IsNullOrEmpty(tableau))
+            return 0;
         var carPanel = _parametercontext.Set<CarPanel>().FirstOrDefault(x => x.Name == tableau);
-        if (carPanel is null) return 0;
+        if (carPanel is null)
+            return 0;
         return carPanel.Weight;
     }
 
     private double? GetBreiteTableau(string tableau)
     {
-        if (string.IsNullOrEmpty(tableau)) return 0;
+        if (string.IsNullOrEmpty(tableau))
+            return 0;
         var carPanel = _parametercontext.Set<CarPanel>().FirstOrDefault(x => x.Name == tableau);
-        if (carPanel is null) return 0;
+        if (carPanel is null)
+            return 0;
         return carPanel.Width;
     }
 
@@ -356,7 +375,8 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

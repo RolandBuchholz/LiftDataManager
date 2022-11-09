@@ -25,7 +25,7 @@ public class CustomInputStringConveter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if  (string.IsNullOrWhiteSpace((string)value))
+        if (string.IsNullOrWhiteSpace((string)value))
         {
             return "Benutzerdefinierte Variable: 0";
         }

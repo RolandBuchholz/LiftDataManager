@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using LiftDataManager.Services;
-using Microsoft.UI.Xaml.Controls;
 
 namespace LiftDataManager.ViewModels;
 
-public class BausatzViewModel : DataViewModelBase, INavigationAware,IRecipient<PropertyChangedMessage<string>>
+public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
 
@@ -60,9 +58,11 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware,IRecipient<P
 
     private double GetFangrahmengewicht(string? fangrahmenTyp)
     {
-        if (string.IsNullOrEmpty(fangrahmenTyp)) return 0;
+        if (string.IsNullOrEmpty(fangrahmenTyp))
+            return 0;
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
-        if (carFrameType is null) return 0;
+        if (carFrameType is null)
+            return 0;
         return carFrameType.CarFrameWeight;
     }
 
@@ -73,7 +73,8 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware,IRecipient<P
         SetCarWeight();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

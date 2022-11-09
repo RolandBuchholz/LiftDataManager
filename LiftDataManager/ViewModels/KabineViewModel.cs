@@ -13,13 +13,14 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     {
         if (message is not null)
         {
-            if ( message.PropertyName == "var_KBI" ||
+            if (message.PropertyName == "var_KBI" ||
                  message.PropertyName == "var_KTI")
             {
                 _ = SetCalculatedValuesAsync();
             };
-            if (message.PropertyName == "var_Bodenbelag") SetCanEditFlooringProperties();
-            
+            if (message.PropertyName == "var_Bodenbelag")
+                SetCanEditFlooringProperties();
+
             SetInfoSidebarPanelText(message);
 
             _ = SetModelStateAsync();
@@ -64,7 +65,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

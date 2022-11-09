@@ -15,7 +15,8 @@ public class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAwa
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

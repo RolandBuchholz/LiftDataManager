@@ -1,11 +1,11 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Windows.Input;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public CollectionViewSource GroupedItems{get; set;}
+    public CollectionViewSource GroupedItems { get; set; }
 
     public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -88,10 +88,12 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null) SearchInput = CurrentSpeziProperties.SearchInput;
+        if (CurrentSpeziProperties is not null)
+            SearchInput = CurrentSpeziProperties.SearchInput;
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null) _ = SetModelStateAsync();
+            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            _ = SetModelStateAsync();
     }
 
     public void OnNavigatedFrom()

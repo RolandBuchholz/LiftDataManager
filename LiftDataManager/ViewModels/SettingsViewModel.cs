@@ -80,7 +80,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathCFPChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value,_settingService.PathCFP)) _settingService.SetSettingsAsync(nameof(PathCFP), value);
+        if (!string.Equals(value, _settingService.PathCFP))
+            _settingService.SetSettingsAsync(nameof(PathCFP), value);
     }
 
     [ObservableProperty]
@@ -88,7 +89,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathZALiftChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathZALift)) _settingService.SetSettingsAsync(nameof(PathZALift), value);
+        if (!string.Equals(value, _settingService.PathZALift))
+            _settingService.SetSettingsAsync(nameof(PathZALift), value);
     }
 
     [ObservableProperty]
@@ -96,7 +98,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathLiloChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathLilo)) _settingService.SetSettingsAsync(nameof(PathLilo), value);
+        if (!string.Equals(value, _settingService.PathLilo))
+            _settingService.SetSettingsAsync(nameof(PathLilo), value);
     }
 
     [ObservableProperty]
@@ -104,7 +107,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathExcelChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathExcel)) _settingService.SetSettingsAsync(nameof(PathExcel), value);
+        if (!string.Equals(value, _settingService.PathExcel))
+            _settingService.SetSettingsAsync(nameof(PathExcel), value);
     }
 
     [ObservableProperty]
@@ -112,7 +116,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     partial void OnPathDataBaseChanged(string? value)
     {
         value ??= string.Empty;
-        if (!string.Equals(value, _settingService.PathDataBase)) _settingService.SetSettingsAsync(nameof(PathDataBase), value);
+        if (!string.Equals(value, _settingService.PathDataBase))
+            _settingService.SetSettingsAsync(nameof(PathDataBase), value);
     }
 
     [RelayCommand]

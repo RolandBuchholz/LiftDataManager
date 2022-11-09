@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace LiftDataManager.Core.Messenger.Messages;
+namespace LiftDataManager.Messenger.Messages;
 public sealed class AreaPersonsRequestMessageAsync : AsyncRequestMessage<CalculatedValues>
 {
-    public NutzlastberechnungViewModel Sender {get; set;}
+    public NutzlastberechnungViewModel Sender { get; set; }
 
     public AreaPersonsRequestMessageAsync()
     {
