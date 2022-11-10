@@ -127,7 +127,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                               new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
         ValidationDictionary.Add("var_Aufzugstyp", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
                             { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(NotEmpty, "Error", "(keine Auswahl)"),
-                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFrameSelection, "None", null)});
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarFrameSelection, "None", null),
+                              new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateCarArea, "Error", null)});
         ValidationDictionary.Add("var_FabriknummerBestand", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
                             { new Tuple<Action<string, string, string?, string?, string?>, string?, string?>(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
         ValidationDictionary.Add("var_ZUGANSSTELLEN_A", new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>
@@ -679,9 +680,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                                                                .FirstOrDefault(x => x.Name == lift);
             var drivesystem = driveSystemDB is not null ? driveSystemDB.DriveType!.Name! : "";
 
+            if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
+            {
+                ParamterDictionary["var_Q1"].Value = Convert.ToString(_calculationsModuleService.GetLoadFromTable(area, "Tabelle7"));
+            }
+            else
+            {
+                ParamterDictionary["var_Q1"].Value = Convert.ToString(load);
+            }
+
             if (!_calculationsModuleService.ValdidateLiftLoad(load, area, cargotyp, drivesystem))
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)));
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)) { DependentParameter = new string[] { "var_Aufzugstyp", "var_Q", "var_A_Kabine" } });
+            }
+            else
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_Aufzugstyp", "var_Q", "var_A_Kabine" } });
             }
         }
     }

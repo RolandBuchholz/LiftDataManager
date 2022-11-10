@@ -11,7 +11,17 @@ public class CalculationsModuleService : ICalculationsModule
         var loadTable7 = GetLoadFromTable(area, "Tabelle7");
 
         if (load >= loadTable6) return true;
-        if (cargotyp == "Lastenaufzug" && drivesystem == "Hydraulik" && load >= loadTable7 ) return true;
+        if (cargotyp == "Lastenaufzug" && drivesystem == "Hydraulik")
+        {
+            if (loadTable7 > 0)
+            {
+                return load >= loadTable7;
+            }
+            else
+            {
+                return load >= loadTable6;
+            }
+        }
         return false;
     }
 

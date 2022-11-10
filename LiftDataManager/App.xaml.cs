@@ -53,8 +53,8 @@ public partial class App : Application
             services.AddSingleton<IDialogService, DialogService>();
 
             // DataBase Services
-            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString()));
-
+            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString())
+                                                                      .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();

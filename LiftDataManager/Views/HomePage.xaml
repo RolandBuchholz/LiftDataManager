@@ -528,10 +528,17 @@
                                 Grid.Column="2"
                                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                                 ui:TextBoxExtensions.ValidationType="Decimal"
-                                Header="reduzierte Nutzlast Q' [kg]"
+                                Header="Gedrängelast Q'"
+                                IsReadOnly="True"
                                 PlaceholderText="Q'"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}"
-                                TextAlignment="Right" />
+                                TextAlignment="Right">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Gedrängelast wird automatisch berechnet</TextBlock>
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                             <TextBlock
                                 Grid.Column="3"
                                 Margin="0,0,0,5"
