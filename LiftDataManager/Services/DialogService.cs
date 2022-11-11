@@ -50,11 +50,39 @@ public class DialogService : IDialogService
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="title">The title.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="buttonText">The button text.</param>
+    /// <returns>Task.</returns>
+    public async Task<bool?> MessageConfirmationDialogAsync(string title, string message, string buttonText)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = message,
+            CloseButtonText = buttonText,
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.None)
+        {
+            return null;
+        }
+
+        return result == ContentDialogResult.Primary;
+    }
+
+    /// <summary>
+    /// Opens a modal message dialog.
+    /// </summary>
+    /// <param name="title">The title.</param>
     /// <returns>Task.</returns>
     public async Task<bool?> ConfirmationDialogAsync(string title)
     {
         return await ConfirmationDialogAsync(title, "OK", string.Empty, "Cancel");
     }
+
     /// <summary>
     /// Opens a modal message dialog.
     /// </summary>
@@ -62,10 +90,11 @@ public class DialogService : IDialogService
     /// <param name="yesButtonText">The yesbutton text.</param>
     /// <param name="noButtonText">The nobutton text.</param>
     /// <returns>Task.</returns>
-    public async Task<bool> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText)
+    public async Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText)
     {
         return (await ConfirmationDialogAsync(title, yesButtonText, noButtonText, string.Empty)).Value;
     }
+
     /// <summary>
     /// Opens a modal message dialog.
     /// </summary>
@@ -104,7 +133,7 @@ public class DialogService : IDialogService
     /// <param name="noButtonText">The nobutton text.</param>
     /// <returns>Task.</returns>
 
-    public async Task<bool> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText)
+    public async Task<bool?> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText)
     {
         var dialog = new ContentDialog
         {
@@ -116,6 +145,11 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.None)
+        {
+            return null;
+        }
 
         return result == ContentDialogResult.Primary;
     }

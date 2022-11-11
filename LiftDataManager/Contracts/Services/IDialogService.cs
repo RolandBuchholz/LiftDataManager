@@ -6,13 +6,15 @@ public interface IDialogService
 
     Task MessageDialogAsync(string title, string message, string buttonText);
 
-    Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
+    Task<bool?> MessageConfirmationDialogAsync(string title, string message, string buttonText);
 
     Task<bool?> ConfirmationDialogAsync(string title);
 
-    Task<bool> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText);
+    Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText);
 
     Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText, string cancelButtonText);
 
-    Task<bool> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText);
+    Task<bool?> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText);
+    
+    Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
 }

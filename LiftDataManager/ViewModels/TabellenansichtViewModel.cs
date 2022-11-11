@@ -66,7 +66,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
                                     $"\n" +
                                     $"Soll zur HomeAnsicht gewechselt werden um die Datei aus zu checken?",
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-                if (dialogResult)
+                if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");

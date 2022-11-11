@@ -146,21 +146,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         if (FullPathXml is null)
             return;
-        var delete = true;
+
+        bool? delete = false;
 
         if (CanSaveAllSpeziParameters || CheckOut)
         {
             delete = await _dialogService!.WarningDialogAsync(
-                    $"Warnung es droht Datenverlust",
-                    $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
-                    $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
-                    $"Der Befehl >Auschecken Rückgänig< wird ausgeführt!\n" +
-                    $"\n" +
-                    $"Soll der Vorgang fortgesetzt werden?",
-                    "Fortsetzen", "Abbrechen");
+                        $"Warnung es droht Datenverlust",
+                        $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
+                        $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
+                        $"Der Befehl >Auschecken Rückgänig< wird ausgeführt!\n" +
+                        $"\n" +
+                        $"Soll der Vorgang fortgesetzt werden?",
+                        "Fortsetzen", "Abbrechen");
         }
 
-        if (delete)
+        if (delete is not null && (bool)delete)
         {
             InfoSidebarPanelText += $"Daten werden auf die Standardwerte zurückgesetzt\n";
             InfoSidebarPanelText += $"----------\n";
@@ -247,8 +248,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         _ = _validationParameterDataService.ValidateAllParameterAsync();
         if (!CheckoutDialogIsOpen)
         {
-            _ = _dialogService!.MessageDialogAsync("Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
-                                                                                       $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
+            _ = await _dialogService!.MessageConfirmationDialogAsync("Validation Result",
+                        $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
+                        $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
+                         "Ok");
         }
         await SetModelStateAsync();
     }
@@ -327,7 +330,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                     $"\n" +
                                     $"Soll die AutodeskTransferXml ausgechecked werden?",
                                     "Auschecken", "Schreibgeschützt bearbeiten");
-                if (dialogResult)
+                if ((bool)dialogResult)
                 {
                     IsBusy = true;
                     OpenReadOnly = false;
@@ -453,7 +456,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                                                 $"Es wurden mehrere {searchPattern} Dateien gefunden?",
                                                  "XML aus Vault herunterladen",
                                                     "Abbrechen");
-                        if (confirmed)
+                        if ((bool)confirmed)
                         {
                             var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
 

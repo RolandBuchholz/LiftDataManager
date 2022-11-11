@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Runtime.CompilerServices;
 namespace LiftDataManager.ViewModels;
 
@@ -148,7 +147,27 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
 
         if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
-            return 0;
+            switch (membername)
+            {
+                case nameof(NutzflaecheZugangA):
+                    if (Kabinenbreite > kabinenTuer.Tuerbreite) 
+                        return 0;
+                    break;
+                case nameof(NutzflaecheZugangB):
+                    if (Kabinentiefe > kabinenTuer.Tuerbreite)
+                        return 0;
+                    break;
+                case nameof(NutzflaecheZugangC):
+                    if(Kabinenbreite > kabinenTuer.Tuerbreite) 
+                        return 0;
+                    break;
+                case nameof(NutzflaecheZugangD):
+                    if(Kabinentiefe > kabinenTuer.Tuerbreite) 
+                        return 0;
+                    break;
+                default:
+                    break;
+            }
         }
 
         return kabinenTuer.AnzahlTuerFluegel switch

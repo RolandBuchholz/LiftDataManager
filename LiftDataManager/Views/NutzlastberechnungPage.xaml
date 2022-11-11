@@ -572,7 +572,8 @@
                         TextWrapping="WrapWholeWords">
                         * 5.4.2.1.3<LineBreak />
                         <Run FontSize="10" Text="a) Flächen mit einer Tiefe zu einem Türblatt von 100 mm oder weniger (einschließlich schneller und langsamer Türblätter bei mehrblättrigen Türen) dürfen bei der Grundfläche nicht berücksichtigt werden." /><LineBreak />
-                        <Run FontSize="10" Text="b) Bei Flächen, die mehr als 100 mm tief sind, muss die gesamte Nutzfläche zur Grundfläche hinzugefügt werden." />
+                        <Run FontSize="10" Text="b) Bei Flächen, die mehr als 100 mm tief sind, muss die gesamte Nutzfläche der Türen zur Grundfläche hinzugefügt werden." />
+                        <Run FontSize="10" Text="Info: Bei Türbreite gleich Kabinenbreite wird die gesamte Nutzfläche der Türen zur Grundfläche hinzugefügt werden " />
                     </TextBlock>
                 </Grid>
                 <!--  Nutzlast  -->
