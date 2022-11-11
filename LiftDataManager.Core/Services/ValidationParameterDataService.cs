@@ -341,6 +341,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 }
                 return;
             default:
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
                 return;
         }
     }
@@ -682,7 +683,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
             if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
             {
-                ParamterDictionary["var_Q1"].Value = Convert.ToString(_calculationsModuleService.GetLoadFromTable(area, "Tabelle7"));
+                ParamterDictionary["var_Q1"].Value = Convert.ToString(_calculationsModuleService.GetLoadFromTable(area, "Tabelle6"));
             }
             else
             {

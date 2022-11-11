@@ -150,7 +150,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (CanSaveAllSpeziParameters || CheckOut)
         {
-            delete = await _dialogService!.WarningDialogAsync(App.MainRoot!,
+            delete = await _dialogService!.WarningDialogAsync(
                     $"Warnung es droht Datenverlust",
                     $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
                     $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
@@ -189,7 +189,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
                 else
                 {
-                    await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                    await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                     InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 }
             }
@@ -234,7 +234,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
             else
             {
-                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 InfoSidebarPanelText += $"----------\n";
             }
@@ -247,7 +247,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         _ = _validationParameterDataService.ValidateAllParameterAsync();
         if (!CheckoutDialogIsOpen)
         {
-            _ = _dialogService!.MessageDialogAsync(App.MainRoot!, "Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
+            _ = _dialogService!.MessageDialogAsync("Validation Result", $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
                                                                                        $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden");
         }
         await SetModelStateAsync();
@@ -320,7 +320,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService!.WarningDialogAsync(App.MainRoot!,
+                var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
@@ -386,7 +386,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         }
                         else
                         {
-                            await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                            await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                             InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -422,7 +422,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             }
                             else if (string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
                             {
-                                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                                 FullPathXml = downloadResult.FullFileName;
                                 InfoSidebarPanelText += $"Achtung Datei wird von {downloadResult.EditedBy} bearbeitet\n";
                                 InfoSidebarPanelText += $"Kein speichern möglich!\n";
@@ -434,7 +434,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             }
                             else
                             {
-                                await _dialogService!.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -449,7 +449,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
                         InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
 
-                        var confirmed = await _dialogService!.ConfirmationDialogAsync(App.MainRoot!,
+                        var confirmed = await _dialogService!.ConfirmationDialogAsync(
                                                 $"Es wurden mehrere {searchPattern} Dateien gefunden?",
                                                  "XML aus Vault herunterladen",
                                                     "Abbrechen");
@@ -466,7 +466,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             }
                             else
                             {
-                                await _dialogService.LiftDataManagerdownloadInfoAsync(App.MainRoot!, downloadResult);
+                                await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
                                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";

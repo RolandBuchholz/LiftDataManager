@@ -154,7 +154,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [RelayCommand]
     private async Task SwitchAccentColorAsync()
     {
-        await _dialogService.MessageDialogAsync(App.MainRoot!, "Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
+        await _dialogService.MessageDialogAsync("Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
 
     [RelayCommand]
