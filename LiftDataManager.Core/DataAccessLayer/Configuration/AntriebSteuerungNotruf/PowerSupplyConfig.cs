@@ -1,6 +1,6 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 
-namespace LiftDataManager.Core.DataAccessLayer.Configuration.ntriebSteuerungNotruf;
+namespace LiftDataManager.Core.DataAccessLayer.Configuration.AntriebSteuerungNotruf;
 
 public class PowerSupplyConfig : BaseModelBuilder<PowerSupply>
 {

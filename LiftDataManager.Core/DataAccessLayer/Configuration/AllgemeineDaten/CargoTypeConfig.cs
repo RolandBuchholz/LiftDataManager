@@ -1,4 +1,4 @@
-﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration.Fahrkorb;
+﻿namespace LiftDataManager.Core.DataAccessLayer.Configuration.AllgemeineDaten;
 
 public class CargoTypeConfig : BaseModelBuilder<CargoType>
 {
