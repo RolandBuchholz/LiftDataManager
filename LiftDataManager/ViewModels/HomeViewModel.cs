@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Xml.Linq;
 
 namespace LiftDataManager.ViewModels;
 
@@ -99,9 +100,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         foreach (var item in data)
         {
-            if (ParamterDictionary!.ContainsKey(item.Name))
+            if (ParamterDictionary!.TryGetValue(item.Name, out Parameter value))
             {
-                var updatedParameter = ParamterDictionary[item.Name];
+                var updatedParameter = value;
                 updatedParameter.DataImport = true;
                 updatedParameter.Value = item.Value;
                 updatedParameter.Comment = item.Comment;
@@ -120,6 +121,30 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"----------\n";
             }
         }
+
+        FileInfo AutoDeskTransferInfo = new(FullPathXml);
+        if (!AutoDeskTransferInfo.IsReadOnly)
+        {
+            var parameterList = ParamterDictionary!.Values.ToList();
+
+            XElement? doc = null;
+
+            for (int i = 0; i < parameterList.Count; i++)
+            {
+                if (!data.Any(x => x.Name == parameterList[i].Name))
+                {
+                    doc ??= XElement.Load(FullPathXml);
+
+                    XElement? xmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
+                                              where para.Element("name")!.Value == parameterList[i-1].Name
+                                              select para).SingleOrDefault();
+
+                    Debug.WriteLine(parameterList[i].Name);
+                }
+                
+            }
+        }
+
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;

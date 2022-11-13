@@ -88,6 +88,8 @@ public class ParameterDataService : IParameterDataService
             return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
         }
 
+        string infotext;
+
         XElement doc = XElement.Load(path);
 
         // Find a specific customer
@@ -102,13 +104,19 @@ public class ParameterDataService : IParameterDataService
             xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
             xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
             xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+            infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
+            infotext += $"----------\n";
+        }
+        else
+        {
+            infotext = $"Speichern fehlgeschlagen |{parameter.Name}|\n";
+            infotext += $"----------\n";
         }
 
         doc.Save(path);
         await Task.CompletedTask;
 
-        var infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
-        infotext += $"----------\n";
+
         return infotext;
     }
 
@@ -142,11 +150,13 @@ public class ParameterDataService : IParameterDataService
                     xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
                     xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
                     xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+                    parameter.IsDirty = false;
+                    infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
                 }
-
-                parameter.IsDirty = false;
-
-                infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
+                else
+                {
+                    infotext += $"Achtung: Speichern fehlgeschlagen |{parameter.Name}|\n";
+                }
             }
             else
             {
@@ -162,4 +172,5 @@ public class ParameterDataService : IParameterDataService
         infotext += $"----------\n";
         return infotext;
     }
+
 }
