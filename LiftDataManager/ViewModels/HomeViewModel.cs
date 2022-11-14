@@ -128,21 +128,33 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             var parameterList = ParamterDictionary!.Values.ToList();
 
             XElement? doc = null;
+            bool isXmlOutdated = false;
+            var dataParameterList = data.Select(x =>x.Name).ToList();
 
             for (int i = 0; i < parameterList.Count; i++)
             {
-                if (!data.Any(x => x.Name == parameterList[i].Name))
+                if (!dataParameterList.Contains(parameterList[i].Name!))
                 {
+                    isXmlOutdated = true;
                     doc ??= XElement.Load(FullPathXml);
 
-                    XElement? xmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
-                                              where para.Element("name")!.Value == parameterList[i-1].Name
+                    XElement? previousxmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
+                                              where para.Element("name")!.Value == parameterList[i - 1].Name
                                               select para).SingleOrDefault();
+                    if (previousxmlparameter is not null)
+                    {
+                        var newXmlTree = new XElement("ParamWithValue",
+                                    new XElement("name", parameterList[i].Name),
+                                    new XElement("typeCode", parameterList[i].TypeCode.ToString()),
+                                    new XElement("value", parameterList[i].Value),
+                                    new XElement("comment", parameterList[i].Comment),
+                                    new XElement("isKey", parameterList[i].IsKey));
 
-                    Debug.WriteLine(parameterList[i].Name);
+                        previousxmlparameter.AddAfterSelf(new XElement(newXmlTree));
+                    }
                 }
-                
             }
+            if(isXmlOutdated && doc is not null) doc.Save(FullPathXml);
         }
 
         if (CurrentSpeziProperties is not null)
