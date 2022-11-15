@@ -243,7 +243,11 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double KabinenKorrekturGewicht => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F_Korr");
 
     public bool VariableTuerdaten => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
-    public double KabinenTuerGewicht => VariableTuerdaten ? KabinentuerGewichtA + KabinentuerGewichtB + KabinentuerGewichtC + KabinentuerGewichtD : KabinentuerGewichtA * AnzahlKabinentueren;
+    public double KabinenTuerGewicht => VariableTuerdaten ? (ZugangA ? KabinentuerGewichtA : 0) +
+                                                            (ZugangB ? KabinentuerGewichtB : 0) +
+                                                            (ZugangC ? KabinentuerGewichtC : 0) +
+                                                            (ZugangD ? KabinentuerGewichtD : 0)
+                                                           : KabinentuerGewichtA * AnzahlKabinentueren;
 
     public double FangrahmenGewicht => GetFangrahmengewichtAsync();
 

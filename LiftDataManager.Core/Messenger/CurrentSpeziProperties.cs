@@ -10,6 +10,7 @@ public class CurrentSpeziProperties
     public bool AuftragsbezogeneXml{get; set; }
     public bool CheckOut{ get; set;}
     public bool LikeEditParameter{get; set;}
+    public bool HideInfoErrors { get; set; }
     public string? SpezifikationStatusTyp{get; set;}
     public string? FullPathXml{get; set;}
     public string? SearchInput{get; set;}

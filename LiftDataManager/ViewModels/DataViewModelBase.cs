@@ -40,6 +40,17 @@ public partial class DataViewModelBase : ObservableRecipient
     private bool hasErrors;
 
     [ObservableProperty]
+    private bool hideInfoErrors;
+    partial void OnHideInfoErrorsChanged(bool value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.HideInfoErrors, value))
+        {
+            CurrentSpeziProperties.HideInfoErrors = value;
+            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        }
+    }
+
+    [ObservableProperty]
     private string? fullPathXml;
     partial void OnFullPathXmlChanged(string? value)
     {
@@ -120,6 +131,7 @@ public partial class DataViewModelBase : ObservableRecipient
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
+        HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
         InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
     }

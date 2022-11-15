@@ -50,14 +50,17 @@ public sealed partial class FooterControl : UserControl
                 {
                     foreach (var error in parameterErrors)
                     {
+                        if (HideInfoErrors && error.Severity == ParameterStateInfo.ErrorLevel.Informational)
+                            break;
                         ErrorsList.Add(error);
                     }
                 }
-
                 ErrorCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Error);
                 WarningCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Warning);
                 InfoCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Informational);
-                ErrorMessage = !string.IsNullOrWhiteSpace(ErrorsList.First()!.ErrorMessage) ? ErrorsList.First()!.ErrorMessage! : string.Empty;
+                ErrorMessage = (ErrorCount + WarningCount + InfoCount > 0)
+                                ? ErrorsList.First()!.ErrorMessage!
+                                : string.Empty;
             }
             catch
             {
@@ -146,6 +149,19 @@ public sealed partial class FooterControl : UserControl
 
     public static readonly DependencyProperty HasErrorsProperty =
         DependencyProperty.Register("HasErrors", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+
+    public bool HideInfoErrors
+    {
+        get => (bool)GetValue(HideInfoErrorsProperty);
+        set
+        {
+            SetValue(HideInfoErrorsProperty, value);
+            UpdateInfobar();
+        }
+    }
+
+    public static readonly DependencyProperty HideInfoErrorsProperty =
+        DependencyProperty.Register("HideInfoErrors", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
 
     public string XmlPath
     {

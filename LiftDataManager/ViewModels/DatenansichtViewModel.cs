@@ -46,7 +46,16 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
                 var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    ParamterErrorDictionary.Add(error.Name!, error.parameterErrors[error.Name!]);
+                    if (!ParamterErrorDictionary.ContainsKey(error.Name!))
+                    {
+                        var errorList = new List<ParameterStateInfo>();
+                        errorList.AddRange(error.parameterErrors["Value"].ToList());
+                        ParamterErrorDictionary.Add(error.Name!, errorList);
+                    }
+                    else
+                    {
+                        ParamterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
+                    }
                 }
             }
         }
