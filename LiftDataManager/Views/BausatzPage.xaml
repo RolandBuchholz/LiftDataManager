@@ -242,7 +242,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Führungsschienen GGW" />
+                                    Text="{x:Bind ViewModel.CWTRailName, Mode=OneWay}" />
                                 <Grid
                                     x:Name="Bausatz4"
                                     Grid.Row="0"

@@ -90,6 +90,8 @@
     <None Remove="Images\carDimensions.png" />
     <None Remove="Images\CFPTransparent.png" />
     <None Remove="Images\ExcelTransparent.png" />
+    <None Remove="Images\Handrails\handrail_HL13.png" />
+    <None Remove="Images\Handrails\handrail_HL14.png" />
     <None Remove="Images\LiftDataManagerLogo.png" />
     <None Remove="Images\LiloTransparent.png" />
     <None Remove="Images\Ordnerblue.png" />
@@ -114,6 +116,8 @@
     <Content Include="Images\carDimensions.png" />
     <Content Include="Images\CFPTransparent.png" />
     <Content Include="Images\ExcelTransparent.png" />
+    <Content Include="Images\Handrails\handrail_HL13.png" />
+    <Content Include="Images\Handrails\handrail_HL14.png" />
     <Content Include="Images\LiftDataManagerLogo.png" />
     <Content Include="Images\LiloTransparent.png" />
     <Content Include="Images\Ordnerblue.png" />

@@ -603,6 +603,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         canValidateAllParameter = AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
+        HideInfoErrors= CurrentSpeziProperties.HideInfoErrors;
         SpezifikationStatusTyp = (CurrentSpeziProperties.SpezifikationStatusTyp is not null) ? CurrentSpeziProperties.SpezifikationStatusTyp : "Auftrag";
         InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
         if (CurrentSpeziProperties.FullPathXml is not null)

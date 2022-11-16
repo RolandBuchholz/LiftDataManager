@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -1187,7 +1188,24 @@
                                         VerticalAlignment="Center"
                                         Header="Handlauftyp"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].DropDownListValue, Mode=TwoWay}" />
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Handlauf'].DropDownListValue, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel Orientation="Vertical" >
+                                                <controls:HeaderedContentControl Header="Handlauf HL13">
+                                                    <Image
+                                                        Width="200"
+                                                        Height="200"
+                                                        Source="/Images/Handrails/handrail_HL13.png" />
+                                                </controls:HeaderedContentControl>
+                                                <controls:HeaderedContentControl Header="Handlauf HL14">
+                                                    <Image
+                                                        Width="200"
+                                                        Height="200"
+                                                        Source="/Images/Handrails/handrail_HL14.png" />
+                                                </controls:HeaderedContentControl>
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </ComboBox>
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"

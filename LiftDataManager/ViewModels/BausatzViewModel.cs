@@ -4,7 +4,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
 
-public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
 
@@ -23,15 +23,13 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
                 ParamterDictionary!["var_Rahmengewicht"].Value = "";
                 FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
             };
-            if (message.PropertyName == "var_Fangvorrichtung")
-            {
-                //ParamterDictionary!["var_TypFV"].DropDownList.
-            };
             SetInfoSidebarPanelText(message);
-
             _ = SetModelStateAsync();
         }
     }
+
+    [ObservableProperty]
+    private string cWTRailName = "Führungsschienen GGW";
 
     private double _FangrahmenGewicht;
     public double FangrahmenGewicht
@@ -63,6 +61,7 @@ public class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
         if (carFrameType is null)
             return 0;
+        CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
         return carFrameType.CarFrameWeight;
     }
 
