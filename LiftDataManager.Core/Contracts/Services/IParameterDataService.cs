@@ -4,6 +4,8 @@ namespace LiftDataManager.Core.Contracts.Services;
 
 public interface IParameterDataService
 {
+    bool CanConnectDataBase();
+
     Task<IEnumerable<TransferData>> LoadParameterAsync(string path);
 
     Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();

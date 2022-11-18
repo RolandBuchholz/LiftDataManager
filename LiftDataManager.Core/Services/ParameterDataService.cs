@@ -17,6 +17,16 @@ public class ParameterDataService : IParameterDataService
         _parametercontext = parametercontext;
     }
 
+    public bool CanConnectDataBase()
+    {
+        if (!_parametercontext.Database.CanConnect()) return false;
+        if (_parametercontext.Database.GetConnectionString() is not null)
+        {
+            return _parametercontext.Database.GetConnectionString()!.Contains("LiftDataParameter");
+        }
+        return false;
+    }
+        
     public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
     {
         List<Parameter> parameterList = new();
@@ -172,5 +182,4 @@ public class ParameterDataService : IParameterDataService
         infotext += $"----------\n";
         return infotext;
     }
-
 }

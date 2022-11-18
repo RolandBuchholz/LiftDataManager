@@ -145,10 +145,12 @@ public partial class App : Application
         return connectionString;
     }
 
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private async void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+        e.Handled = true;
+        var result = await SendErrorlog(e.Message);
+
+        Current.Exit();
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
@@ -157,4 +159,19 @@ public partial class App : Application
 
         await GetService<IActivationService>().ActivateAsync(args);
     }
+
+    private async Task<bool> SendErrorlog(string? errorlog)
+    {
+        var dialogService = GetService<IDialogService>();
+        if (dialogService != null)
+        {
+            var sendErrorlog = await dialogService.ErrorDialogAsync(errorlog);
+            if (sendErrorlog != null)
+            {
+
+            }
+        }
+        return true;
+    }
+
 }

@@ -1,5 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Xml.Linq;
+using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using WinUIEx.Messaging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -293,31 +297,39 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         await SetModelStateAsync();
     }
 
-    public async Task InitializeParametereAsync()
+    public async Task<bool> InitializeParametereAsync()
     {
-        var data = await _parameterDataService!.InitializeParametereFromDbAsync();
+        if (!_parameterDataService!.CanConnectDataBase())
+        {
+            _ = _settingService.SetSettingsAsync("PathDataBase", @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
+            return false;
+        }
+        else
+        {
+            var data = await _parameterDataService!.InitializeParametereFromDbAsync();
 
-        foreach (var item in data)
-        {
-            if (ParamterDictionary!.ContainsKey(item.Name!))
+            foreach (var item in data)
             {
-                ParamterDictionary[item.Name!] = item;
+                if (ParamterDictionary!.ContainsKey(item.Name!))
+                {
+                    ParamterDictionary[item.Name!] = item;
+                }
+                else
+                {
+                    ParamterDictionary.Add(item.Name!, item);
+                }
             }
-            else
+            if (CurrentSpeziProperties is not null)
             {
-                ParamterDictionary.Add(item.Name!, item);
+                CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+                _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
             }
+            LikeEditParameter = true;
+            OpenReadOnly = true;
+            CanCheckOut = !CheckOut && AuftragsbezogeneXml;
+
+            return true;
         }
-        if (CurrentSpeziProperties is not null)
-        {
-            CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
-        }
-        LikeEditParameter = true;
-        OpenReadOnly = true;
-        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-        await SetCalculatedValuesAsync();
-        await SetModelStateAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -612,15 +624,29 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
         ParamterDictionary ??= new();
+
+        //Refactor
+
         if (CurrentSpeziProperties.ParamterDictionary is not null)
             ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+
+
         if (ParamterDictionary.Values.Count == 0)
-            _ = InitializeParametereAsync();
-        _ = SetCalculatedValuesAsync();
+        {
+            var success = InitializeParametereAsync();
+
+            if (!success.Result)
+            {
+                //throw new Exception("LiftDataParameter.db not found");
+            }
+        }
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
+            _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
+        }
     }
 
     public void OnNavigatedFrom()

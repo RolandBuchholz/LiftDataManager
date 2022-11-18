@@ -105,6 +105,8 @@
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
     <None Remove="MainWindow.xaml" />
+    <None Remove="Services\Dialogs\ErrorContentDialog.xaml" />
+    <None Remove="Services\Dialogs\FilePickerDialogxaml" />
     <None Remove="Views\EinreichunterlagenPage.xaml" />
     <None Remove="Views\KabinengewichtPage.xaml" />
     <None Remove="Views\KabinenLüftungPage.xaml" />
@@ -250,5 +252,13 @@
   
   <ItemGroup>
     <Folder Include="Strings\en-us\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <CustomAdditionalCompileInputs Remove="Services\Dialogs\ErrorContentDialog.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Remove="Services\Dialogs\ErrorContentDialog.xaml" />
   </ItemGroup>
 </Project>
