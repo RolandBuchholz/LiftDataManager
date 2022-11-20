@@ -27,6 +27,7 @@ public class PageService : IPageService
         Configure<WartungMontageTüvViewModel, WartungMontageTüvPage>();
         Configure<EinreichunterlagenViewModel, EinreichunterlagenPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<ErrorViewModel, ErrorPage>();
     }
 
     public Type GetPageType(string key)

@@ -219,4 +219,7 @@
   <data name="Shell_LiftDetailData.Content" xml:space="preserve">
     <value>Aufzugsanlage Detaileingaben</value>
   </data>
+  <data name="Shell_Error.Content" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

@@ -1,12 +1,15 @@
-﻿using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Contracts.Services;
+using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
+
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
-using Windows.Storage;
 
+using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
+using Windows.Storage;
 
 namespace LiftDataManager;
 
@@ -63,6 +66,8 @@ public partial class App : Application
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
 
             // Views and ViewModels
+            services.AddTransient<ErrorViewModel>();
+            services.AddTransient<ErrorPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<WartungMontageTüvViewModel>();
@@ -145,12 +150,10 @@ public partial class App : Application
         return connectionString;
     }
 
-    private async void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         e.Handled = true;
-        var result = await SendErrorlog(e.Message);
-
-        Current.Exit();
+        SwitchToErrorHandlingPage(sender, e);
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
@@ -160,18 +163,10 @@ public partial class App : Application
         await GetService<IActivationService>().ActivateAsync(args);
     }
 
-    private async Task<bool> SendErrorlog(string? errorlog)
+    private void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
-        var dialogService = GetService<IDialogService>();
-        if (dialogService != null)
-        {
-            var sendErrorlog = await dialogService.ErrorDialogAsync(errorlog);
-            if (sendErrorlog != null)
-            {
-
-            }
-        }
-        return true;
+        App.MainWindow.Activate();
+        var _navigationService = App.GetService<INavigationService>();
+        _navigationService.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel");
     }
-
 }
