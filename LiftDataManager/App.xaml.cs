@@ -165,8 +165,11 @@ public partial class App : Application
 
     private void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
-        App.MainWindow.Activate();
-        var _navigationService = App.GetService<INavigationService>();
-        _navigationService.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel");
+        MainWindow.Activate();
+        var _navigationService = GetService<INavigationService>();
+        if (_navigationService != null)
+        {
+            _navigationService.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
+        }
     }
 }

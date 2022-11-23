@@ -301,8 +301,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         if (!_parameterDataService!.CanConnectDataBase())
         {
-            _ = _settingService.SetSettingsAsync("PathDataBase", @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
             return false;
+            //_ = _settingService.SetSettingsAsync("PathDataBase", @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
         }
         else
         {
@@ -637,7 +637,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             if (!success.Result)
             {
-                //throw new Exception("LiftDataParameter.db not found");
+                throw new Exception("Initialize LiftDataParameter.db failed");
             }
         }
         if (CurrentSpeziProperties is not null &&

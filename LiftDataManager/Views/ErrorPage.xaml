@@ -2,15 +2,289 @@
     x:Class="LiftDataManager.Views.ErrorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock
+                FontSize="48"
+                Foreground="Red"
+                Text="LiftDataManager ErrorPage" />
+            <TextBlock
+                FontSize="24"
+                Foreground="Red"
+                Text="{x:Bind ViewModel.ErrorPageInfo.CallerMember}" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Margin="0,5,0,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="325" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="500" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <Border
+                        Margin="5"
+                        Background="{StaticResource CardBackgroundFillColorDefault}"
+                        BorderBrush="{StaticResource AccentAAFillColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            Margin="15,5,0,5"
+                            HorizontalAlignment="Left"
+                            FontSize="18"
+                            Text="App Info" />
+                    </Border>
+                    <InfoBar
+                        Title="Can Connect DataBase"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.CanConnectDataBase}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="ParamterDictionary"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.ParamterDictionaryInfo}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="Adminmode"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.Adminmode}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="AuftragsbezogeneXml"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.AuftragsbezogeneXml}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="CheckOut"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.CheckOut}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="CustomAccentColor"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.CustomAccentColor}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="LikeEditParameter"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.LikeEditParameter}"
+                        Severity="Informational" />
+                    <InfoBar
+                        Title="HideInfoErrors"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Message="{x:Bind ViewModel.HideInfoErrors}"
+                        Severity="Informational" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Border
+                        Margin="5"
+                        Background="{StaticResource CardBackgroundFillColorDefault}"
+                        BorderBrush="{StaticResource AccentAAFillColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            Margin="15,5,0,5"
+                            HorizontalAlignment="Left"
+                            FontSize="18"
+                            Text="Error Info" />
+                    </Border>
+                    <InfoBar
+                        Title="Error Message:"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Severity="Error">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            Text="{x:Bind ViewModel.ErrorMessage}"
+                            TextWrapping="WrapWholeWords" />
+                    </InfoBar>
+                    <InfoBar
+                        Title="Exception:"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Severity="Error">
+                        <Expander
+                            Margin="0,0,10,10"
+                            HorizontalAlignment="Stretch"
+                            Header="Exception Details">
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                Text="{x:Bind ViewModel.Exception}"
+                                TextWrapping="WrapWholeWords" />
+                        </Expander>
+                    </InfoBar>
+                    <Expander
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        Header="Logfile">
+                        <TextBlock Text="currently not supported" />
+                    </Expander>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="2">
+                    <Border
+                        Margin="5"
+                        Background="{StaticResource CardBackgroundFillColorDefault}"
+                        BorderBrush="{StaticResource AccentAAFillColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            Margin="15,5,0,5"
+                            HorizontalAlignment="Left"
+                            FontSize="18"
+                            Text="Quick Repair Tools" />
+                    </Border>
+                    <labs:SettingsExpander
+                        Margin="5,0,5,0"
+                        Description="gesetzte Dateipfade"
+                        Header="Programm Pfade"
+                        IsExpanded="True">
+                        <labs:SettingsExpander.HeaderIcon>
+                            <FontIcon Glyph="&#xE118;" />
+                        </labs:SettingsExpander.HeaderIcon>
+                        <labs:SettingsExpander.Items>
+                            <labs:SettingsCard Header="Database Path">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="200" Text="{x:Bind ViewModel.PathDataBase, Mode=TwoWay}" />
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                        CommandParameter="PathDataBase">
+                                        <SymbolIcon Symbol="Share" />
+                                    </Button>
+                                </StackPanel>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard Header="Berchtenbreiter CFP">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="200" Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                        CommandParameter="PathCFP">
+                                        <SymbolIcon Symbol="Share" />
+                                    </Button>
+                                </StackPanel>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard Header="Ziehl Abegg Zetalift">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="200" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                        CommandParameter="PathZALift">
+                                        <SymbolIcon Symbol="Share" />
+                                    </Button>
+                                </StackPanel>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard Header="BucherHydraulics Lilo">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="200" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                        CommandParameter="PathLilo">
+                                        <SymbolIcon Symbol="Share" />
+                                    </Button>
+                                </StackPanel>
+                            </labs:SettingsCard>
+                            <labs:SettingsCard Header="Microsoft Excel">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="200" Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                        CommandParameter="PathExcel">
+                                        <SymbolIcon Symbol="Share" />
+                                    </Button>
+                                </StackPanel>
+                            </labs:SettingsCard>
+                        </labs:SettingsExpander.Items>
+                    </labs:SettingsExpander>
+                    <InfoBar
+                        Title="Danger zone:"
+                        Margin="5,0,5,0"
+                        IsClosable="False"
+                        IsOpen="True"
+                        Severity="Error">
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,10" TextWrapping="WrapWholeWords">
+                                Die Anwendung befindet sich in einem nicht stabilen Zusand.<LineBreak />
+                                Das speichen der Daten kann zu unerwünschten Ergebnissen führen.</TextBlock>
+                            <Button
+                                Margin="10"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Right"
+                                Command="{x:Bind ViewModel.SaveAllParameterCommand}"
+                                Content="Parameter speichern"
+                                FontWeight="Bold"
+                                Style="{StaticResource AccentButtonStyle}" />
+                        </StackPanel>
+                    </InfoBar>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
         <TextBlock
-            FontSize="72"
+            Grid.Row="2"
+            Margin="0,20,0,0"
+            FontSize="18"
             Foreground="Red"
-            Text="ErrorPage" />
-
+            TextWrapping="WrapWholeWords">
+            In der Anwendung wurde ein Fehler festgestellt.<LineBreak />
+            Die Anwendung wird nach dem verlassen der ErrorPage automatisch beendet.<LineBreak />
+            Die können das Logfile zur Fehlerbehebung an roland.buchholz@berchtenbreiter-gmbh.de senden.</TextBlock>
+        <StackPanel
+            Grid.Row="3"
+            Margin="0,0,25,25"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Margin="10"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.SendErrorLogCommand}"
+                Content="Send Errorlog"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+            <Button
+                Margin="10"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.AppShutdownCommand}"
+                Content="Anwendung schließen"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+        </StackPanel>
     </Grid>
 </Page>

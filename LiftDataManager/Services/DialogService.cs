@@ -1,5 +1,4 @@
-﻿using LiftDataManager.Services.Dialogs;
-using Microsoft.UI.Text;
+﻿using Microsoft.UI.Text;
 
 namespace LiftDataManager.Services;
 
@@ -153,48 +152,6 @@ public class DialogService : IDialogService
         }
 
         return result == ContentDialogResult.Primary;
-    }
-
-    public async Task<bool?> ErrorDialogAsync(string? errormessage)
-    {
-        var dialog = new ErrorContentDialog
-        {
-            Title = "Ausnahme Fehler",
-            CloseButtonText = "Programm schließen",
-            PrimaryButtonText = "Fehler übermitteln",
-            ErrorMessage = errormessage,
-            XamlRoot = MainRoot.XamlRoot,
-            RequestedTheme = MainRoot.ActualTheme
-        };
-        var result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.None)
-        {
-            return null;
-        }
-
-        return result == ContentDialogResult.Primary;
-    }
-
-    public async Task<string?> FilePickerDialogAsync(string title, string message, string yesButtonText, string noButtonText)
-    {
-        var dialog = new FilePickerDialog
-        {
-            Title = title,
-            Message = message,
-            PrimaryButtonText = yesButtonText,
-            SecondaryButtonText = noButtonText,
-            XamlRoot = MainRoot.XamlRoot,
-            RequestedTheme = MainRoot.ActualTheme
-        };
-        var result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
-        {
-            return "Hallo";
-        }
-
-        return string.Empty;
     }
 
     /// <summary>

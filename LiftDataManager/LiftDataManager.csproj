@@ -105,8 +105,6 @@
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
     <None Remove="MainWindow.xaml" />
-    <None Remove="Services\Dialogs\ErrorContentDialog.xaml" />
-    <None Remove="Services\Dialogs\FilePickerDialogxaml" />
     <None Remove="Views\EinreichunterlagenPage.xaml" />
     <None Remove="Views\KabinengewichtPage.xaml" />
     <None Remove="Views\KabinenLüftungPage.xaml" />
@@ -156,7 +154,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221116.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="WinUIEx" Version="1.8.0" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.8" />
@@ -252,13 +250,5 @@
   
   <ItemGroup>
     <Folder Include="Strings\en-us\" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Services\Dialogs\ErrorContentDialog.xaml" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Resource Remove="Services\Dialogs\ErrorContentDialog.xaml" />
   </ItemGroup>
 </Project>

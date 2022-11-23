@@ -16,9 +16,5 @@ public interface IDialogService
 
     Task<bool?> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText);
 
-    Task<bool?> ErrorDialogAsync(string? errormessage);
-
-    Task<string?> FilePickerDialogAsync(string title, string message, string yesButtonText, string noButtonText);
-
     Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
 }
