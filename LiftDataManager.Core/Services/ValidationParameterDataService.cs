@@ -417,7 +417,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
             return;
-        var foerderhoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_FH") * 1000;
+        var foerderhoehe = Math.Round(LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_FH") * 1000);
         var etagenhoehe0 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe0");
         var etagenhoehe1 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe1");
         var etagenhoehe2 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe2");

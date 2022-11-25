@@ -195,6 +195,31 @@
                                 Style="{StaticResource AccentButtonStyle}"
                                 ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
                         </labs:SettingsCard>
+                        <labs:SettingsExpander Description="System und AppInformationen" Header="Diagnostics">
+                            <labs:SettingsExpander.HeaderIcon>
+                                <SymbolIcon Symbol="MapDrive" />
+                            </labs:SettingsExpander.HeaderIcon>
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard  Header="Systeminfo">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
+                                            <Run Text="Vault 2023 :" />
+                                            <LineBreak />
+                                            <Run Text="Vault DataStandard :" />
+                                            <LineBreak />
+                                            <Run Text="PowerVault :" />
+                                        </TextBlock>
+                                        <TextBlock Width="150" HorizontalAlignment="left">
+                                            <Run Text="installiert" />
+                                            <LineBreak />
+                                            <Run Text="installiert" />
+                                            <LineBreak />
+                                            <Run Text="installiert" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
                         <labs:SettingsExpander Description="Einstellungen der Datenbank" Header="Database">
                             <labs:SettingsExpander.HeaderIcon>
                                 <FontIcon Glyph="&#xEE94;" />
