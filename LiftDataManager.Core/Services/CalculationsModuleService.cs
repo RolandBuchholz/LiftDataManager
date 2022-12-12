@@ -1,10 +1,16 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.ComponentModels;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.Core.Services;
 
-public class CalculationsModuleService : ICalculationsModule
+public partial class CalculationsModuleService : ICalculationsModule
 {
+    private readonly ILogger<CalculationsModuleService> _logger;
+    public CalculationsModuleService(ILogger<CalculationsModuleService> logger)
+    {
+        _logger= logger;
+    }
     public bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem)
     {
         var loadTable6 = GetLoadFromTable(area, "Tabelle6");
@@ -15,10 +21,12 @@ public class CalculationsModuleService : ICalculationsModule
         {
             if (loadTable7 > 0)
             {
+                LogTabledata("Tabelle 7");
                 return load >= loadTable7;
             }
             else
             {
+                LogTabledata("Tabelle 6");
                 return load >= loadTable6;
             }
         }
@@ -206,4 +214,8 @@ public class CalculationsModuleService : ICalculationsModule
         }
         return dic;
     }
+
+    [LoggerMessage(60121, LogLevel.Debug,
+    "table {tableName} loaded")]
+    partial void LogTabledata(string tableName);
 }

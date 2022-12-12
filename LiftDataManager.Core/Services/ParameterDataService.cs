@@ -3,18 +3,22 @@ using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.Core.Services;
 
-public class ParameterDataService : IParameterDataService
+public partial class ParameterDataService : IParameterDataService
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
+    private readonly ILogger<ParameterDataService> _logger;
 
-    public ParameterDataService( IValidationParameterDataService validationParameterDataService, ParameterContext parametercontext)
+    public ParameterDataService( IValidationParameterDataService validationParameterDataService, 
+                                 ParameterContext parametercontext,ILogger<ParameterDataService> logger)
     {
         _validationParameterDataService = validationParameterDataService;
         _parametercontext = parametercontext;
+        _logger = logger;
     }
 
     public bool CanConnectDataBase()
@@ -72,7 +76,7 @@ public class ParameterDataService : IParameterDataService
         }
 
         await Task.CompletedTask;
-
+        _logger.LogInformation(60100, "Parameter from database initialized");
         return parameterList;
     }
 
@@ -87,6 +91,7 @@ public class ParameterDataService : IParameterDataService
                                   para.Element("isKey")!.GetAs<bool>()))
                                   .ToList();
         await Task.CompletedTask;
+        _logger.LogInformation(60101, "Parameter from {path} loaded",path);
         return TransferDataList;
     }
 
@@ -95,6 +100,7 @@ public class ParameterDataService : IParameterDataService
         FileInfo AutoDeskTransferInfo = new(path);
         if (AutoDeskTransferInfo.IsReadOnly)
         {
+            _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
             return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
         }
 
@@ -114,11 +120,13 @@ public class ParameterDataService : IParameterDataService
             xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
             xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
             xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+            LogSavedParameter(parameter.DisplayName!, parameter.Value!);
             infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
             infotext += $"----------\n";
         }
         else
         {
+            _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
             infotext = $"Speichern fehlgeschlagen |{parameter.Name}|\n";
             infotext += $"----------\n";
         }
@@ -135,6 +143,7 @@ public class ParameterDataService : IParameterDataService
         FileInfo AutoDeskTransferInfo = new(path);
         if (AutoDeskTransferInfo.IsReadOnly)
         {
+            _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
             return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
         }
 
@@ -161,15 +170,19 @@ public class ParameterDataService : IParameterDataService
                     xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
                     xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
                     parameter.IsDirty = false;
+                    LogSavedParameter(parameter.DisplayName!, parameter.Value!);
                     infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
+
                 }
                 else
                 {
+                    _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
                     infotext += $"Achtung: Speichern fehlgeschlagen |{parameter.Name}|\n";
                 }
             }
             else
             {
+                _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name );
                 infotext += $"----------\n";
                 infotext += $"Parameter: {parameter.Name} ist scheibgeschützt! \n";
                 infotext += $"Speichern nur im Adminmode möglich!\n";
@@ -182,4 +195,8 @@ public class ParameterDataService : IParameterDataService
         infotext += $"----------\n";
         return infotext;
     }
+
+    [LoggerMessage(60104, LogLevel.Information,
+        "Parameter: {parameterName} Value: {parameterValue} gespeichert")]
+    partial void LogSavedParameter(string parameterName, string parameterValue);
 }

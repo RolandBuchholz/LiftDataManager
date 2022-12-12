@@ -2,14 +2,15 @@
 using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
+using Serilog;
+using Microsoft.Extensions.Logging;
+using Serilog.Formatting.Compact;
 
 namespace LiftDataManager;
 
@@ -38,6 +39,12 @@ public partial class App : Application
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
+        UseSerilog((host, loggerConfiguration) =>
+        {
+            loggerConfiguration.WriteTo.File(new CompactJsonFormatter(), Path.Combine(Path.GetTempPath(), "LiftDataManager", "log_.json"), rollingInterval: RollingInterval.Day)
+                .WriteTo.Debug()
+                .MinimumLevel.Information();
+        }).
         ConfigureServices((context, services) =>
         {
             // Default Activation Handler
@@ -119,7 +126,9 @@ public partial class App : Application
         Build();
 
         UnhandledException += App_UnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
     }
+
     private static string GetConnectionString()
     {
         string? dbPath;
@@ -154,6 +163,10 @@ public partial class App : Application
     {
         e.Handled = true;
         SwitchToErrorHandlingPage(sender, e);
+    }
+    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Services;
+using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
-using Windows.ApplicationModel.Core;
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using WinUIEx.Messaging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -12,15 +10,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private readonly ILogger<HomeViewModel> _logger;
     private bool OpenReadOnly { get; set; } = true;
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
-                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, IValidationParameterDataService validationParameterDataService)
+                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, 
+                         IValidationParameterDataService validationParameterDataService, ILogger<HomeViewModel> logger)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
+        _logger = logger;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -60,6 +61,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     partial void OnSpezifikationStatusTypChanged(string? value)
     {
         SpezifikationName = string.Empty;
+        _logger.LogInformation(60132, "SpezifikationStatusTyp changed {typ}",value);
     }
 
     [ObservableProperty]
@@ -98,8 +100,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task LoadDataAsync()
     {
         await SetFullPathXmlAsync(OpenReadOnly);
-        if (FullPathXml is null)
+        if (string.IsNullOrWhiteSpace(FullPathXml))
+        {
+            _logger.LogWarning(61033, "FullPathXml is null or whiteSpace");
             return;
+        }
         var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
@@ -119,6 +124,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
             else
             {
+                LogUnsupportedParameter(item.Name);
                 InfoSidebarPanelText += $"----------\n";
                 InfoSidebarPanelText += $"Parameter {item.Name} wird nicht unterstützt\n";
                 InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
@@ -133,7 +139,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             XElement? doc = null;
             bool isXmlOutdated = false;
-            var dataParameterList = data.Select(x =>x.Name).ToList();
+            var dataParameterList = data.Select(x => x.Name).ToList();
 
             for (int i = 0; i < parameterList.Count; i++)
             {
@@ -143,8 +149,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     doc ??= XElement.Load(FullPathXml);
 
                     XElement? previousxmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
-                                              where para.Element("name")!.Value == parameterList[i - 1].Name
-                                              select para).SingleOrDefault();
+                                                      where para.Element("name")!.Value == parameterList[i - 1].Name
+                                                      select para).SingleOrDefault();
                     if (previousxmlparameter is not null)
                     {
                         var newXmlTree = new XElement("ParamWithValue",
@@ -158,7 +164,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     }
                 }
             }
-            if(isXmlOutdated && doc is not null) doc.Save(FullPathXml);
+            if (isXmlOutdated && doc is not null)
+                doc.Save(FullPathXml);
         }
 
         if (CurrentSpeziProperties is not null)
@@ -166,6 +173,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
             _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
+        _logger.LogInformation(60136, "Data loaded from {FullPathXml}",FullPathXml);
         InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
@@ -204,6 +212,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (delete is not null && (bool)delete)
         {
+            _logger.LogInformation(60137, "Reset Data");
             InfoSidebarPanelText += $"Daten werden auf die Standardwerte zurückgesetzt\n";
             InfoSidebarPanelText += $"----------\n";
             if (CheckOut)
@@ -232,6 +241,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 else
                 {
                     await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                    _logger.LogError(60137, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
                     InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 }
             }
@@ -254,8 +264,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task UploadDataAsync()
     {
         await Task.Delay(30);
-        if (SpezifikationName is null)
+        if (string.IsNullOrWhiteSpace(SpezifikationName))
+        {
+            _logger.LogError(61037, "SpezifikationName are null or empty");
             return;
+        }
         if (CheckOut)
         {
             var watch = Stopwatch.StartNew();
@@ -302,7 +315,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (!_parameterDataService!.CanConnectDataBase())
         {
             return false;
-            //_ = _settingService.SetSettingsAsync("PathDataBase", @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
         }
         else
         {
@@ -615,7 +627,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         canValidateAllParameter = AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
-        HideInfoErrors= CurrentSpeziProperties.HideInfoErrors;
+        HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
         SpezifikationStatusTyp = (CurrentSpeziProperties.SpezifikationStatusTyp is not null) ? CurrentSpeziProperties.SpezifikationStatusTyp : "Auftrag";
         InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
         if (CurrentSpeziProperties.FullPathXml is not null)
@@ -637,6 +649,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             if (!success.Result)
             {
+                _logger.LogCritical(61131,"Initialize LiftDataParameter.db failed");
                 throw new Exception("Initialize LiftDataParameter.db failed");
             }
         }
@@ -653,4 +666,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         IsActive = false;
     }
+
+    [LoggerMessage(61035, LogLevel.Warning,
+    "Unsupported Parameter: {parameterName}")]
+    partial void LogUnsupportedParameter(string parameterName);
 }
