@@ -176,13 +176,10 @@ public partial class App : Application
         await GetService<IActivationService>().ActivateAsync(args);
     }
 
-    private void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
+    private static void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
         MainWindow.Activate();
         var _navigationService = GetService<INavigationService>();
-        if (_navigationService != null)
-        {
-            _navigationService.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
-        }
+        _navigationService?.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
     }
 }

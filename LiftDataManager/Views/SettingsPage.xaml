@@ -200,7 +200,25 @@
                                 <SymbolIcon Symbol="MapDrive" />
                             </labs:SettingsExpander.HeaderIcon>
                             <labs:SettingsExpander.Items>
-                                <labs:SettingsCard  Header="Systeminfo">
+                                <labs:SettingsCard Header="Benutzer/System Informationen">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
+                                            <Run Text="Benutzername :" />
+                                            <LineBreak />
+                                            <Run Text="Betriebssystem :" />
+                                            <LineBreak />
+                                            <Run Text="Version :" />
+                                        </TextBlock>
+                                        <TextBlock Width="150" HorizontalAlignment="left">
+                                            <Run Text="{x:Bind ViewModel.UserName}" />
+                                            <LineBreak />
+                                            <Run Text="{x:Bind ViewModel.OSVersion.Platform}" />
+                                            <LineBreak />
+                                            <Run Text="{x:Bind ViewModel.OSVersion.Version}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Header="Autodesk Vault Informationen">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                             <Run Text="Vault 2023 :" />
@@ -208,15 +226,25 @@
                                             <Run Text="Vault DataStandard :" />
                                             <LineBreak />
                                             <Run Text="PowerVault :" />
+                                            <LineBreak />
+                                            <Run Text="AdskLicensingSDK 6 :" />
                                         </TextBlock>
                                         <TextBlock Width="150" HorizontalAlignment="left">
-                                            <Run Text="installiert" />
+                                            <Run Text="{x:Bind ViewModel.Vault2023Installed}" />
                                             <LineBreak />
-                                            <Run Text="installiert" />
+                                            <Run Text="{x:Bind ViewModel.VDSInstalled}" />
                                             <LineBreak />
-                                            <Run Text="installiert" />
+                                            <Run Text="{x:Bind ViewModel.PowerVaultInstalled}" />
+                                            <LineBreak />
+                                            <Run Text="{x:Bind ViewModel.AdskLicensingSDKInstalled}" />
                                         </TextBlock>
                                     </StackPanel>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Header="Logfiles">
+                                    <Button
+                                        Margin="10"
+                                        Command="{x:Bind ViewModel.OpenLogFolderCommand}"
+                                        Content="OpenLogfolder" />
                                 </labs:SettingsCard>
                             </labs:SettingsExpander.Items>
                         </labs:SettingsExpander>

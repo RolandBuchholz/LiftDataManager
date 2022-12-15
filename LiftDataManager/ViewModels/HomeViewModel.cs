@@ -179,8 +179,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         LikeEditParameter = true;
         OpenReadOnly = true;
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-        await SetCalculatedValuesAsync();
-        await ValidateAllParameterAsync();
+        
+        if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
+        {
+            await SetCalculatedValuesAsync();
+            await ValidateAllParameterAsync();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
@@ -299,6 +303,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
     private async Task ValidateAllParameterAsync()
     {
+        _logger.LogError(60138, "Validate all parameter startet");
         _ = _validationParameterDataService.ValidateAllParameterAsync();
         if (!CheckoutDialogIsOpen)
         {
@@ -416,6 +421,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
             }
         }
+        _logger.LogInformation(60139, "Set ModelStateAsync finished");
     }
 
     private async Task SetFullPathXmlAsync(bool ReadOnly = true)
@@ -437,6 +443,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 case 0:
                     {
+                        _logger.LogWarning(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found", SpezifikationName);
                         InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
 
                         var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
@@ -451,6 +458,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         else
                         {
                             await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                            _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
                             InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -467,6 +475,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         if (!AutoDeskTransferInfo.IsReadOnly)
                         {
                             FullPathXml = workspaceSearch[0];
+                            _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
                             InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
                             AuftragsbezogeneXml = true;
                             CanValidateAllParameter = true;
@@ -479,6 +488,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError && !string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
                             {
                                 FullPathXml = downloadResult.FullFileName;
+                                _logger.LogInformation(60139, "{FullPathXml} loaded", FullPathXml);
                                 InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
                                 CanValidateAllParameter = true;
@@ -488,6 +498,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             {
                                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                                 FullPathXml = downloadResult.FullFileName;
+                                _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadResult.EditedBy);
                                 InfoSidebarPanelText += $"Achtung Datei wird von {downloadResult.EditedBy} bearbeitet\n";
                                 InfoSidebarPanelText += $"Kein speichern möglich!\n";
                                 InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
@@ -499,6 +510,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             else
                             {
                                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
                                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -510,6 +522,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     }
                 default:
                     {
+                        _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
                         InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
                         InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
 
@@ -524,6 +537,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
                             {
                                 FullPathXml = downloadResult.FullFileName;
+                                _logger.LogInformation(60139, "{FullPathXml} loaded", FullPathXml);
                                 InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
                                 AuftragsbezogeneXml = true;
                                 CanValidateAllParameter = true;
@@ -531,6 +545,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             else
                             {
                                 await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
+                                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
                                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                                 InfoSidebarPanelText += $"Standard Daten geladen\n";
                                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -541,6 +556,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         else
                         {
                             InfoSidebarPanelText += $"Standard Daten geladen\n";
+                            _logger.LogInformation(60139, "Standarddata loaded");
                             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                             SpezifikationName = string.Empty;
                             AuftragsbezogeneXml = false;
@@ -562,6 +578,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
     {
+        _logger.LogInformation(60139, "Workspacesearch started");
         InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
 
         string? path;

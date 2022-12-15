@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel;
+﻿using System.Formats.Tar;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -36,6 +37,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+#pragma warning disable CA1822 // Member als statisch markieren
+    public string UserName => string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+    public OperatingSystem OSVersion => Environment.OSVersion;
+    public string Vault2023Installed => File.Exists(@"C:\\Programme\\Autodesk\\Vault Client 2023\Explorer\\Connectivity.VaultPro.exe") ? "installiert" : "nicht installiert";
+    public string VDSInstalled => Directory.Exists(@"C:\\ProgramData\\Autodesk\\Vault 2023\\Extensions\\DataStandard") ? "installiert" : "nicht installiert";
+    public string PowerVaultInstalled => File.Exists(@"C:\\Program Files\\coolOrange\\Modules\\powerVault\\powerVault.Cmdlets.dll") ? "installiert" : "nicht installiert";
+    public string AdskLicensingSDKInstalled => File.Exists(@"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\AdskLicensingSDK_6.dll") ? "installiert" : "nicht installiert";
+#pragma warning restore CA1822 // Member als statisch markieren
+   
     [ObservableProperty]
     private string? versionDescription;
 
@@ -216,6 +226,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 CanSwitchToAdminmode = false;
                 break;
         }
+    }
+
+    [RelayCommand]
+    private async Task OpenLogFolder()
+    {
+       string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
+       if (Directory.Exists(path))
+            Process.Start("explorer.exe", path);
+        await Task.CompletedTask;
     }
 
     private static string GetVersionDescription()

@@ -161,7 +161,7 @@
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="WinUIEx" Version="1.8.0" />
+    <PackageReference Include="WinUIEx" Version="2.0.0" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.9" />
   </ItemGroup>
 
@@ -240,19 +240,19 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
-  
+
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Resource Remove="Controls\CarDesignControl.xaml" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Folder Include="Strings\en-us\" />
   </ItemGroup>

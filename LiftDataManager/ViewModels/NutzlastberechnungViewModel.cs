@@ -8,9 +8,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
 
-    public Dictionary<int, TableRow<int, double>> Tabelle6 { get; set; } = new();
-    public Dictionary<int, TableRow<int, double>> Tabelle7 { get; set; } = new();
-    public Dictionary<int, TableRow<int, double>> Tabelle8 { get; set; } = new();
+    public Dictionary<int, TableRow<int, double>> Tabelle6 { get; }
+    public Dictionary<int, TableRow<int, double>> Tabelle7 { get; }
+    public Dictionary<int, TableRow<int, double>> Tabelle8 { get; }
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService,
                                        INavigationService navigationService, ICalculationsModule calculationsModuleService ,ParameterContext parametercontext) :
@@ -23,9 +23,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
         if (CurrentSpeziProperties.ParamterDictionary is not null)
             ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
 
-        Tabelle6 = _calculationsModuleService.GetTable(nameof(Tabelle6));
-        Tabelle7 = _calculationsModuleService.GetTable(nameof(Tabelle7));
-        Tabelle8 = _calculationsModuleService.GetTable(nameof(Tabelle8));
+        Tabelle6 = _calculationsModuleService.Table6;
+        Tabelle7 = _calculationsModuleService.Table7;
+        Tabelle8 = _calculationsModuleService.Table8;
     }
 
     public void Receive(AreaPersonsRequestMessageAsync message)
@@ -140,11 +140,9 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
             _ => 0,
         };
 
-        if (kabinenTuer is null)
-        {
-            return 0;
-        }
-
+        if (kabinenTuer is null) return 0;
+        if (tuerEinbau <= 0) return 0;
+  
         if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
             switch (membername)
