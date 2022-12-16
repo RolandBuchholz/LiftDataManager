@@ -10,6 +10,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyPathLilo = "AppPathLiloRequested";
     private const string SettingsKeyPathExcel = "AppPathExcelRequested";
     private const string SettingsKeyPathDataBase = "AppPathDataBaseRequested";
+    private const string SettingsKeyLogLevel = "AppLogLevelRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -26,6 +27,7 @@ public class SettingsService : ISettingService
     public string? PathLilo { get; set; }
     public string? PathExcel { get; set; }
     public string? PathDataBase { get; set; }
+    public string? LogLevel { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -69,6 +71,10 @@ public class SettingsService : ISettingService
                 PathDataBase = (string)value;
                 await SaveSettingsAsync(key, PathDataBase);
                 return;
+            case nameof(LogLevel):
+                LogLevel = (string)value;
+                await SaveSettingsAsync(key, LogLevel);
+                return;
             default:
                 return;
         }
@@ -93,6 +99,7 @@ public class SettingsService : ISettingService
         PathLilo = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathLilo);
         PathExcel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathExcel);
         PathDataBase = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathDataBase);
+        LogLevel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyLogLevel);
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -123,6 +130,9 @@ public class SettingsService : ISettingService
             case nameof(PathDataBase):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyPathDataBase, value);
                 return;
+            case nameof(LogLevel):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyLogLevel, value);
+                return;
             default:
                 return;
         }
@@ -135,6 +145,7 @@ public class SettingsService : ISettingService
         await SetSettingsAsync(nameof(PathLilo), @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE");
         await SetSettingsAsync(nameof(PathExcel), @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE");
         await SetSettingsAsync(nameof(PathDataBase), @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
+        await SetSettingsAsync(nameof(LogLevel), @"Information");
         await SetSettingsAsync(nameof(FirstSetup), true);
     }
 }

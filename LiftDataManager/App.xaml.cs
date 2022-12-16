@@ -11,6 +11,7 @@ using Windows.Storage;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using Serilog.Formatting.Compact;
+using Serilog.Core;
 
 namespace LiftDataManager;
 
@@ -43,7 +44,7 @@ public partial class App : Application
         {
             loggerConfiguration.WriteTo.File(new CompactJsonFormatter(), Path.Combine(Path.GetTempPath(), "LiftDataManager", "log_.json"), rollingInterval: RollingInterval.Day)
                 .WriteTo.Debug()
-                .MinimumLevel.Information();
+                .MinimumLevel.ControlledBy(SetLogLevel());
         }).
         ConfigureServices((context, services) =>
         {
@@ -127,6 +128,31 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+    }
+
+    private static LoggingLevelSwitch SetLogLevel()
+    {
+        LoggingLevelSwitch loglevel = new();
+
+        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppLoglevelRequested", out var currentLogLevel))
+        {
+            var logLevel = JsonConvert.DeserializeObject<string>((string)currentLogLevel, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+            loglevel.MinimumLevel = logLevel switch
+            {
+                "Verbose" => Serilog.Events.LogEventLevel.Verbose,
+                "Debug" => Serilog.Events.LogEventLevel.Debug,
+                "Information" => Serilog.Events.LogEventLevel.Information,
+                "Warning" => Serilog.Events.LogEventLevel.Warning,
+                "Error" => Serilog.Events.LogEventLevel.Error,
+                "Fatal" => Serilog.Events.LogEventLevel.Fatal,
+                _ => Serilog.Events.LogEventLevel.Information,
+            };
+        }
+        else
+        {
+            loglevel.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+        }
+        return loglevel;
     }
 
     private static string GetConnectionString()

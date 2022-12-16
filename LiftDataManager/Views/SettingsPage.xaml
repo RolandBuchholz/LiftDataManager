@@ -9,6 +9,8 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
+    xmlns:sys="using:System"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
@@ -95,6 +97,29 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <DataTemplate x:Key="VersionsHistoryItemTemplate" x:DataType="models:LiftDataManagerVersion">
+            <labs:SettingsCard>
+                <labs:SettingsCard.HeaderIcon>
+                    <SymbolIcon Symbol="RepeatOne" />
+                </labs:SettingsCard.HeaderIcon>
+                <labs:SettingsCard.Header>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind VersionsNumber}" />
+                        <TextBlock Margin="20,0,0,0" Text="{x:Bind sys:String.Format('{0:d}', VersionsDate)}" />
+                    </StackPanel>
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.Description>
+                    <TextBlock Margin="70,0,0,0" Text="{x:Bind VersionDescription}" />
+                </labs:SettingsCard.Description>
+                <StackPanel Margin="0,0,20,-20" VerticalAlignment="Bottom">
+                    <TextBlock
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Author :" />
+                    <TextBlock FontSize="12" Text="{x:Bind Author}" />
+                </StackPanel>
+            </labs:SettingsCard>
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid>
@@ -201,6 +226,9 @@
                             </labs:SettingsExpander.HeaderIcon>
                             <labs:SettingsExpander.Items>
                                 <labs:SettingsCard Header="Benutzer/System Informationen">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Contact" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                             <Run Text="Benutzername :" />
@@ -208,6 +236,8 @@
                                             <Run Text="Betriebssystem :" />
                                             <LineBreak />
                                             <Run Text="Version :" />
+                                            <LineBreak />
+                                            <Run Text="Runtime :" />
                                         </TextBlock>
                                         <TextBlock Width="150" HorizontalAlignment="left">
                                             <Run Text="{x:Bind ViewModel.UserName}" />
@@ -215,10 +245,15 @@
                                             <Run Text="{x:Bind ViewModel.OSVersion.Platform}" />
                                             <LineBreak />
                                             <Run Text="{x:Bind ViewModel.OSVersion.Version}" />
+                                            <LineBreak />
+                                            <Run Text="{x:Bind ViewModel.RuntimeInformation}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </labs:SettingsCard>
                                 <labs:SettingsCard Header="Autodesk Vault Informationen">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Bullets" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                             <Run Text="Vault 2023 :" />
@@ -241,10 +276,16 @@
                                     </StackPanel>
                                 </labs:SettingsCard>
                                 <labs:SettingsCard Header="Logfiles">
-                                    <Button
-                                        Margin="10"
-                                        Command="{x:Bind ViewModel.OpenLogFolderCommand}"
-                                        Content="OpenLogfolder" />
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Library" />
+                                    </labs:SettingsCard.HeaderIcon>
+                                    <Button Command="{x:Bind ViewModel.OpenLogFolderCommand}" Content="OpenLogfolder" />
+                                </labs:SettingsCard>
+                                <labs:SettingsCard Description="Standard Loglevel Information" Header="Change Loglevel">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Switch" />
+                                    </labs:SettingsCard.HeaderIcon>
+                                    <ComboBox ItemsSource="{x:Bind ViewModel.LogLevel}" SelectedValue="{x:Bind ViewModel.SelectedLogLevel, Mode=TwoWay}" />
                                 </labs:SettingsCard>
                             </labs:SettingsExpander.Items>
                         </labs:SettingsExpander>
@@ -254,6 +295,9 @@
                             </labs:SettingsExpander.HeaderIcon>
                             <labs:SettingsExpander.Items>
                                 <labs:SettingsCard Header="Database Path">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="GoToToday" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathDataBase, Mode=TwoWay}" />
                                         <Button
@@ -273,6 +317,9 @@
                             </labs:SettingsExpander.HeaderIcon>
                             <labs:SettingsExpander.Items>
                                 <labs:SettingsCard Header="Berchtenbreiter CFP">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="ImportAll" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
                                         <Button
@@ -285,6 +332,9 @@
                                     </StackPanel>
                                 </labs:SettingsCard>
                                 <labs:SettingsCard Header="Ziehl Abegg Zetalift">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Calculator" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
                                         <Button
@@ -297,6 +347,9 @@
                                     </StackPanel>
                                 </labs:SettingsCard>
                                 <labs:SettingsCard Header="BucherHydraulics Lilo">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="MapDrive" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
                                         <Button
@@ -309,6 +362,9 @@
                                     </StackPanel>
                                 </labs:SettingsCard>
                                 <labs:SettingsCard Header="Microsoft Excel">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="GoToStart" />
+                                    </labs:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
                                         <Button
@@ -329,13 +385,14 @@
                         Text="Description" />
                     <labs:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE128;" />
+                            <SymbolIcon Symbol="World" />
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Description>
                             <StackPanel>
                                 <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
-                                    Anwendung zum schnellen Überprüfen und Bearbeiten der AutoDeskTranfer.xml.<LineBreak />
-                                    Das änderen von schreibgeschützen Parametern ist im Adninmode möglich.</TextBlock>
+                                    Anwendung zur Datenerfassung und Bearbeitung der Aufzugsspezifikationsdaten.<LineBreak />
+                                    Datenselektion, Plausibilitätsprüfung und Berechnungsmodule sorgen für ein optimale Datenintegrität.<LineBreak />
+                                    Info: Schreibgeschützte Parameter können im Adminmode geändert werden.</TextBlock>
                                 <TextBlock
                                     Margin="0,10,0,0"
                                     Style="{ThemeResource BodyTextBlockStyle}"
@@ -343,6 +400,13 @@
                             </StackPanel>
                         </labs:SettingsCard.Description>
                     </labs:SettingsCard>
+                    <Expander
+                        Padding="0,5,0,0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        Header="Versions History">
+                        <ListView ItemTemplate="{StaticResource VersionsHistoryItemTemplate}" ItemsSource="{x:Bind ViewModel.VersionsHistory, Mode=OneWay}" />
+                    </Expander>
                 </StackPanel>
             </ScrollViewer>
             <Grid

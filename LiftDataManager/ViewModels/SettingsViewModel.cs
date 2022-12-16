@@ -1,4 +1,4 @@
-﻿using System.Formats.Tar;
+﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -12,12 +12,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private CurrentSpeziProperties? CurrentSpeziProperties = new();
     private readonly ISettingService _settingService;
     private readonly IDialogService _dialogService;
+    private readonly ParameterContext _parametercontext;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService, ParameterContext parametercontext)
     {
         _themeSelectorService = themeSelectorService;
         _settingService = settingsSelectorService;
         _dialogService = dialogService;
+        _parametercontext = parametercontext;
         ElementTheme = _themeSelectorService.Theme;
         VersionDescription = GetVersionDescription();
     }
@@ -40,14 +42,28 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 #pragma warning disable CA1822 // Member als statisch markieren
     public string UserName => string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
     public OperatingSystem OSVersion => Environment.OSVersion;
+    public string RuntimeInformation => string.IsNullOrWhiteSpace(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription) ? "no runtime detected" : System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
     public string Vault2023Installed => File.Exists(@"C:\\Programme\\Autodesk\\Vault Client 2023\Explorer\\Connectivity.VaultPro.exe") ? "installiert" : "nicht installiert";
     public string VDSInstalled => Directory.Exists(@"C:\\ProgramData\\Autodesk\\Vault 2023\\Extensions\\DataStandard") ? "installiert" : "nicht installiert";
     public string PowerVaultInstalled => File.Exists(@"C:\\Program Files\\coolOrange\\Modules\\powerVault\\powerVault.Cmdlets.dll") ? "installiert" : "nicht installiert";
     public string AdskLicensingSDKInstalled => File.Exists(@"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\AdskLicensingSDK_6.dll") ? "installiert" : "nicht installiert";
 #pragma warning restore CA1822 // Member als statisch markieren
-   
+
+    public List<string> LogLevel = new() { "Verbose", "Debug", "Information", "Warning", "Error" , "Fatal" };
+
+    [ObservableProperty]
+    private string? selectedLogLevel;
+    partial void OnSelectedLogLevelChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.LogLevel))
+            _settingService.SetSettingsAsync(nameof(LogLevel), value);
+    }
+
     [ObservableProperty]
     private string? versionDescription;
+
+    public List<LiftDataManagerVersion> VersionsHistory => _parametercontext.Set<LiftDataManagerVersion>().OrderByDescending(x => x.VersionsNumber).ToList();
 
     [ObservableProperty]
     private string? infoText;
@@ -229,7 +245,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [RelayCommand]
-    private async Task OpenLogFolder()
+    private static async Task OpenLogFolder()
     {
        string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
        if (Directory.Exists(path))
@@ -256,6 +272,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         PathLilo = _settingService.PathLilo;
         PathExcel = _settingService.PathExcel;
         PathDataBase = _settingService.PathDataBase;
+        selectedLogLevel = _settingService.LogLevel;
     }
     public void OnNavigatedFrom()
     {
