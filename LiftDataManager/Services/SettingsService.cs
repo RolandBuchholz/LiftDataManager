@@ -11,6 +11,8 @@ public class SettingsService : ISettingService
     private const string SettingsKeyPathExcel = "AppPathExcelRequested";
     private const string SettingsKeyPathDataBase = "AppPathDataBaseRequested";
     private const string SettingsKeyLogLevel = "AppLogLevelRequested";
+    private const string SettingsKeyAutoSave = "AppAutoSaveRequested";
+    private const string SettingsKeyAutoSavePeriod = "AppAutoSavePeriodRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -28,6 +30,8 @@ public class SettingsService : ISettingService
     public string? PathExcel { get; set; }
     public string? PathDataBase { get; set; }
     public string? LogLevel { get; set; }
+    public bool AutoSave { get; set; }
+    public string? AutoSavePeriod { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -75,6 +79,14 @@ public class SettingsService : ISettingService
                 LogLevel = (string)value;
                 await SaveSettingsAsync(key, LogLevel);
                 return;
+            case nameof(AutoSave):
+                AutoSave = (bool)value;
+                await SaveSettingsAsync(key, AutoSave);
+                return;
+            case nameof(AutoSavePeriod):
+                AutoSavePeriod = (string)value;
+                await SaveSettingsAsync(key, AutoSavePeriod);
+                return;
             default:
                 return;
         }
@@ -100,6 +112,9 @@ public class SettingsService : ISettingService
         PathExcel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathExcel);
         PathDataBase = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathDataBase);
         LogLevel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyLogLevel);
+        var storedAutoSave = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoSave);
+        AutoSave = !string.IsNullOrWhiteSpace(storedAutoSave) && Convert.ToBoolean(storedAutoSave);
+        AutoSavePeriod = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoSavePeriod);
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -132,6 +147,12 @@ public class SettingsService : ISettingService
                 return;
             case nameof(LogLevel):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyLogLevel, value);
+                return;
+            case nameof(AutoSave):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyAutoSave, ((bool)value).ToString());
+                return;
+            case nameof(AutoSavePeriod):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyAutoSavePeriod, value);
                 return;
             default:
                 return;

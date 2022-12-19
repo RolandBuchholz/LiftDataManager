@@ -39,6 +39,25 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    [ObservableProperty]
+    private bool autoSave;
+    partial void OnAutoSaveChanged(bool value)
+    {
+        if (!Equals(value, _settingService.AutoSave))
+            _settingService.SetSettingsAsync(nameof(AutoSave), value);
+    }
+
+    [ObservableProperty]
+    private string? autoSavePeriod;
+    partial void OnAutoSavePeriodChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.LogLevel))
+            _settingService.SetSettingsAsync(nameof(AutoSavePeriod), value);
+    }
+
+    public string[] SavePeriods = {"2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min" };
+
 #pragma warning disable CA1822 // Member als statisch markieren
     public string UserName => string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
     public OperatingSystem OSVersion => Environment.OSVersion;
@@ -273,6 +292,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         PathExcel = _settingService.PathExcel;
         PathDataBase = _settingService.PathDataBase;
         selectedLogLevel = _settingService.LogLevel;
+        AutoSave = _settingService.AutoSave;
+        AutoSavePeriod = _settingService.AutoSavePeriod;
     }
     public void OnNavigatedFrom()
     {

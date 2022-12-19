@@ -185,6 +185,25 @@
                                 </Interactivity:Interaction.Behaviors>
                             </ToggleSwitch>
                         </labs:SettingsCard>
+                        <labs:SettingsCard Description="Automatisches speichern der Autotransfer.xml" Header="Auto Save">
+                            <labs:SettingsCard.HeaderIcon>
+                                <SymbolIcon Symbol="SaveLocal" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                                <ComboBox
+                                    Margin="0,0,20,-3"
+                                    VerticalAlignment="Center"
+                                    ItemsSource="{x:Bind ViewModel.SavePeriods, Mode=OneWay}"
+                                    SelectedItem="{x:Bind ViewModel.AutoSavePeriod, Mode=TwoWay}"
+                                    Visibility="{x:Bind ViewModel.AutoSave, Mode=OneWay}" />
+                                <ToggleSwitch
+                                    x:Name="SwitchAutoSave"
+                                    HorizontalAlignment="Center"
+                                    IsOn="{x:Bind ViewModel.AutoSave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    OffContent="AutoSave Off"
+                                    OnContent="AutoSave On" />
+                            </StackPanel>
+                        </labs:SettingsCard>
                         <labs:SettingsCard Description="Adminmode für mehr Berechtigungen" Header="Adminmode">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE1A7;" />
