@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 using Serilog;
-using Microsoft.Extensions.Logging;
 using Serilog.Formatting.Compact;
 using Serilog.Core;
 
@@ -31,6 +30,8 @@ public partial class App : Application
     }
 
     public static WindowEx MainWindow { get; } = new MainWindow();
+
+    private bool IgnoreSaveWarning { get; set; }
 
     public static FrameworkElement? MainRoot { get; set; }
     public App()
@@ -126,8 +127,55 @@ public partial class App : Application
         }).
         Build();
 
+        MainWindow.Closed += MainWindow_Closed;
         UnhandledException += App_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+    }
+
+    private async void MainWindow_Closed(object sender, WindowEventArgs args)
+    {
+        
+        var tempHomeViewModel = GetService<HomeViewModel>();
+        var currentSpeziProperties = tempHomeViewModel.GetCurrentSpeziProperties();
+
+        if (currentSpeziProperties != null && currentSpeziProperties.CheckOut && !IgnoreSaveWarning)
+        {
+            args.Handled = true;
+
+            var dirty = currentSpeziProperties.ParamterDictionary!.Values.Any(p => p.IsDirty);
+
+            var title = dirty ? "Warnung nicht gepeicherte Parameter gefunden" : "Warnung Autodesktranfer noch nicht hochgeladen";
+            var message = dirty ? "Es sind nicht gespeicherte Parameter vorhanden.\n" +
+                                  "Wollen Sie diese speichern?"
+                                : "Der Auftrag wurde noch nicht ins Vault hochgeladen.\n" +
+                                  "Wollen Sie den Auftrag ins Vault hochladen?";
+            var yesButtonText = dirty ? "Parameter speichern" : "Hochladen und Schließen";
+            var noButtonText = dirty ? "Ohne Speichern schließen" : "Ohne Hochladen Schließen";
+
+            var dialogResult = await tempHomeViewModel._dialogService!.WarningDialogAsync(title,message,yesButtonText,noButtonText);
+
+            if (dialogResult is not null && (bool)dialogResult)
+            {
+                if (dirty)
+                {
+                    await tempHomeViewModel._parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParamterDictionary, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+                }
+                else
+                {
+                    var spezifikationName = Path.GetFileName(currentSpeziProperties.FullPathXml!).Replace("-AutoDeskTransfer.xml", "");
+                    await tempHomeViewModel._vaultDataService.SetFileAsync(spezifikationName);
+                    IgnoreSaveWarning = true;
+                    Current.Exit();
+                }
+            }
+            else
+            {
+                args.Handled = false;
+                IgnoreSaveWarning = true;
+                Current.Exit();
+            }
+        }
+        Current.Exit();
     }
 
     private static LoggingLevelSwitch SetLogLevel()

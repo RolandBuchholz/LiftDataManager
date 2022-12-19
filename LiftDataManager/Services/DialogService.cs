@@ -128,6 +128,37 @@ public class DialogService : IDialogService
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="title">The title.</param>
+    /// <param name="message">The content.</param>
+    /// <param name="yesButtonText">The yesbutton text.</param>
+    /// <param name="noButtonText">The nobutton text.</param>
+    /// <param name="cancelButtonText">The cancelbutton text.</param>
+    /// <returns>Task.</returns>
+    public async Task<bool?> ConfirmationDialogAsync(string title, string message, string yesButtonText, string noButtonText, string cancelButtonText)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = message,
+            PrimaryButtonText = yesButtonText,
+            SecondaryButtonText = noButtonText,
+            CloseButtonText = cancelButtonText,
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.None)
+        {
+            return null;
+        }
+
+        return result == ContentDialogResult.Primary;
+    }
+
+    /// <summary>
+    /// Opens a modal message dialog.
+    /// </summary>
+    /// <param name="title">The title.</param>
     /// <param name="message">The message.</param>
     /// <param name="yesButtonText">The yesbutton text.</param>
     /// <param name="noButtonText">The nobutton text.</param>

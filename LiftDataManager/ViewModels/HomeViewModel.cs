@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -7,7 +6,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    private readonly IVaultDataService _vaultDataService;
+    public readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ILogger<HomeViewModel> _logger;

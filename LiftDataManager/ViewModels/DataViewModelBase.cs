@@ -248,4 +248,9 @@ public partial class DataViewModelBase : ObservableRecipient
             InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
         }
     }
+
+    public CurrentSpeziProperties GetCurrentSpeziProperties()
+    {
+        return Messenger.Send<SpeziPropertiesRequestMessage>();
+    }
 }
