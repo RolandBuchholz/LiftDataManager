@@ -230,14 +230,12 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 case PackageUpdateAvailability.Available:
                 case PackageUpdateAvailability.Required:
                     InfoBarVersionsUpdateIsOpen = true;
-                    InfoBarVersionsUpdateText = $"Es wurde eine neuere LiftDataManagerVersion gefunden.";
+                    InfoBarVersionsUpdateText = $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
                     InfoBarVersionsUpdateSeverity = InfoBarSeverity.Informational;
-                    InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden.";
-                    _logger.LogInformation(60181, "LiftDataManagerupdate found");
-                    //await pm.AddPackageByAppInstallerFileAsync(
-                    //new Uri("https://trial3.azurewebsites.net/HRApp/HRApp.appinstaller"),
-                    //AddPackageByAppInstallerOptions.ForceApplicationShutdown,
-                    //packageVolume);
+                    InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
+                    _logger.LogInformation(60181, "LiftDataManagerupdate found and installing...");
+                    await pm.AddPackageByAppInstallerFileAsync(new Uri(@"\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager\LiftDataManager_x64.appinstaller"), 
+                        AddPackageByAppInstallerOptions.ForceTargetAppShutdown,pm.GetDefaultPackageVolume());
                     break;
                 case PackageUpdateAvailability.NoUpdates:
                     InfoBarVersionsUpdateIsOpen = true;
