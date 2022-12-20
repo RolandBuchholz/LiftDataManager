@@ -183,6 +183,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             await SetCalculatedValuesAsync();
             await ValidateAllParameterAsync();
+            if(_settingService.AutoSave && CheckOut) StartSaveTimer();
         }
     }
 
@@ -191,6 +192,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         OpenReadOnly = false;
         await LoadDataAsync();
+        StartSaveTimer();
     }
 
     [RelayCommand(CanExecute = nameof(CanClearData))]
@@ -261,6 +263,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 await LoadDataAsync();
             }
         }
+        AutoSaveTimer?.Stop();
     }
 
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
@@ -297,12 +300,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"----------\n";
             }
         }
+        AutoSaveTimer?.Stop();
     }
 
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
     private async Task ValidateAllParameterAsync()
     {
-        _logger.LogError(60138, "Validate all parameter startet");
+        _logger.LogInformation(60138, "Validate all parameter startet");
         _ = _validationParameterDataService.ValidateAllParameterAsync();
         if (!CheckoutDialogIsOpen)
         {
@@ -631,6 +635,37 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CarWeight = carWeightRequestMessageMessageResult.KabinenGewicht;
         }
         await Task.CompletedTask;
+    }
+
+    private void StartSaveTimer()
+    {
+        int period = 5;
+        var autoSavePeriod = _settingService.AutoSavePeriod;
+        if (!string.IsNullOrWhiteSpace(autoSavePeriod))
+        {
+            period = Convert.ToInt32(autoSavePeriod.Replace(" min",""));
+        }
+        AutoSaveTimer ??= new DispatcherTimer();
+        if (!AutoSaveTimer.IsEnabled)
+        {
+            AutoSaveTimer.Interval = TimeSpan.FromMinutes(period);
+            AutoSaveTimer.Tick += Timer_Tick;
+            AutoSaveTimer.Start();
+        }
+    }
+
+    private async void Timer_Tick(object? sender, object e)
+    {
+        if (!SaveAllParameterCommand.IsRunning)
+        {
+            _logger.LogInformation(61038, "Autosave started");
+            var dirty = GetCurrentSpeziProperties().ParamterDictionary!.Values.Any(p => p.IsDirty);
+            if (CheckOut && dirty)
+            {
+                var currentSpeziProperties = GetCurrentSpeziProperties();
+                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParamterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+            }
+        }
     }
 
     public void OnNavigatedTo(object parameter)

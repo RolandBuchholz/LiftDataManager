@@ -11,6 +11,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
+    public DispatcherTimer? AutoSaveTimer { get; set; }
 
     public CurrentSpeziProperties? CurrentSpeziProperties;
     public ObservableDictionary<string, Parameter>? ParamterDictionary { get; set; }
@@ -119,6 +120,13 @@ public partial class DataViewModelBase : ObservableRecipient
         var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml, Adminmode);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
+        if (AutoSaveTimer is not null)
+        {
+            var saveTimeIntervall = AutoSaveTimer.Interval;
+            AutoSaveTimer.Stop();
+            AutoSaveTimer.Interval = saveTimeIntervall;
+            AutoSaveTimer.Start();
+        }
     }
 
     protected virtual void SynchronizeViewModelParameter()

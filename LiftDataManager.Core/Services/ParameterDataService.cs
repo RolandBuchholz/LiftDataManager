@@ -44,36 +44,40 @@ public partial class ParameterDataService : IParameterDataService
                               .ToList()
                               .GroupBy(x => x.Base);
 
-        foreach (var par in parameterDtos)
+        if (parameterDtos is not null)
         {
-            var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)
+            foreach (var par in parameterDtos)
             {
-                Name = par.Name,
-                DisplayName = par.DisplayName,
-                ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
-                DefaultUserEditable = par.DefaultUserEditable,
-                Comment = par.Comment,
-                IsKey = par.IsKey,
-                IsDirty = false
-            };
-
-            if (par.DropdownList is not null)
-            {
-                var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key,par.DropdownList));
-
-                if (dropdownList != null)
+                var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)
                 {
-                    var dropdownListValues = dropdownList.Select(x => x.Name);
-                    newParameter.DropDownList.Add("(keine Auswahl)");
-                    if (dropdownListValues is not null)
-                        foreach (var item in dropdownListValues)
-                        {
-                            newParameter.DropDownList.Add(item!);
-                        }
+                    Name = par.Name,
+                    DisplayName = par.DisplayName,
+                    ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
+                    DefaultUserEditable = par.DefaultUserEditable,
+                    Comment = par.Comment,
+                    IsKey = par.IsKey,
+                    IsDirty = false
+                };
+
+                if (par.DropdownList is not null)
+                {
+                    var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key, par.DropdownList));
+
+                    if (dropdownList is not null)
+                    {
+                        var dropdownListValues = dropdownList.Select(x => x.Name);
+                        newParameter.DropDownList.Add("(keine Auswahl)");
+                        if (dropdownListValues is not null)
+                            foreach (var item in dropdownListValues)
+                            {
+                                newParameter.DropDownList.Add(item!);
+                            }
+                    }
                 }
+                parameterList.Add(newParameter);
             }
-            parameterList.Add(newParameter);    
         }
+
 
         await Task.CompletedTask;
         _logger.LogInformation(60100, "Parameter from database initialized");
