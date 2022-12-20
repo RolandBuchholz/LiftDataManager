@@ -1,5 +1,8 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
+using Microsoft.Extensions.Logging;
+using Serilog.Core;
 using Windows.ApplicationModel;
+using Windows.Management.Deployment;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -13,13 +16,16 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private readonly ISettingService _settingService;
     private readonly IDialogService _dialogService;
     private readonly ParameterContext _parametercontext;
+    private readonly ILogger<SettingsViewModel> _logger;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService, ParameterContext parametercontext)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService,
+                             ParameterContext parametercontext, ILogger<SettingsViewModel> logger)
     {
         _themeSelectorService = themeSelectorService;
         _settingService = settingsSelectorService;
         _dialogService = dialogService;
         _parametercontext = parametercontext;
+        _logger = logger;
         ElementTheme = _themeSelectorService.Theme;
         VersionDescription = GetVersionDescription();
     }
@@ -165,6 +171,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             _settingService.SetSettingsAsync(nameof(PathDataBase), value);
     }
 
+    [ObservableProperty]
+    private string? infoBarVersionsUpdateText;
+
+    [ObservableProperty]
+    private bool infoBarVersionsUpdateIsOpen;
+
+    [ObservableProperty]
+    private InfoBarSeverity infoBarVersionsUpdateSeverity;
+
     [RelayCommand]
     private async Task SwitchThemeAsync(ElementTheme param)
     {
@@ -203,11 +218,52 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [RelayCommand]
-    private async Task UpdateAuswahlParameterAsync()
+    private async Task UpdateCheckAsync()
     {
-        InfoText += "Datentransfer zwischen Excel-Spezifikation und \n";
-        InfoText += "LiftDataManager wurde durch SQLite ersetzt \n";
-        InfoText += "Setzen Sie den Pfad zur Datenbank! \n";
+        var pm = new PackageManager();
+        Package? package = pm.FindPackagesForUser(string.Empty, "BD956274-5B08-468A-AE87-B6190C6A8210", "CN=Buchholz").FirstOrDefault();
+        if (package is not null)
+        {
+            PackageUpdateAvailabilityResult result = await package.CheckUpdateAvailabilityAsync();
+            switch (result.Availability)
+            {
+                case PackageUpdateAvailability.Available:
+                case PackageUpdateAvailability.Required:
+                    InfoBarVersionsUpdateIsOpen = true;
+                    InfoBarVersionsUpdateText = $"Es wurde eine neuere LiftDataManagerVersion gefunden.";
+                    InfoBarVersionsUpdateSeverity = InfoBarSeverity.Informational;
+                    InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden.";
+                    _logger.LogInformation(60181, "LiftDataManagerupdate found");
+                    //await pm.AddPackageByAppInstallerFileAsync(
+                    //new Uri("https://trial3.azurewebsites.net/HRApp/HRApp.appinstaller"),
+                    //AddPackageByAppInstallerOptions.ForceApplicationShutdown,
+                    //packageVolume);
+                    break;
+                case PackageUpdateAvailability.NoUpdates:
+                    InfoBarVersionsUpdateIsOpen = true;
+                    InfoBarVersionsUpdateText = $"Es ist die aktuellste LiftDataManagerVersion installiert.";
+                    InfoBarVersionsUpdateSeverity = InfoBarSeverity.Success;
+                    InfoText += $"Es ist die aktuellste LiftDataManagerVersion installiert.";
+                    _logger.LogInformation(60181, "LiftDataManagerVersion is up to date");
+                    break;
+                case PackageUpdateAvailability.Unknown:
+                default:
+                    InfoBarVersionsUpdateIsOpen = true;
+                    InfoBarVersionsUpdateText = $"Keine Updateinformationen für {package.DisplayName} gefunden!";
+                    InfoBarVersionsUpdateSeverity = InfoBarSeverity.Warning;
+                    InfoText += $"Keine Updateinformationen für {package.DisplayName} gefunden\n";
+                    _logger.LogWarning(60181, "No update information associated with app {DisplayName}", package.DisplayName);
+                    break;
+            }
+        }
+        else
+        {
+            InfoBarVersionsUpdateIsOpen = true;
+            InfoBarVersionsUpdateText = $"Kein installierte App gefunden!";
+            InfoBarVersionsUpdateSeverity = InfoBarSeverity.Error;
+            InfoText += $"Kein installierte App gefunden\n";
+            _logger.LogError(61082, "No found a installed app");
+        }
         await Task.CompletedTask;
     }
 

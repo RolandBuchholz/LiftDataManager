@@ -225,7 +225,7 @@
                             Margin="5,5,0,5"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
                             Text="Maintenance and updates" />
-                        <labs:SettingsCard Description="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" Header="Update Auswahlparamter">
+                        <labs:SettingsCard Description="Es wird überprüft ob die aktuellste LiftDataManager Version installiert ist." Header="Update Check">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE117;" />
                             </labs:SettingsCard.HeaderIcon>
@@ -233,12 +233,21 @@
                                 Width="125"
                                 Margin="25,0,25,0"
                                 HorizontalAlignment="Left"
-                                Command="{x:Bind ViewModel.UpdateAuswahlParameterCommand}"
-                                Content="Update"
+                                Command="{x:Bind ViewModel.UpdateCheckCommand}"
+                                Content="Versions Check"
                                 FontWeight="Bold"
                                 Style="{StaticResource AccentButtonStyle}"
-                                ToolTipService.ToolTip="Es werden die AuswahlParameter aus der Spezifikation aktualisiert" />
+                                ToolTipService.ToolTip="Versions Update Check wird gestartet" />
                         </labs:SettingsCard>
+                        <InfoBar
+                            x:Name="InfoBarVersionsUpdate"
+                            Title="Versions Update Check"
+                            Margin="0"
+                            IsClosable="true"
+                            IsIconVisible="True"
+                            IsOpen="{x:Bind ViewModel.InfoBarVersionsUpdateIsOpen, Mode=OneWay}"
+                            Message="{x:Bind ViewModel.InfoBarVersionsUpdateText, Mode=OneWay}"
+                            Severity="{x:Bind ViewModel.InfoBarVersionsUpdateSeverity, Mode=OneWay}" />
                         <labs:SettingsExpander Description="System und AppInformationen" Header="Diagnostics">
                             <labs:SettingsExpander.HeaderIcon>
                                 <SymbolIcon Symbol="MapDrive" />
@@ -464,7 +473,7 @@
                 Height="200"
                 Background="Transparent"
                 Foreground="{StaticResource SystemAccentColor}"
-                IsActive="{x:Bind ViewModel.UpdateAuswahlParameterCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
+                IsActive="{x:Bind ViewModel.UpdateCheckCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         </Grid>
         <ContentDialog
             x:Name="AdminModePasswortDialog"
