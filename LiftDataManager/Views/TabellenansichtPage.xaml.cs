@@ -19,6 +19,6 @@ public sealed partial class TabellenansichtPage : Page
     {
         ICollectionViewGroup group = e.RowGroupHeader.CollectionViewGroup;
         e.RowGroupHeader.PropertyValue = ((ObservableGroup<string, Parameter>)group.Group).Key;
-        e.RowGroupHeader.Foreground = new SolidColorBrush((Windows.UI.Color)Application.Current.Resources["SystemAccentColor"]);
+        e.RowGroupHeader.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
     }
 }

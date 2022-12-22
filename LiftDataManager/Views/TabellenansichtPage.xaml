@@ -112,14 +112,12 @@
                         <controls:DataGridTemplateColumn Width="200" Header="Kommentar">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="models:Parameter">
-                                    <StackPanel>
-                                        <TextBox
-                                            HorizontalAlignment="Stretch"
-                                            AcceptsReturn="True"
-                                            Style="{StaticResource GridTextboxStyle}"
-                                            Text="{x:Bind Comment, Mode=TwoWay}"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
+                                    <TextBox
+                                        HorizontalAlignment="Stretch"
+                                        AcceptsReturn="True"
+                                        Style="{StaticResource GridTextboxStyle}"
+                                        Text="{x:Bind Comment, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>

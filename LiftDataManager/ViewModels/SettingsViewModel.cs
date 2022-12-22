@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using Windows.Storage;

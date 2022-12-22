@@ -104,28 +104,18 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     protected static int GetSymbolCode(TypeCodeValue TypeCode)
     {
-        switch (TypeCode)
+        return TypeCode switch
         {
-            case TypeCodeValue.mm:
-                return 60220;
-            case TypeCodeValue.String:
-                return 59602;
-            case TypeCodeValue.kg:
-                return 59394;
-            case TypeCodeValue.oE:
-                return 60032;
-            case TypeCodeValue.Boolean:
-                return 62250;
-            case TypeCodeValue.mps:
-                return 60490;
-            case TypeCodeValue.m:
-                return 60614;
-            case TypeCodeValue.N:
-                return 59394;
-            case TypeCodeValue.Date:
-                return 57699;
-            default:
-                return 59412;
-        }
+            TypeCodeValue.mm => 60220,
+            TypeCodeValue.String => 59602,
+            TypeCodeValue.kg => 59394,
+            TypeCodeValue.oE => 60032,
+            TypeCodeValue.Boolean => 62250,
+            TypeCodeValue.mps => 60490,
+            TypeCodeValue.m => 60614,
+            TypeCodeValue.N => 59394,
+            TypeCodeValue.Date => 57699,
+            _ => 59412,
+        };
     }
 }

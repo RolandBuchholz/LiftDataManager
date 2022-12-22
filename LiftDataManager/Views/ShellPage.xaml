@@ -122,6 +122,11 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_DataBaseEdit" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DataBaseEditViewModel">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Rename" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem

@@ -7,7 +7,6 @@ namespace LiftDataManager.Core.Models;
 public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
-    public ObservableCollection<string> DropDownList = new();
     public bool DataImport { get; set; }
     public bool DefaultUserEditable {get; set;}
  
@@ -41,6 +40,9 @@ public partial class Parameter : ParameterBase
     public string? DisplayName { get; set; }
     
     public string? Errors => (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
+
+    [ObservableProperty]
+    public ObservableCollection<string> dropDownList = new();
 
     [ObservableProperty]
     private bool isDirty;

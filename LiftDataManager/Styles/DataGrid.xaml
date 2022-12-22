@@ -28,12 +28,151 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            <ToolTipService.ToolTip>
+                                <TextBlock Text="SchlüsselParameter" />
+                            </ToolTipService.ToolTip>
                             <FontIcon
                                 Margin="0,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 Glyph="&#xE8D7;" />
+                        </Grid>
+                        <Rectangle
+                            x:Name="VerticalSeparator"
+                            Grid.Column="1"
+                            Width="1"
+                            VerticalAlignment="Stretch"
+                            Fill="{TemplateBinding SeparatorBrush}"
+                            Visibility="{TemplateBinding SeparatorVisibility}" />
+                        <Grid
+                            x:Name="FocusVisual"
+                            IsHitTestVisible="False"
+                            Opacity="0">
+                            <Rectangle
+                                x:Name="FocusVisualPrimary"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Fill="Transparent"
+                                IsHitTestVisible="False"
+                                Stroke="{ThemeResource DataGridCellFocusVisualPrimaryBrush}"
+                                StrokeThickness="2" />
+                            <Rectangle
+                                x:Name="FocusVisualSecondary"
+                                Margin="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Fill="Transparent"
+                                IsHitTestVisible="False"
+                                Stroke="{ThemeResource DataGridCellFocusVisualSecondaryBrush}"
+                                StrokeThickness="1" />
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="BackgroundRectangle"
+                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                            To="{ThemeResource DataGridColumnHeaderBackgroundColor}"
+                                            Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="BackgroundRectangle"
+                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                            To="{ThemeResource DataGridColumnHeaderHoveredBackgroundColor}"
+                                            Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="BackgroundRectangle"
+                                            Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                            To="{ThemeResource DataGridColumnHeaderPressedBackgroundColor}"
+                                            Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="FocusVisual"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SortStates">
+                                <VisualState x:Name="Unsorted" />
+                                <VisualState x:Name="SortAscending">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="SortIcon"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="SortDescending">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="SortIcon"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0" />
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <Setter Target="SortIcon.Glyph" Value="{ThemeResource SortIconDescending}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style
+        x:Key="AdminHeaderKey"
+        x:Name="AdminHeaderKey"
+        TargetType="controlsprimitives:DataGridColumnHeader">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controlsprimitives:DataGridColumnHeader">
+                    <Grid x:Name="ColumnHeaderRoot">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle
+                            x:Name="BackgroundRectangle"
+                            Grid.ColumnSpan="2"
+                            Fill="{ThemeResource SystemChromeAltHighColor}"
+                            Stretch="Fill" />
+                        <Grid
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ToolTipService.ToolTip>
+                                <TextBlock Text="DefaultUserEditable" />
+                            </ToolTipService.ToolTip>
+                            <FontIcon
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Glyph="&#xE7EF;" />
                         </Grid>
                         <Rectangle
                             x:Name="VerticalSeparator"

@@ -222,4 +222,7 @@
   <data name="Shell_Error.Content" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="Shell_DataBaseEdit.Content" xml:space="preserve">
+    <value>DataBaseEdit</value>
+  </data>
 </root>

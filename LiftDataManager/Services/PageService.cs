@@ -28,6 +28,7 @@ public class PageService : IPageService
         Configure<EinreichunterlagenViewModel, EinreichunterlagenPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<ErrorViewModel, ErrorPage>();
+        Configure<DataBaseEditViewModel, DataBaseEditPage>();
     }
 
     public Type GetPageType(string key)
