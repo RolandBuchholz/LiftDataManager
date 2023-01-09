@@ -65,50 +65,82 @@
                             CanUserResize="False"
                             Header="Symbol">
                             <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
                                     <FontIcon
                                         HorizontalAlignment="Center"
                                         FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                        Glyph="{Binding Symbol}" />
+                                        Glyph="{x:Bind Symbol}" />
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>
-                        <controls:DataGridTextColumn
+                        <controls:DataGridTemplateColumn
                             Width="150"
-                            Binding="{Binding DisplayName}"
                             Header="Displayname"
-                            IsReadOnly="True" />
-                        <controls:DataGridTextColumn
+                            IsReadOnly="True">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind DisplayName}" />
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
+                        <controls:DataGridTemplateColumn
                             Width="80"
-                            Binding="{Binding TypeCode}"
                             CanUserResize="False"
                             Header="Typ"
-                            IsReadOnly="True" />
-                        <controls:DataGridTextColumn
+                            IsReadOnly="True">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind TypeCode}" />
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
+                        <controls:DataGridTemplateColumn
                             Width="140"
-                            Binding="{Binding ParameterCategory}"
                             CanUserResize="False"
                             Header="Kategorie"
-                            IsReadOnly="True" />
+                            IsReadOnly="True">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind ParameterCategory}" />
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
                         <controls:DataGridTemplateColumn
                             Width="280"
                             CanUserResize="True"
                             Header="Parameterwert">
                             <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
                                     <ContentControl
                                         Margin="5,2,5,2"
                                         HorizontalContentAlignment="Stretch"
-                                        Content="{Binding}"
+                                        Content="{x:Bind}"
                                         ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>
-                        <controls:DataGridCheckBoxColumn
+                        <controls:DataGridTemplateColumn
                             Width="45"
-                            Binding="{Binding IsKey}"
                             CanUserResize="False"
-                            HeaderStyle="{StaticResource SymbolHeaderKey}" />
+                            HeaderStyle="{StaticResource SymbolHeaderKey}">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
+                                    <CheckBox
+                                        Margin="12,0,0,0"
+                                        VerticalAlignment="Center"
+                                        IsChecked="{x:Bind IsKey}" />
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
                         <controls:DataGridTemplateColumn Width="200" Header="Kommentar">
                             <controls:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="models:Parameter">
@@ -121,11 +153,20 @@
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>
-                        <controls:DataGridTextColumn
+                        <controls:DataGridTemplateColumn
                             Width="150"
-                            Binding="{Binding Name}"
+                            CanUserResize="True"
                             Header="interner Name"
-                            IsReadOnly="True" />
+                            IsReadOnly="True">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Parameter">
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind Name}" />
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
                     </controls:DataGrid.Columns>
                 </controls:DataGrid>
             </Grid>
