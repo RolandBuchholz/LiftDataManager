@@ -70,7 +70,7 @@ public partial class App : Application
             services.AddSingleton<IDialogService, DialogService>();
 
             // DataBase Services
-            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString())
+            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))
                                                                       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
@@ -210,7 +210,7 @@ public partial class App : Application
         return loglevel;
     }
 
-    private static string GetConnectionString()
+    public static string GetConnectionString(bool dbReadOnly)
     {
         string? dbPath;
 
@@ -230,14 +230,14 @@ public partial class App : Application
             dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
         }
 
-        var connectionString = new SqliteConnectionStringBuilder()
+        var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
+
+        return new SqliteConnectionStringBuilder()
         {
             DataSource = dbPath,
-            Mode = SqliteOpenMode.ReadOnly,
+            Mode = sqliteOpenMode,
             ForeignKeys = true,
-        }.ToString();
-
-        return connectionString;
+        }.ToString(); 
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)

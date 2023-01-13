@@ -1,20 +1,33 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
+using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ISettingService _settingService;
-    private readonly ParameterContext _parametercontext;
+    private readonly ParameterContext _editableparametercontext;
+    private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
-                                 ISettingService settingsSelectorService, ParameterContext parametercontext) :
+                                 ISettingService settingsSelectorService, ILogger<DataBaseEditViewModel> logger) :
                                  base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
-        _parametercontext = parametercontext;
+        DbContextOptionsBuilder editableOptions = new();
+        editableOptions.UseSqlite(App.GetConnectionString(false));
+        _editableparametercontext = new ParameterContext(editableOptions.Options);
+        _logger = logger;
         parameterDtos ??= new();
         filteredParameterDtos ??= new();
+        GetDropdownValues();
+    }
+
+    public void DataGrid_CurrentCellChanged(object sender, EventArgs e)
+    {
+        CanChangeParameters = _editableparametercontext.ChangeTracker.HasChanges();
     }
 
     [ObservableProperty]
@@ -24,7 +37,177 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private List<ParameterDto> parameterDtos;
 
     [ObservableProperty]
-    private List<ParameterDto>filteredParameterDtos;
+    private List<ParameterDto> filteredParameterDtos;
+
+    [ObservableProperty]
+    private List<string?>? allTables;
+
+    [ObservableProperty]
+    private List<string?>? filteredAllTables;
+
+    [ObservableProperty]
+    private IEnumerable<object> databaseTable;
+
+    [ObservableProperty]
+    private string? selectedTable;
+    partial void OnSelectedTableChanged(string? value)
+    {
+        if (value is not null)
+        {
+
+            var test = _editableparametercontext.Model.GetEntityTypes().First();
+
+            if (value == "CarDoors")
+            {
+                DatabaseTable = _editableparametercontext.Set<CarDoor>().ToList();
+            }
+            else
+            {
+                DatabaseTable = _editableparametercontext.Set<LiftDoorControl>().ToList();
+
+            }
+        }
+    }
+
+    [ObservableProperty]
+    private List<ParameterTyp>? parameterTyps;
+
+    [ObservableProperty]
+    private ParameterTyp? selectedParameterTyp;
+    partial void OnSelectedParameterTypChanged(ParameterTyp? value)
+    {
+        if (value is not null)
+        {
+            if (value.Name != "DropDownList") SelectedDropdownlistTable = null;
+            IsdropdownlistTablesVisible = value.Name == "DropDownList";
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private List<ParameterTypeCode>? parameterTypeCodes;
+
+    [ObservableProperty]
+    private ParameterTypeCode? selectedParameterTypeCode;
+    partial void OnSelectedParameterTypeCodeChanged(ParameterTypeCode? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private List<ParameterCategory>? parameterCategorys;
+
+    [ObservableProperty]
+    private ParameterCategory? selectedParameterCategory;
+    partial void OnSelectedParameterCategoryChanged(ParameterCategory? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private string? uniqueName;
+    partial void OnUniqueNameChanged(string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private string? displayName;
+    partial void OnDisplayNameChanged(string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private string? parameterValue;
+
+    [ObservableProperty]
+    private string? comment;
+
+    [ObservableProperty]
+    private bool? isKey;
+    partial void OnIsKeyChanged(bool? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private bool? isDefaultUserEditable;
+    partial void OnIsDefaultUserEditableChanged(bool? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private List<string?>? dropdownlistTables;
+
+    [ObservableProperty]
+    private bool isdropdownlistTablesVisible;
+
+    [ObservableProperty]
+    private string? selectedDropdownlistTable;
+    partial void OnSelectedDropdownlistTableChanged(string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    private string? removeParameterId;
+    partial void OnRemoveParameterIdChanged(string? value)
+    {
+        CanRemoveParameter = !string.IsNullOrWhiteSpace(value) && value != "0";
+    }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RemoveParameterFromDataBaseCommand))]
+    private bool canRemoveParameter;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddParameterToDataBaseCommand))]
+    private bool canAddParameter;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ChangeParametersDataCommand))]
+    private bool canChangeParameters;
+
+    private void CheckCanAddParameter()
+    {
+        CanAddParameter = SelectedParameterTyp is not null &&
+                          ParameterTypeCodes is not null &&
+                          SelectedParameterCategory is not null &&
+                          !string.IsNullOrWhiteSpace(UniqueName) &&
+                          !string.IsNullOrWhiteSpace(DisplayName) &&
+                          IsKey is not null &&
+                          IsDefaultUserEditable is not null &&
+                          (SelectedParameterTyp.Name != "DropDownList" || !string.IsNullOrWhiteSpace(SelectedDropdownlistTable));
+    }
+
+    [ObservableProperty]
+    private bool showParameterDeleteMessage;
+
+    [ObservableProperty]
+    private string? parameterDeleteMessage;
 
     [ObservableProperty]
     private string? searchInput;
@@ -42,7 +225,23 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
+    private string? searchTableInput;
+    partial void OnSearchTableInputChanged(string? value)
+    {
+        if (value is not null)
+        {
+            FilterTable();
+        }
+        else
+        {
+            SearchInput = string.Empty;
+            FilterTable();
+        }
+    }
+
+    [ObservableProperty]
     private string? filterValue;
+
     partial void OnFilterValueChanged(string? value)
     {
         if (value is not null)
@@ -55,6 +254,101 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void SetFilter(string filterValue)
     {
         FilterValue = filterValue;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanRemoveParameter))]
+    private void RemoveParameterFromDataBase()
+    {
+        var deletableParameterDto = _editableparametercontext.Find<ParameterDto>(Convert.ToInt32(RemoveParameterId));
+
+        if (deletableParameterDto is not null)
+        {
+            try
+            {
+                _editableparametercontext.Remove(deletableParameterDto);
+                _editableparametercontext.SaveChanges();
+                _ = RefreshDataBaseAsync();
+                ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} erfolgreich aus der Datenbank gelöscht !";
+                _logger.LogInformation(60171, "parameter {deletableParameterDto.DisplayName} successfully deleted from database", deletableParameterDto.DisplayName);
+            }
+            catch 
+            {
+                ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} konnte nicht gelöscht werden!";
+                _logger.LogWarning(61072, "Failed to delete parameter {deletableParameterDto.DisplayName} from database", deletableParameterDto.DisplayName);
+            }
+        }
+        else
+        {
+            ParameterDeleteMessage = $"Parameter mit der Id {RemoveParameterId} konnte in der Datenbank nicht gefunden werden !";
+            _logger.LogWarning(61072, "Parameter with Id {RemoveParameterId} not found in the database", RemoveParameterId);
+        }
+        ShowParameterDeleteMessage = true;
+        RemoveParameterId = null;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanAddParameter))]
+    private void AddParameterToDataBase()
+    {
+        try
+        {
+            var newParameterDto = new ParameterDto
+            {
+                ParameterTyp = SelectedParameterTyp,
+                ParameterTypeCode = SelectedParameterTypeCode,
+                ParameterCategory = SelectedParameterCategory,
+                Name = "var_" + UniqueName,
+                DisplayName = DisplayName,
+                Value = ParameterValue,
+                Comment = Comment,
+                IsKey = (bool)IsKey!,
+                DefaultUserEditable = (bool)IsDefaultUserEditable!,
+                DropdownList = SelectedDropdownlistTable
+            };
+            _editableparametercontext.Add(newParameterDto);
+            _editableparametercontext.SaveChanges();
+
+            _logger.LogInformation(60174, "parameter {DisplayName} successfully add to database", DisplayName);
+
+            _ = RefreshDataBaseAsync();
+            SelectedParameterTyp = null;
+            SelectedParameterTypeCode = null;
+            SelectedParameterCategory = null;
+            UniqueName = null;
+            DisplayName = null;
+            ParameterValue = null;
+            Comment = null;
+            IsKey = null;
+            IsDefaultUserEditable = null;
+            SelectedDropdownlistTable = null;
+            CanAddParameter = false;
+        }
+        catch
+        {
+            _logger.LogWarning(61075, "Failed to add parameter {DisplayName} to database", DisplayName);
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanChangeParameters))]
+    private void ChangeParametersData()
+    {
+        if (_editableparametercontext.ChangeTracker.HasChanges())
+        {
+            try
+            {
+                var changedEntities = _editableparametercontext.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
+                foreach (var entry in changedEntities)
+                {
+                    // TODO Parameteränderung in History schreiben
+                    _logger.LogInformation(60176, "ChangeParameter: {entry.DebugView.LongView}", entry.DebugView.LongView);
+                }
+                _editableparametercontext.SaveChanges();
+                CanChangeParameters = false;
+            }
+            catch
+            {
+                _logger.LogWarning(61077, "Failed to change parameters");
+            }
+        }
     }
 
     private void FilterParameterDtos()
@@ -117,11 +411,26 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    private void FilterTable()
+    {
+        if (AllTables is not null)
+        {
+            if (SearchTableInput is not null)
+            {
+                FilteredAllTables = AllTables.Where(x => x.Contains(SearchTableInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
+            else
+            {
+                FilteredAllTables = AllTables;
+            }
+        }
+    }
+
     [RelayCommand]
     private async Task RefreshDataBaseAsync()
     {
         parameterDtos.Clear();
-        ParameterDtos = _parametercontext.ParameterDtos!
+        ParameterDtos = _editableparametercontext.ParameterDtos!
                                      .Include(x => x.ParameterTyp)
                                      .Include(x => x.ParameterTypeCode)
                                      .Include(x => x.ParameterCategory)
@@ -136,13 +445,45 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         await Task.CompletedTask;
     }
 
+    private void GetDropdownValues()
+    {
+        ParameterTyps = _editableparametercontext.Set<ParameterTyp>().ToList();
+        ParameterTypeCodes = _editableparametercontext.Set<ParameterTypeCode>().ToList();
+        ParameterCategorys = _editableparametercontext.Set<ParameterCategory>().ToList();
+        DropdownlistTables = _editableparametercontext.DropdownValues!.Select(x => x.Base)
+                                                                      .Distinct()
+                                                                      .ToList();
+        var allTablesfromDB = _editableparametercontext.Model.GetEntityTypes().Select(t => t.GetTableName())
+                                                                         .Where(x => x is not null)
+                                                                         .Order()
+                                                                         .ToList();
+        var ignoredTables = new List<string>()
+        {
+            "ParameterCategorys",
+            "ParameterTypeCodes",
+            "ParameterTyps",
+            "ParameterDtos",
+            "LoadTable6s",
+            "LoadTable7s",
+            "PersonsTable8s",
+            "LiftDataManagerVersions"
+        };
+
+        AllTables = allTablesfromDB.Except(ignoredTables).ToList();
+
+
+        FilteredAllTables = AllTables;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         Adminmode = _settingService.Adminmode;
         DataBasePath = _settingService.PathDataBase;
+        _ = RefreshDataBaseAsync();
     }
 
     public void OnNavigatedFrom()
     {
+        _editableparametercontext.Dispose();
     }
 }

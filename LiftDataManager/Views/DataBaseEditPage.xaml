@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dbmodels="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToObjectConverter
@@ -63,7 +64,7 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <StackPanel
-                                    Margin="5,5,5,5"
+                                    Margin="5"
                                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                     CornerRadius="4"
                                     Orientation="Horizontal">
@@ -206,6 +207,7 @@
                                     Background="Transparent"
                                     CanUserReorderColumns="True"
                                     CanUserResizeColumns="True"
+                                    CurrentCellChanged="{x:Bind ViewModel.DataGrid_CurrentCellChanged}"
                                     GridLinesVisibility="All"
                                     ItemsSource="{x:Bind ViewModel.FilteredParameterDtos, Mode=OneWay}">
                                     <controls:DataGrid.Columns>
@@ -222,63 +224,42 @@
                                         <controls:DataGridTemplateColumn Width="125" Header="ParameterTyp">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind ParameterTyp.Name}" />
+                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterTyp.Name, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="125" Header="TypeCode">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind ParameterTypeCode.Name}" />
+                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterTypeCode.Name, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="175" Header="ParameterCategory">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind ParameterCategory.Name}" />
+                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterCategory.Name, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="175" Header="Unique Name">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind Name}" />
+                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind Name, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="175" Header="DisplayName">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind DisplayName}" />
+                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind DisplayName, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="175" Header="Wert">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind Value}" />
+                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind Value, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
@@ -301,7 +282,7 @@
                                                     <CheckBox
                                                         Margin="12,0,0,0"
                                                         VerticalAlignment="Center"
-                                                        IsChecked="{x:Bind IsKey}" />
+                                                        IsChecked="{x:Bind IsKey, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
@@ -314,64 +295,130 @@
                                                     <CheckBox
                                                         Margin="12,0,0,0"
                                                         VerticalAlignment="Center"
-                                                        IsChecked="{x:Bind DefaultUserEditable}" />
+                                                        IsChecked="{x:Bind DefaultUserEditable, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Width="175" Header="Auswahlliste">
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind DropdownList}" />
+                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind DropdownList, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                     </controls:DataGrid.Columns>
                                 </controls:DataGrid>
                             </Grid>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="125" />
-                                    <ColumnDefinition Width="125" />
-                                    <ColumnDefinition Width="125" />
-                                    <ColumnDefinition Width="175" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBox
+                            <ScrollViewer
+                                Grid.Row="1"
+                                Margin="10,10,10,0"
+                                HorizontalScrollBarVisibility="Auto"
+                                HorizontalScrollMode="Auto">
+                                <Grid
+                                    Margin="0,0,0,10"
+                                    Padding="5"
+                                    Background="{ThemeResource SpeziCardBackground}"
+                                    CornerRadius="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="147" />
+                                        <ColumnDefinition Width="122" />
+                                        <ColumnDefinition Width="210" />
+                                        <ColumnDefinition Width="45" />
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="175" />
+                                        <ColumnDefinition Width="35" />
+                                        <ColumnDefinition Width="35" />
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox
                                         Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Text="DropDownList" />
-                                <TextBox
+                                        Margin="5"
+                                        HorizontalAlignment="Stretch"
+                                        DisplayMemberPath="Name"
+                                        ItemsSource="{x:Bind ViewModel.ParameterTyps, Mode=OneWay}"
+                                        PlaceholderText="Parametertyp"
+                                        SelectedItem="{x:Bind ViewModel.SelectedParameterTyp, Mode=TwoWay}" />
+                                    <ComboBox
                                         Grid.Column="1"
-                                        HorizontalAlignment="Center"
-                                        Text="DropDownList" />
-                                <TextBox
+                                        Margin="5"
+                                        HorizontalAlignment="Stretch"
+                                        DisplayMemberPath="Name"
+                                        ItemsSource="{x:Bind ViewModel.ParameterTypeCodes, Mode=OneWay}"
+                                        PlaceholderText="TypeCode"
+                                        SelectedItem="{x:Bind ViewModel.SelectedParameterTypeCode, Mode=TwoWay}" />
+                                    <ComboBox
                                         Grid.Column="2"
-                                        HorizontalAlignment="Center"
-                                        Text="DropDownList" />
-                                <TextBox
+                                        Margin="5"
+                                        HorizontalAlignment="Stretch"
+                                        DisplayMemberPath="Name"
+                                        ItemsSource="{x:Bind ViewModel.ParameterCategorys, Mode=OneWay}"
+                                        PlaceholderText="ParameterCategory"
+                                        SelectedItem="{x:Bind ViewModel.SelectedParameterCategory, Mode=TwoWay}" />
+                                    <TextBlock
                                         Grid.Column="3"
-                                        HorizontalAlignment="Center"
-                                        Text="DropDownList" />
-                                <TextBox
-                                        Grid.Column="4"
-                                        HorizontalAlignment="Center"
-                                        Text="DropDownList" />
-
-                                <Button
-                                        Grid.Column="5"
-                                        Margin="5,8,5,0"
+                                        Margin="5,7,0,7"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Bottom"
+                                        FontSize="18"
+                                        Text="var_" />
+                                    <TextBox
+                                        Grid.Column="4"
+                                        Margin="5"
+                                        PlaceholderText="Unique Name"
+                                        Text="{x:Bind ViewModel.UniqueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        Grid.Column="5"
+                                        Margin="5"
+                                        PlaceholderText="DisplayName"
+                                        Text="{x:Bind ViewModel.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        Grid.Column="6"
+                                        Margin="5"
+                                        PlaceholderText="Wert"
+                                        Text="{x:Bind ViewModel.ParameterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        Grid.Column="7"
+                                        Margin="5"
+                                        PlaceholderText="Kommentar"
+                                        Text="{x:Bind ViewModel.Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox
+                                        Grid.Column="8"
+                                        Margin="5"
+                                        IsChecked="{x:Bind ViewModel.IsKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="Schlüsselparameter" />
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="9"
+                                        Margin="5"
+                                        IsChecked="{x:Bind ViewModel.IsDefaultUserEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="DefaultUserEditable" />
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <ComboBox
+                                        Grid.Column="10"
+                                        Margin="0,5,5,5"
+                                        ItemsSource="{x:Bind ViewModel.DropdownlistTables, Mode=OneWay}"
+                                        PlaceholderText="Auswahlliste"
+                                        SelectedItem="{x:Bind ViewModel.SelectedDropdownlistTable, Mode=TwoWay}"
+                                        Visibility="{x:Bind ViewModel.IsdropdownlistTablesVisible, Mode=OneWay}" />
+                                    <Button
+                                        Grid.Column="11"
+                                        Width="150"
+                                        Margin="0,0,0,0"
+                                        HorizontalAlignment="Right"
+                                        Command="{x:Bind ViewModel.AddParameterToDataBaseCommand}"
                                         Content="add Parameter"
                                         Style="{ThemeResource AccentButtonStyle}" />
-                            </Grid>
+                                </Grid>
+                            </ScrollViewer>
                             <InfoBar
                                 Grid.Row="2"
-                                Margin="10,5,10,5"
+                                Margin="10,0,10,5"
                                 IsClosable="False"
                                 IsIconVisible="False"
                                 IsOpen="True"
@@ -383,40 +430,68 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
                                     <TextBlock
                                         Grid.Column="0"
-                                        Margin="5,8,5,0"
+                                        Margin="5,8,5,8"
                                         VerticalAlignment="Center"
                                         Text="Parameter Id" />
                                     <TextBox
                                         Grid.Column="1"
-                                        Margin="0,0,0,0"
+                                        Margin="5,8,5,8"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Bottom"
-                                        Text="12" />
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Number"
+                                        Text="{x:Bind ViewModel.RemoveParameterId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock
                                         Grid.Column="2"
-                                        Margin="5,8,5,0"
+                                        Margin="25,8,5,8"
                                         VerticalAlignment="Center"
                                         Text="Warnung Parameter wird aus Datenbank enfernt" />
                                     <Button
+                                        Grid.RowSpan="2"
                                         Grid.Column="3"
-                                        Margin="5,8,5,0"
+                                        Width="150"
+                                        Margin="5,8,5,8"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
+                                        Command="{x:Bind ViewModel.RemoveParameterFromDataBaseCommand}"
                                         Content="delete Parameter"
                                         Style="{ThemeResource AccentButtonStyle}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="4"
+                                        Margin="5"
+                                        Text="{x:Bind ViewModel.ParameterDeleteMessage, Mode=OneWay}"
+                                        Visibility="{x:Bind ViewModel.ShowParameterDeleteMessage, Mode=OneWay}" />
                                 </Grid>
                             </InfoBar>
-                            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                            <StackPanel
+                                Grid.Row="3"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
                                 <Button
-                                    Margin="10,5,10,5"
+                                    Width="200"
+                                    Margin="5,0,5,10"
                                     Command="{x:Bind ViewModel.RefreshDataBaseCommand}"
-                                    Content="Refresch Database"
+                                    Content="Update Autotransfer-XML"
                                     Style="{ThemeResource AccentButtonStyle}" />
                                 <Button
-                                    Margin="10,5,10,5"
-                                    Content="Save to Database"
+                                    Width="200"
+                                    Margin="5,0,5,10"
+                                    Command="{x:Bind ViewModel.ChangeParametersDataCommand}"
+                                    Content="Save Changes"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                                <Button
+                                    Width="150"
+                                    Margin="5,0,15,10"
+                                    Command="{x:Bind ViewModel.RefreshDataBaseCommand}"
+                                    Content="Refresch Database"
                                     Style="{ThemeResource AccentButtonStyle}" />
                             </StackPanel>
                         </Grid>
@@ -424,6 +499,51 @@
                     <TabViewItem
                         Height="40"
                         Header="Auswahlparameter"
+                        IsClosable="False">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <AutoSuggestBox
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="10"
+                                PlaceholderText="Search"
+                                QueryIcon="Find"
+                                Text="{x:Bind ViewModel.SearchTableInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <ListView
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                ItemsSource="{x:Bind ViewModel.FilteredAllTables, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="10"
+                                FontSize="20"
+                                Text="Parameter Tabelle" />
+                            <controls:DataGrid
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="5"
+                                AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                AutoGenerateColumns="true"
+                                Background="Transparent"
+                                CanUserReorderColumns="True"
+                                CanUserResizeColumns="True"
+                                GridLinesVisibility="All"
+                                ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}" />
+                        </Grid>
+                    </TabViewItem>
+                    <TabViewItem
+                        Height="40"
+                        Header="Datenbank Änderungensverlauf"
                         IsClosable="False">
                         <Grid />
                     </TabViewItem>
