@@ -1,6 +1,6 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
+using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
@@ -11,7 +11,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private readonly ParameterContext _editableparametercontext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
-    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
+    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
                                  ISettingService settingsSelectorService, ILogger<DataBaseEditViewModel> logger) :
                                  base(parameterDataService, dialogService, navigationService)
     {
@@ -46,7 +46,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private List<string?>? filteredAllTables;
 
     [ObservableProperty]
-    private IEnumerable<object> databaseTable;
+    private IEnumerable<object> databaseTable = Enumerable.Empty<object>();
 
     [ObservableProperty]
     private string? selectedTable;
@@ -54,18 +54,24 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     {
         if (value is not null)
         {
+            var entityType = TypeFinder.FindLiftmanagerType(value.Substring(0, value.Length - 1));
 
-            var test = _editableparametercontext.Model.GetEntityTypes().First();
-
-            if (value == "CarDoors")
+            if (entityType is not null)
             {
-                DatabaseTable = _editableparametercontext.Set<CarDoor>().ToList();
+                var table = _editableparametercontext.Query(entityType);
+                if (table is not null)
+                {
+                    DatabaseTable = (IEnumerable<object>)table;
+                    CanAddTableValue= true;
+                    ShowTable = true;
+                }
             }
-            else
-            {
-                DatabaseTable = _editableparametercontext.Set<LiftDoorControl>().ToList();
-
-            }
+        }
+        else
+        {
+            DatabaseTable = Enumerable.Empty<object>();
+            ShowTable = false;
+            CanAddTableValue = false;
         }
     }
 
@@ -78,7 +84,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     {
         if (value is not null)
         {
-            if (value.Name != "DropDownList") SelectedDropdownlistTable = null;
+            if (value.Name != "DropDownList")
+                SelectedDropdownlistTable = null;
             IsdropdownlistTablesVisible = value.Name == "DropDownList";
             CheckCanAddParameter();
         }
@@ -180,12 +187,19 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
+    private bool showTable;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveParameterFromDataBaseCommand))]
     private bool canRemoveParameter;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddParameterToDataBaseCommand))]
     private bool canAddParameter;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddValueToTableCommand))]
+    private bool canAddTableValue;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeParametersDataCommand))]
@@ -271,7 +285,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} erfolgreich aus der Datenbank gelöscht !";
                 _logger.LogInformation(60171, "parameter {deletableParameterDto.DisplayName} successfully deleted from database", deletableParameterDto.DisplayName);
             }
-            catch 
+            catch
             {
                 ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} konnte nicht gelöscht werden!";
                 _logger.LogWarning(61072, "Failed to delete parameter {deletableParameterDto.DisplayName} from database", deletableParameterDto.DisplayName);
@@ -327,6 +341,45 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             _logger.LogWarning(61075, "Failed to add parameter {DisplayName} to database", DisplayName);
         }
     }
+    private T DetachEntity<T>(T entity) where T : class
+    {
+        _editableparametercontext.Entry(entity).State = EntityState.Detached;
+        if (entity.GetType().GetProperty("Id") != null)
+        {
+            entity.GetType().GetProperty("Id")?.SetValue(entity, 0);
+            var oldName = entity.GetType().GetProperty("Name")?.GetValue(entity, null);
+            entity.GetType().GetProperty("Name")?.SetValue(entity, "Copy_of_" + oldName);
+        }
+        return entity;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanAddTableValue))]
+    private void AddValueToTable()
+    {
+        try
+        {
+            if (SelectedTable is not null)
+            {
+                var oldEntity = DatabaseTable.LastOrDefault();
+                if (oldEntity is not null)
+                {
+                    var newEntity = DetachEntity(oldEntity);
+                    _editableparametercontext.Add(newEntity);
+                    _editableparametercontext.SaveChanges();
+                    // TODO Parameteränderung in History schreiben
+                    _logger.LogInformation(60176, "Value {DisplayName} successfully copy in table {SelectedTable}", SelectedTable);
+                    var temp = SelectedTable;
+                    SelectedTable = null;
+                    SelectedTable = temp;
+                }
+            }
+        }
+        catch
+        {
+
+            _logger.LogWarning(61077, "Failed to copy last value in table {SelectedTable}", SelectedTable);
+        }
+    }
 
     [RelayCommand(CanExecute = nameof(CanChangeParameters))]
     private void ChangeParametersData()
@@ -363,7 +416,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
                     FilteredParameterDtos = ParameterDtos.Where(x => x.ParameterTyp!.Name == filterValue).ToList();
                     break;
-                case "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation" 
+                case "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
                                        or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP":
                     FilteredParameterDtos = ParameterDtos.Where(x => x.ParameterCategory!.Name == filterValue).ToList();
                     break;
@@ -438,7 +491,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         filteredParameterDtos.Clear();
         FilterValue = "None";
         SearchInput = string.Empty;
-        if(ParameterDtos is not null)
+        if (ParameterDtos is not null)
         {
             FilteredParameterDtos = ParameterDtos;
         }

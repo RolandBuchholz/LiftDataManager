@@ -488,7 +488,7 @@
                                     Content="Save Changes"
                                     Style="{ThemeResource AccentButtonStyle}" />
                                 <Button
-                                    Width="150"
+                                    Width="200"
                                     Margin="5,0,15,10"
                                     Command="{x:Bind ViewModel.RefreshDataBaseCommand}"
                                     Content="Refresch Database"
@@ -534,18 +534,85 @@
                                 Margin="5"
                                 AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                                 AutoGenerateColumns="true"
+                                AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
                                 Background="Transparent"
                                 CanUserReorderColumns="True"
                                 CanUserResizeColumns="True"
+                                CurrentCellChanged="{x:Bind ViewModel.DataGrid_CurrentCellChanged}"
                                 GridLinesVisibility="All"
-                                ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}" />
+                                ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}"
+                                Visibility="{x:Bind ViewModel.ShowTable, Mode=OneWay}">
+                                <controls:DataGrid.Columns>
+                                    <controls:DataGridTemplateColumn Width="60">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:BaseEntity">
+                                                <Button
+                                                    Margin="0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                    <FontIcon
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                        FontSize="16"
+                                                        Glyph="&#xE74D;" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn
+                                        Width="60"
+                                        Header="Id"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:BaseEntity">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    Text="{x:Bind Id}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn Header="Name">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Style="{StaticResource GridTextboxStyle}" Text="{Binding Name}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+
+
+
+                                </controls:DataGrid.Columns>
+                            </controls:DataGrid>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <Button
+                                    Width="200"
+                                    Margin="5,0,15,10"
+                                    Command="{x:Bind ViewModel.AddValueToTableCommand}"
+                                    Content="Copy last row"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                                <Button
+                                    Width="200"
+                                    Margin="5,0,5,10"
+                                    Command="{x:Bind ViewModel.ChangeParametersDataCommand}"
+                                    Content="Update tables"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                            </StackPanel>
                         </Grid>
                     </TabViewItem>
                     <TabViewItem
                         Height="40"
                         Header="Datenbank Änderungensverlauf"
                         IsClosable="False">
-                        <Grid />
+                        <Grid Background="Azure">
+                            <Button Content="Hallo" />
+                        </Grid>
                     </TabViewItem>
                 </TabView.TabItems>
             </TabView>
