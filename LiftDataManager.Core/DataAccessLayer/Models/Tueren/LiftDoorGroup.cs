@@ -2,7 +2,6 @@
 
 public class LiftDoorGroup : BaseEntity
 {
-    public string? Name { get; set; }
     public int DoorPanelCount { get; set; }
     public int CarDoorId { get; set; }
     public CarDoor? CarDoor { get; set; }

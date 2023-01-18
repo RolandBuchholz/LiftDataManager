@@ -2,5 +2,4 @@
 
 public class CENumber : BaseEntity
 {
-    public string? Name { get; set; }
 }

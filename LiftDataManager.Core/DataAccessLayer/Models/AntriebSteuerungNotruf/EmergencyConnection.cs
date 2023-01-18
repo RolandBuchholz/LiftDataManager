@@ -2,5 +2,4 @@
 
 public class EmergencyConnection : BaseEntity
 {
-    public string? Name { get; set; }
 }

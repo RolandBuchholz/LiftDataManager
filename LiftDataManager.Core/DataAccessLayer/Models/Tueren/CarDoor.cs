@@ -2,7 +2,6 @@
 
 public class CarDoor : BaseEntity
 {
-    public string? Name { get; set; }
     public string? Manufacturer { get; set; }
     public double SillWidth { get; set; }
     public double MinimalMountingSpace { get; set; }

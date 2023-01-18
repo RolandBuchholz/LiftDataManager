@@ -2,5 +2,4 @@
 
 public class ShaftType : BaseEntity
 {
-    public string? Name { get; set; }
 }

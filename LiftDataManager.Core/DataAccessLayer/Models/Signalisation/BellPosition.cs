@@ -2,5 +2,4 @@
 
 public class BellPosition : BaseEntity
 {
-    public string? Name { get; set; }
 }

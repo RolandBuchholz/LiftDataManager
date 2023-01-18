@@ -2,5 +2,4 @@
 
 public class RailBracketFixing : BaseEntity
 {
-    public string? Name { get; set; }
 }

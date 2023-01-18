@@ -2,5 +2,4 @@
 
 public class EmergencyCallButton : BaseEntity
 {
-    public string? Name { get; set; }
 }

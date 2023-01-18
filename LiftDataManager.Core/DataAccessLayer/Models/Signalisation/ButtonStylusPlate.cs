@@ -2,5 +2,4 @@
 
 public class ButtonStylusPlate : BaseEntity
 {
-    public string? Name { get; set; }
 }

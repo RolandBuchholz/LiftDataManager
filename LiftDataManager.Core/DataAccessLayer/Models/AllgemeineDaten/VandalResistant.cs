@@ -2,5 +2,4 @@
 
 public class VandalResistant : BaseEntity
 {
-    public string? Name { get; set; }
 }

@@ -2,5 +2,4 @@
 
 public class EmergencyHotline : BaseEntity
 {
-    public string? Name { get; set; }
 }

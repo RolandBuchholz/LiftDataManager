@@ -2,5 +2,4 @@
 
 public class DeliveryType : BaseEntity
 {
-    public string? Name { get; set; }
 }

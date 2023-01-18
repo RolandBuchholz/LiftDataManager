@@ -2,5 +2,4 @@
 
 public class Coating : BaseEntity
 {
-    public string? Name { get; set; }
 }

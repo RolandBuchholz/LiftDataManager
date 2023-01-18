@@ -8,7 +8,6 @@ public class ParameterDto : BaseEntity
     public ParameterTyp? ParameterTyp { get; set; }
     public int ParameterTypeCodeId { get; set; }
     public ParameterTypeCode? ParameterTypeCode { get; set; }
-    public string? Name { get; set; }
     public string? DisplayName { get; set; }
     public string? Value { get; set; }
     public string? Comment;

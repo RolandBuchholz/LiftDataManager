@@ -2,5 +2,4 @@
 
 public class LiftCarRoof : BaseEntity
 {
-    public string? Name { get; set; }
 }

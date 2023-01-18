@@ -2,5 +2,4 @@
 
 public class ColorDisplay : BaseEntity
 {
-    public string? Name { get; set; }
 }

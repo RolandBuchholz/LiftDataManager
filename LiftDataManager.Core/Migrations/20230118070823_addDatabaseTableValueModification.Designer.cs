@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20230118070823_addDatabaseTableValueModification")]
+    partial class addDatabaseTableValueModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -387,11 +390,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NewEntityValue")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Operation")
-                        .IsRequired()
-                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TableName")

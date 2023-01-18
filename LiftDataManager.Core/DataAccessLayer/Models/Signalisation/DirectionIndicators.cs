@@ -2,5 +2,4 @@
 
 public class DirectionIndicators : BaseEntity
 {
-    public string? Name { get; set; }
 }

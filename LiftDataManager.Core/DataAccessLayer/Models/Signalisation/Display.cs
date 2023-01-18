@@ -2,5 +2,4 @@
 
 public class Display : BaseEntity
 {
-    public string? Name { get; set; }
 }

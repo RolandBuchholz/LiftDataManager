@@ -2,5 +2,4 @@
 
 public class ControlType : BaseEntity
 {
-    public string? Name { get; set; }
 }

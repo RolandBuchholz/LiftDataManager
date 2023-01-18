@@ -2,5 +2,4 @@
 
 public class LiftDoorStandard : BaseEntity
 {
-    public string? Name { get; set; }
 }

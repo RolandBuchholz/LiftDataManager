@@ -2,5 +2,4 @@
 
 public class Button : BaseEntity
 {
-    public string? Name { get; set; }
 }

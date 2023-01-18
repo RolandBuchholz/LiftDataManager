@@ -2,5 +2,4 @@
 
 public class SmokeExtractionShaft : BaseEntity
 {
-    public string? Name { get; set; }
 }

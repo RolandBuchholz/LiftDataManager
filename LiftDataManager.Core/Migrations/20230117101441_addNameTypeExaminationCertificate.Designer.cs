@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20230117101441_addNameTypeExaminationCertificate")]
+    partial class addNameTypeExaminationCertificate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -366,45 +369,6 @@ namespace LiftDataManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PowerSupplys", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.DatabaseTableValueModification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EntityId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NewEntityValue")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Operation")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Timestamp")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DatabaseTableValueModifications", (string)null);
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.DriveType", b =>
@@ -971,11 +935,6 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("VersionDescription")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -1004,11 +963,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("Load")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("LoadTable6s", (string)null);
@@ -1025,11 +979,6 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<int>("Load")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -1177,11 +1126,6 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<double>("Area")
                         .HasColumnType("REAL");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("Persons")
                         .HasColumnType("INTEGER");

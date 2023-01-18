@@ -1,6 +1,4 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
-using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
-using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
@@ -49,12 +47,21 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private IEnumerable<object> databaseTable = Enumerable.Empty<object>();
 
     [ObservableProperty]
+    private List<DatabaseTableValueModification>? tableHistory;
+
+    [ObservableProperty]
     private string? selectedTable;
     partial void OnSelectedTableChanged(string? value)
     {
-        if (value is not null)
+        RefreshSelectedTable(value);
+    }
+
+    private void RefreshSelectedTable(string? tableName)
+    {
+        DatabaseTable = Enumerable.Empty<object>();
+        if (tableName is not null)
         {
-            var entityType = TypeFinder.FindLiftmanagerType(value.Substring(0, value.Length - 1));
+            var entityType = TypeFinder.FindLiftmanagerType(tableName[..^1]);
 
             if (entityType is not null)
             {
@@ -62,7 +69,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 if (table is not null)
                 {
                     DatabaseTable = (IEnumerable<object>)table;
-                    CanAddTableValue= true;
+                    CanAddTableValue = true;
                     ShowTable = true;
                 }
             }
@@ -273,7 +280,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     [RelayCommand(CanExecute = nameof(CanRemoveParameter))]
     private void RemoveParameterFromDataBase()
     {
-        var deletableParameterDto = _editableparametercontext.Find<ParameterDto>(Convert.ToInt32(RemoveParameterId));
+        var id = Convert.ToInt32(RemoveParameterId);
+        var deletableParameterDto = _editableparametercontext.Find<ParameterDto>(id);
 
         if (deletableParameterDto is not null)
         {
@@ -283,6 +291,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 _editableparametercontext.SaveChanges();
                 _ = RefreshDataBaseAsync();
                 ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} erfolgreich aus der Datenbank gelöscht !";
+                SetDatabaseTableValueModification("delete", "ParameterDtos", id, deletableParameterDto.DisplayName!);
                 _logger.LogInformation(60171, "parameter {deletableParameterDto.DisplayName} successfully deleted from database", deletableParameterDto.DisplayName);
             }
             catch
@@ -298,6 +307,35 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         }
         ShowParameterDeleteMessage = true;
         RemoveParameterId = null;
+    }
+
+    [RelayCommand]
+    private void RemoveRowFromDataBaseTable(object deletableRow)
+    {
+        if (deletableRow is not null)
+        {
+            var type = deletableRow.GetType();
+            var tableName = type.Name + "s";
+            var idEntity = ((BaseEntity)deletableRow).Id;
+            var nameEntity = ((BaseEntity)deletableRow).Name;
+
+            try
+            {
+                _editableparametercontext.Remove(deletableRow);
+                _editableparametercontext.SaveChanges();
+                RefreshSelectedTable(SelectedTable);
+                _logger.LogInformation(60177, " from table: {table} Id: {tableId} Name: {nameEntity} successfully deleted", tableName, idEntity, nameEntity);
+                SetDatabaseTableValueModification("delete", tableName, idEntity, nameEntity);
+            }
+            catch
+            {
+                _logger.LogWarning(61078, "Failed to delete value {name} from table {table}", nameEntity, tableName);
+            }
+        }
+        else
+        {
+            _logger.LogWarning(61079, "Value not found in database");
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanAddParameter))]
@@ -318,11 +356,11 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 DefaultUserEditable = (bool)IsDefaultUserEditable!,
                 DropdownList = SelectedDropdownlistTable
             };
-            _editableparametercontext.Add(newParameterDto);
+            var addedParameterDto = _editableparametercontext.Add(newParameterDto);
             _editableparametercontext.SaveChanges();
-
-            _logger.LogInformation(60174, "parameter {DisplayName} successfully add to database", DisplayName);
-
+            var newEntity = _editableparametercontext.Entry(addedParameterDto.Entity);
+            SetDatabaseTableValueModification("add", "ParameterDtos", newEntity.Entity.Id, newEntity.Entity.DisplayName!, newEntity.DebugView.LongView);
+            _logger.LogInformation(60174, "parameter: {newEntity} successfully add to database", newEntity.DebugView.LongView);
             _ = RefreshDataBaseAsync();
             SelectedParameterTyp = null;
             SelectedParameterTypeCode = null;
@@ -366,11 +404,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                     var newEntity = DetachEntity(oldEntity);
                     _editableparametercontext.Add(newEntity);
                     _editableparametercontext.SaveChanges();
-                    // TODO Parameteränderung in History schreiben
-                    _logger.LogInformation(60176, "Value {DisplayName} successfully copy in table {SelectedTable}", SelectedTable);
-                    var temp = SelectedTable;
-                    SelectedTable = null;
-                    SelectedTable = temp;
+                    SetDatabaseTableValueModification("copy", SelectedTable, ((BaseEntity)newEntity).Id, ((BaseEntity)newEntity).Name[8..], ((BaseEntity)newEntity).Name);
+                    _logger.LogInformation(60176, "Value: {Name} successfully copy in table: {SelectedTable}", ((BaseEntity)newEntity).Name, SelectedTable);
+                    RefreshSelectedTable(SelectedTable);
                 }
             }
         }
@@ -389,10 +425,16 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             try
             {
                 var changedEntities = _editableparametercontext.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
-                foreach (var entry in changedEntities)
+                foreach (var entity in changedEntities)
                 {
-                    // TODO Parameteränderung in History schreiben
-                    _logger.LogInformation(60176, "ChangeParameter: {entry.DebugView.LongView}", entry.DebugView.LongView);
+                    var type = entity.Entity.GetType();
+                    var tableName = type.Name + "s";
+                    var idEntity = ((BaseEntity)entity.Entity).Id;
+                    var nameEntity = ((BaseEntity)entity.Entity).Name;
+                    var newEntityValue = entity.DebugView.LongView;
+
+                    SetDatabaseTableValueModification("modify", tableName, idEntity, nameEntity, newEntityValue);
+                    _logger.LogInformation(60176, "ChangeParameter: {entry.DebugView.LongView}", entity.DebugView.LongView);
                 }
                 _editableparametercontext.SaveChanges();
                 CanChangeParameters = false;
@@ -402,6 +444,25 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 _logger.LogWarning(61077, "Failed to change parameters");
             }
         }
+    }
+
+    private void SetDatabaseTableValueModification(string operation, string tableName, int id, string entityName, string? newEntityValue = null)
+    {
+        var timestamp = DateTime.Now.ToString();
+        var userName = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+
+        var newValueModification = new DatabaseTableValueModification
+        {
+            Timestamp = timestamp,
+            Operation = operation,
+            Name = userName,
+            TableName = tableName,
+            EntityId = id,
+            EntityName = entityName,
+            NewEntityValue = newEntityValue
+        };
+        _editableparametercontext.Add(newValueModification);
+        _editableparametercontext.SaveChanges();
     }
 
     private void FilterParameterDtos()
@@ -470,7 +531,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         {
             if (SearchTableInput is not null)
             {
-                FilteredAllTables = AllTables.Where(x => x.Contains(SearchTableInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                FilteredAllTables = AllTables.Where(x => x is not null && x.Contains(SearchTableInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
             }
             else
             {
@@ -498,6 +559,12 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         await Task.CompletedTask;
     }
 
+    public void LoadDatabaseTableValueModificationHistory(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+    {
+        TableHistory = _editableparametercontext.Set<DatabaseTableValueModification>().OrderByDescending(x => x.Id)
+                                                                                      .ToList();
+    }
+
     private void GetDropdownValues()
     {
         ParameterTyps = _editableparametercontext.Set<ParameterTyp>().ToList();
@@ -507,9 +574,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                                                                       .Distinct()
                                                                       .ToList();
         var allTablesfromDB = _editableparametercontext.Model.GetEntityTypes().Select(t => t.GetTableName())
-                                                                         .Where(x => x is not null)
-                                                                         .Order()
-                                                                         .ToList();
+                                                                              .Where(x => x is not null)
+                                                                              .Order()
+                                                                              .ToList();
         var ignoredTables = new List<string>()
         {
             "ParameterCategorys",
@@ -519,7 +586,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             "LoadTable6s",
             "LoadTable7s",
             "PersonsTable8s",
-            "LiftDataManagerVersions"
+            "LiftDataManagerVersions",
+            "DatabaseTableValueModifications"
         };
 
         AllTables = allTablesfromDB.Except(ignoredTables).ToList();

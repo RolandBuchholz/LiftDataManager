@@ -2,5 +2,4 @@
 
 public class ElevatorStandard : BaseEntity
 {
-    public string? Name { get; set; }
 }

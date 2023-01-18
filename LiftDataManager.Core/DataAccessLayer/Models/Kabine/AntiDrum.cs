@@ -2,5 +2,4 @@
 
 public class AntiDrum : BaseEntity
 {
-    public string? Name { get; set; }
 }

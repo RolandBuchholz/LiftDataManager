@@ -2,5 +2,4 @@
 
 public class ColorLEDButton : BaseEntity
 {
-    public string? Name { get; set; }
 }

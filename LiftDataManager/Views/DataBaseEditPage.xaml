@@ -500,7 +500,7 @@
                         Height="40"
                         Header="Auswahlparameter"
                         IsClosable="False">
-                        <Grid>
+                        <Grid x:Name="Grd_dropdownlist">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300" />
                                 <ColumnDefinition />
@@ -545,11 +545,13 @@
                                 <controls:DataGrid.Columns>
                                     <controls:DataGridTemplateColumn Width="60">
                                         <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:BaseEntity">
+                                            <DataTemplate>
                                                 <Button
                                                     Margin="0"
                                                     HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center">
+                                                    VerticalAlignment="Center"
+                                                    Click="DeleteRow_Click"
+                                                    CommandParameter="{Binding}">
                                                     <FontIcon
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -560,30 +562,8 @@
                                             </DataTemplate>
                                         </controls:DataGridTemplateColumn.CellTemplate>
                                     </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn
-                                        Width="60"
-                                        Header="Id"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:BaseEntity">
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    Text="{x:Bind Id}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn Header="Name">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBox Style="{StaticResource GridTextboxStyle}" Text="{Binding Name}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-
-
-
+                                    <controls:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                    <controls:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                                 </controls:DataGrid.Columns>
                             </controls:DataGrid>
                             <StackPanel
@@ -609,9 +589,128 @@
                     <TabViewItem
                         Height="40"
                         Header="Datenbank Änderungensverlauf"
-                        IsClosable="False">
-                        <Grid Background="Azure">
-                            <Button Content="Hallo" />
+                        IsClosable="False"
+                        Tapped="{x:Bind ViewModel.LoadDatabaseTableValueModificationHistory}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="10"
+                                FontSize="24"
+                                Text="Datenbank Parameteränderungen History" />
+                            <controls:DataGrid
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="5"
+                                AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                AutoGenerateColumns="false"
+                                Background="Transparent"
+                                CanUserReorderColumns="True"
+                                CanUserResizeColumns="True"
+                                GridLinesVisibility="All"
+                                ItemsSource="{x:Bind ViewModel.TableHistory, Mode=OneWay}">
+                                <controls:DataGrid.Columns>
+                                    <controls:DataGridTemplateColumn
+                                        Width="55"
+                                        Header="Id"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Id}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn
+                                        Width="150"
+                                        Header="Timestamp"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Timestamp}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn
+                                        Width="150"
+                                        Header="Benutzername"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Name}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn Header="Operation" IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Operation}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn
+                                        Width="auto"
+                                        Header="Auswahl Parameter Tabelle"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind TableName}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn
+                                        Width="55"
+                                        Header="Id"
+                                        IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind EntityId}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn Header="AuswahlParameter" IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind EntityName}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTemplateColumn Header="neuer Wert" IsReadOnly="True">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
+                                                <TextBlock
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind NewEntityValue}" />
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                </controls:DataGrid.Columns>
+                            </controls:DataGrid>
                         </Grid>
                     </TabViewItem>
                 </TabView.TabItems>

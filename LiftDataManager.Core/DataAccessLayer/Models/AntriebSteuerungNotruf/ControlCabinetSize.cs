@@ -2,5 +2,4 @@
 
 public class ControlCabinetSize : BaseEntity
 {
-    public string? Name { get; set; }
 }

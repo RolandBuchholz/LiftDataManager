@@ -2,5 +2,4 @@
 
 public class LiftCarType : BaseEntity
 {
-    public string? Name { get; set; }
 }

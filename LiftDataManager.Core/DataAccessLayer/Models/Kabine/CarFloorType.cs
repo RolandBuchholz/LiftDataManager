@@ -2,5 +2,4 @@
 
 public class CarFloorType : BaseEntity
 {
-    public string? Name { get; set; }
 }

@@ -2,7 +2,6 @@
 
 public class ShaftDoor : BaseEntity
 {
-    public string? Name { get; set; }
     public string? Manufacturer { get; set; }
     public int DoorPanelCount { get; set; }
     public int TypeExaminationCertificateId { get; set; }

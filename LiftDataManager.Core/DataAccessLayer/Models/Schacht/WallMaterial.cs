@@ -2,5 +2,4 @@
 
 public class WallMaterial : BaseEntity
 {
-    public string? Name { get; set; }
 }

@@ -2,5 +2,4 @@
 
 public class LoadWeighingDevice : BaseEntity
 {
-    public string? Name { get; set; }
 }

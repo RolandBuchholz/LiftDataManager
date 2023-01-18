@@ -2,6 +2,5 @@
 
 public class CargoType : BaseEntity
 {
-    public string? Name { get; set; }
     public IEnumerable<LiftType>? LiftTypes { get; set; }
 }

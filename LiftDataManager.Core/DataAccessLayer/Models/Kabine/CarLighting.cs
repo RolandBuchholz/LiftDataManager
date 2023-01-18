@@ -2,5 +2,4 @@
 
 public class CarLighting : BaseEntity
 {
-    public string? Name { get; set; }
 }

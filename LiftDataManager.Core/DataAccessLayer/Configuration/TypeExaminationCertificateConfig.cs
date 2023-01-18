@@ -5,6 +5,9 @@ public class TypeExaminationCertificateConfig : BaseModelBuilder<TypeExamination
     public override void Configure(EntityTypeBuilder<TypeExaminationCertificate> builder)
     {
         base.Configure(builder);
+        builder.Property(x => x.Name)
+               .HasMaxLength(50)
+               .IsRequired();
         builder.Property(x => x.CertificateNumber)
                .HasMaxLength(50)
                .IsRequired();

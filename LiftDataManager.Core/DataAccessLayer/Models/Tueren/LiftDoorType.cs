@@ -2,5 +2,4 @@
 
 public class LiftDoorType : BaseEntity
 {
-    public string? Name { get; set; }
 }

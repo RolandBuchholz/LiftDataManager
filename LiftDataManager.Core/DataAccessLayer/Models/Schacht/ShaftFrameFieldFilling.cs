@@ -2,5 +2,4 @@
 
 public class ShaftFrameFieldFilling : BaseEntity
 {
-    public string? Name { get; set; }
 }

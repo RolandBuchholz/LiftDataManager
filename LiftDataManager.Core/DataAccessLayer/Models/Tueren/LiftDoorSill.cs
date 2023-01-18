@@ -2,5 +2,4 @@
 
 public class LiftDoorSill : BaseEntity
 {
-    public string? Name { get; set; }
 }

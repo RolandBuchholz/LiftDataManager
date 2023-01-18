@@ -2,5 +2,4 @@
 
 public class ReducedProtectionSpace : BaseEntity
 {
-    public string? Name { get; set; }
 }

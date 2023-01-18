@@ -2,6 +2,5 @@
 
 public class MaterialThickness : BaseEntity
 {
-    public string? Name { get; set; }
 }
 

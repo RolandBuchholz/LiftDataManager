@@ -2,5 +2,4 @@
 
 public class FireClosure : BaseEntity
 {
-    public string? Name { get; set; }
 }

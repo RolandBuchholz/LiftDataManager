@@ -2,5 +2,4 @@
 
 public class OutdoorPanelFastening : BaseEntity
 {
-    public string? Name { get; set; }
 }

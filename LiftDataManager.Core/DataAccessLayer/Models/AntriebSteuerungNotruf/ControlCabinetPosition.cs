@@ -2,5 +2,4 @@
 
 public class ControlCabinetPosition : BaseEntity
 {
-    public string? Name { get; set; }
 }

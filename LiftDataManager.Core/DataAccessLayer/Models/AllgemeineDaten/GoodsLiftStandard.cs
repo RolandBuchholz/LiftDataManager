@@ -2,5 +2,4 @@
 
 public class GoodsLiftStandard : BaseEntity
 {
-    public string? Name { get; set; }
 }

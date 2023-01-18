@@ -2,5 +2,4 @@
 
 public class InstallationInfo :BaseEntity
 {
-    public string? Name { get; set; }
 }
