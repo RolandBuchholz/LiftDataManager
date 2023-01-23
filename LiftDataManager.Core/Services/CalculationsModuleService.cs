@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
+using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
 
@@ -10,22 +11,35 @@ public partial class CalculationsModuleService : ICalculationsModule
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<CalculationsModuleService> _logger;
 
-    public Dictionary<int, TableRow<int, double>> Table6 { get; }
-    public Dictionary<int, TableRow<int, double>> Table7 { get; }
-    public Dictionary<int, TableRow<int, double>> Table8 { get; }
+    public required Dictionary<int, TableRow<int, double>> Table6 { get; set; }
+    public required Dictionary<int, TableRow<int, double>> Table7 { get; set; }
+    public required Dictionary<int, TableRow<int, double>> Table8 { get; set; }
 
     public CalculationsModuleService(ParameterContext parametercontext, ILogger<CalculationsModuleService> logger)
     {
         _parametercontext = parametercontext;
         _logger = logger;
-        var loadTable6 = _parametercontext.Set<LoadTable6>().ToArray();
-        var loadTable7 = _parametercontext.Set<LoadTable7>().ToArray();
-        var personsTable8 = _parametercontext.Set<PersonsTable8>().ToArray();
 
-        Table6 = SetTableData(loadTable6, "kg", "m²");
-        Table7 = SetTableData(loadTable7, "kg", "m²");
-        Table8 = SetTableData(personsTable8, "Pers.", "m²");
+        InitializeTableData();
     }
+
+    private void InitializeTableData()
+    {
+        try
+        {
+            var loadTable6 = _parametercontext.Set<LoadTable6>().ToArray();
+            var loadTable7 = _parametercontext.Set<LoadTable7>().ToArray();
+            var personsTable8 = _parametercontext.Set<PersonsTable8>().ToArray();
+            Table6 = SetTableData(loadTable6, "kg", "m²");
+            Table7 = SetTableData(loadTable7, "kg", "m²");
+            Table8 = SetTableData(personsTable8, "Pers.", "m²");
+        }
+        catch (Exception)
+        {
+            _logger.LogError(61151, "InitializeTableData failed");
+        }
+    }
+
 
     public bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem)
     {

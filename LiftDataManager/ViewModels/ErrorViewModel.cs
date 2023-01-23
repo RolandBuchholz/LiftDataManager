@@ -1,6 +1,7 @@
 ﻿using LiftDataManager.Models;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace LiftDataManager.ViewModels;
 
@@ -20,6 +21,21 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
     public string? ParamterDictionaryInfo { get; set; }
     public string? ErrorMessage { get; set; }
     public string? Exception { get; set; }
+    public string? LogFile => GetLastLogFile();
+
+    private string? GetLastLogFile()
+    {
+        string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
+        if (Directory.Exists(path))
+        {
+            var logs = Directory.GetFiles(path,"*.json");
+            return logs.OrderDescending().FirstOrDefault();
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
 
     public bool CanConnectDataBase => _parameterDataService!.CanConnectDataBase();
 
@@ -66,6 +82,15 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathDataBase))
             _settingService.SetSettingsAsync(nameof(PathDataBase), value);
+    }
+
+    [RelayCommand]
+    private static async Task OpenLogFolder()
+    {
+        string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
+        if (Directory.Exists(path))
+            Process.Start("explorer.exe", path);
+        await Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -139,6 +164,15 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
     [RelayCommand]
     public void SendErrorLog()
     {
+        var app = new Outlook.Application();
+        Outlook.MailItem mailItem = app.CreateItem(Outlook.OlItemType.olMailItem);
+        mailItem.To = "roland.buchholz@berchtenbreiter-gmbh.de";
+        mailItem.Subject = "LogFile LiftDataManager";
+        mailItem.BodyFormat = Outlook.OlBodyFormat.olFormatHTML;
+        mailItem.Body = ErrorMessage;
+        mailItem.Attachments.Add(LogFile, Outlook.OlAttachmentType.olByValue, Type.Missing, Type.Missing);
+        mailItem.Display(false);
+        mailItem.Send();
         Application.Current.Exit();
     }
 

@@ -146,8 +146,15 @@
                     <Expander
                         Margin="5,0,5,0"
                         HorizontalAlignment="Stretch"
-                        Header="Logfile">
-                        <TextBlock Text="currently not supported" />
+                        Header="Last Logfile"
+                        IsExpanded="True">
+                        <StackPanel>
+                            <TextBlock Margin="5" Text="{x:Bind ViewModel.LogFile}" />
+                            <Button
+                                Margin="5"
+                                Command="{x:Bind ViewModel.OpenLogFolderCommand}"
+                                Content="Open Logfiles" />
+                        </StackPanel>
                     </Expander>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="2">
@@ -246,8 +253,8 @@
                                 Das speichen der Daten kann zu unerwünschten Ergebnissen führen.</TextBlock>
                             <Button
                                 Margin="10"
-                                VerticalAlignment="Bottom"
                                 HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
                                 Command="{x:Bind ViewModel.SaveAllParameterCommand}"
                                 Content="Parameter speichern"
                                 FontWeight="Bold"
