@@ -13,4 +13,6 @@ public interface IParameterDataService
     Task<string> SaveParameterAsync(Parameter parameter, string path);
 
     Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode);
+
+    Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 }

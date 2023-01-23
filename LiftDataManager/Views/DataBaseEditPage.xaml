@@ -2,6 +2,8 @@
     x:Class="LiftDataManager.Views.DataBaseEditPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -207,9 +209,13 @@
                                     Background="Transparent"
                                     CanUserReorderColumns="True"
                                     CanUserResizeColumns="True"
-                                    CurrentCellChanged="{x:Bind ViewModel.DataGrid_CurrentCellChanged}"
                                     GridLinesVisibility="All"
                                     ItemsSource="{x:Bind ViewModel.FilteredParameterDtos, Mode=OneWay}">
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Core:EventTriggerBehavior EventName="CurrentCellChanged">
+                                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.CheckParameterChangedCommand}" />
+                                        </Core:EventTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
                                     <controls:DataGrid.Columns>
                                         <controls:DataGridTemplateColumn Width="55" Header="Id">
                                             <controls:DataGridTemplateColumn.CellTemplate>
@@ -478,7 +484,7 @@
                                 <Button
                                     Width="200"
                                     Margin="5,0,5,10"
-                                    Command="{x:Bind ViewModel.RefreshDataBaseCommand}"
+                                    Command="{x:Bind ViewModel.UpdateAutotransferXmlCommand}"
                                     Content="Update Autotransfer-XML"
                                     Style="{ThemeResource AccentButtonStyle}" />
                                 <Button
@@ -538,10 +544,14 @@
                                 Background="Transparent"
                                 CanUserReorderColumns="True"
                                 CanUserResizeColumns="True"
-                                CurrentCellChanged="{x:Bind ViewModel.DataGrid_CurrentCellChanged}"
                                 GridLinesVisibility="All"
                                 ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}"
                                 Visibility="{x:Bind ViewModel.ShowTable, Mode=OneWay}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="CurrentCellChanged">
+                                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.CheckParameterChangedCommand}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
                                 <controls:DataGrid.Columns>
                                     <controls:DataGridTemplateColumn Width="60">
                                         <controls:DataGridTemplateColumn.CellTemplate>
@@ -589,8 +599,12 @@
                     <TabViewItem
                         Height="40"
                         Header="Datenbank Änderungensverlauf"
-                        IsClosable="False"
-                        Tapped="{x:Bind ViewModel.LoadDatabaseTableValueModificationHistory}">
+                        IsClosable="False">
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDatabaseTableValueModificationHistoryCommand}" />
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />

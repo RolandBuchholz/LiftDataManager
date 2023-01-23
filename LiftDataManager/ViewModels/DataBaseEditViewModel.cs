@@ -6,14 +6,16 @@ namespace LiftDataManager.ViewModels;
 public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ISettingService _settingService;
+    public readonly IVaultDataService _vaultDataService;
     private readonly ParameterContext _editableparametercontext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
-                                 ISettingService settingsSelectorService, ILogger<DataBaseEditViewModel> logger) :
+                                 ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger) :
                                  base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
+        _vaultDataService = vaultDataService;
         DbContextOptionsBuilder editableOptions = new();
         editableOptions.UseSqlite(App.GetConnectionString(false));
         _editableparametercontext = new ParameterContext(editableOptions.Options);
@@ -21,11 +23,6 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         parameterDtos ??= new();
         filteredParameterDtos ??= new();
         GetDropdownValues();
-    }
-
-    public void DataGrid_CurrentCellChanged(object sender, EventArgs e)
-    {
-        CanChangeParameters = _editableparametercontext.ChangeTracker.HasChanges();
     }
 
     [ObservableProperty]
@@ -275,6 +272,12 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void SetFilter(string filterValue)
     {
         FilterValue = filterValue;
+    }
+
+    [RelayCommand]
+    public void CheckParameterChanged()
+    {
+        CanChangeParameters = _editableparametercontext.ChangeTracker.HasChanges();
     }
 
     [RelayCommand(CanExecute = nameof(CanRemoveParameter))]
@@ -559,7 +562,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         await Task.CompletedTask;
     }
 
-    public void LoadDatabaseTableValueModificationHistory(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+    [RelayCommand]
+    public void LoadDatabaseTableValueModificationHistory()
     {
         TableHistory = _editableparametercontext.Set<DatabaseTableValueModification>().OrderByDescending(x => x.Id)
                                                                                       .ToList();
@@ -594,6 +598,31 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
 
         FilteredAllTables = AllTables;
+    }
+
+    [RelayCommand]
+    public async Task UpdateAutotransferXmlAsync()
+    {
+        var nameXml = "AutoDeskTransfer.xml";
+        var downloadResult = await _vaultDataService.GetFileAsync(nameXml, false, true);
+
+        if (downloadResult.ExitCode == 0 && downloadResult.CheckOutState == "CheckedOutByCurrentUser")
+        {
+            var updateResult = await _parameterDataService!.UpdateAutodeskTransferAsync(downloadResult.FullFileName!, parameterDtos);
+
+            if (updateResult)
+            {
+                var uploadResult = await _vaultDataService.SetFileAsync(nameXml, true);
+                if (uploadResult.ExitCode == 0)
+                {
+                    _logger.LogInformation(60177, "file upload: {uploadResult.FileName} successful", uploadResult.FileName);
+                }
+                else
+                {
+                    _logger.LogError(61078, "file upload: {uploadResult.FileName} failed", uploadResult.FileName);
+                }
+            }
+        }
     }
 
     public void OnNavigatedTo(object parameter)

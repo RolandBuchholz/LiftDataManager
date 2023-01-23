@@ -1,9 +1,16 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml;
+using System.Xml.Linq;
 using Cogs.Collections;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.Helpers;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LiftDataManager.Core.Services;
 
@@ -198,6 +205,58 @@ public partial class ParameterDataService : IParameterDataService
         await Task.CompletedTask;
         infotext += $"----------\n";
         return infotext;
+    }
+
+    public async Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos)
+    {
+        try
+        {
+            XElement root = new("ParamWithValueList",
+                new XAttribute(XNamespace.Xmlns + "xsd", "http://www.w3.org/2001/XMLSchema"),
+                new XAttribute(XNamespace.Xmlns + "xsi", "http://www.w3.org/2001/XMLSchema-instance"),
+                new XElement("version", "20080502"),
+                new XElement("parameterTypes",
+                    new XElement("ParamType", new XElement("typeName", "Inventor"), new XElement("typeCode", "0")),
+                    new XElement("ParamType", new XElement("typeName", "String"), new XElement("typeCode", "1")),
+                    new XElement("ParamType", new XElement("typeName", "Boolean"), new XElement("typeCode", "2"))),
+                new XElement("parameters"),
+                new XCData(@"<Element>CopyAllowedTrue</Element>")
+                );
+            var declaration = new XDeclaration("1.0", "UTF-8", "yes");
+            var autodeskTransfer = new XDocument(root)
+            {
+                Declaration = declaration
+            };
+
+            var parameters = autodeskTransfer.Root!.Element("parameters");
+
+            var paramWithValues = new List<XElement>();
+
+            foreach (var parameterDto in parameterDtos)
+            {
+                var paramWithValue =
+                    new XElement("ParamWithValue",
+                    new XElement("name", parameterDto.Name),
+                    new XElement("typeCode", parameterDto.ParameterTypeCode!.Name),
+                    new XElement("value", parameterDto.Value),
+                    new XElement("comment", parameterDto.Comment),
+                    new XElement("isKey", parameterDto.IsKey.ToString().ToLower()));
+
+                paramWithValues.Add(paramWithValue);
+            }
+
+            parameters!.Add(paramWithValues);
+            autodeskTransfer.Save(path, SaveOptions.None);
+            _logger.LogInformation(60104, "New AutodeskTransferXml created: {path}", path);
+        }
+        catch (Exception)
+        {
+            _logger.LogError(61105, "Saving failed AutoDeskTransferXml");
+            return false;
+        }
+
+        await Task.CompletedTask;
+        return true;
     }
 
     [LoggerMessage(60104, LogLevel.Information,

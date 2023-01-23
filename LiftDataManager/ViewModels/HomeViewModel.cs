@@ -214,6 +214,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         $"Soll der Vorgang fortgesetzt werden?",
                         "Fortsetzen", "Abbrechen");
         }
+        else
+        {
+            delete = true;
+        }
 
         if (delete is not null && (bool)delete)
         {
@@ -357,6 +361,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (AuftragsbezogeneXml)
         {
             HasErrors = false;
+            CanClearData = AuftragsbezogeneXml;
             HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
             ParamterErrorDictionary ??= new();
             ParamterErrorDictionary.Clear();
@@ -387,7 +392,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 CanSaveAllSpeziParameters = dirty;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
-                CanClearData = CheckOut;
             }
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {

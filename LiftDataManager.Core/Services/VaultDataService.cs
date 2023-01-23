@@ -18,11 +18,11 @@ public class VaultDataService : IVaultDataService
         _logger = logger;
     }
 
-    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly)
+    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly, bool customFile)
     {
         starttyp = "get";
         _logger.LogInformation(60111, "start read data from vaultserver");
-        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, readOnly);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, readOnly, customFile);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -30,11 +30,11 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
-    public async Task<DownloadInfo> SetFileAsync(string auftragsnummer)
+    public async Task<DownloadInfo> SetFileAsync(string auftragsnummer, bool customFile)
     {
         starttyp = "set";
         _logger.LogInformation(60112, "start save data to vaultserver");
-        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, false, customFile);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -42,11 +42,11 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
-    public async Task<DownloadInfo> UndoFileAsync(string auftragsnummer)
+    public async Task<DownloadInfo> UndoFileAsync(string auftragsnummer, bool customFile)
     {
         starttyp = "undo";
         _logger.LogInformation(60113, "start undo data vaultserver");
-        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer);
+        var result = StartPowershellScriptAsync(pathPowershellScripts, starttyp, auftragsnummer, false, customFile);
         ExitCode = result.Result;
         DownloadInfo.ExitCode = ExitCode;
         await Task.CompletedTask;
@@ -54,7 +54,7 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
-    private async Task<int> StartPowershellScriptAsync(string pathPowershellScripts, string starttyp, string auftragsnummer, bool readOnly = false)
+    private async Task<int> StartPowershellScriptAsync(string pathPowershellScripts, string starttyp, string auftragsnummer, bool readOnly = false, bool customFile = false)
     {
         var powershellScriptName = starttyp switch
         {
@@ -64,6 +64,8 @@ public class VaultDataService : IVaultDataService
             _ => "GetVaultFile.ps1",
         };
         var readOnlyPowershell = readOnly ? "$true" : "$false";
+        var customFilePowershell = customFile ? "$true" : "$false";
+
         _logger.LogInformation(60114, "start powershellScript with {starttyp}",starttyp);
         try
         {
@@ -72,11 +74,11 @@ public class VaultDataService : IVaultDataService
             psScript.StartInfo.FileName = "PowerShell.exe";
             if (starttyp == "get")
             {
-                psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer} {readOnlyPowershell}";
+                psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer} {readOnlyPowershell} {customFilePowershell}";
             }
             else
             {
-                psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer}";
+                psScript.StartInfo.Arguments = $"{pathPowershellScripts}{powershellScriptName} {auftragsnummer} {customFilePowershell}";
             }
             psScript.StartInfo.CreateNoWindow = true;
             psScript.StartInfo.RedirectStandardOutput = true;
