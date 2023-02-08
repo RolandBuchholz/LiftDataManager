@@ -571,11 +571,11 @@
                     Header="Antrieb"
                     IsExpanded="True"
                     Style="{StaticResource ExpanderContentStyle}">
-                    <Grid RowDefinitions="Auto,Auto,*">
+                    <Grid ColumnDefinitions="2.5*,*" RowDefinitions="Auto,Auto,*">
                         <Grid x:Name="Antriebdetails" Grid.Row="0">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
@@ -589,13 +589,13 @@
                                     x:Name="Antrieb0"
                                     Grid.Row="0"
                                     Grid.Column="1"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,1.75*">
                                     <ComboBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
-                                        Header="Antriebstyp"
+                                        Header="Antriebssytem"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Aggregat'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Aggregat'].DropDownListValue, Mode=TwoWay}" />
                                     <TextBox
@@ -605,20 +605,20 @@
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungAntrieb'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Antrieb1"
+                                    x:Name="Antrieb2"
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,1.75*">
                                     <Grid Background="Transparent" IsHitTestVisible="True">
                                         <ComboBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Antriebstyp"
-                                        IsHitTestVisible="False"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownListValue, Mode=TwoWay}" />
+                                            Grid.Column="0"
+                                            Margin="5,0,5,0"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            Header="Antriebsart"
+                                            IsHitTestVisible="False"
+                                            ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownList, Mode=OneWay}"
+                                            SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownListValue, Mode=TwoWay}" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
@@ -646,6 +646,40 @@
                                             IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RevconZarec'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     </Grid>
                                 </Grid>
+                                <Grid
+                                    x:Name="Antrieb3"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    ColumnDefinitions="*,1.75*">
+                                    <ComboBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Header="Handlüftung"
+                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'].DropDownList, Mode=OneWay}"
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'].DropDownListValue, Mode=TwoWay}" />
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Fremdbelüftung"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Fremdbelueftung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <CheckBox
+                                            Grid.Column="1"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Elektr. Bremsenansteuerung"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ElektrBremsenansteuerung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <CheckBox
+                                            Grid.Column="2"
+                                            Margin="5,0,10,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Treibscheibe gehärtet"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibegehaertet'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid
@@ -666,18 +700,150 @@
                                     FontSize="16"
                                     Text="sonstiges Antrieb" />
                                 <Grid
-                                    x:Name="Antrieb2"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="*">
                                     <TextBox
                                         Grid.Column="1"
-                                        MinHeight="60"
+                                        MinHeight="90"
                                         Margin="5,5,10,0"
                                         AcceptsReturn="True"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesAntrieb'].Value, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="datenZAlift"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            Margin="0,0,0,5">
+                            <Grid>
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="10,5,10,2"
+                                        FontWeight="Bold"
+                                        Text="Daten ZAlift Auslegung" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Aufhängung :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_AufhaengungsartRope'].Value}" />
+                                            <Run Text=" : 1" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Umschlingungswinkel :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Umschlingungswinkel'].Value}" />
+                                            <Run Text=" grad" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Treibscheibendurchmesser :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibendurchmesser'].Value}" />
+                                            <Run Text=" mm" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Umlenkrollendurchmesser :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Umlenkrollendurchmesser'].Value}" />
+                                            <Run Text=" mm" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Anzahl Umlenkrollen :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlUmlenkrollen'].Value}" />
+                                            <Run Text=" Stk." />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Anzahl Umlenkrollen FK :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlUmlenkrollenFk'].Value}" />
+                                            <Run Text=" Stk." />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Anzahl Umlenkrollen GGW :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlUmlenkrollenGgw'].Value}" />
+                                            <Run Text=" Stk." />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <TextBlock
+                                        Margin="10,5,10,2"
+                                        FontWeight="Bold"
+                                        Text="UCM - Daten:" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Erkennungsweg in mm :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Erkennungsweg'].Value}" />
+                                            <Run Text=" mm" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Totzeit gesamt :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Totzeit'].Value}" />
+                                            <Run Text=" ms" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="V Geschwindigkeitsdetektor :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Vdetektor'].Value}" />
+                                            <Run Text=" m/s" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Gebertyp des Motors :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_MotorGeber'].Value}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -874,7 +1040,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"

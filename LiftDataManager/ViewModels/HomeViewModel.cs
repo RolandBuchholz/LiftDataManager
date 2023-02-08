@@ -115,7 +115,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 updatedParameter.Value = item.Value;
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
-                if (updatedParameter.Value is not null && updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
                 {
                     updatedParameter.DropDownListValue = updatedParameter.Value;
                 }
@@ -201,8 +201,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (FullPathXml is null)
             return;
 
-        bool? delete = false;
-
+        bool? delete;
         if (CanSaveAllSpeziParameters || CheckOut)
         {
             delete = await _dialogService!.WarningDialogAsync(

@@ -324,7 +324,7 @@
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Margin="0,0,5,5"
+                    Margin="0,0,10,5"
                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                 <Grid
@@ -932,7 +932,8 @@
             Grid.RowSpan="2"
             Grid.Column="1"
             Margin="5,0,0,0"
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"

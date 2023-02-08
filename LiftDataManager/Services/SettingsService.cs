@@ -162,7 +162,7 @@ public class SettingsService : ISettingService
     private async Task SetDefaultPaths()
     {
         await SetSettingsAsync(nameof(PathCFP), Environment.GetEnvironmentVariable("userprofile") + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe");
-        await SetSettingsAsync(nameof(PathZALift), @"C:\Program Files (x86)\zetalift\Lift.exe");
+        await SetSettingsAsync(nameof(PathZALift), @"C:\Program Files (x86)\ZETALIFT\ZAlift.exe");
         await SetSettingsAsync(nameof(PathLilo), @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE");
         await SetSettingsAsync(nameof(PathExcel), @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE");
         await SetSettingsAsync(nameof(PathDataBase), @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");

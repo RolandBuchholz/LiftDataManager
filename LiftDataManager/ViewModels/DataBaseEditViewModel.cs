@@ -6,7 +6,7 @@ namespace LiftDataManager.ViewModels;
 public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ISettingService _settingService;
-    public readonly IVaultDataService _vaultDataService;
+    private readonly IVaultDataService _vaultDataService;
     private readonly ParameterContext _editableparametercontext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 

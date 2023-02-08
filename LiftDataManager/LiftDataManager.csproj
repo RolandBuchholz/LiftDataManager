@@ -85,13 +85,16 @@
     <None Remove="Assets\Wide310x150Logo.scale-400.png" />
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\PrePlanningNumberControl.xaml" />
+    <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BucherTransparent.png" />
     <None Remove="Images\carAccesses.png" />
     <None Remove="Images\carDimensions.png" />
     <None Remove="Images\CFPTransparent.png" />
     <None Remove="Images\ExcelTransparent.png" />
+    <None Remove="Images\GoogleChrome.png" />
     <None Remove="Images\Handrails\handrail_HL13.png" />
     <None Remove="Images\Handrails\handrail_HL14.png" />
+    <None Remove="Images\html.png" />
     <None Remove="Images\LiftDataManagerLogo.png" />
     <None Remove="Images\LiloTransparent.png" />
     <None Remove="Images\Ordnerblue.png" />
@@ -111,11 +114,13 @@
     <None Remove="Views\NutzlastberechnungPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\Berechnungen.png" />
     <Content Include="Images\BucherTransparent.png" />
     <Content Include="Images\carAccesses.png" />
     <Content Include="Images\carDimensions.png" />
     <Content Include="Images\CFPTransparent.png" />
     <Content Include="Images\ExcelTransparent.png" />
+    <Content Include="Images\GoogleChrome.png" />
     <Content Include="Images\Handrails\handrail_HL13.png" />
     <Content Include="Images\Handrails\handrail_HL14.png" />
     <Content Include="Images\LiftDataManagerLogo.png" />
@@ -146,7 +151,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cogs.Collections" Version="1.11.0" />
+    <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
@@ -154,7 +159,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221209.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />

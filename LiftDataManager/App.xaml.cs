@@ -22,9 +22,12 @@ namespace LiftDataManager;
 public partial class App : Application
 {
     public IHost Host { get; }
+    public static WindowEx MainWindow { get; } = new MainWindow();
+    private bool IgnoreSaveWarning { get; set; }
+    public static FrameworkElement? MainRoot { get; set; }
 
     public static T GetService<T>()
-        where T : class
+    where T : class
     {
         if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
         {
@@ -34,11 +37,6 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx MainWindow { get; } = new MainWindow();
-
-    private bool IgnoreSaveWarning { get; set; }
-
-    public static FrameworkElement? MainRoot { get; set; }
     public App()
     {
         InitializeComponent();
@@ -98,7 +96,7 @@ public partial class App : Application
             services.AddTransient<SignalisationPage>();
             services.AddTransient<SchachtViewModel>();
             services.AddTransient<SchachtPage>();
-            services.AddTransient<QuickLinksViewModel>();
+            services.AddSingleton<QuickLinksViewModel>();
             services.AddTransient<QuickLinksPage>();
             services.AddTransient<KabineViewModel>();
             services.AddTransient<KabinePage>();

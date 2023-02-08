@@ -1,27 +1,55 @@
 ﻿using System.Xml;
+using LiftDataManager.core.Helpers;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 {
+    private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
+    private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
+    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private const string pathSpezifikation = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
+
     private readonly ISettingService _settingService;
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ISettingService settingsSelectorService) :
+    private readonly ParameterContext _parametercontext;
+    private readonly IVaultDataService _vaultDataService;
+    private readonly ILogger<QuickLinksViewModel> _logger;
+
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
+        ISettingService settingsSelectorService, ParameterContext parametercontext, IVaultDataService vaultDataService,ILogger<QuickLinksViewModel> logger) :
          base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
+        _parametercontext = parametercontext;
+        _vaultDataService = vaultDataService;
+        _logger = logger;
+        CheckCanOpenFiles();
     }
-    public string? PathCFP { get; set; }
-    public string? PathZALift { get; set; }
-    public string? PathLilo { get; set; }
-    public string? PathExcel { get; set; }
+
+    public bool ZAliftHtmlUpdated { get; set; }
+    public bool ZAliftAusUpdated { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
     private bool canOpenSpeziPdf;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenCalculationsCommand))]
+    private bool canOpenCalculations;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenVaultCommand))]
     private bool canOpenVault;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenZiehlAbeggCommand))]
+    private bool canOpenZALift;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenZiehlAbeggHtmlCommand))]
+    private bool canOpenZALiftHtml;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenCFPCommand))]
@@ -31,52 +59,77 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
     private bool canOpenLilo;
 
-    private void CheckCanOpenFiles()
+    public void CheckCanOpenFiles()
     {
-
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
+        SynchronizeViewModelParameter();
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
         {
             CanOpenSpeziPdf = File.Exists(FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf"));
         }
-
-        CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml");
-
-        var bausatztyp = "";
-
-        if (ParamterDictionary!["var_Bausatz"].Value is not null)
+        CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
+        CanOpenCalculations = CanOpenVault;
+        CanOpenCFP = File.Exists(_settingService.PathCFP);
+        CanOpenLilo = File.Exists(_settingService.PathLilo);
+        CanOpenZALift = File.Exists(_settingService.PathZALift);
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
         {
-            bausatztyp = ParamterDictionary["var_Bausatz"].Value;
+            var auftragsnummer = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
+            CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html"));
         }
-
-        CanOpenCFP = bausatztyp is "BRR-15 MK2" or "BRR-25 MK2" or "ZZE-S1600";
-        if (bausatztyp is not null)
-            CanOpenLilo = bausatztyp.StartsWith("BR1") || bausatztyp.StartsWith("BR2") || bausatztyp.StartsWith("BT") || bausatztyp.StartsWith("TG");
     }
 
     [RelayCommand]
-    private void OpenSpezi()
+    private async Task OpenSpeziAsync()
     {
+        SynchronizeViewModelParameter();
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
-        var filename = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
-        var startargs = "";
+        var filename = _settingService.PathExcel;
+        var startargs = string.Empty;
+        var closeLiftDataManager = false;
 
         if (!string.IsNullOrWhiteSpace(auftragsnummer))
         {
-            filename = PathExcel;
-            startargs = @"/e/" + auftragsnummer + @" C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
+            if (CheckOut)
+            {
+                _ = _dialogService!.MessageDialogAsync("Spezifikation öffnen", "Öffnen der Spezifikation\nnur möglich wenn AutoDeskTransfer.xml eingechecked ist.");
+                return;
+            }
+
+            var result = await _dialogService!.ConfirmationDialogAsync("Öffnungsoptionen Spezifikation", "Zum Bearbeiten öffnen","Schreibgeschützt öffnen");
+            if (result is not null)
+            {
+                if (result.Value)
+                {
+                    startargs = @"/e/" + auftragsnummer + "/false/ " + pathSpezifikation;
+                    closeLiftDataManager = true;
+                }
+                else
+                {
+                    startargs = @"/e/" + auftragsnummer +"/true/ " + pathSpezifikation;
+                }
+            }
+        }
+        else
+        {
+            startargs = pathSpezifikation;
         }
 
         if (File.Exists(filename))
         {
             StartProgram(filename, startargs);
+            if(closeLiftDataManager)
+            {
+                Application.Current.Exit();
+            }
         }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenSpeziPdf))]
     private void OpenSpeziPdf()
     {
+        SynchronizeViewModelParameter();
         var filename = FullPathXml?.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf");
-        var startargs = "";
+        var startargs = string.Empty;
 
         if (File.Exists(filename))
         {
@@ -84,9 +137,27 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanOpenCalculations))]
+    private void OpenCalculations()
+    {
+        SynchronizeViewModelParameter();
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        {
+            var path = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen","PDF");
+            MakeVaultLink(path, "Folder");
+            var filename = pathVaultPro;
+            var startargs = @"C:\Temp\VaultLink.acr";
+            if (File.Exists(FullPathXml))
+            {
+                StartProgram(filename, startargs);
+            }
+        }
+    }
+
     [RelayCommand]
     private void OpenBauer()
     {
+        SynchronizeViewModelParameter();
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var filename = @"C:\Work\Administration\Tools\Explorer Start.exe";
 
@@ -102,6 +173,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [RelayCommand]
     private void OpenWorkspace()
     {
+        SynchronizeViewModelParameter();
         if (!string.IsNullOrWhiteSpace(FullPathXml))
         {
             var pathXml = Path.GetDirectoryName(FullPathXml);
@@ -117,14 +189,15 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [RelayCommand(CanExecute = nameof(CanOpenVault))]
     private void OpenVault()
     {
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
+        SynchronizeViewModelParameter();
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
         {
-            MakeVaultLink(FullPathXml);
-            var vaultLink = @"C:\Temp\VaultLink.acr";
-            var startargs = "";
+            MakeVaultLink(FullPathXml, "File");
+            var filename = pathVaultPro;
+            var startargs = @"C:\Temp\VaultLink.acr";
             if (File.Exists(FullPathXml))
             {
-                StartProgram(vaultLink, startargs);
+                StartProgram(filename, startargs);
             }
         }
     }
@@ -132,37 +205,136 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [RelayCommand(CanExecute = nameof(CanOpenCFP))]
     private void OpenCFP()
     {
+        SynchronizeViewModelParameter();
+        var startargs = string.Empty;
+        var pathCFP = _settingService.PathCFP;
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var bausatztyp = ParamterDictionary?["var_Bausatz"].Value;
-        var startargs = auftragsnummer + " " + bausatztyp;
-        using Process p = new();
+        var shortSymbolDirveSystem = string.Empty;
 
-        if (File.Exists(PathCFP))
+        var driveSystem = _parametercontext.Set<CarFrameType>().Include(i => i.DriveType)
+                                           .ToList()
+                                           .FirstOrDefault(x => x.Name == bausatztyp);
+        if (driveSystem is not null)
         {
-            StartProgram(PathCFP!, startargs);
+            shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
+            startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + bausatztyp + " " + shortSymbolDirveSystem : string.Empty;
+        }
+
+        if (File.Exists(pathCFP))
+        {
+            StartProgram(pathCFP, startargs);
         }
     }
 
-    [RelayCommand]
-    private void OpenZiehlAbegg()
+    [RelayCommand(CanExecute = nameof(CanOpenZALift))]
+    private async Task OpenZiehlAbeggAsync()
     {
-        var startargs = "";
-
-        if (File.Exists(PathZALift))
+        SynchronizeViewModelParameter();
+        ZAliftHtmlUpdated = false;
+        ZAliftAusUpdated =false;
+        if (!CheckOut)
         {
-            StartProgram(PathZALift!, startargs);
+            _ = _dialogService!.MessageDialogAsync("Ziehl Abegg Auslegung", "Bearbeiten der Auslegung \nnur möglich wenn der Auftrag ausgechecked ist.");
+            return;
+        }
+        _ = SetModelStateAsync();
+        if (CanSaveAllSpeziParameters)
+        {
+            _ = _parameterDataService!.SaveAllParameterAsync(ParamterDictionary!, FullPathXml!, Adminmode);
+        }
+
+        if (!File.Exists(pathSynchronizeZAlift))
+        {
+            var downloadResult = await _vaultDataService.GetFileAsync("SynchronizeZAlift.ps1", true, true);
+            _logger.LogInformation(60191, "downloadResult SynchronizeZAlift.ps1: ErrorState {downloadResult.ErrorState}", downloadResult.ErrorState);
+        }
+
+        if (File.Exists(pathSynchronizeZAlift))
+        {
+            var args = $"{pathSynchronizeZAlift} set '{FullPathXml}'";
+            var exitCode = StartProgramWithExitCode("PowerShell.exe", args);
+            _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
+        }
+
+        using FileSystemWatcher watcher = new (Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
+        watcher.IncludeSubdirectories = false;
+        watcher.EnableRaisingEvents = true;
+        watcher.Changed += OnChanged;
+
+        var startargs = "StartLAST";
+        var pathZALift = _settingService.PathZALift;
+
+        if (File.Exists(pathZALift))
+        {
+            using Process zaLift = new();
+            zaLift.StartInfo.UseShellExecute = true;
+            zaLift.StartInfo.FileName = pathZALift;
+            zaLift.StartInfo.Arguments = startargs;
+            zaLift.Start();
+            while (!ZAliftHtmlUpdated | !ZAliftAusUpdated)
+            {
+                // code block to be executed
+            }
+            zaLift.Kill(true);
+        }
+        watcher.Changed -= OnChanged;
+        OpenZiehlAbeggHtml();
+    }
+
+    private void OnChanged(object sender, FileSystemEventArgs e)
+    {
+        if (e.ChangeType != WatcherChangeTypes.Changed)
+        {
+            return;
+        }
+        var auftragsnummer = Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "");
+
+        if (!string.IsNullOrWhiteSpace(auftragsnummer))
+        {
+            if (e.Name == auftragsnummer + ".aus")
+            {
+                ZAliftAusUpdated = true;
+            }
+            else if (e.Name == auftragsnummer + ".html")
+            {
+                ZAliftHtmlUpdated = true;
+            }
+        }
+        Debug.WriteLine($"Changed: {e.FullPath}");
+    }
+
+    [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]
+    private void OpenZiehlAbeggHtml()
+    {
+        SynchronizeViewModelParameter();
+        var auftragsnummer = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_AuftragsNummer");
+        var filename = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html");
+        var startargs = string.Empty;
+
+        if (File.Exists(filename))
+        {
+            StartProgram(filename, startargs);
         }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenLilo))]
     private void OpenLilo()
     {
+        SynchronizeViewModelParameter();
         var startargs = "";
+        var pathLilo = _settingService.PathLilo;
 
-        if (File.Exists(PathLilo))
+        if (File.Exists(pathLilo))
         {
-            StartProgram(PathLilo, startargs);
+            StartProgram(pathLilo, startargs);
         }
+    }
+
+    [RelayCommand]
+    private void RefreshQuickLinks()
+    {
+        CheckCanOpenFiles();
     }
 
     private static void StartProgram(string filename, string startargs)
@@ -174,7 +346,18 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         p.Start();
     }
 
-    private static void MakeVaultLink(string path)
+    private static int StartProgramWithExitCode(string filename, string startargs)
+    {
+        using Process p = new();
+        p.StartInfo.UseShellExecute = true;
+        p.StartInfo.FileName = filename;
+        p.StartInfo.Arguments = startargs;
+        p.Start();
+        p.WaitForExit();
+        return p.ExitCode;
+    }
+
+    private static void MakeVaultLink(string path, string objectType)
     {
         var vaultPath = path.Replace(@"C:\Work", "$").Replace(@"\", "/");
 
@@ -202,7 +385,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
             oXmlWriter.WriteStartElement("Operations");
             oXmlWriter.WriteStartElement("Operation");
-            oXmlWriter.WriteAttributeString("ObjectType", "File");
+            oXmlWriter.WriteAttributeString("ObjectType", objectType);
             oXmlWriter.WriteStartElement("ObjectID");
             oXmlWriter.WriteString(vaultPath);
             oXmlWriter.WriteEndElement();
@@ -214,7 +397,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
             oXmlWriter.WriteEndElement();
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             Debug.WriteLine(ex.ToString());
         }
@@ -226,11 +409,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        SynchronizeViewModelParameter();
-        PathCFP = _settingService.PathCFP;
-        PathZALift = _settingService.PathZALift;
-        PathLilo = _settingService.PathLilo;
-        PathExcel = _settingService.PathExcel;
         CheckCanOpenFiles();
     }
 

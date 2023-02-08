@@ -39,6 +39,20 @@
                         Text="Spezifikation Pdf" />
                 </StackPanel>
             </Button>
+            <Button Command="{x:Bind ViewModel.OpenCalculationsCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/Berechnungen.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="Berechnungen" />
+                </StackPanel>
+            </Button>
             <Button Command="{x:Bind ViewModel.OpenBauerCommand}" Style="{StaticResource LinkButton}">
                 <StackPanel>
                     <Image
@@ -107,6 +121,20 @@
                         VerticalAlignment="Bottom"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Ziehl Abegg" />
+                </StackPanel>
+            </Button>
+            <Button Command="{x:Bind ViewModel.OpenZiehlAbeggHtmlCommand}" Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Image
+                        Width="100"
+                        Height="100"
+                        Source="/Images/GoogleChrome.png" />
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="ZAlift Html" />
                 </StackPanel>
             </Button>
             <Button

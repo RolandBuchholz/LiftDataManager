@@ -138,6 +138,7 @@
             <speziControls:SidebarPanel
                 Grid.Column="1"
                 Margin="0,0,0,24"
+                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
                 InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
         </Grid>
         <VisualStateManager.VisualStateGroups>

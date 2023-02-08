@@ -395,7 +395,7 @@
                                         Margin="5,0,5,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
-                                        Header="Aufzugstyp"
+                                        Header="Beladegerät"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'].DropDownListValue, Mode=TwoWay}" />
                                     <TextBox
@@ -424,13 +424,13 @@
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Gedrängelast Q'"
-                                        PlaceholderText="Q'"
                                         IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}" >
+                                        PlaceholderText="Q'"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
-                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                        Gedrängelast wird automatisch berechnet</TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Gedrängelast wird automatisch berechnet</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </TextBox>
                                     <TextBox
@@ -923,7 +923,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"
