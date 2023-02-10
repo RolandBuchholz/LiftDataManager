@@ -1002,13 +1002,17 @@
                                         Text="KW" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Stromart Netz:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Spannung Netz:" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Stromart'].Value, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Text="V" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Leistung Motor:" />
@@ -1024,22 +1028,26 @@
                                         Text="KW" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Stromart Motor:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Bemessungsspannung Motor:" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Ur'].Value, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Text="V" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Nennstrom Motor:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Bemessungsstrom Motor:" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Zusatz1'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Ir'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1107,8 +1115,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"

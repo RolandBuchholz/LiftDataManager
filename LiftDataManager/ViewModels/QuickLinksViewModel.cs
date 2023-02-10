@@ -1,7 +1,7 @@
-﻿using System.Xml;
-using LiftDataManager.core.Helpers;
+﻿using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
+using System.Xml;
 
 namespace LiftDataManager.ViewModels;
 
@@ -17,8 +17,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private readonly IVaultDataService _vaultDataService;
     private readonly ILogger<QuickLinksViewModel> _logger;
 
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, 
-        ISettingService settingsSelectorService, ParameterContext parametercontext, IVaultDataService vaultDataService,ILogger<QuickLinksViewModel> logger) :
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+        ISettingService settingsSelectorService, ParameterContext parametercontext, IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
          base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
@@ -28,8 +28,22 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         CheckCanOpenFiles();
     }
 
-    public bool ZAliftHtmlUpdated { get; set; }
-    public bool ZAliftAusUpdated { get; set; }
+    [ObservableProperty]
+    private bool zAliftHtmlUpdated;
+    partial void OnZAliftHtmlUpdatedChanged(bool value)
+    {
+        CanImportZAliftData = value & ZAliftAusUpdated;
+    }
+
+    [ObservableProperty]
+    private bool zAliftAusUpdated;
+    partial void OnZAliftAusUpdatedChanged(bool value)
+    {
+        CanImportZAliftData = value & ZAliftHtmlUpdated;
+    }
+
+    [ObservableProperty]
+    private bool zAliftRegEditSuccessful;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
@@ -48,6 +62,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private bool canOpenZALift;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ImportZAliftDataCommand))]
+    private bool canImportZAliftData;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenZiehlAbeggHtmlCommand))]
     private bool canOpenZALiftHtml;
 
@@ -58,6 +76,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
     private bool canOpenLilo;
+
+    [ObservableProperty]
+    private string? exWorkStatus;
 
     public void CheckCanOpenFiles()
     {
@@ -95,7 +116,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 return;
             }
 
-            var result = await _dialogService!.ConfirmationDialogAsync("Öffnungsoptionen Spezifikation", "Zum Bearbeiten öffnen","Schreibgeschützt öffnen");
+            var result = await _dialogService!.ConfirmationDialogAsync("Öffnungsoptionen Spezifikation", "Zum Bearbeiten öffnen", "Schreibgeschützt öffnen");
             if (result is not null)
             {
                 if (result.Value)
@@ -105,7 +126,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 }
                 else
                 {
-                    startargs = @"/e/" + auftragsnummer +"/true/ " + pathSpezifikation;
+                    startargs = @"/e/" + auftragsnummer + "/true/ " + pathSpezifikation;
                 }
             }
         }
@@ -117,7 +138,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (File.Exists(filename))
         {
             StartProgram(filename, startargs);
-            if(closeLiftDataManager)
+            if (closeLiftDataManager)
             {
                 Application.Current.Exit();
             }
@@ -143,7 +164,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         SynchronizeViewModelParameter();
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
         {
-            var path = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen","PDF");
+            var path = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", "PDF");
             MakeVaultLink(path, "Folder");
             var filename = pathVaultPro;
             var startargs = @"C:\Temp\VaultLink.acr";
@@ -227,22 +248,59 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanOpenZALift))]
-    private async Task OpenZiehlAbeggAsync()
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenZALift))]
+    private async Task OpenZiehlAbeggAsync(ContentDialog extEditDialog, CancellationToken token)
     {
         SynchronizeViewModelParameter();
+        _ = SetModelStateAsync();
+        var startargs = "StartLAST";
+        var pathZALift = _settingService.PathZALift;
+        bool noEditMode = false;
+        ZAliftAusUpdated = false;
+        _zAliftAusUpdated = false;
         ZAliftHtmlUpdated = false;
-        ZAliftAusUpdated =false;
+        _zAliftHtmlUpdated = false;
+        zAliftRegEditSuccessful = false;
+        if (!File.Exists(pathZALift)) return;
+
         if (!CheckOut)
         {
-            _ = _dialogService!.MessageDialogAsync("Ziehl Abegg Auslegung", "Bearbeiten der Auslegung \nnur möglich wenn der Auftrag ausgechecked ist.");
-            return;
+            var message = """
+                Die Auslegung ist aktuell nicht ausgecheckt!
+
+                Auschecken:            Bearbeitung und Datenübernahme möglich
+                Nicht Auschecken:  Keine Datenübernahme möglich
+                Abbrechen:             Zurück zu LiftDataManager
+                """;
+            var checkOutResult = await _dialogService!.ConfirmationDialogAsync("Ziehl Abegg Auslegungsbearbeitung", message, "Auschecken", "Nicht Auschecken", "Abbrechen");
+            if (checkOutResult != null)
+            {
+                if ((bool)checkOutResult)
+                {
+                    //TODO CheckOUT
+                }
+                else
+                {
+                    noEditMode = true;
+                }
+            }
+            else
+            {
+                return;
+            }
         }
-        _ = SetModelStateAsync();
+
         if (CanSaveAllSpeziParameters)
         {
             _ = _parameterDataService!.SaveAllParameterAsync(ParamterDictionary!, FullPathXml!, Adminmode);
         }
+
+        CanImportZAliftData = false;
+        ExWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
+        ZAliftHtmlUpdated = false;
+        ZAliftAusUpdated = false;
+
+        var dialog = extEditDialog.ShowAsync();
 
         if (!File.Exists(pathSynchronizeZAlift))
         {
@@ -253,34 +311,63 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (File.Exists(pathSynchronizeZAlift))
         {
             var args = $"{pathSynchronizeZAlift} set '{FullPathXml}'";
-            var exitCode = StartProgramWithExitCode("PowerShell.exe", args);
+            var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
             _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
+
+            if (exitCode == 0)
+            {
+                ZAliftRegEditSuccessful = true;
+            }
         }
 
-        using FileSystemWatcher watcher = new (Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
+        if (noEditMode)
+        {
+            extEditDialog.Hide();
+            StartProgram(pathZALift, startargs);
+            return;
+        }
+
+        using FileSystemWatcher watcher = new(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
         watcher.IncludeSubdirectories = false;
         watcher.EnableRaisingEvents = true;
         watcher.Changed += OnChanged;
 
-        var startargs = "StartLAST";
-        var pathZALift = _settingService.PathZALift;
+        using Process zaLift = new();
+        zaLift.StartInfo.UseShellExecute = true;
+        zaLift.StartInfo.FileName = pathZALift;
+        zaLift.StartInfo.Arguments = startargs;
+        zaLift.Start();
 
-        if (File.Exists(pathZALift))
+        bool exit = false;
+
+        while (!exit)
         {
-            using Process zaLift = new();
-            zaLift.StartInfo.UseShellExecute = true;
-            zaLift.StartInfo.FileName = pathZALift;
-            zaLift.StartInfo.Arguments = startargs;
-            zaLift.Start();
-            while (!ZAliftHtmlUpdated | !ZAliftAusUpdated)
+            exit = _zAliftAusUpdated && _zAliftHtmlUpdated;
+            if (token.IsCancellationRequested)
             {
-                // code block to be executed
+                exit = true;
+                zaLift.Kill(true);
             }
+            await Task.Delay(50);
+        }
+        
+        ZAliftAusUpdated = _zAliftAusUpdated;
+        ZAliftHtmlUpdated = _zAliftHtmlUpdated;
+        if(ZAliftAusUpdated && ZAliftAusUpdated)
+            ExWorkStatus = "Daten zur Übernahme bereit";
+
+        watcher.Changed -= OnChanged;
+
+        var result = await dialog;
+
+        if (result == ContentDialogResult.Primary)
+        {
             zaLift.Kill(true);
         }
-        watcher.Changed -= OnChanged;
-        OpenZiehlAbeggHtml();
     }
+
+    private bool _zAliftAusUpdated;
+    private bool _zAliftHtmlUpdated;
 
     private void OnChanged(object sender, FileSystemEventArgs e)
     {
@@ -294,14 +381,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         {
             if (e.Name == auftragsnummer + ".aus")
             {
-                ZAliftAusUpdated = true;
+                _zAliftAusUpdated = true;
             }
             else if (e.Name == auftragsnummer + ".html")
             {
-                ZAliftHtmlUpdated = true;
+                _zAliftHtmlUpdated = true;
             }
         }
         Debug.WriteLine($"Changed: {e.FullPath}");
+    }
+
+    [RelayCommand(CanExecute = nameof(CanImportZAliftData))]
+    private async Task ImportZAliftDataAsync()
+    {
+        await Task.Delay(500);
+        await _dialogService!.MessageDialogAsync("Daten werden geschrieben.........", "");
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]
@@ -346,14 +440,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         p.Start();
     }
 
-    private static int StartProgramWithExitCode(string filename, string startargs)
+    private async Task<int> StartProgramWithExitCodeAsync(string filename, string startargs)
     {
         using Process p = new();
         p.StartInfo.UseShellExecute = true;
         p.StartInfo.FileName = filename;
         p.StartInfo.Arguments = startargs;
+        p.StartInfo.CreateNoWindow = true;
+        p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
         p.Start();
-        p.WaitForExit();
+        await p.WaitForExitAsync();
         return p.ExitCode;
     }
 

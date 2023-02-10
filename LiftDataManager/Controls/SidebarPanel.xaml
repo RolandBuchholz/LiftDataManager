@@ -50,50 +50,6 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Text="Links" />
-            <!--<Button
-                x:Name="ExpressionButton1"
-                Command="{x:Bind ViewModel.OpenSpeziCommand}"
-                PointerEntered="element_PointerEntered"
-                PointerExited="element_PointerExited"
-                Style="{StaticResource LinkButtonSmall}">
-                <Image
-                    Width="30"
-                    Height="30"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/Images/ExcelTransparent.png">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Text="Spezifikation" />
-                    </ToolTipService.ToolTip>
-                </Image>
-            </Button>
-            <Button
-                x:Name="ExpressionButton2"
-                Command="{x:Bind ViewModel.OpenSpeziPdfCommand}"
-                PointerEntered="element_PointerEntered"
-                PointerExited="element_PointerExited"
-                Style="{StaticResource LinkButtonSmall}">
-                <Image
-                    Width="30"
-                    Height="30"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/Images/PdfTransparent.png">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Text="Spezifikation Pdf" />
-                    </ToolTipService.ToolTip>
-                </Image>
-            </Button>
-            <Button
-                x:Name="ExpressionButton3"
-                PointerEntered="element_PointerEntered"
-                PointerExited="element_PointerExited"
-                Style="{StaticResource LinkButtonSmall}" />
-            <Button
-                x:Name="ExpressionButton4"
-                PointerEntered="element_PointerEntered"
-                PointerExited="element_PointerExited"
-                Style="{StaticResource LinkButtonSmall}" />-->
             <Button
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.OpenSpeziCommand}"
@@ -258,6 +214,7 @@
             <Button
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.OpenZiehlAbeggCommand}"
+                CommandParameter="{x:Bind ExterneBearbeitungDialog}"
                 Style="{StaticResource LinkButtonSmall}">
                 <Image
                     Width="30"
@@ -375,5 +332,47 @@
                 </StackPanel>
             </ScrollViewer>
         </controls:Expander>
+        <ContentDialog
+            x:Name="ExterneBearbeitungDialog"
+            Title="Ziehl Abegg Auslegungsprogramm aktiv"
+            MaxWidth="{Binding ActualWidth, ElementName=pageRoot}"
+            VerticalAlignment="Stretch"
+            Background="{ThemeResource SystemChromeLowColor}"
+            CloseButtonCommand="{x:Bind ViewModel.OpenZiehlAbeggCancelCommand}"
+            CloseButtonText="Abbrechen"
+            IsPrimaryButtonEnabled="{x:Bind ViewModel.CanImportZAliftData, Mode=OneWay}"
+            PrimaryButtonCommand="{x:Bind ViewModel.ImportZAliftDataCommand}"
+            PrimaryButtonText="Daten übernehmen">
+            <StackPanel>
+                <Image
+                    Width="200"
+                    Height="200"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Source="/Images/ZiehlAbeggTransparent.png" />
+                <ProgressBar Margin="0,10,0,10" IsIndeterminate="True" />
+                <CheckBox
+                    Content="Daten in ZALift Registry geschieben"
+                    IsChecked="{x:Bind ViewModel.ZAliftRegEditSuccessful, Mode=OneWay}"
+                    IsEnabled="False" />
+                <CheckBox
+                    Content="ZiehlAbegg HTML geschieben"
+                    IsChecked="{x:Bind ViewModel.ZAliftHtmlUpdated, Mode=OneWay}"
+                    IsEnabled="False" />
+                <CheckBox
+                    Content="ZiehlAbegg Aus geschieben"
+                    IsChecked="{x:Bind ViewModel.ZAliftAusUpdated, Mode=OneWay}"
+                    IsEnabled="False" />
+                <TextBlock
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                    Text="{x:Bind ViewModel.ExWorkStatus, Mode=OneWay}" />
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </UserControl>

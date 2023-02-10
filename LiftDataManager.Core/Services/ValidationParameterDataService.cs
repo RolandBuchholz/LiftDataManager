@@ -285,6 +285,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_A_Kabine",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarArea, "Error", null) });
+
+        ValidationDictionary.Add("var_F_Korr",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCorrectionWeight, "Warning", null) });
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -724,6 +727,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         var currentdriveSystem = driveSystems.FirstOrDefault(x => x.Name == value);
         ParamterDictionary["var_Getriebe"].Value = currentdriveSystem is not null ? currentdriveSystem.DriveSystemType!.Name : string.Empty;
         ParamterDictionary["var_Getriebe"].DropDownListValue = ParamterDictionary["var_Getriebe"].Value;
+    }
+
+    private void ValidateCorrectionWeight(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+        try
+        {
+            if (Math.Abs(Convert.ToInt16(value)) > 10)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname} ist überschreitet +-10 kg überprüfen Sie die Eingabe", SetSeverity(severity)));
+            }
+        }
+        catch (Exception)
+        {
+            return;
+        }
     }
 
     private void ValidateCarArea(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
