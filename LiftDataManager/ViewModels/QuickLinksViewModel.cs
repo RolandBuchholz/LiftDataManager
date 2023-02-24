@@ -2,7 +2,6 @@
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml.Controls;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -34,18 +33,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private bool zAliftHtmlUpdated;
     partial void OnZAliftHtmlUpdatedChanged(bool value)
     {
-        CanImportZAliftData = value & ZAliftAusUpdated;
+        ZAliftDataReadyForImport = value & ZAliftAusUpdated;
     }
 
     [ObservableProperty]
     private bool zAliftAusUpdated;
     partial void OnZAliftAusUpdatedChanged(bool value)
     {
-        CanImportZAliftData = value & ZAliftHtmlUpdated;
+        ZAliftDataReadyForImport = value & ZAliftHtmlUpdated;
     }
 
     [ObservableProperty]
     private bool zAliftRegEditSuccessful;
+
+    [ObservableProperty]
+    private bool zAliftDataReadyForImport;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
@@ -95,7 +97,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         CanOpenLilo = File.Exists(_settingService.PathLilo);
         CanOpenZALift = File.Exists(_settingService.PathZALift);
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
-            CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));  
+            CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
+        CanImportZAliftData = CanOpenZALiftHtml;
     }
 
     [RelayCommand]
@@ -448,9 +451,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         foreach (var zlipar in zliData)
         {
 
-            if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains("="))
+            if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains('='))
             {
-                var zliPairValue = zlipar.Split("=");
+                var zliPairValue = zlipar.Split('=');
 
                 if (!zliDataDictionary.ContainsKey(zliPairValue[0]))
                 {
@@ -462,8 +465,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         {
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
             ParamterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
-            ParamterDictionary["var_Tragseiltyp"].Value = zliDataDictionary["Treibscheibe-Seiltyp"];
-            var numberOfRopes = string.Empty;
+            ParamterDictionary["var_Tragseiltyp"].Value = "D " + zliDataDictionary["Treibscheibe-SD"] +"mm "+ zliDataDictionary["Treibscheibe-Seiltyp"];
+            var numberOfRopes = string.Empty; 
             try
             {
                 numberOfRopes = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Anzahl der Seile"))?.ChildNodes[2].InnerText;
@@ -552,25 +555,39 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
             ParamterDictionary["var_AufhaengungsartRope"].Value = zliDataDictionary["Aufhaengung_is"];
             ParamterDictionary["var_Umschlingungswinkel"].Value = zliDataDictionary["Treibscheibe-Umschlingung"];
-            var pulleyDiameter = string.Empty;
+            var pulleyDiameter = "0";
+            var numberofFKPulley = "0";
             try
             {
                 var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText;
                 if (!string.IsNullOrWhiteSpace(pulleyDiameterString))
                 {
                     pulleyDiameter = pulleyDiameterString[(pulleyDiameterString.IndexOf('=') + 1)..pulleyDiameterString.IndexOf("mm")].Trim();
+                    numberofFKPulley = pulleyDiameterString[(pulleyDiameterString.Length - 2)..].Trim();
                 }
             }
             catch (Exception)
             {
-                _logger.LogWarning(61094, "pulleyDiameter not found");
+                _logger.LogWarning(61094, "pulleyDiameter or numberofFKPulley not found");
             }
             ParamterDictionary["var_Umlenkrollendurchmesser"].Value = pulleyDiameter;
 
-            //ParamterDictionary["var_AnzahlUmlenkrollen"].Value = zliDataDictionary[""];
-            //ParamterDictionary["var_AnzahlUmlenkrollenFk"].Value = zliDataDictionary[""];
-            //ParamterDictionary["var_AnzahlUmlenkrollenGgw"].Value = zliDataDictionary[""];
-            var detectionDistance = string.Empty;
+            var numberofPulley = "0";
+            try
+            { 
+                numberofPulley = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Zahl der Umlenkrollen"))?.ChildNodes[1].InnerText.Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "numberofPulley not found");
+            }
+            ParamterDictionary["var_AnzahlUmlenkrollen"].Value = numberofPulley;
+
+            
+
+            ParamterDictionary["var_AnzahlUmlenkrollenFk"].Value = numberofFKPulley;
+            ParamterDictionary["var_AnzahlUmlenkrollenGgw"].Value = (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString();
+            var detectionDistance = "0" ;
             try
             {
                 var detectionDistanceMeter = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
@@ -585,7 +602,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 _logger.LogWarning(61094, "detectionDistance not found");
             }
             ParamterDictionary["var_Erkennungsweg"].Value = detectionDistance;
-            var deadTime = string.Empty;
+            var deadTime = "0";
             try
             {
                 deadTime = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms","").Trim();
@@ -595,10 +612,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 _logger.LogWarning(61094, "deadTime not found");
             }
             ParamterDictionary["var_Totzeit"].Value = deadTime;
-            var vDetector = string.Empty;
+            var vDetector = "0";
             try
             {
-                vDetector = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim();
+                vDetector = Convert.ToDouble(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
             }
             catch (Exception)
             {
@@ -633,7 +650,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "true" : "false";
             ParamterDictionary["var_Treibscheibegehaertet"].Value = hardened;
         }
-        await Task.CompletedTask;
+        _logger.LogInformation(60195, "ZAliftData imported");
+
+        if (!zAliftDataReadyForImport)
+        {
+            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
+        }
+        else
+        {
+            await Task.CompletedTask;
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]

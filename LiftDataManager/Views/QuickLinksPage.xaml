@@ -157,13 +157,41 @@
                         Text="Lilo" />
                 </StackPanel>
             </Button>
+            <Button
+                x:Name="ImportZAliftData"
+                Command="{x:Bind ViewModel.ImportZAliftDataCommand}"
+                Style="{StaticResource LinkButton}">
+                <StackPanel>
+                    <Grid Height="100" Width="100">
+                        <Image
+                            Width="70"
+                            Height="70"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Source="/Images/ZiehlAbeggTransparent.png" />
+                        <FontIcon
+                            VerticalAlignment="Bottom"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            FontSize="60"
+                            FontWeight="ExtraBold"
+                            Foreground="WhiteSmoke"
+                            Glyph="&#xE896;" />
+                    </Grid>
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Text="ImportZAliftData" />
+                </StackPanel>
+            </Button>
         </GridView>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"
             Title="Ziehl Abegg Auslegungsprogramm aktiv"
             CloseButtonCommand="{x:Bind ViewModel.OpenZiehlAbeggCancelCommand}"
             CloseButtonText="Abbrechen"
-            IsPrimaryButtonEnabled="{x:Bind ViewModel.CanImportZAliftData, Mode=OneWay}"
+            IsPrimaryButtonEnabled="{x:Bind ViewModel.ZAliftDataReadyForImport, Mode=OneWay}"
             PrimaryButtonCommand="{x:Bind ViewModel.ImportZAliftDataCommand}"
             PrimaryButtonText="Daten übernehmen">
             <StackPanel>

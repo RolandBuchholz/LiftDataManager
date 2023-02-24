@@ -283,6 +283,37 @@
             </Button>
             <Button
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
+                Command="{x:Bind ViewModel.ImportZAliftDataCommand}"
+                Style="{StaticResource LinkButtonSmall}">
+                <Grid Width="30" Height="30">
+                    <Image
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Source="/Images/ZiehlAbeggTransparent.png" />
+                    <FontIcon
+                        VerticalAlignment="Bottom"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="17"
+                        FontWeight="ExtraBold"
+                        Foreground="WhiteSmoke"
+                        Glyph="&#xE896;" />
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Import ZALift Data" />
+                    </ToolTipService.ToolTip>
+                </Grid>
+                <interactivity:Interaction.Behaviors>
+                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                        <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
+                    </interactions:EventTriggerBehavior>
+                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                        <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
+                    </interactions:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
+            <Button
+                ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.RefreshQuickLinksCommand}"
                 Style="{StaticResource LinkButtonSmall}">
                 <SymbolIcon Foreground="LightGreen" Symbol="Refresh">
@@ -337,7 +368,7 @@
             Title="Ziehl Abegg Auslegungsprogramm aktiv"
             CloseButtonCommand="{x:Bind ViewModel.OpenZiehlAbeggCancelCommand}"
             CloseButtonText="Abbrechen"
-            IsPrimaryButtonEnabled="{x:Bind ViewModel.CanImportZAliftData, Mode=OneWay}"
+            IsPrimaryButtonEnabled="{x:Bind ViewModel.ZAliftDataReadyForImport, Mode=OneWay}"
             PrimaryButtonCommand="{x:Bind ViewModel.ImportZAliftDataCommand}"
             PrimaryButtonText="Daten übernehmen">
             <StackPanel>
