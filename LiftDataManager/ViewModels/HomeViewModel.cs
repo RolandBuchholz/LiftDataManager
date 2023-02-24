@@ -249,12 +249,35 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 else
                 {
                     await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                    _logger.LogError(60137, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
+                    _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
                     InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
                 }
             }
             else
             {
+                var spezifikationRootPath = Path.GetDirectoryName(FullPathXml);
+
+                if (Directory.Exists(spezifikationRootPath) && spezifikationRootPath.StartsWith("C:\\Work\\AUFTRÄGE NEU"))
+                {
+                    try
+                    {
+                        var directory = new DirectoryInfo(spezifikationRootPath) { Attributes = FileAttributes.Normal };
+
+                        foreach (var info in directory.GetFileSystemInfos("*", SearchOption.AllDirectories))
+                        {
+                            info.Attributes = FileAttributes.Normal;
+                        }
+
+                        directory.Delete(true);
+                        _logger.LogInformation(60138, "Delete Folder {spezifikationRootPath}", spezifikationRootPath);
+                    }
+                    catch (Exception)
+                    {
+                        _logger.LogError(61037, "Delete Folder {spezifikationRootPath} failed", spezifikationRootPath);
+                    }
+                    
+                }
+
                 AuftragsbezogeneXml = false;
                 CanValidateAllParameter = false;
                 CanLoadSpeziData = false;

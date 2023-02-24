@@ -117,7 +117,8 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
         get
         {
             var nutzflaeche = Math.Round(NutzflaecheKabine + NutzflaecheZugangA + NutzflaecheZugangB + NutzflaecheZugangC + NutzflaecheZugangD, 2);
-            ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaeche);
+            if (nutzflaeche > 0)
+                ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaeche);
             return nutzflaeche;
         }
     }

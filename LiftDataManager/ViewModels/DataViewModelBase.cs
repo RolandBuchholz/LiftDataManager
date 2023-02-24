@@ -11,6 +11,8 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
+    public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+
     public DispatcherTimer? AutoSaveTimer { get; set; }
 
     public CurrentSpeziProperties? CurrentSpeziProperties;

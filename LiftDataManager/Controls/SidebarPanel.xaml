@@ -214,7 +214,7 @@
             <Button
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.OpenZiehlAbeggCommand}"
-                CommandParameter="{x:Bind ExterneBearbeitungDialog}"
+                CommandParameter="{x:Bind ZAliftBearbeitungDialog}"
                 Style="{StaticResource LinkButtonSmall}">
                 <Image
                     Width="30"
@@ -333,11 +333,8 @@
             </ScrollViewer>
         </controls:Expander>
         <ContentDialog
-            x:Name="ExterneBearbeitungDialog"
+            x:Name="ZAliftBearbeitungDialog"
             Title="Ziehl Abegg Auslegungsprogramm aktiv"
-            MaxWidth="{Binding ActualWidth, ElementName=pageRoot}"
-            VerticalAlignment="Stretch"
-            Background="{ThemeResource SystemChromeLowColor}"
             CloseButtonCommand="{x:Bind ViewModel.OpenZiehlAbeggCancelCommand}"
             CloseButtonText="Abbrechen"
             IsPrimaryButtonEnabled="{x:Bind ViewModel.CanImportZAliftData, Mode=OneWay}"

@@ -184,7 +184,7 @@
                     <Rectangle
                         Grid.Row="0"
                         Height="35"
-                        Margin="5,5,5,5"
+                        Margin="0,5,5,5"
                         HorizontalAlignment="Stretch"
                         ui:Effects.Shadow="{StaticResource CommonShadow}"
                         Fill="{StaticResource SystemAccentColor}"

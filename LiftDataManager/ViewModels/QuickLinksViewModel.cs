@@ -1,6 +1,8 @@
-﻿using LiftDataManager.core.Helpers;
+﻿using HtmlAgilityPack;
+using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Controls;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -93,10 +95,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         CanOpenLilo = File.Exists(_settingService.PathLilo);
         CanOpenZALift = File.Exists(_settingService.PathZALift);
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
-        {
-            var auftragsnummer = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
-            CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html"));
-        }
+            CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));  
     }
 
     [RelayCommand]
@@ -249,7 +248,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     }
 
     [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenZALift))]
-    private async Task OpenZiehlAbeggAsync(ContentDialog extEditDialog, CancellationToken token)
+    private async Task OpenZiehlAbeggAsync(ContentDialog zaliftEditDialog, CancellationToken token)
     {
         SynchronizeViewModelParameter();
         _ = SetModelStateAsync();
@@ -261,6 +260,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         ZAliftHtmlUpdated = false;
         _zAliftHtmlUpdated = false;
         zAliftRegEditSuccessful = false;
+        var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         if (!File.Exists(pathZALift)) return;
 
         if (!CheckOut)
@@ -269,6 +269,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 Die Auslegung ist aktuell nicht ausgecheckt!
 
                 Auschecken:            Bearbeitung und Datenübernahme möglich
+                                                (Wechsel zur Homeansicht um Auschecken)
                 Nicht Auschecken:  Keine Datenübernahme möglich
                 Abbrechen:             Zurück zu LiftDataManager
                 """;
@@ -277,7 +278,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             {
                 if ((bool)checkOutResult)
                 {
-                    //TODO CheckOUT
+                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    return;
                 }
                 else
                 {
@@ -295,12 +297,15 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             _ = _parameterDataService!.SaveAllParameterAsync(ParamterDictionary!, FullPathXml!, Adminmode);
         }
 
+        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html"));
+        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen",auftragsnummer + ".aus"));
+
         CanImportZAliftData = false;
         ExWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
         ZAliftHtmlUpdated = false;
         ZAliftAusUpdated = false;
 
-        var dialog = extEditDialog.ShowAsync();
+        var dialog = zaliftEditDialog.ShowAsync();
 
         if (!File.Exists(pathSynchronizeZAlift))
         {
@@ -322,7 +327,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
         if (noEditMode)
         {
-            extEditDialog.Hide();
+            zaliftEditDialog.Hide();
             StartProgram(pathZALift, startargs);
             return;
         }
@@ -364,6 +369,34 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         {
             zaLift.Kill(true);
         }
+        else
+        {
+            try
+            {
+                var restoreFileHtml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html");
+                FileInfo restoreFileHtmlInfo = new(restoreFileHtml);
+                if (restoreFileHtmlInfo.IsReadOnly)
+                {
+                    restoreFileHtmlInfo.IsReadOnly = false;
+                }
+                File.Delete(restoreFileHtml);
+                var restoreFileAus = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".aus");
+                FileInfo restoreFileHtmlAus = new(restoreFileAus);
+                if (restoreFileHtmlAus.IsReadOnly)
+                {
+                    restoreFileHtmlAus.IsReadOnly = false;
+                }
+                File.Delete(restoreFileAus);
+                File.Move(Path.Combine(Path.GetDirectoryName(restoreFileHtml)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(restoreFileHtml)), restoreFileHtml);
+                File.Move(Path.Combine(Path.GetDirectoryName(restoreFileAus)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(restoreFileAus)), restoreFileAus);
+                _logger.LogInformation(60192, "{restoreFileHtml} restored from backupfile", restoreFileHtml);
+                _logger.LogInformation(60192, "{restoreFileAus} restored from backupfile", restoreFileAus);
+            }
+            catch (Exception)
+            {
+                _logger.LogError(61092, "restoring zaliftfiles failed");
+            }
+        }
     }
 
     private bool _zAliftAusUpdated;
@@ -394,8 +427,213 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     [RelayCommand(CanExecute = nameof(CanImportZAliftData))]
     private async Task ImportZAliftDataAsync()
     {
-        await Task.Delay(500);
-        await _dialogService!.MessageDialogAsync("Daten werden geschrieben.........", "");
+        var filePath = string.Empty;
+        var zaliftHtml = new HtmlDocument();
+
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+            filePath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
+
+        if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+            zaliftHtml.Load(filePath);
+
+        var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+                                                                        .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+        if (zliData is null)
+        {
+            return;
+        }
+        var zliDataDictionary = new Dictionary<string, string>();
+        zliDataDictionary.Clear();
+
+        foreach (var zlipar in zliData)
+        {
+
+            if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains("="))
+            {
+                var zliPairValue = zlipar.Split("=");
+
+                if (!zliDataDictionary.ContainsKey(zliPairValue[0]))
+                {
+                    zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                }
+            }
+        }
+        if (ParamterDictionary is not null)
+        {
+            var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
+            ParamterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
+            ParamterDictionary["var_Tragseiltyp"].Value = zliDataDictionary["Treibscheibe-Seiltyp"];
+            var numberOfRopes = string.Empty;
+            try
+            {
+                numberOfRopes = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Anzahl der Seile"))?.ChildNodes[2].InnerText;
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "numberOfRopes not found");
+            }
+            ParamterDictionary["var_NumberOfRopes"].Value = numberOfRopes;
+            
+            var breakingload = string.Empty;
+            try
+            {
+                breakingload = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mindestbruchkraft"))?.ChildNodes[3].InnerText;
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "breakingload not found");
+            }
+            ParamterDictionary["var_Mindestbruchlast"].Value = breakingload;
+
+            var ropeSafety = string.Empty;
+            try
+            {
+                ropeSafety = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilsicherheit"))?.InnerText.Split('=', '&')[1].Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "ropeSafety not found");
+            }
+            ParamterDictionary["var_ZA_IMP_RopeSafety"].Value = ropeSafety;
+
+            var ratedCurrent = string.Empty;
+            var maxCurrent = string.Empty;
+            var ratedCapacity = string.Empty;
+            var nominalVoltage = string.Empty;
+            try
+            {
+                var exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+
+                if (!string.IsNullOrWhiteSpace(exactCurrentString))
+                {
+                    var exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
+                    ratedCurrent = Math.Ceiling(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture)).ToString() + ",0";
+                    maxCurrent = Math.Round(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) * 1.8,2).ToString();
+
+                    var exactCapacityCurrent = exactCurrentString[(exactCurrentString.IndexOf('V') + 2)..exactCurrentString.IndexOf("kW")].Trim();
+                    ratedCapacity = (Math.Ceiling(Convert.ToDouble(exactCapacityCurrent, CultureInfo.CurrentCulture)) + 2).ToString() + ",0";
+
+                    nominalVoltage = exactCurrentString[(exactCurrentString.IndexOf('A') + 2)..exactCurrentString.IndexOf('V')].Trim();
+                }
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "ratedCurrent, ratedCapacity or nominalVoltage not found");
+            }
+            ParamterDictionary["var_ZA_IMP_Nennstrom"].Value = ratedCurrent;
+            ParamterDictionary["var_ZA_IMP_Leistung"].Value = ratedCapacity;
+            ParamterDictionary["var_ZA_IMP_Stromart"].Value = nominalVoltage;
+            ParamterDictionary["var_ZA_IMP_AnlaufstromMax"].Value = maxCurrent;
+
+            ParamterDictionary["var_ZA_IMP_Motor_Pr"].Value = zliDataDictionary["Motor-Pr"];
+            ParamterDictionary["var_ZA_IMP_Motor_Ur"].Value = zliDataDictionary["Bemessungsspannung"];
+            ParamterDictionary["var_ZA_IMP_Motor_Ir"].Value = zliDataDictionary["Bemessungsstrom"];
+
+            var maxEngineCurrent = string.Empty;
+            try
+            {
+                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment"))?.ChildNodes[2].InnerText;
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "maxEngineCurrent not found");
+            }
+            ParamterDictionary["var_ZA_IMP_Motor_FE_"].Value = maxEngineCurrent;
+            var powerDissipation = string.Empty;
+            try
+            {
+                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung"))?.ChildNodes[1].InnerText;
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "powerDissipation not found");
+            }
+            ParamterDictionary["var_ZA_IMP_VerlustLeistung"].Value = powerDissipation;
+
+            ParamterDictionary["var_AufhaengungsartRope"].Value = zliDataDictionary["Aufhaengung_is"];
+            ParamterDictionary["var_Umschlingungswinkel"].Value = zliDataDictionary["Treibscheibe-Umschlingung"];
+            var pulleyDiameter = string.Empty;
+            try
+            {
+                var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText;
+                if (!string.IsNullOrWhiteSpace(pulleyDiameterString))
+                {
+                    pulleyDiameter = pulleyDiameterString[(pulleyDiameterString.IndexOf('=') + 1)..pulleyDiameterString.IndexOf("mm")].Trim();
+                }
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "pulleyDiameter not found");
+            }
+            ParamterDictionary["var_Umlenkrollendurchmesser"].Value = pulleyDiameter;
+
+            //ParamterDictionary["var_AnzahlUmlenkrollen"].Value = zliDataDictionary[""];
+            //ParamterDictionary["var_AnzahlUmlenkrollenFk"].Value = zliDataDictionary[""];
+            //ParamterDictionary["var_AnzahlUmlenkrollenGgw"].Value = zliDataDictionary[""];
+            var detectionDistance = string.Empty;
+            try
+            {
+                var detectionDistanceMeter = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
+
+                if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
+                {
+                    detectionDistance = (Convert.ToDouble(detectionDistanceMeter.Replace("m","").Trim(), CultureInfo.CurrentCulture) * 1000).ToString();
+                }
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "detectionDistance not found");
+            }
+            ParamterDictionary["var_Erkennungsweg"].Value = detectionDistance;
+            var deadTime = string.Empty;
+            try
+            {
+                deadTime = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms","").Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "deadTime not found");
+            }
+            ParamterDictionary["var_Totzeit"].Value = deadTime;
+            var vDetector = string.Empty;
+            try
+            {
+                vDetector = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "vDetector not found");
+            }
+            ParamterDictionary["var_Vdetektor"].Value = vDetector;
+            ParamterDictionary["var_MotorGeber"].Value = zliDataDictionary["Geber-Typ"];
+
+            var brakerelease = string.Empty;
+            if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
+            if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
+            if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
+            if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter") 
+                brakerelease = "207 V Bremse. mit Handl. induktiver NS";
+            if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
+            if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
+
+            ParamterDictionary["var_Handlueftung"].Value = brakerelease;
+            ParamterDictionary["var_Handlueftung"].DropDownListValue = brakerelease;
+
+            var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "true" : "false";
+            ParamterDictionary["var_Fremdbelueftung"].Value = ventilation;
+
+            var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower();
+            ParamterDictionary["var_ElektrBremsenansteuerung"].Value = brakeControl;
+
+            var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "true" : "false";
+            ParamterDictionary["var_Treibscheibegehaertet"].Value = hardened;
+        }
+        await Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]
@@ -500,6 +738,27 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         finally
         {
             oXmlWriter?.Close();
+        }
+    }
+
+    private void MakeBackupFile(string fullPath)
+    {
+        if (!File.Exists(fullPath))
+            return;
+
+        var newName =  Path.Combine(Path.GetDirectoryName(fullPath)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(fullPath));
+
+        if (newName is not null && Path.IsPathFullyQualified(newName))
+        {
+            if (File.Exists(newName))
+            {
+                FileInfo backupFileInfo = new(newName);
+                if (backupFileInfo.IsReadOnly)
+                {
+                    backupFileInfo.IsReadOnly = false;
+                }
+            }
+            File.Copy(fullPath, newName, true);
         }
     }
 

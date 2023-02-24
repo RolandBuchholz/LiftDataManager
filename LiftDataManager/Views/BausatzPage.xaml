@@ -976,7 +976,7 @@
                                     FontWeight="Medium"
                                     Text="Anschlusswerte:" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Nennstrom Netz:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Nennstrom Netz (aufgerundet):" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -989,7 +989,20 @@
                                         Text="A" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Leistung Netz:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Maximale Netzstromaufnahme (Netzstrom x 1,8):" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="0,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_AnlaufstromMax'].Value, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Text="A" />
+                                </Grid>
+                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                    <TextBlock VerticalAlignment="Center" Text="Leistung Netz (aufgerundet  + 2kW):" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -1054,26 +1067,13 @@
                                         Text="A" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Anlaufstrom:" />
+                                    <TextBlock VerticalAlignment="Center" Text="Motorstrom bei Maximalmoment:" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_FE_'].Value, Mode=OneWay}" />
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        VerticalAlignment="Center"
-                                        Text="A" />
-                                </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Maximaler Anlaufstrom:" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="0,0,5,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_AnlaufstromMax'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"

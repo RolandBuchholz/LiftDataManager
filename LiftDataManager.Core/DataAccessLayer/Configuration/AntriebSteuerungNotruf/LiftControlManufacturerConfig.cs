@@ -8,7 +8,26 @@ public class LiftControlManufacturerConfig : BaseModelBuilder<LiftControlManufac
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
+        builder.Property(x => x.DetectionDistance)
+               .HasMaxLength(3)
+               .IsRequired();
+        builder.Property(x => x.DetectionDistanceSIL3)
+               .HasMaxLength(3)
+               .IsRequired();
+        builder.Property(x => x.DeadTime)
+               .HasMaxLength(3)
+               .IsRequired();
+        builder.Property(x => x.DeadTimeZAsbc4)
+               .HasMaxLength(3)
+               .IsRequired();
+        builder.Property(x => x.DeadTimeSIL3)
+               .HasMaxLength(3)
+               .IsRequired();
+        builder.Property(x => x.Speeddetector)
+               .IsRequired();
+        builder.Property(x => x.SpeeddetectorSIL3)
+               .IsRequired();
     }
 }

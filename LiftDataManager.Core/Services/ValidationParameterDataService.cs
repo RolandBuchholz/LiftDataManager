@@ -281,13 +281,23 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null) });
 
         ValidationDictionary.Add("var_Aggregat",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDriveSystemTypes, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDriveSystemTypes, "None", null),
+            new(ValidateUCMValues, "None", null) });
 
         ValidationDictionary.Add("var_A_Kabine",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarArea, "Error", null) });
 
         ValidationDictionary.Add("var_F_Korr",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCorrectionWeight, "Warning", null) });
+
+        ValidationDictionary.Add("var_Steuerungstyp",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+
+        ValidationDictionary.Add("var_ElektrBremsenansteuerung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+
+        ValidationDictionary.Add("var_Schachtinformationssystem",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -778,6 +788,47 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_Aufzugstyp", "var_Q", "var_A_Kabine" } });
             }
+        }
+    }
+
+    private void ValidateUCMValues(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Aggregat"].Value)
+            || ParamterDictionary["var_Aggregat"].Value != "Ziehl-Abegg"
+            || string.IsNullOrWhiteSpace(ParamterDictionary["var_Steuerungstyp"].Value))
+        {
+            ParamterDictionary["var_Erkennungsweg"].Value = "0";
+            ParamterDictionary["var_Totzeit"].Value = "0";
+            ParamterDictionary["var_Vdetektor"].Value = "0";
+            return;
+        }
+
+        var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParamterDictionary["var_Steuerungstyp"].Value);
+
+        if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
+            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box")
+        {
+            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistanceSIL3);
+            ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers!.DeadTimeSIL3);
+            ParamterDictionary["var_Vdetektor"].Value = Convert.ToString(currentLiftControlManufacturers!.SpeeddetectorSIL3);
+        }
+        else
+        {
+            var oldTotzeit = ParamterDictionary["var_Totzeit"].Value;
+            var oldVdetektor = ParamterDictionary["var_Vdetektor"].Value;
+            var newTotzeit = Convert.ToBoolean(ParamterDictionary["var_ElektrBremsenansteuerung"].Value) ?
+                Convert.ToString(currentLiftControlManufacturers!.DeadTimeZAsbc4) :
+                Convert.ToString(currentLiftControlManufacturers!.DeadTime);
+            var newVdetektor = Convert.ToString(currentLiftControlManufacturers!.Speeddetector);
+
+            if (oldTotzeit == newTotzeit && oldVdetektor == newVdetektor)
+            {
+                return;
+            }
+
+            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistance);
+            ParamterDictionary["var_Totzeit"].Value = newTotzeit;
+            ParamterDictionary["var_Vdetektor"].Value = newVdetektor;
         }
     }
 }
