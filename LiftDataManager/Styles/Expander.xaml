@@ -7,6 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ColorStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <converters:EmptyObjectToObjectConverter
         x:Key="NullToVisibilityConverter"
         EmptyValue="Collapsed"
@@ -272,14 +276,16 @@
         TargetType="controls:Expander">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HeaderStyle" Value="{StaticResource HeaderToggleButtonStylePanelStyle}" />
-        <Setter Property="Background" Value="{ThemeResource SystemChromeAltHighColor}" />
+        <Setter Property="Background" Value="{ThemeResource InfoSidebarBackgroundBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Expander">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid
                             x:Name="PART_RootGrid"
-                            Background="{ThemeResource SystemChromeAltHighColor}"
+                            Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
                             CornerRadius="0,8,8,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition x:Name="RowOne" Height="Auto" />
@@ -660,7 +666,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style x:Key="ExpanderContentStyle" TargetType="Expander">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="{ThemeResource ExpanderContentBackground}" />

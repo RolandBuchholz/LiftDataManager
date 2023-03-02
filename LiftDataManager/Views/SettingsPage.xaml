@@ -456,8 +456,8 @@
                     Grid.RowSpan="2"
                     Margin="0,0,0,10"
                     VerticalAlignment="Stretch"
+                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
                     ui:Effects.Shadow="{StaticResource CommonShadow}"
-                    Background="{StaticResource SystemControlPageBackgroundListLowBrush}"
                     CornerRadius="5" />
                 <ScrollViewer
                     Name="InfoTextScroller"

@@ -86,6 +86,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
     }
 
+
     [ObservableProperty]
     private bool likeEditParameter;
     partial void OnLikeEditParameterChanged(bool value)

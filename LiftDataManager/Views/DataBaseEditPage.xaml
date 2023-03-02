@@ -47,10 +47,10 @@
                 <Run FontSize="20" Text="{x:Bind ViewModel.DataBasePath, Mode=OneWay}" />
                 <Run FontSize="20" Text=")" />
             </TextBlock>
-            <TabView
-                Grid.Row="1"
-                Background="{ThemeResource SpeziCardBackground}"
-                IsAddTabButtonVisible="False">
+            <TabView Grid.Row="1" IsAddTabButtonVisible="False">
+                <TabView.Resources>
+                    <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="Transparent" />
+                </TabView.Resources>
                 <TabView.TabItems>
                     <TabViewItem Header="Standard Parameter" IsClosable="False">
                         <Grid>
@@ -66,14 +66,15 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <StackPanel
-                                    Margin="5"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    Margin="10,5,10,5"
+                                    Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4"
                                     Orientation="Horizontal">
                                     <CommandBar
                                         x:Name="CommandBar_DB"
                                         VerticalAlignment="Center"
-                                        Background="Transparent"
                                         DefaultLabelPosition="Right">
                                         <AppBarButton
                                             x:Name="btn_Filter"
@@ -203,12 +204,14 @@
                                 </StackPanel>
                                 <controls:DataGrid
                                     Grid.Row="1"
-                                    Margin="5"
+                                    Margin="10,5,10,5"
                                     AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                                     AutoGenerateColumns="False"
-                                    Background="Transparent"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                                    BorderThickness="1"
                                     CanUserReorderColumns="True"
                                     CanUserResizeColumns="True"
+                                    ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
                                     GridLinesVisibility="All"
                                     ItemsSource="{x:Bind ViewModel.FilteredParameterDtos, Mode=OneWay}">
                                     <Interactivity:Interaction.Behaviors>
@@ -323,7 +326,8 @@
                                 <Grid
                                     Margin="0,0,0,10"
                                     Padding="5"
-                                    Background="{ThemeResource SpeziCardBackground}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="147" />
@@ -537,13 +541,15 @@
                             <controls:DataGrid
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="5"
+                                Margin="10,5,10,5"
                                 AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                                 AutoGenerateColumns="true"
                                 AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
-                                Background="Transparent"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                                BorderThickness="1"
                                 CanUserReorderColumns="True"
                                 CanUserResizeColumns="True"
+                                ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
                                 GridLinesVisibility="All"
                                 ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}"
                                 Visibility="{x:Bind ViewModel.ShowTable, Mode=OneWay}">
@@ -622,9 +628,11 @@
                                 Margin="5"
                                 AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                                 AutoGenerateColumns="false"
-                                Background="Transparent"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                                BorderThickness="1"
                                 CanUserReorderColumns="True"
                                 CanUserResizeColumns="True"
+                                ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
                                 GridLinesVisibility="All"
                                 ItemsSource="{x:Bind ViewModel.TableHistory, Mode=OneWay}">
                                 <controls:DataGrid.Columns>

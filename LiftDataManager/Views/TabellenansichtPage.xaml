@@ -53,8 +53,11 @@
                     AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                     AutoGenerateColumns="False"
                     Background="Transparent"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                    BorderThickness="1"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"
+                    ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
                     GridLinesVisibility="All"
                     ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
                     LoadingRowGroup="DataGrid_LoadingRowGroup"
@@ -174,8 +177,8 @@
             <speziControls:SidebarPanel
                 Grid.Column="1"
                 Margin="0"
-                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <!--  Footer  -->
         <speziControls:FooterControl

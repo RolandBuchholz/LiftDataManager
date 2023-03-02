@@ -644,8 +644,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "true" : "false";
             ParamterDictionary["var_Fremdbelueftung"].Value = ventilation;
 
-            var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower();
-            ParamterDictionary["var_ElektrBremsenansteuerung"].Value = brakeControl;
+            try
+            {
+                var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower();
+                ParamterDictionary["var_ElektrBremsenansteuerung"].Value = brakeControl;
+            }
+            catch (Exception)
+            {
+
+                _logger.LogWarning(61094, "ElektrBremsenansteuerung not found");
+            }
 
             var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "true" : "false";
             ParamterDictionary["var_Treibscheibegehaertet"].Value = hardened;

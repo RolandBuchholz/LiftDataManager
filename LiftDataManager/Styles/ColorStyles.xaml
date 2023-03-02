@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="SpeziCardBorderBrush" Color="{ThemeResource CardStrokeColorDefault}" />
+            <SolidColorBrush x:Key="InfoSidebarBackgroundBrush" Color="Transparent" />
             <AcrylicBrush
                 x:Key="SpeziCardBackground"
                 FallbackColor="{ThemeResource SystemListLowColor}"
@@ -8,6 +10,11 @@
                 TintOpacity="0.8" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush
+                x:Key="SpeziCardBorderBrush"
+                Opacity="0.6"
+                Color="{ThemeResource SystemAltMediumColor}" />
+            <SolidColorBrush x:Key="InfoSidebarBackgroundBrush" Color="Transparent" />
             <AcrylicBrush
                 x:Key="SpeziCardBackground"
                 FallbackColor="{ThemeResource SystemChromeMediumColor}"

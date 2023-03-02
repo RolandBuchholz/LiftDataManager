@@ -20,7 +20,7 @@
         <StackPanel
             MinWidth="55"
             HorizontalAlignment="Center"
-            Background="{ThemeResource SystemChromeBlackLowColor}"
+            Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
             Visibility="{x:Bind ShowQuickLinks, Mode=OneWay}">
             <StackPanel.Resources>
                 <ani:AnimationSet x:Name="ScaleOutAnimation" IsSequential="True">
