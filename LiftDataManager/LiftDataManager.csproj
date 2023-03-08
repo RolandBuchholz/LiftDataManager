@@ -24,6 +24,26 @@
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Remove="Assets\BadgeLogo.scale-100.png" />
     <Content Remove="Assets\BadgeLogo.scale-125.png" />
@@ -43,6 +63,7 @@
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BucherTransparent.png" />
     <None Remove="Images\carAccesses.png" />
+    <None Remove="Images\CarDetails\carDoorInstallationDimensions.png" />
     <None Remove="Images\carDimensions.png" />
     <None Remove="Images\CFPTransparent.png" />
     <None Remove="Images\ExcelTransparent.png" />
@@ -72,6 +93,7 @@
     <Content Include="Images\Berechnungen.png" />
     <Content Include="Images\BucherTransparent.png" />
     <Content Include="Images\carAccesses.png" />
+    <Content Include="Images\CarDetails\carDoorInstallationDimensions.png" />
     <Content Include="Images\carDimensions.png" />
     <Content Include="Images\CFPTransparent.png" />
     <Content Include="Images\ExcelTransparent.png" />
@@ -123,7 +145,7 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="WinUIEx" Version="2.1.0" />
-    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.16" />
+    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.17" />
   </ItemGroup>
 
   <ItemGroup>

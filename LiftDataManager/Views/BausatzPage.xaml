@@ -160,7 +160,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Führungsart GGW" />
+                                    Text="{x:Bind ViewModel.CWTGuideName, Mode=OneWay}" />
                                 <Grid
                                     x:Name="Bausatz2"
                                     Grid.Row="0"
@@ -587,6 +587,7 @@
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="0"
+                                Margin="0,0,0,10"
                                 Spacing="1">
                                 <TextBlock
                                     FontSize="18"
@@ -1088,6 +1089,22 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_VerlustLeistung'].Value, Mode=OneWay}" />
+                                </Grid>
+                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                    <TextBlock VerticalAlignment="Center" Text="Max. Schmelzsicherung:" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="0,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind ViewModel.MaxFuse, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Text="A" />
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock Text="Max. Schmelzsicherung (Betriebsklasse gG)  gemäß Betriebsanleitung ZAdyn4C" TextWrapping="WrapWholeWords" />
+                                    </ToolTipService.ToolTip>
                                 </Grid>
                             </StackPanel>
                         </Grid>

@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -757,7 +756,9 @@
                                             Text="Treibscheibendurchmesser :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibendurchmesser'].Value}" />
-                                            <Run Text=" mm" />
+                                            <Run Text=" mm (RA : " />
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Treibscheibe_RIA'].Value}" />
+                                            <Run Text=" mm)" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -800,6 +801,24 @@
                                             <Run Text=" Stk." />
                                         </TextBlock>
                                     </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Frequenzumrichter :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Regler_Typ'].Value}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Gebertyp des Motors :" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_MotorGeber'].Value}" />
+                                        </TextBlock>
+                                    </StackPanel>
                                     <TextBlock
                                         Margin="10,5,10,2"
                                         FontWeight="Bold"
@@ -824,7 +843,7 @@
                                             <Run Text=" ms" />
                                         </TextBlock>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                                         <TextBlock
                                             Width="200"
                                             Margin="10,0,0,0"
@@ -832,15 +851,6 @@
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Vdetektor'].Value}" />
                                             <Run Text=" m/s" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                        <TextBlock
-                                            Width="200"
-                                            Margin="10,0,0,0"
-                                            Text="Gebertyp des Motors :" />
-                                        <TextBlock>
-                                            <Run Text="{x:Bind ViewModel.ParamterDictionary['var_MotorGeber'].Value}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>

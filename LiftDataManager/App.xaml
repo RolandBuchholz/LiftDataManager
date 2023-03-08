@@ -19,6 +19,8 @@
                 <ResourceDictionary Source="/Styles/ControlDataTemplates.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.DataGrid/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
+            <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

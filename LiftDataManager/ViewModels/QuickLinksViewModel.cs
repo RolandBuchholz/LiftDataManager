@@ -2,6 +2,7 @@
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -332,6 +333,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         {
             zaliftEditDialog.Hide();
             StartProgram(pathZALift, startargs);
+            await Task.Delay(1000);
+            if (File.Exists(pathSynchronizeZAlift))
+            {
+                var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
+                var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
+                _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
+
+            }
             return;
         }
 
@@ -400,6 +409,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 _logger.LogError(61092, "restoring zaliftfiles failed");
             }
         }
+
+        if (File.Exists(pathSynchronizeZAlift))
+        {
+            var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
+            var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
+            _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
+
+        }
     }
 
     private bool _zAliftAusUpdated;
@@ -465,6 +482,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         {
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
             ParamterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
+            ParamterDictionary["var_ZA_IMP_Treibscheibe_RIA"].Value = zliDataDictionary["Treibscheibe-RIA"];
+            ParamterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty; 
             ParamterDictionary["var_Tragseiltyp"].Value = "D " + zliDataDictionary["Treibscheibe-SD"] +"mm "+ zliDataDictionary["Treibscheibe-Seiltyp"];
             var numberOfRopes = string.Empty; 
             try
@@ -662,7 +681,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
         if (!zAliftDataReadyForImport)
         {
-            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
+           await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
         }
         else
         {

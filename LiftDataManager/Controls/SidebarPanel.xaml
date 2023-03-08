@@ -239,16 +239,25 @@
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.OpenZiehlAbeggHtmlCommand}"
                 Style="{StaticResource LinkButtonSmall}">
-                <Image
-                    Width="30"
-                    Height="30"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/Images/GoogleChrome.png">
+
+                <Grid Width="30" Height="30">
+                    <Image
+                        Width="30"
+                        Height="30"
+                        Source="/Images/GoogleChrome.png" />
+                    <Border
+                        Width="20"
+                        Height="20"
+                        Margin="-3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        CornerRadius="10">
+                        <Image Source="/Images/ZiehlAbeggTransparent.png" />
+                    </Border>
                     <ToolTipService.ToolTip>
                         <TextBlock Text="ZAlift Html" />
                     </ToolTipService.ToolTip>
-                </Image>
+                </Grid>
                 <interactivity:Interaction.Behaviors>
                     <interactions:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />

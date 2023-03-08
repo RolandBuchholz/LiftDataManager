@@ -128,10 +128,21 @@
             </Button>
             <Button Command="{x:Bind ViewModel.OpenZiehlAbeggHtmlCommand}" Style="{StaticResource LinkButton}">
                 <StackPanel>
-                    <Image
-                        Width="100"
-                        Height="100"
-                        Source="/Images/GoogleChrome.png" />
+                    <Grid Width="100" Height="100">
+                        <Image
+                            Width="100"
+                            Height="100"
+                            Source="/Images/GoogleChrome.png" />
+                        <Border
+                            Margin="-15"
+                            Width="60"
+                            Height="60"
+                            CornerRadius="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                            <Image Source="/Images/ZiehlAbeggTransparent.png" />
+                        </Border>
+                    </Grid>
                     <TextBlock
                         Margin="10"
                         HorizontalAlignment="Center"
@@ -162,7 +173,7 @@
                 Command="{x:Bind ViewModel.ImportZAliftDataCommand}"
                 Style="{StaticResource LinkButton}">
                 <StackPanel>
-                    <Grid Height="100" Width="100">
+                    <Grid Width="100" Height="100">
                         <Image
                             Width="70"
                             Height="70"
