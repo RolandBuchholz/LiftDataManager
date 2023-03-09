@@ -242,7 +242,6 @@
                         PlaceholderText="Fabriknummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_FabrikNummer'].Value, Mode=TwoWay}" />
                     <ComboBox
-                        x:Name="var_CeNummer"
                         Grid.Row="0"
                         Grid.Column="2"
                         Margin="5,0,10,0"
@@ -250,6 +249,8 @@
                         VerticalAlignment="Stretch"
                         Header="Prüfstelle"
                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].DropDownList, Mode=OneWay}"
+                        PlaceholderForeground="red"
+                        PlaceholderText="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].Value, Mode=TwoWay}"
                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].DropDownListValue, Mode=TwoWay}" />
                     <CalendarDatePicker
                         Grid.Row="1"

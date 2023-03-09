@@ -21,11 +21,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     public ValidationParameterDataService(ParameterContext parametercontext, ICalculationsModule calculationsModuleService)
     {
         IsActive = true;
-        GetValidationDictionary();
         ParamterDictionary ??= new();
         ValidationResult ??= new();
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        GetValidationDictionary();
     }
 
     ~ValidationParameterDataService()
@@ -298,6 +298,30 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+
+        AddDropDownListValidation();
+    }
+
+    private void AddDropDownListValidation()
+    {
+        var dropDownParameters = _parametercontext.ParameterDtos?.Where(x => !string.IsNullOrWhiteSpace(x.DropdownList))
+                                    .Select(x => x.Name)
+                                    .ToList();
+        if (dropDownParameters is not null)
+        {
+            foreach (var par in dropDownParameters)
+            {
+                if (ValidationDictionary.ContainsKey(par))
+                {
+                    ValidationDictionary[par].Add(new(ListContainsValue, "Error", null));
+                }
+                else
+                {
+                    ValidationDictionary.Add(par,
+                        new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ListContainsValue, "Error", null) });
+                }
+            }
+        }
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -363,6 +387,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         else
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherString } });
+        }
+    }
+
+    private void ListContainsValue(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return;
+        if (!ParamterDictionary[name].dropDownList.Contains(value))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: ungültiger Wert | {value} | ist nicht in der Auswahlliste vorhanden.", SetSeverity(severity)));
         }
     }
 
@@ -741,7 +775,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateCorrectionWeight(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(value)) return;
+        if (string.IsNullOrWhiteSpace(value))
+            return;
         try
         {
             if (Math.Abs(Convert.ToInt16(value)) > 10)
