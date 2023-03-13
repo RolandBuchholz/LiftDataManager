@@ -113,39 +113,19 @@
                             Grid.RowSpan="2"
                             Grid.Column="2"
                             Orientation="Vertical">
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Firma Auftraggeber"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_Firma'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Name Auftraggeber"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ1'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Straße Hausnummer"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ2'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Postleitzahl Ort"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ3'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Fachplaner"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ4'].Value, Mode=TwoWay}" />
-                            <TextBox
-                                Margin="5,5,10,0"
-                                PlaceholderText="Adresse Fachplaner"
-                                Text="{x:Bind ViewModel.ParamterDictionary['var_FP_Adresse'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_Firma'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ1'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ2'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ3'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonZ4'].Value, Mode=TwoWay}" />
+                            <TextBox Margin="5,5,10,0" Text="{x:Bind ViewModel.ParamterDictionary['var_FP_Adresse'].Value, Mode=TwoWay}" />
                             <TextBox
                                 Margin="5,5,10,0"
                                 ui:TextBoxExtensions.Regex="^\s*\+?\s*([0-9][\s-]*){9,}$"
-                                PlaceholderText="Telefon Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonPhone'].Value, Mode=TwoWay}" />
                             <TextBox
                                 Margin="5,5,10,0"
                                 ui:TextBoxExtensions.Regex="^\s*\+?\s*([0-9][\s-]*){9,}$"
-                                PlaceholderText="Mobiltelefon Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonMobil'].Value, Mode=TwoWay}" />
                             <TextBox
                                 Margin="5,5,10,0"

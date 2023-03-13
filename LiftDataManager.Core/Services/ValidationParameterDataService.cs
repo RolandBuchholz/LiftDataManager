@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using HtmlAgilityPack;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
@@ -12,7 +13,12 @@ using System.Globalization;
 namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
-    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
+    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
+    public string? FullPathXml { get; set; }
+    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+    private DateTime ZaHtmlCreationTime { get; set; }
+    private Dictionary<string, string> ZliDataDictionary { get; set; }
     private Dictionary<string, List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
     private readonly ParameterContext _parametercontext;
@@ -23,6 +29,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         IsActive = true;
         GetValidationDictionary();
         ParamterDictionary ??= new();
+        ZliDataDictionary ??= new();
         ValidationResult ??= new();
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -43,9 +50,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             return;
         if (message.Response.ParamterDictionary is null)
             return;
-        if (ParamterDictionary.Any())
-            return;
         ParamterDictionary = message.Response.ParamterDictionary;
+        FullPathXml = message.Response.FullPathXml;
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
@@ -54,15 +60,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         if (name is null || displayname is null)
         {
-            ValidationResult.Add(new ParameterStateInfo("Parameter", "Parameter not found", true));
-            await Task.CompletedTask;
             return ValidationResult;
         }
 
         if (!ValidationDictionary.ContainsKey(key: name))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
-            await Task.CompletedTask;
             return ValidationResult;
         }
 
@@ -117,7 +119,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Q",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(NotEmpty, "Error", null),
-            new(ValidateCarArea, "Error", null)});
+            new(ValidateCarArea, "Error", null),
+            new(ValidateZAliftData, "Warning", null)});
+
+        ValidationDictionary.Add("var_F",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
         ValidationDictionary.Add("var_Kennwort",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Warning", null) });
@@ -172,7 +178,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_FH",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0, "Error", null),
-            new(ValidateTravel, "Error", null) });
+            new(ValidateTravel, "Error", null),
+            new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_Etagenhoehe0",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateTravel, "Error", null) });
@@ -741,7 +748,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateCorrectionWeight(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(value)) return;
+        if (string.IsNullOrWhiteSpace(value))
+            return;
         try
         {
             if (Math.Abs(Convert.ToInt16(value)) > 10)
@@ -829,6 +837,76 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistance);
             ParamterDictionary["var_Totzeit"].Value = newTotzeit;
             ParamterDictionary["var_Vdetektor"].Value = newVdetektor;
+        }
+    }
+
+    private void ValidateZAliftData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+            return;
+
+        var zaHtmlPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
+        if (!File.Exists(zaHtmlPath))
+            return;
+        var lastWriteTime = File.GetLastWriteTime(zaHtmlPath);
+
+        if (lastWriteTime != ZaHtmlCreationTime)
+        {
+            var zaliftHtml = new HtmlDocument();
+            zaliftHtml.Load(zaHtmlPath);
+            var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+                                                                            .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            if (zliData is null)
+                return;
+
+            ZliDataDictionary.Clear();
+
+            foreach (var zlipar in zliData)
+            {
+
+                if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains('='))
+                {
+                    var zliPairValue = zlipar.Split('=');
+
+                    if (!ZliDataDictionary.ContainsKey(zliPairValue[0]))
+                    {
+                        ZliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                    }
+                }
+            }
+            ZaHtmlCreationTime = lastWriteTime;
+        }
+
+        var zaLiftValue = string.Empty;
+
+        var searchString = name switch
+        {
+            "var_Q" => "Nennlast_Q",
+            "var_F" => "Fahrkorbgewicht_F",
+            "var_FH" => "Anlage-FH",
+            _ => string.Empty,
+        };
+
+        ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
+
+        if (string.IsNullOrWhiteSpace(zaLiftValue))
+            return;
+
+        var isValid = name switch
+        {
+            "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
+            "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
+            _ => true,
+        };
+
+        if (!isValid)
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
         }
     }
 }

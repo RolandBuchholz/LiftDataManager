@@ -1,8 +1,8 @@
 ﻿using HtmlAgilityPack;
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
-using System.Security.Cryptography;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -18,14 +18,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private readonly ParameterContext _parametercontext;
     private readonly IVaultDataService _vaultDataService;
     private readonly ILogger<QuickLinksViewModel> _logger;
+    private readonly IValidationParameterDataService _validationParameterDataService;
 
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IValidationParameterDataService validationParameterDataService,
         ISettingService settingsSelectorService, ParameterContext parametercontext, IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
          base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _parametercontext = parametercontext;
         _vaultDataService = vaultDataService;
+        _validationParameterDataService = validationParameterDataService;
         _logger = logger;
         CheckCanOpenFiles();
     }
@@ -679,6 +681,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 
+        _ = _validationParameterDataService!.ValidateAllParameterAsync();
+        await SetModelStateAsync();
+
         if (!zAliftDataReadyForImport)
         {
            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
@@ -784,7 +789,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
             oXmlWriter.WriteEndElement();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.WriteLine(ex.ToString());
         }
