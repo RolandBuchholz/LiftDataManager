@@ -301,10 +301,21 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
 
         ValidationDictionary.Add("var_ElektrBremsenansteuerung",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null),
+            new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+
+        ValidationDictionary.Add("var_Treibscheibegehaertet",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Fremdbelueftung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Handlueftung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -638,6 +649,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TH_B"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_B"].Value = Convert.ToString(tuerGewicht);
         }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_B"].Value = string.Empty;
+            ParamterDictionary["var_TH_B"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+        }
 
         if (zugangC)
         {
@@ -647,6 +667,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TH_C"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_C"].Value = Convert.ToString(tuerGewicht);
         }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_C"].Value = string.Empty;
+            ParamterDictionary["var_TH_C"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+        }
 
         if (zugangD)
         {
@@ -655,6 +684,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TB_D"].Value = Convert.ToString(tuerBreite);
             ParamterDictionary["var_TH_D"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_D"].Value = Convert.ToString(tuerGewicht);
+        }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_D"].Value = string.Empty;
+            ParamterDictionary["var_TH_D"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
         }
     }
 
@@ -874,16 +912,26 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                     }
                 }
             }
+
+            var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
+            ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower());
+
             ZaHtmlCreationTime = lastWriteTime;
         }
 
         var zaLiftValue = string.Empty;
+        var zaLiftValue2 = string.Empty;
+        var brakerelease = string.Empty;
 
         var searchString = name switch
         {
             "var_Q" => "Nennlast_Q",
             "var_F" => "Fahrkorbgewicht_F",
             "var_FH" => "Anlage-FH",
+            "var_Fremdbelueftung" => "Motor-Fan",
+            "var_ElektrBremsenansteuerung" => "ElektrBremsenansteuerung",
+            "var_Treibscheibegehaertet" => "Treibscheibe-RF",
+            "var_Handlueftung" => "Bremse-Handlueftung",
             _ => string.Empty,
         };
 
@@ -892,17 +940,48 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (string.IsNullOrWhiteSpace(zaLiftValue))
             return;
 
+        if (name == "var_Handlueftung")
+        {
+            ZliDataDictionary.TryGetValue("Bremse-Lueftueberwachung", out zaLiftValue2);
+            if (string.IsNullOrWhiteSpace(zaLiftValue2))
+                return;
+            if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
+            if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
+            if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
+            if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. mit Handl. induktiver NS";
+            if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
+            if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
+        }
+
         var isValid = name switch
         {
             "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
             "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
+            "var_Fremdbelueftung" => string.Equals(value, Convert.ToString(!zaLiftValue.StartsWith("ohne")), StringComparison.CurrentCultureIgnoreCase),
+            "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
+            "var_Handlueftung" => string.Equals(value, brakerelease, StringComparison.CurrentCultureIgnoreCase),
             _ => true,
-        };
+        }; ;
 
         if (!isValid)
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
+            if (name != "var_Handlueftung")
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
+            }
+            else
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue} - {zaLiftValue2} ", SetSeverity(severity)));
+            }
+                
         }
         else
         {
