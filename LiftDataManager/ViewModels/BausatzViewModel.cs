@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
+using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
@@ -30,6 +31,12 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     [ObservableProperty]
     private string cWTRailName = "Führungsschienen GGW";
+
+    [ObservableProperty]
+    private string cWTGuideName = "Führungsart GGW";
+
+    [ObservableProperty]
+    private string maxFuse = string.Empty;
 
     private double _FangrahmenGewicht;
     public double FangrahmenGewicht
@@ -62,13 +69,29 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         if (carFrameType is null)
             return 0;
         CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
+        CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
         return carFrameType.CarFrameWeight;
+    }
+
+    private void SetMaxFuse()
+    {
+        if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value))
+        {
+            var inverterSize = ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value!.Replace(" ","")[8..11];
+            var inverterType = _parametercontext.Set<LiftInverterType>().FirstOrDefault(x => x.Name.Contains(inverterSize));
+            maxFuse =  inverterType is not null ? inverterType.MaxFuseSize.ToString() : string.Empty;
+        }
+        else
+        {
+            MaxFuse = string.Empty;
+        }
     }
 
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
         SynchronizeViewModelParameter();
+        SetMaxFuse();
         SetCarWeight();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&

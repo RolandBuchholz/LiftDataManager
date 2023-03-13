@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using HtmlAgilityPack;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
@@ -12,7 +13,12 @@ using System.Globalization;
 namespace LiftDataManager.Core.Services;
 public class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
-    public ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
+    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
+    public string? FullPathXml { get; set; }
+    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+    private DateTime ZaHtmlCreationTime { get; set; }
+    private Dictionary<string, string> ZliDataDictionary { get; set; }
     private Dictionary<string, List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = new();
     private List<ParameterStateInfo> ValidationResult { get; set; }
     private readonly ParameterContext _parametercontext;
@@ -22,6 +28,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     {
         IsActive = true;
         ParamterDictionary ??= new();
+        ZliDataDictionary ??= new();
         ValidationResult ??= new();
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -43,9 +50,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             return;
         if (message.Response.ParamterDictionary is null)
             return;
-        if (ParamterDictionary.Any())
-            return;
         ParamterDictionary = message.Response.ParamterDictionary;
+        FullPathXml = message.Response.FullPathXml;
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
@@ -54,15 +60,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         if (name is null || displayname is null)
         {
-            ValidationResult.Add(new ParameterStateInfo("Parameter", "Parameter not found", true));
-            await Task.CompletedTask;
             return ValidationResult;
         }
 
         if (!ValidationDictionary.ContainsKey(key: name))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
-            await Task.CompletedTask;
             return ValidationResult;
         }
 
@@ -117,7 +119,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Q",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(NotEmpty, "Error", null),
-            new(ValidateCarArea, "Error", null)});
+            new(ValidateCarArea, "Error", null),
+            new(ValidateZAliftData, "Warning", null)});
+
+        ValidationDictionary.Add("var_F",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
         ValidationDictionary.Add("var_Kennwort",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Warning", null) });
@@ -172,7 +178,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_FH",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0, "Error", null),
-            new(ValidateTravel, "Error", null) });
+            new(ValidateTravel, "Error", null),
+            new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_Etagenhoehe0",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateTravel, "Error", null) });
@@ -294,10 +301,20 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
 
         ValidationDictionary.Add("var_ElektrBremsenansteuerung",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null),
+            new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+            
+        ValidationDictionary.Add("var_Treibscheibegehaertet",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Fremdbelueftung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Handlueftung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
         AddDropDownListValidation();
     }
@@ -322,6 +339,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 }
             }
         }
+
     }
 
     private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
@@ -665,6 +683,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TH_B"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_B"].Value = Convert.ToString(tuerGewicht);
         }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_B"].Value = string.Empty;
+            ParamterDictionary["var_TH_B"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+        }
 
         if (zugangC)
         {
@@ -674,6 +701,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TH_C"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_C"].Value = Convert.ToString(tuerGewicht);
         }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_C"].Value = string.Empty;
+            ParamterDictionary["var_TH_C"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+        }
 
         if (zugangD)
         {
@@ -682,6 +718,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_TB_D"].Value = Convert.ToString(tuerBreite);
             ParamterDictionary["var_TH_D"].Value = Convert.ToString(tuerHoehe);
             ParamterDictionary["var_Tuergewicht_D"].Value = Convert.ToString(tuerGewicht);
+        }
+        else
+        {
+            ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_TB_D"].Value = string.Empty;
+            ParamterDictionary["var_TH_D"].Value = string.Empty;
+            ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
+            ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
         }
     }
 
@@ -864,6 +909,117 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistance);
             ParamterDictionary["var_Totzeit"].Value = newTotzeit;
             ParamterDictionary["var_Vdetektor"].Value = newVdetektor;
+        }
+    }
+
+    private void ValidateZAliftData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+            return;
+
+        var zaHtmlPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
+        if (!File.Exists(zaHtmlPath))
+            return;
+        var lastWriteTime = File.GetLastWriteTime(zaHtmlPath);
+
+        if (lastWriteTime != ZaHtmlCreationTime)
+        {
+            var zaliftHtml = new HtmlDocument();
+            zaliftHtml.Load(zaHtmlPath);
+            var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+                                                                            .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            if (zliData is null)
+                return;
+
+            ZliDataDictionary.Clear();
+
+            foreach (var zlipar in zliData)
+            {
+
+                if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains('='))
+                {
+                    var zliPairValue = zlipar.Split('=');
+
+                    if (!ZliDataDictionary.ContainsKey(zliPairValue[0]))
+                    {
+                        ZliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                    }
+                }
+            }
+
+            var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
+            ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower());
+
+            ZaHtmlCreationTime = lastWriteTime;
+        }
+
+        var zaLiftValue = string.Empty;
+        var zaLiftValue2 = string.Empty;
+        var brakerelease = string.Empty;
+
+        var searchString = name switch
+        {
+            "var_Q" => "Nennlast_Q",
+            "var_F" => "Fahrkorbgewicht_F",
+            "var_FH" => "Anlage-FH",
+            "var_Fremdbelueftung" => "Motor-Fan",
+            "var_ElektrBremsenansteuerung" => "ElektrBremsenansteuerung",
+            "var_Treibscheibegehaertet" => "Treibscheibe-RF",
+            "var_Handlueftung" => "Bremse-Handlueftung",
+            _ => string.Empty,
+        };
+
+        ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
+
+        if (string.IsNullOrWhiteSpace(zaLiftValue))
+            return;
+
+        if (name == "var_Handlueftung")
+        {
+            ZliDataDictionary.TryGetValue("Bremse-Lueftueberwachung", out zaLiftValue2);
+            if (string.IsNullOrWhiteSpace(zaLiftValue2))
+                return;
+            if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
+            if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
+            if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
+            if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. mit Handl. induktiver NS";
+            if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Mikroschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
+            if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Naeherungsschalter")
+                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
+        }
+
+        var isValid = name switch
+        {
+            "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
+            "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
+            "var_Fremdbelueftung" => string.Equals(value, Convert.ToString(!zaLiftValue.StartsWith("ohne")), StringComparison.CurrentCultureIgnoreCase),
+            "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
+            "var_Handlueftung" => string.Equals(value, brakerelease, StringComparison.CurrentCultureIgnoreCase),
+            _ => true,
+        }; ;
+
+        if (!isValid)
+        {
+            if (name != "var_Handlueftung")
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
+            }
+            else
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue} - {zaLiftValue2} ", SetSeverity(severity)));
+            }
+                
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
         }
     }
 }

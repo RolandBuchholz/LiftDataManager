@@ -103,7 +103,7 @@ public partial class Parameter : ParameterBase
         ClearErrors(nameof(Value));
         var result = await _validationParameterDataService.ValidateParameterAsync(Name!,DisplayName!, Value);
 
-        if (!result.Any(r => r.IsValid))
+        if (result.Any(r => r.IsValid == false))
         {
             foreach (var parameterState in result)
             {
