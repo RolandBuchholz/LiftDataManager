@@ -46,15 +46,25 @@ public sealed partial class FooterControl : UserControl
         {
             try
             {
+                var foundParameterErrors = new List<ParameterStateInfo>();
+
                 foreach (var parameterErrors in ErrorsDictionary.Values)
                 {
                     foreach (var error in parameterErrors)
                     {
                         if (HideInfoErrors && error.Severity == ParameterStateInfo.ErrorLevel.Informational)
                             break;
-                        ErrorsList.Add(error);
+                        foundParameterErrors.Add(error);
                     }
                 }
+
+                var sortedErrors = foundParameterErrors.OrderByDescending(error => error.Severity);
+
+                foreach (var error in sortedErrors)
+                {
+                    ErrorsList.Add(error);
+                }
+
                 ErrorCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Error);
                 WarningCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Warning);
                 InfoCount = ErrorsList.Count((e) => e.Severity == ParameterStateInfo.ErrorLevel.Informational);

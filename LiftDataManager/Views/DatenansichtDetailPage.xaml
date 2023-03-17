@@ -130,7 +130,7 @@
                         FontSize="18"
                         Foreground="IndianRed"
                         Style="{ThemeResource BodyTextBlockStyle}"
-                        Text="{x:Bind ViewModel.Item.Errors, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.Item.ValidationErrors, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.Item.HasErrors, Mode=OneWay}" />
                 </StackPanel>
             </ScrollViewer>
@@ -138,8 +138,8 @@
             <speziControls:SidebarPanel
                 Grid.Column="1"
                 Margin="0,0,0,24"
-                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

@@ -119,6 +119,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     updatedParameter.DropDownListValue = updatedParameter.Value;
                 }
+                if (updatedParameter.HasErrors)
+                {
+                    updatedParameter.HasErrors = false;
+                }
                 updatedParameter.DataImport = false;
             }
             else
@@ -244,6 +248,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     CanSaveAllSpeziParameters = false;
                     CheckOut = false;
                     LikeEditParameter = true;
+                    SpezifikationName = string.Empty;
+                    ParamterErrorDictionary?.Clear();
+                    HasErrors = false;
                     await LoadDataAsync();
                 }
                 else
@@ -286,6 +293,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 CanCheckOut = false;
                 LikeEditParameter = true;
                 SpezifikationName = string.Empty;
+                ParamterErrorDictionary?.Clear();
+                HasErrors = false;
                 await LoadDataAsync();
             }
         }
@@ -317,6 +326,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 CheckOut = false;
                 LikeEditParameter = true;
                 SpezifikationName = string.Empty;
+                ParamterErrorDictionary?.Clear();
+                HasErrors = false;
                 await LoadDataAsync();
             }
             else

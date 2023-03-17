@@ -174,13 +174,18 @@
                                         VerticalAlignment="Center"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart_GGW'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart_GGW'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'], Mode=TwoWay}" />
+                                    <!--<ComboBox
                                         Grid.Column="1"
                                         Margin="5,5,5,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'].DropDownListValue, Mode=TwoWay}" />
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'].DropDownListValue, Mode=TwoWay}" />-->
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -336,14 +341,15 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
+                                    <!--<ComboBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Header="Geschwindigkeitsbegrenzerstyp"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'].DropDownListValue, Mode=TwoWay}" />
+                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'].DropDownListValue, Mode=TwoWay}" />-->
                                 </Grid>
                                 <Grid
                                     x:Name="Bausatz6_1"

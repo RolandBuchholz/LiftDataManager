@@ -31,7 +31,7 @@ public class KabinenLüftungViewModel : DataViewModelBase, INavigationAware, IRe
     public int AnzahlKabinentueren => Convert.ToInt32(ZugangA) + Convert.ToInt32(ZugangB) + Convert.ToInt32(ZugangC) + Convert.ToInt32(ZugangD);
     public int AnzahlKabinentuerfluegel => LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_AnzahlTuerfluegel");
 
-    public double A_Kabine_1Pozent => A_Kabine * 10000;
+    public double A_Kabine_1Pozent => Math.Round(A_Kabine * 10000);
     public double Belueftung_1Seite => Kabinentiefe * Luftspaltoeffnung;
     public double Belueftung_2Seiten => Kabinentiefe * Luftspaltoeffnung * 2;
 

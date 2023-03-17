@@ -241,17 +241,12 @@
                         Header="Fabriknummer"
                         PlaceholderText="Fabriknummer"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_FabrikNummer'].Value, Mode=TwoWay}" />
-                    <ComboBox
+                    <SpeziControls:ParameterComboBox
                         Grid.Row="0"
                         Grid.Column="2"
-                        Margin="5,0,10,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Header="Prüfstelle"
-                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].DropDownList, Mode=OneWay}"
-                        PlaceholderForeground="red"
-                        PlaceholderText="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].Value, Mode=TwoWay}"
-                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'].DropDownListValue, Mode=TwoWay}" />
+                        Margin="0,0,5,0"
+                        ShowDefaultHeader="True"
+                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'], Mode=TwoWay}" />
                     <CalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="0"

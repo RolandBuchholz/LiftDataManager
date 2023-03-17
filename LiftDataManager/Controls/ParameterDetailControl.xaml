@@ -137,7 +137,7 @@
                 FontSize="18"
                 Foreground="IndianRed"
                 Style="{ThemeResource BodyTextBlockStyle}"
-                Text="{x:Bind ListDetailsMenuItem.Errors, Mode=OneWay}"
+                Text="{x:Bind ListDetailsMenuItem.ValidationErrors, Mode=OneWay}"
                 Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
         </StackPanel>
     </ScrollViewer>

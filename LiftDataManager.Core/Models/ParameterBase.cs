@@ -58,6 +58,9 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     [ObservableProperty]
     private bool hasErrors;
 
+    [ObservableProperty]
+    private string? validationErrors;
+
     public IEnumerable GetErrors(string? propertyName)
     {
         var errors = new List<ParameterStateInfo>();
@@ -99,6 +102,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     protected void OnErrorsChanged(string propertyName)
     {
         HasErrors = parameterErrors.Any();
+        ValidationErrors = (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
 

@@ -316,6 +316,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Handlueftung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
+        ValidationDictionary.Add("var_Erkennungsweg",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Totzeit",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
+        ValidationDictionary.Add("var_Vdetektor",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+
         AddDropDownListValidation();
     }
 
@@ -948,7 +957,33 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             }
 
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
-            ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower());
+
+            if (htmlNodes is not null)
+            {
+                ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower());
+            }
+            else
+            {
+                ZliDataDictionary.Add("ElektrBremsenansteuerung", "false");
+            }
+
+            var detectionDistanceMeter = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
+            if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
+            {
+                ZliDataDictionary.Add("DetectionDistance", (Convert.ToDouble(detectionDistanceMeter.Replace("m", "").Trim(), CultureInfo.CurrentCulture) * 1000).ToString());
+            }
+
+            var deadTime = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
+            if (!string.IsNullOrWhiteSpace(deadTime))
+            {
+                ZliDataDictionary.Add("DeadTime", deadTime);
+            }
+
+            var vDetector = Convert.ToDouble(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
+            if (!string.IsNullOrWhiteSpace(vDetector))
+            {
+                ZliDataDictionary.Add("VDetector", vDetector);
+            }
 
             ZaHtmlCreationTime = lastWriteTime;
         }
@@ -966,8 +1001,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             "var_ElektrBremsenansteuerung" => "ElektrBremsenansteuerung",
             "var_Treibscheibegehaertet" => "Treibscheibe-RF",
             "var_Handlueftung" => "Bremse-Handlueftung",
+            "var_Erkennungsweg" => "DetectionDistance",
+            "var_Totzeit" => "DeadTime",
+            "var_Vdetektor" => "VDetector",
             _ => string.Empty,
-        };
+        } ;
 
         ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
 
@@ -1002,6 +1040,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
             "var_Handlueftung" => string.Equals(value, brakerelease, StringComparison.CurrentCultureIgnoreCase),
+            "var_Erkennungsweg" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_Totzeit" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+            "var_Vdetektor" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             _ => true,
         }; ;
 

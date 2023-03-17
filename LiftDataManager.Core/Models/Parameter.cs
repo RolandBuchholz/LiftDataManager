@@ -39,8 +39,6 @@ public partial class Parameter : ParameterBase
     public string? Name {get; set;}
     public string? DisplayName { get; set; }
     
-    public string? Errors => (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
-
     [ObservableProperty]
     public ObservableCollection<string> dropDownList = new();
 
