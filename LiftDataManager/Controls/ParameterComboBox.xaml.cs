@@ -36,10 +36,6 @@ public sealed partial class ParameterComboBox : UserControl
         }
     }
 
-    private readonly SolidColorBrush errorcolorBrush = new(Colors.IndianRed);
-    private readonly SolidColorBrush warningcolorBrush = new(Colors.Orange);
-    private readonly SolidColorBrush infocolorBrush = new(Colors.Gray);
-
     public Parameter? LiftParameter
     {
         get
@@ -55,7 +51,7 @@ public sealed partial class ParameterComboBox : UserControl
 
     private void SetParameterState(Parameter? liftParameter)
     {
-        ParameterInfoForeground = infocolorBrush;
+
         ErrorGlyph = string.Empty;
         ErrorType = string.Empty;
 
@@ -73,25 +69,13 @@ public sealed partial class ParameterComboBox : UserControl
 
             if (error is not null)
             {
-                switch (error.Severity)
+                ErrorGlyph = error.Severity switch
                 {
-                    case ParameterStateInfo.ErrorLevel.Informational:
-                        ParameterInfoForeground = infocolorBrush;
-                        ErrorGlyph = "\ue946";
-                        break;
-                    case ParameterStateInfo.ErrorLevel.Warning:
-                        ParameterInfoForeground = warningcolorBrush;
-                        ErrorGlyph = "\ue7ba";
-                        break;
-                    case ParameterStateInfo.ErrorLevel.Error:
-                        ParameterInfoForeground = errorcolorBrush;
-                        ErrorGlyph = "\ue730";
-                        break;
-                    default:
-                        ParameterInfoForeground = infocolorBrush;
-                        ErrorGlyph = string.Empty;
-                        break;
-                }
+                    ParameterStateInfo.ErrorLevel.Informational => "\ue946",
+                    ParameterStateInfo.ErrorLevel.Warning => "\ue7ba",
+                    ParameterStateInfo.ErrorLevel.Error => "\ue730",
+                    _ => string.Empty,
+                };
                 ErrorType = error.Severity.ToString();
             }
         }
@@ -114,15 +98,6 @@ public sealed partial class ParameterComboBox : UserControl
 
     public static readonly DependencyProperty HeaderProperty =
         DependencyProperty.Register("Header", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
-
-    public SolidColorBrush ParameterInfoForeground
-    {
-        get => (SolidColorBrush)GetValue(ParameterInfoForegroundProperty);
-        set => SetValue(ParameterInfoForegroundProperty, value);
-    }
-
-    public static readonly DependencyProperty ParameterInfoForegroundProperty =
-        DependencyProperty.Register("ParameterInfoForeground", typeof(SolidColorBrush), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     public string ErrorGlyph
     {

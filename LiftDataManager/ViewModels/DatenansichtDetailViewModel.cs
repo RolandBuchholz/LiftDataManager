@@ -8,9 +8,6 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
 {
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
     private Parameter? _item;
-    private readonly SolidColorBrush errorcolorBrush = new(Colors.IndianRed);
-    private readonly SolidColorBrush warningcolorBrush = new(Colors.Orange);
-    private readonly SolidColorBrush infocolorBrush = new(Colors.Gray);
 
     public Parameter? Item
     {
@@ -70,12 +67,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item.IsDirty = false;
     }
 
-    [ObservableProperty]
-    private SolidColorBrush? parameterInfoForeground;
-
     private void SetParameterState(Parameter? liftParameter)
     {
-        ParameterInfoForeground = infocolorBrush;
         ErrorsList.Clear();
 
         if (liftParameter is null)
@@ -98,19 +91,6 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
                 return;
 
             var sortedErrorList = errorList.OrderByDescending(p => p.Severity);
-            var error = sortedErrorList.FirstOrDefault();
-
-            if (error is not null)
-            {
-                ParameterInfoForeground = error.Severity switch
-                {
-                    ParameterStateInfo.ErrorLevel.Informational => infocolorBrush,
-                    ParameterStateInfo.ErrorLevel.Warning => warningcolorBrush,
-                    ParameterStateInfo.ErrorLevel.Error => errorcolorBrush,
-                    _ => infocolorBrush,
-                };
-            }
-
             foreach (var item in sortedErrorList)
             {
                 ErrorsList.Add(item);

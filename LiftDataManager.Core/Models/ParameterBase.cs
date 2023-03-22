@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections;
 using System.ComponentModel;
+using static LiftDataManager.Core.Models.ParameterStateInfo;
 
 namespace LiftDataManager.Core.Models;
 public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
@@ -59,6 +60,9 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     private bool hasErrors;
 
     [ObservableProperty]
+    private ErrorLevel parameterState;
+
+    [ObservableProperty]
     private string? validationErrors;
 
     public IEnumerable GetErrors(string? propertyName)
@@ -102,8 +106,35 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     protected void OnErrorsChanged(string propertyName)
     {
         HasErrors = parameterErrors.Any();
+        if (HasErrors)
+        {
+            SetParameterState(propertyName);
+        }
+        else
+        {
+            ParameterState = ErrorLevel.Valid;
+        }
+
         ValidationErrors = (GetErrors(null) != null) ? string.Join(Environment.NewLine, GetErrors(null).OfType<ParameterStateInfo>().Select(e => e.ErrorMessage)) : null;
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+    }
+
+    private void SetParameterState(string propertyName)
+    {
+        if (!string.Equals(propertyName, "Value")) return;
+        if (parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? valueErrorList))
+        {
+            if (valueErrorList is null)
+                return;
+            if (!valueErrorList.Any())
+                return;
+            var state = valueErrorList.OrderByDescending(p => p.Severity).FirstOrDefault();
+
+            if (state is not null)
+            {
+                ParameterState = state.Severity;
+            }  
+        }
     }
 
     protected static int GetSymbolCode(TypeCodeValue TypeCode)

@@ -12,6 +12,7 @@
 
     <Page.Resources>
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
+        <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <DataTemplate x:Key="ErrorItemTemplate" x:DataType="models:ParameterStateInfo">
             <InfoBar
                 Title="{x:Bind Severity}"
@@ -66,7 +67,7 @@
                             Width="200"
                             Height="200"
                             Margin="0,20,10,20"
-                            BorderBrush="{x:Bind ViewModel.ParameterInfoForeground, Mode=OneWay}"
+                            BorderBrush="{x:Bind ViewModel.Item.ParameterState,Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
                             BorderThickness="4"
                             CornerRadius="8"
                             Visibility="{x:Bind ViewModel.Item.HasErrors, Mode=OneWay}" />

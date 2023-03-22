@@ -41,22 +41,8 @@ public sealed partial class ParameterDetailControl : UserControl
         control?.ForegroundElement.ChangeView(0, 0, 1);
     }
 
-    private readonly SolidColorBrush errorcolorBrush = new(Colors.IndianRed);
-    private readonly SolidColorBrush warningcolorBrush = new(Colors.Orange);
-    private readonly SolidColorBrush infocolorBrush = new(Colors.Gray);
-
-    public SolidColorBrush ParameterInfoForeground
-    {
-        get => (SolidColorBrush)GetValue(ParameterInfoForegroundProperty);
-        set => SetValue(ParameterInfoForegroundProperty, value);
-    }
-
-    public static readonly DependencyProperty ParameterInfoForegroundProperty =
-        DependencyProperty.Register("ParameterInfoForeground", typeof(SolidColorBrush), typeof(ParameterComboBox), new PropertyMetadata(null));
-
     private void SetParameterState(Parameter? liftParameter)
     {
-        ParameterInfoForeground = infocolorBrush;
         ErrorsList.Clear();
 
         if (liftParameter is null) return;
@@ -75,19 +61,6 @@ public sealed partial class ParameterDetailControl : UserControl
             if (!errorList.Any()) return;
 
             var sortedErrorList = errorList.OrderByDescending(p => p.Severity);
-            var error = sortedErrorList.FirstOrDefault();
-
-            if (error is not null)
-            {
-                ParameterInfoForeground = error.Severity switch
-                {
-                    ParameterStateInfo.ErrorLevel.Informational => infocolorBrush,
-                    ParameterStateInfo.ErrorLevel.Warning => warningcolorBrush,
-                    ParameterStateInfo.ErrorLevel.Error => errorcolorBrush,
-                    _ => infocolorBrush,
-                };
-            }
-
             foreach (var item in sortedErrorList)
             {
                 ErrorsList.Add(item);

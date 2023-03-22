@@ -7,6 +7,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:models="using:LiftDataManager.Core.Models"
@@ -23,6 +24,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid x:Name="itemThumbnail" Padding="0,0,8,8">
                 <Border
@@ -30,7 +32,7 @@
                     Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                     CornerRadius="8" />
                 <Border
-                    BorderBrush="IndianRed"
+                    BorderBrush="{x:Bind ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}}"
                     BorderThickness="2"
                     CornerRadius="6"
                     Visibility="{x:Bind HasErrors}" />

@@ -11,6 +11,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
+        <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <converters:BoolToObjectConverter
             x:Key="BoolVisibilityNegationConverter"
             FalseValue="Visible"
@@ -57,9 +58,9 @@
                     <Border
                         Width="200"
                         Height="200"
-                        BorderBrush="{x:Bind ParameterInfoForeground, Mode=OneWay}"
+                        BorderBrush="{x:Bind ListDetailsMenuItem.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
                         BorderThickness="4"
-                        CornerRadius="12"
+                        CornerRadius="8"
                         Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
                     <FontIcon
                         HorizontalAlignment="Center"
