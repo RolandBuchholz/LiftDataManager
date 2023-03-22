@@ -4,10 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
         <converters:BoolToObjectConverter
             x:Key="BoolVisibilityNegationConverter"
             FalseValue="Visible"
@@ -20,6 +23,20 @@
             DropDownList="{StaticResource ParameterTypDropDownList}"
             NumberOnlyTemplate="{StaticResource ParameterTypNumberOnly}"
             StringTemplate="{StaticResource ParameterTypString}" />
+        <DataTemplate x:Key="ErrorItemTemplate" x:DataType="models:ParameterStateInfo">
+            <InfoBar
+                Title="{x:Bind Severity}"
+                Margin="0"
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Severity="{x:Bind Severity, Converter={StaticResource ParameterSeverityConverter}}">
+                <TextBlock
+                    Margin="0,-10,0,5"
+                    Text="{x:Bind ErrorMessage}"
+                    TextWrapping="WrapWholeWords" />
+            </InfoBar>
+        </DataTemplate>
     </UserControl.Resources>
     <ScrollViewer
         Name="ForegroundElement"
@@ -37,6 +54,13 @@
                     VerticalAlignment="Top"
                     Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                     CornerRadius="8">
+                    <Border
+                        Width="200"
+                        Height="200"
+                        BorderBrush="{x:Bind ParameterInfoForeground, Mode=OneWay}"
+                        BorderThickness="4"
+                        CornerRadius="12"
+                        Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
                     <FontIcon
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -100,11 +124,11 @@
                 <SymbolIcon
                     Margin="0,4"
                     HorizontalAlignment="Right"
-                    Foreground="Red"
+                    Foreground="IndianRed"
                     Symbol="ReportHacked"
                     Visibility="{x:Bind ListDetailsMenuItem.DefaultUserEditable, Converter={StaticResource BoolVisibilityNegationConverter}, Mode=OneWay}">
                     <ToolTipService.ToolTip>
-                        <TextBlock Foreground="Red">
+                        <TextBlock Foreground="IndianRed">
                             <Run
                                 FontSize="14"
                                 FontWeight="Bold"
@@ -120,25 +144,25 @@
                     FontWeight="Bold"
                     Style="{StaticResource AccentButtonStyle}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}">
-                <SymbolIcon
-                    Margin="10"
-                    Foreground="IndianRed"
-                    Symbol="ReportHacked" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="22"
-                    Foreground="IndianRed"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="Validierungsfehler" />
-            </StackPanel>
-            <TextBlock
-                Margin="10,0,0,0"
-                FontSize="18"
-                Foreground="IndianRed"
-                Style="{ThemeResource BodyTextBlockStyle}"
-                Text="{x:Bind ListDetailsMenuItem.ValidationErrors, Mode=OneWay}"
-                Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ListView Grid.Column="0" Header="Parameter History" />
+                <ListView
+                    Grid.Column="1"
+                    ItemTemplate="{StaticResource ErrorItemTemplate}"
+                    ItemsSource="{x:Bind ErrorsList, Mode=OneWay}">
+                    <ListView.Header>
+                        <TextBlock
+                            Margin="17,0,0,5"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="Parameter Status" />
+                    </ListView.Header>
+                </ListView>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

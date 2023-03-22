@@ -24,22 +24,54 @@
             FalseValue="Visible"
             TrueValue="Collapsed" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
-            <Grid Height="60">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <FontIcon
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    FontSize="32"
-                    Glyph="{x:Bind Symbol}" />
-                <StackPanel
-                    Grid.Column="1"
-                    Margin="{StaticResource SmallLeftMargin}"
-                    VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind Name, Converter={StaticResource ParameterNameConverter}}" />
-                    <TextBlock Style="{StaticResource ListSubTitleStyle}" Text="{x:Bind TypeCode}" />
+            <Grid x:Name="itemThumbnail" Padding="0,0,8,8">
+                <Border
+                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                    CornerRadius="8" />
+                <Border
+                    BorderBrush="IndianRed"
+                    BorderThickness="2"
+                    CornerRadius="6"
+                    Visibility="{x:Bind HasErrors}" />
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon
+                        Height="50"
+                        FontSize="40"
+                        Glyph="{x:Bind Symbol}" />
+                    <TextBlock
+                        Margin="{StaticResource XXSmallTopMargin}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{ThemeResource BodyTextStyle}"
+                        Text="{x:Bind DisplayName}"
+                        TextAlignment="Center"
+                        TextWrapping="WrapWholeWords" />
+                    <ToolTipService.ToolTip>
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                Text="Parameter:" />
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                FontSize="12"
+                                FontWeight="Normal"
+                                Text="{x:Bind DisplayName}" />
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                Text="Wert:" />
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                FontSize="12"
+                                FontWeight="Normal"
+                                Text="{x:Bind Value}" />
+                        </StackPanel>
+                    </ToolTipService.ToolTip>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -80,6 +112,7 @@
                 IsItemClickEnabled="True"
                 ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 ItemHeight="160"
+                ItemTemplate="{StaticResource ItemTemplate}"
                 ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
                 SelectionMode="None"
                 StretchContentForSingleRow="False">
@@ -115,38 +148,14 @@
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
                 </GridView.GroupStyle>
-                <controls:AdaptiveGridView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Parameter">
-                        <Grid
-                            x:Name="itemThumbnail"
-                            Padding="0,0,8,8"
-                            CornerRadius="10">
-                            <Border
-                                ui:Effects.Shadow="{StaticResource CommonShadow}"
-                                Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                                CornerRadius="8" />
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <FontIcon
-                                    Height="50"
-                                    FontSize="40"
-                                    Glyph="{x:Bind Symbol}" />
-                                <TextBlock
-                                    Margin="{StaticResource XXSmallTopMargin}"
-                                    HorizontalAlignment="Center"
-                                    Style="{ThemeResource BodyTextStyle}"
-                                    Text="{x:Bind DisplayName}" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </controls:AdaptiveGridView.ItemTemplate>
             </controls:AdaptiveGridView>
             <!--  InfoSidebarPanel  -->
             <speziControls:SidebarPanel
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,5,0,0"
-                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <!--  Footer  -->
         <speziControls:FooterControl

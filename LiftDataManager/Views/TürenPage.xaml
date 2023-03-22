@@ -71,37 +71,25 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türentyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türbezeichnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türenzulassung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid
                             x:Name="TuerTyp1"
                             Grid.Row="1"
-                            Margin="0,0,0,5">
+                            Margin="0,5,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
                                 <Border
                                     Grid.RowSpan="3"
@@ -155,14 +143,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türöffnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -197,30 +181,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türentyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türbezeichnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türenzulassung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_B'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_B'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -278,14 +250,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türöffnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -321,30 +289,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türentyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türbezeichnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türenzulassung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_C'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_C'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -402,14 +358,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türöffnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -445,30 +397,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türentyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türbezeichnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türenzulassung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_D'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_D'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -526,14 +466,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türöffnung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -589,14 +525,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Schachttür Oberfläche"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -608,7 +540,7 @@
                         <Grid
                             x:Name="SchachttuerenSchwellen"
                             Grid.Row="1"
-                            Margin="0,0,0,5">
+                            Margin="0,5,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -628,16 +560,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
+                                        Header="Anmerkungen Schachttürschwelle "
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'].Value, Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
@@ -837,14 +767,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Türantrieb"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -857,29 +783,21 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Lichtgitter"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Kabinentürverriegelung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid
                             x:Name="KabinentuerMaterial"
                             Grid.Row="1"
-                            Margin="0,0,0,5">
+                            Margin="0,5,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -899,14 +817,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Oberfläche"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -938,16 +852,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'].DropDownListValue, Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}" />
                                     <TextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
+                                        Margin="5,5,5,0"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'].Value, Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
@@ -1111,8 +1019,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"

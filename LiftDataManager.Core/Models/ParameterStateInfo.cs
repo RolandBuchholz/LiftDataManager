@@ -4,6 +4,7 @@ public class ParameterStateInfo
 {
     public enum ErrorLevel
     {
+        Valid,
         Informational,
         Warning,
         Error

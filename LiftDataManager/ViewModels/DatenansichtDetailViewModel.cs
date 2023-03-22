@@ -1,11 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
+    public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
     private Parameter? _item;
+    private readonly SolidColorBrush errorcolorBrush = new(Colors.IndianRed);
+    private readonly SolidColorBrush warningcolorBrush = new(Colors.Orange);
+    private readonly SolidColorBrush infocolorBrush = new(Colors.Gray);
 
     public Parameter? Item
     {
@@ -26,6 +31,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
+        ErrorsList ??= new();
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
@@ -64,6 +70,54 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item.IsDirty = false;
     }
 
+    [ObservableProperty]
+    private SolidColorBrush? parameterInfoForeground;
+
+    private void SetParameterState(Parameter? liftParameter)
+    {
+        ParameterInfoForeground = infocolorBrush;
+        ErrorsList.Clear();
+
+        if (liftParameter is null)
+            return;
+
+        if (!liftParameter.HasErrors)
+        {
+            ErrorsList.Add(new ParameterStateInfo(liftParameter.Name!, liftParameter.DisplayName!, true)
+            {
+                Severity = ParameterStateInfo.ErrorLevel.Valid,
+                ErrorMessage = "Keine Information, Warnungen oder Fehler vorhanden"
+            });
+        }
+
+        if (liftParameter.parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? errorList))
+        {
+            if (errorList is null)
+                return;
+            if (!errorList.Any())
+                return;
+
+            var sortedErrorList = errorList.OrderByDescending(p => p.Severity);
+            var error = sortedErrorList.FirstOrDefault();
+
+            if (error is not null)
+            {
+                ParameterInfoForeground = error.Severity switch
+                {
+                    ParameterStateInfo.ErrorLevel.Informational => infocolorBrush,
+                    ParameterStateInfo.ErrorLevel.Warning => warningcolorBrush,
+                    ParameterStateInfo.ErrorLevel.Error => errorcolorBrush,
+                    _ => infocolorBrush,
+                };
+            }
+
+            foreach (var item in sortedErrorList)
+            {
+                ErrorsList.Add(item);
+            }
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -72,6 +126,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         {
             var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
             Item = data.First(i => i.Name == (string)parameter);
+            SetParameterState(Item);
         }
     }
 

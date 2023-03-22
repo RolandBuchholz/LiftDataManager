@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:LiftDataManager.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -15,10 +14,10 @@
         </Grid.ColumnDefinitions>
         <Border
             Grid.Column="0"
-            Height="{Binding ElementName=cmb_Liftparameter, Path=ActualHeight}"
+            Height="{x:Bind BorderHeight, Mode=OneWay}"
             Margin="5,0,5,0"
             VerticalAlignment="Bottom"
-            BorderBrush="IndianRed"
+            BorderBrush="{x:Bind ParameterInfoForeground, Mode=OneWay}"
             BorderThickness="2"
             CornerRadius="4"
             Visibility="{x:Bind LiftParameter.HasErrors, Mode=OneWay}" />
@@ -30,23 +29,31 @@
             VerticalAlignment="Stretch"
             Header="{x:Bind Header}"
             ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
-            PlaceholderForeground="IndianRed"
+            PlaceholderForeground="{x:Bind ParameterInfoForeground, Mode=OneWay}"
             PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
             SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}" />
-        <SymbolIcon
+        <FontIcon
             Grid.Column="1"
             Margin="0,0,5,7"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Foreground="IndianRed"
-            Symbol="ReportHacked"
+            FontFamily="{StaticResource SymbolThemeFontFamily}"
+            Foreground="{x:Bind ParameterInfoForeground, Mode=OneWay}"
+            Glyph="{x:Bind ErrorGlyph, Mode=OneWay}"
             Visibility="{x:Bind LiftParameter.HasErrors, Mode=OneWay}">
             <ToolTipService.ToolTip>
-                <TextBlock
-                    Foreground="IndianRed"
-                    Text="{x:Bind LiftParameter.ValidationErrors, Mode=OneWay}"
-                    TextWrapping="WrapWholeWords" />
+                <StackPanel>
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{x:Bind ParameterInfoForeground, Mode=OneWay}"
+                        Text="{x:Bind ErrorType, Mode=OneWay}" />
+                    <TextBlock
+                        Foreground="{x:Bind ParameterInfoForeground, Mode=OneWay}"
+                        Text="{x:Bind LiftParameter.ValidationErrors, Mode=OneWay}"
+                        TextWrapping="WrapWholeWords" />
+                </StackPanel>
             </ToolTipService.ToolTip>
-        </SymbolIcon>
+        </FontIcon>
     </Grid>
 </UserControl>

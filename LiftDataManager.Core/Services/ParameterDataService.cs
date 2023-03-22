@@ -1,16 +1,9 @@
-﻿using System;
-using System.Xml;
-using System.Xml.Linq;
-using Cogs.Collections;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.Helpers;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
 
@@ -20,7 +13,7 @@ public partial class ParameterDataService : IParameterDataService
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
 
-    public ParameterDataService( IValidationParameterDataService validationParameterDataService, 
+    public ParameterDataService(IValidationParameterDataService validationParameterDataService,
                                  ParameterContext parametercontext, ILogger<ParameterDataService> logger)
     {
         _validationParameterDataService = validationParameterDataService;
@@ -30,14 +23,15 @@ public partial class ParameterDataService : IParameterDataService
 
     public bool CanConnectDataBase()
     {
-        if (!_parametercontext.Database.CanConnect()) return false;
+        if (!_parametercontext.Database.CanConnect())
+            return false;
         if (_parametercontext.Database.GetConnectionString() is not null)
         {
             return _parametercontext.Database.GetConnectionString()!.Contains("LiftDataParameter");
         }
         return false;
     }
-        
+
     public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
     {
         List<Parameter> parameterList = new();
@@ -95,14 +89,14 @@ public partial class ParameterDataService : IParameterDataService
     {
         XElement doc = XElement.Load(path);
         var TransferDataList = (from para in doc.Elements("parameters").Elements("ParamWithValue")
-             select new TransferData(
-                                  para.Element("name")!.GetAs<string>()!,
-                                  para.Element("value")!.GetAs<string>()!,
-                                  para.Element("comment")!.GetAs<string>()!,
-                                  para.Element("isKey")!.GetAs<bool>()))
+                                select new TransferData(
+                                                     para.Element("name")!.GetAs<string>()!,
+                                                     para.Element("value")!.GetAs<string>()!,
+                                                     para.Element("comment")!.GetAs<string>()!,
+                                                     para.Element("isKey")!.GetAs<bool>()))
                                   .ToList();
         await Task.CompletedTask;
-        _logger.LogInformation(60101, "Parameter from {path} loaded",path);
+        _logger.LogInformation(60101, "Parameter from {path} loaded", path);
         return TransferDataList;
     }
 
@@ -193,7 +187,7 @@ public partial class ParameterDataService : IParameterDataService
             }
             else
             {
-                _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name );
+                _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name);
                 infotext += $"----------\n";
                 infotext += $"Parameter: {parameter.Name} ist scheibgeschützt! \n";
                 infotext += $"Speichern nur im Adminmode möglich!\n";

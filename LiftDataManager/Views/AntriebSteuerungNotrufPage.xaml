@@ -70,18 +70,14 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Steuerungstyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Steuerungstyp'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Steuerungstyp'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Steuerungstyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,10,0"
-                                        Header="Steuerungstyp Zusatzinformationen"
+                                        Header="Steuerung Zusatzinformationen"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSteuerung'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
@@ -89,14 +85,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Steuerungstyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_XKnopfsteuerung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_XKnopfsteuerung'].DropDownListValue, Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_XKnopfsteuerung'], Mode=TwoWay}" />
                                     <StackPanel
                                         Grid.Column="1"
                                         Margin="5,0,10,0"
@@ -460,13 +449,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,5,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Stromanschluss'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Stromanschluss'].DropDownListValue, Mode=TwoWay}" />
+                                        Margin="0,0,5,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Stromanschluss'], Mode=TwoWay}" />
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,5,5,0"
@@ -508,22 +494,14 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Lage Schaltschrank"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_LageSchaltschrank'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_LageSchaltschrank'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_LageSchaltschrank'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Schaltschrankoberfläche"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankoberflaeche'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankoberflaeche'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankoberflaeche'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="2"
                                         Margin="5,0,10,0"
@@ -535,14 +513,10 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Schaltschrankgröße"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankgroesse'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankgroesse'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankgroesse'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -589,14 +563,10 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,1.75*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Antriebssytem"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Aggregat'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Aggregat'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Aggregat'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,10,0"
@@ -609,15 +579,11 @@
                                     Grid.Column="1"
                                     ColumnDefinitions="*,1.75*">
                                     <Grid Background="Transparent" IsHitTestVisible="True">
-                                        <ComboBox
+                                        <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Header="Antriebsart"
                                             IsHitTestVisible="False"
-                                            ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownList, Mode=OneWay}"
-                                            SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'].DropDownListValue, Mode=TwoWay}" />
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
@@ -650,14 +616,7 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,1.75*">
-                                    <ComboBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Handlüftung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'].DropDownListValue, Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
                                         <CheckBox
                                             Grid.Column="0"
@@ -886,14 +845,10 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="2*,*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Notruftyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Notruftyp'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Notruftyp'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Notruftyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <CheckBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
@@ -921,22 +876,14 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Notrufaufschaltung"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Notruf'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Notruf'].DropDownListValue, Mode=TwoWay}" />
-                                    <ComboBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Notruf'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,0,10,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Notruf Netz"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_NotrufNetz'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_NotrufNetz'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NotrufNetz'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Notruf1"
@@ -1002,13 +949,10 @@
                                         VerticalAlignment="Center"
                                         FontSize="16"
                                         Text="Notruftaster: Kabine / Dach / Schachtgrube" />
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Margin="5,5,10,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_NotruftasterKabineDachSG'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_NotruftasterKabineDachSG'].DropDownListValue, Mode=TwoWay}" />
+                                        Margin="0,5,5,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NotruftasterKabineDachSG'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>

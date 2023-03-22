@@ -14,6 +14,7 @@ public class ParameterSeverityConverter : IValueConverter
             ParameterStateInfo.ErrorLevel.Error => InfoBarSeverity.Error,
             ParameterStateInfo.ErrorLevel.Warning => InfoBarSeverity.Warning,
             ParameterStateInfo.ErrorLevel.Informational => InfoBarSeverity.Informational,
+            ParameterStateInfo.ErrorLevel.Valid => InfoBarSeverity.Success,
             _ => (object)InfoBarSeverity.Success,
         };
     }
