@@ -190,7 +190,7 @@ public partial class DataViewModelBase : ObservableRecipient
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
                                     $"Es sind keine Änderungen möglich!\n" +
                                     $"\n" +
-                                    $"Soll zur HomeAnsicht gewechselt werden um die Datei aus zu checken?",
+                                    $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {

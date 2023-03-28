@@ -241,16 +241,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         }
                         File.Delete(FullPathXml);
                     }
-                    AuftragsbezogeneXml = false;
-                    CanValidateAllParameter = false;
-                    SpezifikationName = string.Empty;
-                    CanLoadSpeziData = false;
-                    CanSaveAllSpeziParameters = false;
-                    CheckOut = false;
-                    LikeEditParameter = true;
-                    SpezifikationName = string.Empty;
-                    ParamterErrorDictionary?.Clear();
-                    HasErrors = false;
+                    ClearExpiredLiftData();
                     await LoadDataAsync();
                 }
                 else
@@ -282,19 +273,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     {
                         _logger.LogError(61037, "Delete Folder {spezifikationRootPath} failed", spezifikationRootPath);
                     }
-                    
-                }
 
-                AuftragsbezogeneXml = false;
-                CanValidateAllParameter = false;
-                CanLoadSpeziData = false;
-                CanSaveAllSpeziParameters = false;
-                CheckOut = false;
-                CanCheckOut = false;
-                LikeEditParameter = true;
-                SpezifikationName = string.Empty;
-                ParamterErrorDictionary?.Clear();
-                HasErrors = false;
+                }
+                ClearExpiredLiftData();
                 await LoadDataAsync();
             }
         }
@@ -321,13 +302,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
                 InfoSidebarPanelText += $"----------\n";
                 InfoSidebarPanelText += $"Standard Daten geladen\n";
-                AuftragsbezogeneXml = false;
-                CanValidateAllParameter = false;
-                CheckOut = false;
-                LikeEditParameter = true;
-                SpezifikationName = string.Empty;
-                ParamterErrorDictionary?.Clear();
-                HasErrors = false;
+                ClearExpiredLiftData();
                 await LoadDataAsync();
             }
             else
@@ -705,6 +680,23 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
     }
 
+    private void ClearExpiredLiftData()
+    {
+        AuftragsbezogeneXml = false;
+        CanValidateAllParameter = false;
+        CanLoadSpeziData = false;
+        CanSaveAllSpeziParameters = false;
+        CheckOut = false;
+        CanCheckOut = false;
+        LikeEditParameter = true;
+        SpezifikationName = string.Empty;
+        ParamterErrorDictionary?.Clear();
+        HasErrors = false;
+        CarWeight = 0;
+        CarDoorWeight = 0;
+        CarFrameWeight = 0;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -748,6 +740,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
+
+            if (parameter is null) return;
+            if (parameter.GetType().Equals(typeof(string)))
+            {
+                if (string.IsNullOrWhiteSpace(parameter as string)) return;
+
+                switch (parameter as string)
+                {
+                    case "CheckOut":
+                        if (CanCheckOut)
+                            CheckOutCommand.ExecuteAsync(parameter as string);
+                        break;
+                    default:
+                        return;
+                }
+            }  
         }
     }
 

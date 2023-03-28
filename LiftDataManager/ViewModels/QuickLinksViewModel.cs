@@ -1,8 +1,8 @@
 ﻿using HtmlAgilityPack;
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.XamlTypeInfo;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -53,6 +53,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private bool zAliftDataReadyForImport;
 
     [ObservableProperty]
+    private bool cFPDataReadyForImport;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
     private bool canOpenSpeziPdf;
 
@@ -81,11 +84,17 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private bool canOpenCFP;
 
     [ObservableProperty]
+    private bool canImportCFPData;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
     private bool canOpenLilo;
 
     [ObservableProperty]
     private string? exWorkStatus;
+
+    [ObservableProperty]
+    private string updatedParameter = string.Empty;
 
     public void CheckCanOpenFiles()
     {
@@ -228,12 +237,13 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanOpenCFP))]
-    private void OpenCFP()
+    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenCFP))]
+    private async Task OpenCFP(ContentDialog cFPEditDialog, CancellationToken token)
     {
         SynchronizeViewModelParameter();
         var startargs = string.Empty;
         var pathCFP = _settingService.PathCFP;
+        if (!File.Exists(pathCFP)) return;
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var bausatztyp = ParamterDictionary?["var_Bausatz"].Value;
         var shortSymbolDirveSystem = string.Empty;
@@ -244,13 +254,129 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + bausatztyp + " " + shortSymbolDirveSystem : string.Empty;
+            var identifierbausatztyp = !string.IsNullOrWhiteSpace(bausatztyp)? bausatztyp[..3] : string.Empty;
+            startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + identifierbausatztyp + " " + shortSymbolDirveSystem : string.Empty;
         }
 
-        if (File.Exists(pathCFP))
+        if (!CheckOut)
         {
-            StartProgram(pathCFP, startargs);
+            var checkOutResult = await CheckOutDialogAsync();
+            if (checkOutResult is null) return;
+            if ((bool)checkOutResult) return;
+            if (File.Exists(pathCFP))
+            {
+               StartProgram(pathCFP, startargs);
+            }
+            return;
         }
+
+        if (CanSaveAllSpeziParameters)
+        {
+            _ = _parameterDataService!.SaveAllParameterAsync(ParamterDictionary!, FullPathXml!, Adminmode);
+        }
+
+        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-AutoDeskTransfer.xml"));
+        ExWorkStatus = "CFP Auslegung wird bearbeitet";
+        CanImportCFPData = false;
+
+        var dialog = cFPEditDialog.ShowAsync();
+
+        using FileSystemWatcher watcher = new(Path.GetDirectoryName(FullPathXml)!);
+        watcher.IncludeSubdirectories = false;
+        watcher.EnableRaisingEvents = true;
+        watcher.Changed += OnChangedCFP;
+
+        if (!File.Exists(pathCFP))
+        {
+            watcher.Changed -= OnChangedCFP;
+            return;
+        }
+
+        using Process carFrameProgram = new();
+        carFrameProgram.StartInfo.UseShellExecute = true;
+        carFrameProgram.StartInfo.FileName = pathCFP;
+        carFrameProgram.StartInfo.Arguments = startargs;
+        carFrameProgram.Start();
+
+        bool exit = false;
+
+        while (!exit)
+        {
+            exit = _fromCFPwritten;
+            if (token.IsCancellationRequested)
+            {
+                exit = true;
+                watcher.Changed -= OnChangedCFP;
+                carFrameProgram.Kill(true);
+            }
+            await Task.Delay(50);
+        }
+
+        watcher.Changed -= OnChangedCFP;
+
+        var fromCFP = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "fromCFP.txt");
+        if (File.Exists(fromCFP)) File.Delete(fromCFP);
+        
+        CFPDataReadyForImport = _fromCFPwritten;
+        if (CFPDataReadyForImport) ExWorkStatus = "Daten zur Übernahme bereit";
+           
+        var result = await dialog;
+        if (result == ContentDialogResult.Primary)
+        {
+            var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
+            if (File.Exists(backupFileXml)) File.Delete(backupFileXml);
+
+            var updatedResult = await _parameterDataService!.SyncFromAutodeskTransferAsync(FullPathXml!, ParamterDictionary!);
+            if (updatedResult is not null)
+            {
+                if (updatedResult.Any())
+                {
+                    await _dialogService!.MessageDialogAsync("Aktualisierte Parameter", string.Join("\n", updatedResult.Select(x => x.ToString())));
+                } 
+            }
+        }
+        else
+        {
+           await _dialogService!.MessageDialogAsync("CarFrameProgram abgebrochen", 
+               "Achtung:\n" +
+               "Daten aus dem CarFrameProgram werden verworfen!\n" +
+               "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
+            try
+            {
+                var restoreFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-AutoDeskTransfer.xml");
+                FileInfo restoreFileXmlInfo = new(restoreFileXml);
+                if (restoreFileXmlInfo.IsReadOnly) return;
+                var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
+
+                if (File.Exists(backupFileXml))
+                {
+                    File.Move(backupFileXml, restoreFileXml, true);
+                    _logger.LogInformation(60192, "{restoreFileXml} restored from backupfile", restoreFileXml);
+                }
+                else
+                {
+                    _logger.LogError(61092, "no backupfile found, restoring Autodesktransfer.xml failed");
+                }
+            }   
+            catch (Exception)
+            {
+
+                _logger.LogError(61092, "restoring Autodesktransfer.xml failed");
+            }
+
+        }
+
+
+    }
+
+    private bool _fromCFPwritten;
+
+    private void OnChangedCFP(object sender, FileSystemEventArgs e)
+    {
+        if (e.ChangeType != WatcherChangeTypes.Changed) return;
+        if (e.Name == "fromCFP.txt") _fromCFPwritten = true;
+
+        Debug.WriteLine($"Changed: {e.FullPath}");
     }
 
     [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenZALift))]
@@ -260,6 +386,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _ = SetModelStateAsync();
         var startargs = "StartLAST";
         var pathZALift = _settingService.PathZALift;
+        if (!File.Exists(pathZALift)) return;
         bool noEditMode = false;
         ZAliftAusUpdated = false;
         _zAliftAusUpdated = false;
@@ -267,35 +394,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _zAliftHtmlUpdated = false;
         zAliftRegEditSuccessful = false;
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
-        if (!File.Exists(pathZALift)) return;
-
+        
         if (!CheckOut)
         {
-            var message = """
-                Die Auslegung ist aktuell nicht ausgecheckt!
-
-                Auschecken:            Bearbeitung und Datenübernahme möglich
-                                                (Wechsel zur Homeansicht um Auschecken)
-                Nicht Auschecken:  Keine Datenübernahme möglich
-                Abbrechen:             Zurück zu LiftDataManager
-                """;
-            var checkOutResult = await _dialogService!.ConfirmationDialogAsync("Ziehl Abegg Auslegungsbearbeitung", message, "Auschecken", "Nicht Auschecken", "Abbrechen");
-            if (checkOutResult != null)
-            {
-                if ((bool)checkOutResult)
-                {
-                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
-                    return;
-                }
-                else
-                {
-                    noEditMode = true;
-                }
-            }
-            else
-            {
-                return;
-            }
+            var checkOutResult = await CheckOutDialogAsync();
+            if (checkOutResult is null) return;
+            if ((bool)checkOutResult) return;
+                
+            noEditMode = true;
         }
 
         if (CanSaveAllSpeziParameters)
@@ -351,6 +457,12 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         watcher.EnableRaisingEvents = true;
         watcher.Changed += OnChanged;
 
+        if (!File.Exists(pathZALift))
+        {
+            watcher.Changed -= OnChanged;
+            return;
+        }
+
         using Process zaLift = new();
         zaLift.StartInfo.UseShellExecute = true;
         zaLift.StartInfo.FileName = pathZALift;
@@ -395,10 +507,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 }
                 File.Delete(restoreFileHtml);
                 var restoreFileAus = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".aus");
-                FileInfo restoreFileHtmlAus = new(restoreFileAus);
-                if (restoreFileHtmlAus.IsReadOnly)
+                FileInfo restoreFileAusInfo = new(restoreFileAus);
+                if (restoreFileAusInfo.IsReadOnly)
                 {
-                    restoreFileHtmlAus.IsReadOnly = false;
+                    restoreFileAusInfo.IsReadOnly = false;
                 }
                 File.Delete(restoreFileAus);
                 File.Move(Path.Combine(Path.GetDirectoryName(restoreFileHtml)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(restoreFileHtml)), restoreFileHtml);
@@ -417,7 +529,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
             var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
             _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
-
         }
     }
 
@@ -747,6 +858,35 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         p.Start();
         await p.WaitForExitAsync();
         return p.ExitCode;
+    }
+
+    private async Task<bool?> CheckOutDialogAsync()
+    {
+        var message = """
+                Die Auslegung ist aktuell nicht ausgecheckt!
+
+                Auschecken:            Bearbeitung und Datenübernahme möglich
+                                                (Wechsel zur Homeansicht um Auschecken)
+                Nicht Auschecken:  Keine Datenübernahme möglich
+                Abbrechen:             Zurück zu LiftDataManager
+                """;
+        var checkOutResult = await _dialogService!.ConfirmationDialogAsync("Auslegungsbearbeitung", message, "Auschecken", "Nicht Auschecken", "Abbrechen");
+        if (checkOutResult != null)
+        {
+            if ((bool)checkOutResult)
+            {
+                _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel", "CheckOut");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private static void MakeVaultLink(string path, string objectType)

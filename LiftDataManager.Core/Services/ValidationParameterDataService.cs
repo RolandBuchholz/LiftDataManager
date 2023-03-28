@@ -694,12 +694,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_TB_B"].Value = string.Empty;
-            ParamterDictionary["var_TH_B"].Value = string.Empty;
-            ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
-            ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_B"].DropDownListValue)) ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_B"].Value)) ParamterDictionary["var_TB_B"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_B"].Value)) ParamterDictionary["var_TH_B"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_B"].Value)) ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauB"].Value)) ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
         }
 
         if (zugangC)
@@ -712,12 +712,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_TB_C"].Value = string.Empty;
-            ParamterDictionary["var_TH_C"].Value = string.Empty;
-            ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
-            ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_C"].DropDownListValue)) ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_C"].Value)) ParamterDictionary["var_TB_C"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_C"].Value)) ParamterDictionary["var_TH_C"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_C"].Value)) ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauC"].Value)) ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
         }
 
         if (zugangD)
@@ -730,12 +730,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_TB_D"].Value = string.Empty;
-            ParamterDictionary["var_TH_D"].Value = string.Empty;
-            ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
-            ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_D"].DropDownListValue)) ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_D"].Value)) ParamterDictionary["var_TB_D"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_D"].Value)) ParamterDictionary["var_TH_D"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_D"].Value)) ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauD"].Value)) ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
         }
     }
 

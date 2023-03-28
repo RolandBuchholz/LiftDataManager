@@ -3,6 +3,7 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
@@ -98,7 +99,7 @@ public partial class ParameterDataService : IParameterDataService
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from {path} loaded", path);
         return TransferDataList;
-    }
+   }
 
     public async Task<string> SaveParameterAsync(Parameter parameter, string path)
     {
@@ -251,6 +252,25 @@ public partial class ParameterDataService : IParameterDataService
 
         await Task.CompletedTask;
         return true;
+    }
+
+    public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary)
+    {
+        List<string> syncedParameter = new(); 
+        var updatedAutodeskTransfer = await LoadParameterAsync(path);
+
+        foreach (var param in updatedAutodeskTransfer)
+        {
+            if (paramterDictionary.TryGetValue(param.Name, out var dictionary))
+            {
+                if (dictionary.Value != param.Value)
+                {
+                    paramterDictionary[dictionary.Name!].Value = param.Value;
+                    syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
+                }
+            }
+        }
+        return syncedParameter;
     }
 
     [LoggerMessage(60104, LogLevel.Information,

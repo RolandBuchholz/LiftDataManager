@@ -5,6 +5,7 @@
     xmlns:collections="using:CommunityToolkit.Common.Collections"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
@@ -15,12 +16,20 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <Border
+                    Grid.ColumnSpan="2"
+                    Margin="-12,2,-10,2"
+                    BorderBrush="{x:Bind ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}}"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    Visibility="{x:Bind HasErrors, Mode=OneWay}" />
                 <FontIcon
                     Grid.Column="0"
                     VerticalAlignment="Center"
@@ -109,8 +118,8 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,5,0,0"
-                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+                ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <!--  Footer  -->
         <speziControls:FooterControl

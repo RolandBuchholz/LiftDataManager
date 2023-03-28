@@ -245,8 +245,8 @@
                         Grid.Row="0"
                         Grid.Column="2"
                         Margin="0,0,5,0"
-                        ShowDefaultHeader="True"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'], Mode=TwoWay}" />
+                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'], Mode=TwoWay}"
+                        ShowDefaultHeader="True" />
                     <CalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="0"

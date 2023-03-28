@@ -1,8 +1,4 @@
-﻿using Microsoft.UI.Composition;
-using Microsoft.UI.Xaml.Input;
-using System.Numerics;
-
-namespace LiftDataManager.Controls;
+﻿namespace LiftDataManager.Controls;
 
 public sealed partial class SidebarPanel : UserControl
 {

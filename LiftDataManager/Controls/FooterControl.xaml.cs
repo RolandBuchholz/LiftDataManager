@@ -1,11 +1,14 @@
 ﻿using Cogs.Collections;
+using LiftDataManager.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl
 {
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
+
 
     public FooterControl()
     {
@@ -15,10 +18,23 @@ public sealed partial class FooterControl : UserControl
         ErrorsList ??= new();
     }
 
+    public ParameterStateInfo? SelectedError { get; set; }
+
     [RelayCommand]
     private async Task ErrorDialogAsync()
     {
         await DetailErrorDialog?.ShowAsync();
+    }
+
+    [RelayCommand]
+    private void NavigateToError()
+    {
+        if (SelectedError is not null)
+        {
+            DetailErrorDialog.Hide();
+            var nav = App.GetService<INavigationService>();
+            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", SelectedError.Name);
+        }
     }
 
     private void OnLoadFooterControl(object sender, RoutedEventArgs e)
