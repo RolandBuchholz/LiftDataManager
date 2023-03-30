@@ -107,6 +107,8 @@
             <ContentControl
                 Margin="0,10,0,0"
                 HorizontalContentAlignment="Stretch"
+                LostFocus="ContentControl_LostFocus"
+                
                 Content="{x:Bind ListDetailsMenuItem, Mode=OneWay}"
                 ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
             <TextBox

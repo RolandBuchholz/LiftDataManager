@@ -3,7 +3,7 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Helpers;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
@@ -13,6 +13,7 @@ public partial class ParameterDataService : IParameterDataService
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
+    private readonly string user;
 
     public ParameterDataService(IValidationParameterDataService validationParameterDataService,
                                  ParameterContext parametercontext, ILogger<ParameterDataService> logger)
@@ -20,6 +21,7 @@ public partial class ParameterDataService : IParameterDataService
         _validationParameterDataService = validationParameterDataService;
         _parametercontext = parametercontext;
         _logger = logger;
+        user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\","");
     }
 
     public bool CanConnectDataBase()
@@ -31,6 +33,36 @@ public partial class ParameterDataService : IParameterDataService
             return _parametercontext.Database.GetConnectionString()!.Contains("LiftDataParameter");
         }
         return false;
+    }
+
+    private bool ValidatePath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            _logger.LogError(61001, "Path is null or whiteSpace");
+            return false;
+        }
+
+        if (!path.StartsWith("C:\\Work"))
+        {
+            _logger.LogError(61001, "Path is not in workspace", path);
+            return false;
+        }
+
+        if (!path.EndsWith("AutoDeskTransfer.xml"))
+        {
+            _logger.LogError(61001, "Path is not a AutoDeskTransfer.xml", path);
+            return false;
+        }
+
+        FileInfo AutoDeskTransferInfo = new(path);
+        if (AutoDeskTransferInfo.IsReadOnly)
+        {
+            _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
+            return false;
+        }
+
+        return true;
     }
 
     public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
@@ -103,11 +135,10 @@ public partial class ParameterDataService : IParameterDataService
 
     public async Task<string> SaveParameterAsync(Parameter parameter, string path)
     {
-        FileInfo AutoDeskTransferInfo = new(path);
-        if (AutoDeskTransferInfo.IsReadOnly)
+        if (!ValidatePath(path))
         {
-            _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
-            return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
+            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild" , path);
+            return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
         }
 
         string infotext;
@@ -127,6 +158,7 @@ public partial class ParameterDataService : IParameterDataService
             xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
             xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
             LogSavedParameter(parameter.DisplayName!, parameter.Value!);
+            await AddParameterToHistoryAsync(parameter.Name!, parameter.DisplayName!, parameter.Value!, parameter.Comment!, path);
             infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
             infotext += $"----------\n";
         }
@@ -140,23 +172,20 @@ public partial class ParameterDataService : IParameterDataService
         doc.Save(path);
         await Task.CompletedTask;
 
-
         return infotext;
     }
 
     public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode)
     {
-        FileInfo AutoDeskTransferInfo = new(path);
-        if (AutoDeskTransferInfo.IsReadOnly)
+        if (!ValidatePath(path))
         {
-            _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
-            return $"AutoDeskTransferXml schreibgeschützt kein speichern möglich.\n";
+            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
+            return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
         }
 
         var infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
 
         XElement doc = XElement.Load(path);
-
         var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);
 
         foreach (var parameter in unsavedParameter)
@@ -177,6 +206,7 @@ public partial class ParameterDataService : IParameterDataService
                     xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
                     parameter.IsDirty = false;
                     LogSavedParameter(parameter.DisplayName!, parameter.Value!);
+                    await AddParameterToHistoryAsync(parameter.Name!, parameter.DisplayName!, parameter.Value!, parameter.Comment!, path);
                     infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
 
                 }
@@ -200,6 +230,26 @@ public partial class ParameterDataService : IParameterDataService
         await Task.CompletedTask;
         infotext += $"----------\n";
         return infotext;
+    }
+
+    private async Task AddParameterToHistoryAsync(string name, string displayName, string value, string comment, string path)
+    {
+        var historyPath = path.Replace("AutoDeskTransfer.xml", "LiftHistory.json");
+
+        if (Path.Exists(historyPath))
+        {
+            FileInfo LiftHistoryInfo = new(historyPath);
+            if (LiftHistoryInfo.IsReadOnly)
+            {
+                _logger.LogError(61101, "Logging failed LiftHistory is readonly");
+                return;
+            }
+        }
+
+        LiftHistoryEntry entry = new(name, displayName, value, user, comment);
+
+        using var writer = new StreamWriter(historyPath, true);
+        await writer.WriteLineAsync(JsonSerializer.Serialize(entry)).ConfigureAwait(false);
     }
 
     public async Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos)

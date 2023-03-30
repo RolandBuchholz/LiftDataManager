@@ -34,6 +34,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
     {
         CheckIsDirty((Parameter?)sender);
+        SetParameterState((Parameter?)sender);
     }
 
     private void CheckIsDirty(Parameter? Item)

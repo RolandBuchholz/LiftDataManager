@@ -79,6 +79,7 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double KabinentuerGewichtC => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_C");
     public double KabinentuerGewichtD => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht_D");
     public double Bodenblech => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenblech");
+    public double BodengewichtProQM => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_SonderExternBodengewicht");
     public double BodenProfilGewicht => Math.Round(GetGewichtBodenprofil(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BoPr")), 2);
 
     public double KabinenBodengewichtStandard => Kabinenbreite * Kabinentiefe * 59 / Math.Pow(10, 6);
@@ -95,7 +96,8 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
             "standard" => KabinenBodengewichtStandard,
             "verstärkt" => KabinenBodengewichtVerstaerkt,
             "standard mit Wanne" => KabinenBodengewichtStandardMitWanne,
-            "extern" => 0,
+            "sonder" => Kabinenbreite * Kabinentiefe * BodengewichtProQM / Math.Pow(10, 6),
+            "extern" => Kabinenbreite * Kabinentiefe * BodengewichtProQM / Math.Pow(10, 6),
             _ => 0,
         };
 
@@ -195,10 +197,11 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
                                      ? (Kabinentiefe - Convert.ToInt32(ZugangD) * Tuerbreite) / 1000 : 0;
     public string VSGTyp => (GlasLaengeWandA > 1 || GlasLaengeWandB > 1 || GlasLaengeWandC > 1 || GlasLaengeWandD > 1) ? "VSG 12" : "VSG 10";
     public double VSGGewichtproQm => (VSGTyp == "VSG 10") ? 25.0 : 30.0;
-    public double VSGQm => ((GlasLaengeWandA > 0.1 ? GlasLaengeWandA - 0.1 : 0) +
-                                       (GlasLaengeWandB > 0.1 ? GlasLaengeWandB - 0.1 : 0) +
-                                       (GlasLaengeWandC > 0.1 ? GlasLaengeWandC - 0.1 : 0) +
-                                       (GlasLaengeWandD > 0.1 ? GlasLaengeWandD - 0.1 : 0)) * (KabineundAbgehaengteDeckeHoehe > 0 ? (KabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
+    public double VSGQm => ((GlasLaengeWandA > 0.15 ? GlasLaengeWandA - 0.15 : 0) +
+                                       (GlasLaengeWandB > 0.15 ? GlasLaengeWandB - 0.15 : 0) +
+                                       (GlasLaengeWandC > 0.15 ? GlasLaengeWandC - 0.15 : 0) +
+                                       (GlasLaengeWandD > 0.15 ? GlasLaengeWandD - 0.15 : 0)) -
+                                        TableauBreite * (KabineundAbgehaengteDeckeHoehe > 0 ? (KabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
     public double VSGGewicht => VSGQm * VSGGewichtproQm;
 
     public double AussenVerkleidungGewichtproQm => gewichtAussenVerkleidung;

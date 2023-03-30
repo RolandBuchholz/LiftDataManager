@@ -5,7 +5,11 @@ namespace LiftDataManager.Controls;
 
 public sealed partial class ParameterDetailControl : UserControl
 {
-    public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
+    public ObservableCollection<ParameterStateInfo> ErrorsList 
+    {
+        get;
+        set; 
+    }
 
     public ParameterDetailControl()
     {
@@ -66,5 +70,11 @@ public sealed partial class ParameterDetailControl : UserControl
                 ErrorsList.Add(item);
             }
         } 
+    }
+
+    private void ContentControl_LostFocus(object sender, RoutedEventArgs e)
+    {
+        var liftparameter = GetValue(ListDetailsMenuItemProperty) as Parameter;
+        SetParameterState(liftparameter);
     }
 }

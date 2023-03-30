@@ -325,6 +325,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Vdetektor",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
+        ValidationDictionary.Add("var_Schacht",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateShaftWalls, "Informational", null) });
+
         AddDropDownListValidation();
     }
 
@@ -525,7 +528,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelag");
         double bodenBlech = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenblech");
         double bodenBelagHoehe = GetFlooringHeight(bodenBelag);
-        double bodenHoehe = 0;
+        double bodenHoehe = -1;
 
         switch (bodentyp)
         {
@@ -543,9 +546,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 bodenHoehe = 85;
                 break;
+            case "sonder":
+                ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                bodenHoehe = -1;
+                break;
             case "extern":
                 ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
                 ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                bodenHoehe = -1;
                 break;
             default:
                 ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
@@ -554,7 +563,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
 
         ParamterDictionary["var_Bodenbelagsgewicht"].Value = GetFloorWeight(bodenBelag);
-        ParamterDictionary["var_KU"].Value = Convert.ToString(bodenHoehe + bodenBelagHoehe);
+        if (bodenHoehe != -1)
+        {
+            ParamterDictionary["var_KU"].Value = Convert.ToString(bodenHoehe + bodenBelagHoehe);
+        }
         ParamterDictionary["var_Bodenbelagsdicke"].Value = Convert.ToString(bodenBelagHoehe);
 
         double GetFloorProfilHeight(string bodenProfil)
@@ -835,7 +847,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             if (Math.Abs(Convert.ToInt16(value)) > 10)
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname} ist überschreitet +-10 kg überprüfen Sie die Eingabe", SetSeverity(severity)));
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname} ist größer +-10 kg überprüfen Sie die Eingabe", SetSeverity(severity)));
             }
         }
         catch (Exception)
@@ -1061,6 +1073,17 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         else
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
+    }
+
+    private void ValidateShaftWalls(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (value is null) return;
+
+        if (string.Equals(value, "Holz"))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Achtung: Holzschacht - LBO und Türzulassung beachten!\n" +
+                $"Schienenbügelbefestigung muß durch bauseitigem Statiker erfolgen!", SetSeverity(severity)));
         }
     }
 }

@@ -857,16 +857,25 @@
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        Header="Kabinenbodenhöhe"
-                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'extern') ,Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay}" />
+                                        Header="Kabinenbodenhöhe (inkl. Bodenbelag)"
+                                        IsEnabled="{x:Bind ViewModel.CanEditFloorWeightAndHeight, Mode=OneWay}"
+                                        LostFocus="{x:Bind ViewModel.CarFloor_LostFocus, Mode=OneWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock FontSize="14" Text="Info:" />
+                                                <TextBlock Text="Bodenhöhe ohne Belag eingeben." TextWrapping="WrapWholeWords" />
+                                                <TextBlock Text="Belag wird automatisch hinzugefügt." TextWrapping="WrapWholeWords" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine11"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,2*">
+                                    ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
@@ -874,35 +883,26 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        IsEnabled="False"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Sonderbleche'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True">
-                                        <ToolTipService.ToolTip>
-                                            <TextBlock
-                                                Margin="5,5,5,10"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
-                                                FontWeight="Bold"
-                                                Text="Auswahl Sonderbleche über Bodenbelag" />
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterComboBox>
+                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BoPr'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        Header="Gewicht pro m² (Sonder- oder externem Boden)"
+                                        IsEnabled="{x:Bind ViewModel.CanEditFloorWeightAndHeight, Mode=OneWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonderExternBodengewicht'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine12"
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,2*">
-                                    <SpeziControls:ParameterComboBox
-                                        Grid.Column="0"
-                                        IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BoPr'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                    ColumnDefinitions="*">
                                     <TextBox
-                                        Grid.Column="1"
+                                        Grid.Column="0"
                                         Margin="5,0,5,0"
-                                        Header="Bodenprofil Zusatzinformationen"
+                                        Header="Boden Zusatzinformationen"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenprofil_ZT'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid

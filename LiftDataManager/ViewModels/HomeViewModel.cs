@@ -56,6 +56,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private double carWeight;
 
     [ObservableProperty]
+    private bool showCarWeightBorder;
+
+    [ObservableProperty]
     private string? spezifikationStatusTyp;
     partial void OnSpezifikationStatusTypChanged(string? value)
     {
@@ -645,6 +648,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CarDoorWeight = carWeightRequestMessageMessageResult.KabinenTuerenGewicht;
             CarFrameWeight = carWeightRequestMessageMessageResult.FangrahmenGewicht;
             CarWeight = carWeightRequestMessageMessageResult.KabinenGewicht;
+            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value);
         }
         await Task.CompletedTask;
     }
@@ -690,11 +694,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CanCheckOut = false;
         LikeEditParameter = true;
         SpezifikationName = string.Empty;
+        ShowCarWeightBorder = false;
         ParamterErrorDictionary?.Clear();
         HasErrors = false;
         CarWeight = 0;
         CarDoorWeight = 0;
         CarFrameWeight = 0;
+        
     }
 
     public void OnNavigatedTo(object parameter)
