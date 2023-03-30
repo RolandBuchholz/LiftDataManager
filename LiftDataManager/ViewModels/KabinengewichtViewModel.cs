@@ -200,8 +200,9 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double VSGQm => ((GlasLaengeWandA > 0.15 ? GlasLaengeWandA - 0.15 : 0) +
                                        (GlasLaengeWandB > 0.15 ? GlasLaengeWandB - 0.15 : 0) +
                                        (GlasLaengeWandC > 0.15 ? GlasLaengeWandC - 0.15 : 0) +
-                                       (GlasLaengeWandD > 0.15 ? GlasLaengeWandD - 0.15 : 0)) -
-                                        TableauBreite * (KabineundAbgehaengteDeckeHoehe > 0 ? (KabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
+                                       (GlasLaengeWandD > 0.15 ? GlasLaengeWandD - 0.15 : 0) -
+                                       ((GlasLaengeWandA + GlasLaengeWandB + GlasLaengeWandC + GlasLaengeWandD) > ((TableauBreite + 150) / 1000) ? (TableauBreite + 150) / 1000 : 0))
+                                       * (KabineundAbgehaengteDeckeHoehe > 0 ? (KabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
     public double VSGGewicht => VSGQm * VSGGewichtproQm;
 
     public double AussenVerkleidungGewichtproQm => gewichtAussenVerkleidung;
