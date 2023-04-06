@@ -7,6 +7,7 @@ namespace LiftDataManager.ViewModels;
 public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
+    public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
     private Parameter? _item;
 
     public Parameter? Item
@@ -64,8 +65,17 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
-        if (Item != null)
+        if (Item is not null)
+        {
             Item.IsDirty = false;
+            ParameterHistoryEntrys.Add(_parameterDataService.GenerateLiftHistoryEntry(Item));
+            var sortedHistoryEntrys = ParameterHistoryEntrys.OrderByDescending(o => o.TimeStamp).ToList();
+            ParameterHistoryEntrys.Clear();
+            foreach ( var entry in sortedHistoryEntrys)
+            {
+                ParameterHistoryEntrys.Add(entry);
+            }  
+        }
     }
 
     private void SetParameterState(Parameter? liftParameter)
@@ -99,6 +109,21 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         }
     }
 
+    private async Task GetHistoryEntrysAsync(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return;
+        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path);
+        if (result is not null && Item is not null)
+        {
+            foreach (var item in result.Where(x => x.Name == Item.Name).OrderByDescending(x => x.TimeStamp))
+            {
+                if (item is not null)
+                    ParameterHistoryEntrys.Add(item);
+            }
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -109,6 +134,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item = data.First(i => i.Name == (string)parameter);
             SetParameterState(Item);
         }
+        _ = GetHistoryEntrysAsync(FullPathXml);
     }
 
     public void OnNavigatedFrom()

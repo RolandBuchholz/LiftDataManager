@@ -78,6 +78,8 @@ public partial class App : Application
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
 
             // Views and ViewModels
+            services.AddTransient<LiftHistoryViewModel>();
+            services.AddTransient<LiftHistoryPage>();
             services.AddTransient<DataBaseEditViewModel>();
             services.AddTransient<DataBaseEditPage>();
             services.AddTransient<ErrorViewModel>();

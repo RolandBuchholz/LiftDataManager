@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.Models;
 
-internal class LiftHistoryEntry
+public class LiftHistoryEntry
 {
     public string Name { get; set; }
     public string DisplayName { get; set; }

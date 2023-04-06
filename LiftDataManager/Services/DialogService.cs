@@ -186,6 +186,56 @@ public class DialogService : IDialogService
     }
 
     /// <summary>
+    /// Opens a modal message Inputdialog.
+    /// </summary>
+    /// <param name="title">The title.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="textBoxName">Header.</param>
+    /// <returns>Task.</returns>
+
+    public async Task<string?> InputDialogAsync(string title, string message, string textBoxName)
+    {
+        var textresult = new TextBox
+        {
+            Text = string.Empty,
+            Header = textBoxName,
+            MinHeight = 62,
+            Margin = new Thickness(0, 10, 0, 10),
+            FontSize = 12,
+            AcceptsReturn = true,
+            HorizontalAlignment = HorizontalAlignment.Stretch, 
+            VerticalAlignment = VerticalAlignment.Stretch
+        };
+
+        var mainPanel = new StackPanel();
+        mainPanel.Children.Add(new TextBlock
+        {
+            Margin = new Thickness(0, 10, 0, 0),
+            Text = message,
+            TextWrapping = TextWrapping.Wrap,
+        });
+        mainPanel.Children.Add(textresult);
+
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = mainPanel,
+            PrimaryButtonText = "OK",
+            SecondaryButtonText = "Abbrechen",
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return null;
+        }
+
+        return textresult.Text;
+    }
+
+    /// <summary>
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="downloadResult">The title.</param>

@@ -328,6 +328,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Schacht",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateShaftWalls, "Informational", null) });
 
+        ValidationDictionary.Add("var_Rammschutz",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateRammingProtections, "Informational", null) });
+
         AddDropDownListValidation();
     }
 
@@ -490,6 +493,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
+    private void ValidateRammingProtections(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (value is null)
+            return;
+        if (value == "Rammschutz siehe Beschreibung")
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Rammschutz |{value}| muss das Gewicht über das Kabinenkorrekturgewicht mitgegeben werden!", SetSeverity(severity)));
+        }
+    }
+
     private void ValidateTravel(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
@@ -538,6 +551,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 break;
             case "verstärkt":
+                if (bodenBlech <= 0) SetDefaultReinforcedFloor(name);
+                if (string.IsNullOrWhiteSpace(bodenProfil)) SetDefaultReinforcedFloor(name);
+                if (bodenBlech == 3 && bodenProfil == "80 x 40 x 3") SetDefaultReinforcedFloor(name);
                 double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
                 break;
@@ -605,6 +621,17 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             if (boden is null)
                 return 0;
             return (double)boden.Thickness!;
+        }
+
+        void SetDefaultReinforcedFloor(string name)
+        {
+            ParamterDictionary["var_Bodenblech"].DropDownListValue = "3";
+            ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 50 x 5";
+            if (name == "var_BoPr")
+            {
+                ParamterDictionary["var_BoPr"].DropDownList.Add("Refresh");
+                ParamterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
+            } 
         }
     }
 

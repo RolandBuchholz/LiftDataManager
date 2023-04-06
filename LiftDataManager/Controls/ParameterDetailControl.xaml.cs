@@ -5,11 +5,7 @@ namespace LiftDataManager.Controls;
 
 public sealed partial class ParameterDetailControl : UserControl
 {
-    public ObservableCollection<ParameterStateInfo> ErrorsList 
-    {
-        get;
-        set; 
-    }
+    public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
 
     public ParameterDetailControl()
     {
@@ -29,6 +25,15 @@ public sealed partial class ParameterDetailControl : UserControl
     }
     public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(Parameter), typeof(ParameterDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
+    public ObservableCollection<LiftHistoryEntry> LiftHistoryEntrys
+    {
+        get => (ObservableCollection<LiftHistoryEntry>)GetValue(LiftHistoryEntrysProperty);
+        set => SetValue(LiftHistoryEntrysProperty, value);
+    }
+
+    public static readonly DependencyProperty LiftHistoryEntrysProperty =
+        DependencyProperty.Register("LiftHistoryEntrys", typeof(ObservableCollection<LiftHistoryEntry>), typeof(ParameterDetailControl), new PropertyMetadata(null));
+
     public ICommand SaveCommand
     {
         get => (ICommand)GetValue(SaveCommandProperty);
@@ -37,7 +42,6 @@ public sealed partial class ParameterDetailControl : UserControl
 
     public static readonly DependencyProperty SaveCommandProperty =
         DependencyProperty.Register("SaveCommand", typeof(ICommand), typeof(ParameterDetailControl), new PropertyMetadata(null));
-
 
     private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -69,7 +73,7 @@ public sealed partial class ParameterDetailControl : UserControl
             {
                 ErrorsList.Add(item);
             }
-        } 
+        }
     }
 
     private void ContentControl_LostFocus(object sender, RoutedEventArgs e)

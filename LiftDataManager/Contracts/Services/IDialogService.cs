@@ -18,5 +18,7 @@ public interface IDialogService
 
     Task<bool?> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText);
 
+    Task<string?> InputDialogAsync(string title, string message, string textBoxName);
+
     Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
 }

@@ -6,7 +6,13 @@ public interface IParameterDataService
 {
     bool CanConnectDataBase();
 
+    string GetCurrentUser();
+
+    LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter);
+
     Task<IEnumerable<TransferData>> LoadParameterAsync(string path);
+
+    Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path);
 
     Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();
 
@@ -17,4 +23,6 @@ public interface IParameterDataService
     Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 
     Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary);
+
+    Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory);
 }

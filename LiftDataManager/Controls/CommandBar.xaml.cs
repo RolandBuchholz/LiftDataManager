@@ -108,14 +108,38 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(CanShowErrorsParametersProperty, value);
-
-            //if (!value && IsUnsavedParametersSelected)
-            //{
-            //    SearchInput = string.Empty;
-            //    FilterParameter(SearchInput);
-            //    IsUnsavedParametersSelected = false;
-            //}
+            RefreshView();
+            if (IsErrorParametersSelected && ViewSource is not null)
+            {
+                if (ViewSource.View.Count == 0)
+                {
+                    SearchInput = string.Empty;
+                    FilterParameter(SearchInput);
+                    IsErrorParametersSelected = false;
+                }
+            } 
         }
+    }
+
+    public bool IsErrorParametersSelected
+    {
+        get => (bool)GetValue(IsErrorParametersSelectedProperty);
+        set
+        {
+            SetValue(IsErrorParametersSelectedProperty, value);
+            btn_AllAppsButton.IsEnabled = value;
+        }
+    }
+
+    public static readonly DependencyProperty IsErrorParametersSelectedProperty =
+        DependencyProperty.Register("IsErrorParametersSelected", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
+    private void RefreshView()
+    {
+        if (IsUnsavedParametersSelected)
+            SetUnsavedParameterView();
+        if (IsErrorParametersSelected)
+            SetErrorsParameterView();
     }
 
     public static readonly DependencyProperty CanShowErrorsParametersProperty =
@@ -244,7 +268,7 @@ public sealed partial class CommandBar : UserControl
     private void ShowErrorsAppsButton_Click(object sender, RoutedEventArgs e)
     {
         SetErrorsParameterView();
-        IsUnsavedParametersSelected = true;
+        IsErrorParametersSelected = true;
     }
 
     private void ShowUnsavedAppsButton_Click(object sender, RoutedEventArgs e)
@@ -269,10 +293,10 @@ public sealed partial class CommandBar : UserControl
     private void SetErrorsParameterView()
     {
         GroupedFilteredParameters.Clear();
-        var unsavedParameters = ItemSource.Values.Where(p => p.HasErrors).
+        var errorParameters = ItemSource.Values.Where(p => p.HasErrors).
                                                 GroupBy(GroupView()).
                                                 OrderBy(g => g.Key);
-        foreach (var group in unsavedParameters)
+        foreach (var group in errorParameters)
         {
             GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
         }

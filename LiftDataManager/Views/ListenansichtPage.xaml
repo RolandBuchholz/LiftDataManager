@@ -100,6 +100,7 @@
                 <speziControls:ParameterDetailControl
                     Grid.Column="1"
                     Margin="0,5,0,0"
+                    LiftHistoryEntrys="{x:Bind ViewModel.ParameterHistoryEntrys, Mode=TwoWay}"
                     ListDetailsMenuItem="{x:Bind ViewModel.Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SaveCommand="{x:Bind ViewModel.SaveParameterCommand}"
                     Visibility="{x:Bind ViewModel.IsItemSelected, Mode=OneWay}" />

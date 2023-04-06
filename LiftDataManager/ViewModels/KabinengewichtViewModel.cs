@@ -82,22 +82,17 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
     public double BodengewichtProQM => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_SonderExternBodengewicht");
     public double BodenProfilGewicht => Math.Round(GetGewichtBodenprofil(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BoPr")), 2);
 
-    public double KabinenBodengewichtStandard => Kabinenbreite * Kabinentiefe * 59 / Math.Pow(10, 6);
-
-    public double KabinenBodengewichtVerstaerkt => Kabinenbreite * Kabinentiefe * Bodenblech * 7.85 / Math.Pow(10, 6) +
+    public double Bodengewicht => Kabinenbreite * Kabinentiefe * Bodenblech * 7.85 / Math.Pow(10, 6) +
                                     ((((Kabinenbreite / 230) + 1 + ((Kabinenbreite > 2000) ? 1 : 0)) * Kabinentiefe / 1000 +
                                     (((Kabinenbreite > 1250) || (Kabinentiefe > 2350)) ? 3 : 2) * Kabinenbreite / 1000 +
                                     AnzahlKabinentueren * Tuerbreite / 1000) * BodenProfilGewicht);
 
-    public double KabinenBodengewichtStandardMitWanne => Kabinenbreite * Kabinentiefe * 70.8 / Math.Pow(10, 6);
     public double KabinenBodengewicht =>
         BodenTyp switch
         {
-            "standard" => KabinenBodengewichtStandard,
-            "verstärkt" => KabinenBodengewichtVerstaerkt,
-            "standard mit Wanne" => KabinenBodengewichtStandardMitWanne,
-            "sonder" => Kabinenbreite * Kabinentiefe * BodengewichtProQM / Math.Pow(10, 6),
-            "extern" => Kabinenbreite * Kabinentiefe * BodengewichtProQM / Math.Pow(10, 6),
+            "standard" or "verstärkt" => Bodengewicht,
+            "standard mit Wanne" => Bodengewicht + (Kabinenbreite * Kabinentiefe * 11.8 / Math.Pow(10, 6)),
+            "sonder" or "extern" => Kabinenbreite * Kabinentiefe * BodengewichtProQM / Math.Pow(10, 6),
             _ => 0,
         };
 

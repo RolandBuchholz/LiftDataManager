@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
         <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
+        <helpers:DateTimeHumanizeConverter x:Key="DateTimeHumanizeConverter" />
         <converters:BoolToObjectConverter
             x:Key="BoolVisibilityNegationConverter"
             FalseValue="Visible"
@@ -37,6 +38,40 @@
                     Text="{x:Bind ErrorMessage}"
                     TextWrapping="WrapWholeWords" />
             </InfoBar>
+        </DataTemplate>
+        <DataTemplate x:Key="LiftHistoryItemTemplate" x:DataType="models:LiftHistoryEntry">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{x:Bind NewValue}"
+                    TextWrapping="WrapWholeWords" />
+                <TextBlock
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{x:Bind Author}" />
+                <TextBlock
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{x:Bind TimeStamp, Converter={StaticResource DateTimeHumanizeConverter}}" />
+                <ToolTipService.ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind TimeStamp}" />
+                        <TextBlock Text="Kommentar:" />
+                        <TextBlock Text="{x:Bind Comment}" />
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
     <ScrollViewer
@@ -107,10 +142,9 @@
             <ContentControl
                 Margin="0,10,0,0"
                 HorizontalContentAlignment="Stretch"
-                LostFocus="ContentControl_LostFocus"
-                
                 Content="{x:Bind ListDetailsMenuItem, Mode=OneWay}"
-                ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
+                ContentTemplateSelector="{StaticResource controlTemplateSelector}"
+                LostFocus="ContentControl_LostFocus" />
             <TextBox
                 Margin="0,10,0,0"
                 Header="Kommentar"
@@ -152,7 +186,62 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" Header="Parameter History" />
+                <ListView
+                    Grid.Column="0"
+                    ItemTemplate="{StaticResource LiftHistoryItemTemplate}"
+                    ItemsSource="{x:Bind LiftHistoryEntrys, Mode=OneWay}">
+                    <ListView.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="32" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Margin="5,0,0,5"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Text="Parameter History" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Margin="5,0,5,0"
+                                Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
+                                CornerRadius="4" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="15,0,0,5"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text="Wert" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="-10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text="Author" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text="Datum" />
+                        </Grid>
+                    </ListView.Header>
+                </ListView>
                 <ListView
                     Grid.Column="1"
                     ItemTemplate="{StaticResource ErrorItemTemplate}"
@@ -160,7 +249,7 @@
                     <ListView.Header>
                         <TextBlock
                             Margin="17,0,0,5"
-                            FontSize="16"
+                            FontSize="18"
                             FontWeight="SemiBold"
                             Text="Parameter Status" />
                     </ListView.Header>

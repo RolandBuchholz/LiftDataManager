@@ -686,6 +686,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private void ClearExpiredLiftData()
     {
+        InfoSidebarPanelText = string.Empty;
         AuftragsbezogeneXml = false;
         CanValidateAllParameter = false;
         CanLoadSpeziData = false;

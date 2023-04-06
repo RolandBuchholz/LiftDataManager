@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Common.Collections;
+﻿using Cogs.Collections;
+using CommunityToolkit.Common.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
@@ -7,6 +9,8 @@ namespace LiftDataManager.ViewModels;
 public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public CollectionViewSource GroupedItems { get; set; }
+    private ObservableDictionary<string,List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new ();
+    public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
 
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
@@ -47,6 +51,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             if (_selected is not null)
             {
                 IsItemSelected = true;
+                SetParameterHistoryEntrys();
             }
             else
             {
@@ -69,20 +74,40 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private void SetParameterHistoryEntrys()
+    {
+        if (_selected is null)
+            return;
+        ParameterHistoryEntrys.Clear();
+
+        if (HistoryEntrysDictionary.TryGetValue(_selected.Name!, out var historyEntry))
+        {
+            foreach (var item in historyEntry.OrderByDescending(x => x.TimeStamp))
+            {
+                if (item is not null)
+                    ParameterHistoryEntrys.Add(item);
+            }
+        }
+    }
+
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
-        if (Selected is null)
-            return;
-        if (FullPathXml is null)
-            return;
+        if (Selected is null) return;
+        if (FullPathXml is null) return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
         Selected.IsDirty = false;
         await SetModelStateAsync();
-        var allUnsavedParameters = (ObservableGroupedCollection<string, Parameter>)GroupedItems.Source;
-        allUnsavedParameters.RemoveItem(allUnsavedParameters.First(g => g.Any(p => p.Name == Selected.Name)).Key, Selected, true);
+
+        if (!HistoryEntrysDictionary.ContainsKey(Selected.Name!))
+        {
+            HistoryEntrysDictionary.Add(Selected.Name!, new List<LiftHistoryEntry>());
+        }
+        HistoryEntrysDictionary[Selected.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected));
+
+        SetParameterHistoryEntrys();
     }
 
     private void CheckIsDirty(object? sender, PropertyChangedEventArgs e)
@@ -168,6 +193,24 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private async Task GetHistoryEntrysAsync(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return;
+        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path);
+        if (result != null)
+        {
+            foreach (var entry in result)
+            {
+                if (!HistoryEntrysDictionary.ContainsKey(entry.Name))
+                {
+                    HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
+                }
+                HistoryEntrysDictionary[entry.Name].Add(entry);
+            }
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -178,6 +221,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
             _ = SetModelStateAsync();
+        _ = GetHistoryEntrysAsync(FullPathXml);
     }
 
     public void OnNavigatedFrom()
