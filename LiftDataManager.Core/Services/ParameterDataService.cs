@@ -372,6 +372,9 @@ public partial class ParameterDataService : IParameterDataService
             {
                 if (dictionary.Value != param.Value)
                 {
+                    if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
+                        continue;
+
                     paramterDictionary[dictionary.Name!].Value = param.Value;
                     syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
                 }

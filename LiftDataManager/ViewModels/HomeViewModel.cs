@@ -115,7 +115,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
-                updatedParameter.Value = item.Value;
+                updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
