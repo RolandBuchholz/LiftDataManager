@@ -396,23 +396,23 @@
                         HorizontalAlignment="Right"
                         Background="Transparent"
                         BorderBrush="YellowGreen"
-                        Visibility="{x:Bind ViewModel.ShowCarWeightBorder,Mode=OneWay}"
                         BorderThickness="2"
-                        CornerRadius="2" >
+                        CornerRadius="2"
+                        Visibility="{x:Bind ViewModel.ShowCarWeightBorder, Mode=OneWay}">
                         <ToolTipService.ToolTip>
-                            <TextBlock Text="CAD ermitteltes Fangrahmengewicht"/>
+                            <TextBlock Text="CAD ermitteltes Fangrahmengewicht" />
                         </ToolTipService.ToolTip>
                     </Border>
                     <TextBox
                         Grid.Row="2"
                         Grid.Column="1"
-                        Margin="0,1,0,1"                 
+                        Margin="0,1,0,1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_Rahmengewicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                        TextAlignment="Right" >
+                        TextAlignment="Right">
                         <ToolTipService.ToolTip>
-                            <TextBlock Text="CAD ermitteltes Fangrahmengewicht"/>
+                            <TextBlock Text="CAD ermitteltes Fangrahmengewicht" />
                         </ToolTipService.ToolTip>
                     </TextBox>
                     <TextBox

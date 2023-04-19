@@ -10,16 +10,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ILogger<HomeViewModel> _logger;
+    private readonly IPdfService _pdfService;
     private bool OpenReadOnly { get; set; } = true;
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
                          ISettingService settingsSelectorService, IVaultDataService vaultDataService, 
-                         IValidationParameterDataService validationParameterDataService, ILogger<HomeViewModel> logger)
+                         IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
+        _pdfService = pdfService;
         _logger = logger;
     }
 
@@ -63,7 +65,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     partial void OnSpezifikationStatusTypChanged(string? value)
     {
         SpezifikationName = string.Empty;
-        _logger.LogInformation(60132, "SpezifikationStatusTyp changed {typ}",value);
+        _logger.LogInformation(60132, "SpezifikationStatusTyp changed {Typ}", value);
     }
 
     [ObservableProperty]
@@ -294,6 +296,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             _logger.LogError(61037, "SpezifikationName are null or empty");
             return;
         }
+
+        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParamterDictionary!, FullPathXml);
+            
+        _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
+
         if (CheckOut)
         {
             var watch = Stopwatch.StartNew();

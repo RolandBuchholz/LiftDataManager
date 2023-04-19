@@ -596,8 +596,17 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
             ParamterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
             ParamterDictionary["var_ZA_IMP_Treibscheibe_RIA"].Value = zliDataDictionary["Treibscheibe-RIA"];
-            ParamterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty; 
-            ParamterDictionary["var_Tragseiltyp"].Value = "D " + zliDataDictionary["Treibscheibe-SD"] +"mm "+ zliDataDictionary["Treibscheibe-Seiltyp"];
+            ParamterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty;
+            
+            if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))
+            {
+                ParamterDictionary["var_Tragseiltyp"].Value = "D " + ropeDiameter + "mm "+ zliDataDictionary["Treibscheibe-Seiltyp"];
+            }
+            else
+            {
+                ParamterDictionary["var_Tragseiltyp"].Value = zliDataDictionary["Treibscheibe-Seiltyp"];
+            }
+
             var numberOfRopes = string.Empty; 
             try
             {

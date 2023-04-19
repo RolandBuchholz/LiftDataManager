@@ -3,21 +3,23 @@ using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using System.Runtime.CompilerServices;
 namespace LiftDataManager.ViewModels;
 
-public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, IRecipient<AreaPersonsRequestMessageAsync>
+public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, IRecipient<AreaPersonsRequestMessageAsync>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
+    private readonly IPdfService _pdfService;
 
     public Dictionary<int, TableRow<int, double>> Tabelle6 { get; }
     public Dictionary<int, TableRow<int, double>> Tabelle7 { get; }
     public Dictionary<int, TableRow<int, double>> Tabelle8 { get; }
 
     public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService,
-                                       INavigationService navigationService, ICalculationsModule calculationsModuleService ,ParameterContext parametercontext) :
+                                       INavigationService navigationService, ICalculationsModule calculationsModuleService ,ParameterContext parametercontext, IPdfService pdfService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        _pdfService = pdfService;
 
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties.ParamterDictionary is not null)
@@ -263,6 +265,15 @@ public class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware, 
             TuerFluegelBreite = 36,
             TuerFluegelAbstand = 6
         };
+    }
+
+    [RelayCommand]
+    public void CreatePdf()
+    {
+        if (ParamterDictionary is not null)
+        {
+            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true);
+        }
     }
 
     public void OnNavigatedTo(object parameter)

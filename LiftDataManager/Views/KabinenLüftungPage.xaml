@@ -50,10 +50,22 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    Style="{StaticResource PageTitleStyle}"
-                    Text="Daten der Aufzugkabine C100 (aufg. Sockel)" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" MaxWidth="200" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Style="{StaticResource PageTitleStyle}"
+                        Text="Daten der Aufzugkabine C100 (aufg. Sockel)" />
+                    <Button
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Command="{x:Bind ViewModel.CreatePdfCommand}">
+                        <SymbolIcon Symbol="Print" />
+                    </Button>
+                </Grid>
                 <Grid Grid.Row="1" Margin="50,10,0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
@@ -188,7 +200,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.A_Kabine_1Pozent, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.AKabine1Pozent, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -248,7 +260,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.Luftspaltoeffnung, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.Luftspaltoeffnung, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -272,7 +284,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.Belueftung_1Seite, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.Belueftung1Seite, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -289,7 +301,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.Belueftung_2Seiten, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.Belueftung2Seiten, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -301,7 +313,7 @@
                     Grid.Row="5"
                     FontSize="20"
                     Style="{StaticResource BodyTextStyle}"
-                    Text="Prüfung Belüftung über Decke :" />
+                    Text="Prüfung Belüftung über Decke" />
                 <Grid
                     Grid.Row="6"
                     MaxWidth="550"
@@ -337,7 +349,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.Belueftung_2Seiten}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.Belueftung2Seiten}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
@@ -349,7 +361,7 @@
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.A_Kabine_1Pozent}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.AKabine1Pozent}" />
                     <Border
                         Grid.Row="3"
                         Grid.Column="0"
@@ -399,7 +411,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.AnzahlKabinentueren, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="3"
@@ -417,7 +429,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.AnzahlKabinentuerfluegel, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="3"
@@ -475,11 +487,11 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlLuftspaltoeffnungenTB, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.AnzahlLuftspaltoeffnungenTB, Mode=OneWay}" />
                         <Run Text=" x " />
-                        <Run Text="{x:Bind ViewModel.Tuerspalt, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.Tuerspalt, Mode=OneWay}" />
                         <Run Text="mm x (TB) = " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenTB, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenTB, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="5"
@@ -497,11 +509,11 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlLuftspaltoeffnungenTH, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.AnzahlLuftspaltoeffnungenTH, Mode=OneWay}" />
                         <Run Text=" x " />
-                        <Run Text="{x:Bind ViewModel.Tuerspalt, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.Tuerspalt, Mode=OneWay}" />
                         <Run Text="mm x (TH) = " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenTH, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenTH, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="6"
@@ -526,7 +538,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.EntlueftungTuerspalten50Pozent, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.EntlueftungTuerspalten50Pozent, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="2"
@@ -608,11 +620,11 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlLuftspaltoeffnungenFB, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.AnzahlLuftspaltoeffnungenFB, Mode=OneWay}" />
                         <Run Text=" x " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenFB, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenFB, Mode=OneWay}" />
                         <Run Text=" mm² = " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenFBGesamt, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenFBGesamt, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="2"
@@ -630,11 +642,11 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlLuftspaltoeffnungenFT, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.AnzahlLuftspaltoeffnungenFT, Mode=OneWay}" />
                         <Run Text=" x " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenFT, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenFT, Mode=OneWay}" />
                         <Run Text=" mm² = " />
-                        <Run Text="{x:Bind ViewModel.FlaecheLuftspaltoeffnungenFTGesamt, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarVentilationResult.FlaecheLuftspaltoeffnungenFTGesamt, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="3"
@@ -659,7 +671,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.FlaecheEntLueftungSockelleisten, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.FlaecheEntLueftungSockelleisten, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
@@ -675,8 +687,8 @@
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
-                        Margin="0,10,0,0"
                         Grid.ColumnSpan="2"
+                        Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Entlüftung gesamt (F3.1 + F3.2)" />
                     <TextBlock
@@ -685,7 +697,7 @@
                         Margin="0,10,0,0"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.FlaecheEntLueftungGesamt, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.FlaecheEntLueftungGesamt, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
@@ -729,7 +741,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.FlaecheEntLueftungGesamt, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.FlaecheEntLueftungGesamt, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
@@ -741,7 +753,7 @@
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.A_Kabine_1Pozent, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarVentilationResult.AKabine1Pozent, Mode=OneWay}" />
                     <Border
                         Grid.Row="3"
                         Grid.Column="0"
@@ -767,8 +779,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"

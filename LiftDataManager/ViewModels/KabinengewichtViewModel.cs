@@ -6,14 +6,20 @@ using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
 namespace LiftDataManager.ViewModels;
 
-public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRecipient<CarWeightRequestMessageAsync>, IRecipient<PropertyChangedMessage<string>>
+public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRecipient<CarWeightRequestMessageAsync>, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
+    private readonly ICalculationsModule _calculationsModuleService;
+    private readonly IPdfService _pdfService;
 
-    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext) :
+    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext,
+                                   ICalculationsModule calculationsModuleService, IPdfService pdfService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
+        _calculationsModuleService = calculationsModuleService;
+        _pdfService = pdfService;
+
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties.ParamterDictionary is not null)
             ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
@@ -370,6 +376,15 @@ public class KabinengewichtViewModel : DataViewModelBase, INavigationAware, IRec
         if (carPanel is null)
             return 0;
         return carPanel.Width;
+    }
+
+    [RelayCommand]
+    public void CreatePdf()
+    {
+        if (ParamterDictionary is not null)
+        {
+            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true);
+        }
     }
 
     public void OnNavigatedTo(object parameter)

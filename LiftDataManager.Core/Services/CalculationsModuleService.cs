@@ -1,8 +1,9 @@
-﻿using LiftDataManager.Core.Contracts.Services;
+﻿using Cogs.Collections;
+using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
-using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
 
@@ -61,6 +62,83 @@ public partial class CalculationsModuleService : ICalculationsModule
             }
         }
         return false;
+    }
+
+    public CarVentilationResult GetCarVentilationCalculation (ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        const int tuerspalt = 4;
+        const int luftspaltoeffnung = 10;
+        const int anzahlLuftspaltoeffnungenFT = 2;
+
+        double aKabine = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_A_Kabine");
+        double kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
+        double kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
+        double tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
+        double tuerhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TH");
+        bool zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+        int anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
+
+        int anzahlKabinentueren = Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
+
+        double aKabine1Pozent = Math.Round(aKabine * 10000);
+        double belueftung1Seite = kabinentiefe* luftspaltoeffnung;
+        double belueftung2Seiten = kabinentiefe* luftspaltoeffnung *2;
+
+        bool ergebnisBelueftungDecke = belueftung2Seiten > aKabine1Pozent;
+
+        int anzahlLuftspaltoeffnungenTB = anzahlKabinentueren * 2;
+        int anzahlLuftspaltoeffnungenTH = anzahlKabinentueren * anzahlKabinentuerfluegel;
+        double flaecheLuftspaltoeffnungenTB = anzahlLuftspaltoeffnungenTB * tuerspalt * tuerbreite;
+        double flaecheLuftspaltoeffnungenTH = anzahlLuftspaltoeffnungenTH * tuerspalt * tuerhoehe;
+        double entlueftungTuerspalten50Pozent = (flaecheLuftspaltoeffnungenTB + flaecheLuftspaltoeffnungenTH) * 0.5;
+
+        int anzahlLuftspaltoeffnungenFB = (anzahlKabinentueren > 1) ? 0 : 1;
+
+        double flaecheLuftspaltoeffnungenFB = Math.Round(kabinenbreite / 50 * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
+        double flaecheLuftspaltoeffnungenFT = Math.Round(kabinentiefe / 50 * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
+        double flaecheLuftspaltoeffnungenFBGesamt = anzahlLuftspaltoeffnungenFB * flaecheLuftspaltoeffnungenFB;
+        double flaecheLuftspaltoeffnungenFTGesamt = anzahlLuftspaltoeffnungenFT * flaecheLuftspaltoeffnungenFT;
+
+        double flaecheEntLueftungSockelleisten = Math.Round(flaecheLuftspaltoeffnungenFB + flaecheLuftspaltoeffnungenFT);
+        double flaecheEntLueftungGesamt = Math.Round(flaecheEntLueftungSockelleisten + entlueftungTuerspalten50Pozent);
+
+        bool ergebnisEntlueftung = flaecheEntLueftungGesamt > aKabine1Pozent;
+
+        return new CarVentilationResult()
+        {
+            Tuerspalt = tuerspalt,
+            Luftspaltoeffnung = luftspaltoeffnung,
+            AnzahlLuftspaltoeffnungenFT = anzahlLuftspaltoeffnungenFT,
+            AnzahlKabinentueren = anzahlKabinentueren,
+            AKabine1Pozent = aKabine1Pozent,
+            Belueftung1Seite = belueftung1Seite,
+            Belueftung2Seiten = belueftung2Seiten,
+            ErgebnisBelueftungDecke = ergebnisBelueftungDecke,
+            AnzahlLuftspaltoeffnungenTB=anzahlLuftspaltoeffnungenTB,
+            AnzahlLuftspaltoeffnungenTH = anzahlLuftspaltoeffnungenTH,
+            FlaecheLuftspaltoeffnungenTB = flaecheLuftspaltoeffnungenTB,
+            FlaecheLuftspaltoeffnungenTH = flaecheLuftspaltoeffnungenTH,
+            EntlueftungTuerspalten50Pozent = entlueftungTuerspalten50Pozent,
+            AnzahlLuftspaltoeffnungenFB = anzahlLuftspaltoeffnungenFB,
+            FlaecheLuftspaltoeffnungenFB = flaecheLuftspaltoeffnungenFB,
+            FlaecheLuftspaltoeffnungenFT = flaecheLuftspaltoeffnungenFT,
+            FlaecheLuftspaltoeffnungenFBGesamt = flaecheLuftspaltoeffnungenFBGesamt,
+            FlaecheLuftspaltoeffnungenFTGesamt = flaecheLuftspaltoeffnungenFTGesamt,
+            FlaecheEntLueftungSockelleisten = flaecheEntLueftungSockelleisten,
+            FlaecheEntLueftungGesamt = flaecheEntLueftungGesamt,
+            ErgebnisEntlueftung = ergebnisEntlueftung,
+        };
+    }
+
+    public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        return new PayLoadResult()
+        {
+
+        };
     }
 
     public double GetLoadFromTable(double area, string tableName)

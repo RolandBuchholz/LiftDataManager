@@ -66,6 +66,7 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
+            services.AddTransient<IPdfService, PdfService>();
 
             // DataBase Services
             services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))

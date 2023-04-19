@@ -1888,27 +1888,26 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="auto,*,*">
+                                    ColumnDefinitions="auto,auto,*">
                                     <CheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
+                                        Margin="5,5,5,0"
                                         VerticalAlignment="Bottom"
                                         Content="Ventilator 90 m³/h"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VentilatorLuftmenge'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                     <TextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
+                                        Margin="5,5,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_VentilatorAnzahl'].Value, Mode=TwoWay}" />
                                     <TextBlock
                                         Grid.Column="2"
-                                        Margin="15,0,0,0"
+                                        Margin="15,5,0,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         FontSize="14"
                                         Text="Anzahl Ventilatoren" />
-
                                 </Grid>
                             </Grid>
                         </Grid>
