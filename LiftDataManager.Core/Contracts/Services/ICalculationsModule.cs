@@ -18,4 +18,8 @@ public interface ICalculationsModule
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+
+    CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+
+    void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }

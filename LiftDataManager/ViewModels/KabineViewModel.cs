@@ -2,13 +2,18 @@
 using LiftDataManager.core.Helpers;
 
 
+
 namespace LiftDataManager.ViewModels;
 
 public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
-    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
+    private readonly ICalculationsModule _calculationsModuleService;
+
+
+    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService) :
          base(parameterDataService, dialogService, navigationService)
     {
+        _calculationsModuleService = calculationsModuleService;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -70,22 +75,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     private async Task SetCalculatedValuesAsync()
     {
-        var areaPersonsRequestMessageResult = await WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
-
-        if (areaPersonsRequestMessageResult is not null)
-        {
-            var person = areaPersonsRequestMessageResult.Personen;
-            var nutzflaecheKabine = areaPersonsRequestMessageResult.NutzflaecheKabine;
-
-            if (person > 0)
-            {
-                ParamterDictionary!["var_Personen"].Value = Convert.ToString(person);
-            }
-            if (nutzflaecheKabine > 0)
-            {
-                ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
-            }
-        }
+        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
+        _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
         await Task.CompletedTask;
     }
 

@@ -383,7 +383,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParamterDictionary, FullPathXml, true);
         }
     }
 

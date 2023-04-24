@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Models.CalculationResultsModels;
+using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -9,18 +11,20 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     public readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private readonly ICalculationsModule _calculationsModuleService;
     private readonly ILogger<HomeViewModel> _logger;
     private readonly IPdfService _pdfService;
     private bool OpenReadOnly { get; set; } = true;
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
-                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, 
+                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
         : base(parameterDataService, dialogService, navigationService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
+        _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;
         _logger = logger;
     }
@@ -631,22 +635,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private async Task SetCalculatedValuesAsync()
     {
-        var areaPersonsRequestMessageResult = await WeakReferenceMessenger.Default.Send<AreaPersonsRequestMessageAsync>();
-
-        if (areaPersonsRequestMessageResult is not null)
-        {
-            var person = areaPersonsRequestMessageResult.Personen;
-            var nutzflaecheKabine = areaPersonsRequestMessageResult.NutzflaecheKabine;
-
-            if (person > 0)
-            {
-                ParamterDictionary!["var_Personen"].Value = Convert.ToString(person);
-            }
-            if (nutzflaecheKabine > 0)
-            {
-                ParamterDictionary!["var_A_Kabine"].Value = Convert.ToString(nutzflaecheKabine);
-            }
-        }
+        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
+        _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
 
         var carWeightRequestMessageMessageResult = await WeakReferenceMessenger.Default.Send<CarWeightRequestMessageAsync>();
 

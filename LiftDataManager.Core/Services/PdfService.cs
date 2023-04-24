@@ -60,6 +60,8 @@ public class PdfService : IPdfService
         {
             "KabinenLüftungViewModel" => new KabinenLüftungDocument(paramterDictionary, _calculationsModuleService),
             "NutzlastberechnungViewModel" => new NutzlastberechnungDocument(paramterDictionary, _calculationsModuleService),
+            "KabinengewichtViewModel" => new KabinengewichtDocument(paramterDictionary, _calculationsModuleService),
+            "Spezifikation" => new SpezifikationDocument(paramterDictionary, _calculationsModuleService),
             _ => null,
         };
 
@@ -87,9 +89,16 @@ public class PdfService : IPdfService
                 if (!ValidatePath(path, false))
                     return false;
 
-                var fileName = document.GetMetadata().Title; 
-
-                var filePath = Path.Combine(Path.GetDirectoryName(path!)!, "Berechnungen","PDF", $@"{fileName}.pdf");
+                var fileName = document.GetMetadata().Title;
+                string? filePath;
+                if (document.GetType() == typeof(SpezifikationDocument))
+                {
+                    filePath = Path.Combine(Path.GetDirectoryName(path!)!, $@"{fileName}.pdf");
+                }
+                else
+                {
+                    filePath = Path.Combine(Path.GetDirectoryName(path!)!, "Berechnungen", "PDF", $@"{fileName}.pdf");
+                }
 
                 if (Path.Exists(Path.GetDirectoryName(filePath)))
                 {
@@ -118,7 +127,9 @@ public class PdfService : IPdfService
         string[] setOfPdfs = new string[]
         {
             "KabinenLüftungViewModel",
-            "NutzlastberechnungViewModel"
+            //"NutzlastberechnungViewModel",
+            //"KabinengewichtViewModel",
+            //"Spezifikation"
         };
 
         foreach (var pdf in setOfPdfs)

@@ -141,11 +141,11 @@
                         Margin="0,10,0,10"
                         FontSize="20"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.CargoTyp}" />
+                        <Run Text="{x:Bind ViewModel.PayLoadResult.CargoTyp, Mode=OneWay}" />
                         <Run FontSize="18" Text="(" />
-                        <Run FontSize="18" Text="{x:Bind ViewModel.DriveSystem}" />
+                        <Run FontSize="18" Text="{x:Bind ViewModel.PayLoadResult.DriveSystem, Mode=OneWay}" />
                         <Run FontSize="18" Text=")" />
-                        <Run FontSize="12" Text="{x:Bind ViewModel.Aufzugstyp}" />
+                        <Run FontSize="12" Text="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="1"
@@ -191,7 +191,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.AnzahlKabinentueren, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -206,15 +206,15 @@
                         Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Zugang A"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.TuertypA, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.TuerbezeichnungA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="6"
@@ -226,7 +226,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerbreiteA, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -238,21 +238,21 @@
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türeinbaumaß"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerEinbauA, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbau'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <!--  ZugangB  -->
                     <TextBlock
                         Grid.Row="8"
@@ -261,56 +261,56 @@
                         Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Zugang B"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="9"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.TuertypB, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.TuerbezeichnungB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türbreite"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerbreiteB, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_B'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türeinbaumaß"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerEinbauB, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauB'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <!--  ZugangC  -->
                     <TextBlock
                         Grid.Row="12"
@@ -319,56 +319,56 @@
                         Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Zugang C"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="13"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.TuertypC, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.TuerbezeichnungC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türbreite"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerbreiteC, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_C'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türeinbaumaß"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerEinbauC, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauC'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <!--  ZugangD  -->
                     <TextBlock
                         Grid.Row="16"
@@ -377,56 +377,56 @@
                         Margin="0,10,0,0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Zugang D"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="17"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.TuertypD, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.TuerbezeichnungD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}">
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="18"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türbreite"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="18"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerbreiteD, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_D'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="18"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="19"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Türeinbaumaß"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="19"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.TuerEinbauD, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauD'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="19"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                 </Grid>
                 <!--  Nutzfläche  -->
                 <Grid
@@ -465,7 +465,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheKabine, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheKabine, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -476,7 +476,7 @@
                         Grid.Row="2"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}">
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}">
                         Fläche Zugang A*<Run Text="{x:Bind ViewModel.InfoZugangA, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
@@ -484,20 +484,20 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheZugangA, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheZugangA, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="m²"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}">
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}">
                         Fläche Zugang B*<Run Text="{x:Bind ViewModel.InfoZugangB, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
@@ -505,20 +505,20 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheZugangB, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheZugangB, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="m²"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}">
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}">
                         Fläche Zugang C*<Run Text="{x:Bind ViewModel.InfoZugangC, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
@@ -526,20 +526,20 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheZugangC, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheZugangC, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="m²"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}">
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}">
                         Fläche Zugang D*<Run Text="{x:Bind ViewModel.InfoZugangD, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
@@ -547,15 +547,15 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheZugangD, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheZugangD, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="m²"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="0"
@@ -566,7 +566,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.NutzflaecheGesamt, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NutzflaecheGesamt, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -752,7 +752,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.Personen75kg, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.Personen75kg, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -777,7 +777,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.PersonenFlaeche, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.PersonenFlaeche, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
@@ -805,7 +805,7 @@
                         HorizontalAlignment="Right"
                         FontSize="20"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.PersonenBerechnet, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.PersonenBerechnet, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"

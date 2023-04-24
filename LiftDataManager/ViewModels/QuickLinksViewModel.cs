@@ -254,7 +254,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            var identifierbausatztyp = !string.IsNullOrWhiteSpace(bausatztyp)? bausatztyp[..3] : string.Empty;
+            var identifierbausatztyp = !string.IsNullOrWhiteSpace(bausatztyp)? bausatztyp.Replace(" ","") : string.Empty;
             startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + identifierbausatztyp + " " + shortSymbolDirveSystem : string.Empty;
         }
 

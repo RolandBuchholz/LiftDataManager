@@ -41,7 +41,6 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
-
     public bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem)
     {
         var loadTable6 = GetLoadFromTable(area, "Tabelle6");
@@ -75,13 +74,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         double kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
         double tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
         double tuerhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TH");
-        bool zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
-        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
-        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
-        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+
         int anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
 
-        int anzahlKabinentueren = Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
+        int anzahlKabinentueren = NumberOfCardoors(parameterDictionary);
 
         double aKabine1Pozent = Math.Round(aKabine * 10000);
         double belueftung1Seite = kabinentiefe* luftspaltoeffnung;
@@ -135,9 +131,179 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
+        var aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
+ 
+        var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
+                                                        .ToList()
+                                                        .FirstOrDefault(x => x.Name == aufzugstyp);
+        var cargoTyp = cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
+
+        var driveSystemDB = _parametercontext.Set<LiftType>().Include(i => i.DriveType)
+                                                           .ToList()
+                                                           .FirstOrDefault(x => x.Name == aufzugstyp);
+        var driveSystem = driveSystemDB is not null ? driveSystemDB.DriveType!.Name! : "";
+
+        var zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
+        var zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
+        var zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
+        var zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+        var anzahlKabinentueren = NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
+
+        var kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
+        var kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
+
+        var nutzflaecheKabine = Math.Round(kabinenbreite * kabinentiefe / Math.Pow(10, 6), 2);
+        var nutzflaecheZugangA = zugangA ? GetCarDoorArea(parameterDictionary, "A") : 0;
+        var nutzflaecheZugangB = zugangB ? GetCarDoorArea(parameterDictionary, "B") : 0;
+        var nutzflaecheZugangC = zugangC ? GetCarDoorArea(parameterDictionary, "C") : 0;
+        var nutzflaecheZugangD = zugangD ? GetCarDoorArea(parameterDictionary, "D") : 0;
+        
+        var nutzflaeche = Math.Round(nutzflaecheKabine + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
+        var nennlast = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
+        var payloadAllowed = ValdidateLiftLoad(nennlast, nutzflaeche, cargoTyp, driveSystem);
+
+        var personen75kg = (int)(nennlast / 75);
+        var personenFlaeche = GetPersonenCarArea(nutzflaeche);
+        var personenBerechnet = (personen75kg > personenFlaeche) ? personenFlaeche : personen75kg;
+
         return new PayLoadResult()
         {
+            CargoTyp = cargoTyp,
+            DriveSystem = driveSystem,
+            ZugangA = zugangA,
+            ZugangB = zugangB,
+            ZugangC = zugangC,
+            ZugangD = zugangD,
+            AnzahlKabinentueren = anzahlKabinentueren,
+            NutzflaecheKabine = nutzflaecheKabine,
+            NutzflaecheZugangA = nutzflaecheZugangA,
+            NutzflaecheZugangB = nutzflaecheZugangB,
+            NutzflaecheZugangC = nutzflaecheZugangC,
+            NutzflaecheZugangD = nutzflaecheZugangD,
+            NutzflaecheGesamt = nutzflaeche,
+            PayloadAllowed = payloadAllowed,
+            Personen75kg = personen75kg,
+            PersonenFlaeche = personenFlaeche,
+            PersonenBerechnet = personenBerechnet
+        };
+    }
 
+    public CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        return new CarWeightResult()
+        {
+
+        };
+    }
+
+    public int NumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        bool zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+
+        return Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
+    }
+
+    public int NumberOfCardoors(bool zugangA, bool zugangB, bool zugangC, bool zugangD)
+    {
+        return Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
+    }
+
+    private double GetCarDoorArea(ObservableDictionary<string, Parameter>? parameterDictionary, string zugang)
+    {
+        double tuerbreite;
+        double tuerEinbau;
+        switch (zugang)
+        {
+            case "A":
+                tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbau");
+                break;
+            case "B":
+                tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_B");
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauB");
+                break;
+            case "C":
+                tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_C");
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauC");
+                break;
+            case "D":
+                tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_D");
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauD");
+                break;
+            default:
+                return 0.0;
+        }
+
+        if (tuerEinbau <= 0)
+            return 0;
+
+        // ToDo Türdaten aus Datenbankladen Beispieldaten einer TTK 25
+        // Logic zur Auswahl fehlt noch 
+        // CarDoor Model am sinnvollsten schon bei der AuswahlTüren erstellen und in einem ComponentModelsdictionary verwalten
+
+        var kabinenTuer = new CarDoorDesignParameter()
+        {
+            Name = "Meiller TTK 25",
+            Hersteller = "Meiller",
+            Typ = "TTK25",
+            Schwellenbreite = 93,
+            Tuerbreite = tuerbreite,
+            MinimalerEinbau = 135,
+            AnzahlTuerFluegel = 2,
+            TuerFluegelBreite = 36,
+            TuerFluegelAbstand = 6
+        };
+
+        if (kabinenTuer is null)
+            return 0;
+
+        var kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
+        var kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
+
+        if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
+        {
+            switch (zugang)
+            {
+                case "A":
+                    if (kabinenbreite > kabinenTuer.Tuerbreite)
+                        return 0;
+                    break;
+                case "B":
+                    if (kabinentiefe > kabinenTuer.Tuerbreite)
+                        return 0;
+                    break;
+                case "C":
+                    if (kabinenbreite > kabinenTuer.Tuerbreite)
+                        return 0;
+                    break;
+                case "D":
+                    if (kabinentiefe > kabinenTuer.Tuerbreite)
+                        return 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return kabinenTuer.AnzahlTuerFluegel switch
+        {
+            2 => Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+
+            3 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+
+            4 => Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+
+            6 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+                            kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
+            _ => 0,
         };
     }
 
@@ -182,6 +348,22 @@ public partial class CalculationsModuleService : ICalculationsModule
         personenAnzahl = Table8.Where(x => x.Value.SecondValue < area).Last().Value;
         LogTabledata("Tabelle 8", personenAnzahl.FirstValue);
         return personenAnzahl.FirstValue;
+    }
+
+    public void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt)
+    {
+        if (parameterDictionary.TryGetValue("var_Personen", out Parameter personen))
+        {
+            personen.Value = Convert.ToString(personenBerechnet);
+        }
+
+        if (nutzflaecheGesamt > 0)
+        {
+            if (parameterDictionary.TryGetValue("var_A_Kabine", out Parameter aKabine))
+            {
+                aKabine.Value = Convert.ToString(nutzflaecheGesamt);
+            }
+        }
     }
 
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)
