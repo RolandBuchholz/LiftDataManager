@@ -127,7 +127,7 @@ public class PdfService : IPdfService
         string[] setOfPdfs = new string[]
         {
             "KabinenLüftungViewModel",
-            //"NutzlastberechnungViewModel",
+            "NutzlastberechnungViewModel",
             //"KabinengewichtViewModel",
             //"Spezifikation"
         };

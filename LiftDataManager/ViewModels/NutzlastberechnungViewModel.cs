@@ -41,8 +41,6 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     public string InfoZugangC => PayLoadResult.NutzflaecheZugangC == 0 && PayLoadResult.ZugangC ? " Tiefe < 100" : string.Empty;
     public string InfoZugangD => PayLoadResult.NutzflaecheZugangD == 0 && PayLoadResult.ZugangD ? " Tiefe < 100" : string.Empty;
 
-    public double NennlastTabelle6 => _calculationsModuleService.GetLoadFromTable(PayLoadResult.NutzflaecheGesamt,nameof(Tabelle6));
-    public double NennlastTabelle7 => _calculationsModuleService.GetLoadFromTable(PayLoadResult.NutzflaecheGesamt,nameof(Tabelle7));
     public double Nennlast => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
 
     public string ErgebnisNennlast => PayLoadResult.PayloadAllowed ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
@@ -60,17 +58,17 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
                 personRow.Value.IsSelected = true;
         }
 
-        if (NennlastTabelle6 > 0 && NennlastTabelle6 <= 2500)
+        if (PayLoadResult.NennLastTabelle6 > 0 && PayLoadResult.NennLastTabelle6 <= 2500)
         {
-            var loadTable6Row = Tabelle6.FirstOrDefault(x => x.Key == NennlastTabelle6);
+            var loadTable6Row = Tabelle6.FirstOrDefault(x => x.Key == PayLoadResult.NennLastTabelle6);
             if (loadTable6Row.Value is not null)
             {
                 loadTable6Row.Value.IsSelected = true;
             }
             else
             {
-                var lowTable6Entry = Tabelle6.Where(x => x.Key < NennlastTabelle6).Last();
-                var highTable6Entry = Tabelle6.Where(x => x.Key > NennlastTabelle6).First();
+                var lowTable6Entry = Tabelle6.Where(x => x.Key < PayLoadResult.NennLastTabelle6).Last();
+                var highTable6Entry = Tabelle6.Where(x => x.Key > PayLoadResult.NennLastTabelle6).First();
                 if (lowTable6Entry.Value is not null)
                     lowTable6Entry.Value.IsSelected = true;
                 if (lowTable6Entry.Value is not null)
@@ -78,17 +76,17 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
             }
         }
 
-        if (NennlastTabelle7 > 0 && NennlastTabelle7 <= 1600)
+        if (PayLoadResult.NennLastTabelle7 > 0 && PayLoadResult.NennLastTabelle7 <= 1600)
         {
-            var loadTable7Row = Tabelle7.FirstOrDefault(x => x.Key == NennlastTabelle7);
+            var loadTable7Row = Tabelle7.FirstOrDefault(x => x.Key == PayLoadResult.NennLastTabelle7);
             if (loadTable7Row.Value is not null)
             {
                 loadTable7Row.Value.IsSelected = true;
             }
             else
             {
-                var lowTable7Entry = Tabelle7.Where(x => x.Key < NennlastTabelle7).Last();
-                var highTable7Entry = Tabelle7.Where(x => x.Key > NennlastTabelle7).First();
+                var lowTable7Entry = Tabelle7.Where(x => x.Key < PayLoadResult.NennLastTabelle7).Last();
+                var highTable7Entry = Tabelle7.Where(x => x.Key > PayLoadResult.NennLastTabelle7).First();
                 if (lowTable7Entry.Value is not null)
                     lowTable7Entry.Value.IsSelected = true;
                 if (lowTable7Entry.Value is not null)

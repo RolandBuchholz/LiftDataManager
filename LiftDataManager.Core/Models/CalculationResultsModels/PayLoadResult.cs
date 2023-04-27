@@ -18,6 +18,9 @@ public class PayLoadResult
     public double NutzflaecheZugangD { get; set; }
     public double NutzflaecheGesamt { get; set; }
 
+    public double NennLastTabelle6 { get; set; }
+    public double NennLastTabelle7 { get; set; }
+
     public bool PayloadAllowed { get; set; }
 
     public int Personen75kg  {get; set; }

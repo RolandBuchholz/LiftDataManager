@@ -98,7 +98,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         double flaecheLuftspaltoeffnungenFBGesamt = anzahlLuftspaltoeffnungenFB * flaecheLuftspaltoeffnungenFB;
         double flaecheLuftspaltoeffnungenFTGesamt = anzahlLuftspaltoeffnungenFT * flaecheLuftspaltoeffnungenFT;
 
-        double flaecheEntLueftungSockelleisten = Math.Round(flaecheLuftspaltoeffnungenFB + flaecheLuftspaltoeffnungenFT);
+        double flaecheEntLueftungSockelleisten = Math.Round(flaecheLuftspaltoeffnungenFBGesamt + flaecheLuftspaltoeffnungenFTGesamt);
         double flaecheEntLueftungGesamt = Math.Round(flaecheEntLueftungSockelleisten + entlueftungTuerspalten50Pozent);
 
         bool ergebnisEntlueftung = flaecheEntLueftungGesamt > aKabine1Pozent;
@@ -160,6 +160,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         
         var nutzflaeche = Math.Round(nutzflaecheKabine + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
         var nennlast = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
+
+        var nennlast6 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle6"), 1);
+        var nennlast7 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle7"), 1);
+
         var payloadAllowed = ValdidateLiftLoad(nennlast, nutzflaeche, cargoTyp, driveSystem);
 
         var personen75kg = (int)(nennlast / 75);
@@ -181,6 +185,8 @@ public partial class CalculationsModuleService : ICalculationsModule
             NutzflaecheZugangC = nutzflaecheZugangC,
             NutzflaecheZugangD = nutzflaecheZugangD,
             NutzflaecheGesamt = nutzflaeche,
+            NennLastTabelle6 = nennlast6,
+            NennLastTabelle7 = nennlast7,
             PayloadAllowed = payloadAllowed,
             Personen75kg = personen75kg,
             PersonenFlaeche = personenFlaeche,

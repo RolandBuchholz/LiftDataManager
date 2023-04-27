@@ -47,35 +47,15 @@ public class KabinenLüftungDocument : PdfBaseDocument
 
             table.Cell().Row(1).Column(1).ColumnSpan(3).PaddingTop(5).PaddingBottom(5).Text("Daten der Aufzugkabine C100 (aufg. Sockel)").FontSize(16).Bold();
             table.Cell().Row(2).Column(1).PaddingLeft(15).Text("Türbreite (TB)");
-            table.Cell().Row(2).Column(2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_TB"].Value);
-                text.Span(" mm");
-            });
+            table.Cell().Row(2).Column(2).AlignRight().Text($"{ParameterDictionary["var_TB"].Value} mm"); 
             table.Cell().Row(3).Column(1).PaddingLeft(15).Text("Türhöhe (TH)");
-            table.Cell().Row(3).Column(2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_TH"].Value);
-                text.Span(" mm");
-            });
+            table.Cell().Row(3).Column(2).AlignRight().Text($"{ParameterDictionary["var_TH"].Value} mm");
             table.Cell().Row(4).Column(1).PaddingLeft(15).Text("Fahrkorbbreite (KB)");
-            table.Cell().Row(4).Column(2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_KBI"].Value);
-                text.Span(" mm");
-            });
+            table.Cell().Row(4).Column(2).AlignRight().Text($"{ParameterDictionary["var_KBI"].Value} mm");
             table.Cell().Row(5).Column(1).PaddingLeft(15).Text("Fahrkorbhöhe (KH)");
-            table.Cell().Row(5).Column(2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_KHLicht"].Value);
-                text.Span(" mm");
-            });
+            table.Cell().Row(5).Column(2).AlignRight().Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
             table.Cell().Row(6).Column(1).Background(Colors.Grey.Lighten2).PaddingLeft(15).Text("Kabinengrundfläche (A)");
-            table.Cell().Row(6).Column(2).Background(Colors.Grey.Lighten2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_A_Kabine"].Value);
-                text.Span(" m²");
-            });
+            table.Cell().Row(6).Column(2).Background(Colors.Grey.Lighten2).AlignRight().Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
             table.Cell().Row(7).Column(1).Background(Colors.Grey.Lighten2).PaddingLeft(15).Text("Kabinengrundfläche (1%)");
             table.Cell().Row(7).Column(2).Background(Colors.Grey.Lighten2).AlignRight().Text(text =>
             {
@@ -102,11 +82,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
                  "Die zusätzliche Belüftung durch die Beleuchtungseinheit wurde hier nicht berücksichtigt.");
 
             table.Cell().Row(3).Column(1).PaddingLeft(15).Text("Fahrkorbtiefe (KT)");
-            table.Cell().Row(3).Column(2).AlignRight().Text(text =>
-            {
-                text.Span(ParameterDictionary["var_KTI"].Value);
-                text.Span(" mm");
-            });
+            table.Cell().Row(3).Column(2).AlignRight().Text($"{ParameterDictionary["var_KTI"].Value} mm");
             table.Cell().Row(4).Column(1).PaddingLeft(15).Text("Luftspaltöffnung");
             table.Cell().Row(4).Column(2).AlignRight().Text(text =>
             {

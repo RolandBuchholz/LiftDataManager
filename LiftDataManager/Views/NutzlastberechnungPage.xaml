@@ -633,7 +633,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N1}', ViewModel.NennlastTabelle6)}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NennLastTabelle6, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -658,7 +658,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N1}', ViewModel.NennlastTabelle7)}" />
+                        Text="{x:Bind ViewModel.PayLoadResult.NennLastTabelle7, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
