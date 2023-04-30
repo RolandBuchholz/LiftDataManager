@@ -27,6 +27,7 @@
             x:Key="InvertBoolToSting"
             FalseValue="True"
             TrueValue="False" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="4"
@@ -303,7 +304,7 @@
                         AcceptsReturn="True"
                         Header="Bauvorhaben"
                         PlaceholderText="Bauvorhaben"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                     <TextBox
                         Grid.Column="1"
@@ -312,7 +313,7 @@
                         AcceptsReturn="True"
                         Header="Betreiber"
                         PlaceholderText="Betreiber"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
                 <!--  Datafield carweight  -->
@@ -936,7 +937,7 @@
                     AcceptsReturn="True"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Mode=TwoWay}"
+                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value,Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                     TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>

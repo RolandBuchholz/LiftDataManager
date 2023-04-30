@@ -20,6 +20,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
@@ -481,7 +482,7 @@
                                         MinHeight="120"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesBausatz'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesBausatz'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>

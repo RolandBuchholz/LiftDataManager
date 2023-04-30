@@ -21,6 +21,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
@@ -248,7 +249,7 @@
                                         Margin="5,0,5,0"
                                         AcceptsReturn="True"
                                         Header="Sonstiges Wartung"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesWart'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesWart'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -307,7 +308,7 @@
                                         Margin="5,0,5,0"
                                         AcceptsReturn="True"
                                         Header="Sonstiges VOB Gewährleistung"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesVOB'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesVOB'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -484,7 +485,7 @@
                                         MinHeight="90"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesMoTUEV'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesMoTUEV'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -609,7 +610,7 @@
                                         MinHeight="90"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesRWA'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesRWA'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
