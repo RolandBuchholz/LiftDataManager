@@ -20,6 +20,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
     </Page.Resources>
@@ -81,7 +82,7 @@
                             AcceptsReturn="True"
                             Header="Bauvorhaben"
                             PlaceholderText="Bauvorhaben"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Mode=TwoWay}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                             TextWrapping="Wrap" />
                         <TextBox
                             Grid.Row="1"
@@ -91,7 +92,7 @@
                             AcceptsReturn="True"
                             Header="Betreiber"
                             PlaceholderText="Betreiber"
-                            Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Mode=TwoWay}"
+                            Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                             TextWrapping="Wrap" />
                         <StackPanel
                             Grid.Row="0"

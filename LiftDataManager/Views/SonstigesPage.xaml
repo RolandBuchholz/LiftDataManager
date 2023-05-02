@@ -5,6 +5,7 @@
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
@@ -15,6 +16,7 @@
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
@@ -65,7 +67,7 @@
                                         AcceptsReturn="True"
                                         Header="Sonstiges"
                                         PlaceholderText="Sonstiges"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesAnlage'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_sonstigesAnlage'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
