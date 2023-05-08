@@ -735,10 +735,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_B"].DropDownListValue)) ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_B"].Value)) ParamterDictionary["var_TB_B"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_B"].Value)) ParamterDictionary["var_TH_B"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_B"].Value)) ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauB"].Value)) ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_B"].Value))
+            {
+                if(ParamterDictionary["var_TB_B"].Value != "0") ParamterDictionary["var_TB_B"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_B"].Value))
+            {
+                if (ParamterDictionary["var_TH_B"].Value != "0") ParamterDictionary["var_TH_B"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_B"].Value))
+            {
+                if (ParamterDictionary["var_Tuergewicht_B"].Value != "0") ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauB"].Value))
+            {
+                if (ParamterDictionary["var_TuerEinbauB"].Value != "0") ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+            }     
         }
 
         if (zugangC)
@@ -753,10 +765,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_C"].DropDownListValue)) ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_C"].Value)) ParamterDictionary["var_TB_C"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_C"].Value)) ParamterDictionary["var_TH_C"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_C"].Value)) ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauC"].Value)) ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_C"].Value))
+            {
+                if (ParamterDictionary["var_TB_C"].Value != "0") ParamterDictionary["var_TB_C"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_C"].Value))
+            {
+                if (ParamterDictionary["var_TH_C"].Value != "0") ParamterDictionary["var_TH_C"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_C"].Value))
+            {
+                if (ParamterDictionary["var_Tuergewicht_C"].Value != "0") ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauC"].Value))
+            {
+                if (ParamterDictionary["var_TuerEinbauC"].Value != "0") ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+            }
         }
 
         if (zugangD)
@@ -771,10 +795,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_D"].DropDownListValue)) ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_D"].Value)) ParamterDictionary["var_TB_D"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_D"].Value)) ParamterDictionary["var_TH_D"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_D"].Value)) ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauD"].Value)) ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_D"].Value))
+            {
+                if (ParamterDictionary["var_TB_D"].Value != "0") ParamterDictionary["var_TB_D"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_D"].Value))
+            {
+                if (ParamterDictionary["var_TH_D"].Value != "0") ParamterDictionary["var_TH_D"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_D"].Value))
+            {
+                if (ParamterDictionary["var_TuerEinbauB"].Value != "0") ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauD"].Value))
+            {
+                if (ParamterDictionary["var_TuerEinbauD"].Value != "0") ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
+            }
         }
     }
 
@@ -934,7 +970,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParamterDictionary["var_Steuerungstyp"].Value);
 
         if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
-            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box")
+            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
+            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift FST-3")
         {
             ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistanceSIL3);
             ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers!.DeadTimeSIL3);

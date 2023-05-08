@@ -128,7 +128,7 @@ public class PdfService : IPdfService
         {
             "KabinenLüftungViewModel",
             "NutzlastberechnungViewModel",
-            //"KabinengewichtViewModel",
+            "KabinengewichtViewModel",
             //"Spezifikation"
         };
 

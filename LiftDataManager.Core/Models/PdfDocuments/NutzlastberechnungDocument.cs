@@ -2,10 +2,8 @@
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.PdfDocuments;
-using LiftDataManager.Core.Services;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
-using Colors = QuestPDF.Helpers.Colors;
 
 namespace PDFTests.Services.DocumentGeneration;
 
@@ -26,14 +24,14 @@ public class NutzlastberechnungDocument : PdfBaseDocument
     {
         container.PaddingLeft(10, Unit.Millimetre).Column(column =>
         {
-            column.Item().PaddingTop(5, Unit.Millimetre).Text("Nutzfläche des Fahrkorbs, Nennlast,Anzahl der Personen (EN81:20 - 5.4.2)").FontSize(16).Bold();
+            column.Item().PaddingTop(5, Unit.Millimetre).Text("Nutzfläche des Fahrkorbs, Nennlast,Anzahl der Personen (EN81:20 - 5.4.2)").FontSize(fontSizeXL).Bold();
             column.Item().PaddingTop(2,Unit.Millimetre).Text(text =>
             {
-                text.Span(PayLoadResult.CargoTyp).FontSize(14).Bold();
+                text.Span(PayLoadResult.CargoTyp).FontSize(fontSizeL).Bold();
                 text.Span(" (");
-                text.Span(PayLoadResult.DriveSystem).FontSize(14).Bold();
+                text.Span(PayLoadResult.DriveSystem).FontSize(fontSizeL).Bold();
                 text.Span(") ");
-                text.Span(ParameterDictionary["var_Aufzugstyp"].Value).FontSize(10).Bold();
+                text.Span(ParameterDictionary["var_Aufzugstyp"].Value).FontSize(fontSizeS).Bold();
             });
             column.Item().Row(row =>
             {
@@ -136,7 +134,7 @@ public class NutzlastberechnungDocument : PdfBaseDocument
                     row.RelativeItem().AlignRight().Text($"{ParameterDictionary["var_TuerEinbauD"].Value} mm");
                 });
             });
-            table.Cell().Row(8).Column(1).PaddingLeft(10).Text("Kabinen Nutzfläche").FontSize(14).Bold();
+            table.Cell().Row(8).Column(1).PaddingLeft(10).Text("Kabinen Nutzfläche").FontSize(fontSizeL).Bold();
             table.Cell().Row(9).Column(1).PaddingLeft(10).Text("Fahrkorbfläche");
             table.Cell().Row(9).Column(2).AlignRight().Text($"{PayLoadResult.NutzflaecheKabine} m²");
             table.Cell().Row(10).Column(1).ShowIf(PayLoadResult.ZugangA).PaddingLeft(10).Text(text => 
@@ -181,34 +179,34 @@ public class NutzlastberechnungDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.ConstantColumn(25, Unit.Millimetre);
             });
-            table.Cell().Row(1).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Nutzfläche des Fahrkorbs für Personenaufzüge").FontSize(8).Bold();
+            table.Cell().Row(1).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Nutzfläche des Fahrkorbs für Personenaufzüge").FontSize(fontSizeXS).Bold();
             table.Cell().Row(2).Column(1).PaddingLeft(10).Text("minimale Nennlast (Tabelle 6)");
             table.Cell().Row(2).Column(2).AlignRight().Text($"{PayLoadResult.NennLastTabelle6} kg");
-            table.Cell().Row(3).Column(1).ColumnSpan(2).PaddingLeft(10).Text("reduzierte Nutzfläche (für hydraulisch angetriebene Lastenaufzüge)").FontSize(8).Bold();
+            table.Cell().Row(3).Column(1).ColumnSpan(2).PaddingLeft(10).Text("reduzierte Nutzfläche (für hydraulisch angetriebene Lastenaufzüge)").FontSize(fontSizeXS).Bold();
             table.Cell().Row(4).Column(1).PaddingLeft(10).Text("minimale Nennlast (Tabelle 7)");
             table.Cell().Row(4).Column(2).AlignRight().Text($"{PayLoadResult.NennLastTabelle7} kg");
-            table.Cell().Row(5).Column(1).PaddingLeft(10).Background(PayLoadResult.PayloadAllowed ? Colors.Green.Lighten3 : Colors.Red.Lighten3).Text("Nennlast (gewählt)").Bold();
-            table.Cell().Row(5).Column(2).Background(PayLoadResult.PayloadAllowed ? Colors.Green.Lighten3 : Colors.Red.Lighten3).AlignRight().Text($"{ParameterDictionary["var_Q"].Value} kg").Bold();
+            table.Cell().Row(5).Column(1).PaddingLeft(10).Background(PayLoadResult.PayloadAllowed ? successfulColor : errorColor).Text("Nennlast (gewählt)").Bold();
+            table.Cell().Row(5).Column(2).Background(PayLoadResult.PayloadAllowed ? successfulColor : errorColor).AlignRight().Text($"{ParameterDictionary["var_Q"].Value} kg").Bold();
             table.Cell().Row(6).Column(1).ColumnSpan(2).AlignCenter().Text(text =>
             {
                 if (PayLoadResult.PayloadAllowed)
                 {
-                    text.Line("Nennlast enspricht der EN81:20!").Bold().FontColor(Colors.Green.Lighten3);
+                    text.Line("Nennlast enspricht der EN81:20!").Bold().FontColor(successfulColor);
                 }
                 else
                 {
-                    text.Line("Nennlast enspricht nicht der EN81:20!").Bold().FontColor(Colors.Red.Lighten3);
+                    text.Line("Nennlast enspricht nicht der EN81:20!").Bold().FontColor(errorColor);
                 }
             });
-            table.Cell().Row(7).Column(1).ColumnSpan(2).PaddingTop(15).PaddingBottom(0).Text("Anzahl der Personen (5.4.2.3)").FontSize(14).Bold();
-            table.Cell().Row(8).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Anzahl der Personen berechnet (Nutzlast / 75)").FontSize(8).Bold();
+            table.Cell().Row(7).Column(1).ColumnSpan(2).PaddingTop(15).PaddingBottom(0).Text("Anzahl der Personen (5.4.2.3)").FontSize(fontSizeL).Bold();
+            table.Cell().Row(8).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Anzahl der Personen berechnet (Nutzlast / 75)").FontSize(fontSizeXS).Bold();
             table.Cell().Row(9).Column(1).PaddingLeft(10).Text("Anzahl Personen");
             table.Cell().Row(9).Column(2).AlignRight().Text($"{PayLoadResult.Personen75kg} Per.");
-            table.Cell().Row(10).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Anzahl der Personen und kleinste Nutzfläche des Fahrkorbs").FontSize(8).Bold();
+            table.Cell().Row(10).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Anzahl der Personen und kleinste Nutzfläche des Fahrkorbs").FontSize(fontSizeXS).Bold();
             table.Cell().Row(11).Column(1).PaddingLeft(10).Text("Anzahl Personen (Tabelle 8)");
             table.Cell().Row(11).Column(2).AlignRight().Text($"{PayLoadResult.PersonenFlaeche} Per.");
-            table.Cell().Row(12).Column(1).PaddingLeft(10).Background(Colors.Grey.Lighten2).Text("Anzahl Personen").Bold();
-            table.Cell().Row(12).Column(2).Background(Colors.Grey.Lighten2).AlignRight().Text($"{PayLoadResult.PersonenBerechnet} Per.").Bold();
+            table.Cell().Row(12).Column(1).PaddingLeft(10).Background(secondaryVariantColor).Text("Anzahl Personen").Bold();
+            table.Cell().Row(12).Column(2).Background(secondaryVariantColor).AlignRight().Text($"{PayLoadResult.PersonenBerechnet} Per.").Bold();
         });
     }
 }

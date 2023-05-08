@@ -5,7 +5,7 @@ using QuestPDF.Infrastructure;
 
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
-public class TableENComponent : IComponent
+public class TableENComponent : PdfBaseDocument, IComponent
 {
 
     List<TableRow<int, double>> tableEN;
@@ -58,27 +58,27 @@ public class TableENComponent : IComponent
                 columns.RelativeColumn();
             });
 
-            table.Cell().Row(1).Column(1).ColumnSpan(4).Padding(0.5f).Background(Colors.Blue.Lighten1).AlignCenter().Text(header).FontSize(10).FontColor(Colors.White);
-            table.Cell().Row(2).Column(1).Padding(0.5f).Background(Colors.Blue.Lighten3).AlignCenter().Text(headerColumn).FontSize(8).FontColor(Colors.White);
-            table.Cell().Row(2).Column(2).Padding(0.5f).Background(Colors.Blue.Lighten3).AlignCenter().Text(headerValue).FontSize(8).FontColor(Colors.White);
-            table.Cell().Row(2).Column(3).Padding(0.5f).Background(Colors.Blue.Lighten3).AlignCenter().Text(headerColumn).FontSize(8).FontColor(Colors.White);
-            table.Cell().Row(2).Column(4).Padding(0.5f).Background(Colors.Blue.Lighten3).AlignCenter().Text(headerValue).FontSize(8).FontColor(Colors.White);
+            table.Cell().Row(1).Column(1).ColumnSpan(4).Padding(0.5f).Background(primaryColor).AlignCenter().Text(header).FontSize(fontSizeS).FontColor(onPrimaryColor);
+            table.Cell().Row(2).Column(1).Padding(0.5f).Background(secondaryColor).AlignCenter().Text(headerColumn).FontSize(fontSizeXS).FontColor(onSecondaryColor);
+            table.Cell().Row(2).Column(2).Padding(0.5f).Background(secondaryColor).AlignCenter().Text(headerValue).FontSize(fontSizeXS).FontColor(onSecondaryColor);
+            table.Cell().Row(2).Column(3).Padding(0.5f).Background(secondaryColor).AlignCenter().Text(headerColumn).FontSize(fontSizeXS).FontColor(onSecondaryColor);
+            table.Cell().Row(2).Column(4).Padding(0.5f).Background(secondaryColor).AlignCenter().Text(headerValue).FontSize(fontSizeXS).FontColor(onSecondaryColor);
 
             for (int i = 0; i < tableEN.Count / 2; i++)
             {
-                table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[i].FirstValue} {tableEN[i].FirstUnit}").FontSize(8);
-                table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[i].SecondValue} {tableEN[i].SecondUnit}").FontSize(8);
-                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].FirstValue} {tableEN[i + tableEN.Count / 2].FirstUnit}").FontSize(8);
-                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].SecondValue} {tableEN[i + tableEN.Count / 2].SecondUnit}").FontSize(8);
+                table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i].FirstValue} {tableEN[i].FirstUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i].SecondValue} {tableEN[i].SecondUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].FirstValue} {tableEN[i + tableEN.Count / 2].FirstUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? highlightColor: secondaryVariantColor).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].SecondValue} {tableEN[i + tableEN.Count / 2].SecondUnit}").FontSize(fontSizeXS);
             }
 
             if (tableEN.Count % 2 != 0)
             {
-                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[tableEN.Count-1].FirstValue} {tableEN[tableEN.Count-1].FirstUnit}").FontSize(8);
-                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? Colors.Lime.Accent1 : Colors.Grey.Lighten2).AlignCenter().Text($"{tableEN[tableEN.Count-1].SecondValue} {tableEN[tableEN.Count - 1].SecondUnit}").FontSize(8);
+                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count-1].FirstValue} {tableEN[tableEN.Count-1].FirstUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count-1].SecondValue} {tableEN[tableEN.Count - 1].SecondUnit}").FontSize(fontSizeXS);
             }
 
-            table.Cell().ColumnSpan(4).Padding(0.5f).Background(Colors.Blue.Lighten3).PaddingLeft(5).Text(footer).FontSize(8).FontColor(Colors.White);
+            table.Cell().ColumnSpan(4).Padding(0.5f).Background(primaryColor).PaddingLeft(5).Text(footer).FontSize(8).FontColor(onPrimaryColor);
         });
     }
 }

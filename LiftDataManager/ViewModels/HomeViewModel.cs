@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Models.CalculationResultsModels;
-using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -638,15 +636,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
         _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
 
-        var carWeightRequestMessageMessageResult = await WeakReferenceMessenger.Default.Send<CarWeightRequestMessageAsync>();
+        var carWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParamterDictionary);
 
-        if (carWeightRequestMessageMessageResult is not null)
+        if (carWeightResult is not null)
         {
-            CarDoorWeight = carWeightRequestMessageMessageResult.KabinenTuerenGewicht;
-            CarFrameWeight = carWeightRequestMessageMessageResult.FangrahmenGewicht;
-            CarWeight = carWeightRequestMessageMessageResult.KabinenGewicht;
+            CarDoorWeight = carWeightResult.KabinenTuerGewicht;
+            CarFrameWeight = carWeightResult.FangrahmenGewicht;
+            CarWeight = carWeightResult.KabinenGewichtGesamt;
             ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value);
+            ParamterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
         }
+
         await Task.CompletedTask;
     }
 

@@ -53,6 +53,30 @@ public class PdfBaseDocument : IDocument
         return user;
     }
 
+    //Colors
+    public string primaryColor = Colors.Pink.Accent3;
+    public string primaryVariantColor = Colors.Pink.Lighten2;
+    public string secondaryColor = Colors.BlueGrey.Darken3;
+    public string secondaryVariantColor = Colors.BlueGrey.Lighten3;
+    public string background = Colors.White;
+    public string onPrimaryColor = Colors.White;
+    public string onPrimaryVariantColor = Colors.White;
+    public string onSecondaryColor = Colors.White;
+    public string onSecondaryVariantColor = Colors.White;
+    public string errorColor = Colors.Red.Lighten3;
+    public string successfulColor = Colors.Green.Lighten3;
+    public string highlightColor = Colors.Lime.Accent3;
+
+    //FontSize
+    public float fontSizeXXS = 6;
+    public float fontSizeXS = 8;
+    public float fontSizeS = 10;
+    public float fontSizeStandard = 12;
+    public float fontSizeL = 14;
+    public float fontSizeXL = 16;
+    public float fontSizeXXL = 18;
+    public float fontSizeBig = 20;
+
     public void Compose(IDocumentContainer container)
     {
         container.Page(page =>
@@ -62,8 +86,8 @@ public class PdfBaseDocument : IDocument
             page.MarginBottom(0, Unit.Millimetre);
             page.MarginLeft(0, Unit.Millimetre);
             page.MarginRight(0, Unit.Millimetre);
-            page.PageColor(Colors.White);
-            page.DefaultTextStyle(x => x.FontSize(12));
+            page.PageColor(background);
+            page.DefaultTextStyle(x => x.FontSize(fontSizeStandard));
             page.Header().Element(Header);
             page.Content().Element(Content);
             page.Footer().Element(Footer);
@@ -79,9 +103,9 @@ public class PdfBaseDocument : IDocument
             {
                 layers.Layer().Canvas((canvas, size) =>
                 {
-                    using var paintRed = new SKPaint
+                    using var paintPrimaryColor = new SKPaint
                     {
-                        Color = SKColor.Parse(Colors.Red.Accent3),
+                        Color = SKColor.Parse(primaryColor),
                         IsAntialias = true
                     };
 
@@ -92,14 +116,14 @@ public class PdfBaseDocument : IDocument
                     path.LineTo(size.Width, 0);
                     path.Close();
 
-                    canvas.DrawPath(path, paintRed);
+                    canvas.DrawPath(path, paintPrimaryColor);
                 });
 
                 layers.PrimaryLayer().Height(120).Width(595).Canvas((canvas, size) =>
                 {
-                    using var paintGrey = new SKPaint
+                    using var paintSecondaryColor = new SKPaint
                     {
-                        Color = SKColor.Parse(Colors.Grey.Darken3),
+                        Color = SKColor.Parse(secondaryColor),
                         IsAntialias = true
                     };
 
@@ -112,14 +136,14 @@ public class PdfBaseDocument : IDocument
                     path.LineTo(size.Width, 0);
                     path.Close();
 
-                    canvas.DrawPath(path, paintGrey);
+                    canvas.DrawPath(path, paintSecondaryColor);
                 });
 
                 layers.Layer().Canvas((canvas, size) =>
                 {
-                    using var paintRed = new SKPaint
+                    using var paintPrimaryColor = new SKPaint
                     {
-                        Color = SKColor.Parse(Colors.Red.Accent3),
+                        Color = SKColor.Parse(primaryColor),
                         IsAntialias = true
                     };
 
@@ -130,60 +154,60 @@ public class PdfBaseDocument : IDocument
                     path.LineTo(size.Width - 60, 0);
                     path.Close();
 
-                    canvas.DrawPath(path, paintRed);
+                    canvas.DrawPath(path, paintPrimaryColor);
                 });
 
                 layers.Layer().Row(row =>
                 {
                     row.ConstantItem(65).PaddingTop(10).PaddingLeft(10).Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BE_Logo.png"));
-                    row.AutoItem().PaddingTop(10).PaddingLeft(10).Column(column =>
+                    row.AutoItem().PaddingTop(8).PaddingLeft(10).Column(column =>
                     {
                         column
                             .Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
-                            .FontSize(17).SemiBold().Italic().FontColor(Colors.Red.Darken2);
+                            .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(primaryColor);
                         column
                             .Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
-                            .FontSize(12).SemiBold().Italic().FontColor(Colors.Grey.Lighten2);
+                            .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(Colors.Grey.Lighten2);
                         column
                             .Item().Text("Mähderweg 1a  86637 Rieblingen")
-                            .FontSize(10).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
                         column
                             .Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
-                            .FontSize(10).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
                         column
                             .Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
-                            .FontSize(10).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
                         column
                             .Item().PaddingTop(3).PaddingLeft(-50).Text(Title)
-                            .Bold().FontSize(18).FontColor(Colors.White);
+                            .Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
                     });
                     row.RelativeItem().PaddingLeft(5, Unit.Millimetre).Column(column =>
                     {
                         column
-                            .Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(20).FontColor(Colors.White);
+                            .Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
 
                         column
-                            .Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(12).FontColor(Colors.White);
+                            .Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(secondaryColor);
 
                         column
                             .Item().PaddingTop(7).Row(row =>
                             {
                                 row.AutoItem().PaddingLeft(50).Column(column =>
                                 {
-                                    column.Item().Text("Auftragsnummer:").FontSize(6).FontColor(Colors.White);
-                                    column.Item().Text(AuftragsNummer).FontSize(16).FontColor(Colors.White);
+                                    column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                    column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
                                 });
-                                row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(Colors.White);
+                                row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
                                 row.AutoItem().PaddingLeft(10).Column(column =>
                                 {
-                                    column.Item().Text("Fabriknummer:").FontSize(6).FontColor(Colors.White);
-                                    column.Item().Text(FabrikNummer).FontSize(16).FontColor(Colors.White);
+                                    column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                    column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
                                 });
                             });
                         column
-                            .Item().PaddingLeft(20).PaddingTop(-2).Text("Kennwort:").FontSize(6).FontColor(Colors.Black);
+                            .Item().PaddingLeft(20).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
                         column
-                           .Item().PaddingLeft(20).Text(Kennwort).FontSize(14).FontColor(Colors.Black);
+                           .Item().PaddingLeft(20).Text(Kennwort).FontSize(fontSizeL);
                     });
                 });
             });
@@ -192,9 +216,9 @@ public class PdfBaseDocument : IDocument
             {
                 layers.Layer().Canvas((canvas, size) =>
                 {
-                    using var paintRed = new SKPaint
+                    using var paintPrimaryColor = new SKPaint
                     {
-                        Color = SKColor.Parse(Colors.Red.Accent3),
+                        Color = SKColor.Parse(primaryColor),
                         IsAntialias = true
                     };
 
@@ -205,14 +229,14 @@ public class PdfBaseDocument : IDocument
                     path.LineTo(size.Width, 0);
                     path.Close();
 
-                    canvas.DrawPath(path, paintRed);
+                    canvas.DrawPath(path, paintPrimaryColor);
                 });
 
                 layers.PrimaryLayer().Height(60).Width(595).Canvas((canvas, size) =>
                 {
-                    using var paintGrey = new SKPaint
+                    using var paintSecondaryColor = new SKPaint
                     {
-                        Color = SKColor.Parse(Colors.Grey.Darken3),
+                        Color = SKColor.Parse(secondaryColor),
                         IsAntialias = true
                     };
 
@@ -222,14 +246,14 @@ public class PdfBaseDocument : IDocument
                     path.ArcTo(275, 60, 325, 0, 30);
                     path.ArcTo(325, 0, size.Width, 0, 30);
                     path.Close();
-                    canvas.DrawPath(path, paintGrey);
+                    canvas.DrawPath(path, paintSecondaryColor);
                 });
 
                 layers.Layer().Row(row =>
                 {
                     row.
                         ConstantItem(290).PaddingTop(32).PaddingLeft(15).Text(Title)
-                        .Bold().FontSize(18).FontColor(Colors.White);
+                        .Bold().FontSize(18).FontColor(onSecondaryColor);
                     row.RelativeItem().Column(column =>
                     {
                         column
@@ -237,21 +261,21 @@ public class PdfBaseDocument : IDocument
                             {
                                 row.AutoItem().Column(column =>
                                 {
-                                    column.Item().Text("Auftragsnummer:").FontSize(6).FontColor(Colors.White);
-                                    column.Item().Text(AuftragsNummer).FontSize(16).FontColor(Colors.White);
+                                    column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                    column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
                                 });
-                                row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(Colors.White);
+                                row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
                                 row.AutoItem().PaddingLeft(10).Column(column =>
                                 {
-                                    column.Item().Text("Fabriknummer:").FontSize(6).FontColor(Colors.White);
-                                    column.Item().Text(FabrikNummer).FontSize(16).FontColor(Colors.White);
+                                    column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                    column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
                                 });
                             });
 
                         column
-                            .Item().PaddingLeft(12).PaddingTop(-2).Text("Kennwort:").FontSize(6).FontColor(Colors.Black);
+                            .Item().PaddingLeft(12).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
                         column
-                            .Item().PaddingLeft(12).Text(Kennwort).FontSize(14).FontColor(Colors.Black);
+                            .Item().PaddingLeft(12).Text(Kennwort).FontSize(fontSizeL);
                     });
                 });
             });
@@ -272,9 +296,9 @@ public class PdfBaseDocument : IDocument
         {
             layers.PrimaryLayer().Height(40).Width(595).Canvas((canvas, size) =>
             {
-                using var paintRed = new SKPaint
+                using var paintprimaryColor = new SKPaint
                 {
-                    Color = SKColor.Parse(Colors.Red.Accent3),
+                    Color = SKColor.Parse(primaryColor),
                     IsAntialias = true
                 };
 
@@ -286,20 +310,20 @@ public class PdfBaseDocument : IDocument
                 path.LineTo(595, 0);
                 path.LineTo(595, 40);
                 path.Close();
-                canvas.DrawPath(path, paintRed);
+                canvas.DrawPath(path, paintprimaryColor);
             });
 
             layers.Layer().Row(row =>
             {
                 row.AutoItem().PaddingTop(20).PaddingLeft(5, Unit.Millimetre).Text(text =>
                 {
-                    text.Span("www.berchtenbreiter-gmbh.de").FontColor(Colors.White);
+                    text.Span("www.berchtenbreiter-gmbh.de").FontColor(onPrimaryColor);
                 });
                 row.RelativeItem().AlignRight().PaddingTop(5).PaddingRight(4, Unit.Millimetre).Text(text =>
                 {
-                    text.CurrentPageNumber().Bold().FontSize(20).FontColor(Colors.White);
-                    text.Span(" / ").Bold().FontSize(20).FontColor(Colors.White);
-                    text.TotalPages().Bold().FontSize(20).FontColor(Colors.White);
+                    text.CurrentPageNumber().Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
+                    text.Span(" / ").Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
+                    text.TotalPages().Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
                 });
             });
         });

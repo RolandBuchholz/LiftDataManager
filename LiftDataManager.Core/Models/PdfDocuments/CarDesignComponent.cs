@@ -78,15 +78,15 @@ public class CarDesignComponent : IComponent
             layers.PrimaryLayer().Canvas((canvas, size) =>
             {
                 canvas.Clear();
-                using var paintBlueBase = new SKPaint
+                using var paintBase = new SKPaint
                 {
-                    Color = SKColor.Parse(Colors.Blue.Medium),
+                    Color = SKColor.Parse(Colors.BlueGrey.Medium),
                     IsAntialias = true
                 };
 
                 using var paintBlueDoor = new SKPaint
                 {
-                    Color = SKColor.Parse(Colors.Blue.Darken2),
+                    Color = SKColor.Parse(Colors.BlueGrey.Lighten1),
                     IsAntialias = true
                 };
 
@@ -97,7 +97,7 @@ public class CarDesignComponent : IComponent
 
                 carBase.Offset(100, 100);
 
-                canvas.DrawRect(carBase, paintBlueBase);
+                canvas.DrawRect(carBase, paintBase);
 
                 if (zugangA)
                 {

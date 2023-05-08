@@ -61,12 +61,7 @@ public partial class Parameter : ParameterBase
 
     [ObservableProperty]
     private string? value;
-    private string? oldTempValue;
-    partial void OnValueChanging(string? value)
-    {
-        oldTempValue = Value;
-    }
-    partial void OnValueChanged(string? value)
+    partial void OnValueChanged(string? oldValue,string? newValue)
     {
         if (!DataImport)
         {
@@ -79,7 +74,7 @@ public partial class Parameter : ParameterBase
                 }
             }
             isDirty = true;
-            Broadcast(oldTempValue, value, Name);
+            Broadcast(oldValue, newValue, Name);
         }
     }
 

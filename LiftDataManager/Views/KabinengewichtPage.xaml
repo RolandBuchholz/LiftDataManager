@@ -185,7 +185,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.AnzahlKabinentueren, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.CarWeightResult.AnzahlKabinentueren, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
@@ -204,7 +204,7 @@
                         Margin="0,0,10,0"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="{x:Bind ViewModel.AnzahlKabinentuerfluegel, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.CarWeightResult.AnzahlKabinentuerfluegel, Mode=OneWay}" />
                         <Run Text="-flügelig" />
                     </TextBlock>
                     <TextBlock
@@ -225,161 +225,161 @@
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals A (L1)"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="8"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="8"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="9"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals A (R1)"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="9"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="9"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangA, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals C (L2)"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals C (R2)"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangC, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="12"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals B (L3)"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="12"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="12"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="13"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals B (R3)"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="13"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="13"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangB, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals D (L4)"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Hals D (R4)"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         Style="{StaticResource BodyTextStyle}"
                         Text="mm"
-                        Visibility="{x:Bind ViewModel.ZugangD, Mode=OneWay}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.ZugangD, Mode=OneWay}" />
                 </Grid>
                 <!--  CarDesignControl  -->
                 <SpeziControls:CarDesignControl
@@ -414,7 +414,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.KabinenBodengewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.KabinenBodengewicht)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
@@ -431,7 +431,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.Bodenblech),}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.Bodenblech),}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -452,7 +452,7 @@
                         Style="{StaticResource BodyTextStyle}">
                         <Run Text="{x:Bind ViewModel.ParamterDictionary['var_BoPr'].Value}" />
                         <Run Text=" (" />
-                        <Run Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.BodenProfilGewicht)}" />
+                        <Run Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.BodenProfilGewicht)}" />
                         <Run Text="kg/m)" />
                     </TextBlock>
                 </Grid>
@@ -493,7 +493,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.BodenBelagGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.BodenBelagGewicht)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
@@ -505,7 +505,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.BodenBelagGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.BodenBelagGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="4"
@@ -526,7 +526,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.Schottengewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.Schottengewicht)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -546,7 +546,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.Haelsegewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.Haelsegewicht)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -563,7 +563,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.AndidroehnGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.AndidroehnGewicht)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -575,19 +575,19 @@
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Schürze (Standard) "
-                        Visibility="{x:Bind ViewModel.SchuerzeVerstaerkt, Converter={StaticResource InvertBoolToObjectConverter}}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.SchuerzeVerstaerkt, Converter={StaticResource InvertBoolToObjectConverter}}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}"
                         Text="Schürze (verstärkt) "
-                        Visibility="{x:Bind ViewModel.SchuerzeVerstaerkt}" />
+                        Visibility="{x:Bind ViewModel.CarWeightResult.SchuerzeVerstaerkt}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SchuerzeGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SchuerzeGewicht)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
@@ -604,7 +604,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.Deckegewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.Deckegewicht)}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
@@ -621,7 +621,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.AbgehaengteDeckeGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.GewichtAbgehaengteDecke)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -633,7 +633,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.AbgehaengteDeckeGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.AbgehaengteDeckeGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="4"
@@ -651,7 +651,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.DeckeBelegtGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.DeckeBelegtGewicht)}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="2"
@@ -663,7 +663,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.DeckeBelegtGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.DeckeBelegtGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="4"
@@ -681,7 +681,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.BelagAufDerDeckeGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.BelagAufDerDeckeGewicht)}" />
                     <TextBlock
                         Grid.Row="8"
                         Grid.Column="2"
@@ -693,7 +693,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.BelagAufDerDeckeGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.BelagAufDerDeckeGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="8"
                         Grid.Column="4"
@@ -737,7 +737,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SpiegelGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SpiegelGewicht)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
@@ -749,7 +749,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.SpiegelGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.SpiegelGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="4"
@@ -762,7 +762,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.SpiegelQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.SpiegelQm)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="6"
@@ -780,7 +780,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.PaneeleGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.PaneeleGewicht)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -792,7 +792,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.PaneeleGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.PaneeleGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="4"
@@ -805,7 +805,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.PaneeleQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.PaneeleQm)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="6"
@@ -823,7 +823,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.PaneeleSpiegelGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.PaneeleSpiegelGewicht)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -835,7 +835,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.PaneeleSpiegelGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.PaneeleSpiegelGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="4"
@@ -848,7 +848,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.PaneeleSpiegelQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.PaneeleSpiegelQm)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="6"
@@ -861,14 +861,14 @@
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}">
                         <Run Text="Glaswände" />
-                        <Run Text="{x:Bind ViewModel.VSGTyp}" />
+                        <Run Text="{x:Bind ViewModel.CarWeightResult.VSGTyp}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.VSGGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.VSGGewicht)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -880,7 +880,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.VSGGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.VSGGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="4"
@@ -893,7 +893,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.VSGQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.VSGQm)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="6"
@@ -911,7 +911,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.AussenVerkleidungGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.AussenVerkleidungGewicht)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
@@ -923,7 +923,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.AussenVerkleidungGewichtproQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.AussenVerkleidungGewichtproQm)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="4"
@@ -936,7 +936,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.AussenVerkleidungQm)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.AussenVerkleidungQm)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="6"
@@ -948,7 +948,7 @@
                         Grid.Row="5"
                         Grid.Column="0"
                         Style="{StaticResource BodyTextStyle}">
-                        <Run Text="Stoßleiste " />
+                        <Run Text="Stoßleiste" />
                         <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Rammschutz'].Value}" />
                     </TextBlock>
                     <TextBlock
@@ -956,7 +956,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.StossleisteGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.StossleisteGewicht)}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="2"
@@ -968,7 +968,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.StossleisteGewichtproMeter)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.StossleisteGewichtproMeter)}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="4"
@@ -981,7 +981,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.StossleisteLaenge)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.StossleisteLaenge)}" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="6"
@@ -1001,7 +1001,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.HandlaufGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.HandlaufGewicht)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -1013,7 +1013,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.HandlaufGewichtproMeter)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.HandlaufGewichtproMeter)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="4"
@@ -1026,7 +1026,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.HandlaufLaenge)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.HandlaufLaenge)}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="6"
@@ -1046,7 +1046,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SockelleisteGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SockelleisteGewicht)}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="2"
@@ -1058,7 +1058,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.SockelleisteGewichtproMeter)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.SockelleisteGewichtproMeter)}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="4"
@@ -1071,7 +1071,7 @@
                         Grid.Column="5"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.SockelleisteLaenge)}" />
+                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.SockelleisteLaenge)}" />
                     <TextBlock
                         Grid.Row="7"
                         Grid.Column="6"
@@ -1107,7 +1107,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SchutzgelaenderGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SchutzgelaenderGewicht)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
@@ -1120,7 +1120,7 @@
                         HorizontalAlignment="Left"
                         Style="{StaticResource BodyTextStyle}">
                         <Run Text="Anzahl Pfosten : " />
-                        <Run Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SchutzgelaenderAnzahlPfosten)}" />
+                        <Run Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SchutzgelaenderAnzahlPfosten)}" />
                         <Run Text=" Stk" />
                     </TextBlock>
                     <TextBlock
@@ -1133,7 +1133,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.KlemmkastenGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.KlemmkastenGewicht)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -1150,7 +1150,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.SchraubenZubehoerGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.SchraubenZubehoerGewicht)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -1167,7 +1167,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.TableauGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.TableauGewicht)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -1180,7 +1180,7 @@
                         HorizontalAlignment="Left"
                         Style="{StaticResource BodyTextStyle}">
                         <Run Text="Abzug Tableaubreite (" />
-                        <Run Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.TableauBreite)}" />
+                        <Run Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.TableauBreite)}" />
                         <Run Text="mm) für Paneel- und Glasberechnung" />
                     </TextBlock>
                 </Grid>
@@ -1221,7 +1221,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.KabinenGewichtGesamt)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.KabinenGewichtGesamt)}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"
@@ -1238,7 +1238,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.KabinenKorrekturGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.ParamterDictionary['var_F_Korr'].Value)}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -1255,7 +1255,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.KabinenTuerGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.KabinenTuerGewicht)}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -1272,7 +1272,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.FangrahmenGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.FangrahmenGewicht)}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -1293,7 +1293,7 @@
                         HorizontalAlignment="Right"
                         FontWeight="SemiBold"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.FahrkorbGewicht)}" />
+                        Text="{x:Bind sys:String.Format('{0:N0}', ViewModel.CarWeightResult.FahrkorbGewicht)}" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="2"
