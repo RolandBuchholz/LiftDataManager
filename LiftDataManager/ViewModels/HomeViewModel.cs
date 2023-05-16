@@ -47,6 +47,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
     }
 
+    [RelayCommand]
+    private void TestPdf()
+    {
+        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, @"C:\\Users\\Buchholz.PPS\\Desktop\\TestPdf.pdf", true);
+    }
+
     [ObservableProperty]
     private bool isBusy;
 
@@ -119,7 +125,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
-                updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
+                {
+                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                }
+                else
+                {
+                    updatedParameter.Value = item.Value is not null ? item.Value.ToLower() : "false";
+                }
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)

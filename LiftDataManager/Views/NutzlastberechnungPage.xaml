@@ -102,7 +102,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Command="{x:Bind ViewModel.CreatePdfCommand}">
+                        Command="{x:Bind ViewModel.CreateNutzlastberechnungPdfCommand}">
                         <SymbolIcon Symbol="Print" />
                     </Button>
                 </Grid>

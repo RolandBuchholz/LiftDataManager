@@ -164,6 +164,10 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         SetDefaultParameter(parameterDictionary);
 
+        ClearSelectedRows(Table6);
+        ClearSelectedRows(Table7);
+        ClearSelectedRows(Table8);
+
         var nutzflaecheKabine = Math.Round(kabinenbreite * kabinentiefe / Math.Pow(10, 6), 2);
         var nutzflaecheZugangA = zugangA ? GetCarDoorArea(parameterDictionary, "A") : 0;
         var nutzflaecheZugangB = zugangB ? GetCarDoorArea(parameterDictionary, "B") : 0;
@@ -402,7 +406,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                                                                 (zugangD ? kabinentuerGewichtD : 0)
                                                                : kabinentuerGewichtA * anzahlKabinentueren;
 
-        var fangrahmenGewicht = GetFangrahmengewicht(parameterDictionary);
+        var fangrahmenGewicht = GetCarFrameWeight(parameterDictionary);
 
         var fahrkorbGewicht = Math.Round(kabinenGewichtGesamt + kabinenKorrekturGewicht + kabinenTuerGewicht + fangrahmenGewicht);
 
@@ -612,10 +616,13 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (table.Any(x => x.Value.SecondValue == area))
         {
             nutzlast = table.FirstOrDefault(x => x.Value.SecondValue == area).Value;
+            nutzlast.IsSelected = true;
             return nutzlast.FirstValue;
         };
         var lowTableEntry = table.Where(x => x.Value.SecondValue < area).Last();
+            lowTableEntry.Value.IsSelected = true;
         var highTableEntry = table.Where(x => x.Value.SecondValue > area).First();
+            highTableEntry.Value.IsSelected = true;
         return Math.Round(lowTableEntry.Value.FirstValue + (highTableEntry.Value.FirstValue - lowTableEntry.Value.FirstValue) /
                 (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (area - lowTableEntry.Value.SecondValue),0); 
     }
@@ -633,10 +640,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
         personenAnzahl = Table8.Where(x => x.Value.SecondValue < area).Last().Value;
         LogTabledata("Tabelle 8", personenAnzahl.FirstValue);
+        personenAnzahl.IsSelected = true;
         return personenAnzahl.FirstValue;
     }
 
-    private double GetFangrahmengewicht(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public double GetCarFrameWeight(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
 
         if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_Rahmengewicht"].Value))
@@ -718,6 +726,15 @@ public partial class CalculationsModuleService : ICalculationsModule
                 break;
         }
         return dic;
+    }
+
+    private static void ClearSelectedRows(Dictionary<int, TableRow<int, double>> table)
+    {
+        foreach (var row in table)
+        {
+            if (row.Value.IsSelected)
+                row.Value.IsSelected = false;
+        }
     }
 
     //Database

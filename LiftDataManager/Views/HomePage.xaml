@@ -138,6 +138,18 @@
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+
+            <Button
+                Grid.Column="6"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.TestPdfCommand}"
+                Content="Test Pdf"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+
+
+
             <Button
                 Grid.Column="7"
                 Width="175"

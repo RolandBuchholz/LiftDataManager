@@ -77,7 +77,9 @@ public partial class ParameterDataService : IParameterDataService
     {
         return new LiftHistoryEntry(parameter.Name!,
             parameter.DisplayName!,
-            parameter.Value is not null ? parameter.Value : string.Empty, 
+            parameter.Value is not null ? parameter.ParameterTyp != ParameterBase.ParameterTypValue.Date?
+                                          parameter.Value : LiftParameterHelper.ConvertExcelDate(parameter.Value)
+                                          : string.Empty, 
             user,
             parameter.Comment is not null ? parameter.Comment : string.Empty);
     }
@@ -208,8 +210,16 @@ public partial class ParameterDataService : IParameterDataService
             xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
             LogSavedParameter(parameter.DisplayName!, parameter.Value!);
             historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-            infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
-            infotext += $"----------\n";
+            if (parameter.ParameterTyp != ParameterBase.ParameterTypValue.Date)
+            {
+                infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
+                infotext += $"----------\n";
+            }
+            else
+            {
+                infotext = $"Parameter gespeichet: {parameter.Name} => {LiftParameterHelper.ConvertExcelDate(parameter.Value)}  \n";
+                infotext += $"----------\n";
+            }
         }
         else
         {
@@ -258,7 +268,14 @@ public partial class ParameterDataService : IParameterDataService
                     parameter.IsDirty = false;
                     LogSavedParameter(parameter.DisplayName!, parameter.Value!);
                     historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-                    infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value} \n";
+                    if (parameter.ParameterTyp != ParameterBase.ParameterTypValue.Date)
+                    {
+                        infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
+                    }
+                    else
+                    {
+                        infotext += $"Parameter gespeichet: {parameter.Name} => {LiftParameterHelper.ConvertExcelDate(parameter.Value)}  \n";
+                    }
                 }
                 else
                 {

@@ -18,9 +18,34 @@ public class PdfBaseDocument : IDocument
     public string Kennwort => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Kennwort");
     private readonly string user;
 
+    //Colors
+    public string primaryColor = string.Empty;
+    public string primaryVariantColor = string.Empty;
+    public string secondaryColor = string.Empty;
+    public string secondaryVariantColor = string.Empty;
+    public string background = string.Empty;
+    public string onPrimaryColor = string.Empty;
+    public string onPrimaryVariantColor = string.Empty;
+    public string onSecondaryColor = string.Empty;
+    public string onSecondaryVariantColor = string.Empty;
+    public string errorColor = string.Empty;
+    public string successfulColor = string.Empty;
+    public string highlightColor = string.Empty;
+
+    //FontSize
+    public float fontSizeXXS;
+    public float fontSizeXS;
+    public float fontSizeS;
+    public float fontSizeStandard;
+    public float fontSizeL;
+    public float fontSizeXL;
+    public float fontSizeXXL;
+    public float fontSizeBig;
+
     public PdfBaseDocument()
     {
         user = GetUserName();
+        SetPdfStyle();
     }
 
     public DocumentMetadata GetMetadata() => new()
@@ -53,29 +78,33 @@ public class PdfBaseDocument : IDocument
         return user;
     }
 
-    //Colors
-    public string primaryColor = Colors.Pink.Accent3;
-    public string primaryVariantColor = Colors.Pink.Lighten2;
-    public string secondaryColor = Colors.BlueGrey.Darken3;
-    public string secondaryVariantColor = Colors.BlueGrey.Lighten3;
-    public string background = Colors.White;
-    public string onPrimaryColor = Colors.White;
-    public string onPrimaryVariantColor = Colors.White;
-    public string onSecondaryColor = Colors.White;
-    public string onSecondaryVariantColor = Colors.White;
-    public string errorColor = Colors.Red.Lighten3;
-    public string successfulColor = Colors.Green.Lighten3;
-    public string highlightColor = Colors.Lime.Accent3;
-
-    //FontSize
-    public float fontSizeXXS = 6;
-    public float fontSizeXS = 8;
-    public float fontSizeS = 10;
-    public float fontSizeStandard = 12;
-    public float fontSizeL = 14;
-    public float fontSizeXL = 16;
-    public float fontSizeXXL = 18;
-    public float fontSizeBig = 20;
+    private void SetPdfStyle()
+    {
+        var style = PdfHelpers.GetPdfStyleSet();
+        if (style is not null)
+        {
+            primaryColor = style.primaryColor!;
+            primaryVariantColor = style.primaryVariantColor!;
+            secondaryColor = style.secondaryColor!;
+            secondaryVariantColor = style.secondaryVariantColor!;
+            background = style.background!;
+            onPrimaryColor = style.onPrimaryColor!;
+            onPrimaryVariantColor = style.onPrimaryVariantColor!;
+            onSecondaryColor = style.onSecondaryColor!;
+            onSecondaryVariantColor = style.onSecondaryVariantColor!;
+            errorColor = style.errorColor!;
+            successfulColor = style.successfulColor!;
+            highlightColor = style.highlightColor!;
+            fontSizeXXS = style.fontSizeXXS;
+            fontSizeXS = style.fontSizeXS;
+            fontSizeS = style.fontSizeS;
+            fontSizeStandard = style.fontSizeStandard;
+            fontSizeL = style.fontSizeL;
+            fontSizeXL = style.fontSizeXL;
+            fontSizeXXL = style.fontSizeXXL;
+            fontSizeBig = style.fontSizeBig;
+        }
+    }
 
     public void Compose(IDocumentContainer container)
     {
@@ -187,7 +216,7 @@ public class PdfBaseDocument : IDocument
                             .Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
 
                         column
-                            .Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(secondaryColor);
+                            .Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(onSecondaryColor);
 
                         column
                             .Item().PaddingTop(7).Row(row =>

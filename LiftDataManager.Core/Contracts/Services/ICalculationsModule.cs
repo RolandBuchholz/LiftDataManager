@@ -15,6 +15,8 @@ public interface ICalculationsModule
 
     bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem);
 
+    double GetCarFrameWeight(ObservableDictionary<string, Parameter>? parameterDictionary);
+
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
