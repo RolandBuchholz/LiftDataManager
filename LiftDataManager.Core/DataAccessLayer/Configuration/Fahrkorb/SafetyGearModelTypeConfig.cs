@@ -8,9 +8,18 @@ public class SafetyGearModelTypeConfig : BaseModelBuilder<SafetyGearModelType>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
         builder.Property(x => x.SafetyGearTypeId);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.Property(x => x.MinLoadOiledColddrawn);
+        builder.Property(x => x.MaxLoadOiledColddrawn);
+        builder.Property(x => x.MinLoadDryColddrawn);
+        builder.Property(x => x.MaxLoadDryColddrawn);
+        builder.Property(x => x.MinLoadOiledMachined);
+        builder.Property(x => x.MaxLoadOiledMachined);
+        builder.Property(x => x.MinLoadDryMachined);
+        builder.Property(x => x.MaxLoadDryMachined);
+        builder.Property(x => x.AllowableWidth);
     }
 }

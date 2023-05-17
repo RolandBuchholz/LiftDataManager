@@ -23,5 +23,7 @@ public interface ICalculationsModule
 
     CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
 
+    SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }

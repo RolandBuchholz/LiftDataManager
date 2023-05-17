@@ -7,6 +7,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
 
@@ -475,6 +476,84 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        var carRailSurface = string.Empty;
+        var lubrication = string.Empty;
+        var allowedRailHeads =string.Empty;
+        var railHeadAllowed = false;
+        var railHead = 0.0;
+        var minLoad = 0;
+        var maxLoad = 0;
+
+        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_Fuehrungsart"].Value))
+        {
+            lubrication = parameterDictionary!["var_Fuehrungsart"].Value switch
+            {
+                "Gleitführung" => "geölt",
+                "Rollenführung" => "trocken",
+                _ => string.Empty,
+            };
+        }
+
+        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_FuehrungsschieneFahrkorb"].Value))
+        {
+            var carRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(parameterDictionary!["var_FuehrungsschieneFahrkorb"].Value!));
+            if (carRail is not null)
+            {
+                carRailSurface = carRail.Machined ? "bearbeitet" : "gezogen";
+                railHead = carRail.RailHead;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_TypFV"].Value))
+        {
+            if (carRailSurface != string.Empty && lubrication != string.Empty)
+            {
+                var currentSafetyGear = _parametercontext.Set<SafetyGearModelType>().FirstOrDefault(x => x.Name.Contains(parameterDictionary!["var_TypFV"].Value!));
+                if (currentSafetyGear is not null)
+                {
+                    var listOfRailHeads = GetAllowedRailHeads(currentSafetyGear.AllowableWidth);
+                    railHeadAllowed = listOfRailHeads.Count == 2 ? listOfRailHeads.First() <= railHead && listOfRailHeads.Last() >= railHead : listOfRailHeads.Contains(railHead);
+                    allowedRailHeads = listOfRailHeads.Count == 2 ? $"{listOfRailHeads.First()} - {listOfRailHeads.Last()}" : string.Join(" | ", listOfRailHeads);
+                    if (railHeadAllowed)
+                    {
+                        if (lubrication == "geölt" && carRailSurface == "gezogen")
+                        {
+                            minLoad = currentSafetyGear.MinLoadOiledColddrawn;
+                            maxLoad = currentSafetyGear.MaxLoadOiledColddrawn;
+                        }
+                        else if (lubrication == "trocken" && carRailSurface == "gezogen")
+                        {
+                            minLoad = currentSafetyGear.MinLoadDryColddrawn;
+                            maxLoad = currentSafetyGear.MaxLoadDryColddrawn;
+                        }
+                        else if (lubrication == "geölt" && carRailSurface == "bearbeitet")
+                        {
+                            minLoad = currentSafetyGear.MinLoadOiledMachined;
+                            maxLoad = currentSafetyGear.MaxLoadOiledMachined;
+                        }
+                        else if (lubrication == "trocken" && carRailSurface == "bearbeitet")
+                        {
+                            minLoad = currentSafetyGear.MinLoadDryMachined;
+                            maxLoad = currentSafetyGear.MaxLoadDryMachined;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new SafetyGearResult()
+        {
+            CarRailSurface = carRailSurface,
+            Lubrication = lubrication,
+            AllowedRailHeads = allowedRailHeads,
+            RailHeadAllowed = railHeadAllowed,
+            MinLoad = minLoad,
+            MaxLoad = maxLoad
+        };
+    }
+
     private void SetDefaultParameter(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
         kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
@@ -735,6 +814,22 @@ public partial class CalculationsModuleService : ICalculationsModule
             if (row.Value.IsSelected)
                 row.Value.IsSelected = false;
         }
+    }
+
+    private static List<double> GetAllowedRailHeads(string? railHeads)
+    {
+        var listOfRailHeads = new List<double>();
+
+        if (railHeads is not null)
+        {
+            var listOfRailHeadsStrings = railHeads!.Contains('-') ? railHeads.Split('-') : railHeads.Split(';');
+
+            foreach (var railHead in listOfRailHeadsStrings)
+            {
+                listOfRailHeads.Add(Convert.ToDouble(railHead, CultureInfo.CurrentCulture));
+            }
+        }
+        return listOfRailHeads;
     }
 
     //Database

@@ -139,14 +139,14 @@
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
 
-            <Button
+            <!--<Button
                 Grid.Column="6"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.TestPdfCommand}"
                 Content="Test Pdf"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}" />-->
 
 
 
@@ -949,7 +949,7 @@
                     AcceptsReturn="True"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value,Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                     TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>

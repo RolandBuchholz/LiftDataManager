@@ -120,10 +120,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Q",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(NotEmpty, "Error", null),
             new(ValidateCarArea, "Error", null),
+            new(ValidateSafetyRange, "Error", null),
             new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_F",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null),
+            new(ValidateSafetyRange, "Error", null)});
 
         ValidationDictionary.Add("var_Kennwort",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Warning", null) });
@@ -284,8 +286,21 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Ersatzmassnahmen",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedProtectionSpaces, "None", null) });
 
+        ValidationDictionary.Add("var_Fuehrungsart",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGuideModel, "None", null),
+            new(ValidateSafetyRange, "Error", null)});
+
+        ValidationDictionary.Add("var_FuehrungsschieneFahrkorb",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> {new(ValidateSafetyRange, "Error", null)});
+
+        ValidationDictionary.Add("var_Fuehrungsart_GGW",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGuideModel, "None", null) });
+
         ValidationDictionary.Add("var_Fangvorrichtung",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null)});
+
+        ValidationDictionary.Add("var_TypFV",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyRange, "None", null) });
 
         ValidationDictionary.Add("var_Aggregat",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDriveSystemTypes, "None", null),
@@ -893,6 +908,41 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
+    private void ValidateSafetyRange(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Q"].Value) ||
+            string.IsNullOrWhiteSpace(ParamterDictionary["var_F"].Value) ||
+            ParamterDictionary["var_F"].Value == "0" ||
+            string.IsNullOrWhiteSpace(ParamterDictionary["var_Fuehrungsart"].Value) ||
+            string.IsNullOrWhiteSpace(ParamterDictionary["var_FuehrungsschieneFahrkorb"].Value) ||
+            string.IsNullOrWhiteSpace(ParamterDictionary["var_TypFV"].Value))
+            return;
+
+        var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(ParamterDictionary);
+        if (safetygearResult is not null)
+        {
+            if (!safetygearResult.RailHeadAllowed)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählter Schienenkopf ist für diese Fangvorrichtung nicht zulässig.", SetSeverity(severity)));
+                return;
+            }
+
+            var load = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Q");
+            var carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_F");
+
+            if (safetygearResult.MinLoad > carWeight)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Minimalgewicht {safetygearResult.MinLoad} kg | Fahrkorbgewicht: {carWeight} kg unterschritten.", SetSeverity(severity)));
+                return;
+            }
+            if (safetygearResult.MaxLoad < load + carWeight)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Maximalgewicht {safetygearResult.MaxLoad} kg | Fahrkorbgewicht: {carWeight + load} kg überschritten.", SetSeverity(severity)));
+                return;
+            }
+        }
+    }
+
     private void ValidateDriveSystemTypes(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         var driveSystems = _parametercontext.Set<DriveSystem>().Include(i => i.DriveSystemType)
@@ -1148,6 +1198,38 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Achtung: Holzschacht - LBO und Türzulassung beachten!\n" +
                 $"Schienenbügelbefestigung muß durch bauseitigem Statiker erfolgen!", SetSeverity(severity)));
+        }
+    }
+
+    private void ValidateGuideModel(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return;
+        if (!name.StartsWith("var_Fuehrungsart")) return;
+
+        var guideModels = _parametercontext.Set<GuideModelType>().ToList();
+        var guideTyp = name.Replace("Fuehrungsart", "TypFuehrung");
+        var selectedguideModel = ParamterDictionary[guideTyp].Value;
+
+        IEnumerable<string?> availableguideModels = value switch
+        {
+            "Gleitführung" => guideModels.Where(x => x.GuideTypeId == 1).Select(s => s.Name),
+            "Rollenführung" => guideModels.Where(x => x.GuideTypeId == 2).Select(s => s.Name),
+            _ => guideModels.Select(s => s.Name),
+        };
+
+        if (availableguideModels is not null)
+        {
+            ParamterDictionary[guideTyp].DropDownList.Clear();
+            foreach (var item in availableguideModels)
+            {
+                ParamterDictionary[guideTyp].DropDownList.Add(item!);
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedguideModel) && !availableguideModels.Contains(selectedguideModel))
+            {
+                ParamterDictionary[guideTyp].Value = string.Empty;
+                ParamterDictionary[guideTyp].DropDownListValue = null;
+            }
         }
     }
 }

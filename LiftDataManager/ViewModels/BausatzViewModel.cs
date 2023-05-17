@@ -2,17 +2,20 @@
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using System.Reflection.PortableExecutable;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
+    private readonly ICalculationsModule _calculationsModuleService;
 
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext) :
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
+        _calculationsModuleService = calculationsModuleService;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -23,6 +26,12 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             {
                 ParamterDictionary!["var_Rahmengewicht"].Value = "";
                 FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
+            };
+            if (message.PropertyName == "var_TypFV" ||
+                message.PropertyName == "var_FuehrungsschieneFahrkorb"||
+                message.PropertyName == "var_Fuehrungsart")
+            {
+                SetSafetygearData();
             };
             SetInfoSidebarPanelText(message);
             _ = SetModelStateAsync();
@@ -37,6 +46,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     [ObservableProperty]
     private string maxFuse = string.Empty;
+
+    [ObservableProperty]
+    private string safetygearworkarea = string.Empty;
 
     private double _FangrahmenGewicht;
     public double FangrahmenGewicht
@@ -79,7 +91,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         {
             var inverterSize = ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value!.Replace(" ","")[8..11];
             var inverterType = _parametercontext.Set<LiftInverterType>().FirstOrDefault(x => x.Name.Contains(inverterSize));
-            maxFuse =  inverterType is not null ? inverterType.MaxFuseSize.ToString() : string.Empty;
+            MaxFuse =  inverterType is not null ? inverterType.MaxFuseSize.ToString() : string.Empty;
         }
         else
         {
@@ -87,11 +99,18 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         }
     }
 
+    private void SetSafetygearData()
+    {
+        var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParamterDictionary);
+        Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
         SynchronizeViewModelParameter();
         SetMaxFuse();
+        SetSafetygearData();
         SetCarWeight();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&

@@ -12,5 +12,7 @@ public class GuideRailsConfig : BaseModelBuilder<GuideRails>
                     .IsRequired();
         builder.Property(x => x.UsageAsCarRail);
         builder.Property(x => x.UsageAsCwtRail);
+        builder.Property(x => x.Machined);
+        builder.Property(x => x.RailHead);
     }
 }
