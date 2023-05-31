@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 
-using LiftDataManager.Contracts.Services;
 using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
@@ -23,13 +22,14 @@ public partial class App : Application
 {
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();
+    public static UIElement? AppTitlebar { get; set; }
     private bool IgnoreSaveWarning { get; set; }
     public static FrameworkElement? MainRoot { get; set; }
 
     public static T GetService<T>()
     where T : class
     {
-        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
         {
             throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
         }

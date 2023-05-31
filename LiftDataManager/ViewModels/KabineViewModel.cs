@@ -48,7 +48,10 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         CanEditFloorWeightAndHeight = ParamterDictionary!["var_Bodentyp"].Value == "sonder" || ParamterDictionary["var_Bodentyp"].Value == "extern";
         if (!CanEditFloorWeightAndHeight)
         {
-            ParamterDictionary["var_SonderExternBodengewicht"].Value = string.Empty;
+            if (ParamterDictionary["var_SonderExternBodengewicht"].Value != "0")
+            {
+                ParamterDictionary["var_SonderExternBodengewicht"].Value = string.Empty;
+            }
             return;
         }
 

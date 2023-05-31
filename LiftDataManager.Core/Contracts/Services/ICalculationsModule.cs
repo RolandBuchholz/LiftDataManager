@@ -1,4 +1,5 @@
 ﻿using Cogs.Collections;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 
@@ -16,6 +17,10 @@ public interface ICalculationsModule
     bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem);
 
     double GetCarFrameWeight(ObservableDictionary<string, Parameter>? parameterDictionary);
+
+    int GetMaxFuse(string? inverter);
+
+    CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
 

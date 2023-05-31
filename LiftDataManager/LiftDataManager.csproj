@@ -12,7 +12,6 @@
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <PackageCertificateThumbprint>801C2B4CFFF516349655979FDDCCAA5C5FF6394B</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampServerUrl>http://timestamp.comodoca.com</AppxPackageSigningTimestampServerUrl>
@@ -23,6 +22,7 @@
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
+    <PackageCertificateKeyFile>LiftDataManager_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -855,28 +855,28 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         switch (value)
         {
             case "keine":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
                 break;
             case "Schachtkopf":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
                 break;
             case "Schachtgrube":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
                 break;
             case "Schachtkopf und Schachtgrube":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
                 break;
             case "Vorausgelöstes Anhaltesystem":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "true";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "true";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
                 break;
             default:
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "false";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "false";
+                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
                 break;
         }
     }
@@ -930,14 +930,14 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             var load = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Q");
             var carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_F");
 
-            if (safetygearResult.MinLoad > carWeight)
+            if (safetygearResult.MinLoad > load + carWeight)
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Minimalgewicht {safetygearResult.MinLoad} kg | Fahrkorbgewicht: {carWeight} kg unterschritten.", SetSeverity(severity)));
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Minimalgewicht {safetygearResult.MinLoad} kg | Nutzlast+Fahrkorbgewicht: {load + carWeight} kg unterschritten.", SetSeverity(severity)));
                 return;
             }
             if (safetygearResult.MaxLoad < load + carWeight)
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Maximalgewicht {safetygearResult.MaxLoad} kg | Fahrkorbgewicht: {carWeight + load} kg überschritten.", SetSeverity(severity)));
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Maximalgewicht {safetygearResult.MaxLoad} kg | Nutzlast+Fahrkorbgewicht: {carWeight + load} kg überschritten.", SetSeverity(severity)));
                 return;
             }
         }
@@ -1086,11 +1086,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
             if (htmlNodes is not null)
             {
-                ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString().ToLower());
+                ZliDataDictionary.Add("ElektrBremsenansteuerung", htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString());
             }
             else
             {
-                ZliDataDictionary.Add("ElektrBremsenansteuerung", "false");
+                ZliDataDictionary.Add("ElektrBremsenansteuerung", "False");
             }
 
             var detectionDistanceMeter = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
@@ -1203,8 +1203,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateGuideModel(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(name)) return;
-        if (!name.StartsWith("var_Fuehrungsart")) return;
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+        if (!name.StartsWith("var_Fuehrungsart"))
+            return;
 
         var guideModels = _parametercontext.Set<GuideModelType>().ToList();
         var guideTyp = name.Replace("Fuehrungsart", "TypFuehrung");

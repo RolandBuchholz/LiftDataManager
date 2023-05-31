@@ -124,8 +124,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterComboBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -152,8 +158,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart_GGW'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterComboBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        Header="{x:Bind ViewModel.CWTGuideName, Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart_GGW'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        Header="{x:Bind ViewModel.CWTGuideTyp, Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -216,12 +228,12 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FuehrungsschieneGegengewicht'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Header="{x:Bind ViewModel.CWTRailName, Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FuehrungsschieneGegengewicht'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StatusGGWSchienen'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Header="{x:Bind ViewModel.CWTRailState, Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StatusGGWSchienen'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -519,13 +531,13 @@
                                 <TextBlock
                                     FontSize="18"
                                     FontWeight="Medium"
-                                    Text="Bausatz Parameter:" />
+                                    Text="Bausatz Parameter" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Margin="0,10,0,5"
                                     FontSize="16"
                                     FontWeight="Medium"
-                                    Text="Basisdaten:" />
+                                    Text="Basisdaten" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Stichmaß:" />
                                     <TextBlock
@@ -701,7 +713,7 @@
                                         Text="mm" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Fahrkorb Endstück :" />
+                                    <TextBlock VerticalAlignment="Center" Text="Fahrkorb Endstück:" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -730,7 +742,7 @@
                                     Margin="0,10,0,5"
                                     FontSize="16"
                                     FontWeight="Medium"
-                                    Text="Seildaten:" />
+                                    Text="Seildaten" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Treibscheibendurchmesser:" />
                                     <TextBlock
@@ -793,7 +805,7 @@
                                     Margin="0,10,0,5"
                                     FontSize="16"
                                     FontWeight="Medium"
-                                    Text="Belastungen / Kräfte:" />
+                                    Text="Belastungen / Kräfte" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Belastung unter FK Schiene:" />
                                     <TextBlock
@@ -902,7 +914,7 @@
                                     Margin="0,10,0,5"
                                     FontSize="16"
                                     FontWeight="Medium"
-                                    Text="Anschlusswerte:" />
+                                    Text="Anschlusswerte" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Nennstrom Netz (aufgerundet):" />
                                     <TextBlock

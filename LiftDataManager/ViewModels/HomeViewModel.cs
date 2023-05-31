@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -131,7 +132,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
                 else
                 {
-                    updatedParameter.Value = item.Value is not null ? item.Value.ToLower() : "false";
+                    updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
                 }
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
@@ -247,57 +248,31 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             _logger.LogInformation(60137, "Reset Data");
             InfoSidebarPanelText += $"Daten werden auf die Standardwerte zurückgesetzt\n";
             InfoSidebarPanelText += $"----------\n";
-            if (CheckOut)
+
+            var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
+            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
             {
-                var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
-                if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                if (File.Exists(FullPathXml))
                 {
-                    if (File.Exists(FullPathXml))
+                    var FileInfo = new FileInfo(FullPathXml);
+                    if (FileInfo.IsReadOnly)
                     {
-                        var FileInfo = new FileInfo(FullPathXml);
-                        if (FileInfo.IsReadOnly)
-                        {
-                            FileInfo.IsReadOnly = false;
-                        }
-                        File.Delete(FullPathXml);
+                        FileInfo.IsReadOnly = false;
                     }
-                    ClearExpiredLiftData();
-                    await LoadDataAsync();
-                }
-                else
-                {
-                    await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                    _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
-                    InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                }
-            }
-            else
-            {
-                var spezifikationRootPath = Path.GetDirectoryName(FullPathXml);
-
-                if (Directory.Exists(spezifikationRootPath) && spezifikationRootPath.StartsWith("C:\\Work\\AUFTRÄGE NEU"))
-                {
-                    try
-                    {
-                        var directory = new DirectoryInfo(spezifikationRootPath) { Attributes = FileAttributes.Normal };
-
-                        foreach (var info in directory.GetFileSystemInfos("*", SearchOption.AllDirectories))
-                        {
-                            info.Attributes = FileAttributes.Normal;
-                        }
-
-                        directory.Delete(true);
-                        _logger.LogInformation(60138, "Delete Folder {spezifikationRootPath}", spezifikationRootPath);
-                    }
-                    catch (Exception)
-                    {
-                        _logger.LogError(61037, "Delete Folder {spezifikationRootPath} failed", spezifikationRootPath);
-                    }
-
+                    File.Delete(FullPathXml);
                 }
                 ClearExpiredLiftData();
                 await LoadDataAsync();
             }
+            else
+            {
+                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
+                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+            }
+            ClearExpiredLiftData();
+            await LoadDataAsync();
+            
         }
         AutoSaveTimer?.Stop();
     }

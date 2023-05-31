@@ -144,11 +144,11 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Header="Punktmatrix Typ"
+                                        Header="Anzeige FT Typ"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Header="Punktmatrix Farbe"
+                                        Header="Anzeige FT Farbe"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'], Mode=TwoWay}" />
                                     <TextBox
                                         Grid.Column="2"

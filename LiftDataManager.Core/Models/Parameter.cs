@@ -23,7 +23,7 @@ public partial class Parameter : ParameterBase
             ParameterTypValue.Text => (value is not null) ? value : "",
             ParameterTypValue.NumberOnly => (value is not null) ? value : "",
             ParameterTypValue.Date => value,
-            ParameterTypValue.Boolean => (value is not null) ? value.ToLower() : "false",
+            ParameterTypValue.Boolean => (value is not null) ? LiftParameterHelper.FirstCharToUpperAsSpan(value) : "False",
             ParameterTypValue.DropDownList => value,
             _ => value,
         };

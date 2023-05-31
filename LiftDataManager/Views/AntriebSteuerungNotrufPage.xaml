@@ -664,7 +664,7 @@
                                     ColumnDefinitions="*">
                                     <TextBox
                                         Grid.Column="1"
-                                        MinHeight="90"
+                                        MinHeight="120"
                                         Margin="5,5,10,0"
                                         AcceptsReturn="True"
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesAntrieb'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
@@ -689,6 +689,13 @@
                                         Margin="10,5,10,2"
                                         FontWeight="Bold"
                                         Text="Daten ZAlift Auslegung" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Antrieb :" />
+                                        <TextBlock Text="{x:Bind ViewModel.ParamterDictionary['var_Antrieb'].Value}" />
+                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Width="200"
@@ -895,7 +902,7 @@
                                         Grid.Column="0"
                                         Margin="5,5,5,5"
                                         VerticalAlignment="Bottom"
-                                        Content="Notruf zusätzlich aufgeschaltet"
+                                        Content="var_Schluesseltresor"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NrGesch'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     <TextBox
                                         Grid.Column="1"
@@ -1009,5 +1016,4 @@
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
-
 </Page>

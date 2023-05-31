@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
@@ -86,6 +87,18 @@ public partial class CalculationsModuleService : ICalculationsModule
             }
         }
         return false;
+    }
+
+    public int GetMaxFuse(string? inverter)
+    { 
+        int maxFuse = 0;
+        if (!string.IsNullOrWhiteSpace(inverter))
+        {
+            var inverterSize = inverter.Replace(" ", "")[8..11];
+            var inverterType = _parametercontext.Set<LiftInverterType>().FirstOrDefault(x => x.Name.Contains(inverterSize));
+            maxFuse = inverterType is not null ? inverterType.MaxFuseSize : 0;
+        }
+        return maxFuse;
     }
 
     public CarVentilationResult GetCarVentilationCalculation (ObservableDictionary<string, Parameter>? parameterDictionary)
@@ -741,6 +754,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         {
             return 0;
         }
+    }
+
+    public CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        return _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary!["var_Bausatz"].Value);
     }
 
     public void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt)

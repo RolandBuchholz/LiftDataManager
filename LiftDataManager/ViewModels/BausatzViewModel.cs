@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
-using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using System.Reflection.PortableExecutable;
 
 namespace LiftDataManager.ViewModels;
 
@@ -38,6 +36,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         }
     }
 
+    public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value);
+
+
     [ObservableProperty]
     private string cWTRailName = "Führungsschienen GGW";
 
@@ -45,7 +46,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     private string cWTGuideName = "Führungsart GGW";
 
     [ObservableProperty]
-    private string maxFuse = string.Empty;
+    private string cWTRailState = "Status Führungsschienen GGW";
+
+    [ObservableProperty]
+    private string cWTGuideTyp = "Typ Führung GGW";
 
     [ObservableProperty]
     private string safetygearworkarea = string.Empty;
@@ -82,21 +86,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             return 0;
         CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
         CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
-        return carFrameType.CarFrameWeight;
-    }
+        CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
+        CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
 
-    private void SetMaxFuse()
-    {
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value))
-        {
-            var inverterSize = ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value!.Replace(" ","")[8..11];
-            var inverterType = _parametercontext.Set<LiftInverterType>().FirstOrDefault(x => x.Name.Contains(inverterSize));
-            MaxFuse =  inverterType is not null ? inverterType.MaxFuseSize.ToString() : string.Empty;
-        }
-        else
-        {
-            MaxFuse = string.Empty;
-        }
+        return carFrameType.CarFrameWeight;
     }
 
     private void SetSafetygearData()
@@ -109,7 +102,6 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        SetMaxFuse();
         SetSafetygearData();
         SetCarWeight();
         if (CurrentSpeziProperties is not null &&
