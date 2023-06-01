@@ -62,6 +62,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--  Control Panel  -->
             <ComboBox
@@ -138,20 +139,16 @@
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
                 Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
-
-            <!--<Button
-                Grid.Column="6"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.TestPdfCommand}"
-                Content="Test Pdf"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />-->
-
-
-
             <Button
                 Grid.Column="7"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.CreatePdfCommand}"
+                Content="Create Pdf"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}" />
+            <Button
+                Grid.Column="8"
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
@@ -160,7 +157,7 @@
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}" />
             <Button
-                Grid.Column="8"
+                Grid.Column="9"
                 Width="175"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"

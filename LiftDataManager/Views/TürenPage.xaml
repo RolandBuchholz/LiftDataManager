@@ -281,7 +281,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16">
-                                    Türen Abmessungen<LineBreak />
+                                    Türen Fabrikat<LineBreak />
                                     Zugang C</TextBlock>
                                 <Grid
                                     x:Name="Tuertyp_C"
@@ -389,7 +389,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16">
-                                    Türen Abmessungen<LineBreak />
+                                    Türen Fabrikat<LineBreak />
                                     Zugang D</TextBlock>
                                 <Grid
                                     x:Name="Tuertyp"

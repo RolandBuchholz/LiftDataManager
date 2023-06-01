@@ -21,7 +21,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         if (message is not null)
         {
             if (message.PropertyName == "var_KBI" ||
-                 message.PropertyName == "var_KTI")
+                message.PropertyName == "var_KTI" ||
+                message.PropertyName == "var_TuerEinbau" ||
+                message.PropertyName == "var_TuerEinbauB" ||
+                message.PropertyName == "var_TuerEinbauC" ||
+                message.PropertyName == "var_TuerEinbauD")
             {
                 _ = SetCalculatedValuesAsync();
             };

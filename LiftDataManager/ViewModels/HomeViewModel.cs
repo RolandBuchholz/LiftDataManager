@@ -48,12 +48,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
     }
 
-    [RelayCommand]
-    private void TestPdf()
-    {
-        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, @"C:\\Users\\Buchholz.PPS\\Desktop\\TestPdf.pdf", true);
-    }
-
     [ObservableProperty]
     private bool isBusy;
 
@@ -328,6 +322,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                          "Ok");
         }
         await SetModelStateAsync();
+    }
+
+    [RelayCommand]
+    private void CreatePdf()
+    {
+        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, null, true);
     }
 
     public async Task<bool> InitializeParametereAsync()

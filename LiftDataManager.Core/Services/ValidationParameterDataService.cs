@@ -820,7 +820,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_D"].Value))
             {
-                if (ParamterDictionary["var_TuerEinbauB"].Value != "0") ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+                if (ParamterDictionary["var_Tuergewicht_D"].Value != "0") ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauD"].Value))
             {
