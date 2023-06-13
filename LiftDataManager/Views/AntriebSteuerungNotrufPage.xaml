@@ -53,14 +53,14 @@
                     Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
                         <Grid x:Name="SteuerungELT" Grid.Row="0">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="11"
+                                    Grid.RowSpan="12"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="10"
+                                    Grid.RowSpan="11"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
@@ -229,17 +229,22 @@
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Potentialausgleich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     <Grid
                                         Grid.Column="1"
-                                        Margin="5,2,5,2"
-                                        ColumnDefinitions="Auto,*">
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
                                         <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_11'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
                                             Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_11'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="Schachtgrubenleiter kontaktgesichert"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SchachtgrubenleiterKontaktgesichert'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                            IsHitTestVisible="False" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                <Run Text="Wird automtisch durch die" /><LineBreak />
+                                                <Run Text="Schachtauswahl(Schachtgrubenleiter) gesetzt" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
                                     </Grid>
                                     <Grid
                                         Grid.Column="2"
@@ -283,11 +288,11 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_14'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_11'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <TextBox
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_14'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_11'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                                     </Grid>
                                     <Grid
                                         Grid.Column="2"
@@ -331,11 +336,11 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_17'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_14'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <TextBox
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_17'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_14'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                                     </Grid>
                                     <Grid
                                         Grid.Column="2"
@@ -361,7 +366,7 @@
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
-                                        Content="Schutzgeländer Kontaktgesichert"
+                                        Content="Schutzgeländer kontaktgesichert"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SchutzgelaenderKontakt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     <Grid
                                         Grid.Column="1"
@@ -371,11 +376,11 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_20'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_17'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <TextBox
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_20'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_17'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                                     </Grid>
                                     <Grid
                                         Grid.Column="2"
@@ -390,6 +395,42 @@
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
                                             Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_21'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Steuerung10"
+                                    Grid.Row="10"
+                                    Grid.Column="1"
+                                    ColumnDefinitions="*,*,*">
+                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            Content="WECO Notstromgerät"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotlichtKab'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                            IsHitTestVisible="False" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                <Run Text="Wird automtisch durch die" /><LineBreak />
+                                                <Run Text="Fahrkorbauswahl(Notlicht Kabine) gesetzt" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="5,2,5,2"
+                                        ColumnDefinitions="Auto,*">
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            MinWidth="0"
+                                            VerticalAlignment="Bottom"
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_20'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            PlaceholderText="benutzerdefinierte Eingabe"
+                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_20'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -412,7 +453,7 @@
                                     FontSize="16"
                                     Text="Sonstiges Steuerung" />
                                 <Grid
-                                    x:Name="Steuerung10"
+                                    x:Name="Steuerung11"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -445,7 +486,7 @@
                                     FontSize="16"
                                     Text="Stromanschluß" />
                                 <Grid
-                                    x:Name="Steuerung11"
+                                    x:Name="Steuerung13"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -510,7 +551,7 @@
                                         Text="{x:Bind ViewModel.ParamterDictionary['var_SchaltschrankRAL'].Value, Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung13"
+                                    x:Name="Steuerung14"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">

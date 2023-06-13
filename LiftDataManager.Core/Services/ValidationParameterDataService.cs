@@ -346,6 +346,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Rammschutz",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateRammingProtections, "Informational", null) });
 
+        ValidationDictionary.Add("var_Schachtgrubenleiter",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidatePitLadder, "None", null) });
+
         AddDropDownListValidation();
     }
 
@@ -1232,6 +1235,23 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary[guideTyp].Value = string.Empty;
                 ParamterDictionary[guideTyp].DropDownListValue = null;
             }
+        }
+    }
+
+    private void ValidatePitLadder(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
+            return;
+        }
+        if (value == "Schachtgrubenleiter EN81:20 mit el. Kontakt")
+        {
+            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "True";
+        }
+        else
+        {
+            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
         }
     }
 }

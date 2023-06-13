@@ -9,4 +9,5 @@ public class LiftDoorGroup : BaseEntity
     public ShaftDoor? ShaftDoor { get; set; }
     public int LiftDoorOpeningDirectionId { get; set; }
     public LiftDoorOpeningDirection? LiftDoorOpeningDirection { get; set; }
+    public string? DoorManufacturer { get; set; }
 }

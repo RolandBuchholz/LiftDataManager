@@ -288,6 +288,10 @@ namespace LiftDataManager.Core.Migrations
                        Name
                   FROM OverspeedGovernors
                 UNION ALL
+                SELECT 'PitLadders' AS Base,
+                       Name
+                  FROM PitLadders
+                UNION ALL
                 SELECT 'PowerSupplys' AS Base,
                        Name
                   FROM PowerSupplys
