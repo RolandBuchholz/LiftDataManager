@@ -244,13 +244,12 @@
             IsPrimaryButtonEnabled="{x:Bind ViewModel.CFPDataReadyForImport, Mode=OneWay}"
             PrimaryButtonText="Daten übernehmen">
             <StackPanel>
-                <Image
-                    Width="200"
-                    Height="200"
+                <PathIcon
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Source="/Images/CFPTransparent.png" />
+                    Data="m 2 120.76 c 8.54 38.42 39.18 68.56 77.88 76.34 l -77.88 0 l 0 -76.34 z m 173.46 39.26 c -17.84 22.34 -45.32 36.68 -76.12 36.68 c -53.74 0 -97.36 -43.62 -97.36 -97.36 c 0 -53.72 43.62 -97.36 97.36 -97.36 c 33.64 0 63.32 17.1 80.82 43.08 l -61.02 40.1 c -4.42 -6.16 -11.64 -10.16 -19.78 -10.16 c -13.44 0 -24.34 10.9 -24.34 24.34 c 0 13.44 10.9 24.34 24.34 24.34 c 7.38 0 13.98 -3.28 18.46 -8.48 l 57.66 44.82 z m 6.28 -112.52 c 9.48 15.02 14.96 32.8 14.96 51.84 c 0 21.9 -7.24 42.12 -19.46 58.38 l -57.68 -44.82 c 2.6 -3.88 4.14 -8.54 4.14 -13.56 c 0 -4.24 -1.1 -8.24 -3 -11.72 l 61.06 -40.12 z"
+                    Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
                 <ProgressBar Margin="0,10,0,10" IsIndeterminate="True" />
                 <CheckBox
                     Content="Car Frame Program Daten geschrieben"

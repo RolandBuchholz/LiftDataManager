@@ -943,7 +943,7 @@
                                         Grid.Column="0"
                                         Margin="5,5,5,5"
                                         VerticalAlignment="Bottom"
-                                        Content="var_Schluesseltresor"
+                                        Content="Notruf zus. geschaltet"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NrGesch'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     <TextBox
                                         Grid.Column="1"

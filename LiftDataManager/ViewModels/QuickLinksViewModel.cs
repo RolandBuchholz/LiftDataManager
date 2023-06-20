@@ -586,7 +586,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
                 if (!zliDataDictionary.ContainsKey(zliPairValue[0]))
                 {
-                    zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                    if (zliPairValue.Length == 2)
+                    {
+                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                    }
+                    else if (zliPairValue.Length > 2)
+                    {
+                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1] + "=" + zliPairValue[2]);
+                    }
                 }
             }
         }
@@ -785,7 +792,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             ParamterDictionary["var_Handlueftung"].Value = brakerelease;
             ParamterDictionary["var_Handlueftung"].DropDownListValue = brakerelease;
 
-            var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "true" : "false";
+            var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "True" : "False";
             ParamterDictionary["var_Fremdbelueftung"].Value = ventilation;
 
             try
@@ -799,7 +806,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 _logger.LogWarning(61094, "ElektrBremsenansteuerung not found");
             }
 
-            var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "true" : "false";
+            var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False";
             ParamterDictionary["var_Treibscheibegehaertet"].Value = hardened;
         }
         _logger.LogInformation(60195, "ZAliftData imported");
