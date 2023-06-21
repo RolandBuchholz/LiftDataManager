@@ -143,17 +143,35 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox
+                                    <Grid
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
                                         Header="Anzahl Türflügel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=TwoWay}" />
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -250,17 +268,35 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox
+                                    <Grid
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
                                         Header="Anzahl Türflügel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_B'].Value, Mode=TwoWay}" />
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_B'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -358,17 +394,35 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox
+                                    <Grid
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
                                         Header="Anzahl Türflügel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_C'].Value, Mode=TwoWay}" />
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_C'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -466,17 +520,35 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox
+                                    <Grid
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <TextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
                                         ui:TextBoxExtensions.ValidationMode="Dynamic"
                                         ui:TextBoxExtensions.ValidationType="Number"
                                         Header="Anzahl Türflügel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_D'].Value, Mode=TwoWay}" />
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_D'].Value, Mode=TwoWay}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch mit der Türauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>

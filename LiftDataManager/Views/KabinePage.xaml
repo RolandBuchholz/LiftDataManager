@@ -74,7 +74,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Fahrkorb Grunddaten" />
+                                    Text="Fahkorb Abmessungen" />
                                 <Grid
                                     x:Name="Kabine0"
                                     Grid.Row="0"

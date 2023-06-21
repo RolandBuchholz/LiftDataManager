@@ -1320,13 +1320,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 }
             }           
         }
-        _= ParamterDictionary[liftDoorGroups].ValidateParameterAsync();
+        _ = ParamterDictionary[liftDoorGroups].ValidateParameterAsync().Result;
     }
 
     private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!name.StartsWith("var_Tuerbezeichnung"))
             return;
+
+        var liftDoortyp = name.Replace("var_Tuerbezeichnung", "var_Tuertyp");
 
         var doorOpeningDirection = name.Replace("var_Tuerbezeichnung", "var_Tueroeffnung");
         var doorPanelCount = name.Replace("var_Tuerbezeichnung", "var_AnzahlTuerfluegel");
@@ -1335,18 +1337,23 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         {
             ParamterDictionary[doorOpeningDirection].Value = string.Empty;
             ParamterDictionary[doorOpeningDirection].DropDownListValue = null;
-            ParamterDictionary[doorOpeningDirection].DropDownList.Clear();
             ParamterDictionary[doorPanelCount].Value = "0";
         }
         else
         {
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.ShaftDoor).FirstOrDefault(x => x.Name == value);
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.ShaftDoor)
+                                                                      .ThenInclude(t => t!.LiftDoorOpeningDirection)
+                                                                      .FirstOrDefault(x => x.Name == value);
             if (liftDoorGroup is not null && liftDoorGroup.ShaftDoor is not null)
             {
-                //ParamterDictionary[doorOpeningDirection].Value = liftDoorGroup.CarDoor.;
-                //ParamterDictionary[doorOpeningDirection].DropDownListValue = liftDoorGroup.CarDoor.DoorPanelCount;
+                if (liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection is not null)
+                {
+                    ParamterDictionary[doorOpeningDirection].Value = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
+                    ParamterDictionary[doorOpeningDirection].DropDownListValue = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
+                }
                 ParamterDictionary[doorPanelCount].Value =  Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
             }
         }
+        if (ParamterDictionary[liftDoortyp].HasErrors) ParamterDictionary[liftDoortyp].ClearErrors("Value");
     }
 }

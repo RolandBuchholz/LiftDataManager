@@ -480,27 +480,17 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*,*">
-                                    <CheckBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="0"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse0'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="1"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse1'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
-                                        Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="2"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse2'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    ColumnDefinitions="auto ,*">
+                                    <RadioButtons HorizontalAlignment="Stretch" MaxColumns="3">
+                                        <RadioButton
+                                            Margin="10,0,0,0"
+                                            Content=" 0 "
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse0'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <RadioButton Content=" 1 " IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse1'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <RadioButton Content=" 2 " IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse2'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    </RadioButtons>
                                     <Grid
-                                        Grid.Column="3"
+                                        Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="Auto,*">
                                         <CheckBox
@@ -1347,27 +1337,17 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*,*">
-                                    <CheckBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="0"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse0'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="1"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse1'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
-                                        Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="2"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse2'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                    ColumnDefinitions="Auto,*">
+                                    <RadioButtons HorizontalAlignment="Stretch" MaxColumns="3">
+                                        <RadioButton
+                                            Margin="10,0,0,0"
+                                            Content=" 0 "
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse0'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <RadioButton Content=" 1 " IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse1'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        <RadioButton Content=" 2 " IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse2'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    </RadioButtons>
                                     <Grid
-                                        Grid.Column="3"
+                                        Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="Auto,*">
                                         <CheckBox

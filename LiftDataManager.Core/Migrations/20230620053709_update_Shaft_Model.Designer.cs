@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20230620053709_update_Shaft_Model")]
+    partial class update_Shaft_Model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
@@ -1845,8 +1848,6 @@ namespace LiftDataManager.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LiftDoorOpeningDirectionId");
-
                     b.HasIndex("TypeExaminationCertificateId");
 
                     b.ToTable("ShaftDoors", (string)null);
@@ -2046,19 +2047,11 @@ namespace LiftDataManager.Core.Migrations
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.ShaftDoor", b =>
                 {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorOpeningDirection", "LiftDoorOpeningDirection")
-                        .WithMany("ShaftDoors")
-                        .HasForeignKey("LiftDoorOpeningDirectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.TypeExaminationCertificate", "TypeExaminationCertificate")
                         .WithMany("ShaftDoors")
                         .HasForeignKey("TypeExaminationCertificateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LiftDoorOpeningDirection");
 
                     b.Navigation("TypeExaminationCertificate");
                 });
@@ -2118,8 +2111,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.LiftDoorOpeningDirection", b =>
                 {
                     b.Navigation("LiftDoorGroups");
-
-                    b.Navigation("ShaftDoors");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Tueren.ShaftDoor", b =>

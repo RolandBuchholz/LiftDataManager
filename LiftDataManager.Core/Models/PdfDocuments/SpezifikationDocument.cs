@@ -33,14 +33,12 @@ public class SpezifikationDocument : PdfBaseDocument
             column.Item().Element(ShaftData);
             column.Item().PageBreak();
             column.Item().Element(CarData);
-            column.Item().PageBreak();
-            column.Item().Element(CarFrameData);
-            column.Item().PageBreak();
-            column.Item().Element(LiftDoorData);
-            column.Item().Element(LiftControlerData);
-            column.Item().PageBreak();
-            column.Item().Element(LiftDriveData);
-            column.Item().Element(LiftEmergencyCallData);
+            column.Item().ShowEntire().Element(CarDataDetail);
+            column.Item().ShowEntire().Element(CarFrameData);
+            column.Item().ShowEntire().Element(LiftDoorData);
+            column.Item().ShowEntire().Element(LiftControlerData);
+            column.Item().ShowEntire().Element(LiftDriveData);
+            column.Item().ShowEntire().Element(LiftEmergencyCallData);
             column.Item().ShowEntire().Element(LiftSignalisationFT);
             column.Item().ShowEntire().Element(LiftSignalisationAT);
             column.Item().ShowEntire().Element(LiftSignalisationWA);
@@ -357,8 +355,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(33).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Grunddaten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(20).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Grunddaten").FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Abmessungen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Fahrkorbtyp"]);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Kabine_ZT"]);
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_KBI"],"mm");
@@ -424,101 +422,142 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(19).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
                 table.Cell().Row(19).Column(5).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"],"kg/m²");
                 table.Cell().Row(19).Column(6).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"],"mm");
-                table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"]);
+                table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
+            });
+        });
+    }
 
-                table.Cell().Row(21).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(21).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
-                table.Cell().Row(21).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"],"Stk");
-                table.Cell().Row(21).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"],"Kelvin");
-                table.Cell().Row(22).Column(3).ColumnSpan(4).Row(row =>
+    void CarDataDetail(IContainer container)
+    {
+        container.PaddingTop(3).Layers(layers =>
+        {
+            layers.Layer().Canvas((canvas, size) =>
+            {
+                using var paintSecondaryColor = new SKPaint
+                {
+                    Color = SKColor.Parse(secondaryColor),
+                    IsAntialias = true,
+                    StrokeWidth = 1.5f,
+                    IsStroke = true,
+                };
+                using var paintSecondaryColorSmall = new SKPaint
+                {
+                    Color = SKColor.Parse(secondaryColor),
+                    IsAntialias = true,
+                    StrokeWidth = 0.5f,
+                    IsStroke = true,
+                };
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+            });
+
+            layers.PrimaryLayer().Table(table =>
+            {
+                table.ColumnsDefinition(columns =>
+                {
+                    columns.ConstantColumn(15);
+                    columns.ConstantColumn(85);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
+                });
+
+                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
+                table.Cell().Row(1).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"], "Stk");
+                table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin");
+                table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_abgDecke"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_52"]);
                 });
-                table.Cell().Row(23).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(3).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Dimmer"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtTab"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_1"]);
                 });
 
-                table.Cell().Row(24).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(24).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
-                table.Cell().Row(24).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(4).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
+                table.Cell().Row(4).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelD"], true, "Seite D");
                 });
-                table.Cell().Row(25).Column(3).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel"],"mm");
-                table.Cell().Row(25).Column(4).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel"],"mm");
-                table.Cell().Row(25).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_InfoSpiegel"]);
+                table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel"], "mm");
+                table.Cell().Row(5).Column(4).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel"], "mm");
+                table.Cell().Row(5).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_InfoSpiegel"]);
 
-                table.Cell().Row(26).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(6).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelAntiKratzf"], true,"Antisplitterfolie");
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelAntiKratzf"], true, "Antisplitterfolie");
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Spiegelleiste"], true);
                 });
-                table.Cell().Row(26).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
-                table.Cell().Row(26).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
+                table.Cell().Row(6).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
+                table.Cell().Row(6).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
 
-                table.Cell().Row(27).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ausstattung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(27).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(7).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ausstattung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Handlauf"]);
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheHandlauf"],"mm");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheHandlauf"], "mm");
                 });
-                table.Cell().Row(27).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(7).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufD"], true, "Seite D");
                 });
-                table.Cell().Row(28).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
-                table.Cell().Row(28).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(8).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
+                table.Cell().Row(8).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteD"], true, "Seite D");
                 });
-                table.Cell().Row(29).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(9).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Rammschutz"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz"], "mm");
                 });
-                table.Cell().Row(29).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(9).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzD"], true, "Seite D");
                 });
-                table.Cell().Row(30).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
-                table.Cell().Row(30).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(10).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
+                table.Cell().Row(10).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungD"], true, "Seite D");
                 });
-                table.Cell().Row(31).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
-                table.Cell().Row(31).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
+                table.Cell().Row(11).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(32).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ventilator").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(32).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"],false, "Ventilator 90 m³/h");
-                table.Cell().Row(32).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk",true);
-                table.Cell().Row(33).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahkorb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(33).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"],null,true,true);
+                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ventilator").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(12).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
+                table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahkorb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }
