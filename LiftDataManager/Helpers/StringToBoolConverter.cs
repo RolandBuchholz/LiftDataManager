@@ -31,6 +31,6 @@ public class StringToBoolConverter : IValueConverter
             return string.Empty;
         }
 
-        return ((bool)value) ? "true" : "false";
+        return ((bool)value) ? "True" : "False";
     }
 }

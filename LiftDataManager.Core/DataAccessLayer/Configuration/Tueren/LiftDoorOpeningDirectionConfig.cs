@@ -10,9 +10,6 @@ public class LiftDoorOpeningDirectionConfig : BaseModelBuilder<LiftDoorOpeningDi
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
-        builder.HasMany(t => t.LiftDoorGroups)
-               .WithOne(g => g.LiftDoorOpeningDirection)
-               .HasForeignKey(t => t.LiftDoorOpeningDirectionId);
         builder.HasMany(t => t.ShaftDoors)
                .WithOne(g => g.LiftDoorOpeningDirection)
                .HasForeignKey(t => t.LiftDoorOpeningDirectionId);

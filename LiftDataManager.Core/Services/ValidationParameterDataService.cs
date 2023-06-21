@@ -1295,7 +1295,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateDoorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!name.StartsWith("var_Tuertyp")) return;
+        if (!name.StartsWith("var_Tuertyp"))
+            return;
 
         var liftDoorGroups = name.Replace("var_Tuertyp", "var_Tuerbezeichnung");
 
@@ -1318,7 +1319,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 {
                     ParamterDictionary[liftDoorGroups].DropDownList.Add(item.Name);
                 }
-            }           
+            }
         }
         _ = ParamterDictionary[liftDoorGroups].ValidateParameterAsync().Result;
     }
@@ -1332,7 +1333,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         var doorOpeningDirection = name.Replace("var_Tuerbezeichnung", "var_Tueroeffnung");
         var doorPanelCount = name.Replace("var_Tuerbezeichnung", "var_AnzahlTuerfluegel");
-        
+
         if (string.IsNullOrWhiteSpace(value))
         {
             ParamterDictionary[doorOpeningDirection].Value = string.Empty;
@@ -1351,9 +1352,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                     ParamterDictionary[doorOpeningDirection].Value = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
                     ParamterDictionary[doorOpeningDirection].DropDownListValue = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
                 }
-                ParamterDictionary[doorPanelCount].Value =  Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
+                ParamterDictionary[doorPanelCount].Value = Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
             }
         }
-        if (ParamterDictionary[liftDoortyp].HasErrors) ParamterDictionary[liftDoortyp].ClearErrors("Value");
+        if (ParamterDictionary[liftDoortyp].HasErrors)
+            ParamterDictionary[liftDoortyp].ClearErrors("Value");
     }
 }

@@ -200,8 +200,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
-            await SetCalculatedValuesAsync();
             await ValidateAllParameterAsync();
+            await SetCalculatedValuesAsync();
             if(_settingService.AutoSave && CheckOut) StartSaveTimer();
         }
     }
