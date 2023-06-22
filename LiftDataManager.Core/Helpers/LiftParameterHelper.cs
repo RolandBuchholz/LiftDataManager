@@ -17,7 +17,7 @@ public class LiftParameterHelper
 
         if (typeof(T) == typeof(int))
         {
-            return string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToInt32(value, CultureInfo.CurrentCulture);
+            return string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToInt32(Math.Round(Convert.ToDouble(value, CultureInfo.CurrentCulture)), CultureInfo.CurrentCulture);
         }
         else if (typeof(T) == typeof(string))
         {

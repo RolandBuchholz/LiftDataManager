@@ -2,16 +2,14 @@
 
 public class CarDoorDesignParameter
 {
-    //TODO Use DataBaseModel
-    public string? Name{get; set;}
-    public string? Hersteller{get; set;}
-    public string? Typ{get; set;}
-    public string? Baumusterpruefbescheinigung{get; set;}
-    public double Tuerbreite{get; set;}
-    public double Schwellenbreite{get; set;}
-    public int AnzahlTuerFluegel{get; set;}
-    public double TuerFluegelBreite{get; set;}
-    public double TuerFluegelAbstand{get; set;}
+    public string Hersteller{get; set;} = string.Empty;
+    public string Typ { get; set; } = "StandardCarDoorTyp";
+    public string Baumusterpruefbescheinigung{get; set;} = "None";
+    public double Tuerbreite { get; set; } = 800;
+    public int AnzahlTuerFluegel { get; set; } = 2;
+    public double TuerFluegelBreite { get; set; } = 36;
+    public double TuerFluegelAbstand { get; set; } = 6;
+    public double Schwellenbreite { get; set; }
     public double Gewicht{get; set;}
     public double MinimalerEinbau{get; set;}
 }

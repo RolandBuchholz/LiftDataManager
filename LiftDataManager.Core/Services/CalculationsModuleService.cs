@@ -5,6 +5,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
+using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
@@ -600,23 +601,28 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         double tuerbreiteZugang;
         double tuerEinbau;
+        string? tuerbezeichnung;
         switch (zugang)
         {
             case "A":
                 tuerbreiteZugang = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbau");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung");
                 break;
             case "B":
                 tuerbreiteZugang = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_B");
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauB");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_B");
                 break;
             case "C":
                 tuerbreiteZugang = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_C");
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauC");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_C");
                 break;
             case "D":
                 tuerbreiteZugang = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_D");
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauD");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_D");
                 break;
             default:
                 return 0.0;
@@ -625,22 +631,27 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (tuerEinbau <= 0)
             return 0;
 
-        // ToDo Türdaten aus Datenbankladen Beispieldaten einer TTK 25
-        // Logic zur Auswahl fehlt noch 
-        // CarDoor Model am sinnvollsten schon bei der AuswahlTüren erstellen und in einem ComponentModelsdictionary verwalten
+        if (tuerbreiteZugang <= 0)
+            return 0;
 
-        var kabinenTuer = new CarDoorDesignParameter()
+        if (string.IsNullOrWhiteSpace(tuerbezeichnung))
+            return 0;
+
+        var kabinenTuer = new CarDoorDesignParameter();
+
+        var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor)
+                                                                  .FirstOrDefault(x => x.Name == tuerbezeichnung);
+        if (liftDoorGroup?.CarDoor is not null)
         {
-            Name = "Meiller TTK 25",
-            Hersteller = "Meiller",
-            Typ = "TTK25",
-            Schwellenbreite = 93,
-            Tuerbreite = tuerbreiteZugang,
-            MinimalerEinbau = 135,
-            AnzahlTuerFluegel = 2,
-            TuerFluegelBreite = 36,
-            TuerFluegelAbstand = 6
-        };
+            var carDoor = liftDoorGroup.CarDoor;
+            kabinenTuer.Hersteller = carDoor.Manufacturer!;
+            kabinenTuer.Typ = carDoor.Name;
+            kabinenTuer.Baumusterpruefbescheinigung = carDoor.Name;
+            kabinenTuer.Tuerbreite = tuerbreiteZugang;
+            kabinenTuer.AnzahlTuerFluegel = carDoor.DoorPanelCount;
+            kabinenTuer.TuerFluegelBreite = carDoor.DoorPanelWidth;
+            kabinenTuer.TuerFluegelAbstand = carDoor.DoorPanelSpace;
+        }
 
         if (kabinenTuer is null)
             return 0;

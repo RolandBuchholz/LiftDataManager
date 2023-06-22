@@ -3,4 +3,5 @@
 public class LiftDoorOpeningDirection : BaseEntity
 {
     public IEnumerable<ShaftDoor>? ShaftDoors { get; set; }
+    public IEnumerable<CarDoor>? CarDoors { get; set; }
 }

@@ -2,6 +2,7 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
+using System.Reflection.Metadata;
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
 public static class PdfHelpers
@@ -79,6 +80,7 @@ public static class PdfHelpers
     public static void ValueCell(this IContainer container, string text) => container.ValueCell().Text(text);
 
     public static void ParameterStringCell(this IContainer container, Parameter parameter, string? unit = null, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
+        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(secondaryColor)
         .PaddingLeft(5).PaddingTop(0)
@@ -89,6 +91,7 @@ public static class PdfHelpers
     });
 
     public static void ParameterDateCell(this IContainer container, Parameter parameter, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
+        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(secondaryColor)
         .PaddingLeft(5)
@@ -101,6 +104,7 @@ public static class PdfHelpers
     });
 
     public static void ParameterBoolCell(this IContainer container, Parameter parameter, bool hideBorder = false, string? optinaleDescription = null) => container
+        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(secondaryColor)
         .PaddingLeft(5)

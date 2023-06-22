@@ -752,7 +752,6 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (variableTuerdaten)
             return;
 
-        // ToDo TurenModel aus Datenbank abrufen
         string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tuertyp");
         string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tuerbezeichnung");
         double tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
@@ -1060,29 +1059,30 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParamterDictionary["var_Steuerungstyp"].Value);
 
+
         if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
             || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
             || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift FST-3")
         {
-            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistanceSIL3);
-            ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers!.DeadTimeSIL3);
-            ParamterDictionary["var_Vdetektor"].Value = Convert.ToString(currentLiftControlManufacturers!.SpeeddetectorSIL3);
+            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistanceSIL3);
+            ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers?.DeadTimeSIL3);
+            ParamterDictionary["var_Vdetektor"].Value = Convert.ToString(currentLiftControlManufacturers?.SpeeddetectorSIL3);
         }
         else
         {
             var oldTotzeit = ParamterDictionary["var_Totzeit"].Value;
             var oldVdetektor = ParamterDictionary["var_Vdetektor"].Value;
             var newTotzeit = Convert.ToBoolean(ParamterDictionary["var_ElektrBremsenansteuerung"].Value) ?
-                Convert.ToString(currentLiftControlManufacturers!.DeadTimeZAsbc4) :
-                Convert.ToString(currentLiftControlManufacturers!.DeadTime);
-            var newVdetektor = Convert.ToString(currentLiftControlManufacturers!.Speeddetector);
+                Convert.ToString(currentLiftControlManufacturers?.DeadTimeZAsbc4) :
+                Convert.ToString(currentLiftControlManufacturers?.DeadTime);
+            var newVdetektor = Convert.ToString(currentLiftControlManufacturers?.Speeddetector);
 
             if (oldTotzeit == newTotzeit && oldVdetektor == newVdetektor)
             {
                 return;
             }
 
-            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers!.DetectionDistance);
+            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistance);
             ParamterDictionary["var_Totzeit"].Value = newTotzeit;
             ParamterDictionary["var_Vdetektor"].Value = newVdetektor;
         }
