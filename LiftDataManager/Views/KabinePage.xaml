@@ -25,6 +25,7 @@
         <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:StringToBoolInvertConverter x:Key="StringToBoolInvertConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -1120,7 +1121,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1142,7 +1144,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1164,7 +1167,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1186,7 +1190,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1346,7 +1351,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1368,7 +1374,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1390,7 +1397,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1412,7 +1420,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1451,7 +1460,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1473,7 +1483,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1495,7 +1506,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1517,7 +1529,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1569,7 +1582,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1591,7 +1605,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1613,7 +1628,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1635,7 +1651,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1780,7 +1797,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1802,7 +1820,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1824,7 +1843,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1846,7 +1866,8 @@
                                             Margin="5,0,5,0"
                                             VerticalAlignment="Bottom"
                                             Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock

@@ -151,19 +151,23 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_A",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbau") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbau"),
+            new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_B",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauB"),
-            new(ValidateVariableCarDoors, "None", null) });
+            new(ValidateVariableCarDoors, "None", null),
+            new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_C",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauC"),
-             new(ValidateVariableCarDoors, "None", null) });
+            new(ValidateVariableCarDoors, "None", null),
+            new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauD"),
-            new(ValidateVariableCarDoors, "None", null) });
+            new(ValidateVariableCarDoors, "None", null),
+            new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_TuerEinbau",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
@@ -1357,5 +1361,31 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         if (ParamterDictionary[liftDoortyp].HasErrors)
             ParamterDictionary[liftDoortyp].ClearErrors("Value");
+    }
+
+    private void ValidateCarEquipmentPosition(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, name))
+            return;
+
+        var zugang = name.Last();
+        var hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Spiegel{zugang}");
+        var hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Handlauf{zugang}");
+        var hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Sockelleiste{zugang}");
+        var hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Rammschutz{zugang}");
+        var hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_PaneelPos{zugang}");
+
+        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel)
+        {
+            var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
+            if (hasSpiegel) errorMessage += " Spiegel,";
+            if (hasHandlauf) errorMessage += " Handlauf,";
+            if (hasSockelleiste) errorMessage += " Sockelleiste,";
+            if (hasRammschutz) errorMessage += " Rammschutz,";
+            if (hasPaneel) errorMessage += " Paneel,";
+            errorMessage += " dies erfordert eine Plausibilitätsprüfung!";
+
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, errorMessage, SetSeverity(severity)));
+        }
     }
 }

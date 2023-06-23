@@ -380,10 +380,15 @@ public partial class CalculationsModuleService : ICalculationsModule
                                        * (kabineundAbgehaengteDeckeHoehe > 0 ? (kabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
         var vSGGewicht = vSGQm * vSGGewichtproQm;
 
+        int aussenVerkleidungenmitTueren = Convert.ToInt32(aussenverkleidungA) * Convert.ToInt32(zugangA) +
+                                         Convert.ToInt32(aussenverkleidungB) * Convert.ToInt32(zugangB) +
+                                         Convert.ToInt32(aussenverkleidungC) * Convert.ToInt32(zugangC) +
+                                         Convert.ToInt32(aussenverkleidungD) * Convert.ToInt32(zugangD);
+
         var aussenVerkleidungQm = (aussenverkleidungA || aussenverkleidungB || aussenverkleidungC || aussenverkleidungD) ?
                                         (((Convert.ToInt32(aussenverkleidungA) + Convert.ToInt32(aussenverkleidungC)) * kabinenbreite / 1000) +
                                         ((Convert.ToInt32(aussenverkleidungB) + Convert.ToInt32(aussenverkleidungD)) * kabinentiefe / 1000)) * kabinenhoeheAussen / 1000 -
-                                        anzahlKabinentueren * (tuerbreite / 1000 * tuerhoehe / 1000) : 0;
+                                        aussenVerkleidungenmitTueren * (tuerbreite / 1000 * tuerhoehe / 1000) : 0;
         var aussenVerkleidungGewicht = Math.Round(aussenVerkleidungQm * aussenVerkleidungGewichtproQm, 0);
 
         
