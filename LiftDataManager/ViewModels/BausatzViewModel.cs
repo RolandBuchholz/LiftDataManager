@@ -4,7 +4,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
@@ -18,22 +18,24 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is not null)
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        if (message.PropertyName == "var_Bausatz")
         {
-            if (message.PropertyName == "var_Bausatz")
-            {
-                ParamterDictionary!["var_Rahmengewicht"].Value = "";
-                FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
-            };
-            if (message.PropertyName == "var_TypFV" ||
-                message.PropertyName == "var_FuehrungsschieneFahrkorb"||
-                message.PropertyName == "var_Fuehrungsart")
-            {
-                SetSafetygearData();
-            };
-            SetInfoSidebarPanelText(message);
-            _ = SetModelStateAsync();
-        }
+            ParamterDictionary!["var_Rahmengewicht"].Value = "";
+            FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
+        };
+        if (message.PropertyName == "var_TypFV" ||
+            message.PropertyName == "var_FuehrungsschieneFahrkorb"||
+            message.PropertyName == "var_Fuehrungsart")
+        {
+            SetSafetygearData();
+        };
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync(); 
     }
 
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value);

@@ -32,11 +32,21 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is not null)
-        {
-            SetInfoSidebarPanelText(message);
-            _ = SetModelStateAsync();
-        }
+        if (message is null) return;
+        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
+        
+    }
+
+    public virtual void Receive(PropertyChangedMessage<bool> message)
+    {
+        if (message is null) return;
+        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+
+        SetInfoSidebarPanelHighlightText(message);
+        _ = SetModelStateAsync();
     }
 
     [ObservableProperty]
@@ -85,7 +95,6 @@ public partial class DataViewModelBase : ObservableRecipient
             Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
     }
-
 
     [ObservableProperty]
     private bool likeEditParameter;
@@ -215,14 +224,9 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-        {
-            return;
-        }
+        var sender = (Parameter)message.Sender;
 
-        var Sender = (Parameter)message.Sender;
-
-        if (Sender.ParameterTyp == ParameterBase.ParameterTypValue.Date)
+        if (sender.ParameterTyp == ParameterBase.ParameterTypValue.Date)
         {
             string? datetimeOld;
             string? datetimeNew;
@@ -257,6 +261,20 @@ public partial class DataViewModelBase : ObservableRecipient
         else
         {
             InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
+        }
+    }
+
+    protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)
+    {
+        var sender = (Parameter)message.Sender;
+
+        if (message.NewValue)
+        {
+            InfoSidebarPanelText += $"Zu |{sender.DisplayName}| Markierung hinzugefügt\n";
+        }
+        else
+        {
+            InfoSidebarPanelText += $"Von |{sender.DisplayName}| Markierung entfernt\n";
         }
     }
 

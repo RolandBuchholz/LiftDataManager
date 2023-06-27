@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
@@ -30,22 +30,23 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is not null)
+        if (message is null) return;
+        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+
+        if (message.PropertyName == "var_Rahmengewicht" ||
+            message.PropertyName == "var_F_Korr" ||
+            message.PropertyName == "var_Q" ||
+            message.PropertyName == "var_KBI" ||
+            message.PropertyName == "var_KTI" ||
+            message.PropertyName == "var_KHLicht")
         {
-            if (message.PropertyName == "var_Rahmengewicht" ||
-                message.PropertyName == "var_F_Korr" ||
-                message.PropertyName == "var_Q" ||
-                message.PropertyName == "var_KBI" ||
-                message.PropertyName == "var_KTI" ||
-                message.PropertyName == "var_KHLicht")
-            {
-                _ = SetCalculatedValuesAsync();
-                //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
-            };
-            SetInfoSidebarPanelText(message);
-            _ = SetModelStateAsync();
-            //Task.Run(async () => await SetModelStateAsync());
-        }
+            _ = SetCalculatedValuesAsync();
+            //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
+        };
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
+        //Task.Run(async () => await SetModelStateAsync());
+        
     }
 
     [ObservableProperty]

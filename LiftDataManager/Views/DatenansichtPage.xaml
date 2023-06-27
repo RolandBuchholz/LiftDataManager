@@ -32,6 +32,15 @@
                     Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                     CornerRadius="8" />
                 <Border
+                    BorderBrush="YellowGreen"
+                    BorderThickness="2"
+                    CornerRadius="6"
+                    Visibility="{x:Bind IsKey}">
+                    <Border.Background>
+                        <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+                    </Border.Background>
+                </Border>
+                <Border
                     BorderBrush="{x:Bind ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}}"
                     BorderThickness="2"
                     CornerRadius="6"

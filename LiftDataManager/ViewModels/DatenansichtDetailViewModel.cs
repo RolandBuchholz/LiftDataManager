@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();

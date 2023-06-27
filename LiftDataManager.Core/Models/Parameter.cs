@@ -54,14 +54,18 @@ public partial class Parameter : ParameterBase
 
     [ObservableProperty]
     private bool isKey;
-    partial void OnIsKeyChanged(bool value)
+    partial void OnIsKeyChanged(bool oldValue, bool newValue)
     {
-        if (!DataImport) IsDirty = true;
+        if (!DataImport)
+        {
+            IsDirty = true;
+            Broadcast(oldValue, newValue, nameof(IsKey));
+        }
     }
 
     [ObservableProperty]
     private string? value;
-    partial void OnValueChanged(string? oldValue,string? newValue)
+    partial void OnValueChanged(string? oldValue, string? newValue)
     {
         if (!DataImport)
         {
@@ -73,7 +77,7 @@ public partial class Parameter : ParameterBase
                     _ = AfterValidateRangeParameterAsync(item.DependentParameter);
                 }
             }
-            isDirty = true;
+            IsDirty = true;
             Broadcast(oldValue, newValue, Name);
         }
     }

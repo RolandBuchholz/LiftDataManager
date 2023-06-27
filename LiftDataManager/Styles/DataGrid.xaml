@@ -179,14 +179,12 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <ToolTipService.ToolTip>
-                                <TextBlock Text="SchlüsselParameter" />
+                                <TextBlock Text="Highlighted" />
                             </ToolTipService.ToolTip>
-                            <FontIcon
-                                Margin="0,0,0,0"
+                            <SymbolIcon
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                Glyph="&#xE8D7;" />
+                                Symbol="Highlight" />
                         </Grid>
                         <Rectangle
                             x:Name="VerticalSeparator"

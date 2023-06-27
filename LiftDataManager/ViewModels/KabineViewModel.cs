@@ -5,7 +5,7 @@ using LiftDataManager.core.Helpers;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
 
@@ -18,26 +18,28 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is not null)
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        if (message.PropertyName == "var_KBI" ||
+            message.PropertyName == "var_KTI" ||
+            message.PropertyName == "var_TuerEinbau" ||
+            message.PropertyName == "var_TuerEinbauB" ||
+            message.PropertyName == "var_TuerEinbauC" ||
+            message.PropertyName == "var_TuerEinbauD")
         {
-            if (message.PropertyName == "var_KBI" ||
-                message.PropertyName == "var_KTI" ||
-                message.PropertyName == "var_TuerEinbau" ||
-                message.PropertyName == "var_TuerEinbauB" ||
-                message.PropertyName == "var_TuerEinbauC" ||
-                message.PropertyName == "var_TuerEinbauD")
-            {
-                _ = SetCalculatedValuesAsync();
-            };
-            if (message.PropertyName == "var_Bodenbelag" ||
-                message.PropertyName == "var_Bodentyp" ||
-                message.PropertyName == "var_Bodenbelagsdicke")
-            {
-                SetCanEditFlooringProperties(message.PropertyName, message.NewValue, message.OldValue);
-            }
-            SetInfoSidebarPanelText(message);
-            _ = SetModelStateAsync();
+            _ = SetCalculatedValuesAsync();
+        };
+        if (message.PropertyName == "var_Bodenbelag" ||
+            message.PropertyName == "var_Bodentyp" ||
+            message.PropertyName == "var_Bodenbelagsdicke")
+        {
+            SetCanEditFlooringProperties(message.PropertyName, message.NewValue, message.OldValue);
         }
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
     }
 
     [ObservableProperty]

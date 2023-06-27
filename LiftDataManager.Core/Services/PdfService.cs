@@ -129,7 +129,7 @@ public class PdfService : IPdfService
             "KabinenLüftungViewModel",
             "NutzlastberechnungViewModel",
             "KabinengewichtViewModel",
-            //"Spezifikation"
+            "Spezifikation"
         };
 
         foreach (var pdf in setOfPdfs)

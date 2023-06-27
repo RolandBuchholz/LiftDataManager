@@ -90,6 +90,22 @@
                     VerticalAlignment="Top"
                     Background="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                     CornerRadius="8">
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="100"
+                        Glyph="{x:Bind ListDetailsMenuItem.Symbol, Mode=OneWay}" />
+                    <Border
+                        Width="200"
+                        Height="200"
+                        BorderBrush="YellowGreen"
+                        BorderThickness="4"
+                        CornerRadius="8"
+                        Visibility="{x:Bind ListDetailsMenuItem.IsKey, Mode=OneWay}">
+                        <Border.Background>
+                            <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+                        </Border.Background>
+                    </Border>
                     <Border
                         Width="200"
                         Height="200"
@@ -97,11 +113,6 @@
                         BorderThickness="4"
                         CornerRadius="8"
                         Visibility="{x:Bind ListDetailsMenuItem.HasErrors, Mode=OneWay}" />
-                    <FontIcon
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="100"
-                        Glyph="{x:Bind ListDetailsMenuItem.Symbol, Mode=OneWay}" />
                 </Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock
@@ -151,7 +162,7 @@
                 Text="{x:Bind ListDetailsMenuItem.Comment, Mode=TwoWay}" />
             <CheckBox
                 Margin="0,10,0,0"
-                Content="Schlüsselparameter"
+                Content="Highlighted"
                 IsChecked="{x:Bind ListDetailsMenuItem.IsKey, Mode=TwoWay}" />
             <StackPanel
                 Margin="0,0,0,0"

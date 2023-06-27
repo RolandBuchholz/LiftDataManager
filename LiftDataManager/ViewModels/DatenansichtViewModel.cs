@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
 

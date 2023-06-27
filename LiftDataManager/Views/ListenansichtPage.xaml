@@ -26,6 +26,17 @@
                 <Border
                     Grid.ColumnSpan="2"
                     Margin="-12,2,-10,2"
+                    BorderBrush="YellowGreen"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    Visibility="{x:Bind IsKey, Mode=OneWay}">
+                    <Border.Background>
+                        <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+                    </Border.Background>
+                </Border>
+                <Border
+                    Grid.ColumnSpan="2"
+                    Margin="-12,2,-10,2"
                     BorderBrush="{x:Bind ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}}"
                     BorderThickness="2"
                     CornerRadius="4"

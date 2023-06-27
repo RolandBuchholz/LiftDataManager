@@ -125,4 +125,30 @@ public sealed partial class ParameterComboBox : UserControl
 
     public static readonly DependencyProperty BorderHeightProperty =
         DependencyProperty.Register("BorderHeight", typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
+
+    public string HighlightAction
+    {
+        get => GetHighlightAction();
+        set { SetValue(HighlightActionProperty, value); }
+    }
+
+    public static readonly DependencyProperty HighlightActionProperty =
+        DependencyProperty.Register("HighlightAction", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+
+    private void HighlightParameter_Click(object sender, RoutedEventArgs e)
+    {
+        if (LiftParameter != null)
+        {
+            LiftParameter.IsKey = !LiftParameter.IsKey;
+            HighlightAction = GetHighlightAction();
+        }
+    }
+
+    private string GetHighlightAction() => LiftParameter!.IsKey ? "Remove highlight" : "Highlight Parameter";
+
+    private void NavigateToHighlightParameters_Click(object sender, RoutedEventArgs e)
+    {
+        var nav = App.GetService<INavigationService>();
+        nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel");
+    }
 }

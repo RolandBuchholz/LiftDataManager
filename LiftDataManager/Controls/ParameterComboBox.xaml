@@ -1,4 +1,3 @@
-
 <UserControl
     x:Class="LiftDataManager.Controls.ParameterComboBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -17,6 +16,47 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <ComboBox
+            x:Name="cmb_Liftparameter"
+            Grid.Column="0"
+            Margin="5,0,5,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Header="{x:Bind Header, Mode=OneWay}"
+            IsRightTapEnabled="True"
+            ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
+            PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
+            PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
+            SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}">
+            <ComboBox.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Click="HighlightParameter_Click" Text="{x:Bind HighlightAction, Mode=OneWay}">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="Highlight" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Click="NavigateToHighlightParameters_Click" Text="All highlighted Parameter">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="ShowResults" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </ComboBox.ContextFlyout>
+        </ComboBox>
+        <Border
+            Grid.Column="0"
+            Height="{x:Bind BorderHeight, Mode=OneWay}"
+            Margin="5,0,5,0"
+            VerticalAlignment="Bottom"
+            BorderBrush="YellowGreen"
+            BorderThickness="2"
+            CornerRadius="4"
+            IsHitTestVisible="False"
+            Visibility="{x:Bind LiftParameter.IsKey, Mode=OneWay}">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+            </Border.Background>
+        </Border>
         <Border
             Grid.Column="0"
             Height="{x:Bind BorderHeight, Mode=OneWay}"
@@ -25,18 +65,8 @@
             BorderBrush="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
             BorderThickness="2"
             CornerRadius="4"
+            IsHitTestVisible="False"
             Visibility="{x:Bind LiftParameter.HasErrors, Mode=OneWay}" />
-        <ComboBox
-            x:Name="cmb_Liftparameter"
-            Grid.Column="0"
-            Margin="5,0,5,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Header="{x:Bind Header, Mode=OneWay}"
-            ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
-            PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
-            PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
-            SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}" />
         <FontIcon
             Grid.Column="1"
             Margin="0,0,5,7"

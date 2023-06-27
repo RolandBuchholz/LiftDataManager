@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
     private ObservableDictionary<string,List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new ();

@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
