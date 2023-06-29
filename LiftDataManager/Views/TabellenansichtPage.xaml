@@ -37,6 +37,7 @@
                 Grid.Column="0"
                 Margin="0,0,0,5"
                 CanShowErrorsParameters="{x:Bind ViewModel.HasErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                CanShowHighlightedParameters="{x:Bind ViewModel.HasHighlightedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
@@ -140,7 +141,7 @@
                                     <CheckBox
                                         Margin="12,0,0,0"
                                         VerticalAlignment="Center"
-                                        IsChecked="{x:Bind IsKey}" />
+                                        IsChecked="{x:Bind IsKey, Mode=TwoWay}" />
                                 </DataTemplate>
                             </controls:DataGridTemplateColumn.CellTemplate>
                         </controls:DataGridTemplateColumn>

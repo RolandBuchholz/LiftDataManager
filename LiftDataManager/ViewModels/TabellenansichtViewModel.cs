@@ -15,8 +15,23 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         };
     }
 
+    public override void Receive(PropertyChangedMessage<bool> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        SetInfoSidebarPanelHighlightText(message);
+        _ = SetModelStateAsync();
+        HasHighlightedParameters = CheckhasHighlightedParameters();
+    }
+
     [ObservableProperty]
     private bool canShowUnsavedParameters;
+
+    [ObservableProperty]
+    private bool hasHighlightedParameters;
 
     [ObservableProperty]
     private string? searchInput;
@@ -89,6 +104,13 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         }
     }
 
+    private bool CheckhasHighlightedParameters()
+    {
+        if (ParamterDictionary is null || ParamterDictionary.Values is null)
+            return false;
+        return ParamterDictionary.Values.Any(x => x.IsKey);
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -99,6 +121,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
             _ = SetModelStateAsync();
+        HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
     public void OnNavigatedFrom()

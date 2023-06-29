@@ -21,11 +21,29 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         };
     }
 
+    public override void Receive(PropertyChangedMessage<bool> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        SetInfoSidebarPanelHighlightText(message);
+        _ = SetModelStateAsync();
+        HasHighlightedParameters = CheckhasHighlightedParameters();
+    }
+
     [ObservableProperty]
     private bool isItemSelected;
 
     [ObservableProperty]
     private bool canShowUnsavedParameters;
+
+    [ObservableProperty]
+    private bool hasHighlightedParameters;
+
+    [ObservableProperty]
+    private bool fastOpenHighlightedParameters;
 
     [ObservableProperty]
     private string? searchInput;
@@ -211,6 +229,12 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private bool CheckhasHighlightedParameters()
+    {
+        if (ParamterDictionary is null || ParamterDictionary.Values is null) return false;
+        return ParamterDictionary.Values.Any(x => x.IsKey);
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -221,7 +245,14 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
             _ = SetModelStateAsync();
+        
         _ = GetHistoryEntrysAsync(FullPathXml);
+        HasHighlightedParameters = CheckhasHighlightedParameters();
+
+        if (parameter is null and not string) return;
+        if (!Equals(parameter, "ShowHighlightParameter")) return;
+        if (!HasHighlightedParameters) return;
+            FastOpenHighlightedParameters = true;
     }
 
     public void OnNavigatedFrom()

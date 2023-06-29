@@ -29,7 +29,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty ViewSourceProperty =
-        DependencyProperty.Register("ViewSourceItems", typeof(CollectionViewSource), typeof(CommandBar), new PropertyMetadata(null));
+        DependencyProperty.Register("ViewSource", typeof(CollectionViewSource), typeof(CommandBar), new PropertyMetadata(null));
 
     public string SearchInput
     {
@@ -121,6 +121,31 @@ public sealed partial class CommandBar : UserControl
         }
     }
 
+    public static readonly DependencyProperty CanShowErrorsParametersProperty =
+    DependencyProperty.Register("CanShowErrorsParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
+    public bool CanShowHighlightedParameters
+    {
+        get => (bool)GetValue(CanShowHighlightedParametersProperty);
+        set
+        {
+            SetValue(CanShowHighlightedParametersProperty, value);
+            RefreshView();
+            if (IsHighlightedParametersSelected && ViewSource is not null)
+            {
+                if (ViewSource.View.Count == 0)
+                {
+                    SearchInput = string.Empty;
+                    FilterParameter(SearchInput);
+                    IsHighlightedParametersSelected = false;
+                }
+            }
+        }
+    }
+
+    public static readonly DependencyProperty CanShowHighlightedParametersProperty =
+    DependencyProperty.Register("CanShowHighlightedParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
     public bool IsErrorParametersSelected
     {
         get => (bool)GetValue(IsErrorParametersSelectedProperty);
@@ -134,16 +159,48 @@ public sealed partial class CommandBar : UserControl
     public static readonly DependencyProperty IsErrorParametersSelectedProperty =
         DependencyProperty.Register("IsErrorParametersSelected", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
+    public bool IsHighlightedParametersSelected
+    {
+        get => (bool)GetValue(IsHighlightedParametersSelectedProperty);
+        set
+        {
+            SetValue(IsHighlightedParametersSelectedProperty, value);
+            btn_AllAppsButton.IsEnabled = value;
+        }
+    }
+
+    public static readonly DependencyProperty IsHighlightedParametersSelectedProperty =
+        DependencyProperty.Register("IsHighlightedParametersSelected", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
+
+    public bool FastOpenHighlighted
+    {
+        get => (bool)GetValue(FastOpenHighlightedProperty);
+        set
+        {
+            SetValue(FastOpenHighlightedProperty, value);
+            if (value)
+            {
+                SetHighlightedParameterView();
+                FastOpenHighlighted = false;
+                IsHighlightedParametersSelected = true;
+                RefreshView();
+            }
+        }
+    }
+
+    public static readonly DependencyProperty FastOpenHighlightedProperty =
+        DependencyProperty.Register("FastOpenHighlighted", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+
     private void RefreshView()
     {
         if (IsUnsavedParametersSelected)
             SetUnsavedParameterView();
         if (IsErrorParametersSelected)
             SetErrorsParameterView();
+        if (IsHighlightedParametersSelected)
+            SetHighlightedParameterView();
     }
-
-    public static readonly DependencyProperty CanShowErrorsParametersProperty =
-        DependencyProperty.Register("CanShowErrorsParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
     public ICommand SaveAllCommand
     {
@@ -176,9 +233,7 @@ public sealed partial class CommandBar : UserControl
         }
 
         if (ViewSource is not null)
-        {
             ViewSource.Source = GroupedFilteredParameters;
-        }
     }
 
     private Func<Parameter, bool> FilterViewSearchInput(string searchInput)
@@ -265,6 +320,12 @@ public sealed partial class CommandBar : UserControl
         IsUnsavedParametersSelected = false;
     }
 
+    private void HighlightAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetHighlightedParameterView();
+        IsHighlightedParametersSelected = true;
+    }
+
     private void ShowErrorsAppsButton_Click(object sender, RoutedEventArgs e)
     {
         SetErrorsParameterView();
@@ -280,26 +341,45 @@ public sealed partial class CommandBar : UserControl
     private void SetUnsavedParameterView()
     {
         GroupedFilteredParameters.Clear();
-        var unsavedParameters = ItemSource.Values.Where(p => p.IsDirty).
-                                                GroupBy(GroupView()).
-                                                OrderBy(g => g.Key);
+        var unsavedParameters = ItemSource.Values.Where(p => p.IsDirty)
+                                                 .GroupBy(GroupView())
+                                                 .OrderBy(g => g.Key);
         foreach (var group in unsavedParameters)
         {
             GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
         }
-        ViewSource.Source = GroupedFilteredParameters;
+        if (ViewSource is not null)
+            ViewSource.Source = GroupedFilteredParameters;
     }
 
     private void SetErrorsParameterView()
     {
         GroupedFilteredParameters.Clear();
-        var errorParameters = ItemSource.Values.Where(p => p.HasErrors).
-                                                GroupBy(GroupView()).
-                                                OrderBy(g => g.Key);
+        var errorParameters = ItemSource.Values.Where(p => p.HasErrors)
+                                               .GroupBy(GroupView())
+                                               .OrderBy(g => g.Key);
         foreach (var group in errorParameters)
         {
             GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
         }
-        ViewSource.Source = GroupedFilteredParameters;
+        if (ViewSource is not null)
+            ViewSource.Source = GroupedFilteredParameters;
+    }
+
+    private void SetHighlightedParameterView()
+    {
+        GroupedFilteredParameters.Clear();
+        var highlightedParameters = ItemSource?.Values.Where(p => p.IsKey)
+                                               .GroupBy(GroupView())
+                                               .OrderBy(g => g.Key);
+        if (highlightedParameters is not null)
+        {
+            foreach (var group in highlightedParameters)
+            {
+                GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
+            }
+        }
+        if (ViewSource is not null)
+            ViewSource.Source = GroupedFilteredParameters;
     }
 }

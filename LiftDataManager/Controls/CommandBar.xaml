@@ -173,26 +173,33 @@
                 Icon="AllApps"
                 IsEnabled="False"
                 Label="All"
-                ToolTipService.ToolTip="Zeige alle Parameter an" />
+                ToolTipService.ToolTip="Zeigt alle Parameter an" />
+            <AppBarButton
+                x:Name="btn_HighlightAppsButton"
+                Click="HighlightAppsButton_Click"
+                Icon="Highlight"
+                IsEnabled="{x:Bind CanShowHighlightedParameters, Mode=OneWay}"
+                Label="Highlighted"
+                ToolTipService.ToolTip="Zeigt alle markierte Parameter an" />
             <AppBarButton
                 x:Name="btn_ErrorsAppsButton"
                 Click="ShowErrorsAppsButton_Click"
                 Icon="ReportHacked"
                 IsEnabled="{x:Bind CanShowErrorsParameters, Mode=OneWay}"
                 Label="Validation Errors"
-                ToolTipService.ToolTip="Zeige Parameter mit Validierungsfehleren an" />
+                ToolTipService.ToolTip="Zeigt Parameter mit Validierungsfehleren an" />
             <AppBarButton
                 x:Name="btn_UnsavedAppsButton"
                 Click="ShowUnsavedAppsButton_Click"
                 Icon="Sync"
                 IsEnabled="{x:Bind CanShowUnsavedParameters, Mode=OneWay}"
                 Label="Unsaved"
-                ToolTipService.ToolTip="Zeige nicht gespeicherte Parameter an" />
+                ToolTipService.ToolTip="Zeigt nicht gespeicherte Parameter an" />
             <AppBarButton
                 Command="{x:Bind SaveAllCommand}"
                 Icon="Save"
                 Label="Save"
-                ToolTipService.ToolTip="Speichere alle Parameter" />
+                ToolTipService.ToolTip="Speichert alle Parameter" />
         </CommandBar>
     </Grid>
 </UserControl>

@@ -149,6 +149,6 @@ public sealed partial class ParameterComboBox : UserControl
     private void NavigateToHighlightParameters_Click(object sender, RoutedEventArgs e)
     {
         var nav = App.GetService<INavigationService>();
-        nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel");
+        nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
     }
 }

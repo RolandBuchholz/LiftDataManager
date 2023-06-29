@@ -23,6 +23,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     private bool canShowUnsavedParameters;
 
     [ObservableProperty]
+    private bool hasHighlightedParameters;
+
+    [ObservableProperty]
     private string? searchInput;
     partial void OnSearchInputChanged(string? value)
     {
@@ -93,6 +96,13 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    private bool CheckhasHighlightedParameters()
+    {
+        if (ParamterDictionary is null || ParamterDictionary.Values is null)
+            return false;
+        return ParamterDictionary.Values.Any(x => x.IsKey);
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -103,6 +113,7 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
             _ = SetModelStateAsync();
+        HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
     public void OnNavigatedFrom()

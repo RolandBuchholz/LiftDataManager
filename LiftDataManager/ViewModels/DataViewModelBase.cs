@@ -270,11 +270,11 @@ public partial class DataViewModelBase : ObservableRecipient
 
         if (message.NewValue)
         {
-            InfoSidebarPanelText += $"Zu |{sender.DisplayName}| Markierung hinzugefügt\n";
+            InfoSidebarPanelText += $"|{sender.DisplayName}| Markierung hinzugefügt\n";
         }
         else
         {
-            InfoSidebarPanelText += $"Von |{sender.DisplayName}| Markierung entfernt\n";
+            InfoSidebarPanelText += $"|{sender.DisplayName}| Markierung entfernt\n";
         }
     }
 
