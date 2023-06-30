@@ -1058,11 +1058,15 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_Erkennungsweg"].Value = "0";
             ParamterDictionary["var_Totzeit"].Value = "0";
             ParamterDictionary["var_Vdetektor"].Value = "0";
+
+            if (name == "var_Steuerungstyp" && ParamterDictionary["var_Aggregat"].Value == "Ziehl-Abegg" && string.IsNullOrWhiteSpace(ParamterDictionary["var_Steuerungstyp"].Value))
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"UCM-Daten können nicht berechnet werden es ist kein Steuerung gewählt ist!", SetSeverity("Warning")));
+            }
             return;
         }
 
         var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParamterDictionary["var_Steuerungstyp"].Value);
-
 
         if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
             || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
@@ -1100,6 +1104,13 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         var zaHtmlPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
         if (!File.Exists(zaHtmlPath))
             return;
+
+        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Aggregat"].Value))
+        {
+            ParamterDictionary["var_Aggregat"].Value = "Ziehl-Abegg";
+            ParamterDictionary["var_Aggregat"].DropDownListValue = "Ziehl-Abegg";
+        }
+
         var lastWriteTime = File.GetLastWriteTime(zaHtmlPath);
 
         if (lastWriteTime != ZaHtmlCreationTime)

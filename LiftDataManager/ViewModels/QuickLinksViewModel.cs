@@ -240,6 +240,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private async Task OpenCFP(ContentDialog cFPEditDialog, CancellationToken token)
     {
         SynchronizeViewModelParameter();
+        _ = SetModelStateAsync();
         var startargs = string.Empty;
         var pathCFP = _settingService.PathCFP;
         if (!File.Exists(pathCFP)) return;
@@ -248,8 +249,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         var shortSymbolDirveSystem = string.Empty;
 
         var driveSystem = _parametercontext.Set<CarFrameType>().Include(i => i.DriveType)
-                                           .ToList()
-                                           .FirstOrDefault(x => x.Name == bausatztyp);
+                                                               .ToList()
+                                                               .FirstOrDefault(x => x.Name == bausatztyp);
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
