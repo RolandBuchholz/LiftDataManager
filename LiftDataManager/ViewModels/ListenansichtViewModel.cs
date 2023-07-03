@@ -43,7 +43,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     private bool hasHighlightedParameters;
 
     [ObservableProperty]
-    private bool fastOpenHighlightedParameters;
+    private string selectedFilter = "All";
 
     [ObservableProperty]
     private string? searchInput;
@@ -119,11 +119,13 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         Selected.IsDirty = false;
         await SetModelStateAsync();
 
-        if (!HistoryEntrysDictionary.ContainsKey(Selected.Name!))
+        if (Selected is null)
+            return;
+        if (!HistoryEntrysDictionary.ContainsKey(Selected?.Name!))
         {
-            HistoryEntrysDictionary.Add(Selected.Name!, new List<LiftHistoryEntry>());
+            HistoryEntrysDictionary.Add(Selected?.Name!, new List<LiftHistoryEntry>());
         }
-        HistoryEntrysDictionary[Selected.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected));
+        HistoryEntrysDictionary[Selected?.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected));
 
         SetParameterHistoryEntrys();
     }
@@ -252,7 +254,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (parameter is null and not string) return;
         if (!Equals(parameter, "ShowHighlightParameter")) return;
         if (!HasHighlightedParameters) return;
-            FastOpenHighlightedParameters = true;
+            SelectedFilter = "Highlighted";
     }
 
     public void OnNavigatedFrom()

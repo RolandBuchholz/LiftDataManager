@@ -76,10 +76,10 @@
                 CanShowErrorsParameters="{x:Bind ViewModel.HasErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 CanShowHighlightedParameters="{x:Bind ViewModel.HasHighlightedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                FastOpenHighlighted="{x:Bind ViewModel.FastOpenHighlightedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
                 SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedFilter="{x:Bind ViewModel.SelectedFilter}"
                 ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid Grid.Row="1">

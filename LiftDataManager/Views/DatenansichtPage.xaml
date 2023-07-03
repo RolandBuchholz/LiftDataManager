@@ -107,6 +107,7 @@
                 CanShowHighlightedParameters="{x:Bind ViewModel.HasHighlightedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedFilter="{x:Bind ViewModel.SelectedFilter}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
                 SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

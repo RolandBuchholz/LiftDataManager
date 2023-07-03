@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Grid
@@ -24,7 +25,6 @@
                 <AppBarButton
                     x:Name="btn_Filter"
                     Icon="Filter"
-                    IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                     Label="{x:Bind FilterValue, Mode=OneWay}">
                     <ToolTipService.ToolTip>
                         <StackPanel>
@@ -123,7 +123,6 @@
                 <AppBarButton
                     x:Name="btn_Grouping"
                     Icon="AllApps"
-                    IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                     Label="{x:Bind GroupingValue, Mode=OneWay}">
                     <ToolTipService.ToolTip>
                         <StackPanel>
@@ -159,47 +158,59 @@
                 Margin="10,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
-                IsEnabled="{x:Bind IsUnsavedParametersSelected, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                 QueryIcon="Find"
                 Text="{x:Bind SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
-        <CommandBar
+        <StackPanel
             Grid.Column="1"
-            Background="Transparent"
-            DefaultLabelPosition="Right">
-            <AppBarButton
-                x:Name="btn_AllAppsButton"
-                Click="ShowAllAppsButton_Click"
-                Icon="AllApps"
-                IsEnabled="False"
-                Label="All"
-                ToolTipService.ToolTip="Zeigt alle Parameter an" />
-            <AppBarButton
-                x:Name="btn_HighlightAppsButton"
-                Click="HighlightAppsButton_Click"
-                Icon="Highlight"
-                IsEnabled="{x:Bind CanShowHighlightedParameters, Mode=OneWay}"
-                Label="Highlighted"
-                ToolTipService.ToolTip="Zeigt alle markierte Parameter an" />
-            <AppBarButton
-                x:Name="btn_ErrorsAppsButton"
-                Click="ShowErrorsAppsButton_Click"
-                Icon="ReportHacked"
-                IsEnabled="{x:Bind CanShowErrorsParameters, Mode=OneWay}"
-                Label="Validation Errors"
-                ToolTipService.ToolTip="Zeigt Parameter mit Validierungsfehleren an" />
-            <AppBarButton
-                x:Name="btn_UnsavedAppsButton"
-                Click="ShowUnsavedAppsButton_Click"
-                Icon="Sync"
-                IsEnabled="{x:Bind CanShowUnsavedParameters, Mode=OneWay}"
-                Label="Unsaved"
-                ToolTipService.ToolTip="Zeigt nicht gespeicherte Parameter an" />
-            <AppBarButton
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="ms-appx:///CommunityToolkit.Labs.WinUI.SegmentedControl/Segmented/Segmented.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <labs:Segmented
+                HorizontalAlignment="Right"
+                SelectedValue="{x:Bind SelectedFilter, Mode=TwoWay}"
+                SelectedValuePath="Content"
+                SelectionChanged="Segmented_SelectionChanged"
+                SelectionMode="Single"
+                Style="{StaticResource ButtonSegmentedStyle}">
+                <labs:SegmentedItem
+                    Content="All"
+                    Icon="AllApps"
+                    ToolTipService.ToolTip="Zeigt alle Parameter an" />
+                <labs:SegmentedItem
+                    Content="Highlighted"
+                    Icon="Highlight"
+                    IsEnabled="{x:Bind CanShowHighlightedParameters, Mode=OneWay}"
+                    ToolTipService.ToolTip="Zeigt alle markierte Parameter an" />
+                <labs:SegmentedItem
+                    Content="Validation Errors"
+                    Icon="ReportHacked"
+                    IsEnabled="{x:Bind CanShowErrorsParameters, Mode=OneWay}"
+                    ToolTipService.ToolTip="Zeigt Parameter mit Validierungsfehleren an" />
+                <labs:SegmentedItem
+                    Content="Unsaved"
+                    Icon="Sync"
+                    IsEnabled="{x:Bind CanShowUnsavedParameters, Mode=OneWay}"
+                    ToolTipService.ToolTip="Zeigt nicht gespeicherte Parameter an" />
+            </labs:Segmented>
+            <Button
+                Width="85"
+                Height="41"
+                Margin="5,0,5,0"
                 Command="{x:Bind SaveAllCommand}"
-                Icon="Save"
-                Label="Save"
-                ToolTipService.ToolTip="Speichert alle Parameter" />
-        </CommandBar>
+                Style="{StaticResource SaveButton}"
+                ToolTipService.ToolTip="Speichert alle Parameter">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Save" />
+                    <TextBlock Margin="5" Text="Save" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>
