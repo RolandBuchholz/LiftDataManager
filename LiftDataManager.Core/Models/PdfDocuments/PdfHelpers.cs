@@ -33,9 +33,9 @@ public static class PdfHelpers
     static float fontSizeXXL = 18;
     static float fontSizeBig = 20;
 
-    static string primaryColorLow = Colors.Grey.Lighten3;
+    static string primaryColorLow = Colors.Grey.Lighten5;
     static string primaryVariantColorLow = Colors.Grey.Lighten1;
-    static string secondaryColorLow = Colors.Grey.Lighten5;
+    static string secondaryColorLow = Colors.Grey.Lighten3;
     static string secondaryVariantColorLow = Colors.Grey.Lighten4;
     static string onPrimaryColorLow = Colors.Black;
     static string onPrimaryVariantColorLow = Colors.Black;
@@ -117,7 +117,7 @@ public static class PdfHelpers
         .Text(text =>
     {
         if (!hideHeader)
-            text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? secondaryColorLow : secondaryColor).Bold();
+            text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
         text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value));
     });
 

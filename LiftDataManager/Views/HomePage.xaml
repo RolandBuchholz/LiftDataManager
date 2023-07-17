@@ -257,18 +257,11 @@
                         Margin="0,0,5,0"
                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'], Mode=TwoWay}"
                         ShowDefaultHeader="True" />
-                    <CalendarDatePicker
+                    <SpeziControls:ParameterCalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="5,0,5,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        CalendarIdentifier="GregorianCalendar"
-                        Date="{x:Bind ViewModel.ParamterDictionary['var_ErstelltAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                        Header="erstellt am"
-                        Language="de"
-                        PlaceholderText="Datum auswählen" />
+                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ErstelltAm'], Mode=TwoWay}"
+                        ShowDefaultHeader="True" />
                     <TextBox
                         Grid.Row="1"
                         Grid.Column="1"
@@ -276,18 +269,11 @@
                         Header="erstellt von"
                         PlaceholderText="erstellt von"
                         Text="{x:Bind ViewModel.ParamterDictionary['var_ErstelltVon'].Value, Mode=TwoWay}" />
-                    <CalendarDatePicker
+                    <SpeziControls:ParameterCalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="3"
-                        Margin="5,0,10,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        CalendarIdentifier="GregorianCalendar"
-                        Date="{x:Bind ViewModel.ParamterDictionary['var_StandVom'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                        Header="Stand vom"
-                        Language="de"
-                        PlaceholderText="Datum auswählen" />
+                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StandVom'], Mode=TwoWay}"
+                        ShowDefaultHeader="True" />
                     <TextBox
                         Grid.Row="2"
                         Grid.Column="0"

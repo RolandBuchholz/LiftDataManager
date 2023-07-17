@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
+    <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
     <None Remove="Controls\PrePlanningNumberControl.xaml" />
     <None Remove="Images\Berechnungen.png" />
@@ -163,6 +164,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Page Update="Controls\HistorySearchBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Controls\ParameterCalendarDatePicker.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Controls\ParameterComboBox.xaml">

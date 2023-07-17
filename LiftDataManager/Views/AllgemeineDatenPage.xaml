@@ -179,50 +179,22 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <CalendarDatePicker
+                                    <SpeziControls:ParameterCalendarDatePicker
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="center"
-                                        CalendarIdentifier="GregorianCalendar"
-                                        Date="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                        Header="Freigabe erfolgt am"
-                                        Language="de"
-                                        PlaceholderText="Datum auswählen" />
-                                    <CalendarDatePicker
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FreigabeErfolgtAm'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterCalendarDatePicker
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="center"
-                                        CalendarIdentifier="GregorianCalendar"
-                                        Date="{x:Bind ViewModel.ParamterDictionary['var_Demontage'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                        Header="Demontage"
-                                        Language="de"
-                                        PlaceholderText="Datum auswählen" />
-                                    <CalendarDatePicker
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Demontage'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterCalendarDatePicker
                                         Grid.Column="2"
-                                        Margin="5,-4,5,-4"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        CalendarIdentifier="GregorianCalendar"
-                                        Date="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                        Header="Auslieferung"
-                                        Language="de"
-                                        PlaceholderText="Datum auswählen" />
-                                    <CalendarDatePicker
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AuslieferungAm'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterCalendarDatePicker
                                         Grid.Column="3"
-                                        Margin="5,-4,5,-4"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        CalendarIdentifier="GregorianCalendar"
-                                        Date="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'].Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
-                                        DateFormat="{}{day.integer}/{month.integer}/{year.full}"
-                                        Header="Fertigstellung"
-                                        Language="de"
-                                        PlaceholderText="Datum auswählen" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FertigstellungAm'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
