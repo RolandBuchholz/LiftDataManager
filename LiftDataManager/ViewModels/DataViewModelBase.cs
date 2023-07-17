@@ -32,18 +32,22 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null) return;
-        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
 
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
-        
+
     }
 
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
-        if (message is null) return;
-        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
 
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
@@ -205,7 +209,6 @@ public partial class DataViewModelBase : ObservableRecipient
                 {
                     CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
-
                 }
                 else
                 {

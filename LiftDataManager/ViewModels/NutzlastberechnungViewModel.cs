@@ -6,6 +6,7 @@ namespace LiftDataManager.ViewModels;
 public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly ISettingService _settingService;
     private readonly ParameterContext _parametercontext;
     private readonly IPdfService _pdfService;
 
@@ -15,12 +16,13 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public PayLoadResult PayLoadResult = new();
 
-    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService,
-                                       INavigationService navigationService, ICalculationsModule calculationsModuleService ,ParameterContext parametercontext, IPdfService pdfService) :
+    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+                                       ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, ParameterContext parametercontext, IPdfService pdfService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        _settingService = settingsSelectorService;
         _pdfService = pdfService;
 
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
@@ -50,7 +52,7 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParamterDictionary, FullPathXml, true);
+            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode);
         }
     }
 

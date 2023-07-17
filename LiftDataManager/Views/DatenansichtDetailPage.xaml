@@ -2,6 +2,7 @@
     x:Class="LiftDataManager.Views.DatenansichtDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,6 +15,10 @@
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />
         <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <helpers:DateTimeHumanizeConverter x:Key="DateTimeHumanizeConverter" />
+        <converters:BoolToObjectConverter
+            x:Key="BoolVisibilityNegationConverter"
+            FalseValue="Visible"
+            TrueValue="Collapsed" />
         <DataTemplate x:Key="ErrorItemTemplate" x:DataType="models:ParameterStateInfo">
             <InfoBar
                 Title="{x:Bind Severity}"
@@ -170,13 +175,17 @@
                         <SymbolIcon
                             Margin="0,4"
                             HorizontalAlignment="Right"
-                            Foreground="Red"
+                            Foreground="IndianRed"
                             Symbol="ReportHacked"
-                            Visibility="{x:Bind ViewModel.Item.IsDirty, Mode=OneWay}">
+                            Visibility="{x:Bind ViewModel.Item.DefaultUserEditable, Converter={StaticResource BoolVisibilityNegationConverter}, Mode=OneWay}">
                             <ToolTipService.ToolTip>
-                                <TextBlock Foreground="Red">
-                                    Parameter noch nicht gespeichert!<LineBreak />
-                                    Speichern ist nur im Adminmode möglich!</TextBlock>
+                                <TextBlock Foreground="IndianRed">
+                                    <Run
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Text="Schreibgeschützer Parameter" /><LineBreak />
+                                    <Run Text="Speichern ist nur im Adminmode möglich!" />
+                                </TextBlock>
                             </ToolTipService.ToolTip>
                         </SymbolIcon>
                         <Button

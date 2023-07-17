@@ -221,6 +221,18 @@
                                 </Interactivity:Interaction.Behaviors>
                             </ToggleSwitch>
                         </labs:SettingsCard>
+                        <labs:SettingsCard Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen." Header="Toner SaveMode">
+                            <labs:SettingsCard.HeaderIcon>
+                                <SymbolIcon Symbol="Street" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch
+                                x:Name="SwitchTonerSaveMode"
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Center"
+                                IsOn="{x:Bind ViewModel.TonerSaveMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="Toner SaveMode Off"
+                                OnContent="Toner SaveMode On" />
+                        </labs:SettingsCard>
                         <TextBlock
                             Margin="5,5,0,5"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -456,8 +468,8 @@
                     Grid.RowSpan="2"
                     Margin="0,0,0,10"
                     VerticalAlignment="Stretch"
-                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
                     ui:Effects.Shadow="{StaticResource CommonShadow}"
+                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
                     CornerRadius="5" />
                 <ScrollViewer
                     Name="InfoTextScroller"

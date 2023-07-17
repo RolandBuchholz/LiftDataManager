@@ -13,6 +13,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyLogLevel = "AppLogLevelRequested";
     private const string SettingsKeyAutoSave = "AppAutoSaveRequested";
     private const string SettingsKeyAutoSavePeriod = "AppAutoSavePeriodRequested";
+    private const string SettingsKeyTonerSaveMode = "AppTonerSaveModeRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -32,6 +33,7 @@ public class SettingsService : ISettingService
     public string? LogLevel { get; set; }
     public bool AutoSave { get; set; }
     public string? AutoSavePeriod { get; set; }
+    public bool TonerSaveMode { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -87,6 +89,10 @@ public class SettingsService : ISettingService
                 AutoSavePeriod = (string)value;
                 await SaveSettingsAsync(key, AutoSavePeriod);
                 return;
+            case nameof(TonerSaveMode):
+                TonerSaveMode = (bool)value;
+                await SaveSettingsAsync(key, TonerSaveMode);
+                return;
             default:
                 return;
         }
@@ -115,6 +121,8 @@ public class SettingsService : ISettingService
         var storedAutoSave = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoSave);
         AutoSave = !string.IsNullOrWhiteSpace(storedAutoSave) && Convert.ToBoolean(storedAutoSave);
         AutoSavePeriod = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoSavePeriod);
+        var storedTonerSaveMode = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyTonerSaveMode);
+        TonerSaveMode = !string.IsNullOrWhiteSpace(storedTonerSaveMode) && Convert.ToBoolean(storedTonerSaveMode);
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -154,6 +162,9 @@ public class SettingsService : ISettingService
             case nameof(AutoSavePeriod):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyAutoSavePeriod, value);
                 return;
+            case nameof(TonerSaveMode):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyTonerSaveMode, ((bool)value).ToString());
+                return;
             default:
                 return;
         }
@@ -167,11 +178,7 @@ public class SettingsService : ISettingService
         await SetSettingsAsync(nameof(PathExcel), @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE");
         await SetSettingsAsync(nameof(PathDataBase), @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
         await SetSettingsAsync(nameof(LogLevel), @"Information");
+        await SetSettingsAsync(nameof(TonerSaveMode), true);
         await SetSettingsAsync(nameof(FirstSetup), true);
     }
 }
-
-
-
-
-

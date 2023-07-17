@@ -10,15 +10,18 @@ namespace PDFTests.Services.DocumentGeneration;
 public class KabinenLüftungDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
-
+    private readonly bool LowPrintColor;
     public CarVentilationResult CarVentilationResult = new();
 
-    public KabinenLüftungDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService)
+    public KabinenLüftungDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
     {
         _calculationsModuleService = calculationsModuleService;
         ParameterDictionary = parameterDictionary;
         CarVentilationResult = _calculationsModuleService.GetCarVentilationCalculation(parameterDictionary);
         Title = "Be- und Entlüftung";
+        LowPrintColor = lowPrintColor;
+        SetPdfStyle(LowPrintColor);
+        LowPrintColor = lowPrintColor;
     }
 
     protected override void Content(IContainer container)

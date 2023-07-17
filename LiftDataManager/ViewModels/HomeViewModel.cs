@@ -328,7 +328,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand]
     private void CreatePdf()
     {
-        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, null, true);
+        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, null, true, _settingService.TonerSaveMode);
     }
 
     public async Task<bool> InitializeParametereAsync()

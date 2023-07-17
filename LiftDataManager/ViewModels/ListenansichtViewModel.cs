@@ -30,6 +30,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
+        HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
@@ -181,6 +182,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
+            CanShowUnsavedParameters = false;
             var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)

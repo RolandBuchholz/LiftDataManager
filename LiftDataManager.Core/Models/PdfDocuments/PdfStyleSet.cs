@@ -15,6 +15,8 @@ public class PdfStyleSet
     public string? errorColor;
     public string? successfulColor;
     public string? highlightColor;
+    public string? borderColor;
+    public string? baseHeaderColor;
 
     //FontSize
     public float fontSizeXXS;

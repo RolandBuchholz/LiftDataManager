@@ -53,6 +53,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [ObservableProperty]
+    private bool tonerSaveMode;
+    partial void OnTonerSaveModeChanged(bool value)
+    {
+        if (!Equals(value, _settingService.TonerSaveMode))
+            _settingService.SetSettingsAsync(nameof(TonerSaveMode), value);
+    }
+
+    [ObservableProperty]
     private string? autoSavePeriod;
     partial void OnAutoSavePeriodChanged(string? value)
     {
@@ -352,6 +360,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         selectedLogLevel = _settingService.LogLevel;
         AutoSave = _settingService.AutoSave;
         AutoSavePeriod = _settingService.AutoSavePeriod;
+        TonerSaveMode = _settingService.TonerSaveMode;
     }
     public void OnNavigatedFrom()
     {

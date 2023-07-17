@@ -11,13 +11,16 @@ public class NutzlastberechnungDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
     public PayLoadResult PayLoadResult = new();
+    private readonly bool LowPrintColor;
 
-    public NutzlastberechnungDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService)
+    public NutzlastberechnungDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
     {
         _calculationsModuleService = calculationsModuleService;
         ParameterDictionary = parameterDictionary;
         PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(parameterDictionary);
         Title = "Nutzfläche des Fahrkorbs";
+        LowPrintColor = lowPrintColor;
+        SetPdfStyle(LowPrintColor);
     }
 
     protected override void Content(IContainer container)
@@ -51,11 +54,11 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             column.Item().Row(row =>
             {
                 row.AutoItem().Element(TablePersonData);
-                row.RelativeItem().PaddingTop(5, Unit.Millimetre).PaddingHorizontal(10, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table8.Values.ToList()));
+                row.RelativeItem().PaddingTop(5, Unit.Millimetre).PaddingHorizontal(10, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table8.Values.ToList(), LowPrintColor));
             });
 
-            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table6.Values.ToList()));
-            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table7.Values.ToList()));
+            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table6.Values.ToList(), LowPrintColor));
+            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table7.Values.ToList(), LowPrintColor));
         });
     }
 

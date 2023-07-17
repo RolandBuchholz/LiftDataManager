@@ -24,6 +24,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
+        HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
@@ -76,6 +77,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
+            CanShowUnsavedParameters = false;
             var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)

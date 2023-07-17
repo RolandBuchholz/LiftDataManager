@@ -10,14 +10,18 @@ namespace PDFTests.Services.DocumentGeneration;
 public class KabinengewichtDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly bool LowPrintColor;
     public CarWeightResult CarWeightResult = new();
 
-    public KabinengewichtDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService)
+    public KabinengewichtDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
     {
         _calculationsModuleService = calculationsModuleService;
         ParameterDictionary = parameterDictionary;
         CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(parameterDictionary);
         Title = "Kabinengewicht";
+        LowPrintColor = lowPrintColor;
+        SetPdfStyle(LowPrintColor);
+        LowPrintColor = lowPrintColor;
     }
 
     protected override void Content(IContainer container)

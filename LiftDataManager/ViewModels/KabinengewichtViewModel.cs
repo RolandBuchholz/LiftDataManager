@@ -7,16 +7,18 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly ISettingService _settingService;
     private readonly IPdfService _pdfService;
 
     public CarWeightResult CarWeightResult = new();
 
     public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext,
-                                   ICalculationsModule calculationsModuleService, IPdfService pdfService) :
+                                   ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, IPdfService pdfService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        _settingService = settingsSelectorService;
         _pdfService = pdfService;
 
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
@@ -29,7 +31,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParamterDictionary, FullPathXml, true);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode);
         }
     }
 

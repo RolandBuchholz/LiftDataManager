@@ -76,12 +76,15 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(CanShowUnsavedParametersProperty, value);
-
-            if (!value && SelectedFilter == "Unsaved")
+            RefreshView();
+            if (ViewSource is not null && SelectedFilter == "Unsaved")
             {
-                SearchInput = string.Empty;
-                FilterParameter(SearchInput);
-                SelectedFilter = "All";
+                if (ViewSource.View.Count == 0)
+                {
+                    SearchInput = string.Empty;
+                    FilterParameter(SearchInput);
+                    SelectedFilter = "All";
+                }
             }
         }
     }

@@ -10,9 +10,10 @@ public class TableENComponent : PdfBaseDocument, IComponent
 
     List<TableRow<int, double>> tableEN;
 
-    public TableENComponent(List<TableRow<int,double>>table)
+    public TableENComponent(List<TableRow<int,double>>table, bool lowColor)
     {
         tableEN = table;
+        SetPdfStyle(lowColor);
     }
 
     public void Compose(IContainer container)

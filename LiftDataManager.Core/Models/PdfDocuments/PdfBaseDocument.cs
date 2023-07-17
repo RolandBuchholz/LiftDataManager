@@ -31,6 +31,8 @@ public class PdfBaseDocument : IDocument
     public string errorColor = string.Empty;
     public string successfulColor = string.Empty;
     public string highlightColor = string.Empty;
+    public string borderColor = string.Empty;
+    public string baseHeaderColor = string.Empty;
 
     //FontSize
     public float fontSizeXXS;
@@ -45,7 +47,6 @@ public class PdfBaseDocument : IDocument
     public PdfBaseDocument()
     {
         user = GetUserName();
-        SetPdfStyle();
     }
 
     public DocumentMetadata GetMetadata() => new()
@@ -78,9 +79,9 @@ public class PdfBaseDocument : IDocument
         return user;
     }
 
-    private void SetPdfStyle()
+    public void SetPdfStyle(bool lowColor)
     {
-        var style = PdfHelpers.GetPdfStyleSet();
+        var style = PdfHelpers.GetPdfStyleSet(lowColor);
         if (style is not null)
         {
             primaryColor = style.primaryColor!;
@@ -95,6 +96,8 @@ public class PdfBaseDocument : IDocument
             errorColor = style.errorColor!;
             successfulColor = style.successfulColor!;
             highlightColor = style.highlightColor!;
+            borderColor = style.borderColor!;
+            baseHeaderColor = style.baseHeaderColor!;
             fontSizeXXS = style.fontSizeXXS;
             fontSizeXS = style.fontSizeXS;
             fontSizeS = style.fontSizeS;
@@ -193,19 +196,19 @@ public class PdfBaseDocument : IDocument
                     {
                         column
                             .Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
-                            .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(primaryColor);
+                            .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(baseHeaderColor);
                         column
                             .Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
-                            .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(Colors.Grey.Lighten2);
+                            .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(onSecondaryColor);
                         column
                             .Item().Text("Mähderweg 1a  86637 Rieblingen")
-                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
                         column
                             .Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
-                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
                         column
                             .Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
-                            .FontSize(fontSizeS).FontColor(Colors.Grey.Lighten1);
+                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
                         column
                             .Item().PaddingTop(3).PaddingLeft(-50).Text(Title)
                             .Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);

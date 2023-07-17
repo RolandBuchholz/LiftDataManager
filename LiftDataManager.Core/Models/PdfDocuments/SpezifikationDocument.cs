@@ -1,7 +1,6 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.PdfDocuments;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
@@ -11,12 +10,16 @@ namespace PDFTests.Services.DocumentGeneration;
 public class SpezifikationDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly bool LowPrintColor;
 
-    public SpezifikationDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService)
+    public SpezifikationDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
     {
         ParameterDictionary = parameterDictionary;
         _calculationsModuleService = calculationsModuleService;
         Title = "Spezifikation";
+        LowPrintColor = lowPrintColor;
+        SetPdfStyle(LowPrintColor);
+        LowPrintColor = lowPrintColor;
     }
 
     protected override void Content(IContainer container)
@@ -61,18 +64,18 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     layers.PrimaryLayer().Canvas((canvas, size) =>
                     {
-                        using var paintSecondaryColor = new SKPaint
+                        using var paintBorderColor = new SKPaint
                         {
-                            Color = SKColor.Parse(secondaryColor),
+                            Color = SKColor.Parse(borderColor),
                             IsAntialias = true,
                             StrokeWidth = 1.5f,
                             IsStroke = true,
                         };
-                        canvas.DrawRoundRect(0, 0, size.Width, boxHeight / 2, 4, 4, paintSecondaryColor);
+                        canvas.DrawRoundRect(0, 0, size.Width, boxHeight / 2, 4, 4, paintBorderColor);
                     });
                     layers.Layer().PaddingLeft(5).Text(text =>
                     {
-                        text.Line("Bauvorhaben:").FontSize(fontSizeXXS).FontColor(secondaryColor).Bold();
+                        text.Line("Bauvorhaben:").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                         text.Line(ParameterDictionary["var_Projekt"].Value);
                     });
                 });
@@ -80,18 +83,18 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     layers.PrimaryLayer().Canvas((canvas, size) =>
                     {
-                        using var paintSecondaryColor = new SKPaint
+                        using var paintBorderColor = new SKPaint
                         {
-                            Color = SKColor.Parse(secondaryColor),
+                            Color = SKColor.Parse(borderColor),
                             IsAntialias = true,
                             StrokeWidth = 1.5f,
                             IsStroke = true,
                         };
-                        canvas.DrawRoundRect(0, 0, size.Width, boxHeight / 2, 4, 4, paintSecondaryColor);
+                        canvas.DrawRoundRect(0, 0, size.Width, boxHeight / 2, 4, 4, paintBorderColor);
                     });
                     layers.Layer().PaddingLeft(5).Text(text =>
                     {
-                        text.Line("Betreiber:").FontSize(fontSizeXXS).FontColor(secondaryColor).Bold();
+                        text.Line("Betreiber:").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                         text.Line(ParameterDictionary["var_Betreiber"].Value);
                     });
                 });
@@ -100,14 +103,14 @@ public class SpezifikationDocument : PdfBaseDocument
             {
                 layers.PrimaryLayer().Canvas((canvas, size) =>
                 {
-                    using var paintSecondaryColor = new SKPaint
+                    using var paintBorderColor = new SKPaint
                     {
-                        Color = SKColor.Parse(secondaryColor),
+                        Color = SKColor.Parse(borderColor),
                         IsAntialias = true,
                         StrokeWidth = 1.5f,
                         IsStroke = true,
                     };
-                    canvas.DrawRoundRect(0, 0, size.Width, boxHeight + 3, 4, 4, paintSecondaryColor);
+                    canvas.DrawRoundRect(0, 0, size.Width, boxHeight + 3, 4, 4, paintBorderColor);
                 });
 
                 layers.Layer().PaddingLeft(5).Table(table =>
@@ -117,7 +120,7 @@ public class SpezifikationDocument : PdfBaseDocument
                         columns.ConstantColumn(35, Unit.Millimetre);
                         columns.RelativeColumn();
                     });
-                    table.Cell().Row(1).Column(1).ColumnSpan(2).Text("Ansprechperson:").FontSize(fontSizeXXS).FontColor(secondaryColor).Bold();
+                    table.Cell().Row(1).Column(1).ColumnSpan(2).Text("Ansprechperson:").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                     table.Cell().Row(2).Column(1).Text("Firma Auftraggeber:");
                     table.Cell().Row(2).Column(2).PaddingRight(2).BorderBottom(0.1f).BorderColor(primaryColor).Text(ParameterDictionary["var_Firma"].Value);
                     table.Cell().Row(3).Column(1).Text("Name Auftraggeber:");
@@ -147,23 +150,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -178,20 +181,20 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(11).RotateLeft().AlignMiddle().AlignCenter().Text("Allgemeine Daten").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Termine").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(11).RotateLeft().AlignMiddle().AlignCenter().Text("Allgemeine Daten").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Termine").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ParameterDateCell(ParameterDictionary["var_FreigabeErfolgtAm"]);
                 table.Cell().Row(1).Column(4).ParameterDateCell(ParameterDictionary["var_Demontage"]);
                 table.Cell().Row(1).Column(5).ParameterDateCell(ParameterDictionary["var_AuslieferungAm"]);
                 table.Cell().Row(1).Column(6).ParameterDateCell(ParameterDictionary["var_FertigstellungAm"], false, true, null);
-                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Grundinformationen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Grundinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ParameterStringCell(ParameterDictionary["var_Lieferart"]);
                 table.Cell().Row(2).Column(4).ParameterStringCell(ParameterDictionary["var_InformationAufzug"]);
                 table.Cell().Row(2).Column(5).ParameterStringCell(ParameterDictionary["var_FabriknummerBestand"]);
                 table.Cell().Row(2).Column(6).ParameterStringCell(ParameterDictionary["var_CeNummer"]);
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Gebaeudetyp"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FE_Gebaeude"], null, false, false, "Gebäudetyp Zusatzinformationen");
-                table.Cell().Row(4).RowSpan(6).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Anlagedaten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).RowSpan(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Anlagedaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aufzugstyp"]);
                 table.Cell().Row(4).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FE_Aufzugstyp"], null, false, false, "Aufzugstyp Zusatzinformationen");
                 table.Cell().Row(5).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beladegeraet"]);
@@ -214,7 +217,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenhaltestellen"]);
                 table.Cell().Row(9).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_maxFahrtenStunde"]);
-                table.Cell().Row(10).RowSpan(2).Column(2).PaddingLeft(5).AlignMiddle().Text("Normen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(10).RowSpan(2).Column(2).PaddingLeft(5).AlignMiddle().Text("Normen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(10).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Normen"], null, true);
@@ -245,23 +248,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 69, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 69, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 69, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 69, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -276,9 +279,9 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(7).RotateLeft().AlignMiddle().AlignCenter().Text("Schacht").FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(7).RotateLeft().AlignMiddle().AlignCenter().Text("Schacht").FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(1).ColumnSpan(6).Element(EntranceData);
-                table.Cell().Row(2).RowSpan(2).Column(2).BorderHorizontal(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schacht").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).RowSpan(2).Column(2).BorderHorizontal(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schacht").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SchachtInformation"]);
@@ -287,7 +290,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Maschinenraum"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtgrubenleiter"]);
-                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachtabmessungen\n(innen im Lichten)").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtabmessungen\n(innen im Lichten)").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SB"], "mm");
@@ -299,14 +302,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SG"], "mm");
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SK"], "mm");
                 });
-                table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachtgerüst").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtgerüst").FontSize(fontSizeXS).FontColor(borderColor).Bold();
 
                 table.Cell().Row(6).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_GeruestFarbe"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_GeruestFeldfuellung"]);
                 });
-                table.Cell().Row(7).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Brandschutz Schacht").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Brandschutz Schacht").FontSize(fontSizeXS).FontColor(borderColor).Bold();
 
                 table.Cell().Row(7).Column(3).ColumnSpan(4).Row(row =>
                 {
@@ -324,23 +327,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -355,8 +358,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(20).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Grunddaten").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Abmessungen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(20).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Grunddaten").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Fahrkorbtyp"]);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Kabine_ZT"]);
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_KBI"],"mm");
@@ -394,7 +397,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_TuerEinbauD"], "mm");
                 });
                 table.Cell().Row(1).RowSpan(8).Column(5).ColumnSpan(2).Padding(5).AlignCenter().MaxHeight(170).Component(new CarDesignComponent(ParameterDictionary));
-                table.Cell().Row(9).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Seitenwände").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(9).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Seitenwände").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Seitenwaende"]);
                 table.Cell().Row(9).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Seitenwand"]);
                 table.Cell().Row(10).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Rueckwand"]);
@@ -405,11 +408,11 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Schotten_ZT"]);
                 table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Antidroehn"]);
                 table.Cell().Row(13).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Antidroehn_ZT"]);
-                table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Decke").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Decke").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Decke"]);
                 table.Cell().Row(14).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Decke"]);
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_BelagAufDemKabinendach"]);
-                table.Cell().Row(16).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Boden").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(16).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Boden").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodentyp"]);
                 table.Cell().Row(16).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KU"],"mm",false,false,"Kabinenbodenhöhe (inkl. Bodenbelag)");
                 table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
@@ -433,23 +436,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -464,8 +467,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
                 table.Cell().Row(1).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"], "Stk");
                 table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin");
@@ -482,7 +485,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_1"]);
                 });
 
-                table.Cell().Row(4).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
                 table.Cell().Row(4).Column(5).ColumnSpan(2).Row(row =>
                 {
@@ -504,7 +507,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(6).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
                 table.Cell().Row(6).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
 
-                table.Cell().Row(7).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ausstattung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Handlauf"]);
@@ -553,10 +556,10 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ventilator").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
                 table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahkorb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
@@ -568,23 +571,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -603,59 +606,59 @@ public class SpezifikationDocument : PdfBaseDocument
                 var cWTRailName = carFrameType?.DriveTypeId == 2 ? "Schienen Joch" : "Schienen GGW";
                 var cWTGuideName = carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
 
-                table.Cell().Row(1).Column(1).RowSpan(17).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Bausatztyp").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(17).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Bausatztyp").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Bausatz"]);
                     row.RelativeItem(1).Border(0.1f)
-                                       .BorderColor(secondaryColor)
+                                       .BorderColor(borderColor)
                                        .PaddingLeft(5).PaddingTop(0)
                                        .PaddingBottom(-10).Text(text => 
                                        {
-                                           text.Line("Rahmengewicht").FontSize(fontSizeXXS).FontColor(secondaryColor).Bold();
+                                           text.Line("Rahmengewicht").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
                                        });
                 });
-                table.Cell().Row(1).RowSpan(16).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingHorizontal(5).Element(CarFrameDetailData);
+                table.Cell().Row(1).RowSpan(16).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bausatz_ZT"]);
-                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
                 table.Cell().Row(3).Column(4).ParameterStringCell(ParameterDictionary["var_TypFuehrung"]);
-                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text(cWTGuideName).FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(cWTGuideName).FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart_GGW"], null, false,false, carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW");
                 table.Cell().Row(4).Column(4).ParameterStringCell(ParameterDictionary["var_TypFuehrung_GGW"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW");
-                table.Cell().Row(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schienen FK").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schienen FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_FuehrungsschieneFahrkorb"]);
                 table.Cell().Row(5).Column(4).ParameterStringCell(ParameterDictionary["var_StatusFuehrungsschienen"]);
-                table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text(cWTRailName).FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(cWTRailName).FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(6).Column(3).ParameterStringCell(ParameterDictionary["var_FuehrungsschieneGegengewicht"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Führungsschiene Joch" : "Führungsschiene Gegengewicht");
                 table.Cell().Row(6).Column(4).ParameterStringCell(ParameterDictionary["var_StatusGGWSchienen"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW");
-                table.Cell().Row(7).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Fangvorrichtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fangvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ParameterStringCell(ParameterDictionary["var_Fangvorrichtung"]);
                 table.Cell().Row(7).Column(4).ParameterStringCell(ParameterDictionary["var_TypFV"]);
                 table.Cell().Row(8).Column(3).ColumnSpan(2).Border(0.1f)
-                                       .BorderColor(secondaryColor)
+                                       .BorderColor(borderColor)
                                        .PaddingLeft(5).PaddingTop(0)
                                        .PaddingBottom(-10).Text(text =>
                                        {
-                                           text.Line("Fangvorrichtungsbereich").FontSize(fontSizeXXS).FontColor(secondaryColor).Bold();
+                                           text.Line("Fangvorrichtungsbereich").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                                            var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
                                            text.Line($"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}");
                                        });
-                table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbegrenzer"]);
                 table.Cell().Row(10).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbeg_ZT"]);
-                table.Cell().Row(11).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(11).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
-                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                 table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
-                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"],null,false,false,"Beschichtungsart Fangrahmen");
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"], null, false, false, "Beschichtungsart Fangrahmen");
-                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(17).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"],null, true, true);
             });
         });
@@ -667,23 +670,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -703,15 +706,15 @@ public class SpezifikationDocument : PdfBaseDocument
                 bool entranceC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
                 bool entranceD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
 
-                table.Cell().Row(1).Column(1).RowSpan(30).RotateLeft().AlignMiddle().AlignCenter().Text("Türen").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Fabrikat A": "Türen Fabrikat").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(30).RotateLeft().AlignMiddle().AlignCenter().Text("Türen").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Fabrikat A": "Türen Fabrikat").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuertyp"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuerbezeichnung"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_ZulassungTuere"], null, false, true);
                 });
-                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Abmessungen A": "Türen Abmessungen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Abmessungen A": "Türen Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB"],"mm", false, false, "Türbreite");
@@ -720,14 +723,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tueroeffnung"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel"],"Stk");
-                table.Cell().Row(4).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat B").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat B").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuertyp_B"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuerbezeichnung_B"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_ZulassungTuere_B"], null, false, true);
                 });
-                table.Cell().Row(5).RowSpan(2).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen B").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(5).RowSpan(2).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen B").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_B"], "mm", false, false, "Türbreite");
@@ -736,14 +739,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(6).Column(3).ColumnSpan(2).ShowIf(entranceB && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_B"]);
                 table.Cell().Row(6).Column(5).ColumnSpan(2).ShowIf(entranceB && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_B"], "Stk");
-                table.Cell().Row(7).Column(2).BorderBottom(0.1f).ShowIf(entranceC && variableDoorData).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat C").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).Column(2).BorderBottom(0.1f).ShowIf(entranceC && variableDoorData).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat C").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ColumnSpan(4).ShowIf(entranceC && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuertyp_C"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuerbezeichnung_C"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_ZulassungTuere_C"], null, false, true);
                 });
-                table.Cell().Row(8).RowSpan(2).Column(2).ShowIf(entranceC && variableDoorData).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen C").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(8).RowSpan(2).Column(2).ShowIf(entranceC && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen C").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(8).Column(3).ColumnSpan(4).ShowIf(entranceC && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_C"], "mm", false, false, "Türbreite");
@@ -753,14 +756,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(9).Column(3).ColumnSpan(2).ShowIf(entranceC && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_C"]);
                 table.Cell().Row(9).Column(5).ColumnSpan(2).ShowIf(entranceC && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_C"], "Stk");
 
-                table.Cell().Row(10).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat D").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(10).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat D").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(10).Column(3).ColumnSpan(4).ShowIf(entranceD && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuertyp_D"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuerbezeichnung_D"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_ZulassungTuere_D"], null, false, true);
                 });
-                table.Cell().Row(11).RowSpan(2).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen D").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(11).RowSpan(2).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen D").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(11).Column(3).ColumnSpan(4).ShowIf(entranceD && variableDoorData).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_D"], "mm", false, false, "Türbreite");
@@ -770,14 +773,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ShowIf(entranceD && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_D"]);
                 table.Cell().Row(12).Column(5).ColumnSpan(2).ShowIf(entranceD && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_D"], "Stk");
                 //Schachttüren
-                table.Cell().Row(13).Column(2).ColumnSpan(5).Background(secondaryColor).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachttüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
-                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachttüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
+                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tueroberflaeche"]);
                 table.Cell().Row(14).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RalSchachtuere"]);
-                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schwellenprofil"]);
                 table.Cell().Row(15).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSchwelleST"]);
-                table.Cell().Row(16).RowSpan(6).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachttür Optionen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(16).RowSpan(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachttür Optionen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(16).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_StSchuerzeV2A"]);
@@ -808,21 +811,21 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(21).Column(3).ColumnSpan(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_5"]);
                 //Kabinentüren
-                table.Cell().Row(22).Column(2).ColumnSpan(5).Background(secondaryColor).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Kabinentüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
+                table.Cell().Row(22).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
 
 
-                table.Cell().Row(23).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(23).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(23).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuersteuerung"]);
                 table.Cell().Row(23).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_ErgAnTuere"]);
                 table.Cell().Row(24).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lichtgitter"]);
                 table.Cell().Row(24).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuerverriegelung"]);
-                table.Cell().Row(25).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(25).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(25).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_OberflaecheKabinentuere"]);
                 table.Cell().Row(25).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RalKabinentuere"]);
-                table.Cell().Row(26).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(26).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(26).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_SchwellenprofilKabTuere"]);
                 table.Cell().Row(26).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSchwelleKT"]);
-                table.Cell().Row(27).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Kabinentür Optionen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(27).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentür Optionen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(27).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KtSchuerzeV2A"]);
@@ -841,7 +844,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KtSchwellenheizung"]);
                     row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_6"]);
                 });
-                table.Cell().Row(30).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentüren").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(30).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentüren").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(30).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesKabinentuere"], null, true, true);
             });
         });
@@ -853,23 +856,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -885,8 +888,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
 
-                table.Cell().Row(1).Column(1).RowSpan(15).RotateLeft().AlignMiddle().AlignCenter().Text("Steuerung").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(11).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(15).RotateLeft().AlignMiddle().AlignCenter().Text("Steuerung").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(11).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Steuerungstyp"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSteuerung"], null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
@@ -950,10 +953,10 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
                     row.RelativeItem();
                 });
-                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
                 table.Cell().Row(12).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_22"]);
-                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schaltschrank").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schaltschrank").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_LageSchaltschrank"]);
@@ -961,7 +964,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SchaltschrankRAL"]);
                 });
                 table.Cell().Row(14).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Schaltschrankgroesse"]);
-                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Steuerung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Steuerung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_SonstigesSteuerung"], null, true,true);
             });
         });
@@ -973,23 +976,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1004,8 +1007,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(5).RotateLeft().AlignMiddle().AlignCenter().Text("Antrieb").FontColor(secondaryColor).Bold();
-                table.Cell().Row(2).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(5).RotateLeft().AlignMiddle().AlignCenter().Text("Antrieb").FontColor(borderColor).Bold();
+                table.Cell().Row(2).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ParameterStringCell(ParameterDictionary["var_Aggregat"]);
                 table.Cell().Row(2).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_AnmerkungAntrieb"]);
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Getriebe"]);
@@ -1022,11 +1025,11 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_ElektrBremsenansteuerung"], true);
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Treibscheibegehaertet"], true);
                 });
-                table.Cell().Row(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Antrieb").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_SonstigesAntrieb"]);
-                    row.RelativeItem(2).BorderLeft(0.1f).BorderTop(0.1f).BorderColor(secondaryColor).PaddingHorizontal(5).Element(DriveDetailData);
+                    row.RelativeItem(2).BorderLeft(0.1f).BorderTop(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(DriveDetailData);
                 });
             });
         });
@@ -1038,23 +1041,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1069,8 +1072,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(14).RotateLeft().AlignMiddle().AlignCenter().Text("Notruf").FontColor(secondaryColor).Bold();
-                table.Cell().Row(2).Column(2).RowSpan(5).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Notruf").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(14).RotateLeft().AlignMiddle().AlignCenter().Text("Notruf").FontColor(borderColor).Bold();
+                table.Cell().Row(2).Column(2).RowSpan(5).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Notruf").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Notruftyp"]);
                 table.Cell().Row(2).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Steuerung"], true);
                 table.Cell().Row(2).Column(6).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_23"], true);
@@ -1083,9 +1086,9 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(5).Column(4).ParameterBoolCell(ParameterDictionary["var_Kabine"]);
                 table.Cell().Row(5).Column(5).ParameterBoolCell(ParameterDictionary["var_Kabdach"]);
                 table.Cell().Row(5).Column(6).ParameterBoolCell(ParameterDictionary["var_Schgrube"]);
-                table.Cell().Row(6).Column(3).ColumnSpan(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).Text("Notruftaster: Kabine / Dach / Schachtgrube");
+                table.Cell().Row(6).Column(3).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).Text("Notruftaster: Kabine / Dach / Schachtgrube");
                 table.Cell().Row(6).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_NotruftasterKabineDachSG"], null, true);
-                table.Cell().Row(7).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Notruf").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Notruf").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_NotrufSonstiges"], null, true, true);
             });
         });
@@ -1097,23 +1100,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1129,15 +1132,15 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
 
-                table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Kabinentableau").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Kabinentableau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Kabinentableau").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabKabinentableau"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_Info1"],null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabAufbau"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_Info2"]);
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabMaterial"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_RAL"]);
-                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabPunktmatrixTyp"]);
                 table.Cell().Row(4).Column(5).ParameterStringCell(ParameterDictionary["var_KabTabFarbe"]);
                 table.Cell().Row(4).Column(6).ParameterStringCell(ParameterDictionary["var_KabTabTFTBildschirmTyp"]);
@@ -1147,7 +1150,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabPfeilestat"],true);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_KabTabLCDAnzeigeTyp"]);
                 });
-                table.Cell().Row(6).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Gravuren Texte").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(6).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Gravuren Texte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(6).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabAufzugimBrandfall"]);
@@ -1160,16 +1163,16 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabAufzugdaten"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabSchluesselschalter"]);
                 });
-                table.Cell().Row(8).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Gegensprechanlage").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(8).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Gegensprechanlage").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(8).Column(3).ParameterBoolCell(ParameterDictionary["var_KabTabKabine"]);
                 table.Cell().Row(8).Column(4).ParameterBoolCell(ParameterDictionary["var_KabTabSteuerung"]);
                 table.Cell().Row(8).Column(5).ParameterBoolCell(ParameterDictionary["var_KabTabSchachtgr"]);
                 table.Cell().Row(8).Column(6).ParameterBoolCell(ParameterDictionary["var_KabTabmitNotrufkombiniert"]);
-                table.Cell().Row(9).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sprachcomputer").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(9).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sprachcomputer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_24"]);
                 table.Cell().Row(9).Column(5).ParameterBoolCell(ParameterDictionary["var_KabTabinLiefenth"]);
                 table.Cell().Row(9).Column(6).ParameterBoolCell(ParameterDictionary["var_KabTabkundenseitig"]);
-                table.Cell().Row(10).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(10).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(10).Column(3).ColumnSpan(3).ParameterBoolCell(ParameterDictionary["var_KabTabMultifunktionsanzeigeinklTKSueLSumNL"]);
                 table.Cell().Row(10).Column(6).ParameterBoolCell(ParameterDictionary["var_KabTabueberlastinklSummer"]);
                 table.Cell().Row(11).Column(3).ParameterBoolCell(ParameterDictionary["var_KabTabBeschriftfeldinclTKSNL"]);
@@ -1179,23 +1182,23 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(12).Column(3).ParameterBoolCell(ParameterDictionary["var_KabTabAnzeigeueberStandanzeige"]);
                 table.Cell().Row(12).Column(4).ParameterBoolCell(ParameterDictionary["var_KabTabAussBetrieb"]);
                 table.Cell().Row(12).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_25"]);
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Vandalenklasse").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Vandalenklasse").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ParameterBoolCell(ParameterDictionary["var_KabTabFTVandalenklasse0"]);
                 table.Cell().Row(13).Column(4).ParameterBoolCell(ParameterDictionary["var_KabTabFTVandalenklasse1"]);
                 table.Cell().Row(13).Column(5).ParameterBoolCell(ParameterDictionary["var_KabTabFTVandalenklasse2"]);
                 table.Cell().Row(13).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_26"]);
-                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tasterprogramm").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tasterprogramm").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ParameterStringCell(ParameterDictionary["var_KabTabTaster"]);
                 table.Cell().Row(14).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Taster_Info"]);
-                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tasterplatten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tasterplatten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ParameterStringCell(ParameterDictionary["var_KabTabTasterplatten"]);
                 table.Cell().Row(15).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabTasterplattenmaterial"]);
                 table.Cell().Row(15).Column(6).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabakustischeQuittung"],true);
-                table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Farbe LED-Quittung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Farbe LED-Quittung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(16).Column(3).ParameterStringCell(ParameterDictionary["var_ColLedFT"]);
                 table.Cell().Row(16).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Quittung_Info"]);
-                table.Cell().Row(16).Column(6).BorderTop(0.1f).BorderColor(secondaryColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Schutzrosette"],true);
-                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Funktionstaster").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(16).Column(6).BorderTop(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Schutzrosette"],true);
+                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Funktionstaster").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabTuerAuf"]);
@@ -1212,7 +1215,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_30"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_31"]);
                 });
-                table.Cell().Row(19).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schlüsselschalter").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(19).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schlüsselschalter").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabVorzugInnen"]);
@@ -1221,7 +1224,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabPZStd"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_32"]);
                 });
-                table.Cell().Row(20).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Code- Kartenleser").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(20).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Code- Kartenleser").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(20).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.AutoItem().ParameterBoolCell(ParameterDictionary["var_KabTabCodeKartenleser"],false,"");
@@ -1230,7 +1233,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabkundenseit"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabEinbauspaeter"]);
                 });
-                table.Cell().Row(21).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentableau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(21).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(21).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesKabTab"], null, true, true);
             });
         });
@@ -1242,23 +1245,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1273,14 +1276,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Außentableau").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Außentableau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Außentableau").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AussTabMaterial"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AT_RAL"], null, false, true);
-                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Befestigung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Befestigung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AussTabATBefestigung"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AT_Info"]);
-                table.Cell().Row(3).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(3).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AussTabPunktmatrixTyp"]);
                 table.Cell().Row(3).Column(5).ParameterStringCell(ParameterDictionary["var_AussTabFarbe"]);
                 table.Cell().Row(3).Column(6).ParameterStringCell(ParameterDictionary["var_AussTabTFTBildschirmTyp"]);
@@ -1290,7 +1293,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabPfeilestat"], true);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_AussTabLCDAnzeigeTyp"]);
                 });
-                table.Cell().Row(5).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Gravuren Texte").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(5).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Gravuren Texte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_AussTabAufzugimBrandfall"]);
@@ -1303,7 +1306,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_AussTabSchlschalt"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_33"]);
                 });
-                table.Cell().Row(7).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(7).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabAuBetrieb"]);
                 table.Cell().Row(7).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabEvakuierung"]);
                 table.Cell().Row(7).Column(5).ParameterBoolCell(ParameterDictionary["var_AussTabbesetzt"]);
@@ -1315,27 +1318,27 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(9).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabAnzeigeueberStandanzeige"]);
                 table.Cell().Row(9).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabBrandfall"]);
                 table.Cell().Row(9).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_35"]);
-                table.Cell().Row(10).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Richtungs- Weiterfahrtspfeil").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(10).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Richtungs- Weiterfahrtspfeil").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(10).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabohnePfeile"]);
                 table.Cell().Row(10).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabanalogTaster"]);
                 table.Cell().Row(10).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AussTabLeuchtfeldGroee"]);
-                table.Cell().Row(11).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Vandalenklasse").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(11).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Vandalenklasse").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(11).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabATVandalenklasse0"]);
                 table.Cell().Row(11).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabATVandalenklasse1"]);
                 table.Cell().Row(11).Column(5).ParameterBoolCell(ParameterDictionary["var_AussTabATVandalenklasse2"]);
                 table.Cell().Row(11).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_36"]);
-                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tasterprogramm").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tasterprogramm").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ParameterStringCell(ParameterDictionary["var_AussTabTaster"]);
                 table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Taster_Info_AT"]);
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Tasterplatten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tasterplatten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ParameterStringCell(ParameterDictionary["var_AussTabTasterplatten"]);
                 table.Cell().Row(13).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AussTabTasterplattenmaterial"]);
                 table.Cell().Row(13).Column(6).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabakustQuitt"], true);
-                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Farbe LED-Quittung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Farbe LED-Quittung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ParameterStringCell(ParameterDictionary["var_ColLedAT"]);
                 table.Cell().Row(14).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Quittung_Info_AT"]);
-                table.Cell().Row(14).Column(6).BorderTop(0.1f).BorderColor(secondaryColor).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_51"], true);
-                table.Cell().Row(15).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schlüsselschalter").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(14).Column(6).BorderTop(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_51"], true);
+                table.Cell().Row(15).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schlüsselschalter").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabAbschaltenHaltstelle"],true);
                 table.Cell().Row(15).Column(4).ParameterStringCell(ParameterDictionary["var_AbschaltenWo"]);
                 table.Cell().Row(15).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabVorzugauenHaltestellen"],true);
@@ -1352,7 +1355,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_40"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_41"]);
                 });
-                table.Cell().Row(18).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Code- Kartenleser").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(18).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Code- Kartenleser").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(18).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.AutoItem().ParameterBoolCell(ParameterDictionary["var_AussTabCodeKartenleser"], false, "");
@@ -1361,7 +1364,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_AussTabkundenseit"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_AussTabEinbauspaeter"]);
                 });
-                table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Montage Außentableau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Montage Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(19).Column(3).ParameterBoolCell(ParameterDictionary["var_Tuerzargenmontage"]);
                 table.Cell().Row(19).Column(4).ParameterBoolCell(ParameterDictionary["var_Mauerwerkmontage"]);
                 table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"]);
@@ -1370,7 +1373,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(20).Column(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_44"]);
                 table.Cell().Row(20).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_45"]);
                 table.Cell().Row(20).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_46"]);
-                table.Cell().Row(21).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Außentableau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(21).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(21).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesAT"], null, true, true);
             });
         });
@@ -1382,23 +1385,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1414,17 +1417,17 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
 
-                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Weiterfahrtsanzeigen").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Weiterfahrtsanzeigen").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Weiterfahrtsanzeigen").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Weiterfahrtsanzeigen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Material"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WFA_RAL"], null, false, true);
-                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Einbau").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Einbau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WfaAnbauortWFA"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WFA_Info"]);
-                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Befestigung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Befestigung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WfaWFABefestigung"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_STA_Info_WFA"]);
-                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Standanzeiger").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WfaPunktmatrixTyp"]);
                 table.Cell().Row(4).Column(5).ParameterStringCell(ParameterDictionary["var_WfaFarbe"]);
                 table.Cell().Row(4).Column(6).ParameterStringCell(ParameterDictionary["var_WfaTFTBildschirmTyp"]);
@@ -1434,7 +1437,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_WfaPfeilestat"], true);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_WfaLCDAnzeigeTyp"]);
                 });
-                table.Cell().Row(6).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(6).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Leuchtanzeige").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(6).Column(3).ParameterBoolCell(ParameterDictionary["var_WfaAuBetrieb"]);
                 table.Cell().Row(6).Column(4).ParameterBoolCell(ParameterDictionary["var_WfaEvakuierung"]);
                 table.Cell().Row(6).Column(5).ParameterBoolCell(ParameterDictionary["var_Wfabesetzt"]);
@@ -1446,17 +1449,17 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(8).Column(3).ParameterBoolCell(ParameterDictionary["var_WfaAnzeigeueberStandanzeige"]);
                 table.Cell().Row(8).Column(4).ParameterBoolCell(ParameterDictionary["var_WfaBrandfall"]);
                 table.Cell().Row(8).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_48"]);
-                table.Cell().Row(9).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Richtungs- Weiterfahrtspfeil").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(9).Column(3).Border(0.1f).BorderColor(secondaryColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_WfaOhnePfeile"], true);
+                table.Cell().Row(9).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Richtungs- Weiterfahrtspfeil").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(9).Column(3).Border(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_WfaOhnePfeile"], true);
                 table.Cell().Row(9).Column(4).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_WfaAnalogTaster"], true);
                 table.Cell().Row(9).Column(5).ParameterStringCell(ParameterDictionary["var_WfaLeuchtfeldGroee"]);
                 table.Cell().Row(9).Column(6).ParameterStringCell(ParameterDictionary["var_Quittung_Info_WFA"]);
-                table.Cell().Row(10).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Gong").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
-                table.Cell().Row(10).Column(3).Border(0.1f).BorderColor(secondaryColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Wfa1Klang"], true);
-                table.Cell().Row(10).Column(4).Border(0.1f).BorderColor(secondaryColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Wfa2Klang"], true);
+                table.Cell().Row(10).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Gong").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(10).Column(3).Border(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Wfa1Klang"], true);
+                table.Cell().Row(10).Column(4).Border(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Wfa2Klang"], true);
                 table.Cell().Row(10).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WfaGongposition"]);
                 table.Cell().Row(11).Column(3).ColumnSpan(4).PaddingLeft(5).Text("Gong ist bei Einzelaufzügen nicht erforderlich wenn das Türgeräusch ausreichend laut ist");
-                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Aufzugsidentifikation").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Aufzugsidentifikation").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_WfaohneIdent"]);
@@ -1465,7 +1468,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_WfaPVCEinl"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_49"]);
                 });
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges WFA / STA").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges WFA / STA").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesWFA"], null, true, true);
             });
         });
@@ -1477,23 +1480,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1508,8 +1511,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Wartung").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Leistungen angeboten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Wartung").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Leistungen angeboten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Funktionswartungjaehrl"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Wartung_Info_1"], null, true, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_WartungInspektionnAMEVjaehrlich"]);
@@ -1520,14 +1523,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(4).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Wartung_Info_4"], null, true);
                 table.Cell().Row(5).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Notrufaufschaltung"]);
                 table.Cell().Row(5).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_ANNotbefreiungdurch"]);
-                table.Cell().Row(6).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Wartung / Notruf").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(6).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Wartung / Notruf").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(6).Column(3).ParameterBoolCell(ParameterDictionary["var_WartungenthMonate"]);
                 table.Cell().Row(6).Column(4).ParameterStringCell(ParameterDictionary["var_WA_AnzMonate"], "Monate", true);
                 table.Cell().Row(7).Column(3).ParameterBoolCell(ParameterDictionary["var_NotrufenthaltMonate"]);
                 table.Cell().Row(7).Column(4).ParameterStringCell(ParameterDictionary["var_NO_AnzMonate"], "Monate", true);
                 table.Cell().Row(7).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WANotbefreiungdurch"]);
                 table.Cell().Row(8).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesWart"]);
-                table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("VOB-Abnahme / vereinbarte Gewähleistungsdauer").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("VOB-Abnahme / vereinbarte Gewähleistungsdauer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(4).Row(row => 
                 { 
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_VOB2"]);
@@ -1545,23 +1548,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1576,17 +1579,17 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Montage / TÜV").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Potentialausgleich").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Montage / TÜV").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Potentialausgleich").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_AnschludurchBE"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Anschlubauseits"],true);
-                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachttürmontage").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachttürmontage").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_VerfugenzumBaukoerper"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_56"]);
-                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Montagepersonal").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Montagepersonal").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_eigenesPersonalerforderlich"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Subunternehmererlaubt"]);
-                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Montage / TÜV").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Montage / TÜV").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesMoTUEV"], null, true, true);
             });
         });
@@ -1598,23 +1601,23 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
-                canvas.DrawLine(100, 0, 100, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
+                canvas.DrawLine(100, 0, 100, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1629,15 +1632,15 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("RWA").FontColor(secondaryColor).Bold();
-                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Schachtentrauchung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("RWA").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtentrauchung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ParameterStringCell(ParameterDictionary["var_Schachtentrauchung"]);
                 table.Cell().Row(1).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_RwaBezeichnung"], null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_LieferungMontageBE"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_LieferungMontagebauseits"]);
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_potfreierKontakt"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_50"]);
-                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(secondaryColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Rauch- und Wärmeabzugsanlage").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+                table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Rauch- und Wärmeabzugsanlage").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesRWA"], null, true,true);
             });
         });
@@ -1649,22 +1652,22 @@ public class SpezifikationDocument : PdfBaseDocument
         {
             layers.Layer().Canvas((canvas, size) =>
             {
-                using var paintSecondaryColor = new SKPaint
+                using var paintBorderColor = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 1.5f,
                     IsStroke = true,
                 };
-                using var paintSecondaryColorSmall = new SKPaint
+                using var paintBorderColorSmall = new SKPaint
                 {
-                    Color = SKColor.Parse(secondaryColor),
+                    Color = SKColor.Parse(borderColor),
                     IsAntialias = true,
                     StrokeWidth = 0.5f,
                     IsStroke = true,
                 };
-                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintSecondaryColor);
-                canvas.DrawLine(15, 0, 15, size.Height, paintSecondaryColorSmall);
+                canvas.DrawRoundRect(0, 0, size.Width, size.Height, 4, 4, paintBorderColor);
+                canvas.DrawLine(15, 0, 15, size.Height, paintBorderColorSmall);
             });
 
             layers.PrimaryLayer().Table(table =>
@@ -1679,7 +1682,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Sonstiges").FontColor(secondaryColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Sonstiges").FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(2).ColumnSpan(5).MinHeight(50).Padding(5).Text(ParameterDictionary["var_sonstigesAnlage"].Value);
             });
         });
@@ -1697,10 +1700,10 @@ public class SpezifikationDocument : PdfBaseDocument
                     IsAntialias = true,
                 };
                 using var path = new SKPath();
-                path.MoveTo(0, 12);
-                path.LineTo(size.Width, 12);
-                path.ArcTo(size.Width, 0, 0, 0, 4);
-                path.ArcTo(0, 0, 0, 12, 4);
+                path.MoveTo(0.75f, 11.5f);
+                path.LineTo(size.Width - 0.75f, 11.5f);
+                path.ArcTo(size.Width - 0.75f, 0.75f, 0.75f, 0, 3.25f);
+                path.ArcTo(0.75f, 0.75f, 0.75f, 11.5f, 3.25f);
                 path.Close();
                 canvas.DrawPath(path, paintSecondaryColor);
             });
@@ -1736,29 +1739,29 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(2).Column(1).PaddingLeft(10).ParameterBoolCell(ParameterDictionary["var_ZUGANSSTELLEN_A"], true, "Zugang A");
                 foreach (var haltestelle in ParameterDictionary.Keys.Where(x => x.StartsWith("var_ZugangA")))
                 {
-                    table.Cell().Border(0.1f).BorderColor(secondaryColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
+                    table.Cell().Border(0.1f).BorderColor(borderColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
                 }
                 table.Cell().Row(3).Column(1).PaddingLeft(10).ParameterBoolCell(ParameterDictionary["var_ZUGANSSTELLEN_B"], true, "Zugang B");
                 foreach (var haltestelle in ParameterDictionary.Keys.Where(x => x.StartsWith("var_ZugangB")))
                 {
-                    table.Cell().Border(0.1f).BorderColor(secondaryColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
+                    table.Cell().Border(0.1f).BorderColor(borderColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
                 }
                 table.Cell().Row(4).Column(1).PaddingLeft(10).ParameterBoolCell(ParameterDictionary["var_ZUGANSSTELLEN_C"], true, "Zugang C");
                 foreach (var haltestelle in ParameterDictionary.Keys.Where(x => x.StartsWith("var_ZugangC")))
                 {
-                    table.Cell().Border(0.1f).BorderColor(secondaryColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
+                    table.Cell().Border(0.1f).BorderColor(borderColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
                 }
                 table.Cell().Row(5).Column(1).PaddingLeft(10).ParameterBoolCell(ParameterDictionary["var_ZUGANSSTELLEN_D"], true, "Zugang D");
                 foreach (var haltestelle in ParameterDictionary.Keys.Where(x => x.StartsWith("var_ZugangD")))
                 {
-                    table.Cell().Border(0.1f).BorderColor(secondaryColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
+                    table.Cell().Border(0.1f).BorderColor(borderColor).AlignCenter().Text(ParameterDictionary[haltestelle].Value);
                 }
                 table.Cell().Row(6).Column(1).PaddingLeft(15).Text("Etagenabstände");
                 foreach (var etagenHoehe in ParameterDictionary.Keys.Where(x => x.StartsWith("var_Etagenhoehe")))
                 {
                     if (string.IsNullOrWhiteSpace(ParameterDictionary[etagenHoehe].Value) || ParameterDictionary[etagenHoehe].Value == "0")
                         break;
-                    table.Cell().Border(0.1f).BorderColor(secondaryColor).AlignCenter().Text(ParameterDictionary[etagenHoehe].Value);
+                    table.Cell().Border(0.1f).BorderColor(borderColor).AlignCenter().Text(ParameterDictionary[etagenHoehe].Value);
                 }
 
                 var haupthalteStelle = ParameterDictionary["var_Haupthaltestelle"].Value;
@@ -1775,7 +1778,7 @@ public class SpezifikationDocument : PdfBaseDocument
                         _ => 2,
                     };
                     uint col = Convert.ToUInt32(haupthalteStelle[4..5]) + 2;
-                    table.Cell().Row(row).Column(col).Padding(0.5f).Border(1).BorderColor(primaryColor);
+                    table.Cell().Row(row).Column(col).Padding(0.5f).Border(1).BorderColor(borderColor);
                 }
             });
         });
@@ -1792,8 +1795,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 columns.ConstantColumn(15);
             });
 
-            table.Cell().Row(1).Column(1).ColumnSpan(3).Text("Bausatz Parameter").FontSize(fontSizeS).FontColor(secondaryColor).Bold();
-            table.Cell().Row(2).Column(1).ColumnSpan(3).Text("Basisdaten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(1).Column(1).ColumnSpan(3).Text("Bausatz Parameter").FontSize(fontSizeS).FontColor(borderColor).Bold();
+            table.Cell().Row(2).Column(1).ColumnSpan(3).Text("Basisdaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(3).Column(1).Text("Stichmaß:").FontSize(fontSizeXXS);
             table.Cell().Row(3).Column(2).AlignRight().Text(ParameterDictionary["var_Stichmass"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(3).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
@@ -1837,7 +1840,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(17).Column(1).Text("Gegengewicht Endstück:").FontSize(fontSizeXXS);
             table.Cell().Row(17).Column(2).AlignRight().Text(ParameterDictionary["var_HilfsschienenlaengeEndstueck"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(17).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
-            table.Cell().Row(18).Column(1).ColumnSpan(3).Text("Seildaten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(18).Column(1).ColumnSpan(3).Text("Seildaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(19).Column(1).Text("Treibscheibendurchmesser:").FontSize(fontSizeXXS);
             table.Cell().Row(19).Column(2).AlignRight().Text(ParameterDictionary["var_Treibscheibendurchmesser"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(19).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
@@ -1850,7 +1853,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(22).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(23).Column(1).Text("Sicherheitsfaktor Tragseil:").FontSize(fontSizeXXS);
             table.Cell().Row(23).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_RopeSafety"].Value).FontSize(fontSizeXXS);
-            table.Cell().Row(24).Column(1).ColumnSpan(3).Text("Belastungen / Kräfte").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(24).Column(1).ColumnSpan(3).Text("Belastungen / Kräfte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(25).Column(1).Text("Belastung unter FK Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(25).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(25).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
@@ -1875,7 +1878,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(32).Column(1).Text("Kraft Fy auf GGW-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(2).AlignRight().Text(ParameterDictionary["var_FyFA_GGW"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(33).Column(1).ColumnSpan(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(33).Column(1).ColumnSpan(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(34).Column(1).Text("Nennstrom Netz (aufgerundet):").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
@@ -1919,7 +1922,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 columns.RelativeColumn(1);
             });
 
-            table.Cell().Row(1).Column(1).ColumnSpan(2).Text("Daten ZAlift Auslegung").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(1).Column(1).ColumnSpan(2).Text("Daten ZAlift Auslegung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(2).Column(1).Text("Antrieb:").FontSize(fontSizeXXS);
             table.Cell().Row(2).Column(2).AlignRight().Text(ParameterDictionary["var_Antrieb"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(3).Column(1).Text("Aufhängung:").FontSize(fontSizeXXS);
@@ -1940,7 +1943,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(10).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(11).Column(1).Text("Gebertyp des Motors:").FontSize(fontSizeXXS);
             table.Cell().Row(11).Column(2).AlignRight().Text(ParameterDictionary["var_MotorGeber"].Value).FontSize(fontSizeXXS);
-            table.Cell().Row(12).Column(1).ColumnSpan(2).PaddingTop(5).Text("UCM - Daten").FontSize(fontSizeXS).FontColor(secondaryColor).Bold();
+            table.Cell().Row(12).Column(1).ColumnSpan(2).PaddingTop(5).Text("UCM - Daten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(13).Column(1).Text("Erkennungsweg in mm:").FontSize(fontSizeXXS);
             table.Cell().Row(13).Column(2).AlignRight().Text($"{ParameterDictionary["var_Erkennungsweg"].Value} mm").FontSize(fontSizeXXS);
             table.Cell().Row(14).Column(1).Text("Totzeit gesamt:").FontSize(fontSizeXXS);

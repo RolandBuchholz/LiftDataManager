@@ -12,6 +12,7 @@ public interface ISettingService
     public string? LogLevel { get; set; }
     public bool AutoSave { get; set; }
     public string? AutoSavePeriod { get; set; }
+    public bool TonerSaveMode { get; set; }
 
     Task InitializeAsync();
     Task SetSettingsAsync(string key, object setting);

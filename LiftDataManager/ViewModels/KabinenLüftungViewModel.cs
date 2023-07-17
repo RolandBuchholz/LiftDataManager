@@ -6,14 +6,17 @@ namespace LiftDataManager.ViewModels;
 public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly ISettingService _settingService;
     private readonly IPdfService _pdfService;
 
     public CarVentilationResult CarVentilationResult = new();
 
-    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService, IPdfService pdfService) :
+    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+                                   ICalculationsModule calculationsModuleService, IPdfService pdfService, ISettingService settingsSelectorService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _calculationsModuleService = calculationsModuleService;
+        _settingService = settingsSelectorService;
         _pdfService = pdfService;
 
     }
@@ -32,7 +35,7 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode);
         }
     }
 
