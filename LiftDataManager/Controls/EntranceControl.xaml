@@ -10,6 +10,9 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <helpers:BoolToHighlightBrushConverter x:Key="BoolToHighlightBrushConverter" />
+    </UserControl.Resources>
     <Expander
         x:Name="Stockwerksbezeichnung"
         IsExpanded="True"
@@ -24,6 +27,10 @@
                 CornerRadius="5"
                 Offset="5" />
             <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <TextCommandBarFlyout
+                x:Name="EntranceControlFlyout"
+                Opening="TextCommandBarFlyout_Opening"
+                Placement="Bottom" />
         </Expander.Resources>
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
@@ -50,7 +57,7 @@
                     Height="45"
                     Margin="10,-2.5,0,0"
                     VerticalAlignment="Top"
-                    Command="{x:Bind ResetHauptzugangCommand}"
+                    Click="Delete_Hauptzugang_Click"
                     Icon="Delete"
                     IsEnabled="True">
                     <ToolTipService.ToolTip>
@@ -297,687 +304,370 @@
                 x:Name="txtBox_A0"
                 Grid.Row="1"
                 Grid.Column="1"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA0'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA0'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A0"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA0'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A1"
                 Grid.Row="1"
                 Grid.Column="2"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA1'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA1'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A1"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA1'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A2"
                 Grid.Row="1"
                 Grid.Column="3"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA2'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA2'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A2"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA2'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A3"
                 Grid.Row="1"
                 Grid.Column="4"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA3'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA3'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A3"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA3'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A4"
                 Grid.Row="1"
                 Grid.Column="5"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA4'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA4'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A4"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA4'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A5"
                 Grid.Row="1"
                 Grid.Column="6"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA5'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA5'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A5"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA5'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A6"
                 Grid.Row="1"
                 Grid.Column="7"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA6'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA6'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A6"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA6'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A7"
                 Grid.Row="1"
                 Grid.Column="8"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA7'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA7'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A7"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA7'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A8"
                 Grid.Row="1"
                 Grid.Column="9"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA8'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA8'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A8"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA8'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_A9"
                 Grid.Row="1"
                 Grid.Column="10"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangA9'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA9'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_A9"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangA9'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B0"
                 Grid.Row="2"
                 Grid.Column="1"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB0'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB0'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B0"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB0'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B1"
                 Grid.Row="2"
                 Grid.Column="2"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB1'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB1'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B1"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB1'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B2"
                 Grid.Row="2"
                 Grid.Column="3"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB2'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB2'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B2"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB2'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B3"
                 Grid.Row="2"
                 Grid.Column="4"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB3'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB3'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B3"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB3'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B4"
                 Grid.Row="2"
                 Grid.Column="5"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB4'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB4'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B4"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB4'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B5"
                 Grid.Row="2"
                 Grid.Column="6"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB5'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB5'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B5"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB5'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B6"
                 Grid.Row="2"
                 Grid.Column="7"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB6'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB6'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B6"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB6'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B7"
                 Grid.Row="2"
                 Grid.Column="8"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB7'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB7'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B7"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB7'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B8"
                 Grid.Row="2"
                 Grid.Column="9"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB8'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB8'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B8"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB8'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_B9"
                 Grid.Row="2"
                 Grid.Column="10"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangB9'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangB, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangB9'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_B9"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangB9'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C0"
                 Grid.Row="3"
                 Grid.Column="1"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC0'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC0'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C0"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC0'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C1"
                 Grid.Row="3"
                 Grid.Column="2"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC1'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC1'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C1"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC1'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C2"
                 Grid.Row="3"
                 Grid.Column="3"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC2'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC2'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C2"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC2'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C3"
                 Grid.Row="3"
                 Grid.Column="4"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC3'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC3'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C3"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC3'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C4"
                 Grid.Row="3"
                 Grid.Column="5"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC4'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC4'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C4"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC4'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C5"
                 Grid.Row="3"
                 Grid.Column="6"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC5'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC5'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C5"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC5'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C6"
                 Grid.Row="3"
                 Grid.Column="7"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC6'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC6'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C6"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC6'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C7"
                 Grid.Row="3"
                 Grid.Column="8"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC7'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC7'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C7"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC7'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C8"
                 Grid.Row="3"
                 Grid.Column="9"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC8'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC8'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C8"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC8'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_C9"
                 Grid.Row="3"
                 Grid.Column="10"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangC9'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangC, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangC9'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_C9"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangC9'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D0"
                 Grid.Row="4"
                 Grid.Column="1"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD0'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD0'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D0"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD0'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D1"
                 Grid.Row="4"
                 Grid.Column="2"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD1'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD1'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D1"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD1'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D2"
                 Grid.Row="4"
                 Grid.Column="3"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD2'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD2'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D2"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD2'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D3"
                 Grid.Row="4"
                 Grid.Column="4"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD3'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD3'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D3"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD3'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D4"
                 Grid.Row="4"
                 Grid.Column="5"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD4'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD4'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D4"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD4'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D5"
                 Grid.Row="4"
                 Grid.Column="6"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD5'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD5'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D5"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD5'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D6"
                 Grid.Row="4"
                 Grid.Column="7"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD6'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD6'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D6"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD6'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D7"
                 Grid.Row="4"
                 Grid.Column="8"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD7'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD7'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D7"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD7'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D8"
                 Grid.Row="4"
                 Grid.Column="9"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD8'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD8'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D8"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD8'].Value, Mode=TwoWay}" />
             <TextBox
                 x:Name="txtBox_D9"
                 Grid.Row="4"
                 Grid.Column="10"
-                ContextMenuOpening="Textbox_ContextMenuOpening"
+                Background="{x:Bind ItemSource['var_ZugangD9'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangD, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangD9'].Value, Mode=TwoWay}">
-                <FlyoutBase.AttachedFlyout>
-                    <MenuFlyout Placement="Right">
-                        <MenuFlyoutItem
-                            Command="{x:Bind SetHauptzugangCommand}"
-                            CommandParameter="ZG_D9"
-                            Text="Setze Haupthaltestelle" />
-                    </MenuFlyout>
-                </FlyoutBase.AttachedFlyout>
-            </TextBox>
+                Text="{x:Bind ItemSource['var_ZugangD9'].Value, Mode=TwoWay}" />
             <TextBox
+                x:Name="txtBox_Etagenhoehe0"
                 Grid.Row="5"
                 Grid.Column="1"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe0'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe0'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -987,10 +677,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe1"
                 Grid.Row="5"
                 Grid.Column="2"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe1'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe1'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1000,10 +693,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe2"
                 Grid.Row="5"
                 Grid.Column="3"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe2'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe2'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1013,10 +709,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe3"
                 Grid.Row="5"
                 Grid.Column="4"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe3'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe3'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1026,10 +725,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe4"
                 Grid.Row="5"
                 Grid.Column="5"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe4'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe4'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1039,10 +741,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe5"
                 Grid.Row="5"
                 Grid.Column="6"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe5'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe5'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1052,10 +757,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe6"
                 Grid.Row="5"
                 Grid.Column="7"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe6'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe6'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1065,10 +773,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe7"
                 Grid.Row="5"
                 Grid.Column="8"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe7'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe7'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>
@@ -1078,10 +789,13 @@
                 </ToolTipService.ToolTip>
             </TextBox>
             <TextBox
+                x:Name="txtBox_Etagenhoehe8"
                 Grid.Row="5"
                 Grid.Column="9"
                 ui:TextBoxExtensions.ValidationMode="Dynamic"
                 ui:TextBoxExtensions.ValidationType="Decimal"
+                Background="{x:Bind ItemSource['var_Etagenhoehe8'].IsKey, Converter={StaticResource BoolToHighlightBrushConverter}, ConverterParameter=EC, Mode=OneWay}"
+                ContextFlyout="{StaticResource EntranceControlFlyout}"
                 Style="{StaticResource TableTextboxStyle}"
                 Text="{x:Bind ItemSource['var_Etagenhoehe8'].Value, Mode=TwoWay}">
                 <ToolTipService.ToolTip>

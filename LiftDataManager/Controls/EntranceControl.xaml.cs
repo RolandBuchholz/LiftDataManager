@@ -1,20 +1,21 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.WinUI.UI;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 
 public sealed partial class EntranceControl : UserControl
 {
-    public string? NewMainEntrance
-    {
-        get; private set;
-    }
+    private string? _selectedEntrance;
 
     public EntranceControl()
     {
         InitializeComponent();
+        Loaded += EntranceControl_Loaded;
+    }
+
+    private void EntranceControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        SetBorderHauptZugang();
     }
 
     public ObservableDictionary<string, Parameter> ItemSource
@@ -26,52 +27,76 @@ public sealed partial class EntranceControl : UserControl
     public static readonly DependencyProperty ItemSourceProperty =
         DependencyProperty.Register("ItemSource", typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
 
-    public ICommand SetHauptzugangCommand
-    {
-        get => (ICommand)GetValue(SetHauptzugangCommandProperty);
-        set => SetValue(SetHauptzugangCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty SetHauptzugangCommandProperty =
-        DependencyProperty.Register("SetHauptzugangCommand", typeof(ICommand), typeof(CommandBar), new PropertyMetadata(null));
-
-    public ICommand ResetHauptzugangCommand
-    {
-        get => (ICommand)GetValue(ResetHauptzugangCommandProperty);
-        set => SetValue(ResetHauptzugangCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty ResetHauptzugangCommandProperty =
-        DependencyProperty.Register("ResetHauptzugangCommand", typeof(ICommand), typeof(CommandBar), new PropertyMetadata(null));
-
     public string DisplayNameHauptzugang
     {
-        get
-        {
-            SetBorderHauptZugang();
-            return (string)GetValue(DisplayNameHauptzugangProperty);
-        }
+        get => (string)GetValue(DisplayNameHauptzugangProperty);
         set => SetValue(DisplayNameHauptzugangProperty, value);
     }
 
     public static readonly DependencyProperty DisplayNameHauptzugangProperty =
         DependencyProperty.Register("DisplayNameHauptzugang", typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
 
-    private void Textbox_ContextMenuOpening(object? sender, ContextMenuEventArgs e)
+    private void TextCommandBarFlyout_Opening(object sender, object e)
     {
-        FrameworkElement? senderElement = sender as FrameworkElement;
-        FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
-        flyoutBase.ShowAt(senderElement);
+        var entranceFlyout = sender as TextCommandBarFlyout;
 
-        e.Handled = true;
+        if (entranceFlyout is not null && entranceFlyout.Target is TextBox)
+        {
+            _selectedEntrance = entranceFlyout.Target.Name;
+            var highLightParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.Highlight), Label = "Highlihght Parameter" };
+            highLightParameter.Click += HighLightParameter_Click;
+            var highLightParameterToolTip = new ToolTip { Content = "hinzufügen/entfernen Parameterhighlighting" };
+            ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
+            if (!_selectedEntrance.StartsWith("txtBox_Etagenhoehe"))
+            {
+                var setMainEntrance = new AppBarButton() { Icon = new SymbolIcon(Symbol.NewWindow), Label = "Set MainEntrance" };
+                var separator = new AppBarSeparator();
+                setMainEntrance.Click += SetMainEntrance_Click;
+                var setMainEntranceToolTip = new ToolTip { Content = "Hauptzugansstelle setzen" };
+                ToolTipService.SetToolTip(setMainEntrance, setMainEntranceToolTip);
+                entranceFlyout.PrimaryCommands.Add(setMainEntrance);
+                entranceFlyout.PrimaryCommands.Add(separator);
+            }
+            entranceFlyout.PrimaryCommands.Add(highLightParameter);
+        }
+    }
+
+    private void SetMainEntrance_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(_selectedEntrance))
+            return;
+        if (_selectedEntrance.StartsWith("txtBox_"))
+        {
+            ItemSource["var_Haupthaltestelle"].Value = _selectedEntrance.Replace("txtBox_", "ZG_");
+        }
+        SetBorderHauptZugang();
+    }
+
+    private void Delete_Hauptzugang_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemSource is null)
+            return;
+        ItemSource["var_Haupthaltestelle"].Value = "NV";
+        DisplayNameHauptzugang = "Kein Hauptzugang gewählt";
+        SetBorderHauptZugang();
+    }
+
+    private void HighLightParameter_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemSource is null)
+            return;
+        var entrance = _selectedEntrance;
+        if (entrance is not null && entrance.StartsWith("txtBox_"))
+        {
+            var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
+            ItemSource[entranceName].IsKey = !ItemSource[entranceName].IsKey; 
+        }
     }
 
     private void SetBorderHauptZugang()
     {
-        if (ItemSource["var_Haupthaltestelle"].Value is null)
+        if (ItemSource is null || string.IsNullOrWhiteSpace(ItemSource["var_Haupthaltestelle"].Value))
             return;
-
-        NewMainEntrance = ItemSource["var_Haupthaltestelle"].Value;
 
         var allEntranceBoxes = grd_Entrance.FindChildren().Where(f => f.Name.StartsWith("txtBox_"));
 
@@ -83,13 +108,27 @@ public sealed partial class EntranceControl : UserControl
             }
         }
 
-        if (NewMainEntrance != "NV")
+        if (!string.IsNullOrWhiteSpace(ItemSource["var_Haupthaltestelle"].Value) || ItemSource["var_Haupthaltestelle"].Value != "NV")
         {
-            var nameHaupthaltestelle = !string.IsNullOrWhiteSpace(ItemSource["var_Haupthaltestelle"].Value) ? ItemSource["var_Haupthaltestelle"].Value!.Replace("ZG_", "") : "Kein Hauptzugang gewählt";
-            var borderBox = (TextBox)FindName("txtBox_" + nameHaupthaltestelle);
-            borderBox.BorderThickness = new Thickness(2);
-            var accentColorFound = Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out object? accentColor);
-            if (accentColorFound)
+            if (ItemSource["var_Haupthaltestelle"].Value!.StartsWith("ZG_"))
+            {
+                DisplayNameHauptzugang = ItemSource["var_Haupthaltestelle"].Value!.Replace("ZG_", "");
+            }
+            else
+            {
+                DisplayNameHauptzugang = "Kein Hauptzugang gewählt";
+            }
+        }
+        else
+        {
+            DisplayNameHauptzugang = "Kein Hauptzugang gewählt";
+        }
+
+        if (!string.IsNullOrWhiteSpace(DisplayNameHauptzugang) && DisplayNameHauptzugang != "Kein Hauptzugang gewählt")
+        {
+            var borderBox = (TextBox)FindName("txtBox_" + DisplayNameHauptzugang);
+            borderBox.BorderThickness = new Thickness(3);
+            if (Application.Current.Resources.ThemeDictionaries.TryGetValue("SystemAccentColor", out object? accentColor))
             {
                 if (accentColor is not null)
                 {

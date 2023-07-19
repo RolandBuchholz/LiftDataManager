@@ -44,10 +44,7 @@
                 <SpeziControls:EntranceControl
                     Grid.Row="0"
                     Margin="0,0,0,10"
-                    DisplayNameHauptzugang="{x:Bind ViewModel.DisplayNameHauptzugang, Mode=TwoWay}"
-                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    ResetHauptzugangCommand="{x:Bind ViewModel.ResetHauptzugangCommand}"
-                    SetHauptzugangCommand="{x:Bind ViewModel.SetHauptzugangCommand}" />
+                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Column="0"
                     Margin="0,6,50,0"

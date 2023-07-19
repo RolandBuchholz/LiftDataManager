@@ -30,6 +30,7 @@ public class SpezifikationDocument : PdfBaseDocument
             {
                 row.ConstantItem(70).ParameterDateCell(ParameterDictionary["var_ErstelltAm"], false, true, null);
                 row.ConstantItem(70).ParameterStringCell(ParameterDictionary["var_ErstelltVon"], null, false, true, null);
+                row.ConstantItem(70).ParameterDateCell(ParameterDictionary["var_StandVom"], false, true, null);
             });
             column.Item().Element(AddressData);
             column.Item().Element(GenerallyData);
