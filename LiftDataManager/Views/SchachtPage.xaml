@@ -133,29 +133,25 @@
                                     VerticalAlignment="Center"
                                     FontSize="16">
                                     Schachtabmessungen<LineBreak />
-                                    (innen im Lichten) [mm]</TextBlock>
+                                    (innen im Lichten)</TextBlock>
                                 <Grid
                                     x:Name="SchachtDaten2"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Schachtbreite [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SB'], Mode=TwoWay}"
                                         PlaceholderText="SB"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SB'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Schachttiefe [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ST'], Mode=TwoWay}"
                                         PlaceholderText="ST"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ST'].Value, Mode=TwoWay}" />
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
                                 </Grid>
                                 <Grid
                                     x:Name="SchachtDaten3"
@@ -163,22 +159,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Schachtgrubentiefe [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SG'], Mode=TwoWay}"
                                         PlaceholderText="SG"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SG'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Schachtkopfhöhe [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SK'], Mode=TwoWay}"
                                         PlaceholderText="SK"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SK'].Value, Mode=TwoWay}" />
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -205,11 +197,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Farbe"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_GeruestFarbe'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_GeruestFarbe'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_GeruestFeldfuellung'], Mode=TwoWay}"

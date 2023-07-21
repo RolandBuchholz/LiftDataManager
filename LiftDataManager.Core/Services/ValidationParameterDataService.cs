@@ -1070,7 +1070,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
             || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
-            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift FST-3")
+            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S2 (FST-3)")
         {
             ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistanceSIL3);
             ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers?.DeadTimeSIL3);

@@ -80,10 +80,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Funktionswartung jährlich"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Funktionswartungjaehrl'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_1'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_1'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                                 <Grid
                                     x:Name="Wartung1"
@@ -97,10 +98,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Wartung / Inspektion nach AMEV jährlich "
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartungInspektionnAMEVjaehrlich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_2'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_2'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                                 <Grid
                                     x:Name="Wartung2"
@@ -114,10 +116,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Vollwartung jährlich"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Vollwartungjaehrlich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_3'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_3'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                                 <Grid
                                     x:Name="Wartung3"
@@ -131,10 +134,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Wart. / Insp. / Install. / Verb. N. AMEV jährl."
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartInspInstVerbesserNAMEVjaehrl'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_4'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wartung_Info_4'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                                 <Grid
                                     x:Name="Wartung4"
@@ -155,10 +159,11 @@
                                         VerticalAlignment="Center"
                                         FontSize="14"
                                         Text="Notbefreiung durch:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ANNotbefreiungdurch'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ANNotbefreiungdurch'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -190,17 +195,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Wartung enthalten"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartungenthMonate'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <StackPanel
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,5,5,0"
-                                        Orientation="Horizontal">
-                                        <TextBox Text="{x:Bind ViewModel.ParamterDictionary['var_WA_AnzMonate'].Value, Mode=TwoWay}" />
-                                        <TextBlock
-                                            Margin="10,0,0,0"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="Monate" />
-                                    </StackPanel>
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WA_AnzMonate'], Mode=TwoWay}"
+                                        Unit="Monate" />
                                 </Grid>
                                 <Grid
                                     Name="Wartung6"
@@ -214,17 +213,12 @@
                                         VerticalAlignment="Bottom"
                                         Content="Notruf enthalten"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotrufenthaltMonate'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <StackPanel
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,5,5,0"
-                                        Orientation="Horizontal">
-                                        <TextBox Text="{x:Bind ViewModel.ParamterDictionary['var_NO_AnzMonate'].Value, Mode=TwoWay}" />
-                                        <TextBlock
-                                            Margin="10,0,0,0"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="Monate" />
-                                    </StackPanel>
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NO_AnzMonate'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="Monate" />
                                     <TextBlock
                                         Grid.Column="2"
                                         Margin="0,0,10,0"
@@ -232,10 +226,11 @@
                                         VerticalAlignment="Center"
                                         FontSize="14"
                                         Text="Notbefreiung durch:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_WANotbefreiungdurch'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WANotbefreiungdurch'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                 </Grid>
                                 <Grid
                                     Name="Wartung7"
@@ -517,11 +512,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtentrauchung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="RWA Typ"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RwaBezeichnung'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RwaBezeichnung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="RWA0"

@@ -131,7 +131,6 @@
                             <TextBox
                                 Margin="5,5,10,0"
                                 ui:TextBoxExtensions.ValidationType="Email"
-                                PlaceholderText="Email Fachplaner"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonMail'].Value, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
@@ -259,17 +258,16 @@
                                                 TÜV die ausgebaute Anlage austragen kann.</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterComboBox>
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Fabriknummer Bestandsanlage"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FabriknummerBestand'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FabriknummerBestand'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 Fabriknummer der alten Bestandsanlage<LineBreak />
                                                 Wird bei einer Ersatzanlage benötigt.</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein2"
@@ -285,11 +283,10 @@
                                         Header="Gebäudetyp"
                                         ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownList, Mode=OneWay}"
                                         SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownListValue, Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Gebäudetyp Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -319,11 +316,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Aufzugstyp Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Aufzugstyp'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FE_Aufzugstyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein4"
@@ -335,11 +331,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Beladegeraet'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Beladegerät Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_Beladegeraete'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FE_Beladegeraete'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein5"
@@ -347,44 +342,50 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Nutzlast Q [kg]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Q'], Mode=TwoWay}"
                                         PlaceholderText="Q"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ShowDefaultHeader="True"
+                                        Unit="kg" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Gedrängelast Q'"
-                                        IsReadOnly="True"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Q1'], Mode=TwoWay}"
                                         PlaceholderText="Q'"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Q1'].Value, Mode=TwoWay}">
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
                                                 Gedrängelast wird automatisch berechnet</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Fahrkorbgewicht F [kg]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_F'], Mode=TwoWay}"
                                         PlaceholderText="F"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Fahrkorbgewicht wird automatisch berechnet</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Personenanzahl"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Personen'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Personen'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="Per.">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Personenanzahl wird automatisch berechnet</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein6"
@@ -392,27 +393,22 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,2*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Nenngeschwindigkeit v [m/s]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_v'], Mode=TwoWay}"
                                         PlaceholderText="v"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_v'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ShowDefaultHeader="True"
+                                        Unit="m/s" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Förderhöhe FH [m]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FH'], Mode=TwoWay}"
                                         PlaceholderText="FH"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FH'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        ShowDefaultHeader="True"
+                                        Unit="m" />
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Förderhöhe Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FE_FH'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FE_FH'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein7"
@@ -420,20 +416,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,2*,*,*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Haltestellen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Haltestellen'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Haltestellen'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Zugangsstellen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Zugangsstellen'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Zugangsstellen'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <CheckBox
                                         Grid.Column="2"
                                         Margin="5,0,5,0"
@@ -530,20 +520,15 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Aussenhaltestellen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Aussenhaltestellen'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Aussenhaltestellen'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="max Fahrten pro Stunde"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_maxFahrtenStunde'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_maxFahrtenStunde'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="Fahrten" />
                                 </Grid>
                             </Grid>
                         </Grid>

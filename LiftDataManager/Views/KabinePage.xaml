@@ -76,44 +76,30 @@
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Fahkorb Abmessungen" />
-                                <Grid
-                                    x:Name="Kabine0"
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterComboBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fahrkorbtyp'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
-                                </Grid>
-                                <Grid
-                                    x:Name="Kabine0_1"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fahrkorbtyp'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Kabinetyp Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Kabine_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Kabine_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                                 <Grid
                                     x:Name="Kabine1"
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Kabinenbreite [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KBI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="KB"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -129,16 +115,13 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Kabinentiefe [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KTI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="KT"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -154,7 +137,7 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine1_1"
@@ -162,15 +145,12 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Kabinenhöhe im Licht [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="KH im Licht"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -191,16 +171,13 @@
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Deckenhöhe [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="DH"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KD'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -221,7 +198,7 @@
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine1_2"
@@ -229,16 +206,13 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Bodenhöhe [mm]"
-                                        IsReadOnly="True"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KU'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="BH"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -250,16 +224,13 @@
                                                 </TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Kabinenhöhe aussen [mm]"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KHA'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         PlaceholderText="KH aussen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KHA'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -280,7 +251,7 @@
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine2"
@@ -288,15 +259,12 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals A (L1)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L1'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_L1'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -312,17 +280,14 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals A (R1)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R1'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_R1'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -334,16 +299,13 @@
                                                     (Kabinenbreite - Türbreite - Hals L1)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals C (L2)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L2'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_L2'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -359,17 +321,14 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals C (R2)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R2'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_R2'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -381,7 +340,7 @@
                                                     (Kabinenbreite - Türbreite - Hals L2)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine2_1"
@@ -389,15 +348,12 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals B (L3)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L3'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_L3'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -413,17 +369,14 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals B (R3)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R3'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_R3'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -435,16 +388,13 @@
                                                     (Kabinentiefe - Türbreite - Hals L3)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals D (L4)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_L4'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_L4'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -460,17 +410,14 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Hals D (R4)"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_R4'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_R4'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -482,7 +429,7 @@
                                                     (Kabinentiefe - Türbreite - Hals L4)</TextBlock>
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <!--  carControl  -->
                                 <SpeziControls:CarDesignControl
@@ -516,12 +463,12 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Türanbau A [mm]"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbau'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbau'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -551,13 +498,13 @@
                                                     Text="2) Kabinen Innenkante" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Türanbau B [mm]"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauB'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauB'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -587,13 +534,13 @@
                                                     Text="2) Kabinen Innenkante" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Türanbau C [mm]"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauC'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauC'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -623,13 +570,13 @@
                                                     Text="2) Kabinen Innenkante" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
-                                    <TextBox
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        Header="Türanbau D [mm]"
                                         IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauD'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -659,7 +606,7 @@
                                                     Text="2) Kabinen Innenkante" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -695,11 +642,10 @@
                                         VerticalAlignment="Bottom"
                                         FontSize="16"
                                         Text="RAL:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="RAL-Farbe Kabinenseitenwände"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Seitenwand'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RAL_Seitenwand'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine4"
@@ -717,11 +663,10 @@
                                         VerticalAlignment="Bottom"
                                         FontSize="16"
                                         Text="RAL:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="RAL-Farbe Rückwand"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Rueckwand'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RAL_Rueckwand'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine5"
@@ -739,11 +684,10 @@
                                         VerticalAlignment="Bottom"
                                         FontSize="16"
                                         Text="RAL:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="RAL-Farbe Eingangswand"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Eingangswand'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RAL_Eingangswand'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine6"
@@ -755,11 +699,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Materialstaerke'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Schotten Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Schotten_ZT'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schotten_ZT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine7"
@@ -771,11 +714,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Antidröhn Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn_ZT'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Antidroehn_ZT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -811,11 +753,10 @@
                                         VerticalAlignment="Bottom"
                                         FontSize="16"
                                         Text="RAL:" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="RAL-Farbe Kabinendecke"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RAL_Decke'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RAL_Decke'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine9"
@@ -856,13 +797,14 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bodentyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
                                         Header="Kabinenbodenhöhe (inkl. Bodenbelag)"
                                         IsEnabled="{x:Bind ViewModel.CanEditFloorWeightAndHeight, Mode=OneWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KU'], Mode=TwoWay}"
                                         LostFocus="{x:Bind ViewModel.CarFloor_LostFocus, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_KU'].Value, Mode=TwoWay}">
+                                        ShowDefaultHeader="False"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock FontSize="14" Text="Info:" />
@@ -870,7 +812,7 @@
                                                 <TextBlock Text="Belag wird automatisch hinzugefügt." TextWrapping="WrapWholeWords" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine11"
@@ -888,25 +830,20 @@
                                         IsEnabled="{x:Bind sys:String.Equals(ViewModel.ParamterDictionary['var_Bodentyp'].Value,'verstärkt') ,Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BoPr'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
                                         Header="Gewicht pro m² (Sonder- oder externem Boden)"
                                         IsEnabled="{x:Bind ViewModel.CanEditFloorWeightAndHeight, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonderExternBodengewicht'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SonderExternBodengewicht'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="kg/m²" />
                                 </Grid>
-                                <Grid
-                                    x:Name="Kabine12"
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Boden Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenprofil_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bodenprofil_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                                 <Grid
                                     x:Name="Kabine13"
                                     Grid.Row="3"
@@ -917,31 +854,25 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelag'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Gewicht Bodenbelag"
                                         IsEnabled="{x:Bind ViewModel.CanEditFlooringProperties, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsgewicht'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsgewicht'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg/m²" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Stärke Bodenbelag"
                                         IsEnabled="{x:Bind ViewModel.CanEditFlooringProperties, Mode=OneWay}"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsdicke'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bodenbelagsdicke'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
                                 </Grid>
-                                <Grid
-                                    x:Name="Kabine14"
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="4"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Beschreibung Bodenbelag "
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_BodenbelagBeschreibung'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BodenbelagBeschreibung'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -1005,18 +936,16 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Beleuchtung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlBeleuchtung'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlBeleuchtung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="Stk" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Farbtemperatur"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FarbtemperaturBeleuchtung'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FarbtemperaturBeleuchtung'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="Kelvin" />
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung1"
@@ -1216,26 +1145,20 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,2*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Breite Spiegel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_BreiteSpiegel'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Höhe Spiegel"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheSpiegel'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        Header="Spiegel Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_InfoSpiegel'].Value, Mode=TwoWay}" />
-
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_InfoSpiegel'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung5"
@@ -1335,13 +1258,11 @@
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterComboBox>
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Höhe Handlauf"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheHandlauf'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HoeheHandlauf'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -1560,19 +1481,17 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Rammschutz'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Höhe Rammschutz"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_HoeheRammschutz'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HoeheRammschutz'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
                                         <ToolTipService.ToolTip>
                                             <TextBlock FontSize="14">
                                                 mehrere Höhen mit Schrägstrich<LineBreak />
                                                 z.B. 300/600</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -1678,11 +1597,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Aussenverkleidung"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Aussenverkleidung_ZT'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Aussenverkleidung_ZT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
@@ -1917,12 +1835,11 @@
                                         VerticalAlignment="Bottom"
                                         Content="Ventilator 90 m³/h"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VentilatorLuftmenge'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,5,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_VentilatorAnzahl'].Value, Mode=TwoWay}" />
+                                        Margin="0,5,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VentilatorAnzahl'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False" />
                                     <TextBlock
                                         Grid.Column="2"
                                         Margin="15,5,0,0"

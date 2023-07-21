@@ -2,17 +2,17 @@ using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
 
-public sealed partial class ParameterCalendarDatePicker : UserControl
+public sealed partial class ParameterNumberTextBox : UserControl
 {
-    public ParameterCalendarDatePicker()
+    public ParameterNumberTextBox()
     {
         InitializeComponent();
-        Loaded += OnLoadParameterCalendarDatePicker;
-        Unloaded += OnUnLoadParameterCalendarDatePicker;
+        Loaded += OnLoadParameterNumberTextBox;
+        Unloaded += OnUnLoadParameterNumberTextBox;
 
     }
 
-    private void OnLoadParameterCalendarDatePicker(object sender, RoutedEventArgs e)
+    private void OnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -20,9 +20,9 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         }
     }
 
-    private void OnUnLoadParameterCalendarDatePicker(object sender, RoutedEventArgs e)
+    private void OnUnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
     {
-        if(LiftParameter is not null)
+        if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged -= OnErrorsChanged;
         }
@@ -36,6 +36,8 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         }
     }
 
+    public bool ShowUnit => !string.IsNullOrWhiteSpace(Unit);
+
     public Parameter? LiftParameter
     {
         get
@@ -47,7 +49,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox) , new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -81,6 +83,42 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         }
     }
 
+    private void TextCommandBarFlyout_Opening(object sender, object e)
+    {
+        var entranceFlyout = sender as TextCommandBarFlyout;
+
+        if (entranceFlyout is not null && entranceFlyout.Target is TextBox)
+        {
+            var highLightParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.Highlight), Label = "Highlihght Parameter" };
+            highLightParameter.Click += HighlightParameter_Click;
+            var highLightParameterToolTip = new ToolTip
+            {
+                Content = GetHighlightAction()
+            };
+            ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
+
+            var separator = new AppBarSeparator();
+
+            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "GoTo HighLighted Parameter" };
+            goToHighLightedParameter.Click += NavigateToHighlightParameters_Click;
+            var setMainEntranceToolTip = new ToolTip { Content = "All HighLighted Parameter" };
+
+            ToolTipService.SetToolTip(goToHighLightedParameter, setMainEntranceToolTip);
+            entranceFlyout.PrimaryCommands.Add(highLightParameter);
+            entranceFlyout.PrimaryCommands.Add(separator);
+            entranceFlyout.PrimaryCommands.Add(goToHighLightedParameter);   
+        }
+    }
+
+    public bool ReadOnly
+    {
+        get => (bool)GetValue(ReadOnlyProperty);
+        set => SetValue(ReadOnlyProperty, value);
+    }
+
+    public static readonly DependencyProperty ReadOnlyProperty =
+        DependencyProperty.Register("ReadOnly", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+
     public bool ShowDefaultHeader
     {
         get => (bool)GetValue(ShowDefaultHeaderProperty);
@@ -93,11 +131,29 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     public string Header
     {
         get => ShowDefaultHeader ? LiftParameter?.DisplayName! : (string)GetValue(HeaderProperty);
-        set => SetValue(HeaderProperty, value); 
+        set => SetValue(HeaderProperty, value);
     }
 
     public static readonly DependencyProperty HeaderProperty =
         DependencyProperty.Register("Header", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+
+    public string Unit
+    {
+        get => (string)GetValue(UnitProperty);
+        set => SetValue(UnitProperty, value);
+    }
+
+    public static readonly DependencyProperty UnitProperty =
+        DependencyProperty.Register("Unit", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+
+    public string PlaceholderText
+    {
+        get => (string)GetValue(PlaceholderTextProperty);
+        set => SetValue(PlaceholderTextProperty, value);
+    }
+
+    public static readonly DependencyProperty PlaceholderTextProperty =
+        DependencyProperty.Register("PlaceholderText", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {

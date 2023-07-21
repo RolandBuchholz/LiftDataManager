@@ -22,7 +22,7 @@
             Margin="5,0,5,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Header="{x:Bind Header, Mode=OneWay}"
+            Header="{x:Bind Header}"
             IsRightTapEnabled="True"
             ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
             PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"

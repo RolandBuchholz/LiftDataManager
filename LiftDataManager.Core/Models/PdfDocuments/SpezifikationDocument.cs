@@ -607,7 +607,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 var cWTRailName = carFrameType?.DriveTypeId == 2 ? "Schienen Joch" : "Schienen GGW";
                 var cWTGuideName = carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
 
-                table.Cell().Row(1).Column(1).RowSpan(17).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(19).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(borderColor).Bold();
                 table.Cell().Row(1).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Bausatztyp").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).Row(row =>
                 {
@@ -621,7 +621,7 @@ public class SpezifikationDocument : PdfBaseDocument
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
                                        });
                 });
-                table.Cell().Row(1).RowSpan(16).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
+                table.Cell().Row(1).RowSpan(18).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bausatz_ZT"]);
                 table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
@@ -653,14 +653,17 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(11).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
-                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
-                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
-                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"],null,false,false,"Beschichtungsart Fangrahmen");
-                table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"], null, false, false, "Beschichtungsart Fangrahmen");
-                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(17).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"],null, true, true);
+                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
+                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
+                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
+                table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
+                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"],null,false,false,"Beschichtungsart Fangrahmen");
+                table.Cell().Row(18).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"], null, false, false, "Beschichtungsart Fangrahmen");
+                table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(19).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"],null, true, true);
             });
         });
     }
@@ -707,7 +710,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 bool entranceC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
                 bool entranceD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
 
-                table.Cell().Row(1).Column(1).RowSpan(30).RotateLeft().AlignMiddle().AlignCenter().Text("Türen").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(31).RotateLeft().AlignMiddle().AlignCenter().Text("Türen").FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Fabrikat A": "Türen Fabrikat").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(4).Row(row =>
                 {
@@ -792,61 +795,67 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_STflRollen"]);
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_SThlRollen"]);
-                    row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_53"]);
+                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_StSchwellenheizung"]);
                 });
                 table.Cell().Row(18).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Estrichbleche"]);
-                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_StSchwellenheizung"]);
-                    row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_4"]);
+                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_53"]);
+                    
                 });
                 table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Schwellenbeleuchtung"]);
+                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_4"]);
+                });
+
+                table.Cell().Row(20).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_MauerumfassungszargenTF"]);
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Mauerumfassungszargen"]);
                 });
-                table.Cell().Row(20).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(21).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_PortaleTF"]);
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Portale"]);
                 });
-                table.Cell().Row(21).Column(3).ColumnSpan(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_5"]);
+                table.Cell().Row(22).Column(3).ColumnSpan(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_5"]);
                 //Kabinentüren
-                table.Cell().Row(22).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
+                table.Cell().Row(23).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentüren").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
 
 
-                table.Cell().Row(23).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(23).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuersteuerung"]);
-                table.Cell().Row(23).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_ErgAnTuere"]);
-                table.Cell().Row(24).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lichtgitter"]);
-                table.Cell().Row(24).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuerverriegelung"]);
-                table.Cell().Row(25).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(25).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_OberflaecheKabinentuere"]);
-                table.Cell().Row(25).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RalKabinentuere"]);
-                table.Cell().Row(26).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(26).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_SchwellenprofilKabTuere"]);
-                table.Cell().Row(26).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSchwelleKT"]);
-                table.Cell().Row(27).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentür Optionen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(27).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(24).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(24).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuersteuerung"]);
+                table.Cell().Row(24).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_ErgAnTuere"]);
+                table.Cell().Row(25).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lichtgitter"]);
+                table.Cell().Row(25).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tuerverriegelung"]);
+                table.Cell().Row(26).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(26).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_OberflaecheKabinentuere"]);
+                table.Cell().Row(26).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RalKabinentuere"]);
+                table.Cell().Row(27).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schwellen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(27).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_SchwellenprofilKabTuere"]);
+                table.Cell().Row(27).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSchwelleKT"]);
+                table.Cell().Row(28).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentür Optionen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(28).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KtSchuerzeV2A"]);
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Schuerzeverstaerkt"]);
                     row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_54"]);
                 });
-                table.Cell().Row(28).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(29).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KTflRollen"]);
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KThlRollen"]);
                     row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_55"]);
                 });
-                table.Cell().Row(29).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(30).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_EcoPlus"]);
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KtSchwellenheizung"]);
                     row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_6"]);
                 });
-                table.Cell().Row(30).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentüren").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(30).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesKabinentuere"], null, true, true);
+                table.Cell().Row(31).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentüren").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(31).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesKabinentuere"], null, true, true);
             });
         });
     }
@@ -1368,7 +1377,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Montage Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(19).Column(3).ParameterBoolCell(ParameterDictionary["var_Tuerzargenmontage"]);
                 table.Cell().Row(19).Column(4).ParameterBoolCell(ParameterDictionary["var_Mauerwerkmontage"]);
-                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"]);
+                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"],false, "Mauerumfassungszargen");
                 table.Cell().Row(19).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_42"]);
                 table.Cell().Row(20).Column(3).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_43"]);
                 table.Cell().Row(20).Column(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_44"]);

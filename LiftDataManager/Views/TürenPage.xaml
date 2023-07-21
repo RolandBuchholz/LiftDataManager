@@ -115,27 +115,23 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türbreite [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        Header="Türbreite"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türhöhe [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        Header="Türhöhe"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türgewicht [kg]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg" />
                                 </Grid>
                                 <Grid
                                     x:Name="TuerTyp2"
@@ -158,20 +154,18 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Türflügel"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="Stk">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -240,27 +234,21 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türbreite [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_B'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türhöhe [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH_B'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türgewicht [kg]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_B'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg" />
                                 </Grid>
                                 <Grid
                                     x:Name="TuerTyp2_B"
@@ -283,20 +271,18 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Türflügel"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_B'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_B'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="Stk">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -366,27 +352,21 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türbreite [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_C'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türhöhe [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH_C'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türgewicht [kg]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_C'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg" />
                                 </Grid>
                                 <Grid
                                     x:Name="TuerTyp2_C"
@@ -409,20 +389,18 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Türflügel"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_C'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_C'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="Stk">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -492,27 +470,21 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türbreite [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_D'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türhöhe [mm]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_TH_D'].Value, Mode=TwoWay}" />
-                                    <TextBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Decimal"
-                                        Header="Türgewicht [kg]"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_D'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="kg" />
                                 </Grid>
                                 <Grid
                                     x:Name="TuerTyp2_D"
@@ -535,20 +507,18 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <TextBox
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                        ui:TextBoxExtensions.ValidationType="Number"
-                                        Header="Anzahl Türflügel"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_D'].Value, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_D'], Mode=TwoWay}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="Stk">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </TextBox>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -601,11 +571,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="RAL Schachttüre"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RalSchachtuere'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RalSchachtuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -636,11 +605,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Anmerkungen Schachttürschwelle "
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -648,14 +616,14 @@
                             x:Name="SchachttuerOptionen"
                             Grid.Row="2"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="7"
+                                    Grid.RowSpan="8"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="6"
+                                    Grid.RowSpan="7"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -703,8 +671,28 @@
                                         VerticalAlignment="Bottom"
                                         Content="Hochleistungsrollen"
                                         IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <Grid
+                                    <CheckBox
                                         Grid.Column="2"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Schwellenheizung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren4"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Estrichbleche"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="Auto,*">
                                         <CheckBox
@@ -719,8 +707,8 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
-                                    x:Name="Schachttueren4"
-                                    Grid.Row="2"
+                                    x:Name="Schachttueren5"
+                                    Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -728,16 +716,11 @@
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
-                                        Content="Estrichbleche"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schwellenheizung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        Content="Schwellenbeleuchtung"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                     <Grid
-                                        Grid.Column="2"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="Auto,*">
                                         <CheckBox
@@ -752,24 +735,6 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
-                                    x:Name="Schachttueren5"
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="0,0,5,0"
-                                    ColumnDefinitions="*,2*">
-                                    <CheckBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Mauerumfassungszargen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Mauerumfassungszargen Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'].Value, Mode=TwoWay}" />
-                                </Grid>
-                                <Grid
                                     x:Name="Schachttueren6"
                                     Grid.Row="4"
                                     Grid.Column="1"
@@ -779,17 +744,33 @@
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
                                         VerticalAlignment="Bottom"
-                                        Content="Portale"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <TextBox
+                                        Content="Mauerumfassungszargen"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Portale Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Portale'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren7"
                                     Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,2*">
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Portale"
+                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                    <SpeziControls:ParameterTextBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Portale'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Schachttueren8"
+                                    Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*">
@@ -843,11 +824,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformatinen Kabinentüre"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ErgAnTuere'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ErgAnTuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabinentuer2_3"
@@ -893,11 +873,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="RAL Kabinentüre"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RalKabinentuere'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RalKabinentuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -924,11 +903,11 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}" />
-                                    <TextBox
+                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}" ShowDefaultHeader="True"/>
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        Margin="5,5,5,0"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -93,11 +93,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*">
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Bausatz_ZT'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -300,26 +299,17 @@
                                     FontSize="16">
                                     Geschwindigkeits-<LineBreak />
                                     begrenzer</TextBlock>
-                                <Grid
-                                    x:Name="Bausatz6"
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
-                                </Grid>
-                                <Grid
-                                    x:Name="Bausatz6_1"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbeg_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbeg_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                         <Grid
@@ -340,26 +330,17 @@
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Ersatzmaßnahmen" />
-                                <Grid
-                                    x:Name="Bausatz7"
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmassnahmen'], Mode=TwoWay}" />
-                                </Grid>
-                                <Grid
-                                    x:Name="Bausatz7_1"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmassnahmen'], Mode=TwoWay}" />
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmaßnahmen_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmaßnahmen_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                         <Grid
@@ -380,26 +361,17 @@
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Schachtinformation" />
-                                <Grid
-                                    x:Name="Bausatz8"
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformationssystem'], Mode=TwoWay}" />
-                                </Grid>
-                                <Grid
-                                    x:Name="Bausatz8_1"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformationssystem'], Mode=TwoWay}" />
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformation_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformation_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                         <Grid
@@ -420,26 +392,17 @@
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Lastmesseinrichtung" />
-                                <Grid
-                                    x:Name="Bausatz9"
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung'], Mode=TwoWay}" />
-                                </Grid>
-                                <Grid
-                                    x:Name="Bausatz9_1"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung'], Mode=TwoWay}" />
+                                <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        Header="Zusatzinformationen"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung_ZT'].Value, Mode=TwoWay}" />
-                                </Grid>
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                         <Grid
@@ -467,11 +430,11 @@
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
                                     <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Beschichtung'], Mode=TwoWay}" ShowDefaultHeader="True" />
-                                    <TextBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        Header="Farbe (RAL)"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RALTonTragrahmen'].Value, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RALTonTragrahmen'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
