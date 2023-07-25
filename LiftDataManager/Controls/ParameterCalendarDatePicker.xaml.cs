@@ -151,4 +151,13 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         var nav = App.GetService<INavigationService>();
         nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
     }
+
+    private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
+    {
+        if (LiftParameter?.Name is not null)
+        {
+            var nav = App.GetService<INavigationService>();
+            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
+    }
 }

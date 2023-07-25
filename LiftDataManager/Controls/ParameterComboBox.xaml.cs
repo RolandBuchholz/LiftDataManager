@@ -137,7 +137,7 @@ public sealed partial class ParameterComboBox : UserControl
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {
-        if (LiftParameter != null)
+        if (LiftParameter is not null)
         {
             LiftParameter.IsKey = !LiftParameter.IsKey;
             HighlightAction = GetHighlightAction();
@@ -150,5 +150,14 @@ public sealed partial class ParameterComboBox : UserControl
     {
         var nav = App.GetService<INavigationService>();
         nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
+    }
+
+    private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
+    {
+        if (LiftParameter?.Name is not null)
+        {
+            var nav = App.GetService<INavigationService>();
+            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
     }
 }

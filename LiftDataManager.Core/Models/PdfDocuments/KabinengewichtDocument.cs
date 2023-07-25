@@ -32,7 +32,7 @@ public class KabinengewichtDocument : PdfBaseDocument
             column.Item().Row(row =>
             {
                 row.AutoItem().MinHeight(300).Element(TableCarData);
-                row.RelativeItem().PaddingVertical(5, Unit.Millimetre).PaddingHorizontal(15, Unit.Millimetre).Component(new CarDesignComponent(ParameterDictionary));
+                row.RelativeItem().PaddingVertical(5, Unit.Millimetre).PaddingHorizontal(15, Unit.Millimetre).Component(new CarDesignComponent(ParameterDictionary, LowPrintColor));
             });
             column.Item().PaddingLeft(10).Element(TableCarEquipment);
             column.Item().PageBreak();

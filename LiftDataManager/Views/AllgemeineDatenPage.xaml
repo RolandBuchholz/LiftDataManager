@@ -424,13 +424,12 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Zugangsstellen'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Zugang A"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                                        IsEnabled="False">
+                                        CheckBoxContent="Zugang A"
+                                        IsEnabled="False"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="False">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -446,13 +445,12 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Zugang B"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        CheckBoxContent="Zugang B"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="False">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -468,13 +466,12 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="4"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Zugang C"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        CheckBoxContent="Zugang C"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="False">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -490,13 +487,12 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="5"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Zugang D"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        CheckBoxContent="Zugang D"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="False">
                                         <ToolTipService.ToolTip>
                                             <StackPanel>
                                                 <TextBlock
@@ -512,7 +508,7 @@
                                                     Source="/Images/carAccesses.png" />
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
+                                    </SpeziControls:ParameterCheckBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein8"
@@ -579,12 +575,10 @@
                                                 Personen- und Lastenaufzüge[AKTUELLE NORM]</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterComboBox>
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-21"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8121'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -596,13 +590,11 @@
                                                 in bestehenden Gebäuden<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="DIN18040"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18040'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_18040'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -613,7 +605,7 @@
                                                 Norm Barrierefreies Bauen<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
+                                    </SpeziControls:ParameterCheckBox>
                                     <SpeziControls:ParameterComboBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8131'], Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -633,12 +625,10 @@
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterComboBox>
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="4"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-58"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8158'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8158'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -650,13 +640,11 @@
                                                 von Fahrschachttüren<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="5"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="DIN18090"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18090'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_18090'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -669,13 +657,11 @@
                                                 Feuerwiderstandsklasse F 90<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="6"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="DIN18091"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_18091'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_18091'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -688,7 +674,7 @@
                                                 Feuerwiderstandklasse F 90<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
+                                    </SpeziControls:ParameterCheckBox>
                                 </Grid>
                                 <Grid
                                     x:Name="Allgemein10"
@@ -696,12 +682,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="1.5*,*,*,1.5*,*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="TRBS 1121"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TRBS1121'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -713,13 +697,11 @@
                                                 von Aufzugsanlagen[ZURÜCKGEZOGEN]<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-70"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8170'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8170'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -731,13 +713,11 @@
                                                 einschließlich Personen mit Behinderungen<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-28"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8128'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8128'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -748,7 +728,7 @@
                                                 Fern-Notruf für Personen- und Lastenaufzüge<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
+                                    </SpeziControls:ParameterCheckBox>
                                     <SpeziControls:ParameterComboBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8171Cat012'], Mode=TwoWay}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -761,12 +741,10 @@
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterComboBox>
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="4"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-72"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8172'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8172'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -777,13 +755,11 @@
                                                 Feuerwehraufzüge<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="5"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-73"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8173'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8173'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -794,13 +770,11 @@
                                                 Verhalten von Aufzügen im Brandfall<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox
+                                    </SpeziControls:ParameterCheckBox>
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="6"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="EN81-76"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EN8176'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EN8176'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True">
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run
@@ -812,7 +786,7 @@
                                                 von Personen mit Behinderungen<LineBreak />
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
-                                    </CheckBox>
+                                    </SpeziControls:ParameterCheckBox>
                                 </Grid>
                             </Grid>
                         </Grid>

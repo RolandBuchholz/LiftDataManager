@@ -61,6 +61,7 @@
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
     <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
+    <None Remove="Controls\ParameterCheckBox.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
     <None Remove="Controls\ParameterTextBox.xaml" />
@@ -169,6 +170,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Controls\ParameterNumberTextBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\ParameterCheckBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

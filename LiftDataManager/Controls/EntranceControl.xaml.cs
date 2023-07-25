@@ -47,6 +47,10 @@ public sealed partial class EntranceControl : UserControl
             highLightParameter.Click += HighLightParameter_Click;
             var highLightParameterToolTip = new ToolTip { Content = "hinzufügen/entfernen Parameterhighlighting" };
             ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
+            var goToParameterDetails = new AppBarButton() { Icon = new SymbolIcon(Symbol.PreviewLink), Label = "Show Parameterdetails" };
+            goToParameterDetails.Click += NavigateToParameterDetails_Click;
+            var setParameterDetailToolTip = new ToolTip { Content = "Show Parameterdetails" };
+            ToolTipService.SetToolTip(goToParameterDetails, setParameterDetailToolTip);
             if (!_selectedEntrance.StartsWith("txtBox_Etagenhoehe"))
             {
                 var setMainEntrance = new AppBarButton() { Icon = new SymbolIcon(Symbol.NewWindow), Label = "Set MainEntrance" };
@@ -58,6 +62,7 @@ public sealed partial class EntranceControl : UserControl
                 entranceFlyout.PrimaryCommands.Add(separator);
             }
             entranceFlyout.PrimaryCommands.Add(highLightParameter);
+            entranceFlyout.PrimaryCommands.Add(goToParameterDetails);
         }
     }
 
@@ -90,6 +95,20 @@ public sealed partial class EntranceControl : UserControl
         {
             var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
             ItemSource[entranceName].IsKey = !ItemSource[entranceName].IsKey; 
+        }
+    }
+
+    private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemSource is null)
+            return;
+        var entrance = _selectedEntrance;
+        if (entrance is not null && entrance.StartsWith("txtBox_"))
+        {
+            var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
+
+            var nav = App.GetService<INavigationService>();
+            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", ItemSource[entranceName].Name);
         }
     }
 

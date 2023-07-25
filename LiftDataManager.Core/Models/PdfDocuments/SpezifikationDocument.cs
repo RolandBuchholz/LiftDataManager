@@ -397,7 +397,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_TuerEinbauC"], "mm");
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_TuerEinbauD"], "mm");
                 });
-                table.Cell().Row(1).RowSpan(8).Column(5).ColumnSpan(2).Padding(5).AlignCenter().MaxHeight(170).Component(new CarDesignComponent(ParameterDictionary));
+                table.Cell().Row(1).RowSpan(8).Column(5).ColumnSpan(2).Padding(5).AlignCenter().MaxHeight(170).Component(new CarDesignComponent(ParameterDictionary, LowPrintColor));
                 table.Cell().Row(9).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Seitenwände").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Seitenwaende"]);
                 table.Cell().Row(9).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Seitenwand"]);

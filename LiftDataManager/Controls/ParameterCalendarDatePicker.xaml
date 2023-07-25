@@ -42,6 +42,11 @@
                             <SymbolIcon Symbol="ShowResults" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
+                    <MenuFlyoutItem Click="NavigateToParameterDetails_Click" Text="Go To Parameterdetails">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="PreviewLink" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
                 </MenuFlyout>
             </CalendarDatePicker.ContextFlyout>
         </CalendarDatePicker>

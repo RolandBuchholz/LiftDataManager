@@ -953,18 +953,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="abgehängte Decke"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_abgDecke'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_abgDecke'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Notlicht Kabine"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotlichtKab'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NotlichtKab'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -973,7 +969,7 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_52'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_52'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
                                         <TextBox
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
@@ -986,18 +982,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5"
-                                        VerticalAlignment="Bottom"
-                                        Content="Dimmer"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Dimmer'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Dimmer'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Notlicht Tableau"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotlichtTab'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NotlichtTab'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -1045,13 +1037,12 @@
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1067,14 +1058,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1090,14 +1080,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1113,14 +1102,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1136,7 +1124,7 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
                                 </Grid>
                                 <Grid
@@ -1166,24 +1154,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,1.5*,1.5*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Antisplitterfolie"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelAntiKratzf'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelAntiKratzf'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Spiegel als Paneel"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SpiegelPaneel'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelPaneel'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Spiegelleiste"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Spiegelleiste'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Spiegelleiste'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="3"
                                         Margin="5,10,5,0"
@@ -1267,13 +1249,12 @@
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1289,14 +1270,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1312,14 +1292,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1335,14 +1314,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1358,9 +1336,8 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
-
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung7"
@@ -1376,13 +1353,12 @@
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1398,14 +1374,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1421,14 +1396,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1444,14 +1418,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1467,7 +1440,7 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
 
                                 </Grid>
@@ -1485,24 +1458,17 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HoeheRammschutz'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
-                                        Unit="mm">
-                                        <ToolTipService.ToolTip>
-                                            <TextBlock FontSize="14">
-                                                mehrere Höhen mit Schrägstrich<LineBreak />
-                                                z.B. 300/600</TextBlock>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterNumberTextBox>
+                                        Unit="mm" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1518,14 +1484,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1541,14 +1506,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1564,14 +1528,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1587,9 +1550,8 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
-
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung9"
@@ -1605,12 +1567,11 @@
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1626,13 +1587,12 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1648,13 +1608,12 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1670,13 +1629,12 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussenverkleidungD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1692,9 +1650,8 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
-
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung10"
@@ -1710,13 +1667,12 @@
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite A"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite A"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1732,14 +1688,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite B"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite B"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1755,14 +1710,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite C"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1778,14 +1732,13 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
-                                        <CheckBox
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Seite D"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}">
+                                            CheckBoxContent="Seite D"
+                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1801,7 +1754,7 @@
                                                         Source="/Images/carAccesses.png" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </CheckBox>
+                                        </SpeziControls:ParameterCheckBox>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -1829,12 +1782,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="auto,auto,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,5,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Ventilator 90 m³/h"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VentilatorLuftmenge'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VentilatorLuftmenge'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"

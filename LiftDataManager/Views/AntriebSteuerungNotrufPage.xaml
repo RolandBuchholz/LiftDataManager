@@ -605,6 +605,7 @@
                                     x:Name="Antrieb0"
                                     Grid.Row="0"
                                     Grid.Column="1"
+                                    Margin="0,0,5,0"
                                     ColumnDefinitions="*,1.75*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
@@ -619,6 +620,7 @@
                                     x:Name="Antrieb2"
                                     Grid.Row="1"
                                     Grid.Column="1"
+                                    Margin="0,0,5,0"
                                     ColumnDefinitions="*,1.75*">
                                     <Grid Background="Transparent" IsHitTestVisible="True">
                                         <SpeziControls:ParameterComboBox
@@ -633,51 +635,41 @@
                                         </ToolTipService.ToolTip>
                                     </Grid>
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Evac 3C"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Evac3C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <CheckBox
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Evac3C'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="USV (Evak)"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_USVEvak'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <CheckBox
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_USVEvak'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,10,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Revcon / Zarec"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_RevconZarec'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RevconZarec'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
                                     </Grid>
                                 </Grid>
                                 <Grid
                                     x:Name="Antrieb3"
                                     Grid.Row="2"
                                     Grid.Column="1"
+                                    Margin="0,0,5,0"
                                     ColumnDefinitions="*,1.75*">
                                     <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Handlueftung'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
-                                        <CheckBox
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Fremdbelüftung"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Fremdbelueftung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <CheckBox
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fremdbelueftung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
-                                            Margin="5,0,5,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Elektr. Bremsenansteuerung"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_ElektrBremsenansteuerung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <CheckBox
+                                            CheckBoxContent="Elek. Bremsenansteuerung"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ElektrBremsenansteuerung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False" />
+                                        <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
-                                            Margin="5,0,10,0"
-                                            VerticalAlignment="Bottom"
-                                            Content="Treibscheibe gehärtet"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibegehaertet'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibegehaertet'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
                                     </Grid>
                                 </Grid>
                             </Grid>

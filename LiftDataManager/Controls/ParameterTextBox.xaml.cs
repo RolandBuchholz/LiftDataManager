@@ -96,16 +96,19 @@ public sealed partial class ParameterTextBox : UserControl
             };
             ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
 
-            var separator = new AppBarSeparator();
-
-            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "GoTo HighLighted Parameter" };
+            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "Show all HighLighted Parameter" };
             goToHighLightedParameter.Click += NavigateToHighlightParameters_Click;
             var setMainEntranceToolTip = new ToolTip { Content = "All HighLighted Parameter" };
-
             ToolTipService.SetToolTip(goToHighLightedParameter, setMainEntranceToolTip);
+
+            var goToParameterDetails = new AppBarButton() { Icon = new SymbolIcon(Symbol.PreviewLink), Label = "Show Parameterdetails" };
+            goToParameterDetails.Click += NavigateToParameterDetails_Click;
+            var setParameterDetailToolTip = new ToolTip { Content = "Show Parameterdetails" };
+            ToolTipService.SetToolTip(goToParameterDetails, setParameterDetailToolTip);
+
             entranceFlyout.PrimaryCommands.Add(highLightParameter);
-            entranceFlyout.PrimaryCommands.Add(separator);
             entranceFlyout.PrimaryCommands.Add(goToHighLightedParameter);
+            entranceFlyout.PrimaryCommands.Add(goToParameterDetails);
         }
     }
 
@@ -196,5 +199,14 @@ public sealed partial class ParameterTextBox : UserControl
     {
         var nav = App.GetService<INavigationService>();
         nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
+    }
+
+    private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
+    {
+        if (LiftParameter?.Name is not null)
+        {
+            var nav = App.GetService<INavigationService>();
+            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
     }
 }

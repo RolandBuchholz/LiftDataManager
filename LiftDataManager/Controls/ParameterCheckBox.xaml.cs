@@ -2,17 +2,17 @@ using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
 
-public sealed partial class ParameterNumberTextBox : UserControl
+public sealed partial class ParameterCheckBox : UserControl
 {
-    public ParameterNumberTextBox()
+    public ParameterCheckBox()
     {
         InitializeComponent();
-        Loaded += OnLoadParameterNumberTextBox;
-        Unloaded += OnUnLoadParameterNumberTextBox;
+        Loaded += OnLoadParameterTextBox;
+        Unloaded += OnUnLoadParameterTextBox;
 
     }
 
-    private void OnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
+    private void OnLoadParameterTextBox(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -20,7 +20,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
         }
     }
 
-    private void OnUnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
+    private void OnUnLoadParameterTextBox(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -35,8 +35,6 @@ public sealed partial class ParameterNumberTextBox : UserControl
             SetParameterState(sender as Parameter);
         }
     }
-
-    public bool ShowUnit => !string.IsNullOrWhiteSpace(Unit);
 
     public Parameter? LiftParameter
     {
@@ -83,36 +81,6 @@ public sealed partial class ParameterNumberTextBox : UserControl
         }
     }
 
-    private void TextCommandBarFlyout_Opening(object sender, object e)
-    {
-        var entranceFlyout = sender as TextCommandBarFlyout;
-
-        if (entranceFlyout is not null && entranceFlyout.Target is TextBox)
-        {
-            var highLightParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.Highlight), Label = "Highlihght Parameter" };
-            highLightParameter.Click += HighlightParameter_Click;
-            var highLightParameterToolTip = new ToolTip
-            {
-                Content = GetHighlightAction()
-            };
-            ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
-
-            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "Show all HighLighted Parameter" };
-            goToHighLightedParameter.Click += NavigateToHighlightParameters_Click;
-            var setMainEntranceToolTip = new ToolTip { Content = "All HighLighted Parameter" };
-            ToolTipService.SetToolTip(goToHighLightedParameter, setMainEntranceToolTip);
-
-            var goToParameterDetails = new AppBarButton() { Icon = new SymbolIcon(Symbol.PreviewLink), Label = "Show Parameterdetails" };
-            goToParameterDetails.Click += NavigateToParameterDetails_Click;
-            var setParameterDetailToolTip = new ToolTip { Content = "Show Parameterdetails" };
-            ToolTipService.SetToolTip(goToParameterDetails, setParameterDetailToolTip);
-
-            entranceFlyout.PrimaryCommands.Add(highLightParameter);
-            entranceFlyout.PrimaryCommands.Add(goToHighLightedParameter);
-            entranceFlyout.PrimaryCommands.Add(goToParameterDetails);
-        }
-    }
-
     public bool ReadOnly
     {
         get => (bool)GetValue(ReadOnlyProperty);
@@ -122,32 +90,23 @@ public sealed partial class ParameterNumberTextBox : UserControl
     public static readonly DependencyProperty ReadOnlyProperty =
         DependencyProperty.Register("ReadOnly", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
-    public bool ShowDefaultHeader
+    public bool ShowDefaultCheckBoxContent
     {
-        get => (bool)GetValue(ShowDefaultHeaderProperty);
-        set => SetValue(ShowDefaultHeaderProperty, value);
+        get => (bool)GetValue(ShowDefaultCheckBoxContentProperty);
+        set => SetValue(ShowDefaultCheckBoxContentProperty, value);
     }
 
-    public static readonly DependencyProperty ShowDefaultHeaderProperty =
-        DependencyProperty.Register("ShowDefaultHeader", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+    public static readonly DependencyProperty ShowDefaultCheckBoxContentProperty =
+        DependencyProperty.Register("ShowDefaultCheckBoxContent", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
-    public string Header
+    public string CheckBoxContent
     {
-        get => ShowDefaultHeader ? LiftParameter?.DisplayName! : (string)GetValue(HeaderProperty);
-        set => SetValue(HeaderProperty, value);
+        get => ShowDefaultCheckBoxContent ? LiftParameter?.DisplayName! : (string)GetValue(CheckBoxContentProperty);
+        set => SetValue(CheckBoxContentProperty, value);
     }
 
-    public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register("Header", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
-
-    public string Unit
-    {
-        get => (string)GetValue(UnitProperty);
-        set => SetValue(UnitProperty, value);
-    }
-
-    public static readonly DependencyProperty UnitProperty =
-        DependencyProperty.Register("Unit", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty CheckBoxContentProperty =
+        DependencyProperty.Register("CheckBoxContent", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -175,15 +134,6 @@ public sealed partial class ParameterNumberTextBox : UserControl
 
     public static readonly DependencyProperty ErrorTypeProperty =
         DependencyProperty.Register("ErrorType", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
-
-    public int BorderHeight
-    {
-        get { return (int)GetValue(BorderHeightProperty); }
-        set { SetValue(BorderHeightProperty, value); }
-    }
-
-    public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register("BorderHeight", typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
 
     public string HighlightAction
     {

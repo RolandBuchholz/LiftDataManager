@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="LiftDataManager.Controls.ParameterComboBox"
+    x:Class="LiftDataManager.Controls.ParameterCheckBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,6 +9,7 @@
 
     <UserControl.Resources>
         <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -16,19 +17,14 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ComboBox
-            x:Name="cmb_Liftparameter"
+        <CheckBox
+            x:Name="cdp_Liftparameter"
             Grid.Column="0"
-            Margin="5,0,5,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Header="{x:Bind Header}"
-            IsRightTapEnabled="True"
-            ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
-            PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
-            PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
-            SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}">
-            <ComboBox.ContextFlyout>
+            Margin="10,0,5,0"
+            VerticalAlignment="Bottom"
+            Content="{x:Bind CheckBoxContent}"
+            IsChecked="{x:Bind LiftParameter.Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+            <CheckBox.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Click="HighlightParameter_Click" Text="{x:Bind HighlightAction, Mode=OneWay}">
                         <MenuFlyoutItem.Icon>
@@ -46,11 +42,11 @@
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                 </MenuFlyout>
-            </ComboBox.ContextFlyout>
-        </ComboBox>
+            </CheckBox.ContextFlyout>
+        </CheckBox>
         <Border
             Grid.Column="0"
-            Height="{x:Bind BorderHeight, Mode=OneWay}"
+            Height="{Binding ElementName=cdp_Liftparameter, Path=ActualHeight, Mode=OneWay}"
             Margin="5,0,5,0"
             VerticalAlignment="Bottom"
             BorderBrush="YellowGreen"
@@ -64,7 +60,7 @@
         </Border>
         <Border
             Grid.Column="0"
-            Height="{x:Bind BorderHeight, Mode=OneWay}"
+            Height="{Binding ElementName=cdp_Liftparameter, Path=ActualHeight, Mode=OneWay}"
             Margin="5,0,5,0"
             VerticalAlignment="Bottom"
             BorderBrush="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"

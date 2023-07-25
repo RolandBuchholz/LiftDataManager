@@ -8,6 +8,7 @@ namespace LiftDataManager.Core.Models.PdfDocuments;
 public class CarDesignComponent : IComponent
 {
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
+    public bool LowPrintColor { get; set; }
 
     float canvasWidth;
     float canvasHeight;
@@ -29,9 +30,10 @@ public class CarDesignComponent : IComponent
     string? personen;
 
 
-    public CarDesignComponent(ObservableDictionary<string, Parameter> parameterDictionary)
+    public CarDesignComponent(ObservableDictionary<string, Parameter> parameterDictionary, bool lowPrintColor)
     {
         ParameterDictionary = parameterDictionary;
+        LowPrintColor = lowPrintColor;
         SetCarDesignParameter();
     }
 
@@ -80,13 +82,17 @@ public class CarDesignComponent : IComponent
                 canvas.Clear();
                 using var paintBase = new SKPaint
                 {
-                    Color = SKColor.Parse(Colors.BlueGrey.Medium),
+                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 :  Colors.BlueGrey.Medium),
+                    IsStroke = LowPrintColor,
+                    StrokeWidth = 7,
                     IsAntialias = true
                 };
 
                 using var paintBlueDoor = new SKPaint
                 {
-                    Color = SKColor.Parse(Colors.BlueGrey.Lighten1),
+                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.BlueGrey.Lighten1),
+                    IsStroke = LowPrintColor,
+                    StrokeWidth = 7,
                     IsAntialias = true
                 };
 
@@ -119,22 +125,22 @@ public class CarDesignComponent : IComponent
 
             layers.Layer().AlignMiddle().Column(colum =>
             {
-                colum.Item().AlignCenter().Text($"{flaeche} m²").FontColor(Colors.White).FontSize(120);
-                colum.Item().AlignCenter().Text($"{personen} Personen").FontColor(Colors.White).FontSize(120);
+                colum.Item().AlignCenter().Text($"{flaeche} m²").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(120);
+                colum.Item().AlignCenter().Text($"{personen} Personen").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(120);
             });
 
             layers.Layer().ShowIf(zugangA).AlignBottom().Column(colum =>
             {
                 colum.Item().PaddingBottom(-20).Row(row => 
                 {
-                    row.AutoItem().PaddingLeft(100).Text("L1").FontColor(Colors.White).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text("TB (A)").FontColor(Colors.White).FontSize(80);
-                    row.AutoItem().AlignRight().PaddingRight(100).Text("R1").FontColor(Colors.White).FontSize(80);
+                    row.AutoItem().PaddingLeft(100).Text("L1").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text("TB (A)").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.AutoItem().AlignRight().PaddingRight(100).Text("R1").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                 });
                 colum.Item().PaddingBottom(-20).Row(row =>
                 {
                     row.ConstantItem(100 + halsL1).AlignRight().Padding(5).Text($"{halsL1}").FontColor(Colors.Black).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteA}").FontColor(Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteA}").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                     row.ConstantItem(100 + kabinenbreite - tuerbreiteA - halsL1).Padding(5).Text($"{kabinenbreite-tuerbreiteA-halsL1}").FontColor(Colors.Black).FontSize(80);
                 });
             });
@@ -143,14 +149,14 @@ public class CarDesignComponent : IComponent
             {
                 colum.Item().PaddingBottom(-30).Row(row =>
                 {
-                    row.AutoItem().PaddingLeft(200).Text("L3").FontColor(Colors.White).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text("TB (C)").FontColor(Colors.White).FontSize(80);
-                    row.AutoItem().AlignRight().PaddingRight(200).Text("R3").FontColor(Colors.White).FontSize(80);
+                    row.AutoItem().PaddingLeft(200).Text("L3").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text("TB (C)").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.AutoItem().AlignRight().PaddingRight(200).Text("R3").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                 });
                 colum.Item().PaddingBottom(-10).Row(row =>
                 {
                     row.ConstantItem(100 + halsL3).AlignRight().Padding(5).Text($"{halsL3}").FontColor(Colors.Black).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteB}").FontColor(Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteB}").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                     row.ConstantItem(100 + kabinentiefe - tuerbreiteB - halsL3).Padding(5).Text($"{kabinentiefe - tuerbreiteB - halsL3}").FontColor(Colors.Black).FontSize(80);
                 });
             });
@@ -160,14 +166,14 @@ public class CarDesignComponent : IComponent
                 colum.Item().PaddingTop(-10).Row(row =>
                 {
                     row.ConstantItem(100 + kabinenbreite - tuerbreiteC - halsL2).AlignRight().Padding(5).Text($"{kabinenbreite - tuerbreiteC - halsL2}").FontColor(Colors.Black).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteC}").FontColor(Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteC}").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                     row.ConstantItem(100 + halsL2).AlignLeft().Padding(5).Text($"{halsL2}").FontColor(Colors.Black).FontSize(80);
                 });
                 colum.Item().PaddingTop(-30).Row(row =>
                 {
-                    row.AutoItem().PaddingLeft(100).Text("R2").FontColor(Colors.White).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text("TB (B)").FontColor(Colors.White).FontSize(80);
-                    row.AutoItem().AlignRight().PaddingRight(100).Text("L2").FontColor(Colors.White).FontSize(80);
+                    row.AutoItem().PaddingLeft(100).Text("R2").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text("TB (B)").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.AutoItem().AlignRight().PaddingRight(100).Text("L2").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                 });
             });
 
@@ -176,15 +182,15 @@ public class CarDesignComponent : IComponent
                 colum.Item().PaddingBottom(-10).Row(row =>
                 {
                     row.ConstantItem(100 + kabinentiefe - tuerbreiteD - halsL4).AlignRight().Padding(5).Text($"{kabinentiefe - tuerbreiteD - halsL4}").FontColor(Colors.Black).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteD}").FontColor(Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text($"{tuerbreiteD}").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                     row.ConstantItem(100 + halsL4).AlignLeft().Padding(5).Text($"{halsL4}").FontColor(Colors.Black).FontSize(80);
 
                 });
                 colum.Item().PaddingTop(-30).Row(row =>
                 {
-                    row.AutoItem().PaddingLeft(200).Text("R4").FontColor(Colors.White).FontSize(80);
-                    row.RelativeItem().AlignCenter().Text("TB (D)").FontColor(Colors.White).FontSize(80);
-                    row.AutoItem().AlignRight().PaddingRight(200).Text("L4").FontColor(Colors.White).FontSize(80);
+                    row.AutoItem().PaddingLeft(200).Text("R4").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.RelativeItem().AlignCenter().Text("TB (D)").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
+                    row.AutoItem().AlignRight().PaddingRight(200).Text("L4").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                 });
 
             });
