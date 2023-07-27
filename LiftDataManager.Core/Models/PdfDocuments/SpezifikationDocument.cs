@@ -11,15 +11,16 @@ public class SpezifikationDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly bool LowPrintColor;
+    private readonly bool LowHighlightColor;
 
-    public SpezifikationDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
+    public SpezifikationDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor, bool lowHighlightColor)
     {
         ParameterDictionary = parameterDictionary;
         _calculationsModuleService = calculationsModuleService;
         Title = "Spezifikation";
         LowPrintColor = lowPrintColor;
-        SetPdfStyle(LowPrintColor);
-        LowPrintColor = lowPrintColor;
+        LowHighlightColor = lowHighlightColor;
+        SetPdfStyle(LowPrintColor, LowHighlightColor);
     }
 
     protected override void Content(IContainer container)

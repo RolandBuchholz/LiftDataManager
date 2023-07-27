@@ -79,9 +79,9 @@ public class PdfBaseDocument : IDocument
         return user;
     }
 
-    public void SetPdfStyle(bool lowColor)
+    public void SetPdfStyle(bool lowColor, bool lowHighlightColor)
     {
-        var style = PdfHelpers.GetPdfStyleSet(lowColor);
+        var style = PdfHelpers.GetPdfStyleSet(lowColor, lowHighlightColor);
         if (style is not null)
         {
             primaryColor = style.primaryColor!;

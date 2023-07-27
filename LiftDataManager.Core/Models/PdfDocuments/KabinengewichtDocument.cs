@@ -20,7 +20,7 @@ public class KabinengewichtDocument : PdfBaseDocument
         CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(parameterDictionary);
         Title = "Kabinengewicht";
         LowPrintColor = lowPrintColor;
-        SetPdfStyle(LowPrintColor);
+        SetPdfStyle(LowPrintColor, false);
         LowPrintColor = lowPrintColor;
     }
 

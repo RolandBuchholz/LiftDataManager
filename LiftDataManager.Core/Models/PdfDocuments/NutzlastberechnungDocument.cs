@@ -20,7 +20,7 @@ public class NutzlastberechnungDocument : PdfBaseDocument
         PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(parameterDictionary);
         Title = "Nutzfläche des Fahrkorbs";
         LowPrintColor = lowPrintColor;
-        SetPdfStyle(LowPrintColor);
+        SetPdfStyle(LowPrintColor, false);
     }
 
     protected override void Content(IContainer container)
@@ -54,11 +54,11 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             column.Item().Row(row =>
             {
                 row.AutoItem().Element(TablePersonData);
-                row.RelativeItem().PaddingTop(5, Unit.Millimetre).PaddingHorizontal(10, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table8.Values.ToList(), LowPrintColor));
+                row.RelativeItem().PaddingTop(5, Unit.Millimetre).PaddingHorizontal(10, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table8.Values.ToList(), LowPrintColor, false));
             });
 
-            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table6.Values.ToList(), LowPrintColor));
-            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table7.Values.ToList(), LowPrintColor));
+            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table6.Values.ToList(), LowPrintColor, false));
+            column.Item().PaddingTop(10, Unit.Millimetre).PaddingLeft(10).PaddingRight(60, Unit.Millimetre).Component(new TableENComponent(_calculationsModuleService.Table7.Values.ToList(), LowPrintColor, false));
         });
     }
 

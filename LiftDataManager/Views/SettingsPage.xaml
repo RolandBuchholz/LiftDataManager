@@ -221,18 +221,105 @@
                                 </Interactivity:Interaction.Behaviors>
                             </ToggleSwitch>
                         </labs:SettingsCard>
-                        <labs:SettingsCard Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen." Header="Toner SaveMode">
-                            <labs:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Street" />
-                            </labs:SettingsCard.HeaderIcon>
-                            <ToggleSwitch
-                                x:Name="SwitchTonerSaveMode"
-                                Margin="0,0,20,0"
-                                HorizontalAlignment="Center"
-                                IsOn="{x:Bind ViewModel.TonerSaveMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                OffContent="Toner SaveMode Off"
-                                OnContent="Toner SaveMode On" />
-                        </labs:SettingsCard>
+                        <labs:SettingsExpander Description="Benutzerdefinierte Ploteigenschaften" Header="Plotstyles">
+                            <labs:SettingsExpander.HeaderIcon>
+                                <SymbolIcon Symbol="Print" />
+                            </labs:SettingsExpander.HeaderIcon>
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard
+                                    Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen"
+                                    Header="Toner SaveMode"
+                                    ToolTipService.Placement="Bottom">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Street" />
+                                    </labs:SettingsCard.HeaderIcon>
+                                    <ToggleSwitch
+                                        x:Name="SwitchTonerSaveMode"
+                                        HorizontalAlignment="Center"
+                                        IsOn="{x:Bind ViewModel.TonerSaveMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        OffContent="Toner SaveMode Off"
+                                        OnContent="Toner SaveMode On" />
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="5"
+                                                Text="Toner SaveMode Off" />
+                                            <Image
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Margin="5"
+                                                Source="/Images/TonerSaveOFF.png" />
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="5"
+                                                Text="Toner SaveMode On" />
+                                            <Image
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="5"
+                                                Source="/Images/TonerSaveON.png" />
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </labs:SettingsCard>
+                                <labs:SettingsCard
+                                    Description="Benutzerdefinierte Einstellungen für die Parameterhervorhebung"
+                                    Header="Highlight Settings"
+                                    ToolTipService.Placement="Bottom">
+                                    <labs:SettingsCard.HeaderIcon>
+                                        <SymbolIcon Symbol="Highlight" />
+                                    </labs:SettingsCard.HeaderIcon>
+                                    <ToggleSwitch
+                                        x:Name="HighlightSettings"
+                                        HorizontalAlignment="Center"
+                                        IsOn="{x:Bind ViewModel.LowHighlightMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        OffContent="Background Color"
+                                        OnContent="Bold Font" />
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="5"
+                                                Text="Background Color" />
+                                            <Image
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Margin="5"
+                                                Source="/Images/HighlightColor.png" />
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="5"
+                                                Text="Bold Font" />
+                                            <Image
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="5"
+                                                Source="/Images/HighlightBold.png" />
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
                         <TextBlock
                             Margin="5,5,0,5"
                             Style="{ThemeResource SubtitleTextBlockStyle}"

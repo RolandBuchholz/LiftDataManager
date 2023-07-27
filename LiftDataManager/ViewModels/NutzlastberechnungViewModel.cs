@@ -52,7 +52,7 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode);
+            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
         }
     }
 

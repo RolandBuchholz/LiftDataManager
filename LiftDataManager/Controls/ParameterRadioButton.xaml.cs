@@ -2,17 +2,17 @@ using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
 
-public sealed partial class ParameterCheckBox : UserControl
+public sealed partial class ParameterRadioButton : UserControl
 {
-    public ParameterCheckBox()
+    public ParameterRadioButton()
     {
         InitializeComponent();
-        Loaded += OnLoadParameterCheckBox;
-        Unloaded += OnUnLoadParameterCheckBox;
+        Loaded += OnLoadParameterRadioButton;
+        Unloaded += OnUnLoadParameterRadioButton;
 
     }
 
-    private void OnLoadParameterCheckBox(object sender, RoutedEventArgs e)
+    private void OnLoadParameterRadioButton(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -20,7 +20,7 @@ public sealed partial class ParameterCheckBox : UserControl
         }
     }
 
-    private void OnUnLoadParameterCheckBox(object sender, RoutedEventArgs e)
+    private void OnUnLoadParameterRadioButton(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -90,23 +90,23 @@ public sealed partial class ParameterCheckBox : UserControl
     public static readonly DependencyProperty ReadOnlyProperty =
         DependencyProperty.Register("ReadOnly", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
-    public bool ShowDefaultCheckBoxContent
+    public bool ShowDefaultRadioButtonContent
     {
-        get => (bool)GetValue(ShowDefaultCheckBoxContentProperty);
-        set => SetValue(ShowDefaultCheckBoxContentProperty, value);
+        get => (bool)GetValue(ShowDefaultRadioButtonContentProperty);
+        set => SetValue(ShowDefaultRadioButtonContentProperty, value);
     }
 
-    public static readonly DependencyProperty ShowDefaultCheckBoxContentProperty =
-        DependencyProperty.Register("ShowDefaultCheckBoxContent", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+    public static readonly DependencyProperty ShowDefaultRadioButtonContentProperty =
+        DependencyProperty.Register("ShowDefaultRadioButtonContent", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
-    public string CheckBoxContent
+    public string RadioButtonContent
     {
-        get => ShowDefaultCheckBoxContent ? LiftParameter?.DisplayName! : (string)GetValue(CheckBoxContentProperty);
-        set => SetValue(CheckBoxContentProperty, value);
+        get => ShowDefaultRadioButtonContent ? LiftParameter?.DisplayName! : (string)GetValue(RadioButtonContentProperty);
+        set => SetValue(RadioButtonContentProperty, value);
     }
 
-    public static readonly DependencyProperty CheckBoxContentProperty =
-        DependencyProperty.Register("CheckBoxContent", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty RadioButtonContentProperty =
+        DependencyProperty.Register("RadioButtonContent", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -116,6 +116,15 @@ public sealed partial class ParameterCheckBox : UserControl
 
     public static readonly DependencyProperty PlaceholderTextProperty =
         DependencyProperty.Register("PlaceholderText", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+
+    public string RadioButtonGroupName
+    {
+        get => (string)GetValue(RadioButtonGroupNameProperty);
+        set => SetValue(RadioButtonGroupNameProperty, value);
+    }
+
+    public static readonly DependencyProperty RadioButtonGroupNameProperty =
+        DependencyProperty.Register("RadioButtonGroupName", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {

@@ -74,12 +74,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Funktionswartung jährlich"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Funktionswartungjaehrl'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Funktionswartungjaehrl'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -92,12 +90,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Wartung / Inspektion nach AMEV jährlich "
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartungInspektionnAMEVjaehrlich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WartungInspektionnAMEVjaehrlich'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -110,12 +106,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Vollwartung jährlich"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Vollwartungjaehrlich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Vollwartungjaehrlich'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -128,12 +122,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Wart. / Insp. / Install. / Verb. N. AMEV jährl."
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartInspInstVerbesserNAMEVjaehrl'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WartInspInstVerbesserNAMEVjaehrl'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -146,12 +138,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,2*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Notrufaufschaltung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Notrufaufschaltung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Notrufaufschaltung'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,10,0"
@@ -189,12 +179,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,0.75*,2.25*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Wartung enthalten"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_WartungenthMonate'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WartungenthMonate'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -207,12 +195,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,0.75*,0.75*,1.5*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Notruf enthalten"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_NotrufenthaltMonate'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_NotrufenthaltMonate'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
@@ -343,18 +329,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Anschluß durch BE"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AnschludurchBE'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnschludurchBE'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Anschluß bauseits"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Anschlubauseits'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Anschlubauseits'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -381,12 +363,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Verfugen zum Baukörper"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VerfugenzumBaukoerper'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VerfugenzumBaukoerper'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,10,5,0"
@@ -427,18 +407,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="eigenes Personal erforderlich"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_eigenesPersonalerforderlich'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_eigenesPersonalerforderlich'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Subunternehmer erlaubt"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Subunternehmererlaubt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Subunternehmererlaubt'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -523,18 +499,15 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Lieferung/Montage BE"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_LieferungMontageBE'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_LieferungMontageBE'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Lieferung/Montage bauseits"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_LieferungMontagebauseits'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_LieferungMontagebauseits'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
                                     Name="RWA2"
@@ -542,12 +515,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Potentialfreier Kontakt auf GLT / BMZ"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_potfreierKontakt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_potfreierKontakt'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,10,5,0"

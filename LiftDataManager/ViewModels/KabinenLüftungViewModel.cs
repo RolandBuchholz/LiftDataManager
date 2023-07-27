@@ -35,7 +35,7 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
     {
         if (ParamterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
         }
     }
 

@@ -20,7 +20,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
         CarVentilationResult = _calculationsModuleService.GetCarVentilationCalculation(parameterDictionary);
         Title = "Be- und Entlüftung";
         LowPrintColor = lowPrintColor;
-        SetPdfStyle(LowPrintColor);
+        SetPdfStyle(LowPrintColor, false);
         LowPrintColor = lowPrintColor;
     }
 

@@ -7,6 +7,7 @@ namespace LiftDataManager.Core.Models.PdfDocuments;
 public static class PdfHelpers
 {
     public static bool LowColor { get; set; }
+    public static bool LowHighlightColor { get; set; }
 
     static string primaryColor = Colors.Pink.Accent3;
     static string primaryVariantColor = Colors.Pink.Lighten2;
@@ -41,12 +42,14 @@ public static class PdfHelpers
     static string onPrimaryVariantColorLow = Colors.Black;
     static string onSecondaryColorLow = Colors.Black;
     static string onSecondaryVariantColorLow = Colors.Black;
+    static string highlightColorLow = Colors.Grey.Lighten3;
     static string borderColorLow = Colors.Black;
     static string baseHeaderColorLow = Colors.Red.Darken4;
 
-    public static PdfStyleSet GetPdfStyleSet(bool lowColor)
+    public static PdfStyleSet GetPdfStyleSet(bool lowColor, bool lowHighlightColor)
     {
         LowColor = lowColor;
+        LowHighlightColor = lowHighlightColor;
         return new PdfStyleSet()
         {
             primaryColor = LowColor ? primaryColorLow : primaryColor,
@@ -60,7 +63,7 @@ public static class PdfHelpers
             onSecondaryVariantColor = LowColor ? onSecondaryVariantColorLow : onSecondaryVariantColor,
             errorColor = errorColor,
             successfulColor = successfulColor,
-            highlightColor = highlightColor,
+            highlightColor = lowHighlightColor ? highlightColorLow : highlightColor,
             borderColor = LowColor ? borderColorLow : borderColor,
             baseHeaderColor = LowColor ? baseHeaderColorLow : baseHeaderColor,
             fontSizeXXS = fontSizeXXS,
@@ -96,7 +99,7 @@ public static class PdfHelpers
     public static void ValueCell(this IContainer container, string text) => container.ValueCell().Text(text);
 
     public static void ParameterStringCell(this IContainer container, Parameter parameter, string? unit = null, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
-        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
+        .Background(parameter.IsKey ? LowHighlightColor ? highlightColorLow : highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(LowColor ? borderColorLow : borderColor)
         .PaddingLeft(5).PaddingTop(0)
@@ -104,11 +107,18 @@ public static class PdfHelpers
     {
         if (!hideHeader)
             text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
-        text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}");
+        if (parameter.IsKey && LowHighlightColor)
+        {
+            text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}").Bold().Italic();
+        }
+        else
+        {
+            text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}");
+        }    
     });
 
     public static void ParameterDateCell(this IContainer container, Parameter parameter, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
-        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
+        .Background(parameter.IsKey ? LowHighlightColor ? highlightColorLow : highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(LowColor ? borderColorLow : borderColor)
         .PaddingLeft(5)
@@ -118,11 +128,18 @@ public static class PdfHelpers
     {
         if (!hideHeader)
             text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
-        text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value));
+        if (parameter.IsKey && LowHighlightColor)
+        {
+            text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value)).Bold().Italic();
+        }
+        else
+        {
+            text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value));
+        }
     });
 
     public static void ParameterBoolCell(this IContainer container, Parameter parameter, bool hideBorder = false, string? optinaleDescription = null) => container
-        .Background(parameter.IsKey ? highlightColor : Colors.Transparent)
+        .Background(parameter.IsKey ? LowHighlightColor ? highlightColorLow : highlightColor : Colors.Transparent)
         .Border(hideBorder ? 0 : 0.1f)
         .BorderColor(LowColor ? borderColorLow : borderColor)
         .PaddingLeft(5)
@@ -165,8 +182,14 @@ public static class PdfHelpers
                     };
                     canvas.DrawRoundRect(0, 1.75f, 8, 8, 1, 1, paintSecondaryColor);
                 });
-
-                layers.PrimaryLayer().PaddingLeft(12).Text(optinaleDescription is null ? parameter.DisplayName : optinaleDescription);
+                if (parameter.IsKey && LowHighlightColor)
+                {
+                    layers.PrimaryLayer().PaddingLeft(12).Text(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).Bold().Italic();
+                }
+                else
+                {
+                    layers.PrimaryLayer().PaddingLeft(12).Text(optinaleDescription is null ? parameter.DisplayName : optinaleDescription);
+                } 
             });
         });
 

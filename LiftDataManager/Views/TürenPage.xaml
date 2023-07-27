@@ -634,24 +634,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schürze V2A"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StSchuerzeV2A'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="durchgehender Schwellenwinkel"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STdghSchwellenwinkel'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_STdghSchwellenwinkel'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Kontakt Schutzraumüberwachung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KontaktSchutzraumueberwachung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KontaktSchutzraumueberwachung'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren3"
@@ -659,24 +653,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Flüsterrollen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_STflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_STflRollen'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Hochleistungsrollen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schwellenheizung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren4"
@@ -684,12 +672,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Estrichbleche"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
@@ -712,12 +698,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schwellenbeleuchtung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
@@ -740,12 +724,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,2*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Mauerumfassungszargen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'], Mode=TwoWay}"
@@ -757,12 +739,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,2*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Portale"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Portale'], Mode=TwoWay}"
@@ -903,7 +883,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}" ShowDefaultHeader="True"/>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
@@ -933,18 +916,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schürze V2A Kabinentüre"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchuerzeV2A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchuerzeV2A'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schürze verstärkt"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -966,18 +945,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Flüsterrollen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KTflRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KTflRollen'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Hochleistungs Rollen"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"
@@ -999,18 +974,14 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <CheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Eco +"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_EcoPlus'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    <CheckBox
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EcoPlus'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Schwellenheizung"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                     <Grid
                                         Grid.Column="2"
                                         Margin="5,10,5,0"

@@ -61,6 +61,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [ObservableProperty]
+    private bool lowHighlightMode;
+    partial void OnLowHighlightModeChanged(bool value)
+    {
+        if (!Equals(value, _settingService.LowHighlightMode))
+            _settingService.SetSettingsAsync(nameof(LowHighlightMode), value);
+    }
+
+    [ObservableProperty]
     private string? autoSavePeriod;
     partial void OnAutoSavePeriodChanged(string? value)
     {
@@ -361,6 +369,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         AutoSave = _settingService.AutoSave;
         AutoSavePeriod = _settingService.AutoSavePeriod;
         TonerSaveMode = _settingService.TonerSaveMode;
+        LowHighlightMode = _settingService.LowHighlightMode;
     }
     public void OnNavigatedFrom()
     {

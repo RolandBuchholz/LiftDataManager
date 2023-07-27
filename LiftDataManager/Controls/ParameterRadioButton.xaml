@@ -1,0 +1,96 @@
+<UserControl
+    x:Class="LiftDataManager.Controls.ParameterRadioButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <RadioButton
+            x:Name="rb_Liftparameter"
+            Grid.Column="0"
+            Margin="10,0,5,0"
+            VerticalAlignment="Bottom"
+            Content="{x:Bind RadioButtonContent}"
+            GroupName="{x:Bind RadioButtonGroupName}"
+            IsChecked="{x:Bind LiftParameter.Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}">
+            <RadioButton.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Click="HighlightParameter_Click" Text="{x:Bind HighlightAction, Mode=OneWay}">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="Highlight" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Click="NavigateToHighlightParameters_Click" Text="All highlighted Parameter">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="ShowResults" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Click="NavigateToParameterDetails_Click" Text="Go To Parameterdetails">
+                        <MenuFlyoutItem.Icon>
+                            <SymbolIcon Symbol="PreviewLink" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </RadioButton.ContextFlyout>
+        </RadioButton>
+        <Border
+            Grid.Column="0"
+            Height="{Binding ElementName=rb_Liftparameter, Path=ActualHeight, Mode=OneWay}"
+            Margin="5,0,5,0"
+            VerticalAlignment="Bottom"
+            BorderBrush="YellowGreen"
+            BorderThickness="2"
+            CornerRadius="4"
+            IsHitTestVisible="False"
+            Visibility="{x:Bind LiftParameter.IsKey, Mode=OneWay}">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+            </Border.Background>
+        </Border>
+        <Border
+            Grid.Column="0"
+            Height="{Binding ElementName=rb_Liftparameter, Path=ActualHeight, Mode=OneWay}"
+            Margin="5,0,5,0"
+            VerticalAlignment="Bottom"
+            BorderBrush="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
+            BorderThickness="2"
+            CornerRadius="4"
+            IsHitTestVisible="False"
+            Visibility="{x:Bind LiftParameter.HasErrors, Mode=OneWay}" />
+        <FontIcon
+            Grid.Column="1"
+            Margin="0,0,5,7"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontFamily="{StaticResource SymbolThemeFontFamily}"
+            Foreground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
+            Glyph="{x:Bind ErrorGlyph, Mode=OneWay}"
+            Visibility="{x:Bind LiftParameter.HasErrors, Mode=OneWay}">
+            <ToolTipService.ToolTip>
+                <StackPanel>
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
+                        Text="{x:Bind ErrorType, Mode=OneWay}" />
+                    <TextBlock
+                        Foreground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
+                        Text="{x:Bind LiftParameter.ValidationErrors, Mode=OneWay}"
+                        TextWrapping="WrapWholeWords" />
+                </StackPanel>
+            </ToolTipService.ToolTip>
+        </FontIcon>
+    </Grid>
+</UserControl>

@@ -64,6 +64,7 @@
     <None Remove="Controls\ParameterCheckBox.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
+    <None Remove="Controls\ParameterRadioButton.xaml" />
     <None Remove="Controls\ParameterTextBox.xaml" />
     <None Remove="Controls\PrePlanningNumberControl.xaml" />
     <None Remove="Images\Berechnungen.png" />
@@ -77,6 +78,8 @@
     <None Remove="Images\GoogleChrome.png" />
     <None Remove="Images\Handrails\handrail_HL13.png" />
     <None Remove="Images\Handrails\handrail_HL14.png" />
+    <None Remove="Images\HighlightBold.png" />
+    <None Remove="Images\HighlightColor.png" />
     <None Remove="Images\html.png" />
     <None Remove="Images\LiftDataManagerLogo.png" />
     <None Remove="Images\LiloTransparent.png" />
@@ -88,6 +91,8 @@
     <None Remove="Images\OrdnerTransparent.png" />
     <None Remove="Images\Ordneryellow.png" />
     <None Remove="Images\PdfTransparent.png" />
+    <None Remove="Images\TonerSaveOFF.png" />
+    <None Remove="Images\TonerSaveON.png" />
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
     <None Remove="MainWindow.xaml" />
@@ -108,6 +113,8 @@
     <Content Include="Images\GoogleChrome.png" />
     <Content Include="Images\Handrails\handrail_HL13.png" />
     <Content Include="Images\Handrails\handrail_HL14.png" />
+    <Content Include="Images\HighlightBold.png" />
+    <Content Include="Images\HighlightColor.png" />
     <Content Include="Images\LiftDataManagerLogo.png" />
     <Content Include="Images\LiloTransparent.png" />
     <Content Include="Images\Ordnerblue.png" />
@@ -118,6 +125,8 @@
     <Content Include="Images\OrdnerTransparent.png" />
     <Content Include="Images\Ordneryellow.png" />
     <Content Include="Images\PdfTransparent.png" />
+    <Content Include="Images\TonerSaveOFF.png" />
+    <Content Include="Images\TonerSaveON.png" />
     <Content Include="Images\VaultTransparent.png" />
     <Content Include="Images\ZiehlAbeggTransparent.png" />
   </ItemGroup>
@@ -168,6 +177,10 @@
     </None>
     <Page Update="Controls\HistorySearchBar.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Controls\ParameterRadioButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\ParameterNumberTextBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
