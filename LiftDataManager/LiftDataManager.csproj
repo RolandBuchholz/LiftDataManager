@@ -63,6 +63,7 @@
     <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
     <None Remove="Controls\ParameterCheckBox.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
+    <None Remove="Controls\ParameterCustomCheckBox.xaml" />
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
     <None Remove="Controls\ParameterRadioButton.xaml" />
     <None Remove="Controls\ParameterTextBox.xaml" />
@@ -176,6 +177,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Page Update="Controls\HistorySearchBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Controls\ParameterCustomCheckBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Controls\ParameterRadioButton.xaml">

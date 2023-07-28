@@ -1,0 +1,52 @@
+<UserControl
+    x:Class="LiftDataManager.Controls.ParameterCustomCheckBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10,5,5,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <CheckBox
+            x:Name="chk_Liftparameter"
+            Grid.Column="0"
+            MinWidth="0"
+            VerticalAlignment="Bottom"
+            IsChecked="{x:Bind LiftParameter.Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
+        <TextBox
+            x:Name="txt_Liftparameter"
+            Grid.Column="1"
+            IsEnabled="{Binding ElementName=chk_Liftparameter, Path=IsChecked, Mode=OneWay}"
+            PlaceholderText="benutzerdefinierte Eingabe"
+            Text="{x:Bind LiftParameter.Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}">
+            <TextBox.ContextFlyout>
+                <TextCommandBarFlyout Opening="TextCommandBarFlyout_Opening" Placement="Bottom" />
+            </TextBox.ContextFlyout>
+        </TextBox>
+        <Border
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Height="{Binding ElementName=txt_Liftparameter, Path=ActualHeight, Mode=OneWay}"
+            Margin="-5,0,0,0"
+            VerticalAlignment="Bottom"
+            BorderBrush="YellowGreen"
+            BorderThickness="2"
+            CornerRadius="4"
+            IsHitTestVisible="False"
+            Visibility="{x:Bind LiftParameter.IsKey, Mode=OneWay}">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+            </Border.Background>
+        </Border>
+    </Grid>
+</UserControl>

@@ -676,21 +676,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <Grid
+                                    <SpeziControls:ParameterCustomCheckBox
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren5"
@@ -702,21 +691,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <Grid
+                                    <SpeziControls:ParameterCustomCheckBox
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren6"
@@ -754,20 +732,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*">
-                                    <Grid
-                                        Grid.Column="0"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -924,20 +889,7 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <Grid
-                                        Grid.Column="2"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabinentuer7"
@@ -953,20 +905,7 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <Grid
-                                        Grid.Column="2"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabinentuer8"
@@ -982,20 +921,7 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <Grid
-                                        Grid.Column="2"
-                                        Margin="5,10,5,0"
-                                        ColumnDefinitions="Auto,*">
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
-                                        <TextBox
-                                            Grid.Column="1"
-                                            PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
-                                    </Grid>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>

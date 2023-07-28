@@ -961,8 +961,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(11).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"],false, "WECO Notstromgerät");
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
-                    row.RelativeItem();
+                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
+                    
                 });
                 table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
