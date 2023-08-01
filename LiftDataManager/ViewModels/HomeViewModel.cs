@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
+using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
+using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -63,6 +65,30 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     [ObservableProperty]
     private bool showCarWeightBorder;
+
+    [ObservableProperty]
+    private double payloadTable6;
+
+    [ObservableProperty]
+    private double payloadTable7;
+
+    [ObservableProperty]
+    private double customPayload;
+    partial void OnCustomPayloadChanged(double value)
+    {
+        if(payloadTable7 == 0) 
+            return;
+        if (value < payloadTable7)
+            return;
+        if (value > LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q"))
+            return;
+
+        ParamterDictionary!["var_Q1"].Value = value.ToString();
+        _logger.LogInformation(60132, "CustomPayload", value);
+    }
+
+    [ObservableProperty]
+    private bool canEditCustomPayload;
 
     [ObservableProperty]
     private string? spezifikationStatusTyp;
@@ -624,6 +650,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
         _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
+
+        PayloadTable6 = payLoadResult.NennLastTabelle6;
+        PayloadTable7 = payLoadResult.NennLastTabelle7;
+        CanEditCustomPayload = string.Equals(payLoadResult.CargoTyp, "Lastenaufzug") && string.Equals(payLoadResult.DriveSystem, "Hydraulik");
 
         var carWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParamterDictionary);
 

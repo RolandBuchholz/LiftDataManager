@@ -518,8 +518,7 @@
                             <StackPanel>
                                 <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
                                     Anwendung zur Datenerfassung und Bearbeitung der Aufzugsspezifikationsdaten.<LineBreak />
-                                    Datenselektion, Plausibilitätsprüfung und Berechnungsmodule sorgen für ein optimale Datenintegrität.<LineBreak />
-                                    Info: Schreibgeschützte Parameter können im Adminmode geändert werden.</TextBlock>
+                                    Datenselektion, Plausibilitätsprüfung und Berechnungsmodule sorgen für eine optimale Datenintegrität.</TextBlock>
                                 <TextBlock
                                     Margin="0,10,0,0"
                                     Style="{ThemeResource BodyTextBlockStyle}"

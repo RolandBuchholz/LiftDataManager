@@ -1018,6 +1018,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value, "0"))
         {
             var load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
+            var reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q1");
             var area = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_A_Kabine");
             var lift = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Aufzugstyp");
             var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
@@ -1031,7 +1032,11 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
             if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
             {
-                ParamterDictionary["var_Q1"].Value = Convert.ToString(_calculationsModuleService.GetLoadFromTable(area, "Tabelle6"));
+                var loadTable7 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle7");
+                if (reducedLoad <  loadTable7)
+                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
+                if (reducedLoad > load)
+                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
             }
             else
             {

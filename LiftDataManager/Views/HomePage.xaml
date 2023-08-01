@@ -498,17 +498,14 @@
                             <RowDefinition />
                             <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
                         <Border
                             Grid.RowSpan="3"
-                            Grid.ColumnSpan="2"
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <Grid Grid.Row="0" Grid.Column="0">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
@@ -520,6 +517,46 @@
                                 Unit="kg" />
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="1"
+                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_v'], Mode=TwoWay}"
+                                PlaceholderText="Nenngeschwindigkeit"
+                                ShowDefaultHeader="True"
+                                Unit="m/s" />
+                            <SpeziControls:ParameterNumberTextBox
+                                Grid.Column="2"
+                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_F'], Mode=TwoWay}"
+                                PlaceholderText="Fahrkorbgewicht"
+                                ReadOnly="True"
+                                ShowDefaultHeader="True"
+                                Unit="kg">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Fahrkorbgewicht wird automatisch berechnet</TextBlock>
+                                </ToolTipService.ToolTip>
+                            </SpeziControls:ParameterNumberTextBox>
+                            <SpeziControls:ParameterNumberTextBox
+                                Grid.Column="3"
+                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Personen'], Mode=TwoWay}"
+                                PlaceholderText="Anzahl Personen"
+                                ReadOnly="True"
+                                ShowDefaultHeader="True"
+                                Unit="Per.">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        Personenanzahl wird automatisch berechnet</TextBlock>
+                                </ToolTipService.ToolTip>
+                            </SpeziControls:ParameterNumberTextBox>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <SpeziControls:ParameterNumberTextBox
+                                Grid.Column="0"
                                 LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Q1'], Mode=TwoWay}"
                                 PlaceholderText="Gedrängelast Q'"
                                 ReadOnly="True"
@@ -528,45 +565,100 @@
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
                                         <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                        Gedrängelast wird automatisch berechnet</TextBlock>
+                                        Gedrängelast wird automatisch berechnet<LineBreak />
+                                        <Run FontSize="16" Text="Info:" /><LineBreak />
+                                        5.4.2.2.4 Bei hydraulisch betriebenen Lastenaufzügen<LineBreak />
+                                        muss bei der Auslegung des Fahrkorbs,<LineBreak />
+                                        des Fahrkorbrahmens,<LineBreak />
+                                        der Verbindung zwischen Fahrkorb und Kolben (Zylinder),<LineBreak />
+                                        der Tragmittel (von indirekt angetriebenen Aufzügen),<LineBreak />
+                                        der Fangvorrichtung am Fahrkorb, Leitungsbruchventil,<LineBreak />
+                                        Drossel-/Drosselrück-schlagventil, der Aufsetzvorrichtung,<LineBreak />
+                                        der Führungsschienen und der Puffer<LineBreak />
+                                        von einer Last ausgegangen werden,<LineBreak />
+                                        die sich aus der Tabelle 6 (5.4.2.1) ergibt.<LineBreak />
+                                        Der Zylinder kann in Übereinstimmung mit der in Tabelle 7<LineBreak />
+                                        angegebenen Nennlast berechnet werden.</TextBlock>
                                 </ToolTipService.ToolTip>
                             </SpeziControls:ParameterNumberTextBox>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                    ui:TextBoxExtensions.ValidationType="Decimal"
+                                    Header="Eingabe benutzerdefinierte Gedrängelast"
+                                    IsReadOnly="{x:Bind ViewModel.CanEditCustomPayload, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                                    Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay}"
+                                    TextAlignment="Right">
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock>
+                                            <Run FontSize="16" Text="Benutzerdefinierte Gedrängelast:" /><LineBreak />
+                                            <Run
+                                                FontSize="14"
+                                                Foreground="IndianRed"
+                                                Text="nur bei Hydraulik Lastenaufzügen möglich" /><LineBreak />
+                                            Gedrängelast kann vom Benutzer angepasst werden.<LineBreak />
+                                            Die Gedrängelast muss den Tabellen 6 und 7<LineBreak />
+                                            der EN81:20 5.4.2 entsprechen!</TextBlock>
+                                    </ToolTipService.ToolTip>
+                                </TextBox>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    MinWidth="35"
+                                    Margin="0,0,5,6"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="14"
+                                    Text="kg" />
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Grid.Column="0"
+                                    Margin="5,0,5,0"
+                                    Header="Nutzlast Tabelle 6 (EN 81-20 5.4.2)"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.PayloadTable6, Mode=OneWay}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    MinWidth="35"
+                                    Margin="0,0,5,6"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="14"
+                                    Text="kg" />
+                            </Grid>
+                            <Grid Grid.Column="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Grid.Column="0"
+                                    Margin="5,0,10,0"
+                                    Header="reduzierte Nutzlastlast Tabelle 7 (EN 81-20 5.4.2)"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.PayloadTable7, Mode=OneWay}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    MinWidth="35"
+                                    Margin="0,0,5,6"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="14"
+                                    Text="kg" />
+                            </Grid>
                         </Grid>
-                        <SpeziControls:ParameterNumberTextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_F'], Mode=TwoWay}"
-                            PlaceholderText="Fahrkorbgewicht"
-                            ReadOnly="True"
-                            ShowDefaultHeader="True"
-                            Unit="kg">
-                            <ToolTipService.ToolTip>
-                                <TextBlock>
-                                    <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                    Fahrkorbgewicht wird automatisch berechnet</TextBlock>
-                            </ToolTipService.ToolTip>
-                        </SpeziControls:ParameterNumberTextBox>
-                        <SpeziControls:ParameterNumberTextBox
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_v'], Mode=TwoWay}"
-                            PlaceholderText="Nenngeschwindigkeit"
-                            ShowDefaultHeader="True"
-                            Unit="m/s" />
-                        <SpeziControls:ParameterNumberTextBox
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Personen'], Mode=TwoWay}"
-                            PlaceholderText="Anzahl Personen"
-                            ReadOnly="True"
-                            ShowDefaultHeader="True"
-                            Unit="Per.">
-                            <ToolTipService.ToolTip>
-                                <TextBlock>
-                                    <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                    Personenanzahl wird automatisch berechnet</TextBlock>
-                            </ToolTipService.ToolTip>
-                        </SpeziControls:ParameterNumberTextBox>
                     </Grid>
                 </Expander>
                 <Expander
