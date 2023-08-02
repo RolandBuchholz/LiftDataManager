@@ -15,12 +15,12 @@ public sealed partial class ParameterDetailControl : UserControl
 
     public Parameter? ListDetailsMenuItem
     {
-        get 
+        get
         {
             var liftparameter = GetValue(ListDetailsMenuItemProperty) as Parameter;
             SetParameterState(liftparameter);
             return liftparameter;
-        } 
+        }
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
     public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(Parameter), typeof(ParameterDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
@@ -53,20 +53,24 @@ public sealed partial class ParameterDetailControl : UserControl
     {
         ErrorsList.Clear();
 
-        if (liftParameter is null) return;
+        if (liftParameter is null)
+            return;
 
         if (!liftParameter.HasErrors)
         {
             ErrorsList.Add(new ParameterStateInfo(liftParameter.Name!, liftParameter.DisplayName!, true)
             {
-                Severity = ParameterStateInfo.ErrorLevel.Valid, ErrorMessage ="Keine Information, Warnungen oder Fehler vorhanden"
+                Severity = ParameterStateInfo.ErrorLevel.Valid,
+                ErrorMessage = "Keine Information, Warnungen oder Fehler vorhanden"
             });
         }
 
         if (liftParameter.parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? errorList))
         {
-            if (errorList is null) return;
-            if (!errorList.Any()) return;
+            if (errorList is null)
+                return;
+            if (!errorList.Any())
+                return;
 
             var sortedErrorList = errorList.OrderByDescending(p => p.Severity);
             foreach (var item in sortedErrorList)

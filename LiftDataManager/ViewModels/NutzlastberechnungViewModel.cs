@@ -66,7 +66,7 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
         {
             _ = SetModelStateAsync();
             PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
-            _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, PayLoadResult.PersonenBerechnet,PayLoadResult.NutzflaecheGesamt);
+            _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
         }
     }
 

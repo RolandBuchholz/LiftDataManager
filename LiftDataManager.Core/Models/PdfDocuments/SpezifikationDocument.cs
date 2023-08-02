@@ -364,8 +364,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Fahrkorbtyp"]);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Kabine_ZT"]);
-                table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_KBI"],"mm");
-                table.Cell().Row(3).Column(4).ParameterStringCell(ParameterDictionary["var_KTI"],"mm");
+                table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_KBI"], "mm");
+                table.Cell().Row(3).Column(4).ParameterStringCell(ParameterDictionary["var_KTI"], "mm");
                 table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_KHLicht"], "mm");
                 table.Cell().Row(4).Column(4).ParameterStringCell(ParameterDictionary["var_KD"], "mm");
                 table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_KU"], "mm");
@@ -416,17 +416,17 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_BelagAufDemKabinendach"]);
                 table.Cell().Row(16).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Boden").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodentyp"]);
-                table.Cell().Row(16).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KU"],"mm",false,false,"Kabinenbodenhöhe (inkl. Bodenbelag)");
+                table.Cell().Row(16).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KU"], "mm", false, false, "Kabinenbodenhöhe (inkl. Bodenbelag)");
                 table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenblech"], "mm");
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_BoPr"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SonderExternBodengewicht"], "kg/m²");
                 });
-                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"],null,false,false, "Boden Zusatzinformationen");
+                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
                 table.Cell().Row(19).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
-                table.Cell().Row(19).Column(5).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"],"kg/m²");
-                table.Cell().Row(19).Column(6).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"],"mm");
+                table.Cell().Row(19).Column(5).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
+                table.Cell().Row(19).Column(6).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
                 table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
             });
         });
@@ -604,7 +604,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                var carFrameType= _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);  
+                var carFrameType = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
                 var cWTRailName = carFrameType?.DriveTypeId == 2 ? "Schienen Joch" : "Schienen GGW";
                 var cWTGuideName = carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
 
@@ -616,7 +616,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).Border(0.1f)
                                        .BorderColor(borderColor)
                                        .PaddingLeft(5).PaddingTop(0)
-                                       .PaddingBottom(-10).Text(text => 
+                                       .PaddingBottom(-10).Text(text =>
                                        {
                                            text.Line("Rahmengewicht").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
@@ -628,7 +628,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
                 table.Cell().Row(3).Column(4).ParameterStringCell(ParameterDictionary["var_TypFuehrung"]);
                 table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(cWTGuideName).FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart_GGW"], null, false,false, carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW");
+                table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart_GGW"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW");
                 table.Cell().Row(4).Column(4).ParameterStringCell(ParameterDictionary["var_TypFuehrung_GGW"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW");
                 table.Cell().Row(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schienen FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_FuehrungsschieneFahrkorb"]);
@@ -661,10 +661,10 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
                 table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"],null,false,false,"Beschichtungsart Fangrahmen");
+                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"], null, false, false, "Beschichtungsart Fangrahmen");
                 table.Cell().Row(18).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"], null, false, false, "Beschichtungsart Fangrahmen");
                 table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(19).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"],null, true, true);
+                table.Cell().Row(19).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
             });
         });
     }
@@ -712,22 +712,22 @@ public class SpezifikationDocument : PdfBaseDocument
                 bool entranceD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
 
                 table.Cell().Row(1).Column(1).RowSpan(31).RotateLeft().AlignMiddle().AlignCenter().Text("Türen").FontColor(borderColor).Bold();
-                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Fabrikat A": "Türen Fabrikat").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Fabrikat A" : "Türen Fabrikat").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuertyp"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuerbezeichnung"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_ZulassungTuere"], null, false, true);
                 });
-                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Abmessungen A": "Türen Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Abmessungen A" : "Türen Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB"],"mm", false, false, "Türbreite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH"],"mm", false, false, "Türhöhe");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht"],"kg");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB"], "mm", false, false, "Türbreite");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH"], "mm", false, false, "Türhöhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht"], "kg");
                 });
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tueroeffnung"]);
-                table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel"],"Stk");
+                table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel"], "Stk");
                 table.Cell().Row(4).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat B").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
                 {
@@ -802,7 +802,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Estrichbleche"]);
                     row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_53"]);
-                    
+
                 });
                 table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
                 {
@@ -906,7 +906,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_XKnopfsteuerung"], null, true);
-                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Gruppe"], true, "Gruppe mit" );
+                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Gruppe"], true, "Gruppe mit");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_GruppeMit"], null, true, false);
                     row.RelativeItem(2).ParameterBoolCell(ParameterDictionary["var_AllstromSensitiverFI"]);
                 });
@@ -960,9 +960,9 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(11).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"],false, "WECO Notstromgerät");
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"], false, "WECO Notstromgerät");
                     row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
-                    
+
                 });
                 table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
@@ -976,7 +976,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(14).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Schaltschrankgroesse"]);
                 table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Steuerung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_SonstigesSteuerung"], null, true,true);
+                table.Cell().Row(15).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_SonstigesSteuerung"], null, true, true);
             });
         });
     }
@@ -1146,7 +1146,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Signalisation Kabinentableau").FontColor(borderColor).Bold();
                 table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Kabinentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabKabinentableau"]);
-                table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_Info1"],null, false, true);
+                table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_Info1"], null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabAufbau"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_FT_Info2"]);
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabMaterial"]);
@@ -1157,8 +1157,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(4).Column(6).ParameterStringCell(ParameterDictionary["var_KabTabTFTBildschirmTyp"]);
                 table.Cell().Row(5).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabPfeilescrollend"],true);
-                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabPfeilestat"],true);
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabPfeilescrollend"], true);
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabPfeilestat"], true);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_KabTabLCDAnzeigeTyp"]);
                 });
                 table.Cell().Row(6).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Gravuren Texte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
@@ -1204,11 +1204,11 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tasterplatten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ParameterStringCell(ParameterDictionary["var_KabTabTasterplatten"]);
                 table.Cell().Row(15).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KabTabTasterplattenmaterial"]);
-                table.Cell().Row(15).Column(6).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabakustischeQuittung"],true);
+                table.Cell().Row(15).Column(6).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_KabTabakustischeQuittung"], true);
                 table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Farbe LED-Quittung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(16).Column(3).ParameterStringCell(ParameterDictionary["var_ColLedFT"]);
                 table.Cell().Row(16).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Quittung_Info"]);
-                table.Cell().Row(16).Column(6).BorderTop(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Schutzrosette"],true);
+                table.Cell().Row(16).Column(6).BorderTop(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_Schutzrosette"], true);
                 table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Funktionstaster").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
                 {
@@ -1238,8 +1238,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(20).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Code- Kartenleser").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(20).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.AutoItem().ParameterBoolCell(ParameterDictionary["var_KabTabCodeKartenleser"],false,"");
-                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_KabTabCodeKartenleserTyp"],null,true);
+                    row.AutoItem().ParameterBoolCell(ParameterDictionary["var_KabTabCodeKartenleser"], false, "");
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_KabTabCodeKartenleserTyp"], null, true);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabCodeKinLiefenth"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabkundenseit"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_KabTabEinbauspaeter"]);
@@ -1322,10 +1322,10 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(7).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabEvakuierung"]);
                 table.Cell().Row(7).Column(5).ParameterBoolCell(ParameterDictionary["var_AussTabbesetzt"]);
                 table.Cell().Row(7).Column(6).ParameterBoolCell(ParameterDictionary["var_AussTabFeuerwehrfahrt"]);
-                table.Cell().Row(8).Column(3).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabindividuelleGroee"],true);
+                table.Cell().Row(8).Column(3).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabindividuelleGroee"], true);
                 table.Cell().Row(8).Column(4).ParameterStringCell(ParameterDictionary["var_Groesse_Info_AT"]);
-                table.Cell().Row(8).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabanalogTast"],true);
-                table.Cell().Row(8).Column(6).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_34"],true);
+                table.Cell().Row(8).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabanalogTast"], true);
+                table.Cell().Row(8).Column(6).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_34"], true);
                 table.Cell().Row(9).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabAnzeigeueberStandanzeige"]);
                 table.Cell().Row(9).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabBrandfall"]);
                 table.Cell().Row(9).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_35"]);
@@ -1350,14 +1350,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(14).Column(4).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Quittung_Info_AT"]);
                 table.Cell().Row(14).Column(6).BorderTop(0.1f).BorderColor(borderColor).PaddingTop(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_51"], true);
                 table.Cell().Row(15).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schlüsselschalter").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabAbschaltenHaltstelle"],true);
+                table.Cell().Row(15).Column(3).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabAbschaltenHaltstelle"], true);
                 table.Cell().Row(15).Column(4).ParameterStringCell(ParameterDictionary["var_AbschaltenWo"]);
-                table.Cell().Row(15).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabVorzugauenHaltestellen"],true);
+                table.Cell().Row(15).Column(5).PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussTabVorzugauenHaltestellen"], true);
                 table.Cell().Row(15).Column(6).ParameterStringCell(ParameterDictionary["var_VorzugWo"]);
                 table.Cell().Row(16).Column(3).ParameterBoolCell(ParameterDictionary["var_AussTabPZStd"]);
                 table.Cell().Row(16).Column(4).ParameterBoolCell(ParameterDictionary["var_AussTabFederrueckz"]);
                 table.Cell().Row(16).Column(5).ParameterBoolCell(ParameterDictionary["var_AussTabSchlAbzSt"]);
-                table.Cell().Row(16).Column(6).ParameterStringCell(ParameterDictionary["var_StellungenPZ"],"Stellungen",true);
+                table.Cell().Row(16).Column(6).ParameterStringCell(ParameterDictionary["var_StellungenPZ"], "Stellungen", true);
                 table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_37"]);
@@ -1378,7 +1378,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Montage Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(19).Column(3).ParameterBoolCell(ParameterDictionary["var_Tuerzargenmontage"]);
                 table.Cell().Row(19).Column(4).ParameterBoolCell(ParameterDictionary["var_Mauerwerkmontage"]);
-                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"],false, "Mauerumfassungszargen");
+                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"], false, "Mauerumfassungszargen");
                 table.Cell().Row(19).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_42"]);
                 table.Cell().Row(20).Column(3).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_43"]);
                 table.Cell().Row(20).Column(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_44"]);
@@ -1454,7 +1454,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(6).Column(5).ParameterBoolCell(ParameterDictionary["var_Wfabesetzt"]);
                 table.Cell().Row(6).Column(6).ParameterBoolCell(ParameterDictionary["var_WfaFeuerwehrfahrt"]);
                 table.Cell().Row(7).Column(3).ParameterBoolCell(ParameterDictionary["var_WfaIndividuelleGroesse"]);
-                table.Cell().Row(7).Column(4).ParameterStringCell(ParameterDictionary["var_Groesse_Info_WFA"],null ,true);
+                table.Cell().Row(7).Column(4).ParameterStringCell(ParameterDictionary["var_Groesse_Info_WFA"], null, true);
                 table.Cell().Row(7).Column(5).ParameterBoolCell(ParameterDictionary["var_WfaAnalogTast"]);
                 table.Cell().Row(7).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_47"]);
                 table.Cell().Row(8).Column(3).ParameterBoolCell(ParameterDictionary["var_WfaAnzeigeueberStandanzeige"]);
@@ -1542,8 +1542,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(7).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_WANotbefreiungdurch"]);
                 table.Cell().Row(8).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesWart"]);
                 table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("VOB-Abnahme / vereinbarte Gewähleistungsdauer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(9).Column(3).ColumnSpan(4).Row(row => 
-                { 
+                table.Cell().Row(9).Column(3).ColumnSpan(4).Row(row =>
+                {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_VOB2"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_VOB4"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_VOB5"]);
@@ -1593,7 +1593,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Montage / TÜV").FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Potentialausgleich").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_AnschludurchBE"]);
-                table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Anschlubauseits"],true);
+                table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_Anschlubauseits"], true);
                 table.Cell().Row(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachttürmontage").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_VerfugenzumBaukoerper"]);
                 table.Cell().Row(2).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_56"]);
@@ -1652,7 +1652,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_potfreierKontakt"]);
                 table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_50"]);
                 table.Cell().Row(4).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Rauch- und Wärmeabzugsanlage").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(4).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesRWA"], null, true,true);
+                table.Cell().Row(4).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_sonstigesRWA"], null, true, true);
             });
         });
     }
@@ -1777,9 +1777,10 @@ public class SpezifikationDocument : PdfBaseDocument
 
                 var haupthalteStelle = ParameterDictionary["var_Haupthaltestelle"].Value;
 
-                if (!string.IsNullOrWhiteSpace(haupthalteStelle) )
+                if (!string.IsNullOrWhiteSpace(haupthalteStelle))
                 {
-                    if (haupthalteStelle == "NV") return;
+                    if (haupthalteStelle == "NV")
+                        return;
                     uint row = haupthalteStelle[3..4] switch
                     {
                         "A" => 2,
@@ -1797,7 +1798,7 @@ public class SpezifikationDocument : PdfBaseDocument
 
     void CarFrameDetailData(IContainer container)
     {
-        container.Table(table => 
+        container.Table(table =>
         {
             table.ColumnsDefinition(columns =>
             {
@@ -1825,7 +1826,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(8).Column(2).AlignRight().Text(ParameterDictionary["var_PUH"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(8).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
             table.Cell().Row(9).Column(1).Text("Fangrahmengewicht:").FontSize(fontSizeXXS);
-            table.Cell().Row(9).Column(2).AlignRight().Text($"{ _calculationsModuleService.GetCarFrameWeight(ParameterDictionary)}").FontSize(fontSizeXXS);
+            table.Cell().Row(9).Column(2).AlignRight().Text($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)}").FontSize(fontSizeXXS);
             table.Cell().Row(9).Column(3).AlignLeft().PaddingLeft(2).Text("kg").FontSize(fontSizeXXS);
             table.Cell().Row(10).Column(1).Text("GGW-Rahmengewicht:").FontSize(fontSizeXXS);
             table.Cell().Row(10).Column(2).AlignRight().Text(ParameterDictionary["var_GGW_Rahmen_Gewicht"].Value).FontSize(fontSizeXXS);

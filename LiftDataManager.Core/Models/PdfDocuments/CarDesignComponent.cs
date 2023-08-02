@@ -53,9 +53,9 @@ public class CarDesignComponent : IComponent
         halsL2 = (float)LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L2");
         halsL3 = (float)LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L3");
         halsL4 = (float)LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L4");
-        flaeche = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_A_Kabine")) ? "0" 
+        flaeche = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_A_Kabine")) ? "0"
                                                                : LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_A_Kabine");
-        personen = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Personen")) ? "0" 
+        personen = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Personen")) ? "0"
                                                                 : LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Personen");
 
         if (kabinenbreite <= 0)
@@ -82,7 +82,7 @@ public class CarDesignComponent : IComponent
                 canvas.Clear();
                 using var paintBase = new SKPaint
                 {
-                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 :  Colors.BlueGrey.Medium),
+                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.BlueGrey.Medium),
                     IsStroke = LowPrintColor,
                     StrokeWidth = 7,
                     IsAntialias = true
@@ -131,7 +131,7 @@ public class CarDesignComponent : IComponent
 
             layers.Layer().ShowIf(zugangA).AlignBottom().Column(colum =>
             {
-                colum.Item().PaddingBottom(-20).Row(row => 
+                colum.Item().PaddingBottom(-20).Row(row =>
                 {
                     row.AutoItem().PaddingLeft(100).Text("L1").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
                     row.RelativeItem().AlignCenter().Text("TB (A)").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
@@ -141,7 +141,7 @@ public class CarDesignComponent : IComponent
                 {
                     row.ConstantItem(100 + halsL1).AlignRight().Padding(5).Text($"{halsL1}").FontColor(Colors.Black).FontSize(80);
                     row.RelativeItem().AlignCenter().Text($"{tuerbreiteA}").FontColor(LowPrintColor ? Colors.Black : Colors.White).FontSize(80);
-                    row.ConstantItem(100 + kabinenbreite - tuerbreiteA - halsL1).Padding(5).Text($"{kabinenbreite-tuerbreiteA-halsL1}").FontColor(Colors.Black).FontSize(80);
+                    row.ConstantItem(100 + kabinenbreite - tuerbreiteA - halsL1).Padding(5).Text($"{kabinenbreite - tuerbreiteA - halsL1}").FontColor(Colors.Black).FontSize(80);
                 });
             });
 

@@ -1,8 +1,6 @@
 ﻿using Cogs.Collections;
-using LiftDataManager.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl

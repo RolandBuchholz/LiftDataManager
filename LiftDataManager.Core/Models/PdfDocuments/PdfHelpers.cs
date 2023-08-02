@@ -114,7 +114,7 @@ public static class PdfHelpers
         else
         {
             text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}");
-        }    
+        }
     });
 
     public static void ParameterDateCell(this IContainer container, Parameter parameter, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
@@ -189,7 +189,7 @@ public static class PdfHelpers
                 else
                 {
                     layers.PrimaryLayer().PaddingLeft(12).Text(optinaleDescription is null ? parameter.DisplayName : optinaleDescription);
-                } 
+                }
             });
         });
 

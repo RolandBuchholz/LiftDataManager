@@ -28,7 +28,7 @@ public class NutzlastberechnungDocument : PdfBaseDocument
         container.PaddingLeft(10, Unit.Millimetre).Column(column =>
         {
             column.Item().PaddingTop(5, Unit.Millimetre).Text("Nutzfläche des Fahrkorbs, Nennlast,Anzahl der Personen (EN81:20 - 5.4.2)").FontSize(fontSizeXL).Bold();
-            column.Item().PaddingTop(2,Unit.Millimetre).Text(text =>
+            column.Item().PaddingTop(2, Unit.Millimetre).Text(text =>
             {
                 text.Span(PayLoadResult.CargoTyp).FontSize(fontSizeL).Bold();
                 text.Span(" (");
@@ -39,8 +39,8 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             column.Item().Row(row =>
             {
                 row.AutoItem().MinHeight(475).Element(TableCarData);
-                row.RelativeItem().PaddingVertical(5,Unit.Millimetre).PaddingHorizontal(15,Unit.Millimetre).Component(new CarDesignComponent(ParameterDictionary, LowPrintColor));
-            });        
+                row.RelativeItem().PaddingVertical(5, Unit.Millimetre).PaddingHorizontal(15, Unit.Millimetre).Component(new CarDesignComponent(ParameterDictionary, LowPrintColor));
+            });
             column.Item().Text(text =>
             {
                 text.Line("* 5.4.2.1.3").FontSize(10).Bold();
@@ -81,7 +81,7 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             {
                 column.Item().Text("Zugang A").Bold();
                 column.Item().Text($"{ParameterDictionary["var_Tuertyp"].Value}{ParameterDictionary["var_Tuerbezeichnung"].Value}");
-                column.Item().Row(row => 
+                column.Item().Row(row =>
                 {
                     row.AutoItem().Text("Türbreite (TB)");
                     row.RelativeItem().AlignRight().Text($"{ParameterDictionary["var_TB"].Value} mm");
@@ -140,10 +140,11 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             table.Cell().Row(8).Column(1).PaddingLeft(10).Text("Kabinen Nutzfläche").FontSize(fontSizeL).Bold();
             table.Cell().Row(9).Column(1).PaddingLeft(10).Text("Fahrkorbfläche");
             table.Cell().Row(9).Column(2).AlignRight().Text($"{PayLoadResult.NutzflaecheKabine} m²");
-            table.Cell().Row(10).Column(1).ShowIf(PayLoadResult.ZugangA).PaddingLeft(10).Text(text => 
+            table.Cell().Row(10).Column(1).ShowIf(PayLoadResult.ZugangA).PaddingLeft(10).Text(text =>
             {
                 text.Span("Fläche Zugang A*");
-                if (PayLoadResult.NutzflaecheZugangA == 0) text.Span(" Tiefe < 100");
+                if (PayLoadResult.NutzflaecheZugangA == 0)
+                    text.Span(" Tiefe < 100");
             });
             table.Cell().Row(10).Column(2).ShowIf(PayLoadResult.ZugangA).AlignRight().Text($"{PayLoadResult.NutzflaecheZugangA} m²");
 

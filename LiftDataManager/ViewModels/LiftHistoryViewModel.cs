@@ -48,13 +48,13 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware,
             await _dialogService!.MessageDialogAsync("Edit Lift History Entry", "Auftrag ist schreibgeschützt(Checked In)!");
             return;
         }
-            
+
         if (sender is LiftHistoryEntry liftHistoryEntry)
         {
-           var timestamp = liftHistoryEntry.TimeStamp;
-           var name = liftHistoryEntry.Name;
+            var timestamp = liftHistoryEntry.TimeStamp;
+            var name = liftHistoryEntry.Name;
             SearchInput = name;
-            var result = await _dialogService!.InputDialogAsync("Edit Lift History Entry",$"Kommentar ({name}) ändern:", "Kommentar");
+            var result = await _dialogService!.InputDialogAsync("Edit Lift History Entry", $"Kommentar ({name}) ändern:", "Kommentar");
 
             if (!string.IsNullOrWhiteSpace(result))
             {

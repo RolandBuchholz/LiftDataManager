@@ -68,7 +68,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             case "var_Bodenbelagsdicke":
                 double newFloorThinkness = string.IsNullOrWhiteSpace(newValue) ? 0 : Convert.ToDouble(newValue, CultureInfo.CurrentCulture);
                 double oldFloorThinkness = string.IsNullOrWhiteSpace(oldValue) ? 0 : Convert.ToDouble(oldValue, CultureInfo.CurrentCulture);
-                ParamterDictionary["var_KU"].Value = currentFloorHeight <= 0? Convert.ToString(newFloorThinkness) : 
+                ParamterDictionary["var_KU"].Value = currentFloorHeight <= 0 ? Convert.ToString(newFloorThinkness) :
                                                                               Convert.ToString(currentFloorHeight - oldFloorThinkness + newFloorThinkness);
                 break;
             case "var_Bodentyp":

@@ -121,7 +121,7 @@ public sealed partial class CommandBar : UserControl
         {
             SetValue(CanShowHighlightedParametersProperty, value);
             RefreshView();
-            if (ViewSource is not null )
+            if (ViewSource is not null)
             {
                 if (ViewSource.View.Count == 0 && SelectedFilter == "Highlighted")
                 {

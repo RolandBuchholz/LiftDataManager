@@ -9,7 +9,7 @@ public class LiftHistoryEntry
     public DateTime TimeStamp { get; set; }
     public string? Comment { get; set; }
 
-    public LiftHistoryEntry(string name, string displayName , string newValue, string author, string comment)
+    public LiftHistoryEntry(string name, string displayName, string newValue, string author, string comment)
     {
         TimeStamp = DateTime.Now;
         Name = name;

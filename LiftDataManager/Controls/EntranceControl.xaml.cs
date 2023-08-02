@@ -94,7 +94,7 @@ public sealed partial class EntranceControl : UserControl
         if (entrance is not null && entrance.StartsWith("txtBox_"))
         {
             var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
-            ItemSource[entranceName].IsKey = !ItemSource[entranceName].IsKey; 
+            ItemSource[entranceName].IsKey = !ItemSource[entranceName].IsKey;
         }
     }
 

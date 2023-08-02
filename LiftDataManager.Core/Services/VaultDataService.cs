@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace LiftDataManager.Core.Services;
 
@@ -11,7 +11,7 @@ public class VaultDataService : IVaultDataService
     private const string pathPowershellScripts = @"C:\Work\Administration\PowerShellScripts\";
     private readonly ILogger<VaultDataService> _logger;
     private DownloadInfo DownloadInfo { get; set; } = new DownloadInfo();
-    public int ExitCode { get; private set;}
+    public int ExitCode { get; private set; }
 
     public VaultDataService(ILogger<VaultDataService> logger)
     {
@@ -66,7 +66,7 @@ public class VaultDataService : IVaultDataService
         var readOnlyPowershell = readOnly ? "$true" : "$false";
         var customFilePowershell = customFile ? "$true" : "$false";
 
-        _logger.LogInformation(60114, "start powershellScript with {starttyp}",starttyp);
+        _logger.LogInformation(60114, "start powershellScript with {starttyp}", starttyp);
         try
         {
             using Process psScript = new();

@@ -15,7 +15,7 @@ public class BoolToHighlightBrushConverter : IValueConverter
                    : new SolidColorBrush(Colors.Gray) { Opacity = 0.15 };
         }
 
-        return (bool)value ? new SolidColorBrush(Colors.YellowGreen) { Opacity = 0.2} 
+        return (bool)value ? new SolidColorBrush(Colors.YellowGreen) { Opacity = 0.2 }
                            : new SolidColorBrush(Colors.Transparent);
     }
 

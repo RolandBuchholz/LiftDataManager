@@ -77,7 +77,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             _settingService.SetSettingsAsync(nameof(AutoSavePeriod), value);
     }
 
-    public string[] SavePeriods = {"2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min" };
+    public string[] SavePeriods = { "2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min" };
 
 #pragma warning disable CA1822 // Member als statisch markieren
     public string UserName => string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
@@ -89,7 +89,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     public string AdskLicensingSDKInstalled => File.Exists(@"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\AdskLicensingSDK_6.dll") ? "installiert" : "nicht installiert";
 #pragma warning restore CA1822 // Member als statisch markieren
 
-    public List<string> LogLevel = new() { "Verbose", "Debug", "Information", "Warning", "Error" , "Fatal" };
+    public List<string> LogLevel = new() { "Verbose", "Debug", "Information", "Warning", "Error", "Fatal" };
 
     [ObservableProperty]
     private string? selectedLogLevel;
@@ -247,8 +247,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                     InfoBarVersionsUpdateIsOpen = true;
                     InfoBarVersionsUpdateText = $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
                     InfoBarVersionsUpdateSeverity = InfoBarSeverity.Informational;
-                    var dialogResult = await _dialogService.ConfirmationDialogAsync("LiftDataManagerVersionsUpdateCheck","Liftdatamanager wird nach dem Update neugestartet.\n" +
-                        "Nicht gespeicherte Daten gehen verloren!","Update starten","Später updaten","Abbrechen");
+                    var dialogResult = await _dialogService.ConfirmationDialogAsync("LiftDataManagerVersionsUpdateCheck", "Liftdatamanager wird nach dem Update neugestartet.\n" +
+                        "Nicht gespeicherte Daten gehen verloren!", "Update starten", "Später updaten", "Abbrechen");
                     if (dialogResult is not null && (bool)dialogResult)
                     {
                         InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
@@ -340,8 +340,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [RelayCommand]
     private static async Task OpenLogFolder()
     {
-       string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
-       if (Directory.Exists(path))
+        string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
+        if (Directory.Exists(path))
             Process.Start("explorer.exe", path);
         await Task.CompletedTask;
     }

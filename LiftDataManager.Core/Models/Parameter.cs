@@ -8,9 +8,9 @@ public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
     public bool DataImport { get; set; }
-    public bool DefaultUserEditable {get; set;}
- 
-    public Parameter(string value,int parameterTypeCodeId,int parameterTypId, IValidationParameterDataService validationParameterDataService)
+    public bool DefaultUserEditable { get; set; }
+
+    public Parameter(string value, int parameterTypeCodeId, int parameterTypId, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
         DataImport = true;
@@ -36,9 +36,9 @@ public partial class Parameter : ParameterBase
         DataImport = false;
     }
 
-    public string? Name {get; set;}
+    public string? Name { get; set; }
     public string? DisplayName { get; set; }
-    
+
     [ObservableProperty]
     public ObservableCollection<string> dropDownList = new();
 
@@ -49,7 +49,8 @@ public partial class Parameter : ParameterBase
     private string? comment;
     partial void OnCommentChanged(string? value)
     {
-        if (!DataImport) IsDirty = true;
+        if (!DataImport)
+            IsDirty = true;
     }
 
     [ObservableProperty]
@@ -98,16 +99,17 @@ public partial class Parameter : ParameterBase
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
     {
         ClearErrors(nameof(Value));
-        var result = await _validationParameterDataService.ValidateParameterAsync(Name!,DisplayName!, Value);
+        var result = await _validationParameterDataService.ValidateParameterAsync(Name!, DisplayName!, Value);
 
         if (result.Any(r => r.IsValid == false))
         {
             foreach (var parameterState in result)
             {
-                if(!parameterState.IsValid) AddError(nameof(Value), parameterState);
+                if (!parameterState.IsValid)
+                    AddError(nameof(Value), parameterState);
             }
         }
-       return result;
+        return result;
     }
 
     public async Task AfterValidateRangeParameterAsync(string[] dependentParameters)

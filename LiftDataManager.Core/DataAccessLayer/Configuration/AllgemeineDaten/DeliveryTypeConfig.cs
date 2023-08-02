@@ -7,6 +7,6 @@ public class DeliveryTypeConfig : BaseModelBuilder<DeliveryType>
         base.Configure(builder);
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
-                    .IsRequired();   
+                    .IsRequired();
     }
 }

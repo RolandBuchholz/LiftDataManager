@@ -63,6 +63,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--  Control Panel  -->
             <ComboBox
@@ -108,63 +109,134 @@
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.LoadDataCommand}"
-                Content="Load Data"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
+                ToolTipService.Placement="Bottom"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    Daten werden auf den lokalen Rechner geladen
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xEBD3;" />
+                    <TextBlock Text="Load Data" />
+                </StackPanel>
+            </Button>
             <Button
                 Grid.Column="3"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.UploadDataCommand}"
-                Content="Upload Vault"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+                ToolTipService.Placement="Bottom"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    Lokale Daten werden auf den Server hochgeladen
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE753;" />
+                    <TextBlock Text="Upload Vault" />
+                </StackPanel>
+            </Button>
             <Button
                 Grid.Column="4"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CheckOutCommand}"
-                Content="CheckOut"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+                ToolTipService.Placement="Bottom"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    Daten werden zur Bearbeitung für den Benutzer reserviert
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE785;" />
+                    <TextBlock Text="CheckOut" />
+                </StackPanel>
+            </Button>
             <Button
                 Grid.Column="5"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.ClearDataCommand}"
-                Content="Clear Data"
                 FontWeight="Bold"
                 Style="{StaticResource AccentButtonStyle}"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+                ToolTipService.Placement="Bottom"
+                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    Alle lokalen Daten werden gelöscht
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE894;" />
+                    <TextBlock Text="Clear Data" />
+                </StackPanel>
+            </Button>
             <Button
                 Grid.Column="7"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CreatePdfCommand}"
-                Content="Create Pdf"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.Placement="Bottom">
+                <ToolTipService.ToolTip>
+                    Erstellung einer Pdf-Datei für den Ausdruck
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xEA90;" />
+                    <TextBlock Text="Create Pdf" />
+                </StackPanel>
+            </Button>
             <Button
                 Grid.Column="8"
-                Width="175"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.DataImportCommand}"
+                CommandParameter="{x:Bind LiftDataImportDialog}"
+                FontWeight="Bold"
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.Placement="Bottom">
+                <ToolTipService.ToolTip>
+                    Datenimport aus einer vorhandenen Spezifikation
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Margin="-5,0,5,0" Symbol="Import" />
+                    <TextBlock Text="Import LiftData" />
+                </StackPanel>
+            </Button>
+            <Button
+                Grid.Column="9"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.ValidateAllParameterCommand}"
-                Content="Validate All Parameter"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.Placement="Bottom">
+                <ToolTipService.ToolTip>
+                    Alle Parameter werden auf Plausibilität geprüft
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="-5,0,5,0" Glyph="&#xF28B;" />
+                    <TextBlock Text="Validate All Parameter" />
+                </StackPanel>
+            </Button>
             <Button
-                Grid.Column="9"
-                Width="175"
+                Grid.Column="10"
                 Margin="5,0,5,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.SaveAllParameterCommand}"
-                Content="Save All Parameter"
                 FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.Placement="Bottom">
+                <ToolTipService.ToolTip>
+                    Alle Parameter werden in die XML gespeichert
+                </ToolTipService.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Margin="-5,0,5,0" Symbol="SaveLocal" />
+                    <TextBlock Text="Save All Parameter" />
+                </StackPanel>
+            </Button>
         </Grid>
         <!--  Parameter  -->
         <ScrollViewer
@@ -867,5 +939,136 @@
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
+        <ContentDialog
+            x:Name="LiftDataImportDialog"
+            Title="Datenimport von bestehender Spezifikation"
+            CloseButtonText="Abbrechen">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,-5,0,5"
+                    FontSize="12"
+                    Text="Daten aus einer vorhandenen Spezifikation importieren." />
+                <Image
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Width="125"
+                    Height="125"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/Images/TonerSaveOFF.png" />
+                <FontIcon
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="10,5,10,0"
+                    VerticalAlignment="Top"
+                    FontSize="40"
+                    Foreground="IndianRed"
+                    Glyph="&#xE7BA;" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    FontSize="32"
+                    Foreground="IndianRed"
+                    Text="Warnung" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="10,-10,0,0"
+                    FontSize="16">
+                    Daten der Spezifikation<LineBreak />
+                    <Run
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Text="{x:Bind ViewModel.SpezifikationName, Mode=OneWay}" /><LineBreak />
+                    werden überschrieben!</TextBlock>
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,5,0,5"
+                    FontSize="16"
+                    Text="Import Daten auswählen:" />
+                <ComboBox
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    SelectedItem="{x:Bind ViewModel.ImportSpezifikationStatusTyp, Mode=TwoWay}">
+                    <x:String>Auftrag</x:String>
+                    <x:String>Angebot</x:String>
+                    <x:String>Vorplanung</x:String>
+                </ComboBox>
+                <controls:SwitchPresenter
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="5,0,5,0"
+                    Value="{x:Bind ViewModel.ImportSpezifikationStatusTyp, Mode=OneWay}">
+                    <controls:Case Value="Auftrag">
+                        <TextBox
+                            x:Name="AuftragsTextboxImport"
+                            MinWidth="125"
+                            ui:TextBoxExtensions.Regex="[0-9-VP]"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            MaxLength="10"
+                            PlaceholderText="Auftragsnummer"
+                            Text="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </controls:Case>
+                    <controls:Case Value="Angebot">
+                        <SpeziControls:OrderNumberControl OrderNumber="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </controls:Case>
+                    <controls:Case Value="Vorplanung">
+                        <SpeziControls:PrePlanningNumberControl PrePlanningNumber="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </controls:Case>
+                </controls:SwitchPresenter>
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,5,0,0"
+                    Text="{x:Bind ViewModel.DataImportStatus, Mode=OneWay}" />
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.StartDataImportCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="10,0,10,0" Glyph="&#xE8B5;" />
+                        <TextBlock Text="Import Spezifikationsdaten" />
+                    </StackPanel>
+                </Button>
+                <ProgressBar
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,10,0,-10"
+                    IsIndeterminate="{x:Bind ViewModel.StartDataImportCommand.IsRunning, FallbackValue=false, Mode=OneWay}" />
+            </Grid>
+        </ContentDialog>
     </Grid>
 </Page>

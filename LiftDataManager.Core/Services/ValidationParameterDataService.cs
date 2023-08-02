@@ -299,13 +299,13 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new(ValidateSafetyRange, "Error", null)});
 
         ValidationDictionary.Add("var_FuehrungsschieneFahrkorb",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> {new(ValidateSafetyRange, "Error", null)});
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyRange, "Error", null) });
 
         ValidationDictionary.Add("var_Fuehrungsart_GGW",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGuideModel, "None", null) });
 
         ValidationDictionary.Add("var_Fangvorrichtung",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null)});
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null) });
 
         ValidationDictionary.Add("var_TypFV",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyRange, "None", null) });
@@ -329,7 +329,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
-            
+
         ValidationDictionary.Add("var_Treibscheibegehaertet",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
 
@@ -595,9 +595,12 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 break;
             case "verstärkt":
-                if (bodenBlech <= 0) SetDefaultReinforcedFloor(name);
-                if (string.IsNullOrWhiteSpace(bodenProfil)) SetDefaultReinforcedFloor(name);
-                if (bodenBlech == 3 && bodenProfil == "80 x 40 x 3") SetDefaultReinforcedFloor(name);
+                if (bodenBlech <= 0)
+                    SetDefaultReinforcedFloor(name);
+                if (string.IsNullOrWhiteSpace(bodenProfil))
+                    SetDefaultReinforcedFloor(name);
+                if (bodenBlech == 3 && bodenProfil == "80 x 40 x 3")
+                    SetDefaultReinforcedFloor(name);
                 double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
                 break;
@@ -675,7 +678,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             {
                 ParamterDictionary["var_BoPr"].DropDownList.Add("Refresh");
                 ParamterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
-            } 
+            }
         }
     }
 
@@ -776,24 +779,30 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_B"].DropDownListValue)) ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_B"].DropDownListValue))
+                ParamterDictionary["var_Tuertyp_B"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue))
+                ParamterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_B"].Value))
             {
-                if(ParamterDictionary["var_TB_B"].Value != "0") ParamterDictionary["var_TB_B"].Value = string.Empty;
+                if (ParamterDictionary["var_TB_B"].Value != "0")
+                    ParamterDictionary["var_TB_B"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_B"].Value))
             {
-                if (ParamterDictionary["var_TH_B"].Value != "0") ParamterDictionary["var_TH_B"].Value = string.Empty;
+                if (ParamterDictionary["var_TH_B"].Value != "0")
+                    ParamterDictionary["var_TH_B"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_B"].Value))
             {
-                if (ParamterDictionary["var_Tuergewicht_B"].Value != "0") ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
+                if (ParamterDictionary["var_Tuergewicht_B"].Value != "0")
+                    ParamterDictionary["var_Tuergewicht_B"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauB"].Value))
             {
-                if (ParamterDictionary["var_TuerEinbauB"].Value != "0") ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
-            }     
+                if (ParamterDictionary["var_TuerEinbauB"].Value != "0")
+                    ParamterDictionary["var_TuerEinbauB"].Value = string.Empty;
+            }
         }
 
         if (zugangC)
@@ -806,23 +815,29 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_C"].DropDownListValue)) ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_C"].DropDownListValue))
+                ParamterDictionary["var_Tuertyp_C"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue))
+                ParamterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_C"].Value))
             {
-                if (ParamterDictionary["var_TB_C"].Value != "0") ParamterDictionary["var_TB_C"].Value = string.Empty;
+                if (ParamterDictionary["var_TB_C"].Value != "0")
+                    ParamterDictionary["var_TB_C"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_C"].Value))
             {
-                if (ParamterDictionary["var_TH_C"].Value != "0") ParamterDictionary["var_TH_C"].Value = string.Empty;
+                if (ParamterDictionary["var_TH_C"].Value != "0")
+                    ParamterDictionary["var_TH_C"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_C"].Value))
             {
-                if (ParamterDictionary["var_Tuergewicht_C"].Value != "0") ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
+                if (ParamterDictionary["var_Tuergewicht_C"].Value != "0")
+                    ParamterDictionary["var_Tuergewicht_C"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauC"].Value))
             {
-                if (ParamterDictionary["var_TuerEinbauC"].Value != "0") ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
+                if (ParamterDictionary["var_TuerEinbauC"].Value != "0")
+                    ParamterDictionary["var_TuerEinbauC"].Value = string.Empty;
             }
         }
 
@@ -836,23 +851,29 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
         else
         {
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_D"].DropDownListValue)) ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
-            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue)) ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuertyp_D"].DropDownListValue))
+                ParamterDictionary["var_Tuertyp_D"].DropDownListValue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue))
+                ParamterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = string.Empty;
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TB_D"].Value))
             {
-                if (ParamterDictionary["var_TB_D"].Value != "0") ParamterDictionary["var_TB_D"].Value = string.Empty;
+                if (ParamterDictionary["var_TB_D"].Value != "0")
+                    ParamterDictionary["var_TB_D"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TH_D"].Value))
             {
-                if (ParamterDictionary["var_TH_D"].Value != "0") ParamterDictionary["var_TH_D"].Value = string.Empty;
+                if (ParamterDictionary["var_TH_D"].Value != "0")
+                    ParamterDictionary["var_TH_D"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Tuergewicht_D"].Value))
             {
-                if (ParamterDictionary["var_Tuergewicht_D"].Value != "0") ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
+                if (ParamterDictionary["var_Tuergewicht_D"].Value != "0")
+                    ParamterDictionary["var_Tuergewicht_D"].Value = string.Empty;
             }
             if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_TuerEinbauD"].Value))
             {
-                if (ParamterDictionary["var_TuerEinbauD"].Value != "0") ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
+                if (ParamterDictionary["var_TuerEinbauD"].Value != "0")
+                    ParamterDictionary["var_TuerEinbauD"].Value = string.Empty;
             }
         }
     }
@@ -982,7 +1003,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateCarweightWithoutFrame(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(value)) return;
+        if (string.IsNullOrWhiteSpace(value))
+            return;
 
         int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Rahmengewicht");
 
@@ -1033,7 +1055,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
             {
                 var loadTable7 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle7");
-                if (reducedLoad <  loadTable7)
+                if (reducedLoad < loadTable7)
                     ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
                 if (reducedLoad > load)
                     ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
@@ -1192,7 +1214,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             "var_Totzeit" => "DeadTime",
             "var_Vdetektor" => "VDetector",
             _ => string.Empty,
-        } ;
+        };
 
         ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
 
@@ -1231,7 +1253,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             "var_Totzeit" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             "var_Vdetektor" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             _ => true,
-        }; ;
+        };
+        ;
 
         if (!isValid)
         {
@@ -1243,7 +1266,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue} - {zaLiftValue2} ", SetSeverity(severity)));
             }
-                
+
         }
         else
         {
@@ -1253,7 +1276,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateShaftWalls(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (value is null) return;
+        if (value is null)
+            return;
 
         if (string.Equals(value, "Holz"))
         {
@@ -1394,11 +1418,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
-            if (hasSpiegel) errorMessage += " Spiegel,";
-            if (hasHandlauf) errorMessage += " Handlauf,";
-            if (hasSockelleiste) errorMessage += " Sockelleiste,";
-            if (hasRammschutz) errorMessage += " Rammschutz,";
-            if (hasPaneel) errorMessage += " Paneel,";
+            if (hasSpiegel)
+                errorMessage += " Spiegel,";
+            if (hasHandlauf)
+                errorMessage += " Handlauf,";
+            if (hasSockelleiste)
+                errorMessage += " Sockelleiste,";
+            if (hasRammschutz)
+                errorMessage += " Rammschutz,";
+            if (hasPaneel)
+                errorMessage += " Paneel,";
             errorMessage += " dies erfordert eine Plausibilitätsprüfung!";
 
             ValidationResult.Add(new ParameterStateInfo(name, displayname, errorMessage, SetSeverity(severity)));

@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
-using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
-using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 
@@ -32,8 +30,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null) return;
-        if (!(message.Sender.GetType() == typeof(Parameter))) return;
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
 
         if (message.PropertyName == "var_Rahmengewicht" ||
             message.PropertyName == "var_F_Korr" ||
@@ -48,7 +48,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
         //Task.Run(async () => await SetModelStateAsync());
-        
+
     }
 
     [ObservableProperty]
@@ -76,7 +76,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private double customPayload;
     partial void OnCustomPayloadChanged(double value)
     {
-        if(payloadTable7 == 0) 
+        if (payloadTable7 == 0)
             return;
         if (value < payloadTable7)
             return;
@@ -111,6 +111,30 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
+    private string? importSpezifikationStatusTyp;
+    partial void OnImportSpezifikationStatusTypChanged(string? value)
+    {
+        ImportSpezifikationName = string.Empty;
+        _logger.LogInformation(60132, "ImportSpezifikationStatusTyp changed {Typ}", value);
+    }
+
+    [ObservableProperty]
+    private string? importSpezifikationName;
+    partial void OnImportSpezifikationNameChanged(string? value)
+    {
+        if (value is not null)
+        {
+            CanImportSpeziData = ((value.Length >= 6) && (ImportSpezifikationStatusTyp == "Auftrag")) ||
+                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Angebot")) ||
+                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Vorplanung"));
+        }
+    }
+
+    [ObservableProperty]
+    private string? dataImportStatus;
+
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoadDataCommand))]
     private bool canLoadSpeziData;
 
@@ -124,11 +148,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadDataCommand))]
+    [NotifyCanExecuteChangedFor(nameof(DataImportCommand))]
     private bool canUpLoadSpeziData;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ValidateAllParameterCommand))]
     private bool canValidateAllParameter;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StartDataImportCommand))]
+    private bool canImportSpeziData;
 
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
@@ -218,18 +247,19 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
             _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
-        _logger.LogInformation(60136, "Data loaded from {FullPathXml}",FullPathXml);
+        _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
         InfoSidebarPanelText += $"----------\n";
         LikeEditParameter = true;
         OpenReadOnly = true;
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-        
+
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
-            if(_settingService.AutoSave && CheckOut) StartSaveTimer();
+            if (_settingService.AutoSave && CheckOut)
+                StartSaveTimer();
         }
     }
 
@@ -293,7 +323,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
             ClearExpiredLiftData();
             await LoadDataAsync();
-            
+
         }
         AutoSaveTimer?.Stop();
     }
@@ -309,7 +339,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
 
         var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParamterDictionary!, FullPathXml);
-            
+
         _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
 
         if (CheckOut)
@@ -389,6 +419,31 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             return true;
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
+    private async Task DataImportAsync(ContentDialog LiftDataImportDialog)
+    {
+        await LiftDataImportDialog.ShowAsync();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanImportSpeziData))]
+    private async Task StartDataImportAsync()
+    {
+        if (string.IsNullOrWhiteSpace(SpezifikationName))
+            return;
+        if (string.IsNullOrWhiteSpace(ImportSpezifikationName))
+            return;
+
+        if (string.Equals(SpezifikationName, ImportSpezifikationName))
+        {
+            DataImportStatus = "Fehler: Datenimport kann nicht in sich selbst importiert werden!";
+            return;
+        }
+
+        DataImportStatus = "Datenimport gestartet";
+        await Task.Delay(3000);
+        DataImportStatus = "Daten erfolgreich importiert";
     }
 
     protected override async Task SetModelStateAsync()
@@ -675,7 +730,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         var autoSavePeriod = _settingService.AutoSavePeriod;
         if (!string.IsNullOrWhiteSpace(autoSavePeriod))
         {
-            period = Convert.ToInt32(autoSavePeriod.Replace(" min",""));
+            period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
         }
         AutoSaveTimer ??= new DispatcherTimer();
         if (!AutoSaveTimer.IsEnabled)
@@ -717,7 +772,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CarWeight = 0;
         CarDoorWeight = 0;
         CarFrameWeight = 0;
-        
+        PayloadTable6 = 0;
+        PayloadTable7 = 0;
+
     }
 
     public void OnNavigatedTo(object parameter)
@@ -753,7 +810,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             if (!success.Result)
             {
-                _logger.LogCritical(61131,"Initialize LiftDataParameter.db failed");
+                _logger.LogCritical(61131, "Initialize LiftDataParameter.db failed");
                 throw new Exception("Initialize LiftDataParameter.db failed");
             }
         }
@@ -764,10 +821,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
 
-            if (parameter is null) return;
+            if (parameter is null)
+                return;
             if (parameter.GetType().Equals(typeof(string)))
             {
-                if (string.IsNullOrWhiteSpace(parameter as string)) return;
+                if (string.IsNullOrWhiteSpace(parameter as string))
+                    return;
 
                 switch (parameter as string)
                 {
@@ -778,7 +837,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     default:
                         return;
                 }
-            }  
+            }
         }
     }
 

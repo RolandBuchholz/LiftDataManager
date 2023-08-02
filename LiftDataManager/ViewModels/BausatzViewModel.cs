@@ -29,13 +29,13 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
         };
         if (message.PropertyName == "var_TypFV" ||
-            message.PropertyName == "var_FuehrungsschieneFahrkorb"||
+            message.PropertyName == "var_FuehrungsschieneFahrkorb" ||
             message.PropertyName == "var_Fuehrungsart")
         {
             SetSafetygearData();
         };
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync(); 
+        _ = SetModelStateAsync();
     }
 
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value);

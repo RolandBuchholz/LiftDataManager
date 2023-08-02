@@ -243,7 +243,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _ = SetModelStateAsync();
         var startargs = string.Empty;
         var pathCFP = _settingService.PathCFP;
-        if (!File.Exists(pathCFP)) return;
+        if (!File.Exists(pathCFP))
+            return;
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
         var bausatztyp = ParamterDictionary?["var_Bausatz"].Value;
         var shortSymbolDirveSystem = string.Empty;
@@ -254,18 +255,20 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            var identifierbausatztyp = !string.IsNullOrWhiteSpace(bausatztyp)? bausatztyp.Replace(" ","") : string.Empty;
+            var identifierbausatztyp = !string.IsNullOrWhiteSpace(bausatztyp) ? bausatztyp.Replace(" ", "") : string.Empty;
             startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + identifierbausatztyp + " " + shortSymbolDirveSystem : string.Empty;
         }
 
         if (!CheckOut)
         {
             var checkOutResult = await CheckOutDialogAsync();
-            if (checkOutResult is null) return;
-            if ((bool)checkOutResult) return;
+            if (checkOutResult is null)
+                return;
+            if ((bool)checkOutResult)
+                return;
             if (File.Exists(pathCFP))
             {
-               StartProgram(pathCFP, startargs);
+                StartProgram(pathCFP, startargs);
             }
             return;
         }
@@ -315,16 +318,19 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         watcher.Changed -= OnChangedCFP;
 
         var fromCFP = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "fromCFP.txt");
-        if (File.Exists(fromCFP)) File.Delete(fromCFP);
-        
+        if (File.Exists(fromCFP))
+            File.Delete(fromCFP);
+
         CFPDataReadyForImport = _fromCFPwritten;
-        if (CFPDataReadyForImport) ExWorkStatus = "Daten zur Übernahme bereit";
-           
+        if (CFPDataReadyForImport)
+            ExWorkStatus = "Daten zur Übernahme bereit";
+
         var result = await dialog;
         if (result == ContentDialogResult.Primary)
         {
             var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
-            if (File.Exists(backupFileXml)) File.Delete(backupFileXml);
+            if (File.Exists(backupFileXml))
+                File.Delete(backupFileXml);
 
             var updatedResult = await _parameterDataService!.SyncFromAutodeskTransferAsync(FullPathXml!, ParamterDictionary!);
             if (updatedResult is not null)
@@ -332,20 +338,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 if (updatedResult.Any())
                 {
                     await _dialogService!.MessageDialogAsync("Aktualisierte Parameter", string.Join("\n", updatedResult.Select(x => x.ToString())));
-                } 
+                }
             }
         }
         else
         {
-           await _dialogService!.MessageDialogAsync("CarFrameProgram abgebrochen", 
-               "Achtung:\n" +
-               "Daten aus dem CarFrameProgram werden verworfen!\n" +
-               "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
+            await _dialogService!.MessageDialogAsync("CarFrameProgram abgebrochen",
+                "Achtung:\n" +
+                "Daten aus dem CarFrameProgram werden verworfen!\n" +
+                "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
             try
             {
                 var restoreFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-AutoDeskTransfer.xml");
                 FileInfo restoreFileXmlInfo = new(restoreFileXml);
-                if (restoreFileXmlInfo.IsReadOnly) return;
+                if (restoreFileXmlInfo.IsReadOnly)
+                    return;
                 var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
 
                 if (File.Exists(backupFileXml))
@@ -357,7 +364,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
                 {
                     _logger.LogError(61092, "no backupfile found, restoring Autodesktransfer.xml failed");
                 }
-            }   
+            }
             catch (Exception)
             {
 
@@ -373,8 +380,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
 
     private void OnChangedCFP(object sender, FileSystemEventArgs e)
     {
-        if (e.ChangeType != WatcherChangeTypes.Changed) return;
-        if (e.Name == "fromCFP.txt") _fromCFPwritten = true;
+        if (e.ChangeType != WatcherChangeTypes.Changed)
+            return;
+        if (e.Name == "fromCFP.txt")
+            _fromCFPwritten = true;
 
         Debug.WriteLine($"Changed: {e.FullPath}");
     }
@@ -386,7 +395,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _ = SetModelStateAsync();
         var startargs = "StartLAST";
         var pathZALift = _settingService.PathZALift;
-        if (!File.Exists(pathZALift)) return;
+        if (!File.Exists(pathZALift))
+            return;
         bool noEditMode = false;
         ZAliftAusUpdated = false;
         _zAliftAusUpdated = false;
@@ -394,13 +404,15 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _zAliftHtmlUpdated = false;
         zAliftRegEditSuccessful = false;
         var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
-        
+
         if (!CheckOut)
         {
             var checkOutResult = await CheckOutDialogAsync();
-            if (checkOutResult is null) return;
-            if ((bool)checkOutResult) return;
-                
+            if (checkOutResult is null)
+                return;
+            if ((bool)checkOutResult)
+                return;
+
             noEditMode = true;
         }
 
@@ -410,7 +422,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         }
 
         MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html"));
-        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen",auftragsnummer + ".aus"));
+        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".aus"));
 
         CanImportZAliftData = false;
         ExWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
@@ -481,10 +493,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
             }
             await Task.Delay(50);
         }
-        
+
         ZAliftAusUpdated = _zAliftAusUpdated;
         ZAliftHtmlUpdated = _zAliftHtmlUpdated;
-        if(ZAliftAusUpdated && ZAliftAusUpdated)
+        if (ZAliftAusUpdated && ZAliftAusUpdated)
             ExWorkStatus = "Daten zur Übernahme bereit";
 
         watcher.Changed -= OnChanged;
@@ -964,7 +976,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (!File.Exists(fullPath))
             return;
 
-        var newName =  Path.Combine(Path.GetDirectoryName(fullPath)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(fullPath));
+        var newName = Path.Combine(Path.GetDirectoryName(fullPath)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(fullPath));
 
         if (newName is not null && Path.IsPathFullyQualified(newName))
         {

@@ -14,7 +14,7 @@ public class ParameterStateInfo
     public string DisplayName { get; set; }
     public bool IsValid { get; set; }
     public string? ErrorMessage { get; set; }
-    public ErrorLevel Severity {get; set;}
+    public ErrorLevel Severity { get; set; }
     public bool HasDependentParameters => DependentParameter.Any();
     public string[] DependentParameter { get; set; } = Array.Empty<string>();
 

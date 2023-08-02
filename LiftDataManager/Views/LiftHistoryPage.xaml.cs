@@ -16,6 +16,6 @@ public sealed partial class LiftHistoryPage : Page
     private void EditComment_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not null && sender.GetType() == typeof(Button))
-            _ = ViewModel.EditCommentAsync(((Button)sender).CommandParameter);   
+            _ = ViewModel.EditCommentAsync(((Button)sender).CommandParameter);
     }
 }

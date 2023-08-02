@@ -49,7 +49,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
 
             table.Cell().Row(1).Column(1).ColumnSpan(3).PaddingTop(5).PaddingBottom(5).Text("Daten der Aufzugkabine C100 (aufg. Sockel)").FontSize(fontSizeXL).Bold();
             table.Cell().Row(2).Column(1).PaddingLeft(15).Text("Türbreite (TB)");
-            table.Cell().Row(2).Column(2).AlignRight().Text($"{ParameterDictionary["var_TB"].Value} mm"); 
+            table.Cell().Row(2).Column(2).AlignRight().Text($"{ParameterDictionary["var_TB"].Value} mm");
             table.Cell().Row(3).Column(1).PaddingLeft(15).Text("Türhöhe (TH)");
             table.Cell().Row(3).Column(2).AlignRight().Text($"{ParameterDictionary["var_TH"].Value} mm");
             table.Cell().Row(4).Column(1).PaddingLeft(15).Text("Fahrkorbbreite (KB)");

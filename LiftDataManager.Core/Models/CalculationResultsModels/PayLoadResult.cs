@@ -23,7 +23,7 @@ public class PayLoadResult
 
     public bool PayloadAllowed { get; set; }
 
-    public int Personen75kg  {get; set; }
-    public int PersonenFlaeche  {get; set; }
+    public int Personen75kg { get; set; }
+    public int PersonenFlaeche { get; set; }
     public int PersonenBerechnet { get; set; }
 }

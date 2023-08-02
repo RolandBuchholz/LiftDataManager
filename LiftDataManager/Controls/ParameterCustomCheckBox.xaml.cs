@@ -13,7 +13,7 @@ public sealed partial class ParameterCustomCheckBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox) , new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void TextCommandBarFlyout_Opening(object sender, object e)
     {

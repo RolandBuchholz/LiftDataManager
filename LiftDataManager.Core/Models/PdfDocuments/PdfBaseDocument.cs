@@ -66,13 +66,13 @@ public class PdfBaseDocument : IDocument
         string? user;
         try
         {
-        #pragma warning disable CA1416 
-            user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) 
-                ? "no user detected" 
+#pragma warning disable CA1416
+            user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name)
+                ? "no user detected"
                 : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
-        #pragma warning restore CA1416 
+#pragma warning restore CA1416
         }
-        catch 
+        catch
         {
             user = "Useridentification failed";
         }

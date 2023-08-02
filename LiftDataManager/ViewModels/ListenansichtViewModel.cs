@@ -9,7 +9,7 @@ namespace LiftDataManager.ViewModels;
 public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
-    private ObservableDictionary<string,List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new ();
+    private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new();
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
 
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
@@ -112,8 +112,10 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
-        if (Selected is null) return;
-        if (FullPathXml is null) return;
+        if (Selected is null)
+            return;
+        if (FullPathXml is null)
+            return;
         var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
@@ -235,7 +237,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     private bool CheckhasHighlightedParameters()
     {
-        if (ParamterDictionary is null || ParamterDictionary.Values is null) return false;
+        if (ParamterDictionary is null || ParamterDictionary.Values is null)
+            return false;
         return ParamterDictionary.Values.Any(x => x.IsKey);
     }
 
@@ -249,14 +252,17 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
             _ = SetModelStateAsync();
-        
+
         _ = GetHistoryEntrysAsync(FullPathXml);
         HasHighlightedParameters = CheckhasHighlightedParameters();
 
-        if (parameter is null and not string) return;
-        if (!Equals(parameter, "ShowHighlightParameter")) return;
-        if (!HasHighlightedParameters) return;
-            SelectedFilter = "Highlighted";
+        if (parameter is null and not string)
+            return;
+        if (!Equals(parameter, "ShowHighlightParameter"))
+            return;
+        if (!HasHighlightedParameters)
+            return;
+        SelectedFilter = "Highlighted";
     }
 
     public void OnNavigatedFrom()

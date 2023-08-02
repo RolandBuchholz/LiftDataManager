@@ -81,13 +81,13 @@ public sealed partial class DataBaseEditPage : Page
     }
 
     //Workaround brocken datatemplete binding datagrid
-    
+
     private void DeleteRow_Click(object sender, RoutedEventArgs e)
     {
         var commandParameter = ((Button)sender).CommandParameter;
         if (commandParameter != null)
         {
             ViewModel.RemoveRowFromDataBaseTableCommand.Execute(commandParameter);
-        } 
+        }
     }
 }

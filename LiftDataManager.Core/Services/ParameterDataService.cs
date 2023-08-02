@@ -21,7 +21,7 @@ public partial class ParameterDataService : IParameterDataService
         _validationParameterDataService = validationParameterDataService;
         _parametercontext = parametercontext;
         _logger = logger;
-        user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\","");
+        user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
     }
 
     public bool CanConnectDataBase()
@@ -77,9 +77,9 @@ public partial class ParameterDataService : IParameterDataService
     {
         return new LiftHistoryEntry(parameter.Name!,
             parameter.DisplayName!,
-            parameter.Value is not null ? parameter.ParameterTyp != ParameterBase.ParameterTypValue.Date?
+            parameter.Value is not null ? parameter.ParameterTyp != ParameterBase.ParameterTypValue.Date ?
                                           parameter.Value : LiftParameterHelper.ConvertExcelDate(parameter.Value)
-                                          : string.Empty, 
+                                          : string.Empty,
             user,
             parameter.Comment is not null ? parameter.Comment : string.Empty);
     }
@@ -150,7 +150,7 @@ public partial class ParameterDataService : IParameterDataService
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from {path} loaded", path);
         return TransferDataList;
-   }
+    }
 
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path)
     {
@@ -178,7 +178,8 @@ public partial class ParameterDataService : IParameterDataService
                 _logger.LogError(61101, "Deserialize failed LiftHistory failed");
                 continue;
             }
-            if (lifthistoryentry != null) historyEntrys.Add(lifthistoryentry);
+            if (lifthistoryentry != null)
+                historyEntrys.Add(lifthistoryentry);
         }
         await Task.CompletedTask;
         return historyEntrys;
@@ -188,7 +189,7 @@ public partial class ParameterDataService : IParameterDataService
     {
         if (!ValidatePath(path, false))
         {
-            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild" , path);
+            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
             return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
         }
 
@@ -236,7 +237,7 @@ public partial class ParameterDataService : IParameterDataService
 
     public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode)
     {
-        if (!ValidatePath(path,false))
+        if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
             return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
@@ -380,7 +381,7 @@ public partial class ParameterDataService : IParameterDataService
 
     public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary)
     {
-        List<string> syncedParameter = new(); 
+        List<string> syncedParameter = new();
         var updatedAutodeskTransfer = await LoadParameterAsync(path);
 
         foreach (var param in updatedAutodeskTransfer)

@@ -26,7 +26,7 @@ public class CarWeightResult
 
     public double GewichtKlemmkasten { get; set; }
     public double GewichtSchraubenZubehoer { get; set; }
- 
+
     public double GewichtAbgehaengteDecke { get; set; }
     public double BodenProfilGewicht { get; set; }
     public double Bodenblech { get; set; }
@@ -45,7 +45,7 @@ public class CarWeightResult
     public double PaneeleGewicht { get; set; }
     public double PaneeleSpiegelQm { get; set; }
     public double PaneeleSpiegelGewicht { get; set; }
-    public string? VSGTyp{ get; set; }
+    public string? VSGTyp { get; set; }
     public double VSGQm { get; set; }
     public double VSGGewicht { get; set; }
     public double AussenVerkleidungQm { get; set; }

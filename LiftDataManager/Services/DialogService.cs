@@ -203,7 +203,7 @@ public class DialogService : IDialogService
             Margin = new Thickness(0, 10, 0, 10),
             FontSize = 12,
             AcceptsReturn = true,
-            HorizontalAlignment = HorizontalAlignment.Stretch, 
+            HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch
         };
 

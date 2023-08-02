@@ -22,5 +22,5 @@ public static partial class EntityFrameworkCoreExtensions
         }
         return null;
     }
-       
+
 }

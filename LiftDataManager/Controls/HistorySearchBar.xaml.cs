@@ -5,7 +5,7 @@ namespace LiftDataManager.Controls;
 public sealed partial class HistorySearchBar : UserControl
 {
     public List<LiftHistoryEntry> FilteredEntrys { get; set; }
-    public ObservableCollection<string> Authors { get; set; } 
+    public ObservableCollection<string> Authors { get; set; }
 
     public HistorySearchBar()
     {
@@ -19,7 +19,8 @@ public sealed partial class HistorySearchBar : UserControl
         get { return (DateTimeOffset?)GetValue(StartDateProperty); }
         set
         {
-            if(EndDate != DateTimeOffset.MinValue && value > EndDate) EndDate = value.Value;
+            if (EndDate != DateTimeOffset.MinValue && value > EndDate)
+                EndDate = value.Value;
             SetValue(StartDateProperty, value);
             FilterParameter(SearchInput);
         }
@@ -33,7 +34,8 @@ public sealed partial class HistorySearchBar : UserControl
         get { return (DateTimeOffset?)GetValue(EndDateProperty); }
         set
         {
-            if (value < StartDate) StartDate = value.Value;
+            if (value < StartDate)
+                StartDate = value.Value;
             SetValue(EndDateProperty, value);
             FilterParameter(SearchInput);
         }
@@ -101,9 +103,10 @@ public sealed partial class HistorySearchBar : UserControl
         Authors.Clear();
         Authors.Add("All Authors");
         var authors = ItemSource.Select(x => x.Author).Distinct();
-        foreach ( var author in authors )
+        foreach (var author in authors)
         {
-            if (!string.IsNullOrWhiteSpace(author)) Authors.Add(author);
+            if (!string.IsNullOrWhiteSpace(author))
+                Authors.Add(author);
         }
     }
 
@@ -113,7 +116,7 @@ public sealed partial class HistorySearchBar : UserControl
         var start = StartDate.GetValueOrDefault().DateTime;
         var end = EndDate.GetValueOrDefault().DateTime;
         IEnumerable<LiftHistoryEntry> filteredEntrys;
-        if( start == DateTime.MinValue && end == DateTime.MinValue )
+        if (start == DateTime.MinValue && end == DateTime.MinValue)
         {
             filteredEntrys = ItemSource.Where(FilterViewSearchInput(searchInput));
         }
@@ -131,10 +134,11 @@ public sealed partial class HistorySearchBar : UserControl
 
     private Func<LiftHistoryEntry, bool> FilterViewSearchInput(string searchInput)
     {
-        if (string.IsNullOrWhiteSpace(searchInput) && Author == "All Authors") return p => p.Name != null;
+        if (string.IsNullOrWhiteSpace(searchInput) && Author == "All Authors")
+            return p => p.Name != null;
         if (string.IsNullOrWhiteSpace(searchInput))
         {
-            return p => p.Name != null && p.Author == Author;   
+            return p => p.Name != null && p.Author == Author;
         }
         else
         {

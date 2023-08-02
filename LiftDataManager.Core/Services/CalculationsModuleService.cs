@@ -73,7 +73,8 @@ public partial class CalculationsModuleService : ICalculationsModule
         var loadTable6 = GetLoadFromTable(area, "Tabelle6");
         var loadTable7 = GetLoadFromTable(area, "Tabelle7");
 
-        if (load >= loadTable6) return true;
+        if (load >= loadTable6)
+            return true;
         if (cargotyp == "Lastenaufzug" && drivesystem == "Hydraulik")
         {
             if (loadTable7 > 0)
@@ -91,7 +92,7 @@ public partial class CalculationsModuleService : ICalculationsModule
     }
 
     public int GetMaxFuse(string? inverter)
-    { 
+    {
         int maxFuse = 0;
         if (!string.IsNullOrWhiteSpace(inverter))
         {
@@ -102,7 +103,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return maxFuse;
     }
 
-    public CarVentilationResult GetCarVentilationCalculation (ObservableDictionary<string, Parameter>? parameterDictionary)
+    public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
         const int tuerspalt = 4;
         const int luftspaltoeffnung = 10;
@@ -114,8 +115,8 @@ public partial class CalculationsModuleService : ICalculationsModule
         int anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
 
         double aKabine1Pozent = Math.Round(aKabine * 10000);
-        double belueftung1Seite = kabinentiefe* luftspaltoeffnung;
-        double belueftung2Seiten = kabinentiefe* luftspaltoeffnung *2;
+        double belueftung1Seite = kabinentiefe * luftspaltoeffnung;
+        double belueftung2Seiten = kabinentiefe * luftspaltoeffnung * 2;
 
         bool ergebnisBelueftungDecke = belueftung2Seiten > aKabine1Pozent;
 
@@ -147,7 +148,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             Belueftung1Seite = belueftung1Seite,
             Belueftung2Seiten = belueftung2Seiten,
             ErgebnisBelueftungDecke = ergebnisBelueftungDecke,
-            AnzahlLuftspaltoeffnungenTB=anzahlLuftspaltoeffnungenTB,
+            AnzahlLuftspaltoeffnungenTB = anzahlLuftspaltoeffnungenTB,
             AnzahlLuftspaltoeffnungenTH = anzahlLuftspaltoeffnungenTH,
             FlaecheLuftspaltoeffnungenTB = flaecheLuftspaltoeffnungenTB,
             FlaecheLuftspaltoeffnungenTH = flaecheLuftspaltoeffnungenTH,
@@ -166,7 +167,7 @@ public partial class CalculationsModuleService : ICalculationsModule
     public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
         var aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
- 
+
         var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
                                                         .ToList()
                                                         .FirstOrDefault(x => x.Name == aufzugstyp);
@@ -188,7 +189,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         var nutzflaecheZugangB = zugangB ? GetCarDoorArea(parameterDictionary, "B") : 0;
         var nutzflaecheZugangC = zugangC ? GetCarDoorArea(parameterDictionary, "C") : 0;
         var nutzflaecheZugangD = zugangD ? GetCarDoorArea(parameterDictionary, "D") : 0;
-        
+
         var nutzflaeche = Math.Round(nutzflaecheKabine + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
         var nennlast = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
 
@@ -235,7 +236,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         const double aussenVerkleidungGewichtproQm = 12;
         const double gewichtKlemmkasten = 10;
         const double gewichtSchraubenZubehoer = 5;
-        
+
         SetDefaultParameter(parameterDictionary);
 
         //ParameterDictionary
@@ -285,12 +286,12 @@ public partial class CalculationsModuleService : ICalculationsModule
         var rammschutzB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzB");
         var rammschutzC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzC");
         var rammschutzD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzD");
-        
+
         var handlaufA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufA");
         var handlaufB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufB");
         var handlaufC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufC");
         var handlaufD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufD");
-        
+
         var sockelleisteA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteA");
         var sockelleisteB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteB");
         var sockelleisteC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteC");
@@ -352,7 +353,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         var deckeBelegtGewicht = belegteDecke ? kabinenbreite * kabinentiefe * deckeBelegtGewichtproQm / Math.Pow(10, 6) : 0;
 
-        
+
         var belagAufDerDeckeGewicht = belagAufDerDecke ? Math.Round(kabinenbreite * kabinentiefe * belagAufDerDeckeGewichtproQm / Math.Pow(10, 6)) : 0;
 
         var spiegelQm = !spiegelPaneel ? (Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelB) + Convert.ToInt32(spiegelC) + Convert.ToInt32(spiegelD)) * spiegelHoehe * spiegelBreite / Math.Pow(10, 6) : 0;
@@ -362,7 +363,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                        (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
                      ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - spiegelQm : 0;
         var paneeleGewicht = paneeleGewichtproQm * paneeleQm;
-    
+
         var paneeleSpiegelQm = spiegelPaneel ?
                                         spiegelHoehe > 0 ? ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * spiegelHoehe / 1000
                                         : ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * ((kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000)
@@ -391,7 +392,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                                         aussenVerkleidungenmitTueren * (tuerbreite / 1000 * tuerhoehe / 1000) : 0;
         var aussenVerkleidungGewicht = Math.Round(aussenVerkleidungQm * aussenVerkleidungGewichtproQm, 0);
 
-        
+
         var stossleisteLaenge = ((Convert.ToInt32(rammschutzA) + Convert.ToInt32(rammschutzC)) * kabinenbreite / 1000) +
                                         ((Convert.ToInt32(rammschutzB) + Convert.ToInt32(rammschutzD)) * kabinentiefe / 1000);
         var stossleisteGewicht = stossleisteGewichtproMeter * stossleisteLaenge;
@@ -499,7 +500,7 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         var carRailSurface = string.Empty;
         var lubrication = string.Empty;
-        var allowedRailHeads =string.Empty;
+        var allowedRailHeads = string.Empty;
         var railHeadAllowed = false;
         var railHead = 0.0;
         var minLoad = 0;
@@ -715,12 +716,18 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
 
         TableRow<int, double>? nutzlast = null;
-        if (table == null)  return 0; 
-        if (area <= 0)  return 0; 
-        if (tableName == "Tabelle6" && area > 5.0) return Math.Round(2500 + (area - 5.0) / 0.16 * 100,0);
-        if (tableName == "Tabelle6" && area < 0.37) return 0;
-        if (tableName == "Tabelle7" && area > 5.04) return Math.Round(1600 + (area - 5.04) / 0.40 * 100, 0);
-        if (tableName == "Tabelle7" && area < 1.68) return 0;
+        if (table == null)
+            return 0;
+        if (area <= 0)
+            return 0;
+        if (tableName == "Tabelle6" && area > 5.0)
+            return Math.Round(2500 + (area - 5.0) / 0.16 * 100, 0);
+        if (tableName == "Tabelle6" && area < 0.37)
+            return 0;
+        if (tableName == "Tabelle7" && area > 5.04)
+            return Math.Round(1600 + (area - 5.04) / 0.40 * 100, 0);
+        if (tableName == "Tabelle7" && area < 1.68)
+            return 0;
         if (table.Any(x => x.Value.SecondValue == area))
         {
             nutzlast = table.FirstOrDefault(x => x.Value.SecondValue == area).Value;
@@ -728,19 +735,22 @@ public partial class CalculationsModuleService : ICalculationsModule
             return nutzlast.FirstValue;
         };
         var lowTableEntry = table.Where(x => x.Value.SecondValue < area).Last();
-            lowTableEntry.Value.IsSelected = true;
+        lowTableEntry.Value.IsSelected = true;
         var highTableEntry = table.Where(x => x.Value.SecondValue > area).First();
-            highTableEntry.Value.IsSelected = true;
+        highTableEntry.Value.IsSelected = true;
         return Math.Round(lowTableEntry.Value.FirstValue + (highTableEntry.Value.FirstValue - lowTableEntry.Value.FirstValue) /
-                (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (area - lowTableEntry.Value.SecondValue),0); 
+                (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (area - lowTableEntry.Value.SecondValue), 0);
     }
 
     public int GetPersonenCarArea(double area)
     {
         TableRow<int, double>? personenAnzahl = null;
-        if (Table8 == null) return 0; 
-        if (area < 0.28) return 0;
-        if (area > 3.13) return Convert.ToInt32(20 + (area - 3.13) / 0.115);
+        if (Table8 == null)
+            return 0;
+        if (area < 0.28)
+            return 0;
+        if (area > 3.13)
+            return Convert.ToInt32(20 + (area - 3.13) / 0.115);
         if (Table8.Any(x => x.Value.SecondValue == area))
         {
             personenAnzahl = Table8.FirstOrDefault(x => x.Value.SecondValue == area).Value;
@@ -796,7 +806,8 @@ public partial class CalculationsModuleService : ICalculationsModule
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)
     {
         var dic = new Dictionary<int, TableRow<int, double>>();
-        if (tabledata is null) return dic;
+        if (tabledata is null)
+            return dic;
         switch (tabledata.GetType().Name)
         {
             case "LoadTable6[]":

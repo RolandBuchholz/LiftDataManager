@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.Models.ComponentModels;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 
@@ -10,7 +9,7 @@ public class TableENComponent : PdfBaseDocument, IComponent
 
     List<TableRow<int, double>> tableEN;
 
-    public TableENComponent(List<TableRow<int,double>>table, bool lowColor, bool lowHighlightColor)
+    public TableENComponent(List<TableRow<int, double>> table, bool lowColor, bool lowHighlightColor)
     {
         tableEN = table;
         SetPdfStyle(lowColor, lowHighlightColor);
@@ -70,13 +69,13 @@ public class TableENComponent : PdfBaseDocument, IComponent
                 table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i].FirstValue} {tableEN[i].FirstUnit}").FontSize(fontSizeXS);
                 table.Cell().Padding(0.5f).Background(tableEN[i].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i].SecondValue} {tableEN[i].SecondUnit}").FontSize(fontSizeXS);
                 table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].FirstValue} {tableEN[i + tableEN.Count / 2].FirstUnit}").FontSize(fontSizeXS);
-                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? highlightColor: secondaryVariantColor).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].SecondValue} {tableEN[i + tableEN.Count / 2].SecondUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[i + tableEN.Count / 2].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[i + tableEN.Count / 2].SecondValue} {tableEN[i + tableEN.Count / 2].SecondUnit}").FontSize(fontSizeXS);
             }
 
             if (tableEN.Count % 2 != 0)
             {
-                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count-1].FirstValue} {tableEN[tableEN.Count-1].FirstUnit}").FontSize(fontSizeXS);
-                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count-1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count-1].SecondValue} {tableEN[tableEN.Count - 1].SecondUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count - 1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count - 1].FirstValue} {tableEN[tableEN.Count - 1].FirstUnit}").FontSize(fontSizeXS);
+                table.Cell().Padding(0.5f).Background(tableEN[tableEN.Count - 1].IsSelected ? highlightColor : secondaryVariantColor).AlignCenter().Text($"{tableEN[tableEN.Count - 1].SecondValue} {tableEN[tableEN.Count - 1].SecondUnit}").FontSize(fontSizeXS);
             }
 
             table.Cell().ColumnSpan(4).Padding(0.5f).Background(primaryColor).PaddingLeft(5).Text(footer).FontSize(8).FontColor(onPrimaryColor);

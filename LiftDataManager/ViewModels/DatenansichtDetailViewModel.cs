@@ -71,10 +71,10 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             ParameterHistoryEntrys.Add(_parameterDataService.GenerateLiftHistoryEntry(Item));
             var sortedHistoryEntrys = ParameterHistoryEntrys.OrderByDescending(o => o.TimeStamp).ToList();
             ParameterHistoryEntrys.Clear();
-            foreach ( var entry in sortedHistoryEntrys)
+            foreach (var entry in sortedHistoryEntrys)
             {
                 ParameterHistoryEntrys.Add(entry);
-            }  
+            }
         }
     }
 

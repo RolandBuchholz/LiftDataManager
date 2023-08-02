@@ -162,7 +162,7 @@ public class KabinengewichtDocument : PdfBaseDocument
             table.Cell().Row(1).Column(1).ColumnSpan(4).Text("Kabinenausführung").FontSize(fontSizeXL).Bold();
             table.Cell().Row(2).Column(1).Text($"Bodenbelag ({ParameterDictionary["var_Bodenbelag"].Value})");
             table.Cell().Row(2).Column(2).AlignRight().Text($"{Math.Round(CarWeightResult.BodenBelagGewicht)} kg");
-            table.Cell().Row(2).Column(3).AlignRight().PaddingRight(15).Text($"{Math.Round(CarWeightResult.BodenBelagGewichtproQm,2)} kg/m²");
+            table.Cell().Row(2).Column(3).AlignRight().PaddingRight(15).Text($"{Math.Round(CarWeightResult.BodenBelagGewichtproQm, 2)} kg/m²");
             table.Cell().Row(3).Column(1).Text($"Schotten ({ParameterDictionary["var_Materialstaerke"].Value} mm)");
             table.Cell().Row(3).Column(2).AlignRight().Text($"{Math.Round(CarWeightResult.Schottengewicht)} kg");
             table.Cell().Row(4).Column(1).Text($"Hälse ({ParameterDictionary["var_Materialstaerke"].Value} mm)");

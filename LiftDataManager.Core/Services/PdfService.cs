@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using PDFTests.Services.DocumentGeneration;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
-using QuestPDF.Previewer;
 using System.Diagnostics;
 
 namespace LiftDataManager.Core.Services;
@@ -105,7 +104,8 @@ public class PdfService : IPdfService
                     if (File.Exists(filePath))
                     {
                         FileInfo PdfFileInfo = new(filePath);
-                        if (PdfFileInfo.IsReadOnly) PdfFileInfo.IsReadOnly = false;
+                        if (PdfFileInfo.IsReadOnly)
+                            PdfFileInfo.IsReadOnly = false;
                         if (PdfFileInfo.IsLocked())
                         {
                             var acrobatProcesses = Process.GetProcessesByName("Acrobat");

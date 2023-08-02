@@ -1,19 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-
-using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Newtonsoft.Json;
-
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
-
+using System.Runtime.CompilerServices;
 using Windows.Storage;
 
 namespace LiftDataManager;
@@ -142,7 +137,7 @@ public partial class App : Application
 
     private async void MainWindow_Closed(object sender, WindowEventArgs args)
     {
-        
+
         var tempHomeViewModel = GetService<HomeViewModel>();
         var currentSpeziProperties = tempHomeViewModel.GetCurrentSpeziProperties();
 
@@ -160,7 +155,7 @@ public partial class App : Application
             var yesButtonText = dirty ? "Parameter speichern" : "Hochladen und Schließen";
             var noButtonText = dirty ? "Ohne Speichern schließen" : "Ohne Hochladen Schließen";
 
-            var dialogResult = await tempHomeViewModel._dialogService!.WarningDialogAsync(title,message,yesButtonText,noButtonText);
+            var dialogResult = await tempHomeViewModel._dialogService!.WarningDialogAsync(title, message, yesButtonText, noButtonText);
 
             if (dialogResult is not null && (bool)dialogResult)
             {
@@ -238,7 +233,7 @@ public partial class App : Application
             DataSource = dbPath,
             Mode = sqliteOpenMode,
             ForeignKeys = true,
-        }.ToString(); 
+        }.ToString();
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)

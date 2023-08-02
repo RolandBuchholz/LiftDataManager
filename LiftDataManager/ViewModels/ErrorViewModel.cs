@@ -1,6 +1,6 @@
 ﻿using LiftDataManager.Models;
-using Windows.Storage.Pickers;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace LiftDataManager.ViewModels;
@@ -28,7 +28,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
         string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
         if (Directory.Exists(path))
         {
-            var logs = Directory.GetFiles(path,"*.json");
+            var logs = Directory.GetFiles(path, "*.json");
             return logs.OrderDescending().FirstOrDefault();
         }
         else
@@ -130,13 +130,13 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
 
-        if(CurrentSpeziProperties != null )
+        if (CurrentSpeziProperties != null)
         {
             Adminmode = CurrentSpeziProperties.Adminmode;
-            AuftragsbezogeneXml= CurrentSpeziProperties.AuftragsbezogeneXml;
+            AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
             CheckOut = CurrentSpeziProperties.CheckOut;
-            LikeEditParameter= CurrentSpeziProperties.LikeEditParameter;
-            HideInfoErrors= CurrentSpeziProperties.HideInfoErrors;
+            LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
+            HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
             ParamterDictionaryInfo = CurrentSpeziProperties.ParamterDictionary is null ? "ParamterDictionary nicht geladen" : $"{ParamterDictionary!.Count} Parameter";
         }
 
@@ -147,12 +147,12 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
         PathDataBase = _settingService.PathDataBase;
         CustomAccentColor = _settingService.CustomAccentColor;
 
-        if (ErrorPageInfo is not null )
+        if (ErrorPageInfo is not null)
         {
             ErrorMessage = ErrorPageInfo.ErrorArgs.Message;
             Exception = ErrorPageInfo.ErrorArgs.Exception.ToString();
         }
-        
+
     }
 
     [RelayCommand]

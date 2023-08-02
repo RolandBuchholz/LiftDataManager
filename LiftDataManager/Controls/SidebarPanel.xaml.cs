@@ -12,7 +12,7 @@ public sealed partial class SidebarPanel : UserControl
         ViewModel = App.GetService<QuickLinksViewModel>();
         InitializeComponent();
 
-      //  StackedButtonsExample_Loaded();
+        //  StackedButtonsExample_Loaded();
     }
 
     public string InfoText
@@ -47,7 +47,7 @@ public sealed partial class SidebarPanel : UserControl
             ViewModel.CheckCanOpenFiles();
             return (bool)GetValue(ShowQuickLinksProperty);
         }
-        
+
         set => SetValue(ShowQuickLinksProperty, value);
     }
 

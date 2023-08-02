@@ -1,7 +1,7 @@
 ﻿namespace LiftDataManager.Core.Models;
 public class TransferData
 {
-    public TransferData(string name,string value,string comment,bool isKey)
+    public TransferData(string name, string value, string comment, bool isKey)
     {
         Name = name;
         Value = value;

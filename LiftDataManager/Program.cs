@@ -28,7 +28,7 @@ public static class Program
         if (args != null)
         {
             _ = args.Kind;
-        }   
+        }
     }
 
     private static bool DecideRedirection()

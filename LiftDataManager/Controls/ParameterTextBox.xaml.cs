@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.ComponentModel;
 
 namespace LiftDataManager.Controls;

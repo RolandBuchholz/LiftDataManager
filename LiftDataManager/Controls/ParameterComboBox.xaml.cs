@@ -22,7 +22,7 @@ public sealed partial class ParameterComboBox : UserControl
 
     private void OnUnLoadParameterComboBoxControl(object sender, RoutedEventArgs e)
     {
-        if(LiftParameter is not null)
+        if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged -= OnErrorsChanged;
         }
@@ -47,7 +47,7 @@ public sealed partial class ParameterComboBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox) , new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -93,7 +93,7 @@ public sealed partial class ParameterComboBox : UserControl
     public string Header
     {
         get => ShowDefaultHeader ? LiftParameter?.DisplayName! : (string)GetValue(HeaderProperty);
-        set => SetValue(HeaderProperty, value); 
+        set => SetValue(HeaderProperty, value);
     }
 
     public static readonly DependencyProperty HeaderProperty =

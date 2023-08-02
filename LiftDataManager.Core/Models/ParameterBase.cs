@@ -18,7 +18,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     public enum ParameterCategoryValue
     {
         AllgemeineDaten = 1,
-        Schacht = 2 ,
+        Schacht = 2,
         Bausatz = 3,
         Fahrkorb = 4,
         Tueren = 5,
@@ -74,11 +74,12 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
             {
                 errors.AddRange(errorList);
             }
-            return  errors;
+            return errors;
         }
         else
         {
-            if (parameterErrors.ContainsKey(propertyName)) errors.AddRange(parameterErrors[propertyName]);
+            if (parameterErrors.ContainsKey(propertyName))
+                errors.AddRange(parameterErrors[propertyName]);
             return errors;
         }
     }
@@ -121,7 +122,8 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     private void SetParameterState(string propertyName)
     {
-        if (!string.Equals(propertyName, "Value")) return;
+        if (!string.Equals(propertyName, "Value"))
+            return;
         if (parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? valueErrorList))
         {
             if (valueErrorList is null)
@@ -133,7 +135,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
             if (state is not null)
             {
                 ParameterState = state.Severity;
-            }  
+            }
         }
     }
 
