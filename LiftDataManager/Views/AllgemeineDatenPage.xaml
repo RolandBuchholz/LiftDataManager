@@ -275,14 +275,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <ComboBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        Header="Gebäudetyp"
-                                        ItemsSource="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownList, Mode=OneWay}"
-                                        SelectedValue="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'].DropDownListValue, Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Gebaeudetyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FE_Gebaeude'], Mode=TwoWay}"

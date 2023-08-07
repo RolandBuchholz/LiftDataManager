@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq.Expressions;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LiftDataManager.ViewModels;
 
@@ -131,8 +134,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
-    private string? dataImportStatus;
+    private string? dataImportStatusText = "Keine Daten für Import vorhanden" ;
 
+    [ObservableProperty]
+    private InfoBarSeverity dataImportStatus = InfoBarSeverity.Informational;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoadDataCommand))]
@@ -162,12 +167,99 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
-        await SetFullPathXmlAsync(OpenReadOnly);
+        var downloadInfo = await GetAutoDeskTransferAsync(SpezifikationName, OpenReadOnly);
+        if (downloadInfo is not null)
+        {
+            if (downloadInfo.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+            {
+                switch (downloadInfo.CheckOutState)
+                {
+                    case "CheckedOutByCurrentUser":
+                        CheckOut = true;
+                        FullPathXml = downloadInfo.FullFileName;
+                        _logger.LogInformation(60139, "{FullPathXml} loaded", downloadInfo.FullFileName);
+                        break;
+                    case "CheckedOutByOtherUser":
+                        await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadInfo);
+                        _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
+                        InfoSidebarPanelText += $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n";
+                        InfoSidebarPanelText += $"Kein speichern möglich!\n";
+                        InfoSidebarPanelText += $"{downloadInfo.FullFileName?.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                        AuftragsbezogeneXml = true;
+                        CanValidateAllParameter = true;
+                        CheckOut = false;
+                        LikeEditParameter = false;
+                        break;
+                    default:
+                        CheckOut = false;
+                        FullPathXml = downloadInfo.FullFileName;
+                        break;
+                }
+            }
+            else if (downloadInfo.ExitState == DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml)
+            {
+                InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden\n";
+
+                var confirmed = await _dialogService!.ConfirmationDialogAsync(
+                                        $"Es wurden mehrere {downloadInfo.FileName} Dateien gefunden?",
+                                            "XML aus Vault herunterladen",
+                                            "Abbrechen");
+                if ((bool)confirmed)
+                {
+                    var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, true);
+
+                    if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                    {
+                        _logger.LogInformation(60139, "{FullPathXml} loaded", downloadResult.FullFileName);
+                        FullPathXml = downloadResult.FullFileName;
+                    }
+                    else
+                    {
+                        await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
+                        _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName!, downloadResult.ExitState);
+                        InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                        FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation(60139, "Standarddata loaded");
+                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                }
+            }
+            else
+            {
+                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadInfo);
+                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadInfo.ExitState);
+                InfoSidebarPanelText += $"Fehler: {downloadInfo.ExitState}\n";
+                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+            }
+        }
+        else
+        {
+            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+        }
+        
         if (string.IsNullOrWhiteSpace(FullPathXml))
         {
             _logger.LogWarning(61033, "FullPathXml is null or whiteSpace");
             return;
         }
+
+        if (string.Equals(FullPathXml, @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
+        {
+            SpezifikationName = string.Empty;
+            AuftragsbezogeneXml = false;
+            CanValidateAllParameter = false;
+            InfoSidebarPanelText += $"Standard Daten geladen\n";
+        }
+        else
+        {
+            AuftragsbezogeneXml = true;
+            CanValidateAllParameter = true;
+            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+        }
+
         var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
@@ -437,13 +529,92 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (string.Equals(SpezifikationName, ImportSpezifikationName))
         {
-            DataImportStatus = "Fehler: Datenimport kann nicht in sich selbst importiert werden!";
+            DataImportStatus = InfoBarSeverity.Error;
+            DataImportStatusText = "Datenimport kann nicht in sich selbst importiert werden!";
+            return;
+        }
+        DataImportStatus = InfoBarSeverity.Informational;
+        DataImportStatusText = "Datenimport gestartet";
+
+        var downloadInfo = await GetAutoDeskTransferAsync(ImportSpezifikationName, true);
+        if (downloadInfo is null)
+        {
+            DataImportStatus = InfoBarSeverity.Error;
+            DataImportStatusText = "Datenimport fehlgeschlagen";
+            return;
+        }
+        if (downloadInfo.ExitState is not DownloadInfo.ExitCodeEnum.NoError)
+        {
+            DataImportStatus = InfoBarSeverity.Warning;
+            DataImportStatusText = downloadInfo.DownloadInfoEnumToString();
+            return;
+        }
+        if (downloadInfo.FullFileName is null)
+        {
+            DataImportStatus = InfoBarSeverity.Error;
+            DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
             return;
         }
 
-        DataImportStatus = "Datenimport gestartet";
-        await Task.Delay(3000);
-        DataImportStatus = "Daten erfolgreich importiert";
+        var importParameter = await _parameterDataService!.LoadParameterAsync(downloadInfo.FullFileName);
+
+        string[] ignoreImportParameters =
+        {
+            "var_Index",
+            "var_FabrikNummer",
+            "var_AuftragsNummer",
+            "var_Kennwort",
+            "var_ErstelltVon",
+            "var_ErstelltAm",
+            "var_FabriknummerBestand",
+            "var_FreigabeErfolgtAm",
+            "var_Demontage",
+            "var_AuslieferungAm",
+            "var_FertigstellungAm"
+        };
+
+        foreach (var item in importParameter)
+        {
+            if (ignoreImportParameters.Contains(item.Name))
+            {
+                continue;
+            }
+            if (ParamterDictionary!.TryGetValue(item.Name, out Parameter value))
+            {
+                var updatedParameter = value;
+                updatedParameter.DataImport = true;
+                if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
+                {
+                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                }
+                else
+                {
+                    updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+                }
+                updatedParameter.Comment = item.Comment;
+                updatedParameter.IsKey = item.IsKey;
+                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                {
+                    updatedParameter.DropDownListValue = updatedParameter.Value;
+                }
+                if (updatedParameter.HasErrors)
+                {
+                    updatedParameter.HasErrors = false;
+                }
+                updatedParameter.DataImport = false;
+            }
+            else
+            {
+                LogUnsupportedParameter(item.Name);
+                InfoSidebarPanelText += $"----------\n";
+                InfoSidebarPanelText += $"Parameter {item.Name} wird nicht unterstützt\n";
+                InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
+                InfoSidebarPanelText += $"----------\n";
+            }
+        }
+
+        DataImportStatus = InfoBarSeverity.Success;
+        DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert";
     }
 
     protected override async Task SetModelStateAsync()
@@ -521,146 +692,62 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         _logger.LogInformation(60139, "Set ModelStateAsync finished");
     }
 
-    private async Task SetFullPathXmlAsync(bool ReadOnly = true)
+    private async Task<DownloadInfo?> GetAutoDeskTransferAsync(string? liftNumber, bool ReadOnly = true)
     {
-        if (!AuftragsbezogeneXml && string.IsNullOrEmpty(SpezifikationName))
+        if (!AuftragsbezogeneXml && string.IsNullOrEmpty(liftNumber))
         {
-            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
             SpezifikationName = string.Empty;
+            return null;
         }
-        else
+
+        CheckOut = false;
+        var searchPattern = liftNumber + "-AutoDeskTransfer.xml";
+        var watch = Stopwatch.StartNew();
+        var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
+        var stopTimeMs = watch.ElapsedMilliseconds;
+        
+        switch (workspaceSearch.Length)
         {
-            CheckOut = false;
-            var searchPattern = SpezifikationName + "-AutoDeskTransfer.xml";
-            var watch = Stopwatch.StartNew();
-            var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
-            var stopTimeMs = watch.ElapsedMilliseconds;
-
-            switch (workspaceSearch.Length)
+            case 0:
             {
-                case 0:
-                    {
-                        _logger.LogWarning(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found", SpezifikationName);
-                        InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
-
-                        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
-
-                        if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                _logger.LogWarning(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found", liftNumber);
+                InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
+                return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
+            }
+            case 1:
+            {
+                InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                var autoDeskTransferpath = workspaceSearch[0];
+                FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                if (!AutoDeskTransferInfo.IsReadOnly)
+                {
+                        _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
+                        return new DownloadInfo() 
                         {
-                            FullPathXml = downloadResult.FullFileName;
-                            InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                            AuftragsbezogeneXml = true;
-                            CanValidateAllParameter = true;
-                        }
-                        else
-                        {
-                            await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                            _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
-                            InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            AuftragsbezogeneXml = false;
-                            CanValidateAllParameter = false;
-                        }
-                        break;
-                    }
-                case 1:
-                    {
-                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                        var autoDeskTransferpath = workspaceSearch[0];
-                        FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
-                        if (!AutoDeskTransferInfo.IsReadOnly)
-                        {
-                            FullPathXml = workspaceSearch[0];
-                            _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
-                            InfoSidebarPanelText += $"Die Daten {searchPattern} wurden aus dem Arbeitsberech geladen\n";
-                            AuftragsbezogeneXml = true;
-                            CanValidateAllParameter = true;
-                            CheckOut = true;
-                        }
-                        else
-                        {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
-
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError && !string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
-                            {
-                                FullPathXml = downloadResult.FullFileName;
-                                _logger.LogInformation(60139, "{FullPathXml} loaded", FullPathXml);
-                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                                AuftragsbezogeneXml = true;
-                                CanValidateAllParameter = true;
-                                CheckOut = downloadResult.IsCheckOut;
-                            }
-                            else if (string.Equals(downloadResult.CheckOutState, "CheckedOutByOtherUser"))
-                            {
-                                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                                FullPathXml = downloadResult.FullFileName;
-                                _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadResult.EditedBy);
-                                InfoSidebarPanelText += $"Achtung Datei wird von {downloadResult.EditedBy} bearbeitet\n";
-                                InfoSidebarPanelText += $"Kein speichern möglich!\n";
-                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                                AuftragsbezogeneXml = true;
-                                CanValidateAllParameter = true;
-                                CheckOut = false;
-                                LikeEditParameter = false;
-                            }
-                            else
-                            {
-                                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
-                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                                InfoSidebarPanelText += $"Standard Daten geladen\n";
-                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                                AuftragsbezogeneXml = false;
-                                CanValidateAllParameter = true;
-                            }
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
-                        InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                        InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {searchPattern} wurden gefunden\n";
-
-                        var confirmed = await _dialogService!.ConfirmationDialogAsync(
-                                                $"Es wurden mehrere {searchPattern} Dateien gefunden?",
-                                                 "XML aus Vault herunterladen",
-                                                    "Abbrechen");
-                        if ((bool)confirmed)
-                        {
-                            var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, ReadOnly);
-
-                            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
-                            {
-                                FullPathXml = downloadResult.FullFileName;
-                                _logger.LogInformation(60139, "{FullPathXml} loaded", FullPathXml);
-                                InfoSidebarPanelText += $"{FullPathXml!.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                                AuftragsbezogeneXml = true;
-                                CanValidateAllParameter = true;
-                            }
-                            else
-                            {
-                                await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
-                                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadResult.ExitState);
-                                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                                InfoSidebarPanelText += $"Standard Daten geladen\n";
-                                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                                AuftragsbezogeneXml = false;
-                                CanValidateAllParameter = false;
-                            }
-                        }
-                        else
-                        {
-                            InfoSidebarPanelText += $"Standard Daten geladen\n";
-                            _logger.LogInformation(60139, "Standarddata loaded");
-                            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-                            SpezifikationName = string.Empty;
-                            AuftragsbezogeneXml = false;
-                            CanValidateAllParameter = false;
-                        }
-                        break;
-                    }
+                            ExitCode = 0,
+                            CheckOutState = "CheckedOutByCurrentUser",
+                            ExitState = DownloadInfo.ExitCodeEnum.NoError,
+                            FullFileName = workspaceSearch[0],
+                            Success = true,
+                            IsCheckOut = true
+                        };
+                }
+                else
+                {
+                    return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
+                }
+            }
+            default:
+            {
+                InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
+                return new DownloadInfo()
+                {
+                    ExitCode = 5,
+                    FileName = searchPattern,
+                    FullFileName = searchPattern,
+                    ExitState = DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml
+                };
             }
         }
     }
