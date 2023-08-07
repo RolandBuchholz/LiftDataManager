@@ -1,0 +1,2 @@
+﻿# LiftDataManger Hilfe
+## Allgemeine Daten
