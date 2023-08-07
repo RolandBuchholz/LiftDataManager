@@ -25,7 +25,7 @@ public class SpezifikationDocument : PdfBaseDocument
 
     protected override void Content(IContainer container)
     {
-        container.PaddingLeft(10, Unit.Millimetre).PaddingRight(10, Unit.Millimetre).DefaultTextStyle(x => x.FontSize(fontSizeXS)).Column(column =>
+        container.PaddingLeft(15, Unit.Millimetre).PaddingRight(15, Unit.Millimetre).DefaultTextStyle(x => x.FontSize(fontSizeXS)).Column(column =>
         {
             column.Item().AlignRight().Row(row =>
             {
@@ -473,7 +473,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
                 table.Cell().Row(1).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"], "Stk");
-                table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin");
+                table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin", false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_abgDecke"]);
@@ -1378,7 +1378,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Montage Außentableau").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(19).Column(3).ParameterBoolCell(ParameterDictionary["var_Tuerzargenmontage"]);
                 table.Cell().Row(19).Column(4).ParameterBoolCell(ParameterDictionary["var_Mauerwerkmontage"]);
-                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"], false, "Mauerumfassungszargen");
+                table.Cell().Row(19).Column(5).ParameterBoolCell(ParameterDictionary["var_MWUmontage"], false, "Mauerumfassungszarge");
                 table.Cell().Row(19).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_42"]);
                 table.Cell().Row(20).Column(3).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_43"]);
                 table.Cell().Row(20).Column(4).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_44"]);

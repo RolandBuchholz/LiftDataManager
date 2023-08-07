@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq.Expressions;
 using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LiftDataManager.ViewModels;
 
@@ -556,6 +553,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
         }
 
+        CheckOut = true;
         var importParameter = await _parameterDataService!.LoadParameterAsync(downloadInfo.FullFileName);
 
         string[] ignoreImportParameters =
@@ -582,7 +580,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (ParamterDictionary!.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
-                updatedParameter.DataImport = true;
                 if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
                 {
                     updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
@@ -601,7 +598,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     updatedParameter.HasErrors = false;
                 }
-                updatedParameter.DataImport = false;
             }
             else
             {
@@ -611,6 +607,21 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
                 InfoSidebarPanelText += $"----------\n";
             }
+        }
+
+        if (ParamterDictionary is null)
+            return;
+        if (FullPathXml is null)
+            return;
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml, true);
+        InfoSidebarPanelText += infotext;
+        await SetModelStateAsync();
+        if (AutoSaveTimer is not null)
+        {
+            var saveTimeIntervall = AutoSaveTimer.Interval;
+            AutoSaveTimer.Stop();
+            AutoSaveTimer.Interval = saveTimeIntervall;
+            AutoSaveTimer.Start();
         }
 
         DataImportStatus = InfoBarSeverity.Success;
