@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml.Input;
 using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
@@ -206,6 +207,16 @@ public sealed partial class ParameterTextBox : UserControl
         {
             var nav = App.GetService<INavigationService>();
             nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
+    }
+
+    public void MoveFocus(Object sender, KeyRoutedEventArgs e)
+    {
+        var ptx = sender as ParameterTextBox;
+        if (ptx is not null)
+        {
+            FindNextElementOptions fneo = new() { SearchRoot = ptx.XamlRoot.Content };
+            _ = FocusManager.TryMoveFocus(FocusNavigationDirection.Next, fneo);
         }
     }
 }

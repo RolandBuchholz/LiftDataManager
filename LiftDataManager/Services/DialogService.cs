@@ -305,7 +305,7 @@ public class DialogService : IDialogService
         mainPanel.Children.Add(new TextBlock
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Text = DownloadInfoEnumToString(downloadResult),
+            Text = downloadResult.DownloadInfoEnumToString(),
             TextWrapping = TextWrapping.Wrap,
         });
         mainPanel.Children.Add(exp);
@@ -319,26 +319,5 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         await dialog.ShowAsync();
-    }
-
-    private static string DownloadInfoEnumToString(DownloadInfo downloadResult)
-    {
-        var enumText = downloadResult.ExitState switch
-        {
-            DownloadInfo.ExitCodeEnum.NoError => "kein Fehler",
-            DownloadInfo.ExitCodeEnum.UpDownLoadError => "Datei - Upload /Download/Reservierung enfernen fehlgeschlagen",
-            DownloadInfo.ExitCodeEnum.LoginError => "Login Fehler im Vault",
-            DownloadInfo.ExitCodeEnum.UpdatePropertiesError => "Eigenschaftsabgleich mit Vault fehlgeschlagen",
-            DownloadInfo.ExitCodeEnum.PowerShellStartError => "Interner Fehler in der PowerShellStart Programm",
-            DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml => "AutoDeskTransferXml mehrfach im Arbeitsbereich vorhanden",
-            DownloadInfo.ExitCodeEnum.InvalideOrderNumber => "Invalide Auftrags bzw. Angebotsnummer",
-            DownloadInfo.ExitCodeEnum.MissingVaultFile => "Datei im Vault oder Arbeitsbereich nicht gefunden",
-            DownloadInfo.ExitCodeEnum.MissingAdskLicensingSDK_5 => "Fehlende AdskLicensingSDK_5.dll im Powershell Ordner",
-            DownloadInfo.ExitCodeEnum.MissingVaultClient_DataStandard => "Vault Client 2022 oder DataStandard wurde nicht gefunden",
-            DownloadInfo.ExitCodeEnum.CheckedOutByOtherUser => "AutoDeskTransferXml durch anderen Benutzer ausgechecked",
-            DownloadInfo.ExitCodeEnum.CheckedOutLinkedFilesByOtherUser => "AutoDeskTransferXml verbundene Dateien durch anderen Benutzer ausgechecked",
-            _ => "keine ExitCode vorhanden",
-        };
-        return enumText;
     }
 }
