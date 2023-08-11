@@ -1,19 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Services;
-using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
-    private readonly ILogger<ParameterDataService> _logger;
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ILogger<ParameterDataService> logger) :
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
                                 base(parameterDataService, dialogService, navigationService)
     {
-        _logger = logger;
         FilteredItems = new CollectionViewSource
         {
             IsSourceGrouped = false

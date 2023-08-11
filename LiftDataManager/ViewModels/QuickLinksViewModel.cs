@@ -241,6 +241,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
         SynchronizeViewModelParameter();
         _ = SetModelStateAsync();
+        _fromCFPwritten = false;
+        CFPDataReadyForImport = false;
         var startargs = string.Empty;
         var pathCFP = _settingService.PathCFP;
         if (!File.Exists(pathCFP))
@@ -393,6 +395,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     {
         SynchronizeViewModelParameter();
         _ = SetModelStateAsync();
+        ZAliftRegEditSuccessful = false;
         var startargs = "StartLAST";
         var pathZALift = _settingService.PathZALift;
         if (!File.Exists(pathZALift))

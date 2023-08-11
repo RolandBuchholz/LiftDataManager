@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20230808054618_AddLiftplanner")]
+    partial class AddLiftplanner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -63,26 +66,6 @@ namespace LiftDataManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CargoTypes", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShortMark")
-                        .HasMaxLength(3)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countrys", (string)null);
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.DeliveryType", b =>
@@ -149,58 +132,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("InstallationInfos", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.LiftPlanner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MobileNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StreetNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ZipCodeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ZipCodeId");
-
-                    b.ToTable("LiftPlanners", (string)null);
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.LiftType", b =>
                 {
                     b.Property<int>("Id")
@@ -257,31 +188,6 @@ namespace LiftDataManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VandalResistants", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ZipCodeNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("ZipCodes", (string)null);
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.ControlCabinetPosition", b =>
@@ -1972,17 +1878,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("TypeExaminationCertificates", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.LiftPlanner", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", "ZipCode")
-                        .WithMany("LiftPlanners")
-                        .HasForeignKey("ZipCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ZipCode");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.LiftType", b =>
                 {
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", "CargoType")
@@ -2000,17 +1895,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("CargoType");
 
                     b.Navigation("DriveType");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", "Country")
-                        .WithMany("ZipCodes")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystem", b =>
@@ -2182,16 +2066,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
                 {
                     b.Navigation("LiftTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", b =>
-                {
-                    b.Navigation("ZipCodes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", b =>
-                {
-                    b.Navigation("LiftPlanners");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystemType", b =>

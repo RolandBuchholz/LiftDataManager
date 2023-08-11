@@ -4,10 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     mc:Ignorable="d">
 
@@ -21,8 +24,7 @@
             FalseValue="Visible"
             TrueValue="Collapsed" />
         <helpers:NewLineConveter x:Key="NewLineConveter" />
-        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
-        <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
+        <helpers:AutoSuggestionChosenParameterConverter x:Key="AutoSuggestionChosenParameterConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -60,6 +62,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.Resources>
                             <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
@@ -71,7 +74,7 @@
                         <Border
                             Grid.RowSpan="3"
                             Grid.Column="1"
-                            Grid.ColumnSpan="2"
+                            Grid.ColumnSpan="3"
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <TextBox
@@ -132,6 +135,60 @@
                                 Margin="5,5,10,0"
                                 ui:TextBoxExtensions.ValidationType="Email"
                                 Text="{x:Bind ViewModel.ParamterDictionary['var_AnPersonMail'].Value, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="3"
+                            Margin="0,0,10,0"
+                            Orientation="Vertical">
+                            <TextBlock
+                                MinWidth="300"
+                                Margin="5"
+                                Style="{ThemeResource DetailBodyBaseMediumStyle}"
+                                Text="Database" />
+                            <AutoSuggestBox
+                                x:Name="asb_LiftPlanner"
+                                Margin="5"
+                                Padding="5"
+                                ItemsSource="{x:Bind ViewModel.FilteredLiftPlanners, Mode=OneWay}"
+                                PlaceholderText="Fachplaner wählen"
+                                QueryIcon="Find"
+                                Text="{x:Bind ViewModel.AutoSuggestBoxText, Mode=TwoWay}">
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="TextChanged">
+                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.FilterLiftPlannersCommand}" CommandParameter="{x:Bind asb_LiftPlanner}" />
+                                    </core:EventTriggerBehavior>
+                                    <core:EventTriggerBehavior EventName="SuggestionChosen">
+                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.SelectLiftPlannersCommand}" InputConverter="{StaticResource AutoSuggestionChosenParameterConverter}" />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                            </AutoSuggestBox>
+                            <TextBlock Margin="5" Text="gewählter Fachplaner:" />
+                            <TextBlock Margin="5" Text="{x:Bind ViewModel.SelectedLiftPlanner, Mode=OneWay}" />
+                            <Button
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
+                                Command="{x:Bind ViewModel.GetLiftPlannerFromDatabaseCommand}"
+                                FontWeight="Bold"
+                                Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Margin="-5,0,5,0" Symbol="Contact" />
+                                    <TextBlock Text="Fachplaner auswählen" />
+                                </StackPanel>
+                            </Button>
+                            <Button
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
+                                Command="{x:Bind ViewModel.AddLiftPlannerDialogCommand}"
+                                CommandParameter="{x:Bind AddNewLiftPlannerDialog}"
+                                FontWeight="Bold"
+                                Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Margin="-5,0,5,0" Symbol="AddFriend" />
+                                    <TextBlock Text="Neuen Fachplaner anlegen" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Expander>
@@ -808,5 +865,334 @@
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
             ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
+        <ContentDialog
+            x:Name="AddNewLiftPlannerDialog"
+            Title="Neuen Fachplaner erstellen"
+            CloseButtonText="Abbrechen">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="5"
+                    FontSize="16"
+                    Text="Neuen Fachplaner erstellen und in die Datenbank speichen" />
+                <FontIcon
+                    Grid.Row="1"
+                    Grid.RowSpan="4"
+                    Grid.Column="0"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    FontSize="125"
+                    Glyph="&#xE779;" />
+                <Grid
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Width="350"
+                    Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="txb_Company"
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        PlaceholderText="Unternehmen"
+                        Text="{x:Bind ViewModel.Company, Mode=TwoWay}" />
+                    <FontIcon
+                        x:Name="ico_CompanyError"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Foreground="Red"
+                        Glyph="&#xE946;"
+                        Visibility="Collapsed">
+                        <ToolTipService.ToolTip>
+                            <TextBlock Foreground="Red" Text="* Pflichteingabe" />
+                        </ToolTipService.ToolTip>
+                    </FontIcon>
+                </Grid>
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="txb_Name"
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        PlaceholderText="Name"
+                        Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
+                    <FontIcon
+                        x:Name="ico_NameError"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Foreground="Red"
+                        Glyph="&#xE946;"
+                        Visibility="Collapsed">
+                        <ToolTipService.ToolTip>
+                            <TextBlock Foreground="Red" Text="* Pflichteingabe" />
+                        </ToolTipService.ToolTip>
+                    </FontIcon>
+                </Grid>
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Margin="3"
+                    PlaceholderText="Vorname"
+                    Text="{x:Bind ViewModel.FirstName, Mode=TwoWay}" />
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="txb_Street"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Stretch"
+                        PlaceholderText="Straßenname"
+                        Text="{x:Bind ViewModel.Street, Mode=TwoWay}" />
+                    <FontIcon
+                        x:Name="ico_StreetError"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Foreground="Red"
+                        Glyph="&#xE946;"
+                        Visibility="Collapsed">
+                        <ToolTipService.ToolTip>
+                            <TextBlock Foreground="Red" Text="* Pflichteingabe" />
+                        </ToolTipService.ToolTip>
+                    </FontIcon>
+                    <TextBox
+                        Grid.Column="2"
+                        Margin="3"
+                        PlaceholderText="Hausnr."
+                        Text="{x:Bind ViewModel.StreetNumber, Mode=TwoWay}" />
+                </Grid>
+                <ComboBox
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="3"
+                    HorizontalAlignment="Stretch"
+                    DisplayMemberPath="Name"
+                    ItemsSource="{x:Bind ViewModel.Countrys, Mode=OneWay}"
+                    PlaceholderText="Land"
+                    SelectedValue="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
+                <Grid
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="76" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox
+                            Grid.Column="0"
+                            Margin="3"
+                            DisplayMemberPath="ShortMark"
+                            IsEnabled="False"
+                            ItemsSource="{x:Bind ViewModel.Countrys, Mode=OneWay}"
+                            PlaceholderText="--"
+                            SelectedValue="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="-" />
+                        <TextBox
+                            Grid.Column="2"
+                            Margin="3"
+                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                            ui:TextBoxExtensions.ValidationType="Number"
+                            MaxLength="{x:Bind ViewModel.ZipCodePlaces, Mode=OneWay}"
+                            PlaceholderText="Postleitzahl"
+                            Text="{x:Bind ViewModel.ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{x:Bind ViewModel.CanShowZipCode, Mode=OneWay}" />
+                        <TextBox
+                            Grid.Column="3"
+                            Margin="3"
+                            HorizontalAlignment="Stretch"
+                            IsReadOnly="{x:Bind ViewModel.TownIsInDataBase, Mode=OneWay}"
+                            PlaceholderText="Ortschaft"
+                            Text="{x:Bind ViewModel.Town, Mode=TwoWay}"
+                            Visibility="{x:Bind ViewModel.CanShowTown, Mode=OneWay}" />
+                    </Grid>
+                    <FontIcon
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="3"
+                        HorizontalAlignment="Center"
+                        Glyph="&#xE717;" />
+                    <TextBox
+                        x:Name="tbx_PhoneNumber"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="3"
+                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                        ui:TextBoxExtensions.ValidationType="PhoneNumber"
+                        PlaceholderText="Telefonnummer"
+                        Text="{x:Bind ViewModel.PhoneNumber, Mode=TwoWay}" />
+                    <FontIcon
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Glyph="&#xE8EA;" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="3"
+                        HorizontalAlignment="Stretch"
+                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                        ui:TextBoxExtensions.ValidationType="PhoneNumber"
+                        PlaceholderText="Mobilnummer"
+                        Text="{x:Bind ViewModel.MobileNumber, Mode=TwoWay}" />
+                    <FontIcon
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Glyph="&#xE715;" />
+                    <Grid
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            x:Name="txb_Mail"
+                            Grid.Column="0"
+                            HorizontalAlignment="Stretch"
+                            PlaceholderText="E-Mail Adresse"
+                            Text="{x:Bind ViewModel.Mailadress, Mode=TwoWay}" />
+                        <FontIcon
+                            x:Name="ico_MailError"
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="Red"
+                            Glyph="&#xE946;"
+                            Visibility="Collapsed">
+                            <ToolTipService.ToolTip>
+                                <TextBlock Foreground="Red" Text="* Pflichteingabe" />
+                            </ToolTipService.ToolTip>
+                        </FontIcon>
+                    </Grid>
+                </Grid>
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.AddLiftPlannerToDatabaseCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Margin="10,0,10,0" Symbol="AddFriend" />
+                        <TextBlock Text="Fachplaner erstellen und speichern" />
+                    </StackPanel>
+                </Button>
+                <ProgressBar
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,10,0,-10"
+                    IsIndeterminate="{x:Bind ViewModel.AddLiftPlannerToDatabaseCommand.IsRunning, FallbackValue=false, Mode=OneWay}" />
+            </Grid>
+        </ContentDialog>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CompanyState">
+                <VisualState x:Name="CompanyNotEmptyState" />
+                <VisualState x:Name="CompanyEmptyState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Company, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="txb_Company.BorderBrush" Value="Red" />
+                        <Setter Target="ico_CompanyError.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="NameState">
+                <VisualState x:Name="NameNotEmptyState" />
+                <VisualState x:Name="NameEmptyState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Name, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="txb_Name.BorderBrush" Value="Red" />
+                        <Setter Target="ico_NameError.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="StreetState">
+                <VisualState x:Name="StreetNotEmptyState" />
+                <VisualState x:Name="StreetEmptyState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Street, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="txb_Street.BorderBrush" Value="Red" />
+                        <Setter Target="ico_StreetError.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="MailState">
+                <VisualState x:Name="MailNotEmptyState" />
+                <VisualState x:Name="MailEmptyState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Mail, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="txb_Mail.BorderBrush" Value="Red" />
+                        <Setter Target="ico_MailError.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

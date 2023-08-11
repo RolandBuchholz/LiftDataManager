@@ -101,13 +101,12 @@ public partial class ParameterDataService : IParameterDataService
         {
             foreach (var par in parameterDtos)
             {
-                var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, _validationParameterDataService)
+                var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, par.Comment!,  _validationParameterDataService)
                 {
                     Name = par.Name,
                     DisplayName = par.DisplayName,
                     ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
                     DefaultUserEditable = par.DefaultUserEditable,
-                    Comment = par.Comment,
                     IsKey = par.IsKey,
                     IsDirty = false
                 };
@@ -130,7 +129,6 @@ public partial class ParameterDataService : IParameterDataService
                 parameterList.Add(newParameter);
             }
         }
-
 
         await Task.CompletedTask;
         _logger.LogInformation(60100, "Parameter from database initialized");
@@ -382,6 +380,7 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary)
     {
         List<string> syncedParameter = new();
+        List<LiftHistoryEntry> syncedLiftHistoryEntries = new();
         var updatedAutodeskTransfer = await LoadParameterAsync(path);
 
         foreach (var param in updatedAutodeskTransfer)
@@ -392,11 +391,23 @@ public partial class ParameterDataService : IParameterDataService
                 {
                     if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
                         continue;
-
-                    paramterDictionary[dictionary.Name!].Value = param.Value;
+                    if (paramterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
+                    {
+                        paramterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False"; 
+                    }
+                    else
+                    {
+                        paramterDictionary[dictionary.Name!].Value = param.Value;
+                    }
+                    paramterDictionary[dictionary.Name!].IsDirty = false;
+                    syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(paramterDictionary[dictionary.Name!]));
                     syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
                 }
             }
+        }
+        if (syncedLiftHistoryEntries.Count > 0)
+        {
+            _ = AddParameterListToHistoryAsync(syncedLiftHistoryEntries, path, false);
         }
         return syncedParameter;
     }

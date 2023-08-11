@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20230808061624_AddLiftPlannerDetails")]
+    partial class AddLiftPlannerDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -63,26 +66,6 @@ namespace LiftDataManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CargoTypes", (string)null);
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShortMark")
-                        .HasMaxLength(3)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countrys", (string)null);
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.DeliveryType", b =>
@@ -265,8 +248,10 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CountryId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -278,8 +263,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
 
                     b.ToTable("ZipCodes", (string)null);
                 });
@@ -2002,17 +1985,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Navigation("DriveType");
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", b =>
-                {
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", "Country")
-                        .WithMany("ZipCodes")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystem", b =>
                 {
                     b.HasOne("LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf.DriveSystemType", "DriveSystemType")
@@ -2182,11 +2154,6 @@ namespace LiftDataManager.Core.Migrations
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.CargoType", b =>
                 {
                     b.Navigation("LiftTypes");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.Country", b =>
-                {
-                    b.Navigation("ZipCodes");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten.ZipCode", b =>

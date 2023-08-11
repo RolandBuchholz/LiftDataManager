@@ -10,14 +10,14 @@ public partial class Parameter : ParameterBase
     public bool DataImport { get; set; }
     public bool DefaultUserEditable { get; set; }
 
-    public Parameter(string value, int parameterTypeCodeId, int parameterTypId, IValidationParameterDataService validationParameterDataService)
+    public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
         DataImport = true;
         TypeCode = (TypeCodeValue)parameterTypeCodeId;
         ParameterTyp = (ParameterTypValue)parameterTypId;
         SymbolCode = GetSymbolCode(TypeCode);
-
+        Comment = comment;
         Value = ParameterTyp switch
         {
             ParameterTypValue.Text => (value is not null) ? value : "",
@@ -47,10 +47,13 @@ public partial class Parameter : ParameterBase
 
     [ObservableProperty]
     private string? comment;
-    partial void OnCommentChanged(string? value)
+    partial void OnCommentChanged(string? oldValue, string? newValue)
     {
         if (!DataImport)
+        {
             IsDirty = true;
+            Broadcast(oldValue, newValue, Name);
+        } 
     }
 
     [ObservableProperty]
