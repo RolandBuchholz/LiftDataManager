@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
@@ -92,7 +91,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private bool canShowTown;
     partial void OnCanShowTownChanged(bool value)
     {
-        if (ZipCode is not null)
+        if (!string.IsNullOrWhiteSpace(ZipCode))
         {
             var storedZipCode = _editableparametercontext.Set<ZipCode>().FirstOrDefault(x => x.ZipCodeNumber == Convert.ToInt32(ZipCode));
             if (storedZipCode is not null)
@@ -129,6 +128,9 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     partial void OnSelectedLiftPlannerChanged(string? value)
     {
         CanGetLiftPlannerFromDatabase = !string.IsNullOrWhiteSpace(value);
+        DataBaseAction = string.IsNullOrWhiteSpace(value) ? "Neuen Fachplaner anlegen" : "Fachplaner aktualisieren";
+        DataBaseActionDescription = string.IsNullOrWhiteSpace(value) ? "Neuen Fachplaner erstellen und in die Datenbank speichen" : "Vorhandenen Fachplaner in der Datenbank aktualisieren";
+        DataBaseButtonText = string.IsNullOrWhiteSpace(value) ? "Fachplaner erstellen und speichern" : "Fachplaner in Datenbank aktualisieren";
     }
 
     [ObservableProperty]
@@ -145,6 +147,15 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(GetLiftPlannerFromDatabaseCommand))]
     private bool canGetLiftPlannerFromDatabase;
+
+    [ObservableProperty]
+    private string dataBaseAction = "Neuen Fachplaner anlegen";
+
+    [ObservableProperty]
+    private string dataBaseActionDescription = "Neuen Fachplaner erstellen und in die Datenbank speichen";
+
+    [ObservableProperty]
+    private string dataBaseButtonText= "Fachplaner erstellen und speichern";
 
     private void SetLiftplanners()
     {
@@ -211,9 +222,53 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     }
 
     [RelayCommand]
+    private void ResetLiftPlanner()
+    {
+        ParamterDictionary!["var_AnPersonZ4"].Value = string.Empty;
+        ParamterDictionary!["var_FP_Adresse"].Value = string.Empty;
+        ParamterDictionary!["var_AnPersonPhone"].Value = string.Empty;
+        ParamterDictionary!["var_AnPersonMobil"].Value = string.Empty;
+        ParamterDictionary!["var_AnPersonMail"].Value = string.Empty;
+        AutoSuggestBoxText = string.Empty;
+        SelectedLiftPlanner = string.Empty;
+        Company = string.Empty;
+        FirstName = string.Empty;
+        Name = string.Empty;
+        Street = string.Empty;
+        StreetNumber = string.Empty;
+        PhoneNumber = string.Empty;
+        MobileNumber = string.Empty;
+        Mailadress = string.Empty;
+        Town = string.Empty;
+        ZipCode = null;
+    }
+
+    [RelayCommand]
     private async Task AddLiftPlannerDialogAsync(ContentDialog addLiftPlannerDialog)
     {
-        await addLiftPlannerDialog.ShowAsync();
+        if (!string.IsNullOrWhiteSpace(SelectedLiftPlanner))
+        {
+            var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
+            var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+                                                                          .ThenInclude(t => t.Country)
+                                                                          .FirstOrDefault(x => x.Id == liftPlanner.Key);
+            if (liftPlannerDatabase is not null)
+            {
+                Company = liftPlannerDatabase.Company;
+                FirstName = liftPlannerDatabase.FirstName;
+                Name = liftPlannerDatabase.Name;
+                Street = liftPlannerDatabase.Street;
+                StreetNumber = liftPlannerDatabase.StreetNumber;
+                SelectedCountry = liftPlannerDatabase.ZipCode.Country;
+                ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
+                Town = liftPlannerDatabase.ZipCode.Name;
+                PhoneNumber = liftPlannerDatabase.PhoneNumber;
+                MobileNumber = liftPlannerDatabase.MobileNumber;
+                Mailadress = liftPlannerDatabase.EmailAddress;
+                ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
+            }
+        }
+            await addLiftPlannerDialog.ShowAsync();
     }
 
     private void CheckLiftplannerIsValid()
@@ -226,52 +281,106 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     }
 
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]
-    private async Task AddLiftPlannerToDatabaseAsync()
+    private async Task AddLiftPlannerToDatabaseAsync(ContentDialog addLiftPlannerDialog)
     {
-        try
+        if (string.IsNullOrWhiteSpace(SelectedLiftPlanner))
         {
-            ZipCode dBZipCode;
+            try
+            {
+                ZipCode dBZipCode;
 
-            var storedZipCode = _editableparametercontext.Set<ZipCode>().FirstOrDefault(x => x.ZipCodeNumber == Convert.ToInt32(ZipCode));
-            if (storedZipCode is not null)
-            {
-                dBZipCode = storedZipCode;
-            }
-            else
-            {
-                dBZipCode = new ZipCode
+                var storedZipCode = _editableparametercontext.Set<ZipCode>().FirstOrDefault(x => x.ZipCodeNumber == Convert.ToInt32(ZipCode));
+                if (storedZipCode is not null)
                 {
-                    ZipCodeNumber = Convert.ToInt32(ZipCode),
-                    Name = Town!,
-                    Country = selectedCountry!
+                    dBZipCode = storedZipCode;
+                }
+                else
+                {
+                    dBZipCode = new ZipCode
+                    {
+                        ZipCodeNumber = Convert.ToInt32(ZipCode),
+                        Name = Town!,
+                        Country = selectedCountry!
+                    };
+                }
+
+                var newLiftplanner = new LiftPlanner
+                {
+                    Company = Company!,
+                    Name = Name!,
+                    FirstName = FirstName,
+                    Street = Street!,
+                    StreetNumber = StreetNumber,
+                    PhoneNumber = PhoneNumber,
+                    MobileNumber = MobileNumber,
+                    EmailAddress = Mailadress!,
+                    ZipCode = dBZipCode,
                 };
+
+                var addedLiftpanner = _editableparametercontext.Add(newLiftplanner);
+                await _editableparametercontext.SaveChangesAsync();
+                if (LiftPlanners is not null)
+                {
+                    LiftPlanners.Add(addedLiftpanner.Entity.Id, $"{addedLiftpanner.Entity.Company} ({addedLiftpanner.Entity.FirstName} {addedLiftpanner.Entity.Name})");
+                    SelectedLiftPlanner = LiftPlanners[addedLiftpanner.Entity.Id];
+                }
+                _logger.LogInformation(60179, "Liftplanner: {Company} successfully add to database", addedLiftpanner.DebugView.LongView);
             }
-
-            var newLiftplanner = new LiftPlanner
+            catch
             {
-                Company = Company!,
-                Name = Name!,
-                FirstName = FirstName,
-                Street = Street!,
-                StreetNumber = StreetNumber,
-                PhoneNumber = PhoneNumber,
-                MobileNumber = MobileNumber,
-                EmailAddress = Mailadress!,
-                ZipCode = dBZipCode,
-            };
-
-            var addedLiftpanner = _editableparametercontext.Add(newLiftplanner);
-            await _editableparametercontext.SaveChangesAsync();
-            _logger.LogInformation(60179, "Liftplanner: {Company} successfully add to database", addedLiftpanner.DebugView.LongView);
+                _logger.LogError(61078, "Failed to add new Liftplanner {Company} to database", Company);
+            }
+            GetLiftPlannerFromDatabase();
+            Company = string.Empty;
+            FirstName = string.Empty;
+            Name = string.Empty;
+            Street = string.Empty;
+            StreetNumber = string.Empty;
+            PhoneNumber = string.Empty;
+            MobileNumber = string.Empty;
+            Mailadress = string.Empty;
+            Town = string.Empty;
+            ZipCode = null;
+            addLiftPlannerDialog.Hide();
         }
-        catch
+        else
         {
-            _logger.LogError(61078, "Failed to add new Liftplanner {Company} to database", Company);
-        }
+            var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
+            var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+                                                                          .ThenInclude(t => t.Country)
+                                                                          .FirstOrDefault(x => x.Id == liftPlanner.Key);
+            if (liftPlannerDatabase is not null)
+            {
+                liftPlannerDatabase.Company = Company!;
+                liftPlannerDatabase.FirstName = FirstName;
+                liftPlannerDatabase.Name = Name!;
+                liftPlannerDatabase.Street = Street!;
+                liftPlannerDatabase.StreetNumber = StreetNumber;
+                liftPlannerDatabase.PhoneNumber = PhoneNumber;
+                liftPlannerDatabase.MobileNumber = MobileNumber;
+                liftPlannerDatabase.EmailAddress = Mailadress!;
+                liftPlannerDatabase.ZipCode.Country = SelectedCountry!;
+                liftPlannerDatabase.ZipCode.ZipCodeNumber = Convert.ToInt32(ZipCode);
+                liftPlannerDatabase.ZipCode.Name = Town!;
+            }
+            await _editableparametercontext.SaveChangesAsync();
 
-        //SetLiftplanners();
-        // TO DO Close Window
-        // Refresh DB Context
+            LiftPlanners[liftPlanner.Key] = $"{Company} ({FirstName} {Name})";
+            SelectedLiftPlanner = LiftPlanners[liftPlanner.Key];
+
+            GetLiftPlannerFromDatabase();
+            Company = string.Empty;
+            FirstName = string.Empty;
+            Name = string.Empty;
+            Street = string.Empty;
+            StreetNumber = string.Empty;
+            PhoneNumber = string.Empty;
+            MobileNumber = string.Empty;
+            Mailadress = string.Empty;
+            Town = string.Empty;
+            ZipCode = null;
+            addLiftPlannerDialog.Hide();
+        }
     }
 
     public void OnNavigatedTo(object parameter)

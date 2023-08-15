@@ -169,11 +169,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             if (downloadInfo.ExitState == DownloadInfo.ExitCodeEnum.NoError)
             {
+                FullPathXml = downloadInfo.FullFileName;
                 switch (downloadInfo.CheckOutState)
                 {
                     case "CheckedOutByCurrentUser":
                         CheckOut = true;
-                        FullPathXml = downloadInfo.FullFileName;
                         _logger.LogInformation(60139, "{FullPathXml} loaded", downloadInfo.FullFileName);
                         break;
                     case "CheckedOutByOtherUser":
@@ -189,7 +189,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         break;
                     default:
                         CheckOut = false;
-                        FullPathXml = downloadInfo.FullFileName;
                         break;
                 }
             }
