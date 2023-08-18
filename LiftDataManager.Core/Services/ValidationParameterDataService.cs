@@ -9,6 +9,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
+using LiftDataManager.Core.Models.CalculationResultsModels;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -292,7 +293,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null) });
 
         ValidationDictionary.Add("var_Ersatzmassnahmen",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedProtectionSpaces, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedProtectionSpaces, "None", "var_TypFV") });
 
         ValidationDictionary.Add("var_Fuehrungsart",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGuideModel, "None", null),
@@ -308,7 +309,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyGear, "None", null) });
 
         ValidationDictionary.Add("var_TypFV",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyRange, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateSafetyRange, "None", null),
+            new(ValidateAvailablEReducedProtectionSpaces, "Warning", null)});
 
         ValidationDictionary.Add("var_Aggregat",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDriveSystemTypes, "None", null),
@@ -901,32 +903,32 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateReducedProtectionSpaces(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        switch (value)
+        if (string.IsNullOrWhiteSpace(value) || value == "keine")
         {
-            case "keine":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
-                break;
-            case "Schachtkopf":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
-                break;
-            case "Schachtgrube":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
-                break;
-            case "Schachtkopf und Schachtgrube":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
-                break;
-            case "Vorausgelöstes Anhaltesystem":
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
-                break;
-            default:
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
-                break;
+            ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+            ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
+            return;
+        }
+
+        if (value == "Vorausgelöstes Anhaltesystem" || value.StartsWith("Schachtkopf und Schachtgrube"))
+        {
+            ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+            ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
+            return;
+        }
+
+        if (value.StartsWith("Schachtkopf"))
+        {
+            ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+            ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
+            return;
+        }
+
+        if (value.StartsWith("Schachtgrube"))
+        {
+            ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+            ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
+            return;
         }
     }
 
@@ -953,6 +955,49 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             {
                 ParamterDictionary["var_TypFV"].Value = string.Empty;
                 ParamterDictionary["var_TypFV"].DropDownListValue = null;
+            }
+        }
+    }
+
+    private void ValidateAvailablEReducedProtectionSpaces(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var reducedProtectionSpaces = _parametercontext.Set<ReducedProtectionSpace>().ToList();
+        var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
+        var selectedReducedProtectionSpace = ParamterDictionary["var_Ersatzmassnahmen"].Value;
+
+        IEnumerable<string?> availablEReducedProtectionSpaces;
+
+        if (string.IsNullOrWhiteSpace(selectedSafetyGear))
+        {
+            availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(s => s.Name);
+        }
+        else if (selectedSafetyGear.Contains("ESG"))
+        {
+            availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name =="keine").Select(s => s.Name);
+            if (selectedSafetyGear == "Wittur ESG 25 U")
+            {
+                availablEReducedProtectionSpaces = availablEReducedProtectionSpaces.Append("Schachtkopf");
+            }
+        }
+        else
+        {
+            availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(s => s.Name);
+        }
+
+        if (availablEReducedProtectionSpaces is not null)
+        {
+            ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Clear();
+            foreach (var item in availablEReducedProtectionSpaces)
+            {
+                ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Add(item!);
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedSafetyGear) &&
+                !string.IsNullOrWhiteSpace(selectedReducedProtectionSpace) &&
+                !availablEReducedProtectionSpaces.Contains(selectedReducedProtectionSpace))
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity)));
+                return;
             }
         }
     }

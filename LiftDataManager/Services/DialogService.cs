@@ -298,6 +298,7 @@ public class DialogService : IDialogService
             Margin = new Thickness(0, 20, 0, 0),
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Bottom,
+            IsExpanded = true,
             Content = detailPanel
         };
 
