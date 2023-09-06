@@ -130,11 +130,11 @@ public static class PdfHelpers
             text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
         if (parameter.IsKey && LowHighlightColor)
         {
-            text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value)).Bold().Italic();
+            text.Line(parameter.Value).Bold().Italic();
         }
         else
         {
-            text.Line(LiftParameterHelper.ConvertExcelDate(parameter.Value));
+            text.Line(parameter.Value);
         }
     });
 

@@ -11,7 +11,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
     private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-    private const string pathSpezifikation = @"C:\Work\Administration\Spezifikation\Spezifikation.xlsm";
 
     private readonly ISettingService _settingService;
     private readonly ParameterContext _parametercontext;
@@ -110,52 +109,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
             CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
         CanImportZAliftData = CanOpenZALiftHtml && CheckOut;
-    }
-
-    [RelayCommand]
-    private async Task OpenSpeziAsync()
-    {
-        SynchronizeViewModelParameter();
-        var auftragsnummer = ParamterDictionary?["var_AuftragsNummer"].Value;
-        var filename = _settingService.PathExcel;
-        var startargs = string.Empty;
-        var closeLiftDataManager = false;
-
-        if (!string.IsNullOrWhiteSpace(auftragsnummer))
-        {
-            if (CheckOut)
-            {
-                _ = _dialogService!.MessageDialogAsync("Spezifikation öffnen", "Öffnen der Spezifikation\nnur möglich wenn AutoDeskTransfer.xml eingechecked ist.");
-                return;
-            }
-
-            var result = await _dialogService!.ConfirmationDialogAsync("Öffnungsoptionen Spezifikation", "Zum Bearbeiten öffnen", "Schreibgeschützt öffnen");
-            if (result is not null)
-            {
-                if (result.Value)
-                {
-                    startargs = @"/e/" + auftragsnummer + "/false/ " + pathSpezifikation;
-                    closeLiftDataManager = true;
-                }
-                else
-                {
-                    startargs = @"/e/" + auftragsnummer + "/true/ " + pathSpezifikation;
-                }
-            }
-        }
-        else
-        {
-            startargs = pathSpezifikation;
-        }
-
-        if (File.Exists(filename))
-        {
-            StartProgram(filename, startargs);
-            if (closeLiftDataManager)
-            {
-                Application.Current.Exit();
-            }
-        }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenSpeziPdf))]

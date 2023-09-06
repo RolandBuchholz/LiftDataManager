@@ -1,5 +1,4 @@
 ﻿using Cogs.Collections;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace LiftDataManager.core.Helpers;
@@ -34,27 +33,6 @@ public class LiftParameterHelper
         else
         {
             return string.Empty;
-        }
-    }
-
-    public static string ConvertExcelDate(string? date)
-    {
-        if (string.IsNullOrWhiteSpace(date) || date == "0")
-        {
-            return string.Empty;
-        }
-        else
-        {
-            try
-            {
-                var excelDate = Convert.ToDouble(date, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                return DateTime.FromOADate(excelDate).ToShortDateString();
-            }
-            catch
-            {
-                Debug.WriteLine($"string: {date} could not be converted to a dateTimeOffset");
-                return string.Empty;
-            }
         }
     }
 

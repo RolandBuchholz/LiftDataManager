@@ -52,29 +52,6 @@
                 Text="Links" />
             <Button
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
-                Command="{x:Bind ViewModel.OpenSpeziCommand}"
-                Style="{StaticResource LinkButtonSmall}">
-                <Image
-                    Width="30"
-                    Height="30"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/Images/ExcelTransparent.png">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Text="Spezifikation" />
-                    </ToolTipService.ToolTip>
-                </Image>
-                <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
-                        <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
-                        <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
-            </Button>
-            <Button
-                ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.OpenSpeziPdfCommand}"
                 Style="{StaticResource LinkButtonSmall}">
                 <Image

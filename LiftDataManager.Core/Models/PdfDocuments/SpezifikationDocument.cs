@@ -31,6 +31,8 @@ public class SpezifikationDocument : PdfBaseDocument
             {
                 row.ConstantItem(70).ParameterDateCell(ParameterDictionary["var_ErstelltAm"], false, true, null);
                 row.ConstantItem(70).ParameterStringCell(ParameterDictionary["var_ErstelltVon"], null, false, true, null);
+                row.ConstantItem(70).ParameterDateCell(ParameterDictionary["var_GeaendertAm"], false, true, null);
+                row.ConstantItem(70).ParameterStringCell(ParameterDictionary["var_GeaendertVon"], null, false, true, null);
                 row.ConstantItem(70).ParameterDateCell(ParameterDictionary["var_StandVom"], false, true, null);
             });
             column.Item().Element(AddressData);
@@ -622,7 +624,7 @@ public class SpezifikationDocument : PdfBaseDocument
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
                                        });
                 });
-                table.Cell().Row(1).RowSpan(18).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
+                table.Cell().Row(1).RowSpan(19).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bausatz_ZT"]);
                 table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
@@ -660,11 +662,24 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
-                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"], null, false, false, "Beschichtungsart Fangrahmen");
-                table.Cell().Row(18).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"], null, false, false, "Beschichtungsart Fangrahmen");
-                table.Cell().Row(19).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(19).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
+                table.Cell().Row(17).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"]);
+                });
+                table.Cell().Row(18).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungSchachteinbauten"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonSchachteinbauten"]);
+                });
+                table.Cell().Row(19).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungAntrieb"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonAntrieb"]);
+                });
+                table.Cell().Row(20).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(20).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
             });
         });
     }
@@ -1852,7 +1867,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(17).Column(1).Text("Gegengewicht Endstück:").FontSize(fontSizeXXS);
             table.Cell().Row(17).Column(2).AlignRight().Text(ParameterDictionary["var_HilfsschienenlaengeEndstueck"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(17).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
-            table.Cell().Row(18).Column(1).ColumnSpan(3).Text("Seildaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+            table.Cell().Row(18).Column(1).ColumnSpan(3).PaddingTop(3).Text("Seildaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(19).Column(1).Text("Treibscheibendurchmesser:").FontSize(fontSizeXXS);
             table.Cell().Row(19).Column(2).AlignRight().Text(ParameterDictionary["var_Treibscheibendurchmesser"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(19).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
@@ -1865,7 +1880,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(22).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(23).Column(1).Text("Sicherheitsfaktor Tragseil:").FontSize(fontSizeXXS);
             table.Cell().Row(23).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_RopeSafety"].Value).FontSize(fontSizeXXS);
-            table.Cell().Row(24).Column(1).ColumnSpan(3).Text("Belastungen / Kräfte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+            table.Cell().Row(24).Column(1).ColumnSpan(3).PaddingTop(3).Text("Belastungen / Kräfte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(25).Column(1).Text("Belastung unter FK Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(25).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(25).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
@@ -1890,7 +1905,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(32).Column(1).Text("Kraft Fy auf GGW-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(2).AlignRight().Text(ParameterDictionary["var_FyFA_GGW"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(33).Column(1).ColumnSpan(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+            table.Cell().Row(33).Column(1).ColumnSpan(3).PaddingTop(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(34).Column(1).Text("Nennstrom Netz (aufgerundet):").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);

@@ -4,21 +4,17 @@ public class ExcelDateToDateTimeOffsetConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, string language)
     {
-        DateTimeOffset? date;
-
         if (string.IsNullOrWhiteSpace((string)value) || value.GetType() != typeof(string) || (string)value == "0")
         {
             return null;
         }
         else
         {
-            try
+            if (DateTimeOffset.TryParse(value as string, out DateTimeOffset date))
             {
-                var excelDate = System.Convert.ToDouble(value, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                date = DateTime.FromOADate(excelDate);
                 return date;
             }
-            catch
+            else
             {
                 Debug.WriteLine($"string: {value} could not be converted to a dateTimeOffset");
                 return null;
@@ -28,22 +24,13 @@ public class ExcelDateToDateTimeOffsetConverter : IValueConverter
 
     public object? ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        string date;
-
         if (value == null || value.GetType() != typeof(DateTimeOffset))
         {
             return string.Empty;
         }
-
-        try
+        else
         {
-            date = ((DateTimeOffset)value).DateTime.ToOADate().ToString(CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-            return date;
-        }
-        catch
-        {
-            Debug.WriteLine($"date: {value} could not be converted to a string");
-            return string.Empty;
+            return ((DateTimeOffset)value).ToString("d", CultureInfo.CreateSpecificCulture("de-DE"));
         }
     }
 }

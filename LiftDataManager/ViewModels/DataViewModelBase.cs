@@ -227,44 +227,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        var sender = (Parameter)message.Sender;
-
-        if (sender.ParameterTyp == ParameterBase.ParameterTypValue.Date)
-        {
-            string? datetimeOld;
-            string? datetimeNew;
-            try
-            {
-                if (message.OldValue is not null)
-                {
-                    var excelDateOld = Convert.ToDouble(message.OldValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                    datetimeOld = DateTime.FromOADate(excelDateOld).ToShortDateString();
-                }
-                else
-                {
-                    datetimeOld = string.Empty;
-                }
-
-                if (message.NewValue is not null)
-                {
-                    var excelDateNew = Convert.ToDouble(message.NewValue, CultureInfo.GetCultureInfo("de-DE").NumberFormat);
-                    datetimeNew = DateTime.FromOADate(excelDateNew).ToShortDateString();
-                }
-                else
-                {
-                    datetimeNew = string.Empty;
-                }
-                InfoSidebarPanelText += $"{message.PropertyName} : {datetimeOld} => {datetimeNew} geändert \n";
-            }
-            catch
-            {
-                InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
-            }
-        }
-        else
-        {
-            InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
-        }
+        InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
     }
 
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)

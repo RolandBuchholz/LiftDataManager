@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Controls;
 using LiftDataManager.core.Helpers;
 
 
@@ -91,8 +92,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void CarFloor_LostFocus(object sender, RoutedEventArgs e)
     {
-        TextBox CarFloortextBox = (TextBox)sender;
-        double floorHeight = string.IsNullOrWhiteSpace(CarFloortextBox.Text) ? 0 : Convert.ToDouble(CarFloortextBox.Text, CultureInfo.CurrentCulture);
+        ParameterNumberTextBox CarFloortextBox = (ParameterNumberTextBox)sender;
+        double floorHeight = string.IsNullOrWhiteSpace(CarFloortextBox.LiftParameter?.Value) ? 0 : Convert.ToDouble(CarFloortextBox.LiftParameter?.Value, CultureInfo.CurrentCulture);
         double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KU");
         double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
         if (floorHeight + currentFloorThinkness != currentFloorHeight)

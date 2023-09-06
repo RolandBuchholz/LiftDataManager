@@ -9,7 +9,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -293,7 +292,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null) });
 
         ValidationDictionary.Add("var_Ersatzmassnahmen",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedProtectionSpaces, "None", "var_TypFV") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedProtectionSpaces, "Warning", "var_TypFV") });
 
         ValidationDictionary.Add("var_Fuehrungsart",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGuideModel, "None", null),
@@ -612,18 +611,24 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 bodenHoehe = 85;
                 break;
             case "sonder":
-                ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
+                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
+                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 bodenHoehe = -1;
                 break;
             case "extern":
-                ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
+                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
+                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 bodenHoehe = -1;
                 break;
             default:
-                ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
+                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
+                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 break;
         }
 
@@ -903,7 +908,6 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateReducedProtectionSpaces(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        Debug.WriteLine($"Ersatzmaßnahmen: Parameter => {name}");
         if (name == "var_Ersatzmassnahmen")
         {
             if (string.IsNullOrWhiteSpace(value) || value == "keine")
@@ -928,46 +932,50 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             }
         }
 
-        //var reducedProtectionSpaces = _parametercontext.Set<ReducedProtectionSpace>().ToList();
-        //var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
-        //var selectedReducedProtectionSpace = ParamterDictionary["var_Ersatzmassnahmen"].Value;
+        var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
+        var selectedReducedProtectionSpace = ParamterDictionary["var_Ersatzmassnahmen"].Value;
 
-        //IEnumerable<string?> availablEReducedProtectionSpaces;
+        if (name == "var_TypFV")
+        {
+            var reducedProtectionSpaces = _parametercontext.Set<ReducedProtectionSpace>().ToList();
+            IEnumerable<string?> availablEReducedProtectionSpaces;
 
-        //if (string.IsNullOrWhiteSpace(selectedSafetyGear))
-        //{
-        //    availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(s => s.Name);
-        //}
-        //else if (selectedSafetyGear.Contains("ESG"))
-        //{
-        //    availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(s => s.Name);
-        //    if (selectedSafetyGear == "Wittur ESG 25 U")
-        //    {
-        //        availablEReducedProtectionSpaces = availablEReducedProtectionSpaces.Append("Schachtkopf");
-        //    }
-        //}
-        //else
-        //{
-        //    availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(s => s.Name);
-        //}
+            if (string.IsNullOrWhiteSpace(selectedSafetyGear))
+            {
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(s => s.Name);
+            }
+            else if (selectedSafetyGear.Contains("BS"))
+            {
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(s => s.Name);
+            }
+            else
+            {
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(s => s.Name);
+            }
 
-        //if (availablEReducedProtectionSpaces is not null)
-        //{
-        //    ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Clear();
-        //    foreach (var item in availablEReducedProtectionSpaces)
-        //    {
-        //        ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Add(item!);
-        //    }
+            if (availablEReducedProtectionSpaces is not null)
+            {
+                ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Clear();
+                foreach (var item in availablEReducedProtectionSpaces)
+                {
+                    ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Add(item!);
+                }
+            }
+        }
 
-        //    if (!string.IsNullOrWhiteSpace(selectedSafetyGear) &&
-        //        !string.IsNullOrWhiteSpace(selectedReducedProtectionSpace) &&
-        //        !availablEReducedProtectionSpaces.Contains(selectedReducedProtectionSpace))
-        //    {
-        //        ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
-        //        { DependentParameter = new string[] { optional } });
-        //        return;
-        //    }
-        //}
+        if (!string.IsNullOrWhiteSpace(selectedSafetyGear) &&
+            !string.IsNullOrWhiteSpace(selectedReducedProtectionSpace))
+        {
+            if (!ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
+                { DependentParameter = new string[] { optional! } });
+            }
+            else
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { optional! } });
+            }
+        }
     }
 
     private void ValidateSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)

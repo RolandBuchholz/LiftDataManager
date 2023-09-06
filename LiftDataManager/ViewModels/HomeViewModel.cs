@@ -2,6 +2,7 @@
 using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LiftDataManager.ViewModels;
 
@@ -174,6 +175,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     case "CheckedOutByCurrentUser":
                         CheckOut = true;
+                        SetModifyInfos();
                         _logger.LogInformation(60139, "{FullPathXml} loaded", downloadInfo.FullFileName);
                         break;
                     case "CheckedOutByOtherUser":
@@ -264,14 +266,27 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
-                if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
-                {
-                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
-                }
-                else
+                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
                 {
                     updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
                 }
+                else if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.Date)
+                {
+                    if (string.IsNullOrWhiteSpace(item.Value))
+                    {
+                        updatedParameter.Value = string.Empty;
+                    }
+                    else
+                    {
+                        updatedParameter.Value = item.Value.Contains('.') ? item.Value 
+                                                                          : DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
+                    }
+                }
+                else
+                {
+                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                }
+
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
@@ -567,7 +582,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             "var_FreigabeErfolgtAm",
             "var_Demontage",
             "var_AuslieferungAm",
-            "var_FertigstellungAm"
+            "var_FertigstellungAm",
+            "var_GeaendertAm",
+            "var_GeaendertVon"
         };
 
         foreach (var item in importParameter)
@@ -720,7 +737,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             case 0:
             {
-                _logger.LogWarning(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found", liftNumber);
+                _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
                 InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
                 return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
             }
@@ -874,6 +891,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     }
 
+    private void SetModifyInfos()
+    {
+        ParamterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName)? "Keine Angaben" : Environment.UserName;
+        ParamterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -900,7 +923,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (CurrentSpeziProperties.ParamterDictionary is not null)
             ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
 
-
         if (ParamterDictionary.Values.Count == 0)
         {
             var success = InitializeParametereAsync();
@@ -915,6 +937,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
         {
+            if (CheckOut) SetModifyInfos();
+            
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
 

@@ -10,21 +10,6 @@
 
     <Grid x:Name="ContentArea">
         <GridView>
-            <Button Command="{x:Bind ViewModel.OpenSpeziCommand}" Style="{StaticResource LinkButton}">
-                <StackPanel>
-                    <Image
-                        Width="100"
-                        Height="100"
-                        Source="/Images/ExcelTransparent.png"
-                        Stretch="UniformToFill" />
-                    <TextBlock
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="Spezifikation" />
-                </StackPanel>
-            </Button>
             <Button Command="{x:Bind ViewModel.OpenSpeziPdfCommand}" Style="{StaticResource LinkButton}">
                 <StackPanel>
                     <Image
