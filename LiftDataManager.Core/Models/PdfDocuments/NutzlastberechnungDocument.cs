@@ -209,8 +209,8 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             table.Cell().Row(10).Column(1).ColumnSpan(2).PaddingLeft(10).Text("Anzahl der Personen und kleinste Nutzfläche des Fahrkorbs").FontSize(fontSizeXS).Bold();
             table.Cell().Row(11).Column(1).PaddingLeft(10).Text("Anzahl Personen (Tabelle 8)");
             table.Cell().Row(11).Column(2).AlignRight().Text($"{PayLoadResult.PersonenFlaeche} Per.");
-            table.Cell().Row(12).Column(1).PaddingLeft(10).Background(secondaryVariantColor).Text("Anzahl Personen").Bold();
-            table.Cell().Row(12).Column(2).Background(secondaryVariantColor).AlignRight().Text($"{PayLoadResult.PersonenBerechnet} Per.").Bold();
+            table.Cell().Row(12).Column(1).PaddingLeft(10).Background(secondaryColor).Text("Anzahl Personen").Bold();
+            table.Cell().Row(12).Column(2).Background(secondaryColor).AlignRight().Text($"{PayLoadResult.PersonenBerechnet} Per.").Bold();
         });
     }
 }

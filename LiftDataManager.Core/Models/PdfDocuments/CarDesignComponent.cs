@@ -82,7 +82,7 @@ public class CarDesignComponent : IComponent
                 canvas.Clear();
                 using var paintBase = new SKPaint
                 {
-                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.BlueGrey.Medium),
+                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.Blue.Lighten3),
                     IsStroke = LowPrintColor,
                     StrokeWidth = 7,
                     IsAntialias = true
@@ -90,7 +90,7 @@ public class CarDesignComponent : IComponent
 
                 using var paintBlueDoor = new SKPaint
                 {
-                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.BlueGrey.Lighten1),
+                    Color = SKColor.Parse(LowPrintColor ? Colors.Grey.Darken4 : Colors.Blue.Lighten4),
                     IsStroke = LowPrintColor,
                     StrokeWidth = 7,
                     IsAntialias = true

@@ -44,6 +44,9 @@ public class PdfBaseDocument : IDocument
     public float fontSizeXXL;
     public float fontSizeBig;
 
+    //TonerSave
+    public bool lowPrintColor;
+
     public PdfBaseDocument()
     {
         user = GetUserName();
@@ -107,6 +110,8 @@ public class PdfBaseDocument : IDocument
             fontSizeXXL = style.fontSizeXXL;
             fontSizeBig = style.fontSizeBig;
         }
+
+        lowPrintColor = lowColor;
     }
 
     public void Compose(IDocumentContainer container)
@@ -141,6 +146,15 @@ public class PdfBaseDocument : IDocument
                         IsAntialias = true
                     };
 
+                    using var paintSecondaryStokeColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(onPrimaryVariantColor),
+                        IsStroke = true,
+                        StrokeWidth = 1,
+                        IsAntialias = true
+                        
+                    };
+
                     using var path = new SKPath();
                     path.MoveTo(250, 0);
                     path.LineTo(250, 90);
@@ -149,6 +163,8 @@ public class PdfBaseDocument : IDocument
                     path.Close();
 
                     canvas.DrawPath(path, paintPrimaryColor);
+                    if (lowPrintColor)
+                        canvas.DrawPath(path, paintSecondaryStokeColor);
                 });
 
                 layers.PrimaryLayer().Height(120).Width(595).Canvas((canvas, size) =>
@@ -156,6 +172,14 @@ public class PdfBaseDocument : IDocument
                     using var paintSecondaryColor = new SKPaint
                     {
                         Color = SKColor.Parse(secondaryColor),
+                        IsAntialias = true
+                    };
+
+                    using var paintSecondaryStokeColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(onPrimaryVariantColor),
+                        StrokeWidth = 1,
+                        IsStroke = true,
                         IsAntialias = true
                     };
 
@@ -169,6 +193,8 @@ public class PdfBaseDocument : IDocument
                     path.Close();
 
                     canvas.DrawPath(path, paintSecondaryColor);
+                    if (lowPrintColor)
+                        canvas.DrawPath(path, paintSecondaryStokeColor);
                 });
 
                 layers.Layer().Canvas((canvas, size) =>
@@ -176,6 +202,14 @@ public class PdfBaseDocument : IDocument
                     using var paintPrimaryColor = new SKPaint
                     {
                         Color = SKColor.Parse(primaryColor),
+                        IsAntialias = true
+                    };
+
+                    using var paintSecondaryStokeColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(onPrimaryVariantColor),
+                        StrokeWidth = 1,
+                        IsStroke = true,
                         IsAntialias = true
                     };
 
@@ -187,6 +221,8 @@ public class PdfBaseDocument : IDocument
                     path.Close();
 
                     canvas.DrawPath(path, paintPrimaryColor);
+                    if (lowPrintColor)
+                        canvas.DrawPath(path, paintSecondaryStokeColor);
                 });
 
                 layers.Layer().Row(row =>

@@ -170,16 +170,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_TuerEinbau",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
 
         ValidationDictionary.Add("var_TuerEinbauB",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B") });
 
         ValidationDictionary.Add("var_TuerEinbauC",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C") });
 
         ValidationDictionary.Add("var_TuerEinbauD",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyOr0WhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D") });
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateJungblutOSG, "Informational", null) });
@@ -322,14 +322,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCorrectionWeight, "Warning", null) });
 
         ValidationDictionary.Add("var_Steuerungstyp",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null),
+            new(ValidateLiftPositionSystems, "Warning", "var_Schachtinformationssystem")});
 
         ValidationDictionary.Add("var_ElektrBremsenansteuerung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null),
             new(ValidateZAliftData, "Warning", null)});
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateUCMValues, "None", null),
+            new(ValidateLiftPositionSystems, "Warning", "var_Steuerungstyp")});
 
         ValidationDictionary.Add("var_Treibscheibegehaertet",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null) });
@@ -431,6 +433,22 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0") || string.Equals(value, optionalCondition))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein", SetSeverity(severity)));
+        }
+    }
+
+    private void NotEmptyWhenAnotherTrue(string name, string displayname, string? value, string? severity, string? anotherBoolean)
+    {
+        if (string.IsNullOrWhiteSpace(anotherBoolean))
+            return;
+        var anotherParameter = Convert.ToBoolean(ParamterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
+        if (string.IsNullOrWhiteSpace(value) && anotherParameter)
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
+            { DependentParameter = new string[] { anotherBoolean } });
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
         }
     }
 
@@ -1479,6 +1497,33 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             errorMessage += " dies erfordert eine Plausibilitätsprüfung!";
 
             ValidationResult.Add(new ParameterStateInfo(name, displayname, errorMessage, SetSeverity(severity)));
+        }
+    }
+
+    private void ValidateLiftPositionSystems(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var controler = ParamterDictionary["var_Steuerungstyp"].Value;
+        var liftPositionSystem = ParamterDictionary["var_Schachtinformationssystem"].Value;
+
+        if (string.IsNullOrWhiteSpace(controler) || string.IsNullOrWhiteSpace(liftPositionSystem))
+            return;
+
+        var validSystem = liftPositionSystem switch
+        {
+            "Limax 33CP" => string.Equals(controler, "Kühn MSZ 9E"),
+            "NEW-Lift S1-Box" => string.Equals(controler, "New-Lift FST-2 XT") || string.Equals(controler, "New-Lift FST-2 S"),
+            "NEW-Lift S2 (FST-3)" => string.Equals(controler, "New-Lift FST-3"),
+            _ => true
+        };
+
+        if (validSystem)
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { optional! } });
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewähltes Schachtinformationssystem: {liftPositionSystem} ist mit der Steuerung: {controler} nicht zulässig!", SetSeverity(severity))
+            { DependentParameter = new string[] { optional! } });
         }
     }
 }

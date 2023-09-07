@@ -56,10 +56,10 @@ public class KabinenLüftungDocument : PdfBaseDocument
             table.Cell().Row(4).Column(2).AlignRight().Text($"{ParameterDictionary["var_KBI"].Value} mm");
             table.Cell().Row(5).Column(1).PaddingLeft(15).Text("Fahrkorbhöhe (KH)");
             table.Cell().Row(5).Column(2).AlignRight().Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
-            table.Cell().Row(6).Column(1).Background(secondaryVariantColor).PaddingLeft(15).Text("Kabinengrundfläche (A)");
-            table.Cell().Row(6).Column(2).Background(secondaryVariantColor).AlignRight().Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
-            table.Cell().Row(7).Column(1).Background(secondaryVariantColor).PaddingLeft(15).Text("Kabinengrundfläche (1%)");
-            table.Cell().Row(7).Column(2).Background(secondaryVariantColor).AlignRight().Text(text =>
+            table.Cell().Row(6).Column(1).Background(secondaryColor).PaddingLeft(15).Text("Kabinengrundfläche (A)");
+            table.Cell().Row(6).Column(2).Background(secondaryColor).AlignRight().Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
+            table.Cell().Row(7).Column(1).Background(secondaryColor).PaddingLeft(15).Text("Kabinengrundfläche (1%)");
+            table.Cell().Row(7).Column(2).Background(secondaryColor).AlignRight().Text(text =>
             {
                 text.Span(CarVentilationResult.AKabine1Pozent.ToString());
                 text.Span(" mm²");
@@ -91,14 +91,14 @@ public class KabinenLüftungDocument : PdfBaseDocument
                 text.Span(CarVentilationResult.Luftspaltoeffnung.ToString());
                 text.Span(" mm");
             });
-            table.Cell().Row(5).Column(1).Background(secondaryVariantColor).PaddingLeft(15).Text("Belüftung pro Seite");
-            table.Cell().Row(5).Column(2).Background(secondaryVariantColor).AlignRight().Text(text =>
+            table.Cell().Row(5).Column(1).Background(secondaryColor).PaddingLeft(15).Text("Belüftung pro Seite");
+            table.Cell().Row(5).Column(2).Background(secondaryColor).AlignRight().Text(text =>
             {
                 text.Span(CarVentilationResult.Belueftung1Seite.ToString());
                 text.Span(" mm²");
             });
-            table.Cell().Row(6).Column(1).Background(secondaryVariantColor).PaddingLeft(15).Text("Gesamtbelüftung (2 Seiten)");
-            table.Cell().Row(6).Column(2).Background(secondaryVariantColor).AlignRight().Text(text =>
+            table.Cell().Row(6).Column(1).Background(secondaryColor).PaddingLeft(15).Text("Gesamtbelüftung (2 Seiten)");
+            table.Cell().Row(6).Column(2).Background(secondaryColor).AlignRight().Text(text =>
             {
                 text.Span(CarVentilationResult.Belueftung2Seiten.ToString());
                 text.Span(" m²");
@@ -193,7 +193,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
                 text.Span(" mm");
             });
 
-            table.Cell().Row(9).Column(1).ColumnSpan(2).Background(secondaryVariantColor).PaddingLeft(15).Row(row =>
+            table.Cell().Row(9).Column(1).ColumnSpan(2).Background(secondaryColor).PaddingLeft(15).Row(row =>
             {
                 row.AutoItem().Text("Entlüftung durch die Türspalten 50 % (F3.1)");
                 row.RelativeItem().AlignRight().Text(text =>
@@ -251,7 +251,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
                 text.Span(CarVentilationResult.FlaecheLuftspaltoeffnungenFTGesamt.ToString());
                 text.Span(" mm");
             });
-            table.Cell().Row(7).Column(1).ColumnSpan(2).Background(secondaryVariantColor).PaddingLeft(15).Row(row =>
+            table.Cell().Row(7).Column(1).ColumnSpan(2).Background(secondaryColor).PaddingLeft(15).Row(row =>
             {
                 row.AutoItem().Text("Entlüftung durch die Spalten an den Sockelleisten (F3.2)");
                 row.RelativeItem().AlignRight().Text(text =>
@@ -260,8 +260,8 @@ public class KabinenLüftungDocument : PdfBaseDocument
                     text.Span(" mm²");
                 });
             });
-            table.Cell().Row(8).Column(1).Background(secondaryVariantColor).PaddingLeft(15).Text("Entlüftung gesamt (F3.1 + F3.2)");
-            table.Cell().Row(8).Column(2).Background(secondaryVariantColor).AlignRight().Text(text =>
+            table.Cell().Row(8).Column(1).Background(secondaryColor).PaddingLeft(15).Text("Entlüftung gesamt (F3.1 + F3.2)");
+            table.Cell().Row(8).Column(2).Background(secondaryColor).AlignRight().Text(text =>
             {
                 text.Span(CarVentilationResult.FlaecheEntLueftungGesamt.ToString());
                 text.Span(" mm²");

@@ -9,42 +9,42 @@ public static class PdfHelpers
     public static bool LowColor { get; set; }
     public static bool LowHighlightColor { get; set; }
 
-    static string primaryColor = Colors.Pink.Accent3;
-    static string primaryVariantColor = Colors.Pink.Lighten2;
-    static string secondaryColor = Colors.BlueGrey.Darken3;
-    static string secondaryVariantColor = Colors.BlueGrey.Lighten3;
-    static string background = Colors.White;
-    static string onPrimaryColor = Colors.White;
-    static string onPrimaryVariantColor = Colors.White;
-    static string onSecondaryColor = Colors.White;
-    static string onSecondaryVariantColor = Colors.White;
-    static string errorColor = Colors.Red.Lighten3;
-    static string successfulColor = Colors.Green.Lighten3;
-    static string highlightColor = Colors.Lime.Accent3;
-    static string borderColor = Colors.BlueGrey.Darken3;
-    static string baseHeaderColor = Colors.Pink.Accent3;
+    private static readonly string primaryColor = Colors.Blue.Lighten5;
+    private static readonly string primaryVariantColor = Colors.Blue.Medium;
+    private static readonly string secondaryColor = Colors.Grey.Lighten2;
+    private static readonly string secondaryVariantColor = Colors.Grey.Darken3;
+    private static readonly string background = Colors.White;
+    private static readonly string onPrimaryColor = Colors.Black;
+    private static readonly string onPrimaryVariantColor = Colors.Black;
+    private static readonly string onSecondaryColor = Colors.Black;
+    private static readonly string onSecondaryVariantColor = Colors.Black;
+    private static readonly string errorColor = Colors.Red.Lighten3;
+    private static readonly string successfulColor = Colors.Green.Lighten3;
+    private static readonly string highlightColor = Colors.Lime.Accent3;
+    private static readonly string borderColor = Colors.BlueGrey.Darken3;
+    private static readonly string baseHeaderColor = Colors.Pink.Accent3;
 
     //FontSize
-    static float fontSizeXXS = 6;
-    static float fontSizeXS = 8;
-    static float fontSizeS = 10;
-    static float fontSizeStandard = 12;
-    static float fontSizeL = 14;
-    static float fontSizeXL = 16;
-    static float fontSizeXXL = 18;
-    static float fontSizeBig = 20;
+    private static readonly float fontSizeXXS = 6;
+    private static readonly float fontSizeXS = 8;
+    private static readonly float fontSizeS = 10;
+    private static readonly float fontSizeStandard = 12;
+    private static readonly float fontSizeL = 14;
+    private static readonly float fontSizeXL = 16;
+    private static readonly float fontSizeXXL = 18;
+    private static readonly float fontSizeBig = 20;
 
-    static string primaryColorLow = Colors.Grey.Lighten5;
-    static string primaryVariantColorLow = Colors.Grey.Lighten1;
-    static string secondaryColorLow = Colors.Grey.Lighten3;
-    static string secondaryVariantColorLow = Colors.Grey.Lighten4;
-    static string onPrimaryColorLow = Colors.Black;
-    static string onPrimaryVariantColorLow = Colors.Black;
-    static string onSecondaryColorLow = Colors.Black;
-    static string onSecondaryVariantColorLow = Colors.Black;
-    static string highlightColorLow = Colors.Grey.Lighten3;
-    static string borderColorLow = Colors.Black;
-    static string baseHeaderColorLow = Colors.Red.Darken4;
+    private static readonly string primaryColorLow = Colors.Grey.Lighten5;
+    private static readonly string primaryVariantColorLow = Colors.Grey.Lighten2;
+    private static readonly string secondaryColorLow = Colors.Grey.Lighten5;
+    private static readonly string secondaryVariantColorLow = Colors.Grey.Lighten4;
+    private static readonly string onPrimaryColorLow = Colors.Black;
+    private static readonly string onPrimaryVariantColorLow = Colors.Black;
+    private static readonly string onSecondaryColorLow = Colors.Black;
+    private static readonly string onSecondaryVariantColorLow = Colors.Black;
+    private static readonly string highlightColorLow = Colors.Grey.Lighten3;
+    private static readonly string borderColorLow = Colors.Black;
+    private static readonly string baseHeaderColorLow = Colors.Red.Darken4;
 
     public static PdfStyleSet GetPdfStyleSet(bool lowColor, bool lowHighlightColor)
     {
@@ -153,7 +153,7 @@ public static class PdfHelpers
                     {
                         using var paintPrimaryColor = new SKPaint
                         {
-                            Color = SKColor.Parse(LowColor ? primaryColorLow : primaryColor),
+                            Color = SKColor.Parse(LowColor ? primaryVariantColorLow : primaryVariantColor),
                             IsAntialias = true
                         };
                         using var paintOnPrimaryColor = new SKPaint
@@ -173,14 +173,14 @@ public static class PdfHelpers
                 }
                 layers.Layer().Canvas((canvas, size) =>
                 {
-                    using var paintSecondaryColor = new SKPaint
+                    using var paintSecondaryVariantColor = new SKPaint
                     {
-                        Color = SKColor.Parse(secondaryColor),
+                        Color = SKColor.Parse(secondaryVariantColor),
                         IsAntialias = true,
                         StrokeWidth = 1,
                         IsStroke = true,
                     };
-                    canvas.DrawRoundRect(0, 1.75f, 8, 8, 1, 1, paintSecondaryColor);
+                    canvas.DrawRoundRect(0, 1.75f, 8, 8, 1, 1, paintSecondaryVariantColor);
                 });
                 if (parameter.IsKey && LowHighlightColor)
                 {
