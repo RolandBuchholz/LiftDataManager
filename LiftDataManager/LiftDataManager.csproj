@@ -315,6 +315,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
   </ItemGroup>
 </Project>

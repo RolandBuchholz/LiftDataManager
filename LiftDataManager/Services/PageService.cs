@@ -30,6 +30,7 @@ public class PageService : IPageService
         Configure<ErrorViewModel, ErrorPage>();
         Configure<DataBaseEditViewModel, DataBaseEditPage>();
         Configure<LiftHistoryViewModel, LiftHistoryPage>();
+        Configure<HelpViewModel, HelpPage>();
     }
 
     public Type GetPageType(string key)

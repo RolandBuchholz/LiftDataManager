@@ -110,8 +110,7 @@
                 <NavigationViewItem
                     x:Uid="Shell_LiftHistory"
                     helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.LiftHistoryViewModel"
-                    Icon="Library">
-                </NavigationViewItem>
+                    Icon="Library" />
                 <NavigationViewItem x:Uid="Shell_Listenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;" />
@@ -138,6 +137,10 @@
                     x:Uid="Shell_QuickLinks"
                     helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.QuickLinksViewModel"
                     Icon="View" />
+                <NavigationViewItem
+                    x:Uid="Shell_Help"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.HelpViewModel"
+                    Icon="Help" />
             </NavigationView.FooterMenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
