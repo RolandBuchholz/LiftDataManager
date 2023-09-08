@@ -754,6 +754,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (Table8.Any(x => x.Value.SecondValue == area))
         {
             personenAnzahl = Table8.FirstOrDefault(x => x.Value.SecondValue == area).Value;
+            personenAnzahl.IsSelected = true;
             return personenAnzahl.FirstValue;
         };
         personenAnzahl = Table8.Where(x => x.Value.SecondValue < area).Last().Value;

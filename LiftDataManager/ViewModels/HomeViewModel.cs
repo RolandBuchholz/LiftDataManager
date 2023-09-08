@@ -2,7 +2,6 @@
 using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LiftDataManager.ViewModels;
 
