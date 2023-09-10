@@ -313,16 +313,12 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
-
-
-        <!--ExpandDirection="Left"-->
-        <!--Style="{StaticResource ExpanderInfoSidebarPanelStyle}"-->
-        <Expander
+        <controls:Expander
             x:Name="InfoSidebarPanel"
             Grid.Column="1"
-            
+            ExpandDirection="Left"
             Header="Info Sidebar Panel"
-            >
+            Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
             <ScrollViewer
                 Name="InfoTextScroller"
                 MinWidth="250"
@@ -348,7 +344,7 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </ScrollViewer>
-        </Expander>
+        </controls:Expander>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"
             Title="Ziehl Abegg Auslegungsprogramm aktiv"

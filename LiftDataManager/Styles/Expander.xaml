@@ -270,7 +270,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <!--<Style
+    <Style
         x:Key="ExpanderInfoSidebarPanelStyle"
         x:Name="ExpanderInfoSidebarPanelStyle"
         TargetType="controls:Expander">
@@ -665,7 +665,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
     <Style x:Key="ExpanderContentStyle" TargetType="Expander">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="{ThemeResource ExpanderContentBackground}" />
