@@ -128,7 +128,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         {
             HistoryEntrysDictionary.Add(Selected?.Name!, new List<LiftHistoryEntry>());
         }
-        HistoryEntrysDictionary[Selected?.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected));
+        HistoryEntrysDictionary[Selected?.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected!));
 
         SetParameterHistoryEntrys();
     }

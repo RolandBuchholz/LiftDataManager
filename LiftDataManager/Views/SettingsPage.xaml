@@ -6,13 +6,13 @@
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
+    xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:sys="using:System"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:xaml="using:Microsoft.UI.Xaml" 
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -98,19 +98,19 @@
             </Setter>
         </Style>
         <DataTemplate x:Key="VersionsHistoryItemTemplate" x:DataType="models:LiftDataManagerVersion">
-            <labs:SettingsCard>
-                <labs:SettingsCard.HeaderIcon>
+            <controls:SettingsCard>
+                <controls:SettingsCard.HeaderIcon>
                     <SymbolIcon Symbol="RepeatOne" />
-                </labs:SettingsCard.HeaderIcon>
-                <labs:SettingsCard.Header>
+                </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard.Header>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ListTitleStyle}" Text="{x:Bind VersionsNumber}" />
                         <TextBlock Margin="20,0,0,0" Text="{x:Bind sys:String.Format('{0:d}', VersionsDate)}" />
                     </StackPanel>
-                </labs:SettingsCard.Header>
-                <labs:SettingsCard.Description>
+                </controls:SettingsCard.Header>
+                <controls:SettingsCard.Description>
                     <TextBlock Margin="70,0,0,0" Text="{x:Bind VersionDescription}" />
-                </labs:SettingsCard.Description>
+                </controls:SettingsCard.Description>
                 <StackPanel Margin="0,0,20,-20" VerticalAlignment="Bottom">
                     <TextBlock
                         FontSize="12"
@@ -118,7 +118,7 @@
                         Text="Author :" />
                     <TextBlock FontSize="12" Text="{x:Bind Author}" />
                 </StackPanel>
-            </labs:SettingsCard>
+            </controls:SettingsCard>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -131,10 +131,10 @@
                 <StackPanel x:Name="ContentArea" Margin="0,0,15,0">
                     <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                        <labs:SettingsCard Description="Auswahl Theme" Header="Theme">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="Auswahl Theme" Header="Theme">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE12B;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <StackPanel Margin="0,0,100,0">
                                 <RadioButton
                                     x:Uid="Settings_Theme_Light"
@@ -167,11 +167,11 @@
                                     </RadioButton.CommandParameter>
                                 </RadioButton>
                             </StackPanel>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard Description="Auswahl AccentColor" Header="AccentColor">
-                            <labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Description="Auswahl AccentColor" Header="AccentColor">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE193;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch
                                 x:Name="SwitchAccentColor"
                                 Margin="0,0,20,0"
@@ -184,11 +184,11 @@
                                     </Core:EventTriggerBehavior>
                                 </Interactivity:Interaction.Behaviors>
                             </ToggleSwitch>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard Description="Automatisches speichern der Autotransfer.xml" Header="Auto Save">
-                            <labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Description="Automatisches speichern der Autotransfer.xml" Header="Auto Save">
+                            <controls:SettingsCard.HeaderIcon>
                                 <SymbolIcon Symbol="SaveLocal" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
                                 <ComboBox
                                     Margin="0,0,20,-3"
@@ -203,11 +203,11 @@
                                     OffContent="AutoSave Off"
                                     OnContent="AutoSave On" />
                             </StackPanel>
-                        </labs:SettingsCard>
-                        <labs:SettingsCard Description="Adminmode für mehr Berechtigungen" Header="Adminmode">
-                            <labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Description="Adminmode für mehr Berechtigungen" Header="Adminmode">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE1A7;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch
                                 x:Name="SwitchAdminmode"
                                 Margin="0,0,20,0"
@@ -220,19 +220,19 @@
                                     </Core:EventTriggerBehavior>
                                 </Interactivity:Interaction.Behaviors>
                             </ToggleSwitch>
-                        </labs:SettingsCard>
-                        <labs:SettingsExpander Description="Benutzerdefinierte Ploteigenschaften" Header="Plotstyles">
-                            <labs:SettingsExpander.HeaderIcon>
+                        </controls:SettingsCard>
+                        <controls:SettingsExpander Description="Benutzerdefinierte Ploteigenschaften" Header="Plotstyles">
+                            <controls:SettingsExpander.HeaderIcon>
                                 <SymbolIcon Symbol="Print" />
-                            </labs:SettingsExpander.HeaderIcon>
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard
+                            </controls:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard
                                     Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen"
                                     Header="Toner SaveMode"
                                     ToolTipService.Placement="Bottom">
-                                    <labs:SettingsCard.HeaderIcon>
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Street" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <ToggleSwitch
                                         x:Name="SwitchTonerSaveMode"
                                         HorizontalAlignment="Center"
@@ -271,14 +271,14 @@
                                                 Source="/Images/TonerSaveON.png" />
                                         </Grid>
                                     </ToolTipService.ToolTip>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard
+                                </controls:SettingsCard>
+                                <controls:SettingsCard
                                     Description="Benutzerdefinierte Einstellungen für die Parameterhervorhebung"
                                     Header="Highlight Settings"
                                     ToolTipService.Placement="Bottom">
-                                    <labs:SettingsCard.HeaderIcon>
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Highlight" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <ToggleSwitch
                                         x:Name="HighlightSettings"
                                         HorizontalAlignment="Center"
@@ -317,17 +317,17 @@
                                                 Source="/Images/HighlightBold.png" />
                                         </Grid>
                                     </ToolTipService.ToolTip>
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
                         <TextBlock
                             Margin="5,5,0,5"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
                             Text="Maintenance and updates" />
-                        <labs:SettingsCard Description="Es wird überprüft ob die aktuellste LiftDataManager Version installiert ist." Header="Update Check">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="Es wird überprüft ob die aktuellste LiftDataManager Version installiert ist." Header="Update Check">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE117;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <Button
                                 Width="125"
                                 Margin="25,0,25,0"
@@ -337,7 +337,7 @@
                                 FontWeight="Bold"
                                 Style="{StaticResource AccentButtonStyle}"
                                 ToolTipService.ToolTip="Versions Update Check wird gestartet" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
                         <InfoBar
                             x:Name="InfoBarVersionsUpdate"
                             Title="Versions Update Check"
@@ -347,15 +347,15 @@
                             IsOpen="{x:Bind ViewModel.InfoBarVersionsUpdateIsOpen, Mode=OneWay}"
                             Message="{x:Bind ViewModel.InfoBarVersionsUpdateText, Mode=OneWay}"
                             Severity="{x:Bind ViewModel.InfoBarVersionsUpdateSeverity, Mode=OneWay}" />
-                        <labs:SettingsExpander Description="System und AppInformationen" Header="Diagnostics">
-                            <labs:SettingsExpander.HeaderIcon>
+                        <controls:SettingsExpander Description="System und AppInformationen" Header="Diagnostics">
+                            <controls:SettingsExpander.HeaderIcon>
                                 <SymbolIcon Symbol="MapDrive" />
-                            </labs:SettingsExpander.HeaderIcon>
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard Header="Benutzer/System Informationen">
-                                    <labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Benutzer/System Informationen">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Contact" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                             <Run Text="Benutzername :" />
@@ -376,11 +376,11 @@
                                             <Run Text="{x:Bind ViewModel.RuntimeInformation}" />
                                         </TextBlock>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Header="Autodesk Vault Informationen">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Autodesk Vault Informationen">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Bullets" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                             <Run Text="Vault 2023 :" />
@@ -401,30 +401,30 @@
                                             <Run Text="{x:Bind ViewModel.AdskLicensingSDKInstalled}" />
                                         </TextBlock>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Header="Logfiles">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Logfiles">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Library" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <Button Command="{x:Bind ViewModel.OpenLogFolderCommand}" Content="OpenLogfolder" />
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Description="Standard Loglevel Information" Header="Change Loglevel">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Description="Standard Loglevel Information" Header="Change Loglevel">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Switch" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <ComboBox ItemsSource="{x:Bind ViewModel.LogLevel}" SelectedValue="{x:Bind ViewModel.SelectedLogLevel, Mode=TwoWay}" />
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
-                        <labs:SettingsExpander Description="Einstellungen der Datenbank" Header="Database">
-                            <labs:SettingsExpander.HeaderIcon>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
+                        <controls:SettingsExpander Description="Einstellungen der Datenbank" Header="Database">
+                            <controls:SettingsExpander.HeaderIcon>
                                 <FontIcon Glyph="&#xEE94;" />
-                            </labs:SettingsExpander.HeaderIcon>
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard Header="Database Path">
-                                    <labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Database Path">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="GoToToday" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathDataBase, Mode=TwoWay}" />
                                         <Button
@@ -435,18 +435,18 @@
                                             <SymbolIcon Symbol="Share" />
                                         </Button>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
-                        <labs:SettingsExpander Description="Pfade der externen Programme" Header="externe Programme">
-                            <labs:SettingsExpander.HeaderIcon>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
+                        <controls:SettingsExpander Description="Pfade der externen Programme" Header="externe Programme">
+                            <controls:SettingsExpander.HeaderIcon>
                                 <FontIcon Glyph="&#xE118;" />
-                            </labs:SettingsExpander.HeaderIcon>
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard Header="Berchtenbreiter CFP">
-                                    <labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard Header="Berchtenbreiter CFP">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="ImportAll" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
                                         <Button
@@ -457,11 +457,11 @@
                                             <SymbolIcon Symbol="Share" />
                                         </Button>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Header="Ziehl Abegg Zetalift">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Ziehl Abegg Zetalift">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="Calculator" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
                                         <Button
@@ -472,11 +472,11 @@
                                             <SymbolIcon Symbol="Share" />
                                         </Button>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Header="BucherHydraulics Lilo">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="BucherHydraulics Lilo">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="MapDrive" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
                                         <Button
@@ -487,11 +487,11 @@
                                             <SymbolIcon Symbol="Share" />
                                         </Button>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                                <labs:SettingsCard Header="Microsoft Excel">
-                                    <labs:SettingsCard.HeaderIcon>
+                                </controls:SettingsCard>
+                                <controls:SettingsCard Header="Microsoft Excel">
+                                    <controls:SettingsCard.HeaderIcon>
                                         <SymbolIcon Symbol="GoToStart" />
-                                    </labs:SettingsCard.HeaderIcon>
+                                    </controls:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
                                         <Button
@@ -502,19 +502,19 @@
                                             <SymbolIcon Symbol="Share" />
                                         </Button>
                                     </StackPanel>
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
                     </StackPanel>
                     <TextBlock
                         Margin="5,5,0,5"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="Description" />
-                    <labs:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}">
-                        <labs:SettingsCard.HeaderIcon>
+                    <controls:SettingsCard Header="{x:Bind ViewModel.VersionDescription, Mode=OneWay}">
+                        <controls:SettingsCard.HeaderIcon>
                             <SymbolIcon Symbol="World" />
-                        </labs:SettingsCard.HeaderIcon>
-                        <labs:SettingsCard.Description>
+                        </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard.Description>
                             <StackPanel>
                                 <TextBlock Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}">
                                     Anwendung zur Datenerfassung und Bearbeitung der Aufzugsspezifikationsdaten.<LineBreak />
@@ -524,8 +524,8 @@
                                     Style="{ThemeResource BodyTextBlockStyle}"
                                     Text="©Buchholz Roland" />
                             </StackPanel>
-                        </labs:SettingsCard.Description>
-                    </labs:SettingsCard>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
                     <Expander
                         Padding="0,5,0,0"
                         HorizontalAlignment="Stretch"

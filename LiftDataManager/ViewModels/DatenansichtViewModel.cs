@@ -16,9 +16,6 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
         };
     }
 
-    private ICommand? _itemClickCommand;
-    public ICommand ItemClickCommand => _itemClickCommand ??= new RelayCommand<Parameter>(OnItemClick);
-
     [ObservableProperty]
     private bool canShowUnsavedParameters;
 
@@ -124,12 +121,13 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
         IsActive = false;
     }
 
-    private void OnItemClick(Parameter? clickedItem)
+    [RelayCommand]
+    private void ItemClick(ItemClickEventArgs e)
     {
-        if (clickedItem != null)
+        if (e.ClickedItem is Parameter parameter)
         {
-            _navigationService!.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, clickedItem.Name);
+            _navigationService!.SetListDataItemForNextConnectedAnimation(parameter);
+            _navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, parameter.Name);
         }
     }
 }

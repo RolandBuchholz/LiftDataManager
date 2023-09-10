@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Animations;
+﻿using CommunityToolkit.WinUI.Animations;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.Views;

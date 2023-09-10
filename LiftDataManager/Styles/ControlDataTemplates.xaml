@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:models="using:LiftDataManager.Core.Models"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI">
+    xmlns:ui="using:CommunityToolkit.WinUI">
 
     <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />

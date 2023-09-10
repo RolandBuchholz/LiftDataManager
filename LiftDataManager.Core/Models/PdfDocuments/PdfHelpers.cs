@@ -22,7 +22,7 @@ public static class PdfHelpers
     private static readonly string successfulColor = Colors.Green.Lighten3;
     private static readonly string highlightColor = Colors.Lime.Accent3;
     private static readonly string borderColor = Colors.BlueGrey.Darken3;
-    private static readonly string baseHeaderColor = Colors.Pink.Accent3;
+    private static readonly string baseHeaderColor = Colors.Red.Darken4;
 
     //FontSize
     private static readonly float fontSizeXXS = 6;

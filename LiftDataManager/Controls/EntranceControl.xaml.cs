@@ -1,5 +1,5 @@
 ﻿using Cogs.Collections;
-using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.WinUI;
 
 namespace LiftDataManager.Controls;
 

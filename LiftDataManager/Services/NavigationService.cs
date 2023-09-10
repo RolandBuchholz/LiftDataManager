@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Animations;
+﻿using CommunityToolkit.WinUI.Animations;
 using Microsoft.UI.Xaml.Navigation;
 using System.Diagnostics.CodeAnalysis;
 
@@ -116,5 +116,5 @@ public class NavigationService : INavigationService
             Navigated?.Invoke(sender, e);
         }
     }
-    public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
+    public void SetListDataItemForNextConnectedAnimation(object item) => Frame?.SetListDataItemForNextConnectedAnimation(item);
 }

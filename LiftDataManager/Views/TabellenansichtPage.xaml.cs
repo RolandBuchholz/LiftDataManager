@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Common.Collections;
+using CommunityToolkit.Mvvm.Collections;
 
 namespace LiftDataManager.Views;
 

@@ -2,14 +2,14 @@
     x:Class="LiftDataManager.Controls.SidebarPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ani="using:CommunityToolkit.WinUI.UI.Animations"
-    xmlns:behaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
+    xmlns:ani="using:CommunityToolkit.WinUI.Animations"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
     <Grid>
@@ -313,12 +313,16 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
-        <controls:Expander
+
+
+        <!--ExpandDirection="Left"-->
+        <!--Style="{StaticResource ExpanderInfoSidebarPanelStyle}"-->
+        <Expander
             x:Name="InfoSidebarPanel"
             Grid.Column="1"
-            ExpandDirection="Left"
+            
             Header="Info Sidebar Panel"
-            Style="{StaticResource ExpanderInfoSidebarPanelStyle}">
+            >
             <ScrollViewer
                 Name="InfoTextScroller"
                 MinWidth="250"
@@ -344,7 +348,7 @@
                         TextWrapping="Wrap" />
                 </StackPanel>
             </ScrollViewer>
-        </controls:Expander>
+        </Expander>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"
             Title="Ziehl Abegg Auslegungsprogramm aktiv"
