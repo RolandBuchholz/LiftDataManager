@@ -89,7 +89,6 @@
 
                         </VisualStateManager.VisualStateGroups>
                     </ContentPresenter>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

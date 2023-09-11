@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ani="using:CommunityToolkit.WinUI.Animations"
     xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
@@ -14,12 +15,14 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <StackPanel
             MinWidth="55"
             HorizontalAlignment="Center"
             Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
+            CornerRadius="4"
             Visibility="{x:Bind ShowQuickLinks, Mode=OneWay}">
             <StackPanel.Resources>
                 <ani:AnimationSet x:Name="ScaleOutAnimation" IsSequential="True">
@@ -312,17 +315,26 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
+        <controls:ContentSizer
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            FlowDirection="RightToLeft"
+            TargetControl="{x:Bind InfoTextScroller}"
+            Visibility="{x:Bind InfoSidebarPanel.IsExpanded, Mode=OneWay}" />
         <Expander
             x:Name="InfoSidebarPanel"
-            Grid.Column="1"
+            Grid.Column="2"
+            Margin="2,0,0,0"
             VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top"
             ExpandDirection="Up"
             Header="Info Sidebar Panel"
             Style="{StaticResource HorizontalExpanderStyle}">
             <ScrollViewer
                 Name="InfoTextScroller"
                 MinWidth="250"
-                MaxWidth="350"
                 Padding="10"
                 VerticalAlignment="Top"
                 HorizontalScrollBarVisibility="Auto"
