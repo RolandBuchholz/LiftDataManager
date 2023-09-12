@@ -271,14 +271,24 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
                 else if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.Date)
                 {
-                    if (string.IsNullOrWhiteSpace(item.Value))
+                    if (string.IsNullOrWhiteSpace(item.Value) || item.Value == "0")
                     {
                         updatedParameter.Value = string.Empty;
                     }
+                    else if (item.Value.Contains('.'))
+                    {
+                        updatedParameter.Value = item.Value;                                                  
+                    }
                     else
                     {
-                        updatedParameter.Value = item.Value.Contains('.') ? item.Value 
-                                                                          : DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
+                        try
+                        {
+                            updatedParameter.Value = DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
+                        }
+                        catch
+                        {
+                            updatedParameter.Value = string.Empty;
+                        }
                     }
                 }
                 else

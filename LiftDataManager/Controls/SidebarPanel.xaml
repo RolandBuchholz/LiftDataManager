@@ -319,8 +319,8 @@
             Grid.Column="1"
             Margin="5,0,0,0"
             VerticalAlignment="Center"
-            Orientation="Vertical"
             FlowDirection="RightToLeft"
+            Orientation="Vertical"
             TargetControl="{x:Bind InfoTextScroller}"
             Visibility="{x:Bind InfoSidebarPanel.IsExpanded, Mode=OneWay}" />
         <Expander
@@ -334,7 +334,6 @@
             Style="{StaticResource HorizontalExpanderStyle}">
             <ScrollViewer
                 Name="InfoTextScroller"
-                MinWidth="250"
                 Padding="10"
                 VerticalAlignment="Top"
                 HorizontalScrollBarVisibility="Auto"
