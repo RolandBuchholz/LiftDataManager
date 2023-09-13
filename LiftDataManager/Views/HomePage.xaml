@@ -665,7 +665,8 @@
                                     ui:TextBoxExtensions.ValidationType="Decimal"
                                     Header="Eingabe benutzerdefinierte Gedrängelast"
                                     IsReadOnly="{x:Bind ViewModel.CanEditCustomPayload, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
-                                    Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Description="{x:Bind ViewModel.CustomPayloadInfo,Mode=OneWay}"
                                     TextAlignment="Right">
                                     <ToolTipService.ToolTip>
                                         <TextBlock>
@@ -675,8 +676,8 @@
                                                 Foreground="IndianRed"
                                                 Text="nur bei Hydraulik Lastenaufzügen möglich" /><LineBreak />
                                             Gedrängelast kann vom Benutzer angepasst werden.<LineBreak />
-                                            Die Gedrängelast muss den Tabellen 6 und 7<LineBreak />
-                                            der EN81:20 5.4.2 entsprechen!</TextBlock>
+                                            Die Gedrängelast größer gleich der<LineBreak />
+                                            Tabelle 6(EN81:20 5.4.2) sein!</TextBlock>
                                     </ToolTipService.ToolTip>
                                 </TextBox>
                                 <TextBlock

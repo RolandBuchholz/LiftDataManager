@@ -377,7 +377,12 @@ public partial class ParameterDataService : IParameterDataService
                         continue;
                     if (paramterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
                     {
-                        paramterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False"; 
+                        paramterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
+                    }
+                    else if (paramterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                    {
+                        paramterDictionary[dictionary.Name!].Value = param.Value;
+                        paramterDictionary[dictionary.Name!].DropDownListValue = param.Value;
                     }
                     else
                     {

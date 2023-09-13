@@ -1073,6 +1073,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             return;
 
         int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Rahmengewicht");
+        string? fangrahmenTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bausatz");
+
+        if (carFrameWeight == 0 && !string.IsNullOrWhiteSpace(fangrahmenTyp))
+        {
+            var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
+            if (carFrameType is not null)
+            {
+                carFrameWeight = carFrameType.CarFrameWeight;
+            }
+        }
 
         if (carFrameWeight > 0)
         {
@@ -1120,11 +1130,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
             if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
             {
-                var loadTable7 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle7");
-                if (reducedLoad < loadTable7)
-                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
-                if (reducedLoad > load)
-                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable7);
+                var loadTable6 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle6");
+
+                if (reducedLoad < loadTable6)
+                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable6);
             }
             else
             {

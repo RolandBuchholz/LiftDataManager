@@ -73,19 +73,25 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private double payloadTable7;
 
     [ObservableProperty]
-    private double customPayload;
-    partial void OnCustomPayloadChanged(double value)
+    private string? customPayload;
+    partial void OnCustomPayloadChanged(string? value)
     {
-        if (payloadTable7 == 0)
-            return;
-        if (value < payloadTable7)
-            return;
-        if (value > LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q"))
-            return;
+        var payload = string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToDouble(value, CultureInfo.CurrentCulture);
 
-        ParamterDictionary!["var_Q1"].Value = value.ToString();
+        if (payload < payloadTable6)
+        {
+            CustomPayloadInfo = "Gedrängelast muß größer/gleich Tabelle6 sein!";
+            return;
+        }
+ 
+        ParamterDictionary!["var_Q1"].Value = payload.ToString();
+        CustomPayload = string.Empty;
+        CustomPayloadInfo = string.Empty;
         _logger.LogInformation(60132, "CustomPayload", value);
     }
+
+    [ObservableProperty]
+    private string customPayloadInfo = string.Empty;
 
     [ObservableProperty]
     private bool canEditCustomPayload;
