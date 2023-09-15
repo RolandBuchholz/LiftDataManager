@@ -15,5 +15,8 @@ public class CarFlooringConfig : BaseModelBuilder<CarFlooring>
         builder.Property(x => x.Thickness)
                .IsRequired();
         builder.Property(x => x.SpecialSheet);
+        builder.HasMany(t => t.CarFloorColorTyps)
+               .WithOne(g => g.CarFlooring)
+               .HasForeignKey(t => t.CarFloorId);
     }
 }

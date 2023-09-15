@@ -426,9 +426,13 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SonderExternBodengewicht"], "kg/m²");
                 });
                 table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
-                table.Cell().Row(19).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
-                table.Cell().Row(19).Column(5).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
-                table.Cell().Row(19).Column(6).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
+                table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BodenbelagsTyp"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
+                });
                 table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
             });
         });
@@ -504,8 +508,8 @@ public class SpezifikationDocument : PdfBaseDocument
 
                 table.Cell().Row(6).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelAntiKratzf"], true, "Antisplitterfolie");
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true);
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelAntiKratzf"], true, "Antisplitterf.");
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true, "Spiegelpaneel");
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Spiegelleiste"], true);
                 });
                 table.Cell().Row(6).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
@@ -524,7 +528,11 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufD"], true, "Seite D");
                 });
-                table.Cell().Row(8).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
+                table.Cell().Row(8).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteOKFF"], "mm");
+                });
                 table.Cell().Row(8).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteA"], true, "Seite A");

@@ -192,24 +192,19 @@ public partial class ParameterDataService : IParameterDataService
         string infotext;
 
         XElement doc = XElement.Load(path);
-
-        // Find a specific customer
         XElement? xmlparameter =
           (from para in doc.Elements("parameters").Elements("ParamWithValue")
            where para.Element("name")!.Value == parameter.Name
            select para).SingleOrDefault();
+
         List<LiftHistoryEntry> historyEntrys = new();
-        // Modify some of the node values
+    
         if (xmlparameter is not null)
         {
-            xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
-            xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
-            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
-            LogSavedParameter(parameter.DisplayName!, parameter.Value!);
+            AddParameterToXml(parameter, xmlparameter);
             historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
             infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
             infotext += $"----------\n";
-
         }
         else
         {
@@ -252,11 +247,8 @@ public partial class ParameterDataService : IParameterDataService
                 // Modify some of the node values
                 if (xmlparameter is not null)
                 {
-                    xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
-                    xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
-                    xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+                    AddParameterToXml(parameter, xmlparameter);
                     parameter.IsDirty = false;
-                    LogSavedParameter(parameter.DisplayName!, parameter.Value!);
                     historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
                     infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
                 }
@@ -399,6 +391,22 @@ public partial class ParameterDataService : IParameterDataService
             _ = AddParameterListToHistoryAsync(syncedLiftHistoryEntries, path, false);
         }
         return syncedParameter;
+    }
+
+    private void AddParameterToXml(Parameter parameter, XElement xmlparameter)
+    {
+        if (parameter.ParameterTyp is not ParameterBase.ParameterTypValue.NumberOnly)
+        {
+            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
+        }
+        else
+        {
+            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value.Replace(".",",");
+        }
+        
+        xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
+        xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
+        LogSavedParameter(parameter.DisplayName!, parameter.Value!);
     }
 
     [LoggerMessage(60104, LogLevel.Information,

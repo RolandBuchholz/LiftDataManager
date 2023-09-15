@@ -229,7 +229,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarFlooring, "None", null) });
 
         ValidationDictionary.Add("var_Bodenbelag",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarFlooring, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarFlooring, "None", null),
+            new(ValidateFloorColorTyps, "None", null)});
 
         ValidationDictionary.Add("var_KU",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
@@ -1535,4 +1536,32 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             { DependentParameter = new string[] { optional! } });
         }
     }
+
+    private void ValidateFloorColorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        //var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
+        //var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
+        //IEnumerable<string?> availablseafetyGears = value switch
+        //{
+        //    "keine" => Enumerable.Empty<string?>(),
+        //    "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(s => s.Name),
+        //    "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(s => s.Name),
+        //    _ => safetyGears.Select(s => s.Name),
+        //};
+        //if (availablseafetyGears is not null)
+        //{
+        //    ParamterDictionary["var_TypFV"].DropDownList.Clear();
+        //    foreach (var item in availablseafetyGears)
+        //    {
+        //        ParamterDictionary["var_TypFV"].DropDownList.Add(item!);
+        //    }
+
+        //    if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Contains(selectedSafetyGear))
+        //    {
+        //        ParamterDictionary["var_TypFV"].Value = string.Empty;
+        //        ParamterDictionary["var_TypFV"].DropDownListValue = null;
+        //    }
+        //}
+    }
+
 }

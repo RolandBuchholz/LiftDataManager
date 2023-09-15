@@ -15,7 +15,7 @@ public static class PdfHelpers
     private static readonly string secondaryVariantColor = Colors.Grey.Darken3;
     private static readonly string background = Colors.White;
     private static readonly string onPrimaryColor = Colors.Black;
-    private static readonly string onPrimaryVariantColor = Colors.Black;
+    private static readonly string onPrimaryVariantColor = Colors.White;
     private static readonly string onSecondaryColor = Colors.Black;
     private static readonly string onSecondaryVariantColor = Colors.Black;
     private static readonly string errorColor = Colors.Red.Lighten3;
@@ -158,9 +158,10 @@ public static class PdfHelpers
                         };
                         using var paintOnPrimaryColor = new SKPaint
                         {
-                            Color = SKColor.Parse(LowColor ? onPrimaryColorLow : onPrimaryColor),
+                            Color = SKColor.Parse(LowColor ? onPrimaryVariantColorLow : onPrimaryVariantColor),
                             IsAntialias = true,
                             StrokeWidth = 1,
+                            StrokeCap = SKStrokeCap.Round,
                             IsStroke = true,
                         };
                         canvas.DrawRoundRect(0, 1.75f, 8, 8, 1, 1, paintPrimaryColor);

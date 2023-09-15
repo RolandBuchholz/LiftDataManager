@@ -40,6 +40,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value);
 
+    [ObservableProperty]
+    private bool isCFPFrame;
 
     [ObservableProperty]
     private string cWTRailName = "Führungsschienen GGW";
@@ -86,10 +88,12 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
         if (carFrameType is null)
             return 0;
-            CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
-            CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
-            CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
-            CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
+
+        IsCFPFrame = carFrameType.IsCFPControlled;
+        CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
+        CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
+        CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
+        CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
 
         return carFrameType.CarFrameWeight;
     }
