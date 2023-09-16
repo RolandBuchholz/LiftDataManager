@@ -290,11 +290,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         try
                         {
                             updatedParameter.Value = DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
+                            InfoSidebarPanelText += $"{updatedParameter.Name} => Exceldatum in String konvertiert!\n";
                         }
                         catch
                         {
                             updatedParameter.Value = string.Empty;
                         }
+                        updatedParameter.IsDirty = true;
                     }
                 }
                 else
