@@ -857,7 +857,7 @@
                                     <StackPanel
                                         Grid.Column="1"
                                         Orientation="Horizontal"
-                                        Visibility="Visible">
+                                        Visibility="{x:Bind ViewModel.ShowFlooringColors, Mode=OneWay}">
                                         <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BodenbelagsTyp'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                         <Border
                                             Width="50"
@@ -867,14 +867,17 @@
                                             BorderBrush="YellowGreen"
                                             BorderThickness="2"
                                             CornerRadius="4">
-                                            <Image Source="C:\Work\Administration\Standardeinstellungen\Inventor\Textures\flooring\SteelGrey.png" Stretch="UniformToFill" />
+                                            <Image Source="{x:Bind ViewModel.FloorImagePath, Mode=OneWay}" Stretch="UniformToFill" />
                                             <ToolTipService.ToolTip>
                                                 <ToolTip>
-                                                    <Image
-                                                        Width="400"
-                                                        Height="400"
-                                                        Source="C:\Work\Administration\Standardeinstellungen\Inventor\Textures\flooring\SteelGrey.png"
-                                                        Stretch="UniformToFill" />
+                                                    <Border
+                                                        Width="300"
+                                                        Height="300"
+                                                        BorderBrush="YellowGreen"
+                                                        BorderThickness="2"
+                                                        CornerRadius="16">
+                                                        <Image Source="{x:Bind ViewModel.FloorImagePath, Mode=OneWay}" Stretch="UniformToFill" />
+                                                    </Border>
                                                 </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </Border>

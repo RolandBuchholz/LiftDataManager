@@ -84,6 +84,7 @@
     <None Remove="Images\html.png" />
     <None Remove="Images\LiftDataManagerLogo.png" />
     <None Remove="Images\LiloTransparent.png" />
+    <None Remove="Images\NoImage.png" />
     <None Remove="Images\Ordnerblue.png" />
     <None Remove="Images\Ordnergreen.png" />
     <None Remove="Images\Ordnerorange.png" />
@@ -118,6 +119,7 @@
     <Content Include="Images\HighlightColor.png" />
     <Content Include="Images\LiftDataManagerLogo.png" />
     <Content Include="Images\LiloTransparent.png" />
+    <Content Include="Images\NoImage.png" />
     <Content Include="Images\Ordnerblue.png" />
     <Content Include="Images\Ordnergreen.png" />
     <Content Include="Images\Ordnerorange.png" />

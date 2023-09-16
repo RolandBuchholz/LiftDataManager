@@ -1,20 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Controls;
 using LiftDataManager.core.Helpers;
-
-
+using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly ParameterContext _parametercontext;
 
-
-    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService) :
+    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
         _calculationsModuleService = calculationsModuleService;
+        _parametercontext = parametercontext;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -39,9 +40,19 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             SetCanEditFlooringProperties(message.PropertyName, message.NewValue, message.OldValue);
         }
+        if (message.PropertyName == "var_BodenbelagsTyp")
+        {
+            SetFloorImagePath();
+        }
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    [ObservableProperty]
+    public string floorImagePath = @"/Images/NoImage.png";
+
+    [ObservableProperty]
+    public bool showFlooringColors;
 
     [ObservableProperty]
     public bool canEditFlooringProperties;
@@ -53,6 +64,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     {
         CanEditFlooringProperties = ParamterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParamterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
         CanEditFloorWeightAndHeight = ParamterDictionary!["var_Bodentyp"].Value == "sonder" || ParamterDictionary["var_Bodentyp"].Value == "extern";
+        ShowFlooringColors = ParamterDictionary!["var_BodenbelagsTyp"].DropDownList.Any();
+
         if (!CanEditFloorWeightAndHeight)
         {
             if (ParamterDictionary["var_SonderExternBodengewicht"].Value != "0")
@@ -78,6 +91,24 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             default:
                 break;
         };
+    }
+
+    public void SetFloorImagePath()
+    {
+        if (string.IsNullOrWhiteSpace(ParamterDictionary!["var_BodenbelagsTyp"].Value))
+        {
+            FloorImagePath = @"/Images/NoImage.png";
+            return;
+        }
+        var floorColor = _parametercontext.Set<CarFloorColorTyp>().FirstOrDefault(x => x.Name.Equals(ParamterDictionary!["var_BodenbelagsTyp"].Value));
+        if (floorColor is not null)
+        {
+            FloorImagePath = $@"C:/Work/Administration/Standardeinstellungen/Inventor/Textures/flooring/{floorColor.Image}";
+        }
+        else
+        {
+            FloorImagePath = @"/Images/NoImage.png";
+        }
     }
 
     [RelayCommand]
@@ -112,6 +143,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             _ = SetModelStateAsync();
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);
+            SetFloorImagePath();
         }
     }
 

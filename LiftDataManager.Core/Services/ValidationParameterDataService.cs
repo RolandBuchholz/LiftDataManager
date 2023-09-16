@@ -1539,29 +1539,31 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
     private void ValidateFloorColorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        //var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
-        //var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
-        //IEnumerable<string?> availablseafetyGears = value switch
-        //{
-        //    "keine" => Enumerable.Empty<string?>(),
-        //    "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(s => s.Name),
-        //    "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(s => s.Name),
-        //    _ => safetyGears.Select(s => s.Name),
-        //};
-        //if (availablseafetyGears is not null)
-        //{
-        //    ParamterDictionary["var_TypFV"].DropDownList.Clear();
-        //    foreach (var item in availablseafetyGears)
-        //    {
-        //        ParamterDictionary["var_TypFV"].DropDownList.Add(item!);
-        //    }
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
+            ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = string.Empty;
+            ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
+            return;
+        }
 
-        //    if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Contains(selectedSafetyGear))
-        //    {
-        //        ParamterDictionary["var_TypFV"].Value = string.Empty;
-        //        ParamterDictionary["var_TypFV"].DropDownListValue = null;
-        //    }
-        //}
+        var floorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).ToList();
+
+        IEnumerable<string> availableFloorColors = floorColors.Where(x => x.CarFlooring?.Name == value).Select(s => s.Name);
+
+        if (availableFloorColors is not null)
+        {
+            ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
+            foreach (var item in availableFloorColors)
+            {
+                ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Add(item!);
+            }
+
+            if (!availableFloorColors.Contains(value))
+            {
+                ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
+                ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;
+            }
+        }
     }
-
 }
