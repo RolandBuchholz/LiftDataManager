@@ -117,6 +117,10 @@
                                 x:Name="CFP"
                                 Click="SetFilter_Click"
                                 Text="Car Frame Programm" />
+                            <MenuFlyoutItem
+                                x:Name="CarDesign"
+                                Click="SetFilter_Click"
+                                Text="CarDesign Parameter" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>

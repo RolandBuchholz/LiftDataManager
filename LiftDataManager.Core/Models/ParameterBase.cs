@@ -29,7 +29,8 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
         RWA = 10,
         Sonstiges = 11,
         KommentareVault = 12,
-        CFP = 13
+        CFP = 13,
+        CarDesign = 14,
     }
 
     public enum TypeCodeValue

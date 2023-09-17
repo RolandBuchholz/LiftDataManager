@@ -170,16 +170,20 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_TuerEinbau",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"), 
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TuerEinbauB",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TuerEinbauC",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TuerEinbauD",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D") });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"), 
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateJungblutOSG, "Informational", null) });
@@ -287,7 +291,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Tuerbezeichnung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
-            new(ValidateVariableCarDoors, "None", null)});
+            new(ValidateVariableCarDoors, "None", null),
+            new(ValidateEntryDimensions, "None", null)});
 
         ValidationDictionary.Add("var_Tuergewicht",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null) });
@@ -371,13 +376,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorTyps, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_B",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
+            new(ValidateEntryDimensions, "None", null) });
 
         AddDropDownListValidation();
     }
@@ -1564,6 +1572,47 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
                 ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;
             }
+        }
+    }
+
+    private void ValidateEntryDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var zugang = string.Equals(name[^1..],"B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D")? name[^1..] : "A";
+        
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+            return;
+        }
+            
+        if (name.StartsWith("var_TuerEinbau"))
+        {
+            var liftDoor = ParamterDictionary[zugang == "A" ?"var_Tuerbezeichnung": $"var_Tuerbezeichnung_{zugang}"].Value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                return;
+            }
+
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
+            var doorEntrance = Convert.ToDouble(value, CultureInfo.CurrentCulture);
+            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+            {
+                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                return;
+            }
+            ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
+        }
+        else if (name.StartsWith("var_Tuerbezeichnung"))
+        {
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
+            var doorEntrance = Convert.ToDouble(ParamterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value, CultureInfo.CurrentCulture);
+            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+            {
+                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                return;
+            }
+            ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
         }
     }
 }
