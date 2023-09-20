@@ -53,7 +53,7 @@
                     Header="Fahrkorb Grunddaten"
                     IsExpanded="True"
                     Style="{StaticResource ExpanderContentStyle}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid
                             x:Name="KabineGrunddaten"
                             Grid.Row="0"
@@ -655,6 +655,7 @@
                                     ColumnDefinitions="2*,Auto,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Rueckwand'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <TextBlock
@@ -665,6 +666,7 @@
                                         Text="RAL:" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RAL_Rueckwand'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
@@ -772,8 +774,58 @@
                             </Grid>
                         </Grid>
                         <Grid
-                            x:Name="Boden"
+                            x:Name="Schutzgelaender"
                             Grid.Row="4"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.RowSpan="2"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Fahrkorb Schutzgeländer" />
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_A'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
+                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <SpeziControls:ParameterTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_Info'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Boden"
+                            Grid.Row="5"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,10">
                                 <Border

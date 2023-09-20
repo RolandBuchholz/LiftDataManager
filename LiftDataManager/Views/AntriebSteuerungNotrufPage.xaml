@@ -53,14 +53,14 @@
                     Style="{StaticResource ExpanderContentStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
                         <Grid x:Name="SteuerungELT" Grid.Row="0">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="12"
+                                    Grid.RowSpan="13"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="11"
+                                    Grid.RowSpan="12"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
@@ -144,6 +144,55 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
+                                    <Grid
+                                        Grid.Column="0"
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Aufzugstürenauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="1"
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Aufzugstürenauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
+                                    <Grid
+                                        Grid.Column="2"
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Aufzugstürenauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    x:Name="Steuerung5"
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EinfahrtmoeffnTuer'], Mode=TwoWay}"
@@ -155,8 +204,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_8'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung5"
-                                    Grid.Row="5"
+                                    x:Name="Steuerung6"
+                                    Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -171,8 +220,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_10'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung6"
-                                    Grid.Row="6"
+                                    x:Name="Steuerung7"
+                                    Grid.Row="7"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -200,8 +249,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_12'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung7"
-                                    Grid.Row="7"
+                                    x:Name="Steuerung8"
+                                    Grid.Row="8"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -221,8 +270,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_15'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung8"
-                                    Grid.Row="8"
+                                    x:Name="Steuerung9"
+                                    Grid.Row="9"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -242,8 +291,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_18'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung9"
-                                    Grid.Row="9"
+                                    x:Name="Steuerung10"
+                                    Grid.Row="10"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -255,8 +304,8 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_21'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung10"
-                                    Grid.Row="10"
+                                    x:Name="Steuerung11"
+                                    Grid.Row="11"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
@@ -282,41 +331,8 @@
                             </Grid>
                         </Grid>
                         <Grid
-                            x:Name="SonstigesSteuerung"
-                            Grid.Row="1"
-                            Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
-                                <Border
-                                    Grid.RowSpan="2"
-                                    Grid.ColumnSpan="2"
-                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
-                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Sonstiges Steuerung" />
-                                <Grid
-                                    x:Name="Steuerung11"
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <TextBox
-                                        Grid.Column="0"
-                                        MinHeight="60"
-                                        Margin="5,5,5,0"
-                                        AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesSteuerung'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
-                                        TextWrapping="Wrap" />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid
                             x:Name="Stromanschluss"
-                            Grid.Row="2"
+                            Grid.Row="1"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
@@ -347,7 +363,7 @@
                         </Grid>
                         <Grid
                             x:Name="Schaltschrank"
-                            Grid.Row="3"
+                            Grid.Row="2"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
@@ -364,7 +380,7 @@
                                     FontSize="16"
                                     Text="Schaltschrank" />
                                 <Grid
-                                    x:Name="Steuerung12"
+                                    x:Name="Steuerung14"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -383,7 +399,7 @@
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Steuerung14"
+                                    x:Name="Steuerung15"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ColumnDefinitions="*,*">
@@ -391,6 +407,39 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schaltschrankgroesse'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="SonstigesSteuerung"
+                            Grid.Row="3"
+                            Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Sonstiges Steuerung" />
+                                <Grid
+                                    x:Name="Steuerung12"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*">
+                                    <TextBox
+                                        Grid.Column="0"
+                                        MinHeight="60"
+                                        Margin="5,5,5,0"
+                                        AcceptsReturn="True"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesSteuerung'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                                        TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
                         </Grid>
