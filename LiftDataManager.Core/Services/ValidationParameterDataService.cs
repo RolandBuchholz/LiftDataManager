@@ -975,9 +975,13 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             {
                 availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(s => s.Name);
             }
-            else
+            else if (selectedSafetyGear.Contains("PC 13") || selectedSafetyGear.Contains("PC 24") || selectedSafetyGear.Contains("CSGB01") || selectedSafetyGear.Contains("CSGB02"))
             {
                 availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(s => s.Name);
+            }
+            else
+            {
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG") && !x.Name.Contains("Voraus")).Select(s => s.Name);
             }
 
             if (availablEReducedProtectionSpaces is not null)
