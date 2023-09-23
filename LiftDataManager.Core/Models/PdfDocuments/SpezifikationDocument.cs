@@ -242,6 +242,11 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_EN8173"]);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_EN8176"], true, null);
                 });
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Kommentare"].Value))
+                {
+                    table.Cell().Row(12).Column(2).BorderTop(0.1f).PaddingLeft(5).AlignMiddle().Text("Kommentare").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                    table.Cell().Row(12).Column(3).ColumnSpan(4).BorderTop(0.1f).ParameterStringCell(ParameterDictionary["var_Kommentare"], null, true, true);
+                }
             });
         });
     }
@@ -362,7 +367,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(20).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Grunddaten").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(22).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Grunddaten").FontColor(borderColor).Bold();
                 table.Cell().Row(1).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Fahrkorbtyp"]);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Kabine_ZT"]);
@@ -416,24 +421,30 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(14).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Decke"]);
                 table.Cell().Row(14).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Decke"]);
                 table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_BelagAufDemKabinendach"]);
-                table.Cell().Row(16).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Boden").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodentyp"]);
-                table.Cell().Row(16).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KU"], "mm", false, false, "Kabinenbodenhöhe (inkl. Bodenbelag)");
-                table.Cell().Row(17).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(16).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Schutzgeländer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(16).Column(3).ParameterStringCell(ParameterDictionary["var_Schutzgelaender_A"]);
+                table.Cell().Row(16).Column(4).ParameterStringCell(ParameterDictionary["var_Schutzgelaender_B"]);
+                table.Cell().Row(16).Column(5).ParameterStringCell(ParameterDictionary["var_Schutzgelaender_C"]);
+                table.Cell().Row(16).Column(6).ParameterStringCell(ParameterDictionary["var_Schutzgelaender_D"]);
+                table.Cell().Row(17).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Schutzgelaender_Info"]);
+                table.Cell().Row(18).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Boden").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(18).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodentyp"]);
+                table.Cell().Row(18).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_KU"], "mm", false, false, "Kabinenbodenhöhe (inkl. Bodenbelag)");
+                table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenblech"], "mm");
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_BoPr"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SonderExternBodengewicht"], "kg/m²");
                 });
-                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
-                table.Cell().Row(19).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
+                table.Cell().Row(21).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BodenbelagsTyp"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
                 });
-                table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
+                table.Cell().Row(22).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
             });
         });
     }
@@ -668,7 +679,15 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
                 table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
                 table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
+                table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
+                    row.ConstantItem(87).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"],true);
+                    if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
+                    {
+                        row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);
+                    }
+                });
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
                 table.Cell().Row(17).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(17).Column(3).ColumnSpan(2).Row(row =>
