@@ -387,6 +387,9 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
+        ValidationDictionary.Add("var_Aufsetzvorrichtung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateHydrauliclock, "None", null)});
+
         AddDropDownListValidation();
     }
 
@@ -1497,13 +1500,19 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             return;
 
         var zugang = name.Last();
-        var hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Spiegel{zugang}");
-        var hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Handlauf{zugang}");
-        var hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Sockelleiste{zugang}");
-        var hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Rammschutz{zugang}");
-        var hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_PaneelPos{zugang}");
-
-        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel)
+        bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Spiegel{zugang}");
+        bool hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Handlauf{zugang}");
+        bool hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Sockelleiste{zugang}");
+        bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Rammschutz{zugang}");
+        bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_PaneelPos{zugang}");
+        bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
+        bool hasRueckwand = false;
+        if (zugang == 'C')
+        {
+            hasRueckwand = !string.IsNullOrWhiteSpace(ParamterDictionary["var_Rueckwand"].Value);
+        }
+        
+        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
             if (hasSpiegel)
@@ -1516,6 +1525,10 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 errorMessage += " Rammschutz,";
             if (hasPaneel)
                 errorMessage += " Paneel,";
+            if (hasSchutzgelaender)
+                errorMessage += " Schutzgeländer,";
+            if (hasRueckwand)
+                errorMessage += " Rückwand,";
             errorMessage += " dies erfordert eine Plausibilitätsprüfung!";
 
             ValidationResult.Add(new ParameterStateInfo(name, displayname, errorMessage, SetSeverity(severity)));
@@ -1610,13 +1623,26 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         else if (name.StartsWith("var_Tuerbezeichnung"))
         {
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
-            var doorEntrance = Convert.ToDouble(ParamterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value, CultureInfo.CurrentCulture);
-            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+            var doorEntranceString = ParamterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value;
+            if (!string.IsNullOrWhiteSpace (doorEntranceString))
             {
-                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
-                return;
+                var doorEntrance = Convert.ToDouble(doorEntranceString, CultureInfo.CurrentCulture);
+                if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+                {
+                    ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                    return;
+                }
+                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
             }
-            ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
+        }
+    }
+
+    private void ValidateHydrauliclock(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.Equals(value,"False",StringComparison.CurrentCultureIgnoreCase))
+        {
+            ParamterDictionary["var_AufsetzvorrichtungSystem"].Value = string.Empty;
+            ParamterDictionary["var_AufsetzvorrichtungSystem"].DropDownListValue = null;
         }
     }
 }
