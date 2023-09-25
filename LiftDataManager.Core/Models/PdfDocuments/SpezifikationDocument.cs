@@ -678,11 +678,11 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
                 table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
-                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung Aufsetzvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
-                    row.ConstantItem(87).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"],true);
+                    row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"],true);
                     if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
                     {
                         row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);
