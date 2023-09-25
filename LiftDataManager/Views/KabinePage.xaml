@@ -1094,7 +1094,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1116,7 +1116,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1138,7 +1138,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1160,7 +1160,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SpiegelD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1280,7 +1280,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1302,7 +1302,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1324,7 +1324,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1346,7 +1346,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_HandlaufD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1389,7 +1389,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1411,7 +1411,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1433,7 +1433,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1455,7 +1455,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SockelleisteD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1499,7 +1499,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1521,7 +1521,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1543,7 +1543,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1565,7 +1565,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RammschutzD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1703,7 +1703,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1725,7 +1725,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1747,7 +1747,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1769,7 +1769,7 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PaneelPosD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>

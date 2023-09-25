@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Controls;
 using LiftDataManager.core.Helpers;
-using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;
@@ -10,13 +9,19 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
-
+ 
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
     }
+
+    private readonly string[] carEquipment = { "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD", 
+                                               "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
+                                               "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
+                                               "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
+                                               "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD"};
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -43,6 +48,15 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         if (message.PropertyName == "var_BodenbelagsTyp")
         {
             SetFloorImagePath();
+        }
+        if (carEquipment.Contains(message.PropertyName))
+        {
+            var liftparameter = message.Sender as Parameter;
+            if (liftparameter is not null && liftparameter.Name is not null)
+            {
+                string[] zugang = { $"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}" };
+                _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
+            }
         }
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();

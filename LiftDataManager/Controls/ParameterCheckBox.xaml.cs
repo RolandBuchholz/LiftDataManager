@@ -47,7 +47,7 @@ public sealed partial class ParameterCheckBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -88,7 +88,16 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty ReadOnlyProperty =
-        DependencyProperty.Register("ReadOnly", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+
+    public bool IsControlActive
+    {
+        get => (bool)GetValue(IsControlActiveProperty);
+        set => SetValue(IsControlActiveProperty, value);
+    }
+
+    public static readonly DependencyProperty IsControlActiveProperty =
+        DependencyProperty.Register(nameof(IsControlActive), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(true));
 
     public bool ShowDefaultCheckBoxContent
     {
@@ -97,7 +106,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultCheckBoxContentProperty =
-        DependencyProperty.Register("ShowDefaultCheckBoxContent", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultCheckBoxContent), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
     public string CheckBoxContent
     {
@@ -106,7 +115,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty CheckBoxContentProperty =
-        DependencyProperty.Register("CheckBoxContent", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(CheckBoxContent), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -115,7 +124,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty PlaceholderTextProperty =
-        DependencyProperty.Register("PlaceholderText", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -124,7 +133,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register("ErrorGlyph", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -133,7 +142,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register("ErrorType", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string HighlightAction
     {
@@ -142,7 +151,7 @@ public sealed partial class ParameterCheckBox : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register("HighlightAction", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {
@@ -167,6 +176,14 @@ public sealed partial class ParameterCheckBox : UserControl
         {
             var nav = App.GetService<INavigationService>();
             nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
+    }
+
+    private void SetLiftParameterValueFalse(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+    {
+        if (!IsControlActive && LiftParameter is not null)
+        {
+            LiftParameter.Value = string.Equals(LiftParameter.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "False" : "True";
         }
     }
 }
