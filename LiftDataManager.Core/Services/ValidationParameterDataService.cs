@@ -1021,6 +1021,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             "keine" => Enumerable.Empty<string?>(),
             "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(s => s.Name),
             "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(s => s.Name),
+            "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(s => s.Name),
             _ => safetyGears.Select(s => s.Name),
         };
         if (availablseafetyGears is not null)
