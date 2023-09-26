@@ -36,6 +36,15 @@ public sealed partial class ParameterComboBox : UserControl
         }
     }
 
+    public bool IsControlActive
+    {
+        get => (bool)GetValue(IsControlActiveProperty);
+        set => SetValue(IsControlActiveProperty, value);
+    }
+
+    public static readonly DependencyProperty IsControlActiveProperty =
+        DependencyProperty.Register(nameof(IsControlActive), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(true));
+
     public Parameter? LiftParameter
     {
         get
@@ -47,7 +56,7 @@ public sealed partial class ParameterComboBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -88,7 +97,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultHeaderProperty =
-        DependencyProperty.Register("ShowDefaultHeader", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
     public string Header
     {
@@ -97,7 +106,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register("Header", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -106,7 +115,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register("ErrorGlyph", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -115,7 +124,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register("ErrorType", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public int BorderHeight
     {
@@ -124,7 +133,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register("BorderHeight", typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
 
     public string HighlightAction
     {
@@ -133,7 +142,7 @@ public sealed partial class ParameterComboBox : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register("HighlightAction", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {
@@ -158,6 +167,18 @@ public sealed partial class ParameterComboBox : UserControl
         {
             var nav = App.GetService<INavigationService>();
             nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
+        }
+    }
+
+    private void SetLiftParameterValue(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+    {
+        if (!IsControlActive && LiftParameter is not null)
+        {
+           if (!string.IsNullOrWhiteSpace(LiftParameter.Value))
+           {
+                LiftParameter.Value = string.Empty;
+                LiftParameter.DropDownListValue = null;
+           }
         }
     }
 }

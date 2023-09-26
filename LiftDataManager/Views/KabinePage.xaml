@@ -655,7 +655,7 @@
                                     ColumnDefinitions="2*,Auto,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Rueckwand'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <TextBlock
@@ -796,22 +796,22 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_A'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
-                                        IsEnabled="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                        IsControlActive="{x:Bind ViewModel.ParamterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzgelaender_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>

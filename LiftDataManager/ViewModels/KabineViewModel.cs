@@ -21,7 +21,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                                                "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
                                                "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
                                                "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
-                                               "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD"};
+                                               "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD",
+                                               "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"};
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -57,6 +58,13 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                 string[] zugang = { $"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}" };
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
             }
+        }
+        if (message.PropertyName == "var_Rueckwand")
+        {
+            var liftparameter = message.Sender as Parameter;
+            string[] zugang = { "var_ZUGANSSTELLEN_C" };
+            if (liftparameter is not null)
+                _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
         }
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();

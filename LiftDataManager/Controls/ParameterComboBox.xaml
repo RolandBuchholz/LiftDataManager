@@ -12,7 +12,11 @@
         <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid
+        Background="Transparent"
+        DoubleTapped="SetLiftParameterValue"
+        IsDoubleTapEnabled="True"
+        IsHitTestVisible="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -25,6 +29,7 @@
             VerticalAlignment="Stretch"
             CornerRadius="4"
             Header="{x:Bind Header}"
+            IsEnabled="{x:Bind IsControlActive, Mode=OneWay}"
             IsRightTapEnabled="True"
             ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
             PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
