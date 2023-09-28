@@ -620,12 +620,25 @@
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.RowSpan="5"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Fahrkorb Seitenwände" />
+                                    Margin="10,20,0,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" Text="Fahrkorb Seitenwände" />
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/oberflaechen.html">
+                                        <Image
+                                            Width="30"
+                                            Height="30"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Source="/Images/Homepage.ico" />
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                https://www.berchtenbreiter-gmbh.de/de/oberflaechen.html
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </HyperlinkButton>
+                                </StackPanel>
                                 <Grid
                                     x:Name="Kabine3"
                                     Grid.Row="0"
@@ -833,12 +846,25 @@
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.RowSpan="5"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Fahrkorb Boden" />
+                                    Margin="10,20,0,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" Text="Fahrkorb Boden" />
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/kabinenboeden.html">
+                                        <Image
+                                            Width="30"
+                                            Height="30"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Source="/Images/Homepage.ico" />
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                https://www.berchtenbreiter-gmbh.de/de/kabinenboeden.html
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </HyperlinkButton>
+                                </StackPanel>
                                 <Grid
                                     x:Name="Kabine10"
                                     Grid.Row="0"
@@ -1000,12 +1026,25 @@
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.RowSpan="3"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Beleuchtung" />
+                                    Margin="10,20,0,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" Text="Beleuchtung" />
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/lichtgestaltung.html">
+                                        <Image
+                                            Width="30"
+                                            Height="30"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Source="/Images/Homepage.ico" />
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                https://www.berchtenbreiter-gmbh.de/de/lichtgestaltung.html
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </HyperlinkButton>
+                                </StackPanel>
                                 <Grid
                                     x:Name="Ausstattung0"
                                     Grid.Row="0"

@@ -81,6 +81,7 @@
     <None Remove="Images\Handrails\handrail_HL14.png" />
     <None Remove="Images\HighlightBold.png" />
     <None Remove="Images\HighlightColor.png" />
+    <None Remove="Images\Homepage.ico" />
     <None Remove="Images\html.png" />
     <None Remove="Images\LiftDataManagerLogo.png" />
     <None Remove="Images\LiloTransparent.png" />
@@ -117,6 +118,7 @@
     <Content Include="Images\Handrails\handrail_HL14.png" />
     <Content Include="Images\HighlightBold.png" />
     <Content Include="Images\HighlightColor.png" />
+    <Content Include="Images\Homepage.ico" />
     <Content Include="Images\LiftDataManagerLogo.png" />
     <Content Include="Images\LiloTransparent.png" />
     <Content Include="Images\NoImage.png" />

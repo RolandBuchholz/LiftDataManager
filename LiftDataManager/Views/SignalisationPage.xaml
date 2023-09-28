@@ -59,14 +59,25 @@
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
-                                <TextBlock
-                                    Grid.Row="0"
+                                <StackPanel
                                     Grid.RowSpan="3"
-                                    Grid.Column="0"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Kabinentableau" />
+                                    Margin="10,20,0,0"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="16" Text="Kabinentableau" />
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/bedienelemente.html">
+                                        <Image
+                                            Width="30"
+                                            Height="30"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Source="/Images/Homepage.ico" />
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                https://www.berchtenbreiter-gmbh.de/de/bedienelemente.html
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </HyperlinkButton>
+                                </StackPanel>
                                 <Grid
                                     x:Name="KDKT0"
                                     Grid.Row="0"
@@ -140,12 +151,12 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Header="Anzeige FT Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Header="Anzeige FT Farbe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTFTBildschirmTyp'], Mode=TwoWay}"
@@ -191,7 +202,6 @@
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Gravuren Texte" />
-
                                 <Grid
                                     x:Name="KDKT5"
                                     Grid.Row="0"
@@ -868,12 +878,12 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Header="Punktmatrix Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPunktmatrixTyp'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPunktmatrixTyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Header="Punktmatrix Farbe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFarbe'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFarbe'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabTFTBildschirmTyp'], Mode=TwoWay}"
@@ -1590,12 +1600,12 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Header="Punktmatrix Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPunktmatrixTyp'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPunktmatrixTyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        Header="Punktmatrix Farbe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaFarbe'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaFarbe'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaTFTBildschirmTyp'], Mode=TwoWay}"

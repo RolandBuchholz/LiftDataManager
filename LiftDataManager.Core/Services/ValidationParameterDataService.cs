@@ -122,12 +122,14 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(NotEmpty, "Error", null),
             new(ValidateCarArea, "Error", null),
             new(ValidateSafetyRange, "Error", null),
-            new(ValidateZAliftData, "Warning", null)});
+            new(ValidateZAliftData, "Warning", null),
+            new(ValidateCounterweightMass, "None", null)});
 
         ValidationDictionary.Add("var_F",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null),
             new(ValidateSafetyRange, "Error", null),
-            new(ValidateCarweightWithoutFrame, "None", null)});
+            new(ValidateCarweightWithoutFrame, "None", null),
+            new(ValidateCounterweightMass, "None", null)});
 
         ValidationDictionary.Add("var_Kennwort",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Warning", null) });
@@ -151,21 +153,21 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateJobNumber, "Warning", "var_AuftragsNummer") });
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_A",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbau"),
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmty, "Warning", "var_TuerEinbau"),
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_B",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauB"),
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmty, "Warning", "var_TuerEinbauB"),
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_C",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauC"),
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(MustBeTrueWhenAnotherNotEmty, "Warning", "var_TuerEinbauC"),
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_ZUGANSSTELLEN_D",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmtyOr0, "Warning", "var_TuerEinbauD"),
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(MustBeTrueWhenAnotherNotEmty, "Warning", "var_TuerEinbauD"),
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateCarEquipmentPosition, "Error", null)});
 
@@ -390,6 +392,21 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateHydrauliclock, "None", null)});
 
+        ValidationDictionary.Add("var_GGWNutzlastausgleich",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCounterweightMass, "None", null) });
+
+        ValidationDictionary.Add("var_Schutzgelaender_A",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateProtectiveRailingSwitch, "None", null) });
+
+        ValidationDictionary.Add("var_Schutzgelaender_B",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateProtectiveRailingSwitch, "None", null) });
+
+        ValidationDictionary.Add("var_Schutzgelaender_C",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateProtectiveRailingSwitch, "None", null) });
+
+        ValidationDictionary.Add("var_Schutzgelaender_D",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateProtectiveRailingSwitch, "None", null) });
+
         AddDropDownListValidation();
     }
 
@@ -480,16 +497,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
         }
     }
 
-    private void MustBeTrueWhenAnotherNotEmtyOr0(string name, string displayname, string? value, string? severity, string? anotherString)
+    private void MustBeTrueWhenAnotherNotEmty(string name, string displayname, string? value, string? severity, string? anotherString)
     {
         if (string.IsNullOrWhiteSpace(anotherString))
             return;
         var valueToBool = Convert.ToBoolean(value, CultureInfo.CurrentCulture);
         var stringValue = ParamterDictionary[anotherString].Value;
 
-        if (valueToBool && (string.IsNullOrWhiteSpace(stringValue) || stringValue == "0"))
+        if (valueToBool && (string.IsNullOrWhiteSpace(stringValue)))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} gesetzt (wahr) ist, darf {anotherString} nicht leer sein oder 0 sein", SetSeverity(severity))
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} gesetzt (wahr) ist, darf {anotherString} nicht leer sein", SetSeverity(severity))
             { DependentParameter = new string[] { anotherString } });
         }
         else
@@ -1132,6 +1149,8 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     {
         if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value, "0"))
         {
+            if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Normen"),"MRL 2006/42/EG"))
+                return;
             var load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
             var reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q1");
             var area = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_A_Kabine");
@@ -1645,5 +1664,31 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
             ParamterDictionary["var_AufsetzvorrichtungSystem"].Value = string.Empty;
             ParamterDictionary["var_AufsetzvorrichtungSystem"].DropDownListValue = null;
         }
+    }
+
+    private void ValidateCounterweightMass(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return;
+        double load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
+        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F");
+        double balance = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_GGWNutzlastausgleich");
+
+        ParamterDictionary["var_Gegengewichtsmasse"].Value = Convert.ToString(Math.Round(load * balance + carWeight));
+    }
+
+    private void ValidateProtectiveRailingSwitch(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        string[] sides = { "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D" };
+        bool railingSwitch= false;
+
+        foreach (var side in sides)
+        {
+           if (!string.IsNullOrWhiteSpace(ParamterDictionary[side].Value))
+           {
+                railingSwitch = ParamterDictionary[side].Value!.Contains("klappbar") || ParamterDictionary[side].Value!.Contains("steckbar");
+           }
+        }
+        ParamterDictionary["var_SchutzgelaenderKontakt"].Value = railingSwitch ? "True" : "False";
     }
 }

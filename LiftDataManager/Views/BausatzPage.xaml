@@ -659,6 +659,23 @@
                                         Text="kg" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="Gegengewicht kompl. (Ausgleich " />
+                                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_GGWNutzlastausgleich'].Value, Mode=OneWay}" />
+                                        <Run Text=")" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="0,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Gegengewichtsmasse'].Value, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Text="kg" />
+                                </Grid>
+                                <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="GGW-Rahmengewicht:" />
                                     <TextBlock
                                         Grid.Column="1"

@@ -104,8 +104,17 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
         CanOpenCalculations = CanOpenVault;
         CanOpenCFP = File.Exists(_settingService.PathCFP);
-        CanOpenLilo = File.Exists(_settingService.PathLilo);
-        CanOpenZALift = File.Exists(_settingService.PathZALift);
+
+        if (ParamterDictionary is null || string.IsNullOrWhiteSpace(ParamterDictionary["var_Aufzugstyp"].Value))
+        {
+            CanOpenLilo = File.Exists(_settingService.PathLilo);
+            CanOpenZALift = File.Exists(_settingService.PathZALift);
+        }
+        else
+        {
+            CanOpenZALift = ParamterDictionary["var_Aufzugstyp"].Value!.Contains("Seil") && File.Exists(_settingService.PathZALift);
+            CanOpenLilo = ParamterDictionary["var_Aufzugstyp"].Value!.Contains("Hydraulik") && File.Exists(_settingService.PathLilo);
+        }
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
             CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
         CanImportZAliftData = CanOpenZALiftHtml && CheckOut;
@@ -569,12 +578,26 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         if (ParamterDictionary is not null)
         {
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
+            ParamterDictionary["var_Q"].Value = zliDataDictionary["Nennlast_Q"];
             if (zliDataDictionary.TryGetValue("Getriebebezeichnung", out string? drive))
             {
                 ParamterDictionary["var_Antrieb"].Value = string.IsNullOrWhiteSpace(drive) ? string.Empty : drive.Replace(',', '.');
             }
             ParamterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
             ParamterDictionary["var_ZA_IMP_Treibscheibe_RIA"].Value = zliDataDictionary["Treibscheibe-RIA"];
+            ParamterDictionary["var_Gegengewichtsmasse"].Value = zliDataDictionary["Gegengewicht_G"];
+            try
+            {
+                double load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
+                double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F");
+                double counterWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Gegengewichtsmasse");
+                ParamterDictionary["var_GGWNutzlastausgleich"].Value = Convert.ToString(Math.Round((counterWeight - carWeight) / load,2));
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "balance not found");
+            }
+
             ParamterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty;
 
             if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))

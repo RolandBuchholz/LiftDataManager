@@ -296,10 +296,18 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*">
-                                    <SpeziControls:ParameterCheckBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchutzgelaenderKontakt'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True" />
+                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="0"
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchutzgelaenderKontakt'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Schutzgeländerauswahl  gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_17'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_21'], Mode=TwoWay}" />
                                 </Grid>
@@ -502,17 +510,25 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,1.75*">
-                                    <Grid Background="Transparent" IsHitTestVisible="True">
+                                    <Grid
+                                        Background="Transparent"
+                                        ColumnDefinitions="*,Auto"
+                                        IsHitTestVisible="True">
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             IsHitTestVisible="False"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Getriebe'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True">
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock>
+                                                    <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                    Wird automtisch mit der Antriebsauswahl  gesetzt</TextBlock>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterComboBox>
+                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.Column="1"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_GGWNutzlastausgleich'], Mode=TwoWay}"
                                             ShowDefaultHeader="True" />
-                                        <ToolTipService.ToolTip>
-                                            <TextBlock>
-                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                                Wird automtisch mit der Antriebsauswahl  gesetzt</TextBlock>
-                                        </ToolTipService.ToolTip>
                                     </Grid>
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
                                         <SpeziControls:ParameterCheckBox

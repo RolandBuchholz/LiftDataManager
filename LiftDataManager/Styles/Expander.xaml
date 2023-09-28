@@ -14,6 +14,14 @@
         NotEmptyValue="Visible" />
     <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
 
+    <DataTemplate x:Key="BaseExpanderHeaderTemplate">
+        <TextBlock
+            FontSize="16"
+            FontWeight="Normal"
+            Foreground="White"
+            Text="{Binding}" />
+    </DataTemplate>
+
     <Style x:Key="HorizontalExpanderToggleButtonStyle" TargetType="ToggleButton">
         <Setter Property="Padding" Value="5" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -454,7 +462,7 @@
                             BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}"
                             BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}"
                             Content="{TemplateBinding Header}"
-                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            ContentTemplate="{StaticResource BaseExpanderHeaderTemplate}"
                             ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
                             CornerRadius="{TemplateBinding CornerRadius}"
                             IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"

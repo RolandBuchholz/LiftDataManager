@@ -276,7 +276,9 @@
                         Grid.Column="0"
                         Margin="15,0,10,0"
                         VerticalAlignment="Center"
+                        FontSize="16"
                         FontWeight="Bold"
+                        Foreground="White"
                         Text="Basis Aufzugsinformationen:" />
                     <TextBox
                         Grid.Column="1"
@@ -663,10 +665,10 @@
                                     Margin="5,0,5,0"
                                     ui:TextBoxExtensions.ValidationMode="Dynamic"
                                     ui:TextBoxExtensions.ValidationType="Decimal"
+                                    Description="{x:Bind ViewModel.CustomPayloadInfo, Mode=OneWay}"
                                     Header="Eingabe benutzerdefinierte Gedrängelast"
                                     IsReadOnly="{x:Bind ViewModel.CanEditCustomPayload, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                     Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Description="{x:Bind ViewModel.CustomPayloadInfo,Mode=OneWay}"
                                     TextAlignment="Right">
                                     <ToolTipService.ToolTip>
                                         <TextBlock>
