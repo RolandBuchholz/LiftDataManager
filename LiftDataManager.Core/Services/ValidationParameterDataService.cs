@@ -120,16 +120,16 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
 
         ValidationDictionary.Add("var_Q",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>{ new(NotEmpty, "Error", null),
+            new(ValidateCounterweightMass, "None", null),
             new(ValidateCarArea, "Error", null),
             new(ValidateSafetyRange, "Error", null),
-            new(ValidateZAliftData, "Warning", null),
-            new(ValidateCounterweightMass, "None", null)});
+            new(ValidateZAliftData, "Warning", null) });
 
         ValidationDictionary.Add("var_F",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateZAliftData, "Warning", null),
             new(ValidateSafetyRange, "Error", null),
             new(ValidateCarweightWithoutFrame, "None", null),
-            new(ValidateCounterweightMass, "None", null)});
+            new(ValidateCounterweightMass, "None", null) });
 
         ValidationDictionary.Add("var_Kennwort",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Warning", null) });
@@ -1149,7 +1149,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
     {
         if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value, "0"))
         {
-            if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Normen"),"MRL 2006/42/EG"))
+            if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Normen"), "MRL 2006/42/EG"))
                 return;
             var load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
             var reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q1");
