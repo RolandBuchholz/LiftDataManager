@@ -39,7 +39,6 @@ public partial class DataViewModelBase : ObservableRecipient
 
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
-
     }
 
     public virtual void Receive(PropertyChangedMessage<bool> message)

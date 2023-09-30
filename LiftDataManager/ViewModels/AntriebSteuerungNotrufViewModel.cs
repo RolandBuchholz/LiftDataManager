@@ -1,12 +1,34 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-
 namespace LiftDataManager.ViewModels;
 
-public class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public AntriebSteuerungNotrufViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
          base(parameterDataService, dialogService, navigationService)
     {
+    }
+
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        if (message.PropertyName == "var_Getriebe")
+        {
+            SetDriveTyp();
+        };
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
+    }
+
+    [ObservableProperty]
+    private bool isRopedrive;
+
+    private void SetDriveTyp()
+    {
+        IsRopedrive = string.IsNullOrWhiteSpace(ParamterDictionary!["var_Getriebe"].Value) || ParamterDictionary!["var_Getriebe"].Value != "hydraulisch";
     }
 
     public void OnNavigatedTo(object parameter)
@@ -16,7 +38,10 @@ public class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAwa
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)
+        {
             _ = SetModelStateAsync();
+            SetDriveTyp();
+        }
     }
 
     public void OnNavigatedFrom()

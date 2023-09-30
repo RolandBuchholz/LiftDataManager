@@ -528,7 +528,8 @@
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="1"
                                             LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_GGWNutzlastausgleich'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True" />
+                                            ShowDefaultHeader="True"
+                                            Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                                     </Grid>
                                     <Grid Grid.Column="1" ColumnDefinitions="*,*,*">
                                         <SpeziControls:ParameterCheckBox
