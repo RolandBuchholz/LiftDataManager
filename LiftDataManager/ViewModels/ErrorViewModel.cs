@@ -9,11 +9,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ISettingService _settingService;
 
-
-    public ErrorViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ISettingService settingsSelectorService) :
-         base(parameterDataService, dialogService, navigationService)
+    public ErrorViewModel(ISettingService settingsSelectorService)
     {
-        _settingService = settingsSelectorService;
+       _settingService = settingsSelectorService;
     }
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }
@@ -36,8 +34,6 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
             return string.Empty;
         }
     }
-
-    public bool CanConnectDataBase => _parameterDataService!.CanConnectDataBase();
 
     [ObservableProperty]
     private string? pathCFP;
@@ -137,7 +133,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
             CheckOut = CurrentSpeziProperties.CheckOut;
             LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
             HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-            ParamterDictionaryInfo = CurrentSpeziProperties.ParamterDictionary is null ? "ParamterDictionary nicht geladen" : $"{ParamterDictionary!.Count} Parameter";
+            ParamterDictionaryInfo = CurrentSpeziProperties.ParamterDictionary is null ? "ParamterDictionary nicht geladen" : $"{CurrentSpeziProperties.ParamterDictionary.Count} Parameter";
         }
 
         PathCFP = _settingService.PathCFP;
@@ -152,7 +148,6 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
             ErrorMessage = ErrorPageInfo.ErrorArgs.Message;
             Exception = ErrorPageInfo.ErrorArgs.Exception.ToString();
         }
-
     }
 
     [RelayCommand]
@@ -186,7 +181,6 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
         {
             ErrorPageInfo = parameter as ErrorPageInfo;
         }
-
         SetErrorValues();
     }
 }

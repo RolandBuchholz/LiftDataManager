@@ -47,13 +47,6 @@
                             Text="App Info" />
                     </Border>
                     <InfoBar
-                        Title="Can Connect DataBase"
-                        Margin="5,0,5,0"
-                        IsClosable="False"
-                        IsOpen="True"
-                        Message="{x:Bind ViewModel.CanConnectDataBase}"
-                        Severity="Informational" />
-                    <InfoBar
                         Title="ParamterDictionary"
                         Margin="5,0,5,0"
                         IsClosable="False"
