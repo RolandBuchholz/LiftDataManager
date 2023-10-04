@@ -257,14 +257,32 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     ColumnDefinitions="*">
-                                    <RadioButtons
-                                        HorizontalAlignment="Stretch"
-                                        Header="Gewähleistungsdauer:"
-                                        MaxColumns="3">
-                                        <RadioButton Content="2 Jahre" IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VOB2'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <RadioButton Content="4 Jahre" IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VOB4'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                        <RadioButton Content="5 Jahre" IsChecked="{x:Bind ViewModel.ParamterDictionary['var_VOB5'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
-                                    </RadioButtons>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Margin="5,5,0,0"
+                                        Text="Gewährleistungsdauer:" />
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <SpeziControls:ParameterRadioButton
+                                            Margin="0,0,0,0"
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VOB2'], Mode=TwoWay}"
+                                            RadioButtonContent=" 2 Jahre "
+                                            RadioButtonGroupName="VOB"
+                                            ShowDefaultRadioButtonContent="False" />
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VOB4'], Mode=TwoWay}"
+                                            RadioButtonContent=" 4 Jahre "
+                                            RadioButtonGroupName="VOB"
+                                            ShowDefaultRadioButtonContent="False" />
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VOB5'], Mode=TwoWay}"
+                                            RadioButtonContent=" 5 Jahre "
+                                            RadioButtonGroupName="VOB"
+                                            ShowDefaultRadioButtonContent="False" />
+                                    </StackPanel>
                                 </Grid>
                                 <Grid
                                     Name="Wartung9"

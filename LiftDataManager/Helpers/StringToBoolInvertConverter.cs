@@ -9,11 +9,11 @@ public class StringToBoolInvertConverter : IValueConverter
             return null;
         }
 
-        if (string.Equals((string)value, "false", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals((string)value, "False", StringComparison.OrdinalIgnoreCase))
         {
             return true;
         }
-        else if (string.Equals((string)value, "true", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals((string)value, "True", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
