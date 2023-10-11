@@ -600,12 +600,34 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,*"
+                                    RowDefinitions="Auto,Auto,Auto,Auto">
                                     <SpeziControls:ParameterComboBox
+                                        Grid.Row="0"
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataB, Mode=OneWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataC, Mode=OneWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataD, Mode=OneWay}" />
                                     <SpeziControls:ParameterTextBox
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
@@ -847,12 +869,34 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,*"
+                                    RowDefinitions="Auto,Auto,Auto,Auto">
                                     <SpeziControls:ParameterComboBox
+                                        Grid.Row="0"
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataB, Mode=OneWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataC, Mode=OneWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Visibility="{x:Bind ViewModel.ShowCarDoorDataD, Mode=OneWay}" />
                                     <SpeziControls:ParameterTextBox
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />

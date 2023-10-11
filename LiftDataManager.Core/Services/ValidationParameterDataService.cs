@@ -1287,19 +1287,19 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ZliDataDictionary.Add("ElektrBremsenansteuerung", "False");
             }
 
-            var detectionDistanceMeter = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
+            var detectionDistanceMeter = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg") || x.InnerText.StartsWith("Detection distance"))?.ChildNodes[1].InnerText;
             if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
             {
                 ZliDataDictionary.Add("DetectionDistance", (Convert.ToDouble(detectionDistanceMeter.Replace("m", "").Trim(), CultureInfo.CurrentCulture) * 1000).ToString());
             }
 
-            var deadTime = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
+            var deadTime = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit") || x.InnerText.StartsWith("Dead time"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
             if (!string.IsNullOrWhiteSpace(deadTime))
             {
                 ZliDataDictionary.Add("DeadTime", deadTime);
             }
 
-            var vDetector = Convert.ToDouble(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
+            var vDetector = Convert.ToDouble(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor") || x.InnerText.StartsWith("V Detector"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
             if (!string.IsNullOrWhiteSpace(vDetector))
             {
                 ZliDataDictionary.Add("VDetector", vDetector);
@@ -1604,7 +1604,7 @@ public class ValidationParameterDataService : ObservableRecipient, IValidationPa
                 ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Add(item!);
             }
 
-            if (!availableFloorColors.Contains(value))
+            if (!availableFloorColors.Contains(ParamterDictionary["var_BodenbelagsTyp"].Value))
             {
                 ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
                 ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;

@@ -16,7 +16,7 @@
     <Expander
         x:Name="Stockwerksbezeichnung"
         IsExpanded="True"
-        Style="{StaticResource ExpanderContentStyle}">
+        Style="{StaticResource ExpanderEntranceControlStyle}">
         <Expander.Resources>
             <converters:BoolToObjectConverter
                 x:Key="InvertBoolToObjectConverter"
@@ -205,7 +205,7 @@
                 HorizontalAlignment="Right"
                 Content="Zugang A"
                 IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-                IsEnabled="False">
+                IsHitTestVisible="False">
                 <ToolTipService.ToolTip>
                     <StackPanel>
                         <TextBlock

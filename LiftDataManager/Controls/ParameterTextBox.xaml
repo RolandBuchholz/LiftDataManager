@@ -24,7 +24,7 @@
             Grid.Column="0"
             Margin="5,0,5,0"
             Header="{x:Bind Header}"
-            IsReadOnly="{x:Bind ReadOnly}"
+            IsReadOnly="{x:Bind ReadOnly, Mode=TwoWay}"
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}">
             <Interactivity:Interaction.Behaviors>

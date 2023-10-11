@@ -43,9 +43,9 @@
             Margin="0,10,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Content="Zugang A"
+            Content="Wand A"
             IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
-            IsEnabled="False"
+            IsHitTestVisible="False"
             Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}" />
         <controls:LayoutTransformControl
             Grid.Row="3"
@@ -59,7 +59,7 @@
             </controls:LayoutTransformControl.Transform>
             <ToggleButton
                 x:Name="ZugangB"
-                Content="Zugang B"
+                Content="Wand B"
                 IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
         </controls:LayoutTransformControl>
         <ToggleButton
@@ -69,7 +69,7 @@
             Margin="0,0,0,10"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Content="Zugang C"
+            Content="Wand C"
             IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
             Visibility="{x:Bind ShowEntranceButtons, Mode=OneWay}" />
         <controls:LayoutTransformControl
@@ -84,7 +84,7 @@
             </controls:LayoutTransformControl.Transform>
             <ToggleButton
                 x:Name="ZugangD"
-                Content="Zugang D"
+                Content="Wand D"
                 IsChecked="{x:Bind ItemSource['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}" />
         </controls:LayoutTransformControl>
         <!--  Kabine  -->

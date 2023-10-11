@@ -27,6 +27,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         {
             ParamterDictionary!["var_Rahmengewicht"].Value = "";
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
+            CheckCFPState();
         };
         if (message.PropertyName == "var_TypFV" ||
             message.PropertyName == "var_FuehrungsschieneFahrkorb" ||
@@ -88,14 +89,23 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
         if (carFrameType is null)
             return 0;
-
-        IsCFPFrame = carFrameType.IsCFPControlled;
         CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
         CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
         CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
         CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
 
         return carFrameType.CarFrameWeight;
+    }
+
+    private void CheckCFPState()
+    {
+        var fangrahmenTyp = ParamterDictionary!["var_Bausatz"].Value;
+        if (string.IsNullOrWhiteSpace(fangrahmenTyp))
+            return;
+        var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
+        if (carFrameType is null)
+            return ;
+        IsCFPFrame = carFrameType.IsCFPControlled;
     }
 
     private void SetSafetygearData()
@@ -110,6 +120,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         SynchronizeViewModelParameter();
         SetSafetygearData();
         SetCarWeight();
+        CheckCFPState();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParamterDictionary is not null &&
             CurrentSpeziProperties.ParamterDictionary.Values is not null)

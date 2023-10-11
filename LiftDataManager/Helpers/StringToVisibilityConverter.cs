@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Helpers;
 
-public class StringToBoolConverter : IValueConverter
+public class StringToVisibilityConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, string language)
     {
@@ -9,28 +9,27 @@ public class StringToBoolConverter : IValueConverter
             return null;
         }
 
-        if (string.Equals((string)value, "true", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals((string)value, "True", StringComparison.OrdinalIgnoreCase))
         {
-            return true;
+            return Visibility.Visible;
         }
-        else if (string.Equals((string)value, "false", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals((string)value, "False", StringComparison.OrdinalIgnoreCase))
         {
-            return false;
+            return Visibility.Collapsed;
         }
         else
         {
-            Debug.WriteLine($"string: {value} could not be converted to a bool");
+            Debug.WriteLine($"string: {value} could not be converted to Visibility");
             return null;
         }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if (value == null || value.GetType() != typeof(bool))
+        if (value is Visibility && (Visibility)value == Visibility.Visible)
         {
-            return string.Empty;
+            return "True";
         }
-
-        return ((bool)value) ? "True" : "False";
+        return "False";
     }
 }
