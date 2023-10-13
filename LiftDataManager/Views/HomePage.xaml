@@ -32,7 +32,6 @@
             x:Key="CommonShadow"
             CornerRadius="4"
             Offset="4" />
-        <helpers:ExcelDateToDateTimeOffsetConverter x:Name="ExcelDate" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -304,6 +303,10 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    <!--<SpeziControls:BaseValidationTextBox
+                        Header="Ich bin ein Header"
+                        Placeholder="PlaceHolder"
+                        Text="Hallo" />-->
                     <SpeziControls:ParameterTextBox
                         Grid.Row="0"
                         Grid.Column="0"

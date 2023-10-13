@@ -1,0 +1,48 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LiftDataManager.Controls">
+
+    <Style TargetType="local:BaseValidationTextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:BaseValidationTextBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBox
+                            x:Name="TextBox"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            HorizontalAlignment="Stretch"
+                            Header="{TemplateBinding Header}"
+                            PlaceholderText="{TemplateBinding Placeholder}"
+                            Text="{TemplateBinding Text}" />
+                        <FontIcon
+                            x:Name="ErrorIcon"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5,0,0,5"
+                            VerticalAlignment="Bottom"
+                            Foreground="Red"
+                            Glyph="&#xE946;"
+                            Visibility="Visible" />
+                        <TextBlock
+                            x:Name="ErrorText"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Foreground="Red"
+                            Text="* Pflichteingabe" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

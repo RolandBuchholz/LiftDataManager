@@ -10,5 +10,7 @@ public class LiftDoorSillConfig : BaseModelBuilder<LiftDoorSill>
         builder.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
+        builder.Property(x => x.Manufacturer);
+        builder.Property(x => x.SillMountTyp);
     }
 }
