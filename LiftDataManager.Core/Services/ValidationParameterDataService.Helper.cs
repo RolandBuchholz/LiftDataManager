@@ -11,21 +11,21 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(zugang))
             return;
-        string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tuertyp");
-        string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tuerbezeichnung");
-        string schwellenprofilSchachttuer = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Schwellenprofil");
-        string schwellenprofilKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_SchwellenprofilKabTuere");
-        double tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
-        double tuerHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TH");
-        double tuerGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Tuergewicht");
+        string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
+        string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuerbezeichnung");
+        string schwellenprofilSchachttuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Schwellenprofil");
+        string schwellenprofilKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_SchwellenprofilKabTuere");
+        double tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB");
+        double tuerHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TH");
+        double tuerGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Tuergewicht");
 
-        ParamterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = tuerTyp;
-        ParamterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = tuerBezeichnung;
-        ParamterDictionary[$"var_TB_{zugang}"].Value = Convert.ToString(tuerBreite);
-        ParamterDictionary[$"var_TH_{zugang}"].Value = Convert.ToString(tuerHoehe);
-        ParamterDictionary[$"var_Tuergewicht_{zugang}"].Value = Convert.ToString(tuerGewicht);
-        ParamterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = schwellenprofilSchachttuer;
-        ParamterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = schwellenprofilKabinentuer;
+        ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = tuerTyp;
+        ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = tuerBezeichnung;
+        ParameterDictionary[$"var_TB_{zugang}"].Value = Convert.ToString(tuerBreite);
+        ParameterDictionary[$"var_TH_{zugang}"].Value = Convert.ToString(tuerHoehe);
+        ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = Convert.ToString(tuerGewicht);
+        ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = schwellenprofilSchachttuer;
+        ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = schwellenprofilKabinentuer;
     }
 
     private void RemoveCarDoorData(string zugang)
@@ -33,33 +33,33 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(zugang))
             return;
 
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue))
-            ParamterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue))
-            ParamterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue))
-            ParamterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue))
-            ParamterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_TB_{zugang}"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue))
+            ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = string.Empty;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue))
+            ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = string.Empty;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue))
+            ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = string.Empty;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue))
+            ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = string.Empty;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TB_{zugang}"].Value))
         {
-            if (ParamterDictionary[$"var_TB_{zugang}"].Value != "0")
-                ParamterDictionary[$"var_TB_{zugang}"].Value = string.Empty;
+            if (ParameterDictionary[$"var_TB_{zugang}"].Value != "0")
+                ParameterDictionary[$"var_TB_{zugang}"].Value = string.Empty;
         }
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_TH_{zugang}"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TH_{zugang}"].Value))
         {
-            if (ParamterDictionary[$"var_TH_{zugang}"].Value != "0")
-                ParamterDictionary[$"var_TH_{zugang}"].Value = string.Empty;
+            if (ParameterDictionary[$"var_TH_{zugang}"].Value != "0")
+                ParameterDictionary[$"var_TH_{zugang}"].Value = string.Empty;
         }
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Tuergewicht_{zugang}"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value))
         {
-            if (ParamterDictionary[$"var_Tuergewicht_{zugang}"].Value != "0")
-                ParamterDictionary[$"var_Tuergewicht_{zugang}"].Value = string.Empty;
+            if (ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value != "0")
+                ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = string.Empty;
         }
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_TuerEinbauB"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbauB"].Value))
         {
-            if (ParamterDictionary[$"var_TuerEinbau{zugang}"].Value != "0")
-                ParamterDictionary[$"var_TuerEinbau{zugang}"].Value = string.Empty;
+            if (ParameterDictionary[$"var_TuerEinbau{zugang}"].Value != "0")
+                ParameterDictionary[$"var_TuerEinbau{zugang}"].Value = string.Empty;
         }
     }
 
@@ -68,15 +68,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(zugang) || liftDoorGroup is null || liftDoorGroup.CarDoor is null)
             return;
 
-        var openingDirection = zugang == "A" ? ParamterDictionary["var_Tueroeffnung"].Value :
-                                 ParamterDictionary[$"var_Tueroeffnung_{zugang}"].Value;
+        var openingDirection = zugang == "A" ? ParameterDictionary["var_Tueroeffnung"].Value :
+                                 ParameterDictionary[$"var_Tueroeffnung_{zugang}"].Value;
 
-        var sillProfil = zugang == "A" ? ParamterDictionary["var_SchwellenprofilKabTuere"].Value :
-                                         ParamterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].Value;
+        var sillProfil = zugang == "A" ? ParameterDictionary["var_SchwellenprofilKabTuere"].Value :
+                                         ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].Value;
 
         if (liftDoorGroup.DoorManufacturer != "Meiller" || string.IsNullOrWhiteSpace(openingDirection) || string.IsNullOrWhiteSpace(sillProfil))
         {
-            ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
+            ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
             return;
         }
 
@@ -84,11 +84,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (carFloorSill == null)
         {
-            ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
+            ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
             return;
         }
 
-        double doorWidth = zugang == "A" ? LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, $"var_TB") : LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, $"var_TB_{zugang}");
+        double doorWidth = zugang == "A" ? LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_TB") : LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_TB_{zugang}");
 
         double supportPlateExtensionLeft;
         double supportPlateExtensionRight;
@@ -126,7 +126,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
         else
         {
-            ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
+            ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
             return;
         }
 
@@ -145,7 +145,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         switch (carFloorSill.SillMountTyp)
         {
             case 0:
-                ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
                 return;
             case 1:
                 supportPlateWidth = 999; //13
@@ -166,9 +166,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 triangularLockingDistance = 999; //16
                 break;
             default:
-                ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
                 return;
         }
-        ParamterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = $"{supportPlateExtensionLeft};{supportPlateExtensionRight};{distanceMudHolesFloorEdge};{quantityRowMudHoles};{distanceMudHole};{distanceSillBracketHoles};{quantityRowHolesSillBracket};{distanceSillMounting};{sillExtensionLeft};{sillExtensionRight};{sillBracketExtensionLeft};{sillBracketExtensionRight};{supportPlateWidth};{offsetOKAprontoOKFF};{distanceBetweenSillBracketholes};{triangularLockingDistance}";
+        ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = $"{supportPlateExtensionLeft};{supportPlateExtensionRight};{distanceMudHolesFloorEdge};{quantityRowMudHoles};{distanceMudHole};{distanceSillBracketHoles};{quantityRowHolesSillBracket};{distanceSillMounting};{sillExtensionLeft};{sillExtensionRight};{sillBracketExtensionLeft};{sillBracketExtensionRight};{supportPlateWidth};{offsetOKAprontoOKFF};{distanceBetweenSillBracketholes};{triangularLockingDistance}";
     }
 }

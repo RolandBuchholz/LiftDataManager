@@ -16,7 +16,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }
     public bool CustomAccentColor { get; set; }
-    public string? ParamterDictionaryInfo { get; set; }
+    public string? ParameterDictionaryInfo { get; set; }
     public string? ErrorMessage { get; set; }
     public string? Exception { get; set; }
     public string? LogFile => GetLastLogFile();
@@ -133,7 +133,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
             CheckOut = CurrentSpeziProperties.CheckOut;
             LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
             HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-            ParamterDictionaryInfo = CurrentSpeziProperties.ParamterDictionary is null ? "ParamterDictionary nicht geladen" : $"{CurrentSpeziProperties.ParamterDictionary.Count} Parameter";
+            ParameterDictionaryInfo = CurrentSpeziProperties.ParameterDictionary is null ? "ParameterDictionary nicht geladen" : $"{CurrentSpeziProperties.ParameterDictionary.Count} Parameter";
         }
 
         PathCFP = _settingService.PathCFP;

@@ -128,9 +128,9 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (parameter is not null && ParamterDictionary is not null)
+        if (parameter is not null && ParameterDictionary is not null)
         {
-            var data = ParamterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
+            var data = ParameterDictionary.Values.Where(p => !string.IsNullOrWhiteSpace(p.Name));
             Item = data.First(i => i.Name == (string)parameter);
             SetParameterState(Item);
         }

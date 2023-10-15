@@ -47,11 +47,11 @@
                             Text="App Info" />
                     </Border>
                     <InfoBar
-                        Title="ParamterDictionary"
+                        Title="ParameterDictionary"
                         Margin="5,0,5,0"
                         IsClosable="False"
                         IsOpen="True"
-                        Message="{x:Bind ViewModel.ParamterDictionaryInfo}"
+                        Message="{x:Bind ViewModel.ParameterDictionaryInfo}"
                         Severity="Informational" />
                     <InfoBar
                         Title="Adminmode"

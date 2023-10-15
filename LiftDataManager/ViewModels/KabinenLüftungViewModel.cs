@@ -33,9 +33,9 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
     [RelayCommand]
     public void CreatePdf()
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinenLüftungViewModel), ParameterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
         }
     }
 
@@ -44,10 +44,10 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
-        CarVentilationResult = _calculationsModuleService.GetCarVentilationCalculation(ParamterDictionary);
+        CarVentilationResult = _calculationsModuleService.GetCarVentilationCalculation(ParameterDictionary);
     }
 
     public void OnNavigatedFrom()

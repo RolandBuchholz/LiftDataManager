@@ -26,18 +26,18 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRec
     [RelayCommand(CanExecute = nameof(CanSetVariableCarDoorData))]
     private async Task SetVariableCarDoorDataAsync()
     {
-        var currentVariableCarDoorData = Convert.ToBoolean(ParamterDictionary!["var_Variable_Tuerdaten"].Value);
-        ParamterDictionary["var_Variable_Tuerdaten"].Value = (currentVariableCarDoorData) ? "false" : "true";
+        var currentVariableCarDoorData = Convert.ToBoolean(ParameterDictionary!["var_Variable_Tuerdaten"].Value);
+        ParameterDictionary["var_Variable_Tuerdaten"].Value = (currentVariableCarDoorData) ? "false" : "true";
         SetCarDoorDataVisibility();
         await Task.CompletedTask;
     }
 
     private void SetCarDoorDataVisibility()
     {
-        var variableCarDoorData = Convert.ToBoolean(ParamterDictionary!["var_Variable_Tuerdaten"].Value);
-        var zugangB = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_B"].Value);
-        var zugangC = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_C"].Value);
-        var zugangD = Convert.ToBoolean(ParamterDictionary["var_ZUGANSSTELLEN_D"].Value);
+        var variableCarDoorData = Convert.ToBoolean(ParameterDictionary!["var_Variable_Tuerdaten"].Value);
+        var zugangB = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_B"].Value);
+        var zugangC = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_C"].Value);
+        var zugangD = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_D"].Value);
 
         CanSetVariableCarDoorData = (zugangB || zugangC || zugangD);
 
@@ -51,8 +51,8 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRec
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
         SetCarDoorDataVisibility();
     }

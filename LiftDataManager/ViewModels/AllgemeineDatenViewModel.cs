@@ -212,11 +212,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                                                                       .ThenInclude(t => t.Country)
                                                                       .FirstOrDefault(x => x.Id == liftPlanner.Key);
 
-        ParamterDictionary!["var_AnPersonZ4"].Value = SelectedLiftPlanner;
-        ParamterDictionary!["var_FP_Adresse"].Value = $"{liftPlannerDatabase?.ZipCode.Country.ShortMark} - {liftPlannerDatabase?.ZipCode.ZipCodeNumber} {liftPlannerDatabase?.ZipCode.Name} {liftPlannerDatabase?.Street} {liftPlannerDatabase?.StreetNumber}";
-        ParamterDictionary!["var_AnPersonPhone"].Value = liftPlannerDatabase?.PhoneNumber;
-        ParamterDictionary!["var_AnPersonMobil"].Value = liftPlannerDatabase?.MobileNumber;
-        ParamterDictionary!["var_AnPersonMail"].Value = liftPlannerDatabase?.EmailAddress;
+        ParameterDictionary!["var_AnPersonZ4"].Value = SelectedLiftPlanner;
+        ParameterDictionary!["var_FP_Adresse"].Value = $"{liftPlannerDatabase?.ZipCode.Country.ShortMark} - {liftPlannerDatabase?.ZipCode.ZipCodeNumber} {liftPlannerDatabase?.ZipCode.Name} {liftPlannerDatabase?.Street} {liftPlannerDatabase?.StreetNumber}";
+        ParameterDictionary!["var_AnPersonPhone"].Value = liftPlannerDatabase?.PhoneNumber;
+        ParameterDictionary!["var_AnPersonMobil"].Value = liftPlannerDatabase?.MobileNumber;
+        ParameterDictionary!["var_AnPersonMail"].Value = liftPlannerDatabase?.EmailAddress;
         AutoSuggestBoxText = string.Empty;
         SelectedLiftPlanner = string.Empty;
     }
@@ -224,11 +224,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     [RelayCommand]
     private void ResetLiftPlanner()
     {
-        ParamterDictionary!["var_AnPersonZ4"].Value = string.Empty;
-        ParamterDictionary!["var_FP_Adresse"].Value = string.Empty;
-        ParamterDictionary!["var_AnPersonPhone"].Value = string.Empty;
-        ParamterDictionary!["var_AnPersonMobil"].Value = string.Empty;
-        ParamterDictionary!["var_AnPersonMail"].Value = string.Empty;
+        ParameterDictionary!["var_AnPersonZ4"].Value = string.Empty;
+        ParameterDictionary!["var_FP_Adresse"].Value = string.Empty;
+        ParameterDictionary!["var_AnPersonPhone"].Value = string.Empty;
+        ParameterDictionary!["var_AnPersonMobil"].Value = string.Empty;
+        ParameterDictionary!["var_AnPersonMail"].Value = string.Empty;
         AutoSuggestBoxText = string.Empty;
         SelectedLiftPlanner = string.Empty;
         Company = string.Empty;
@@ -388,8 +388,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
         SetLiftplanners();
     }

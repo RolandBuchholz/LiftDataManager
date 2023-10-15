@@ -25,7 +25,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
         if (message.PropertyName == "var_Bausatz")
         {
-            ParamterDictionary!["var_Rahmengewicht"].Value = "";
+            ParameterDictionary!["var_Rahmengewicht"].Value = "";
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
             CheckCFPState();
         };
@@ -39,7 +39,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         _ = SetModelStateAsync();
     }
 
-    public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParamterDictionary!["var_ZA_IMP_Regler_Typ"].Value);
+    public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParameterDictionary!["var_ZA_IMP_Regler_Typ"].Value);
 
     [ObservableProperty]
     private bool isCFPFrame;
@@ -68,13 +68,13 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     private void SetCarWeight()
     {
-        if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value))
         {
-            FangrahmenGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Rahmengewicht");
+            FangrahmenGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Rahmengewicht");
         }
-        else if (!string.IsNullOrWhiteSpace(ParamterDictionary!["var_Bausatz"].Value))
+        else if (!string.IsNullOrWhiteSpace(ParameterDictionary!["var_Bausatz"].Value))
         {
-            FangrahmenGewicht = GetFangrahmengewicht(ParamterDictionary!["var_Bausatz"].Value);
+            FangrahmenGewicht = GetFangrahmengewicht(ParameterDictionary!["var_Bausatz"].Value);
         }
         else
         {
@@ -99,7 +99,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     private void CheckCFPState()
     {
-        var fangrahmenTyp = ParamterDictionary!["var_Bausatz"].Value;
+        var fangrahmenTyp = ParameterDictionary!["var_Bausatz"].Value;
         if (string.IsNullOrWhiteSpace(fangrahmenTyp))
             return;
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
@@ -110,7 +110,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     private void SetSafetygearData()
     {
-        var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParamterDictionary);
+        var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
     }
 
@@ -122,8 +122,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         SetCarWeight();
         CheckCFPState();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
     }
 

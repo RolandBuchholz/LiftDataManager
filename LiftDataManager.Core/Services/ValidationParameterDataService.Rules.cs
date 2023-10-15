@@ -34,7 +34,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(anotherBoolean))
             return;
-        var anotherParameter = Convert.ToBoolean(ParamterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
+        var anotherParameter = Convert.ToBoolean(ParameterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
         if (string.IsNullOrWhiteSpace(value) && anotherParameter)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
@@ -50,7 +50,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(anotherBoolean))
             return;
-        var anotherParameter = Convert.ToBoolean(ParamterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
+        var anotherParameter = Convert.ToBoolean(ParameterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
         if ((string.IsNullOrWhiteSpace(value) || value == "0") && anotherParameter)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
@@ -67,7 +67,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(anotherString))
             return;
         var valueToBool = Convert.ToBoolean(value, CultureInfo.CurrentCulture);
-        var stringValue = ParamterDictionary[anotherString].Value;
+        var stringValue = ParameterDictionary[anotherString].Value;
 
         if (valueToBool && (string.IsNullOrWhiteSpace(stringValue)))
         {
@@ -84,7 +84,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(value))
             return;
-        if (!ParamterDictionary[name].dropDownList.Contains(value))
+        if (!ParameterDictionary[name].dropDownList.Contains(value))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: ungültiger Wert | {value} | ist nicht in der Auswahlliste vorhanden.", SetSeverity(severity)));
         }
@@ -96,15 +96,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(odernummerName))
             return;
-        var fabriknummer = ParamterDictionary["var_FabrikNummer"].Value;
+        var fabriknummer = ParameterDictionary["var_FabrikNummer"].Value;
 
         if (string.IsNullOrWhiteSpace(fabriknummer))
             return;
-        ParamterDictionary["var_FabrikNummer"].ClearErrors("var_FabrikNummer");
+        ParameterDictionary["var_FabrikNummer"].ClearErrors("var_FabrikNummer");
 
-        var auftragsnummer = ParamterDictionary[odernummerName].Value;
-        var informationAufzug = ParamterDictionary["var_InformationAufzug"].Value;
-        var fabriknummerBestand = ParamterDictionary["var_FabriknummerBestand"].Value;
+        var auftragsnummer = ParameterDictionary[odernummerName].Value;
+        var informationAufzug = ParameterDictionary["var_InformationAufzug"].Value;
+        var fabriknummerBestand = ParameterDictionary["var_FabriknummerBestand"].Value;
 
         switch (informationAufzug)
         {
@@ -164,16 +164,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
             return;
-        var foerderhoehe = Math.Round(LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_FH") * 1000);
-        var etagenhoehe0 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe0");
-        var etagenhoehe1 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe1");
-        var etagenhoehe2 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe2");
-        var etagenhoehe3 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe3");
-        var etagenhoehe4 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe4");
-        var etagenhoehe5 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe5");
-        var etagenhoehe6 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe6");
-        var etagenhoehe7 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe7");
-        var etagenhoehe8 = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Etagenhoehe8");
+        var foerderhoehe = Math.Round(LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_FH") * 1000);
+        var etagenhoehe0 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe0");
+        var etagenhoehe1 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe1");
+        var etagenhoehe2 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe2");
+        var etagenhoehe3 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe3");
+        var etagenhoehe4 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe4");
+        var etagenhoehe5 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe5");
+        var etagenhoehe6 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe6");
+        var etagenhoehe7 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe7");
+        var etagenhoehe8 = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Etagenhoehe8");
 
         if ((etagenhoehe0 + etagenhoehe1 + etagenhoehe2 + etagenhoehe3 + etagenhoehe4 + etagenhoehe5 + etagenhoehe6 + etagenhoehe7 + etagenhoehe8) == 0)
             return;
@@ -193,10 +193,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarFlooring(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        string bodentyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodentyp");
-        string bodenProfil = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_BoPr");
-        string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelag");
-        double bodenBlech = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenblech");
+        string bodentyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodentyp");
+        string bodenProfil = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_BoPr");
+        string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelag");
+        double bodenBlech = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenblech");
         double bodenBelagHoehe = GetFlooringHeight(bodenBelag);
         double bodenHoehe = -1;
 
@@ -204,8 +204,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             case "standard":
                 bodenHoehe = 83;
-                ParamterDictionary["var_Bodenblech"].DropDownListValue = "3";
-                ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
+                ParameterDictionary["var_Bodenblech"].DropDownListValue = "3";
+                ParameterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 break;
             case "verstärkt":
                 if (bodenBlech <= 0)
@@ -218,38 +218,38 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
                 break;
             case "standard mit Wanne":
-                ParamterDictionary["var_Bodenblech"].DropDownListValue = "5";
-                ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
+                ParameterDictionary["var_Bodenblech"].DropDownListValue = "5";
+                ParameterDictionary["var_BoPr"].DropDownListValue = "80 x 40 x 3";
                 bodenHoehe = 85;
                 break;
             case "sonder":
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
-                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
-                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Bodenblech"].Value))
+                    ParameterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_BoPr"].Value))
+                    ParameterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 bodenHoehe = -1;
                 break;
             case "extern":
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
-                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
-                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Bodenblech"].Value))
+                    ParameterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_BoPr"].Value))
+                    ParameterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 bodenHoehe = -1;
                 break;
             default:
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_Bodenblech"].Value))
-                    ParamterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary["var_BoPr"].Value))
-                    ParamterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Bodenblech"].Value))
+                    ParameterDictionary["var_Bodenblech"].DropDownListValue = "(keine Auswahl)";
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_BoPr"].Value))
+                    ParameterDictionary["var_BoPr"].DropDownListValue = "(keine Auswahl)";
                 break;
         }
 
-        ParamterDictionary["var_Bodenbelagsgewicht"].Value = GetFloorWeight(bodenBelag);
+        ParameterDictionary["var_Bodenbelagsgewicht"].Value = GetFloorWeight(bodenBelag);
         if (bodenHoehe != -1)
         {
-            ParamterDictionary["var_KU"].Value = Convert.ToString(bodenHoehe + bodenBelagHoehe);
+            ParameterDictionary["var_KU"].Value = Convert.ToString(bodenHoehe + bodenBelagHoehe);
         }
-        ParamterDictionary["var_Bodenbelagsdicke"].Value = Convert.ToString(bodenBelagHoehe);
+        ParameterDictionary["var_Bodenbelagsdicke"].Value = Convert.ToString(bodenBelagHoehe);
 
         double GetFloorProfilHeight(string bodenProfil)
         {
@@ -266,9 +266,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (string.IsNullOrEmpty(bodenBelag))
                 return "0";
             if (string.Equals(bodenBelag, "bauseits lt. Beschreibung"))
-                return LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsgewicht");
+                return LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelagsgewicht");
             if (string.Equals(bodenBelag, "Nach Beschreibung"))
-                return LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsgewicht");
+                return LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelagsgewicht");
             var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
             if (boden is null)
                 return "0";
@@ -280,9 +280,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (string.IsNullOrEmpty(bodenBelag))
                 return 0;
             if (string.Equals(bodenBelag, "bauseits lt. Beschreibung"))
-                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
+                return LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
             if (string.Equals(bodenBelag, "Nach Beschreibung"))
-                return LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
+                return LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
             var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
             if (boden is null)
                 return 0;
@@ -291,22 +291,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         void SetDefaultReinforcedFloor(string name)
         {
-            ParamterDictionary["var_Bodenblech"].DropDownListValue = "3";
-            ParamterDictionary["var_BoPr"].DropDownListValue = "80 x 50 x 5";
+            ParameterDictionary["var_Bodenblech"].DropDownListValue = "3";
+            ParameterDictionary["var_BoPr"].DropDownListValue = "80 x 50 x 5";
             if (name == "var_BoPr")
             {
-                ParamterDictionary["var_BoPr"].DropDownList.Add("Refresh");
-                ParamterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
+                ParameterDictionary["var_BoPr"].DropDownList.Add("Refresh");
+                ParameterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
             }
         }
     }
 
     private void ValidateCarHeight(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        double bodenHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KU");
-        double kabinenHoeheInnen = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHLicht");
-        double kabinenHoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KHA");
-        double deckenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KD");
+        double bodenHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
+        double kabinenHoeheInnen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
+        double kabinenHoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHA");
+        double deckenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KD");
 
         if (bodenHoehe + kabinenHoeheInnen + deckenhoehe == kabinenHoeheAussen)
             return;
@@ -314,10 +314,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         switch (name)
         {
             case "var_KU" or "var_KHLicht" or "var_KD":
-                ParamterDictionary["var_KHA"].Value = Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe);
+                ParameterDictionary["var_KHA"].Value = Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe);
                 return;
             case "var_KHA":
-                ParamterDictionary["var_KD"].Value = Convert.ToString(kabinenHoeheAussen - (bodenHoehe + kabinenHoeheInnen));
+                ParameterDictionary["var_KD"].Value = Convert.ToString(kabinenHoeheAussen - (bodenHoehe + kabinenHoeheInnen));
                 return;
             default:
                 return;
@@ -326,11 +326,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarEntranceRightSide(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        double kabinenBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KBI");
-        double kabinenTiefe = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KTI");
-        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_B");
-        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_C");
-        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D");
+        double kabinenBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KBI");
+        double kabinenTiefe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KTI");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
         double linkeSeite;
         double tuerBreite;
 
@@ -339,33 +339,33 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             case "var_L1" or "var_TB" or "var_KBI":
                 if (!(kabinenBreite > 0))
                     return;
-                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L1");
-                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB");
-                ParamterDictionary["var_R1"].Value = Convert.ToString(kabinenBreite - (linkeSeite + tuerBreite));
+                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L1");
+                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB");
+                ParameterDictionary["var_R1"].Value = Convert.ToString(kabinenBreite - (linkeSeite + tuerBreite));
                 return;
             case "var_L2" or "var_TB_C" or "var_KBI":
                 if (!(kabinenBreite > 0))
                     return;
-                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L2");
-                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_C");
+                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L2");
+                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB_C");
                 double r2 = zugangC ? kabinenBreite - (linkeSeite + tuerBreite) : 0;
-                ParamterDictionary["var_R2"].Value = Convert.ToString(r2);
+                ParameterDictionary["var_R2"].Value = Convert.ToString(r2);
                 return;
             case "var_L3" or "var_TB_B" or "var_KTI":
                 if (!(kabinenTiefe > 0))
                     return;
-                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L3");
-                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_B");
+                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L3");
+                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB_B");
                 double r3 = zugangB ? kabinenTiefe - (linkeSeite + tuerBreite) : 0;
-                ParamterDictionary["var_R3"].Value = Convert.ToString(r3);
+                ParameterDictionary["var_R3"].Value = Convert.ToString(r3);
                 return;
             case "var_L4" or "var_TB_D" or "var_KTI":
                 if (!(kabinenTiefe > 0))
                     return;
-                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_L4");
-                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_TB_D");
+                linkeSeite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_L4");
+                tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB_D");
                 double r4 = zugangD ? kabinenTiefe - (linkeSeite + tuerBreite) : 0;
-                ParamterDictionary["var_R4"].Value = Convert.ToString(r4);
+                ParameterDictionary["var_R4"].Value = Convert.ToString(r4);
                 return;
             default:
                 return;
@@ -374,10 +374,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateVariableCarDoors(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        bool variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_Variable_Tuerdaten");
-        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_B");
-        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_C");
-        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D");
+        bool variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Variable_Tuerdaten");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
         
         if (variableTuerdaten)
         {
@@ -431,10 +431,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (availableCarframes is not null)
         {
-            ParamterDictionary["var_Bausatz"].DropDownList.Clear();
+            ParameterDictionary["var_Bausatz"].DropDownList.Clear();
             foreach (var item in availableCarframes)
             {
-                ParamterDictionary["var_Bausatz"].DropDownList.Add(item!);
+                ParameterDictionary["var_Bausatz"].DropDownList.Add(item!);
             }
         }
     }
@@ -445,28 +445,28 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             if (string.IsNullOrWhiteSpace(value) || value == "keine")
             {
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
+                ParameterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+                ParameterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
             }
             else if (value == "Vorausgelöstes Anhaltesystem" || value.StartsWith("Schachtkopf und Schachtgrube"))
             {
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
+                ParameterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+                ParameterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
             }
             else if (value.StartsWith("Schachtkopf"))
             {
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
+                ParameterDictionary["var_ErsatzmassnahmenSK"].Value = "True";
+                ParameterDictionary["var_ErsatzmassnahmenSG"].Value = "False";
             }
             else if (value.StartsWith("Schachtgrube"))
             {
-                ParamterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
-                ParamterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
+                ParameterDictionary["var_ErsatzmassnahmenSK"].Value = "False";
+                ParameterDictionary["var_ErsatzmassnahmenSG"].Value = "True";
             }
         }
 
-        var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
-        var selectedReducedProtectionSpace = ParamterDictionary["var_Ersatzmassnahmen"].Value;
+        var selectedSafetyGear = ParameterDictionary["var_TypFV"].Value;
+        var selectedReducedProtectionSpace = ParameterDictionary["var_Ersatzmassnahmen"].Value;
 
         if (name == "var_TypFV")
         {
@@ -492,10 +492,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             if (availablEReducedProtectionSpaces is not null)
             {
-                ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Clear();
+                ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Clear();
                 foreach (var item in availablEReducedProtectionSpaces)
                 {
-                    ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Add(item!);
+                    ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Add(item!);
                 }
             }
         }
@@ -503,7 +503,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (!string.IsNullOrWhiteSpace(selectedSafetyGear) &&
             !string.IsNullOrWhiteSpace(selectedReducedProtectionSpace))
         {
-            if (!ParamterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
+            if (!ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
                 { DependentParameter = new string[] { optional! } });
@@ -518,7 +518,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     private void ValidateSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
-        var selectedSafetyGear = ParamterDictionary["var_TypFV"].Value;
+        var selectedSafetyGear = ParameterDictionary["var_TypFV"].Value;
         IEnumerable<string?> availablseafetyGears = value switch
         {
             "keine" => Enumerable.Empty<string?>(),
@@ -529,31 +529,31 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         };
         if (availablseafetyGears is not null)
         {
-            ParamterDictionary["var_TypFV"].DropDownList.Clear();
+            ParameterDictionary["var_TypFV"].DropDownList.Clear();
             foreach (var item in availablseafetyGears)
             {
-                ParamterDictionary["var_TypFV"].DropDownList.Add(item!);
+                ParameterDictionary["var_TypFV"].DropDownList.Add(item!);
             }
 
             if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Contains(selectedSafetyGear))
             {
-                ParamterDictionary["var_TypFV"].Value = string.Empty;
-                ParamterDictionary["var_TypFV"].DropDownListValue = null;
+                ParameterDictionary["var_TypFV"].Value = string.Empty;
+                ParameterDictionary["var_TypFV"].DropDownListValue = null;
             }
         }
     }
 
     private void ValidateSafetyRange(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Q"].Value) ||
-            string.IsNullOrWhiteSpace(ParamterDictionary["var_F"].Value) ||
-            ParamterDictionary["var_F"].Value == "0" ||
-            string.IsNullOrWhiteSpace(ParamterDictionary["var_Fuehrungsart"].Value) ||
-            string.IsNullOrWhiteSpace(ParamterDictionary["var_FuehrungsschieneFahrkorb"].Value) ||
-            string.IsNullOrWhiteSpace(ParamterDictionary["var_TypFV"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Q"].Value) ||
+            string.IsNullOrWhiteSpace(ParameterDictionary["var_F"].Value) ||
+            ParameterDictionary["var_F"].Value == "0" ||
+            string.IsNullOrWhiteSpace(ParameterDictionary["var_Fuehrungsart"].Value) ||
+            string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value) ||
+            string.IsNullOrWhiteSpace(ParameterDictionary["var_TypFV"].Value))
             return;
 
-        var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(ParamterDictionary);
+        var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
         if (safetygearResult is not null)
         {
             if (!safetygearResult.RailHeadAllowed)
@@ -562,8 +562,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 return;
             }
 
-            var load = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Q");
-            var carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_F");
+            var load = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Q");
+            var carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_F");
 
             if (safetygearResult.MinLoad > load + carWeight)
             {
@@ -583,8 +583,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var driveSystems = _parametercontext.Set<DriveSystem>().Include(i => i.DriveSystemType)
                                                                .ToList();
         var currentdriveSystem = driveSystems.FirstOrDefault(x => x.Name == value);
-        ParamterDictionary["var_Getriebe"].Value = currentdriveSystem is not null ? currentdriveSystem.DriveSystemType!.Name : string.Empty;
-        ParamterDictionary["var_Getriebe"].DropDownListValue = ParamterDictionary["var_Getriebe"].Value;
+        ParameterDictionary["var_Getriebe"].Value = currentdriveSystem is not null ? currentdriveSystem.DriveSystemType!.Name : string.Empty;
+        ParameterDictionary["var_Getriebe"].DropDownListValue = ParameterDictionary["var_Getriebe"].Value;
     }
 
     private void ValidateCarweightWithoutFrame(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -592,8 +592,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(value))
             return;
 
-        int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_Rahmengewicht");
-        string? fangrahmenTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bausatz");
+        int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Rahmengewicht");
+        string? fangrahmenTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatz");
 
         if (carFrameWeight == 0 && !string.IsNullOrWhiteSpace(fangrahmenTyp))
         {
@@ -606,10 +606,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (carFrameWeight > 0)
         {
-            int carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParamterDictionary, "var_F");
+            int carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_F");
             if (carWeight > 0)
             {
-                ParamterDictionary["var_KabTueF"].Value = Convert.ToString(carWeight - carFrameWeight);
+                ParameterDictionary["var_KabTueF"].Value = Convert.ToString(carWeight - carFrameWeight);
             }
         }
     }
@@ -635,12 +635,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value, "0"))
         {
-            if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Normen"), "MRL 2006/42/EG"))
+            if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Normen"), "MRL 2006/42/EG"))
                 return;
-            var load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
-            var reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q1");
-            var area = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_A_Kabine");
-            var lift = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Aufzugstyp");
+            var load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
+            var reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q1");
+            var area = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_A_Kabine");
+            var lift = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Aufzugstyp");
             var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
                                                             .ToList()
                                                             .FirstOrDefault(x => x.Name == lift);
@@ -655,11 +655,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 var loadTable6 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle6");
 
                 if (reducedLoad < loadTable6)
-                    ParamterDictionary["var_Q1"].Value = Convert.ToString(loadTable6);
+                    ParameterDictionary["var_Q1"].Value = Convert.ToString(loadTable6);
             }
             else
             {
-                ParamterDictionary["var_Q1"].Value = Convert.ToString(load);
+                ParameterDictionary["var_Q1"].Value = Convert.ToString(load);
             }
 
             if (!_calculationsModuleService.ValdidateLiftLoad(load, area, cargotyp, drivesystem))
@@ -675,36 +675,36 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateUCMValues(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Aggregat"].Value)
-            || ParamterDictionary["var_Aggregat"].Value != "Ziehl-Abegg"
-            || string.IsNullOrWhiteSpace(ParamterDictionary["var_Steuerungstyp"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Aggregat"].Value)
+            || ParameterDictionary["var_Aggregat"].Value != "Ziehl-Abegg"
+            || string.IsNullOrWhiteSpace(ParameterDictionary["var_Steuerungstyp"].Value))
         {
-            ParamterDictionary["var_Erkennungsweg"].Value = "0";
-            ParamterDictionary["var_Totzeit"].Value = "0";
-            ParamterDictionary["var_Vdetektor"].Value = "0";
+            ParameterDictionary["var_Erkennungsweg"].Value = "0";
+            ParameterDictionary["var_Totzeit"].Value = "0";
+            ParameterDictionary["var_Vdetektor"].Value = "0";
 
-            if (name == "var_Steuerungstyp" && ParamterDictionary["var_Aggregat"].Value == "Ziehl-Abegg" && string.IsNullOrWhiteSpace(ParamterDictionary["var_Steuerungstyp"].Value))
+            if (name == "var_Steuerungstyp" && ParameterDictionary["var_Aggregat"].Value == "Ziehl-Abegg" && string.IsNullOrWhiteSpace(ParameterDictionary["var_Steuerungstyp"].Value))
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"UCM-Daten können nicht berechnet werden es ist kein Steuerung gewählt ist!", SetSeverity("Warning")));
             }
             return;
         }
 
-        var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParamterDictionary["var_Steuerungstyp"].Value);
+        var currentLiftControlManufacturers = _parametercontext.Set<LiftControlManufacturer>().FirstOrDefault(x => x.Name == ParameterDictionary["var_Steuerungstyp"].Value);
 
-        if (ParamterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
-            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
-            || ParamterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S2 (FST-3)")
+        if (ParameterDictionary["var_Schachtinformationssystem"].Value == "Limax 33CP"
+            || ParameterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S1-Box"
+            || ParameterDictionary["var_Schachtinformationssystem"].Value == "NEW-Lift S2 (FST-3)")
         {
-            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistanceSIL3);
-            ParamterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers?.DeadTimeSIL3);
-            ParamterDictionary["var_Vdetektor"].Value = Convert.ToString(currentLiftControlManufacturers?.SpeeddetectorSIL3);
+            ParameterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistanceSIL3);
+            ParameterDictionary["var_Totzeit"].Value = Convert.ToString(currentLiftControlManufacturers?.DeadTimeSIL3);
+            ParameterDictionary["var_Vdetektor"].Value = Convert.ToString(currentLiftControlManufacturers?.SpeeddetectorSIL3);
         }
         else
         {
-            var oldTotzeit = ParamterDictionary["var_Totzeit"].Value;
-            var oldVdetektor = ParamterDictionary["var_Vdetektor"].Value;
-            var newTotzeit = Convert.ToBoolean(ParamterDictionary["var_ElektrBremsenansteuerung"].Value) ?
+            var oldTotzeit = ParameterDictionary["var_Totzeit"].Value;
+            var oldVdetektor = ParameterDictionary["var_Vdetektor"].Value;
+            var newTotzeit = Convert.ToBoolean(ParameterDictionary["var_ElektrBremsenansteuerung"].Value) ?
                 Convert.ToString(currentLiftControlManufacturers?.DeadTimeZAsbc4) :
                 Convert.ToString(currentLiftControlManufacturers?.DeadTime);
             var newVdetektor = Convert.ToString(currentLiftControlManufacturers?.Speeddetector);
@@ -714,9 +714,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 return;
             }
 
-            ParamterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistance);
-            ParamterDictionary["var_Totzeit"].Value = newTotzeit;
-            ParamterDictionary["var_Vdetektor"].Value = newVdetektor;
+            ParameterDictionary["var_Erkennungsweg"].Value = Convert.ToString(currentLiftControlManufacturers?.DetectionDistance);
+            ParameterDictionary["var_Totzeit"].Value = newTotzeit;
+            ParameterDictionary["var_Vdetektor"].Value = newVdetektor;
         }
     }
 
@@ -729,10 +729,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (!File.Exists(zaHtmlPath))
             return;
 
-        if (string.IsNullOrWhiteSpace(ParamterDictionary["var_Aggregat"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Aggregat"].Value))
         {
-            ParamterDictionary["var_Aggregat"].Value = "Ziehl-Abegg";
-            ParamterDictionary["var_Aggregat"].DropDownListValue = "Ziehl-Abegg";
+            ParameterDictionary["var_Aggregat"].Value = "Ziehl-Abegg";
+            ParameterDictionary["var_Aggregat"].DropDownListValue = "Ziehl-Abegg";
         }
 
         var lastWriteTime = File.GetLastWriteTime(zaHtmlPath);
@@ -892,7 +892,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         var guideModels = _parametercontext.Set<GuideModelType>().ToList();
         var guideTyp = name.Replace("Fuehrungsart", "TypFuehrung");
-        var selectedguideModel = ParamterDictionary[guideTyp].Value;
+        var selectedguideModel = ParameterDictionary[guideTyp].Value;
 
         IEnumerable<string?> availableguideModels = value switch
         {
@@ -903,16 +903,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (availableguideModels is not null)
         {
-            ParamterDictionary[guideTyp].DropDownList.Clear();
+            ParameterDictionary[guideTyp].DropDownList.Clear();
             foreach (var item in availableguideModels)
             {
-                ParamterDictionary[guideTyp].DropDownList.Add(item!);
+                ParameterDictionary[guideTyp].DropDownList.Add(item!);
             }
 
             if (!string.IsNullOrWhiteSpace(selectedguideModel) && !availableguideModels.Contains(selectedguideModel))
             {
-                ParamterDictionary[guideTyp].Value = string.Empty;
-                ParamterDictionary[guideTyp].DropDownListValue = null;
+                ParameterDictionary[guideTyp].Value = string.Empty;
+                ParameterDictionary[guideTyp].DropDownListValue = null;
             }
         }
     }
@@ -921,16 +921,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
+            ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
             return;
         }
         if (value == "Schachtgrubenleiter EN81:20 mit el. Kontakt")
         {
-            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "True";
+            ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "True";
         }
         else
         {
-            ParamterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
+            ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].Value = "False";
         }
     }
 
@@ -943,26 +943,26 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (string.IsNullOrWhiteSpace(value))
         {
-            ParamterDictionary[liftDoorGroups].Value = string.Empty;
-            ParamterDictionary[liftDoorGroups].DropDownListValue = null;
-            ParamterDictionary[liftDoorGroups].DropDownList.Clear();
+            ParameterDictionary[liftDoorGroups].Value = string.Empty;
+            ParameterDictionary[liftDoorGroups].DropDownListValue = null;
+            ParameterDictionary[liftDoorGroups].DropDownList.Clear();
         }
         else
         {
-            var selectedDoorSytem = ParamterDictionary[name].Value![..1];
+            var selectedDoorSytem = ParameterDictionary[name].Value![..1];
 
             var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(x => x.DoorManufacturer!.StartsWith(selectedDoorSytem)).ToList();
 
             if (availableLiftDoorGroups is not null)
             {
-                ParamterDictionary[liftDoorGroups].DropDownList.Clear();
+                ParameterDictionary[liftDoorGroups].DropDownList.Clear();
                 foreach (var item in availableLiftDoorGroups)
                 {
-                    ParamterDictionary[liftDoorGroups].DropDownList.Add(item.Name);
+                    ParameterDictionary[liftDoorGroups].DropDownList.Add(item.Name);
                 }
             }
         }
-        _ = ParamterDictionary[liftDoorGroups].ValidateParameterAsync().Result;
+        _ = ParameterDictionary[liftDoorGroups].ValidateParameterAsync().Result;
     }
 
     private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -977,9 +977,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (string.IsNullOrWhiteSpace(value))
         {
-            ParamterDictionary[doorOpeningDirection].Value = string.Empty;
-            ParamterDictionary[doorOpeningDirection].DropDownListValue = null;
-            ParamterDictionary[doorPanelCount].Value = "0";
+            ParameterDictionary[doorOpeningDirection].Value = string.Empty;
+            ParameterDictionary[doorOpeningDirection].DropDownListValue = null;
+            ParameterDictionary[doorPanelCount].Value = "0";
         }
         else
         {
@@ -990,35 +990,35 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 if (liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection is not null)
                 {
-                    if (string.IsNullOrWhiteSpace(ParamterDictionary[doorOpeningDirection].Value) || !ParamterDictionary[doorOpeningDirection].Value!.StartsWith(liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name))
+                    if (string.IsNullOrWhiteSpace(ParameterDictionary[doorOpeningDirection].Value) || !ParameterDictionary[doorOpeningDirection].Value!.StartsWith(liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name))
                     {
-                        ParamterDictionary[doorOpeningDirection].Value = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
-                        ParamterDictionary[doorOpeningDirection].DropDownListValue = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
+                        ParameterDictionary[doorOpeningDirection].Value = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
+                        ParameterDictionary[doorOpeningDirection].DropDownListValue = liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name;
                     }
                 }
-                ParamterDictionary[doorPanelCount].Value = Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
+                ParameterDictionary[doorPanelCount].Value = Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
             }
         }
-        if (ParamterDictionary[liftDoortyp].HasErrors)
-            ParamterDictionary[liftDoortyp].ClearErrors("Value");
+        if (ParameterDictionary[liftDoortyp].HasErrors)
+            ParameterDictionary[liftDoortyp].ClearErrors("Value");
     }
 
     private void ValidateCarEquipmentPosition(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, name))
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, name))
             return;
 
         var zugang = name.Last();
-        bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Spiegel{zugang}");
-        bool hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Handlauf{zugang}");
-        bool hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Sockelleiste{zugang}");
-        bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_Rammschutz{zugang}");
-        bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_PaneelPos{zugang}");
-        bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParamterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
+        bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Spiegel{zugang}");
+        bool hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Handlauf{zugang}");
+        bool hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Sockelleiste{zugang}");
+        bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Rammschutz{zugang}");
+        bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_PaneelPos{zugang}");
+        bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
         bool hasRueckwand = false;
         if (zugang == 'C')
         {
-            hasRueckwand = !string.IsNullOrWhiteSpace(ParamterDictionary["var_Rueckwand"].Value);
+            hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
         
         if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
@@ -1046,8 +1046,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateLiftPositionSystems(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        var controler = ParamterDictionary["var_Steuerungstyp"].Value;
-        var liftPositionSystem = ParamterDictionary["var_Schachtinformationssystem"].Value;
+        var controler = ParameterDictionary["var_Steuerungstyp"].Value;
+        var liftPositionSystem = ParameterDictionary["var_Schachtinformationssystem"].Value;
 
         if (string.IsNullOrWhiteSpace(controler) || string.IsNullOrWhiteSpace(liftPositionSystem))
             return;
@@ -1075,9 +1075,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
-            ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = string.Empty;
-            ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
+            ParameterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
+            ParameterDictionary["var_BodenbelagsTyp"].DropDownListValue = string.Empty;
+            ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
             return;
         }
 
@@ -1087,23 +1087,23 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (availableFloorColors is not null)
         {
-            ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
+            ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
             foreach (var item in availableFloorColors)
             {
-                ParamterDictionary["var_BodenbelagsTyp"].DropDownList.Add(item!);
+                ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Add(item!);
             }
 
-            if (!availableFloorColors.Contains(ParamterDictionary["var_BodenbelagsTyp"].Value))
+            if (!availableFloorColors.Contains(ParameterDictionary["var_BodenbelagsTyp"].Value))
             {
-                ParamterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
-                ParamterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;
+                ParameterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
+                ParameterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;
             }
         }
     }
 
     private void ValidateEntryDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_AutogenerateFloorDoorData"))
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData"))
             return;
         
         var zugang = string.Equals(name[^1..],"B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D")? name[^1..] : "A";
@@ -1113,45 +1113,45 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
                 return;
             }
 
-            var liftDoor = ParamterDictionary[zugang == "A" ?"var_Tuerbezeichnung": $"var_Tuerbezeichnung_{zugang}"].Value;
+            var liftDoor = ParameterDictionary[zugang == "A" ?"var_Tuerbezeichnung": $"var_Tuerbezeichnung_{zugang}"].Value;
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
             var doorEntrance = Convert.ToDouble(value, CultureInfo.CurrentCulture);
             if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
             {
-                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
-                ParamterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
                 return;
             }
-            ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
-            ParamterDictionary[$"var_Schwellenbreite{zugang}"].Value = liftDoorGroup.CarDoor.SillWidth.ToString();
+            ParameterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
+            ParameterDictionary[$"var_Schwellenbreite{zugang}"].Value = liftDoorGroup.CarDoor.SillWidth.ToString();
             SetCarDesignParameterSill(zugang, liftDoorGroup);
         }
         else if (name.StartsWith("var_Tuerbezeichnung"))
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
-                ParamterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
                 return;
             }
 
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
-            var doorEntranceString = ParamterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value;
+            var doorEntranceString = ParameterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value;
             if (!string.IsNullOrWhiteSpace (doorEntranceString))
             {
                 var doorEntrance = Convert.ToDouble(doorEntranceString, CultureInfo.CurrentCulture);
                 if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
                 {
-                    ParamterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
-                    ParamterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
+                    ParameterDictionary[$"var_EinzugN_{zugang}"].Value = string.Empty;
+                    ParameterDictionary[$"var_Schwellenbreite{zugang}"].Value = string.Empty;
                     return;
                 }
-                ParamterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
-                ParamterDictionary[$"var_Schwellenbreite{zugang}"].Value = liftDoorGroup.CarDoor.SillWidth.ToString();
+                ParameterDictionary[$"var_EinzugN_{zugang}"].Value = (doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString();
+                ParameterDictionary[$"var_Schwellenbreite{zugang}"].Value = liftDoorGroup.CarDoor.SillWidth.ToString();
                 SetCarDesignParameterSill(zugang, liftDoorGroup);
             }
         }
@@ -1160,7 +1160,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (string.IsNullOrWhiteSpace(value) || value == "0")
                 return;
 
-            var liftDoor = ParamterDictionary[zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
+            var liftDoor = ParameterDictionary[zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
             if (liftDoorGroup is not null)
             {
@@ -1173,8 +1173,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.Equals(value,"False",StringComparison.CurrentCultureIgnoreCase))
         {
-            ParamterDictionary["var_AufsetzvorrichtungSystem"].Value = string.Empty;
-            ParamterDictionary["var_AufsetzvorrichtungSystem"].DropDownListValue = null;
+            ParameterDictionary["var_AufsetzvorrichtungSystem"].Value = string.Empty;
+            ParameterDictionary["var_AufsetzvorrichtungSystem"].DropDownListValue = null;
         }
     }
 
@@ -1182,11 +1182,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (string.IsNullOrWhiteSpace(value))
             return;
-        double load = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
-        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_F");
-        double balance = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_GGWNutzlastausgleich");
+        double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
+        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_F");
+        double balance = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich");
 
-        ParamterDictionary["var_Gegengewichtsmasse"].Value = Convert.ToString(Math.Round(load * balance + carWeight));
+        ParameterDictionary["var_Gegengewichtsmasse"].Value = Convert.ToString(Math.Round(load * balance + carWeight));
     }
 
     private void ValidateProtectiveRailingSwitch(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1196,15 +1196,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         foreach (var side in sides)
         {
-           if (!string.IsNullOrWhiteSpace(ParamterDictionary[side].Value))
+           if (!string.IsNullOrWhiteSpace(ParameterDictionary[side].Value))
            {
-                if (ParamterDictionary[side].Value!.Contains("klappbar") || ParamterDictionary[side].Value!.Contains("steckbar"))
+                if (ParameterDictionary[side].Value!.Contains("klappbar") || ParameterDictionary[side].Value!.Contains("steckbar"))
                 {
                     railingSwitch = true;
                     break;
                 }
            }
         }
-        ParamterDictionary["var_SchutzgelaenderKontakt"].Value = railingSwitch ? "True" : "False";
+        ParameterDictionary["var_SchutzgelaenderKontakt"].Value = railingSwitch ? "True" : "False";
     }
 }

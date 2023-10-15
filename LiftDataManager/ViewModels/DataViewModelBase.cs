@@ -16,8 +16,8 @@ public partial class DataViewModelBase : ObservableRecipient
     public DispatcherTimer? AutoSaveTimer { get; set; }
 
     public CurrentSpeziProperties? CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter>? ParamterDictionary { get; set; }
-    public ObservableDictionary<string, List<ParameterStateInfo>>? ParamterErrorDictionary { get; set; } = new();
+    public ObservableDictionary<string, Parameter>? ParameterDictionary { get; set; }
+    public ObservableDictionary<string, List<ParameterStateInfo>>? ParameterErrorDictionary { get; set; } = new();
 
     public DataViewModelBase()
     {
@@ -128,11 +128,11 @@ public partial class DataViewModelBase : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanSaveAllSpeziParameters))]
     public async Task SaveAllParameterAsync()
     {
-        if (ParamterDictionary is null)
+        if (ParameterDictionary is null)
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml, Adminmode);
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
         if (AutoSaveTimer is not null)
@@ -149,8 +149,8 @@ public partial class DataViewModelBase : ObservableRecipient
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties.FullPathXml is not null)
             FullPathXml = CurrentSpeziProperties.FullPathXml;
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.ParameterDictionary is not null)
+            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
@@ -164,23 +164,23 @@ public partial class DataViewModelBase : ObservableRecipient
         if (AuftragsbezogeneXml)
         {
             HasErrors = false;
-            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
-            ParamterErrorDictionary ??= new();
-            ParamterErrorDictionary.Clear();
+            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            ParameterErrorDictionary ??= new();
+            ParameterErrorDictionary.Clear();
             if (HasErrors)
             {
-                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    if (!ParamterErrorDictionary.ContainsKey(error.Name!))
+                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
                     {
                         var errorList = new List<ParameterStateInfo>();
                         errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParamterErrorDictionary.Add(error.Name!, errorList);
+                        ParameterErrorDictionary.Add(error.Name!, errorList);
                     }
                     else
                     {
-                        ParamterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
+                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
                     }
                 }
             }
@@ -188,7 +188,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {

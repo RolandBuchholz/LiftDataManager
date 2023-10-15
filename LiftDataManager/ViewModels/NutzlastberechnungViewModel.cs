@@ -26,8 +26,8 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
         _pdfService = pdfService;
 
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.ParameterDictionary is not null)
+            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
 
         Tabelle6 = _calculationsModuleService.Table6;
         Tabelle7 = _calculationsModuleService.Table7;
@@ -43,16 +43,16 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     public string InfoZugangC => PayLoadResult.NutzflaecheZugangC == 0 && PayLoadResult.ZugangC ? " Tiefe < 100" : string.Empty;
     public string InfoZugangD => PayLoadResult.NutzflaecheZugangD == 0 && PayLoadResult.ZugangD ? " Tiefe < 100" : string.Empty;
 
-    public double Nennlast => LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Q");
+    public double Nennlast => LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
 
     public string ErgebnisNennlast => PayLoadResult.PayloadAllowed ? "Nennlast enspricht der EN81:20!" : "Nennlast enspricht nicht der EN81:20!";
 
     [RelayCommand]
     public void CreateNutzlastberechnungPdf()
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
+            _pdfService.MakeSinglePdfDocument(nameof(NutzlastberechnungViewModel), ParameterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
         }
     }
 
@@ -61,12 +61,12 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             _ = SetModelStateAsync();
-            PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
-            _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
+            PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
+            _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
         }
     }
 

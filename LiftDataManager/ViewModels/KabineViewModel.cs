@@ -84,31 +84,31 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
     {
-        CanEditFlooringProperties = ParamterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParamterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
-        CanEditFloorWeightAndHeight = ParamterDictionary!["var_Bodentyp"].Value == "sonder" || ParamterDictionary["var_Bodentyp"].Value == "extern";
-        ShowFlooringColors = ParamterDictionary!["var_BodenbelagsTyp"].DropDownList.Any();
+        CanEditFlooringProperties = ParameterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParameterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
+        CanEditFloorWeightAndHeight = ParameterDictionary!["var_Bodentyp"].Value == "sonder" || ParameterDictionary["var_Bodentyp"].Value == "extern";
+        ShowFlooringColors = ParameterDictionary!["var_BodenbelagsTyp"].DropDownList.Any();
 
         if (!CanEditFloorWeightAndHeight)
         {
-            if (ParamterDictionary["var_SonderExternBodengewicht"].Value != "0")
+            if (ParameterDictionary["var_SonderExternBodengewicht"].Value != "0")
             {
-                ParamterDictionary["var_SonderExternBodengewicht"].Value = string.Empty;
+                ParameterDictionary["var_SonderExternBodengewicht"].Value = string.Empty;
             }
             return;
         }
 
-        double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KU");
+        double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
 
         switch (name)
         {
             case "var_Bodenbelagsdicke":
                 double newFloorThinkness = string.IsNullOrWhiteSpace(newValue) ? 0 : Convert.ToDouble(newValue, CultureInfo.CurrentCulture);
                 double oldFloorThinkness = string.IsNullOrWhiteSpace(oldValue) ? 0 : Convert.ToDouble(oldValue, CultureInfo.CurrentCulture);
-                ParamterDictionary["var_KU"].Value = currentFloorHeight <= 0 ? Convert.ToString(newFloorThinkness) :
+                ParameterDictionary["var_KU"].Value = currentFloorHeight <= 0 ? Convert.ToString(newFloorThinkness) :
                                                                               Convert.ToString(currentFloorHeight - oldFloorThinkness + newFloorThinkness);
                 break;
             case "var_Bodentyp":
-                ParamterDictionary["var_KU"].Value = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Bodenbelagsdicke");
+                ParameterDictionary["var_KU"].Value = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelagsdicke");
                 break;
             default:
                 break;
@@ -117,12 +117,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void SetFloorImagePath()
     {
-        if (string.IsNullOrWhiteSpace(ParamterDictionary!["var_BodenbelagsTyp"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_BodenbelagsTyp"].Value))
         {
             FloorImagePath = @"/Images/NoImage.png";
             return;
         }
-        var floorColor = _parametercontext.Set<CarFloorColorTyp>().FirstOrDefault(x => x.Name.Equals(ParamterDictionary!["var_BodenbelagsTyp"].Value));
+        var floorColor = _parametercontext.Set<CarFloorColorTyp>().FirstOrDefault(x => x.Name.Equals(ParameterDictionary!["var_BodenbelagsTyp"].Value));
         if (floorColor is not null)
         {
             FloorImagePath = $@"C:/Work/Administration/Standardeinstellungen/Inventor/Textures/flooring/{floorColor.Image}";
@@ -138,8 +138,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     private async Task SetCalculatedValuesAsync()
     {
-        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
-        _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
+        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
+        _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
         await Task.CompletedTask;
     }
 
@@ -147,11 +147,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     {
         ParameterNumberTextBox CarFloortextBox = (ParameterNumberTextBox)sender;
         double floorHeight = string.IsNullOrWhiteSpace(CarFloortextBox.LiftParameter?.Value) ? 0 : Convert.ToDouble(CarFloortextBox.LiftParameter?.Value, CultureInfo.CurrentCulture);
-        double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_KU");
-        double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParamterDictionary, "var_Bodenbelagsdicke");
+        double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
+        double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
         if (floorHeight + currentFloorThinkness != currentFloorHeight)
         {
-            ParamterDictionary!["var_KU"].Value = Convert.ToString(floorHeight + currentFloorThinkness, CultureInfo.CurrentCulture);
+            ParameterDictionary!["var_KU"].Value = Convert.ToString(floorHeight + currentFloorThinkness, CultureInfo.CurrentCulture);
         }
     }
 
@@ -160,8 +160,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             _ = SetModelStateAsync();
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);

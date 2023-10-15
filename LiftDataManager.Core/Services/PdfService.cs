@@ -53,14 +53,14 @@ public class PdfService : IPdfService
         return true;
     }
 
-    public bool MakeSinglePdfDocument(string pdfModel, ObservableDictionary<string, Parameter> paramterDictionary, string? path, bool showPdf, bool lowPrintColor, bool lowHighlightColor)
+    public bool MakeSinglePdfDocument(string pdfModel, ObservableDictionary<string, Parameter> ParameterDictionary, string? path, bool showPdf, bool lowPrintColor, bool lowHighlightColor)
     {
         IDocument? document = pdfModel switch
         {
-            "KabinenLüftungViewModel" => new KabinenLüftungDocument(paramterDictionary, _calculationsModuleService, lowPrintColor),
-            "NutzlastberechnungViewModel" => new NutzlastberechnungDocument(paramterDictionary, _calculationsModuleService, lowPrintColor),
-            "KabinengewichtViewModel" => new KabinengewichtDocument(paramterDictionary, _calculationsModuleService, lowPrintColor),
-            "Spezifikation" => new SpezifikationDocument(paramterDictionary, _calculationsModuleService, lowPrintColor, lowHighlightColor),
+            "KabinenLüftungViewModel" => new KabinenLüftungDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
+            "NutzlastberechnungViewModel" => new NutzlastberechnungDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
+            "KabinengewichtViewModel" => new KabinengewichtDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
+            "Spezifikation" => new SpezifikationDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor, lowHighlightColor),
             _ => null,
         };
 
@@ -131,7 +131,7 @@ public class PdfService : IPdfService
         return true;
     }
 
-    public bool MakeDefaultSetofPdfDocuments(ObservableDictionary<string, Parameter> paramterDictionary, string? path)
+    public bool MakeDefaultSetofPdfDocuments(ObservableDictionary<string, Parameter> ParameterDictionary, string? path)
     {
         string[] setOfPdfs = new string[]
         {
@@ -143,7 +143,7 @@ public class PdfService : IPdfService
 
         foreach (var pdf in setOfPdfs)
         {
-            MakeSinglePdfDocument(pdf, paramterDictionary, path, false, false, false);
+            MakeSinglePdfDocument(pdf, ParameterDictionary, path, false, false, false);
         }
 
         return true;

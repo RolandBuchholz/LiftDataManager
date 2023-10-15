@@ -284,7 +284,7 @@
                         Margin="10,5,10,5"
                         FontWeight="Bold"
                         PlaceholderText="Index"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Index'].Value, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Index'].Value, Mode=TwoWay}"
                         TextAlignment="Center" />
                 </Grid>
                 <Border
@@ -310,7 +310,7 @@
                     <SpeziControls:ParameterTextBox
                         Grid.Row="0"
                         Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AuftragsNummer'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AuftragsNummer'], Mode=TwoWay}"
                         PlaceholderText="Auftragsnummer"
                         ReadOnly="True"
                         ShowDefaultHeader="True">
@@ -323,38 +323,38 @@
                     <SpeziControls:ParameterTextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FabrikNummer'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FabrikNummer'], Mode=TwoWay}"
                         PlaceholderText="Fabriknummer"
                         ShowDefaultHeader="True" />
                     <SpeziControls:ParameterComboBox
                         Grid.Row="0"
                         Grid.Column="2"
                         Margin="0,0,5,0"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_CeNummer'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CeNummer'], Mode=TwoWay}"
                         ShowDefaultHeader="True" />
                     <SpeziControls:ParameterCalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ErstelltAm'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErstelltAm'], Mode=TwoWay}"
                         ShowDefaultHeader="True" />
                     <SpeziControls:ParameterTextBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ErstelltVon'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErstelltVon'], Mode=TwoWay}"
                         PlaceholderText="erstellt von"
                         ShowDefaultHeader="True" />
                     <SpeziControls:ParameterCalendarDatePicker
                         Grid.Row="1"
                         Grid.Column="3"
                         Margin="0,0,5,0"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StandVom'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StandVom'], Mode=TwoWay}"
                         ShowDefaultHeader="True" />
                     <SpeziControls:ParameterTextBox
                         Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Margin="0,0,5,0"
-                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Kennwort'], Mode=TwoWay}"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Kennwort'], Mode=TwoWay}"
                         PlaceholderText="Kennwort"
                         ShowDefaultHeader="True" />
                 </Grid>
@@ -374,7 +374,7 @@
                         AcceptsReturn="True"
                         Header="Bauvorhaben"
                         PlaceholderText="Bauvorhaben"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Projekt'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                     <TextBox
                         Grid.Column="1"
@@ -383,7 +383,7 @@
                         AcceptsReturn="True"
                         Header="Betreiber"
                         PlaceholderText="Betreiber"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Betreiber'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
                 <!--  Datafield carweight  -->
@@ -480,7 +480,7 @@
                         Margin="0,1,0,1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_Rahmengewicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Rahmengewicht'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         TextAlignment="Right">
                         <ToolTipService.ToolTip>
                             <TextBlock Text="CAD ermitteltes Fangrahmengewicht" />
@@ -492,7 +492,7 @@
                         Margin="0,1,0,1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_F_Korr'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_F_Korr'].Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                         TextAlignment="Right" />
                     <TextBlock
                         Grid.Row="4"
@@ -522,7 +522,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontWeight="Medium"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_F'].Value, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_F'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -588,19 +588,19 @@
                             </Grid.ColumnDefinitions>
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="0"
-                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Q'], Mode=TwoWay}"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Q'], Mode=TwoWay}"
                                 PlaceholderText="Nutzlast"
                                 ShowDefaultHeader="True"
                                 Unit="kg" />
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="1"
-                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_v'], Mode=TwoWay}"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_v'], Mode=TwoWay}"
                                 PlaceholderText="Nenngeschwindigkeit"
                                 ShowDefaultHeader="True"
                                 Unit="m/s" />
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="2"
-                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_F'], Mode=TwoWay}"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_F'], Mode=TwoWay}"
                                 PlaceholderText="Fahrkorbgewicht"
                                 ReadOnly="True"
                                 ShowDefaultHeader="True"
@@ -613,7 +613,7 @@
                             </SpeziControls:ParameterNumberTextBox>
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="3"
-                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Personen'], Mode=TwoWay}"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Personen'], Mode=TwoWay}"
                                 PlaceholderText="Anzahl Personen"
                                 ReadOnly="True"
                                 ShowDefaultHeader="True"
@@ -634,7 +634,7 @@
                             </Grid.ColumnDefinitions>
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Column="0"
-                                LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Q1'], Mode=TwoWay}"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Q1'], Mode=TwoWay}"
                                 PlaceholderText="Gedrängelast Q'"
                                 ReadOnly="True"
                                 ShowDefaultHeader="True"
@@ -766,35 +766,35 @@
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="0"
                             Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SB'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SB'], Mode=TwoWay}"
                             PlaceholderText="Schachtbreite"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ST'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ST'], Mode=TwoWay}"
                             PlaceholderText="Schachttiefe"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="1"
                             Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SG'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SG'], Mode=TwoWay}"
                             PlaceholderText="Schachtgrube"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SK'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SK'], Mode=TwoWay}"
                             PlaceholderText="Schachtkopf"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="2"
                             Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FH'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FH'], Mode=TwoWay}"
                             PlaceholderText="Förderhöhe"
                             ShowDefaultHeader="True"
                             Unit="m" />
@@ -826,28 +826,28 @@
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="0"
                             Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KBI'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KBI'], Mode=TwoWay}"
                             PlaceholderText="Kabinenbreite"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KTI'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay}"
                             PlaceholderText="Kabinentiefe"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="1"
                             Grid.Column="0"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KHLicht'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KHLicht'], Mode=TwoWay}"
                             PlaceholderText="Kabinenhöhe im Licht"
                             ShowDefaultHeader="True"
                             Unit="mm" />
                         <SpeziControls:ParameterNumberTextBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_A_Kabine'], Mode=TwoWay}"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_A_Kabine'], Mode=TwoWay}"
                             PlaceholderText="Kabinenfläche"
                             ReadOnly="True"
                             ShowDefaultHeader="True"
@@ -873,7 +873,7 @@
                     AcceptsReturn="True"
                     Header="Kommentare"
                     PlaceholderText="Kommentare"
-                    Text="{x:Bind ViewModel.ParamterDictionary['var_Kommentare'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                    Text="{x:Bind ViewModel.ParameterDictionary['var_Kommentare'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                     TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>
@@ -940,10 +940,10 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
         <ContentDialog
             x:Name="LiftDataImportDialog"

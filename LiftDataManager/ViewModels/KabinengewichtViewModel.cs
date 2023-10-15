@@ -22,16 +22,16 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         _pdfService = pdfService;
 
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.ParameterDictionary is not null)
+            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
     }
 
     [RelayCommand]
     public void CreatePdf()
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParamterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
+            _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParameterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
         }
     }
 
@@ -40,12 +40,12 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             _ = SetModelStateAsync();
-            CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParamterDictionary);
-            ParamterDictionary!["var_F"].Value = Convert.ToString(CarWeightResult.FahrkorbGewicht);
+            CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
+            ParameterDictionary!["var_F"].Value = Convert.ToString(CarWeightResult.FahrkorbGewicht);
         }
     }
 

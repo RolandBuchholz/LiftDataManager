@@ -84,7 +84,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
         }
  
-        ParamterDictionary!["var_Q1"].Value = payload.ToString();
+        ParameterDictionary!["var_Q1"].Value = payload.ToString();
         CustomPayload = string.Empty;
         CustomPayloadInfo = string.Empty;
         _logger.LogInformation(60132, "CustomPayload", value);
@@ -267,7 +267,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         foreach (var item in data)
         {
-            if (ParamterDictionary!.TryGetValue(item.Name, out Parameter value))
+            if (ParameterDictionary!.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
@@ -329,7 +329,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         FileInfo AutoDeskTransferInfo = new(FullPathXml);
         if (!AutoDeskTransferInfo.IsReadOnly)
         {
-            var parameterList = ParamterDictionary!.Values.ToList();
+            var parameterList = ParameterDictionary!.Values.ToList();
 
             XElement? doc = null;
             bool isXmlOutdated = false;
@@ -364,7 +364,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (CurrentSpeziProperties is not null)
         {
-            CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+            CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
             _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
         }
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
@@ -458,7 +458,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
         }
 
-        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParamterDictionary!, FullPathXml);
+        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParameterDictionary!, FullPathXml);
 
         _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
 
@@ -494,8 +494,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (!CheckoutDialogIsOpen)
         {
             _ = await _dialogService!.MessageConfirmationDialogAsync("Validation Result",
-                        $"Es wurden {ParamterDictionary!.Count} Parameter überprüft.\n" +
-                        $"Es wurden {ParamterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
+                        $"Es wurden {ParameterDictionary!.Count} Parameter überprüft.\n" +
+                        $"Es wurden {ParameterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
                          "Ok");
         }
         await SetModelStateAsync();
@@ -504,7 +504,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand]
     private void CreatePdf()
     {
-        _pdfService.MakeSinglePdfDocument("Spezifikation", ParamterDictionary!, null, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
+        _pdfService.MakeSinglePdfDocument("Spezifikation", ParameterDictionary!, null, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
     }
 
     public async Task<bool> InitializeParametereAsync()
@@ -519,18 +519,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             foreach (var item in data)
             {
-                if (ParamterDictionary!.ContainsKey(item.Name!))
+                if (ParameterDictionary!.ContainsKey(item.Name!))
                 {
-                    ParamterDictionary[item.Name!] = item;
+                    ParameterDictionary[item.Name!] = item;
                 }
                 else
                 {
-                    ParamterDictionary.Add(item.Name!, item);
+                    ParameterDictionary.Add(item.Name!, item);
                 }
             }
             if (CurrentSpeziProperties is not null)
             {
-                CurrentSpeziProperties.ParamterDictionary = ParamterDictionary;
+                CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
                 _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
             }
             LikeEditParameter = true;
@@ -610,7 +610,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 continue;
             }
-            if (ParamterDictionary!.TryGetValue(item.Name, out Parameter value))
+            if (ParameterDictionary!.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
                 if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
@@ -642,11 +642,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
         }
 
-        if (ParamterDictionary is null)
+        if (ParameterDictionary is null)
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParamterDictionary, FullPathXml, true);
+        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
         InfoSidebarPanelText += infotext;
         await SetModelStateAsync();
         if (AutoSaveTimer is not null)
@@ -667,23 +667,23 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             HasErrors = false;
             CanClearData = AuftragsbezogeneXml;
-            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
-            ParamterErrorDictionary ??= new();
-            ParamterErrorDictionary.Clear();
+            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            ParameterErrorDictionary ??= new();
+            ParameterErrorDictionary.Clear();
             if (HasErrors)
             {
-                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    if (!ParamterErrorDictionary.ContainsKey(error.Name!))
+                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
                     {
                         var errorList = new List<ParameterStateInfo>();
                         errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParamterErrorDictionary.Add(error.Name!, errorList);
+                        ParameterErrorDictionary.Add(error.Name!, errorList);
                     }
                     else
                     {
-                        ParamterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
+                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
                     }
                 }
             }
@@ -691,7 +691,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -713,14 +713,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     IsBusy = true;
                     OpenReadOnly = false;
                     Parameter? storedParmeter = null;
-                    if (ParamterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
+                    if (ParameterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
                     {
-                        storedParmeter = ParamterDictionary.Values.First(x => x.IsDirty);
+                        storedParmeter = ParameterDictionary.Values.First(x => x.IsDirty);
                     }
                     await LoadDataAsync();
                     if (storedParmeter != null)
                     {
-                        ParamterDictionary[storedParmeter.Name!] = storedParmeter;
+                        ParameterDictionary[storedParmeter.Name!] = storedParmeter;
                         CanSaveAllSpeziParameters = dirty;
                     };
                     CheckoutDialogIsOpen = false;
@@ -834,22 +834,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private async Task SetCalculatedValuesAsync()
     {
-        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParamterDictionary);
-        _calculationsModuleService.SetPayLoadResult(ParamterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
+        var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
+        _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
 
         PayloadTable6 = payLoadResult.NennLastTabelle6;
         PayloadTable7 = payLoadResult.NennLastTabelle7;
         CanEditCustomPayload = string.Equals(payLoadResult.CargoTyp, "Lastenaufzug") && string.Equals(payLoadResult.DriveSystem, "Hydraulik");
 
-        var carWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParamterDictionary);
+        var carWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
 
         if (carWeightResult is not null)
         {
             CarDoorWeight = carWeightResult.KabinenTuerGewicht;
             CarFrameWeight = carWeightResult.FangrahmenGewicht;
             CarWeight = carWeightResult.KabinenGewichtGesamt;
-            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParamterDictionary!["var_Rahmengewicht"].Value);
-            ParamterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
+            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value);
+            ParameterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
         }
 
         await Task.CompletedTask;
@@ -877,11 +877,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (!SaveAllParameterCommand.IsRunning)
         {
             _logger.LogInformation(61038, "Autosave started");
-            var dirty = GetCurrentSpeziProperties().ParamterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
             if (CheckOut && dirty)
             {
                 var currentSpeziProperties = GetCurrentSpeziProperties();
-                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParamterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
             }
         }
     }
@@ -898,7 +898,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         LikeEditParameter = true;
         SpezifikationName = string.Empty;
         ShowCarWeightBorder = false;
-        ParamterErrorDictionary?.Clear();
+        ParameterErrorDictionary?.Clear();
         HasErrors = false;
         CarWeight = 0;
         CarDoorWeight = 0;
@@ -910,8 +910,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private void SetModifyInfos()
     {
-        ParamterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName)? "Keine Angaben" : Environment.UserName;
-        ParamterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
+        ParameterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName)? "Keine Angaben" : Environment.UserName;
+        ParameterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
     }
 
     public void OnNavigatedTo(object parameter)
@@ -933,14 +933,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             FullPathXml = CurrentSpeziProperties.FullPathXml;
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
-        ParamterDictionary ??= new();
+        ParameterDictionary ??= new();
 
         //Refactor
 
-        if (CurrentSpeziProperties.ParamterDictionary is not null)
-            ParamterDictionary = CurrentSpeziProperties.ParamterDictionary;
+        if (CurrentSpeziProperties.ParameterDictionary is not null)
+            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
 
-        if (ParamterDictionary.Values.Count == 0)
+        if (ParameterDictionary.Values.Count == 0)
         {
             var success = InitializeParametereAsync();
 
@@ -951,8 +951,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
         }
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             if (CheckOut) SetModifyInfos();
             

@@ -87,10 +87,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabKabinentableau'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabKabinentableau'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FT_Info1'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FT_Info1'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -102,10 +102,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Aufbau"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufbau'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAufbau'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FT_Info2'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FT_Info2'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -117,10 +117,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Material"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabMaterial'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabMaterial'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FT_RAL'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FT_RAL'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -151,15 +151,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPunktmatrixTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabPunktmatrixTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFarbe'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFarbe'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTFTBildschirmTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTFTBildschirmTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -171,15 +171,15 @@
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
                                         Margin="5,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPfeilescrollend'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabPfeilescrollend'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPfeilestat'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabPfeilestat'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabLCDAnzeigeTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabLCDAnzeigeTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -210,15 +210,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufzugimBrandfall'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAufzugimBrandfall'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFirmenlogo'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFirmenlogo'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabHinweisNotrufbenutzung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabHinweisNotrufbenutzung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -229,15 +229,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPiktogrEN8173'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabPiktogrEN8173'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufzugdaten'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAufzugdaten'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabSchluesselschalter'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabSchluesselschalter'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -267,19 +267,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabKabine'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabKabine'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabSteuerung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabSteuerung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabSchachtgr'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabSchachtgr'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabmitNotrufkombiniert'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabmitNotrufkombiniert'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -315,19 +315,19 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_BenDef_24'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParameterDictionary['var_BenDef_24'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <TextBox
                                             Grid.Column="1"
                                             PlaceholderText="benutzerdefinierte Eingabe"
-                                            Text="{x:Bind ViewModel.ParamterDictionary['var_BenDef_24'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
+                                            Text="{x:Bind ViewModel.ParameterDictionary['var_BenDef_24'].Comment, Mode=TwoWay, Converter={StaticResource CustomInputStringConveter}}" />
                                     </Grid>
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabinLiefenth'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabinLiefenth'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabkundenseitig'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabkundenseitig'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -358,11 +358,11 @@
                                     ColumnDefinitions="3*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabMultifunktionsanzeigeinklTKSueLSumNL'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabMultifunktionsanzeigeinklTKSueLSumNL'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabueberlastinklSummer'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabueberlastinklSummer'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -373,19 +373,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabBeschriftfeldinclTKSNL'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabBeschriftfeldinclTKSNL'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabEvakuierung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabEvakuierung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabBrandfall'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabBrandfall'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFeuerwfahrt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFeuerwfahrt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -396,13 +396,13 @@
                                     ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAnzeigeueberStandanzeige'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAnzeigeueberStandanzeige'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAussBetrieb'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAussBetrieb'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_25'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_25'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -432,22 +432,22 @@
                                     <StackPanel Orientation="Horizontal">
                                         <SpeziControls:ParameterRadioButton
                                             Margin="10,0,0,0"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse0'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFTVandalenklasse0'], Mode=TwoWay}"
                                             RadioButtonContent=" 0 "
                                             RadioButtonGroupName="VandalenklasseFT"
                                             ShowDefaultRadioButtonContent="False" />
                                         <SpeziControls:ParameterRadioButton
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse1'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFTVandalenklasse1'], Mode=TwoWay}"
                                             RadioButtonContent=" 1 "
                                             RadioButtonGroupName="VandalenklasseFT"
                                             ShowDefaultRadioButtonContent="False" />
                                         <SpeziControls:ParameterRadioButton
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabFTVandalenklasse2'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabFTVandalenklasse2'], Mode=TwoWay}"
                                             RadioButtonContent=" 2 "
                                             RadioButtonGroupName="VandalenklasseFT"
                                             ShowDefaultRadioButtonContent="False" />
                                     </StackPanel>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_26'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_26'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -477,10 +477,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTaster'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTaster'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Taster_Info'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Taster_Info'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -511,14 +511,14 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplatten'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTasterplatten'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
                                         Header="Material"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTasterplattenmaterial'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTasterplattenmaterial'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabakustischeQuittung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabakustischeQuittung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -549,14 +549,14 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Farbe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ColLedFT'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ColLedFT'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Quittung_Info'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schutzrosette'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schutzrosette'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -587,21 +587,21 @@
                                     ColumnDefinitions="*,*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTuerAuf'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTuerAuf'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabTuerZu'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabTuerZu'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabAufHalten'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabAufHalten'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabVentilatortaste'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabVentilatortaste'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_27'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_27'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="KDKT17"
@@ -611,12 +611,12 @@
                                     ColumnDefinitions="*,*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabSelektivitaet'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabSelektivitaet'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_28'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_29'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_30'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_31'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_28'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_29'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_30'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_31'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -645,21 +645,21 @@
                                     ColumnDefinitions="*,*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabVorzugInnen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabVorzugInnen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabVentilatorSchalter'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabVentilatorSchalter'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabLichttest'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabLichttest'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabPZStd'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabPZStd'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_32'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_32'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -695,10 +695,10 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParameterDictionary['var_KabTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <SpeziControls:ParameterTextBox
                                             Grid.Column="1"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKartenleserTyp'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabCodeKartenleserTyp'], Mode=TwoWay}"
                                             ShowDefaultHeader="False" />
                                     </Grid>
                                     <RadioButton
@@ -707,7 +707,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="in Lieferung enthalten"
                                         GroupName="CodeKartenleser"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabCodeKinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_KabTabCodeKinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
                                     <RadioButton
                                         Grid.Column="2"
@@ -715,7 +715,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="kundenseitig"
                                         GroupName="CodeKartenleser"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_KabTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
                                     <RadioButton
                                         Grid.Column="3"
@@ -723,7 +723,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="Einbau später"
                                         GroupName="CodeKartenleser"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_KabTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_KabTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}" />
 
                                 </Grid>
@@ -757,7 +757,7 @@
                                         MinHeight="60"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesKabTab'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesKabTab'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -810,10 +810,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Material"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabMaterial'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabMaterial'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AT_RAL'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AT_RAL'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -843,11 +843,11 @@
                                     ColumnDefinitions="2*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabATBefestigung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabATBefestigung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AT_Info'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AT_Info'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -878,15 +878,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPunktmatrixTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabPunktmatrixTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFarbe'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabFarbe'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabTFTBildschirmTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabTFTBildschirmTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -897,15 +897,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPfeilescrollend'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabPfeilescrollend'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPfeilestat'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabPfeilestat'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabLCDAnzeigeTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabLCDAnzeigeTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -936,15 +936,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabAufzugimBrandfall'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabAufzugimBrandfall'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFirmenlogo'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabFirmenlogo'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabHinweisNotrufbenutzung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabHinweisNotrufbenutzung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -955,13 +955,13 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPiktogrEN8173'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabPiktogrEN8173'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabSchlschalt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabSchlschalt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_33'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_33'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -991,19 +991,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabAuBetrieb'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabAuBetrieb'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabEvakuierung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabEvakuierung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabbesetzt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabbesetzt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFeuerwehrfahrt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabFeuerwehrfahrt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -1014,18 +1014,18 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabindividuelleGroee'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabindividuelleGroee'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         VerticalAlignment="Bottom"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Groesse_Info_AT'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Groesse_Info_AT'], Mode=TwoWay}"
                                         ShowDefaultHeader="False" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabanalogTast'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabanalogTast'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_34'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_34'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="AT8"
@@ -1035,13 +1035,13 @@
                                     ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabAnzeigeueberStandanzeige'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabAnzeigeueberStandanzeige'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabBrandfall'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabBrandfall'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_35'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_35'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1071,16 +1071,16 @@
                                     ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabohnePfeile'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabohnePfeile'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabanalogTaster'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabanalogTaster'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
                                         Header="Leuchtfeld Größe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabLeuchtfeldGroee'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabLeuchtfeldGroee'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1110,22 +1110,22 @@
                                     <StackPanel Orientation="Horizontal">
                                         <SpeziControls:ParameterRadioButton
                                             Margin="10,0,0,0"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse0'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabATVandalenklasse0'], Mode=TwoWay}"
                                             RadioButtonContent=" 0 "
                                             RadioButtonGroupName="VandalenklasseAT"
                                             ShowDefaultRadioButtonContent="False" />
                                         <SpeziControls:ParameterRadioButton
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse1'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabATVandalenklasse1'], Mode=TwoWay}"
                                             RadioButtonContent=" 1 "
                                             RadioButtonGroupName="VandalenklasseAT"
                                             ShowDefaultRadioButtonContent="False" />
                                         <SpeziControls:ParameterRadioButton
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabATVandalenklasse2'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabATVandalenklasse2'], Mode=TwoWay}"
                                             RadioButtonContent=" 2 "
                                             RadioButtonGroupName="VandalenklasseAT"
                                             ShowDefaultRadioButtonContent="False" />
                                     </StackPanel>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_36'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_36'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1155,10 +1155,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabTaster'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabTaster'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Taster_Info_AT'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Taster_Info_AT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1189,14 +1189,14 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Typ"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplatten'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabTasterplatten'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
                                         Header="Material"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabTasterplattenmaterial'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabTasterplattenmaterial'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabakustQuitt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabakustQuitt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
@@ -1227,12 +1227,12 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Farbe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ColLedAT'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ColLedAT'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info_AT'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Quittung_Info_AT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_51'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_51'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1262,19 +1262,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabAbschaltenHaltstelle'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabAbschaltenHaltstelle'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AbschaltenWo'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbschaltenWo'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabVorzugauenHaltestellen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabVorzugauenHaltestellen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_VorzugWo'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VorzugWo'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -1285,20 +1285,20 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabPZStd'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabPZStd'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabFederrueckz'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabFederrueckz'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabSchlAbzSt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabSchlAbzSt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
                                         Margin="0,5,0,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StellungenPZ'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StellungenPZ'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
                                         Unit="Stellungen" />
                                 </Grid>
@@ -1308,11 +1308,11 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*,*">
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_37'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_38'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_39'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_40'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_41'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_37'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_38'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_39'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_40'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_41'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1348,10 +1348,10 @@
                                             Grid.Column="0"
                                             MinWidth="0"
                                             VerticalAlignment="Bottom"
-                                            IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            IsChecked="{x:Bind ViewModel.ParameterDictionary['var_AussTabCodeKartenleser'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}" />
                                         <SpeziControls:ParameterTextBox
                                             Grid.Column="1"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AussTabCodeKartenleserTyp'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabCodeKartenleserTyp'], Mode=TwoWay}"
                                             ShowDefaultHeader="False" />
                                     </Grid>
                                     <RadioButton
@@ -1360,7 +1360,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="in Lieferung enthalten"
                                         GroupName="CodeKartenleserAT"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_AussTabinLiefenth'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
                                     <RadioButton
                                         Grid.Column="2"
@@ -1368,7 +1368,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="kundenseitig"
                                         GroupName="CodeKartenleserAT"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_AussTabkundenseit'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
                                     <RadioButton
                                         Grid.Column="3"
@@ -1376,7 +1376,7 @@
                                         VerticalAlignment="Bottom"
                                         Content="Einbau später"
                                         GroupName="CodeKartenleserAT"
-                                        IsChecked="{x:Bind ViewModel.ParamterDictionary['var_AussTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
+                                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_AussTabEinbauspaeter'].Value, Mode=TwoWay, Converter={StaticResource StringToBoolConverter}}"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}" />
                                 </Grid>
                             </Grid>
@@ -1407,17 +1407,17 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerzargenmontage'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerzargenmontage'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Mauerwerkmontage'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Mauerwerkmontage'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_MWUmontage'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MWUmontage'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_42'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_42'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="AT19"
@@ -1425,10 +1425,10 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*,*,*">
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_43'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_44'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_45'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_46'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_43'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_44'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_45'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_46'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1460,7 +1460,7 @@
                                         MinHeight="60"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesAT'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesAT'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -1498,10 +1498,10 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="Material"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Material'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Material'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WFA_RAL'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WFA_RAL'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1531,11 +1531,11 @@
                                     ColumnDefinitions="2*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaAnbauortWFA'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaAnbauortWFA'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WFA_Info'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WFA_Info'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1565,11 +1565,11 @@
                                     ColumnDefinitions="2*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaWFABefestigung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaWFABefestigung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_STA_Info_WFA'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_STA_Info_WFA'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1600,15 +1600,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPunktmatrixTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaPunktmatrixTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaFarbe'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaFarbe'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaTFTBildschirmTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaTFTBildschirmTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -1619,15 +1619,15 @@
                                     ColumnDefinitions="2*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPfeilescrollend'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaPfeilescrollend'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPfeilestat'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaPfeilestat'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaLCDAnzeigeTyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaLCDAnzeigeTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1658,19 +1658,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaAuBetrieb'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaAuBetrieb'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaEvakuierung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaEvakuierung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wfabesetzt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Wfabesetzt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaFeuerwehrfahrt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaFeuerwehrfahrt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -1681,19 +1681,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaIndividuelleGroesse'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaIndividuelleGroesse'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         VerticalAlignment="Bottom"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Groesse_Info_WFA'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Groesse_Info_WFA'], Mode=TwoWay}"
                                         ShowDefaultHeader="False" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaAnalogTast'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaAnalogTast'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_47'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_47'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="WFA7"
@@ -1703,13 +1703,13 @@
                                     ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaAnzeigeueberStandanzeige'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaAnzeigeueberStandanzeige'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaBrandfall'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaBrandfall'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_48'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_48'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1739,19 +1739,19 @@
                                     ColumnDefinitions="*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaOhnePfeile'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaOhnePfeile'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaAnalogTaster'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaAnalogTaster'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
                                         Header="Leuchtfeld Größe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaLeuchtfeldGroee'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaLeuchtfeldGroee'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Quittung_Info_WFA'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Quittung_Info_WFA'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -1782,13 +1782,13 @@
                                     ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wfa1Klang'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Wfa1Klang'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Wfa2Klang'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Wfa2Klang'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterComboBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaGongposition'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaGongposition'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="WFA10"
@@ -1825,21 +1825,21 @@
                                     ColumnDefinitions="*,*,*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaohneIdent'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaohneIdent'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfamitIdent'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfamitIdent'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaV2Agraviert'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaV2Agraviert'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_WfaPVCEinl'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_WfaPVCEinl'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_49'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="4" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_49'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1871,7 +1871,7 @@
                                         MinHeight="60"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesWFA'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesWFA'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -1893,10 +1893,10 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

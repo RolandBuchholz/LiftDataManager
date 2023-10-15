@@ -18,11 +18,11 @@ public interface IParameterDataService
 
     Task<string> SaveParameterAsync(Parameter parameter, string path);
 
-    Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode);
+    Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode);
 
     Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 
-    Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary);
+    Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary);
 
     Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory);
 }

@@ -9,7 +9,7 @@ namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
-    private ObservableDictionary<string, Parameter> ParamterDictionary { get; set; }
+    private ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
     public string? FullPathXml { get; set; }
     private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     private DateTime ZaHtmlCreationTime { get; set; }
@@ -22,7 +22,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     public ValidationParameterDataService(ParameterContext parametercontext, ICalculationsModule calculationsModuleService)
     {
         IsActive = true;
-        ParamterDictionary ??= new();
+        ParameterDictionary ??= new();
         ZliDataDictionary ??= new();
         ValidationResult ??= new();
         _parametercontext = parametercontext;
@@ -43,9 +43,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         if (message.Response is null)
             return;
-        if (message.Response.ParamterDictionary is null)
+        if (message.Response.ParameterDictionary is null)
             return;
-        ParamterDictionary = message.Response.ParamterDictionary;
+        ParameterDictionary = message.Response.ParameterDictionary;
         FullPathXml = message.Response.FullPathXml;
     }
 
@@ -79,7 +79,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     public async Task ValidateAllParameterAsync()
     {
-        foreach (var par in ParamterDictionary)
+        foreach (var par in ParameterDictionary)
         {
             _ = par.Value.ValidateParameterAsync();
         }
@@ -94,7 +94,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (range.Length == 0)
             return;
 
-        foreach (var par in ParamterDictionary)
+        foreach (var par in ParameterDictionary)
         {
             if (range.Any(r => string.Equals(r, par.Value.Name)))
                 _ = par.Value.ValidateParameterAsync();

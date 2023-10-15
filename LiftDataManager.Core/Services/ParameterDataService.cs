@@ -219,7 +219,7 @@ public partial class ParameterDataService : IParameterDataService
         return infotext;
     }
 
-    public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParamterDictionary, string path, bool adminmode)
+    public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
     {
         if (!ValidatePath(path, false))
         {
@@ -230,7 +230,7 @@ public partial class ParameterDataService : IParameterDataService
         var infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
 
         XElement doc = XElement.Load(path);
-        var unsavedParameter = ParamterDictionary.Values.Where(p => p.IsDirty);
+        var unsavedParameter = ParameterDictionary.Values.Where(p => p.IsDirty);
 
         List<LiftHistoryEntry> historyEntrys = new();
 
@@ -353,7 +353,7 @@ public partial class ParameterDataService : IParameterDataService
         return true;
     }
 
-    public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> paramterDictionary)
+    public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary)
     {
         List<string> syncedParameter = new();
         List<LiftHistoryEntry> syncedLiftHistoryEntries = new();
@@ -361,27 +361,27 @@ public partial class ParameterDataService : IParameterDataService
 
         foreach (var param in updatedAutodeskTransfer)
         {
-            if (paramterDictionary.TryGetValue(param.Name, out var dictionary))
+            if (ParameterDictionary.TryGetValue(param.Name, out var dictionary))
             {
                 if (dictionary.Value != param.Value)
                 {
                     if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
                         continue;
-                    if (paramterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
+                    if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
                     {
-                        paramterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
+                        ParameterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
                     }
-                    else if (paramterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                    else if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
                     {
-                        paramterDictionary[dictionary.Name!].Value = param.Value;
-                        paramterDictionary[dictionary.Name!].DropDownListValue = param.Value;
+                        ParameterDictionary[dictionary.Name!].Value = param.Value;
+                        ParameterDictionary[dictionary.Name!].DropDownListValue = param.Value;
                     }
                     else
                     {
-                        paramterDictionary[dictionary.Name!].Value = param.Value;
+                        ParameterDictionary[dictionary.Name!].Value = param.Value;
                     }
-                    paramterDictionary[dictionary.Name!].IsDirty = false;
-                    syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(paramterDictionary[dictionary.Name!]));
+                    ParameterDictionary[dictionary.Name!].IsDirty = false;
+                    syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(ParameterDictionary[dictionary.Name!]));
                     syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
                 }
             }

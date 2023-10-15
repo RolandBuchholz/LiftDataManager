@@ -73,15 +73,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -118,18 +118,18 @@
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
                                         Header="Türbreite"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="Türhöhe"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TH'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuergewicht'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="kg" />
                                 </Grid>
@@ -146,7 +146,7 @@
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             IsHitTestVisible="False"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
                                             ShowDefaultHeader="True" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -156,7 +156,7 @@
                                     </Grid>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlTuerfluegel'], Mode=TwoWay}"
                                         ReadOnly="True"
                                         ShowDefaultHeader="True"
                                         Unit="Stk">
@@ -195,15 +195,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -236,17 +236,17 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TH_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuergewicht_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="kg" />
                                 </Grid>
@@ -263,7 +263,7 @@
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             IsHitTestVisible="False"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
                                             ShowDefaultHeader="True" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -273,7 +273,7 @@
                                     </Grid>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_B'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlTuerfluegel_B'], Mode=TwoWay}"
                                         ReadOnly="True"
                                         ShowDefaultHeader="True"
                                         Unit="Stk">
@@ -313,15 +313,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -354,17 +354,17 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TH_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuergewicht_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="kg" />
                                 </Grid>
@@ -381,7 +381,7 @@
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             IsHitTestVisible="False"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
                                             ShowDefaultHeader="True" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -391,7 +391,7 @@
                                     </Grid>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_C'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlTuerfluegel_C'], Mode=TwoWay}"
                                         ReadOnly="True"
                                         ShowDefaultHeader="True"
                                         Unit="Stk">
@@ -431,15 +431,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ZulassungTuere_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -472,17 +472,17 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TB_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TH_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TH_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuergewicht_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuergewicht_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="kg" />
                                 </Grid>
@@ -499,7 +499,7 @@
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             IsHitTestVisible="False"
-                                            LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
                                             ShowDefaultHeader="True" />
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
@@ -509,7 +509,7 @@
                                     </Grid>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnzahlTuerfluegel_D'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlTuerfluegel_D'], Mode=TwoWay}"
                                         ReadOnly="True"
                                         ShowDefaultHeader="True"
                                         Unit="Stk">
@@ -569,11 +569,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tueroberflaeche'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroberflaeche'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RalSchachtuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RalSchachtuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -605,31 +605,31 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenprofil'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schwellenprofil'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilB'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilB'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataB, Mode=OneWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="2"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilC'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilC'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataC, Mode=OneWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="3"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilD'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilD'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataD, Mode=OneWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Row="0"
                                         Grid.RowSpan="4"
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleST'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnmerkungSchwelleST'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -658,15 +658,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StSchuerzeV2A'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StSchuerzeV2A'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_STdghSchwellenwinkel'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_STdghSchwellenwinkel'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KontaktSchutzraumueberwachung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KontaktSchutzraumueberwachung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -677,15 +677,15 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_STflRollen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_STflRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SThlRollen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SThlRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StSchwellenheizung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StSchwellenheizung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
@@ -696,12 +696,12 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Estrichbleche'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Estrichbleche'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCustomCheckBox
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_53'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_53'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren5"
@@ -711,12 +711,12 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schwellenbeleuchtung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schwellenbeleuchtung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCustomCheckBox
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_4'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_4'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren6"
@@ -726,11 +726,11 @@
                                     ColumnDefinitions="*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_MauerumfassungszargenTF'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerumfassungszargenTF'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Mauerumfassungszargen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Mauerumfassungszargen'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -741,11 +741,11 @@
                                     ColumnDefinitions="*,2*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_PortaleTF'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_PortaleTF'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Portale'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Portale'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -754,7 +754,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*">
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_5'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_5'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -789,11 +789,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuersteuerung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuersteuerung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_ErgAnTuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErgAnTuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -804,11 +804,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lichtgitter'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Lichtgitter'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Tuerverriegelung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuerverriegelung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -838,11 +838,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_OberflaecheKabinentuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_OberflaecheKabinentuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RalKabinentuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RalKabinentuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -874,31 +874,31 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilKabTuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="1"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereB'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilKabTuereB'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataB, Mode=OneWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="2"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereC'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilKabTuereC'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataC, Mode=OneWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Row="3"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_SchwellenprofilKabTuereD'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchwellenprofilKabTuereD'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Visibility="{x:Bind ViewModel.ShowCarDoorDataD, Mode=OneWay}" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Row="0"
                                         Grid.RowSpan="4"
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -927,13 +927,13 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchuerzeV2A'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KtSchuerzeV2A'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schuerzeverstaerkt'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schuerzeverstaerkt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_54'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabinentuer7"
@@ -943,13 +943,13 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KTflRollen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTflRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KThlRollen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KThlRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_55'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_55'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Kabinentuer8"
@@ -959,13 +959,13 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_EcoPlus'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_EcoPlus'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BenDef_6'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_6'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -997,7 +997,7 @@
                                         MinHeight="120"
                                         Margin="5,0,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesKabinentuere'].Value, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesKabinentuere'].Value, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -1019,10 +1019,10 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

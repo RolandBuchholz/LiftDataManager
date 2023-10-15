@@ -152,7 +152,7 @@ public partial class App : Application
         {
             args.Handled = true;
 
-            var dirty = currentSpeziProperties.ParamterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = currentSpeziProperties.ParameterDictionary!.Values.Any(p => p.IsDirty);
 
             var title = dirty ? "Warnung nicht gepeicherte Parameter gefunden" : "Warnung Autodesktranfer noch nicht hochgeladen";
             var message = dirty ? "Es sind nicht gespeicherte Parameter vorhanden.\n" +
@@ -168,7 +168,7 @@ public partial class App : Application
             {
                 if (dirty)
                 {
-                    await tempHomeViewModel._parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParamterDictionary, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+                    await tempHomeViewModel._parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
                 }
                 else
                 {

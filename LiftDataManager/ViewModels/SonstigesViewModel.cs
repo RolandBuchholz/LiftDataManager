@@ -14,8 +14,8 @@ public class SonstigesViewModel : DataViewModelBase, INavigationAware, IRecipien
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
     }
 

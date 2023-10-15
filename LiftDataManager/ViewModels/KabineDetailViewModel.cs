@@ -43,9 +43,9 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public string? openingDirectionA;
     partial void OnOpeningDirectionAChanged(string? value)
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            ParamterDictionary!["var_Tueroeffnung"].DropDownListValue = value;
+            ParameterDictionary!["var_Tueroeffnung"].DropDownListValue = value;
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -54,9 +54,9 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public string? openingDirectionB;
     partial void OnOpeningDirectionBChanged(string? value)
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            ParamterDictionary!["var_Tueroeffnung_B"].DropDownListValue = value;
+            ParameterDictionary!["var_Tueroeffnung_B"].DropDownListValue = value;
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -65,9 +65,9 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public string? openingDirectionC;
     partial void OnOpeningDirectionCChanged(string? value)
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            ParamterDictionary!["var_Tueroeffnung_C"].DropDownListValue = value;
+            ParameterDictionary!["var_Tueroeffnung_C"].DropDownListValue = value;
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -76,9 +76,9 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public string? openingDirectionD;
     partial void OnOpeningDirectionDChanged(string? value)
     {
-        if (ParamterDictionary is not null)
+        if (ParameterDictionary is not null)
         {
-            ParamterDictionary!["var_Tueroeffnung_D"].DropDownListValue = value;
+            ParameterDictionary!["var_Tueroeffnung_D"].DropDownListValue = value;
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -97,14 +97,14 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    public bool CanEditSillEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_A") && 
-                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
-    public bool CanEditSillEntranceB => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_B") && 
-                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_B")).StartsWith("einseitig");
-    public bool CanEditSillEntranceC => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_C") && 
-                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
-    public bool CanEditSillEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D") && 
-                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
+    public bool CanEditSillEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") && 
+                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
+    public bool CanEditSillEntranceB => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B") && 
+                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B")).StartsWith("einseitig");
+    public bool CanEditSillEntranceC => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C") && 
+                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
+    public bool CanEditSillEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D") && 
+                                        ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RefreshCarFloorSillParameterCommand))]
@@ -119,26 +119,26 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         string[] accesses = new string[] { "A", "B", "C", "D" };
         foreach (var access in accesses)
         {
-            if (LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, $"var_ZUGANSSTELLEN_{access}"))
+            if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{access}"))
             {
                 var carFloorSillParameterString = new StringBuilder();
                 var parameters = CarFloorSillParameter.Where(x => x.Key.EndsWith(access)).Select(s => s.Value.ToString());
                 carFloorSillParameterString.AppendJoin(';',parameters);
-                ParamterDictionary![$"var_SchwellenUnterbau{access}"].Value = carFloorSillParameterString.ToString();
+                ParameterDictionary![$"var_SchwellenUnterbau{access}"].Value = carFloorSillParameterString.ToString();
             }
         }
     }
 
     private void FillCarFloorSillParameter()
     {
-        if (ParamterDictionary is not null && ParamterDictionary.Any())
+        if (ParameterDictionary is not null && ParameterDictionary.Any())
         {
             string[] accesses = new string[] { "A", "B", "C", "D" };
             foreach (var access in accesses)
             {
-                if (!string.IsNullOrWhiteSpace(ParamterDictionary[$"var_SchwellenUnterbau{access}"].Value))
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_SchwellenUnterbau{access}"].Value))
                 {
-                    var cardesignparametres = ParamterDictionary[$"var_SchwellenUnterbau{access}"].Value!.Split(";");
+                    var cardesignparametres = ParameterDictionary[$"var_SchwellenUnterbau{access}"].Value!.Split(";");
                     for (int i = 0; i < cardesignparametres.Length; i++)
                     {
                         if (string.IsNullOrWhiteSpace(cardesignparametres[i]))
@@ -168,17 +168,17 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             _ = SetModelStateAsync();
-            CanRefreshCarFloorSill = !LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_AutogenerateFloorDoorData");
+            CanRefreshCarFloorSill = !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData");
             FillCarFloorSillParameter();
         }
-        OpeningDirectionA = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung");
-        OpeningDirectionB = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_B");
-        OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_C");
-        OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_D");
+        OpeningDirectionA = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung");
+        OpeningDirectionB = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B");
+        OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C");
+        OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
         CheckIsOpeningDirectionSelected();
     }
 

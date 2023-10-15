@@ -79,7 +79,7 @@
                                     ColumnDefinitions="*,auto,auto">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bausatz'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <Border
                                         Grid.Column="1"
@@ -124,7 +124,7 @@
                                     ColumnDefinitions="*">
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -154,11 +154,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Fuehrungsart'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TypFuehrung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -189,11 +189,11 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.CWTGuideName, Mode=OneWay}"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fuehrungsart_GGW'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Fuehrungsart_GGW'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.CWTGuideTyp, Mode=OneWay}"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFuehrung_GGW'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TypFuehrung_GGW'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -222,11 +222,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FuehrungsschieneFahrkorb'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FuehrungsschieneFahrkorb'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StatusFuehrungsschienen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StatusFuehrungsschienen'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -257,11 +257,11 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.CWTRailName, Mode=OneWay}"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_FuehrungsschieneGegengewicht'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FuehrungsschieneGegengewicht'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.CWTRailState, Mode=OneWay}"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_StatusGGWSchienen'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_StatusGGWSchienen'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -291,11 +291,11 @@
                                     ColumnDefinitions="*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Fangvorrichtung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Fangvorrichtung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_TypFV'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TypFV'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -332,12 +332,12 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Geschwindigkeitsbeg_ZT'], Mode=TwoWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbeg_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
@@ -363,12 +363,12 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmassnahmen'], Mode=TwoWay}" />
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Ersatzmassnahmen'], Mode=TwoWay}" />
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Ersatzmaßnahmen_ZT'], Mode=TwoWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Ersatzmaßnahmen_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
@@ -394,12 +394,12 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformationssystem'], Mode=TwoWay}" />
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schachtinformationssystem'], Mode=TwoWay}" />
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Schachtinformation_ZT'], Mode=TwoWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schachtinformation_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
@@ -429,26 +429,26 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         Margin="0,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Lastmesseinrichtung'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterCheckBox
                                         x:Name="Aufsetzvorrichtung"
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Aufsetzvorrichtung'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Aufsetzvorrichtung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
                                         Margin="0,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_AufsetzvorrichtungSystem'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AufsetzvorrichtungSystem'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
-                                        Visibility="{x:Bind ViewModel.ParamterDictionary['var_Aufsetzvorrichtung'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
+                                        Visibility="{x:Bind ViewModel.ParameterDictionary['var_Aufsetzvorrichtung'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
                                 </Grid>
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Lastmesseinrichtung_ZT'], Mode=TwoWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Lastmesseinrichtung_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
@@ -477,11 +477,11 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_Beschichtung'], Mode=TwoWay}" ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Beschichtung'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RALTonTragrahmen'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RALTonTragrahmen'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -490,11 +490,11 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BeschichtungSchachteinbauten'], Mode=TwoWay}" ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BeschichtungSchachteinbauten'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RALTonSchachteinbauten'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RALTonSchachteinbauten'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                                 <Grid
@@ -503,11 +503,11 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*">
-                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_BeschichtungAntrieb'], Mode=TwoWay}" ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BeschichtungAntrieb'], Mode=TwoWay}" ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
                                         Margin="5,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParamterDictionary['var_RALTonAntrieb'], Mode=TwoWay}"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RALTonAntrieb'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
@@ -541,7 +541,7 @@
                                         MinHeight="120"
                                         Margin="5,5,5,0"
                                         AcceptsReturn="True"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_SonstigesBausatz'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesBausatz'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
                                 </Grid>
                             </Grid>
@@ -582,7 +582,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Stichmass'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Stichmass'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -595,7 +595,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FUBP'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FUBP'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -608,7 +608,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_RHO'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_RHO'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -621,7 +621,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Puffertyp'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'].Value, Mode=OneWay}" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Puffer Typ GGW:" />
@@ -630,7 +630,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Puffertyp_GGW'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'].Value, Mode=OneWay}" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Pufferhöhe:" />
@@ -639,7 +639,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_PUH'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_PUH'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -661,7 +661,7 @@
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="Gegengewicht kompl. (Ausgleich " />
-                                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_GGWNutzlastausgleich'].Value, Mode=OneWay}" />
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_GGWNutzlastausgleich'].Value, Mode=OneWay}" />
                                         <Run Text=")" />
                                     </TextBlock>
                                     <TextBlock
@@ -669,7 +669,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Gegengewichtsmasse'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -682,7 +682,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_GGW_Rahmen_Gewicht'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -695,7 +695,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_GGW_Fuellgewicht'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellgewicht'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -708,7 +708,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_GGW_Fuellhoehe'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellhoehe'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -721,7 +721,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Schienenlaenge'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Schienenlaenge'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -734,7 +734,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Hilfsschienenlaenge'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Hilfsschienenlaenge'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -747,7 +747,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Startschiene'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Startschiene'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -760,7 +760,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_HilfsschienenlaengeStartstueck'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_HilfsschienenlaengeStartstueck'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -773,7 +773,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Endschiene'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Endschiene'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -786,7 +786,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_HilfsschienenlaengeEndstueck'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_HilfsschienenlaengeEndstueck'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -804,7 +804,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Treibscheibendurchmesser'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Treibscheibendurchmesser'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -818,7 +818,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Tragseiltyp'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Tragseiltyp'].Value, Mode=OneWay}" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Anzahl der Tragseile:" />
@@ -827,7 +827,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_NumberOfRopes'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_NumberOfRopes'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -840,7 +840,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Mindestbruchlast'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Mindestbruchlast'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -853,7 +853,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_RopeSafety'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_RopeSafety'].Value, Mode=OneWay}" />
                                 </Grid>
                                 <TextBlock
                                     Margin="0,10,0,5"
@@ -867,7 +867,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Belastung_pro_Schiene_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -880,7 +880,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -893,7 +893,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -906,7 +906,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -919,7 +919,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FxF'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FxF'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -932,7 +932,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FyF'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FyF'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -945,7 +945,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FxFA_GGW'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FxFA_GGW'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -958,7 +958,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_FyFA_GGW'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FyFA_GGW'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -976,7 +976,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Nennstrom'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Nennstrom'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -989,7 +989,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_AnlaufstromMax'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_AnlaufstromMax'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1002,7 +1002,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Leistung'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Leistung'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1015,7 +1015,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Stromart'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Stromart'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1028,7 +1028,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Pr'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Pr'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1041,7 +1041,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Ur'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ur'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1054,7 +1054,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_Ir'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ir'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1067,7 +1067,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_Motor_FE_'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_FE_'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -1081,7 +1081,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParamterDictionary['var_ZA_IMP_VerlustLeistung'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_VerlustLeistung'].Value, Mode=OneWay}" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Max. Schmelzsicherung:" />
@@ -1133,10 +1133,10 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

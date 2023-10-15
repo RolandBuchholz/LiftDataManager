@@ -144,7 +144,7 @@
                         <Run FontSize="18" Text="(" />
                         <Run FontSize="18" Text="{x:Bind ViewModel.PayLoadResult.DriveSystem, Mode=OneWay}" />
                         <Run FontSize="18" Text=")" />
-                        <Run FontSize="12" Text="{x:Bind ViewModel.ParamterDictionary['var_Aufzugstyp'].Value, Mode=OneWay}" />
+                        <Run FontSize="12" Text="{x:Bind ViewModel.ParameterDictionary['var_Aufzugstyp'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="1"
@@ -156,7 +156,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_KBI'].Value, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_KBI'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="2"
@@ -173,7 +173,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_KTI'].Value, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_KTI'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -212,8 +212,8 @@
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp'].Value, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="6"
@@ -225,7 +225,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB'].Value, Mode=OneWay}" />
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TB'].Value, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="2"
@@ -243,7 +243,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbau'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbau'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangA, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="7"
@@ -267,8 +267,8 @@
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_B'].Value, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_B'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_B'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="10"
@@ -281,7 +281,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_B'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TB_B'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="10"
@@ -301,7 +301,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauB'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauB'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangB, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="11"
@@ -325,8 +325,8 @@
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_C'].Value, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_C'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_C'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="14"
@@ -339,7 +339,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_C'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TB_C'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="14"
@@ -359,7 +359,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauC'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauC'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangC, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="15"
@@ -383,8 +383,8 @@
                         Grid.ColumnSpan="3"
                         Style="{StaticResource BodyTextStyle}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}">
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuertyp_D'].Value, Mode=OneWay}" />
-                        <Run Text="{x:Bind ViewModel.ParamterDictionary['var_Tuerbezeichnung_D'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_D'].Value, Mode=OneWay}" />
+                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].Value, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock
                         Grid.Row="18"
@@ -397,7 +397,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TB_D'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TB_D'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="18"
@@ -417,7 +417,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind ViewModel.ParamterDictionary['var_TuerEinbauD'].Value, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauD'].Value, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.PayLoadResult.ZugangD, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="19"
@@ -820,7 +820,7 @@
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Margin="-40,-40,-40,-40"
-                    ItemSource="{x:Bind ViewModel.ParamterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ShowEntranceButtons="False" />
                 <StackPanel
                     Grid.Row="3"
@@ -1173,10 +1173,10 @@
             Grid.ColumnSpan="2"
             Margin="0"
             CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
-            ErrorsDictionary="{x:Bind ViewModel.ParamterErrorDictionary, Mode=TwoWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            ParameterFound="{x:Bind ViewModel.ParamterDictionary.Count, Mode=OneWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

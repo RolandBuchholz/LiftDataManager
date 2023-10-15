@@ -53,23 +53,23 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (AuftragsbezogeneXml)
         {
             HasErrors = false;
-            HasErrors = ParamterDictionary!.Values.Any(p => p.HasErrors);
-            ParamterErrorDictionary ??= new();
-            ParamterErrorDictionary.Clear();
+            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            ParameterErrorDictionary ??= new();
+            ParameterErrorDictionary.Clear();
             if (HasErrors)
             {
-                var errors = ParamterDictionary.Values.Where(e => e.HasErrors);
+                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
                 foreach (var error in errors)
                 {
-                    if (!ParamterErrorDictionary.ContainsKey(error.Name!))
+                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
                     {
                         var errorList = new List<ParameterStateInfo>();
                         errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParamterErrorDictionary.Add(error.Name!, errorList);
+                        ParameterErrorDictionary.Add(error.Name!, errorList);
                     }
                     else
                     {
-                        ParamterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
+                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
                     }
                 }
             }
@@ -78,7 +78,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
             CanShowUnsavedParameters = false;
-            var dirty = ParamterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -111,9 +111,9 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
     private bool CheckhasHighlightedParameters()
     {
-        if (ParamterDictionary is null || ParamterDictionary.Values is null)
+        if (ParameterDictionary is null || ParameterDictionary.Values is null)
             return false;
-        return ParamterDictionary.Values.Any(x => x.IsKey);
+        return ParameterDictionary.Values.Any(x => x.IsKey);
     }
 
     public void OnNavigatedTo(object parameter)
@@ -123,8 +123,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (CurrentSpeziProperties is not null)
             SearchInput = CurrentSpeziProperties.SearchInput;
         if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParamterDictionary is not null &&
-            CurrentSpeziProperties.ParamterDictionary.Values is not null)
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
