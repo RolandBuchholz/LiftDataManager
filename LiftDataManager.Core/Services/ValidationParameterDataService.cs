@@ -417,6 +417,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_SchwellenprofilKabTuereD",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
 
+        ValidationDictionary.Add("var_Tueroeffnung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_Tueroeffnung_B",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_Tueroeffnung_C",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_Tueroeffnung_D",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
+
         AddDropDownListValidation();
     }
 

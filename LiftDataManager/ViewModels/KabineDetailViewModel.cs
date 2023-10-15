@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+
 using LiftDataManager.core.Helpers;
 using System.Collections.ObjectModel;
 
@@ -21,6 +22,22 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
             "einseitig öffnend (links)"
         };
     }
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        if (message.PropertyName == "var_AutogenerateFloorDoorData")
+        {
+            if (!string.IsNullOrWhiteSpace(message.NewValue))
+                CanRefreshCarFloorSill = !Convert.ToBoolean(message.NewValue, CultureInfo.CurrentCulture);
+        }
+
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
+    }
 
     [ObservableProperty]
     public string? openingDirectionA;
@@ -29,6 +46,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         if (ParamterDictionary is not null)
         {
             ParamterDictionary!["var_Tueroeffnung"].DropDownListValue = value;
+            CheckIsOpeningDirectionSelected();
         }
     }
 
@@ -39,6 +57,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         if (ParamterDictionary is not null)
         {
             ParamterDictionary!["var_Tueroeffnung_B"].DropDownListValue = value;
+            CheckIsOpeningDirectionSelected();
         }
     }
 
@@ -49,6 +68,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         if (ParamterDictionary is not null)
         {
             ParamterDictionary!["var_Tueroeffnung_C"].DropDownListValue = value;
+            CheckIsOpeningDirectionSelected();
         }
     }
 
@@ -59,9 +79,12 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         if (ParamterDictionary is not null)
         {
             ParamterDictionary!["var_Tueroeffnung_D"].DropDownListValue = value;
+            CheckIsOpeningDirectionSelected();
         }
     }
 
+    [ObservableProperty]
+    public bool openingDirectionNotSelected;
     private void SetupCarFloorSillParameter()
     {
         CarFloorSillParameter.Clear();
@@ -82,23 +105,6 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
     public bool CanEditSillEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParamterDictionary, "var_ZUGANSSTELLEN_D") && 
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
-
-    public override void Receive(PropertyChangedMessage<string> message)
-    {
-        if (message is null)
-            return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
-
-        if (message.PropertyName == "var_AutogenerateFloorDoorData")
-        {
-             if (!string.IsNullOrWhiteSpace(message.NewValue))
-                CanRefreshCarFloorSill = !Convert.ToBoolean(message.NewValue, CultureInfo.CurrentCulture);
-        };
-
-        SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
-    }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RefreshCarFloorSillParameterCommand))]
@@ -149,6 +155,14 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    private void CheckIsOpeningDirectionSelected()
+    {
+        OpeningDirectionNotSelected = (!string.IsNullOrWhiteSpace(openingDirectionA) && string.Equals(openingDirectionA, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(openingDirectionB) && string.Equals(openingDirectionB, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(openingDirectionC) && string.Equals(openingDirectionC, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(openingDirectionD) && string.Equals(openingDirectionD, "einseitig öffnend"));
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -165,6 +179,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         OpeningDirectionB = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_B");
         OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_C");
         OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParamterDictionary, "var_Tueroeffnung_D");
+        CheckIsOpeningDirectionSelected();
     }
 
     public void OnNavigatedFrom()

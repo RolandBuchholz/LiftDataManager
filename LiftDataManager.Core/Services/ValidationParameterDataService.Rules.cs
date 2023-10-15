@@ -1155,7 +1155,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 SetCarDesignParameterSill(zugang, liftDoorGroup);
             }
         }
-        else if (name.StartsWith("var_SchwellenprofilKab") || name.StartsWith("var_TB"))
+        else if (name.StartsWith("var_SchwellenprofilKab") || name.StartsWith("var_TB") || name.StartsWith("var_Tueroeffnung"))
         {
             if (string.IsNullOrWhiteSpace(value) || value == "0")
                 return;
