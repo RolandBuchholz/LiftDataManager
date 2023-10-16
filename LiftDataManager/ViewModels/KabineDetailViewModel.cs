@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using Cogs.Collections;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 using LiftDataManager.core.Helpers;
 using System.Collections.ObjectModel;
@@ -7,13 +8,13 @@ namespace LiftDataManager.ViewModels;
 
 public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public Dictionary<string, double?> CarFloorSillParameter { get; set; }
+    public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
     public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
      base(parameterDataService, dialogService, navigationService)
     {
-        CarFloorSillParameter = new Dictionary<string, double?>();
+        CarFloorSillParameter = new ObservableDictionary<string, double?>();
         SetupCarFloorSillParameter();
         OpeningDirections = new ObservableCollection<string?>
         {
@@ -34,8 +35,11 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
             if (!string.IsNullOrWhiteSpace(message.NewValue))
                 CanRefreshCarFloorSill = !Convert.ToBoolean(message.NewValue, CultureInfo.CurrentCulture);
         }
-
-        SetInfoSidebarPanelText(message);
+        else if (!string.IsNullOrWhiteSpace(message.PropertyName) && message.PropertyName.StartsWith("var_Tueroeffnung"))
+        {
+            FillCarFloorSillParameter();
+        }
+            SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
 
@@ -149,6 +153,13 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
                         {
                             CarFloorSillParameter[$"{i + 1}_{access}"] = Convert.ToDouble(cardesignparametres[i], CultureInfo.CurrentCulture);
                         }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 16; i++)
+                    {
+                        CarFloorSillParameter[$"{i + 1}_{access}"] = 0;
                     }
                 }
             }

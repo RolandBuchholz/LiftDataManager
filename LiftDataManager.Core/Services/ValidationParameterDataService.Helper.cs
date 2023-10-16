@@ -109,19 +109,19 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         else if (openingDirection == "einseitig öffnend (links)")
         {
             supportPlateExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //1
-            supportPlateExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //2
+            supportPlateExtensionRight = 0; //2
             sillExtensionLeft = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //9
-            sillExtensionRight = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //10
+            sillExtensionRight = 0; //10
             sillBracketExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //11
-            sillBracketExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //12
+            sillBracketExtensionRight = 50; //12
         }
         else if (openingDirection == "einseitig öffnend (rechts)")
         {
-            supportPlateExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //1
+            supportPlateExtensionLeft = 0; //1
             supportPlateExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //2
-            sillExtensionLeft = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //9
+            sillExtensionLeft = 0; //9
             sillExtensionRight = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //10
-            sillBracketExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //11
+            sillBracketExtensionLeft = 50; //11
             sillBracketExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //12
         }
         else
@@ -130,12 +130,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         }
 
-        var distanceMudHolesFloorEdge = Math.Round(1.0 /3, 2); //3
-        var quantityRowMudHoles = 9999; //4
-        var distanceMudHole = 9999; //5
-        var distanceSillBracketHoles = 9999; //6
-        var quantityRowHolesSillBracket = 9999; //7
-        var distanceSillMounting = 9999; //8
+        var distanceMudHolesFloorEdge = liftDoorGroup.CarDoor.Name == "STK26" ? 51.5 : 25.5; //3
+        var quantityRowMudHoles = liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 3 ? liftDoorGroup.CarDoor.DoorPanelCount / 2 : liftDoorGroup.CarDoor.DoorPanelCount; //4
+        var distanceMudHole = liftDoorGroup.CarDoor.Name == "STK26" ? 0 : 42; //5
+        var distanceSillBracketHoles = liftDoorGroup.CarDoor.Name == "STK26" ? 26 : 46.5; //6
+        var quantityRowHolesSillBracket = (liftDoorGroup.CarDoor.DoorPanelCount == 3 || liftDoorGroup.CarDoor.DoorPanelCount == 6) ? 2 : 1; //7
+        var distanceSillMounting = (liftDoorGroup.CarDoor.DoorPanelCount == 3 || liftDoorGroup.CarDoor.DoorPanelCount == 6) ? 42 : 0; //8
 
         double supportPlateWidth; //13
         double offsetOKAprontoOKFF; //14
@@ -148,22 +148,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
                 return;
             case 1:
-                supportPlateWidth = 999; //13
-                offsetOKAprontoOKFF = 999; //14
-                distanceBetweenSillBracketholes = 999; //15
-                triangularLockingDistance = 999; //16
+                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                offsetOKAprontoOKFF = 4; //14
+                distanceBetweenSillBracketholes = 42; //15
+                triangularLockingDistance = 100; //16
                 break;
             case 2:
-                supportPlateWidth = 999; //13
-                offsetOKAprontoOKFF = 999; //14
-                distanceBetweenSillBracketholes = 999; //15
-                triangularLockingDistance = 999; //16
+                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                offsetOKAprontoOKFF = 29; //14
+                distanceBetweenSillBracketholes = 42; //15
+                triangularLockingDistance = 100; //16
                 break;
             case 3:
-                supportPlateWidth = 999; //13
-                offsetOKAprontoOKFF = 999; //14
-                distanceBetweenSillBracketholes = 999; //15
-                triangularLockingDistance = 999; //16
+                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 25; //13
+                offsetOKAprontoOKFF = 88; //14
+                distanceBetweenSillBracketholes = 105; //15
+                triangularLockingDistance = 168; //16
                 break;
             default:
                 ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
