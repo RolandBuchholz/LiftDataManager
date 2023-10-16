@@ -1,5 +1,6 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using Windows.Storage;
@@ -354,16 +355,38 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
+    private void GetProgrammsPath()
+    {
+        var liloRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\BUCHER\LILO");
+        if (liloRegistryKey is not null)
+        {
+            var liloPath = Registry.GetValue(liloRegistryKey.Name, "basepath", "")?.ToString();
+
+            if (!string.IsNullOrWhiteSpace(liloPath))
+            {
+                PathLilo = Path.Combine(liloPath,"PRG","LILO.EXE");
+            }
+            else
+            {
+                PathLilo = string.Empty;
+            }
+        }
+        else
+        {
+            PathLilo = string.Empty;
+        }
+        PathCFP = _settingService.PathCFP;
+        PathZALift = _settingService.PathZALift;
+        PathExcel = _settingService.PathExcel;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         if (CurrentSpeziProperties is not null)
             CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        GetProgrammsPath();
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
-        PathCFP = _settingService.PathCFP;
-        PathZALift = _settingService.PathZALift;
-        PathLilo = _settingService.PathLilo;
-        PathExcel = _settingService.PathExcel;
         PathDataBase = _settingService.PathDataBase;
         selectedLogLevel = _settingService.LogLevel;
         AutoSave = _settingService.AutoSave;

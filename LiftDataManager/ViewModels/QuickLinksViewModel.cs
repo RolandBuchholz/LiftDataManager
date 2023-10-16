@@ -836,11 +836,17 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         SynchronizeViewModelParameter();
         var startargs = "";
         var pathLilo = _settingService.PathLilo;
+        var auftragsnummer = ParameterDictionary?["var_AuftragsNummer"].Value;
+        var pathXml = Path.GetDirectoryName(FullPathXml);
 
-        if (File.Exists(pathLilo))
+        if(!string.IsNullOrWhiteSpace(pathXml))
         {
-            StartProgram(pathLilo, startargs);
+            var pathLiloCalculation = Path.Combine(pathXml, "Berechnungen", $"{auftragsnummer}.LILO");
+            if (File.Exists(pathLiloCalculation))
+                startargs = pathLiloCalculation;
         }
+        if (File.Exists(pathLilo))
+            StartProgram(pathLilo, startargs);
     }
 
     [RelayCommand]

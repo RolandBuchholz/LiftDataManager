@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,8 +12,7 @@
     xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:sys="using:System"
     xmlns:ui="using:CommunityToolkit.WinUI"
-    xmlns:xaml="using:Microsoft.UI.Xaml" 
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -479,12 +479,11 @@
                                     </controls:SettingsCard.HeaderIcon>
                                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                         <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
-                                        <Button
-                                            Margin="5,0,0,0"
-                                            VerticalAlignment="Bottom"
-                                            Command="{x:Bind ViewModel.UpdateFilePathCommand}"
-                                            CommandParameter="PathLilo">
-                                            <SymbolIcon Symbol="Share" />
+                                        <Button Margin="5,0,0,0" VerticalAlignment="Bottom">
+                                            <SymbolIcon Symbol="SyncFolder" />
+                                            <ToolTipService.ToolTip>
+                                                automatisch ermittelter Pfad
+                                            </ToolTipService.ToolTip>
                                         </Button>
                                     </StackPanel>
                                 </controls:SettingsCard>
