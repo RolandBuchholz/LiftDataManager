@@ -218,6 +218,11 @@ public partial class App : Application
         const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
         string? dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
 
+        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)!))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+        }
+
         if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var obj))
         {
             if (!string.IsNullOrWhiteSpace((string)obj))

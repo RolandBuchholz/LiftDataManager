@@ -14,13 +14,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private readonly ILogger<AllgemeineDatenViewModel> _logger;
     private readonly ParameterContext _parametercontext;
     private ParameterContext? _editableparametercontext;
-    private readonly ISettingService _settingService;
 
-    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext, ISettingService settingsSelectorService, ILogger<AllgemeineDatenViewModel> logger) :
+    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
-        _settingService = settingsSelectorService;
         _logger = logger;
     }
 
@@ -345,7 +343,6 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 {
                     LiftPlanners.Add(addedLiftpanner.Entity.Id, $"{addedLiftpanner.Entity.Company} ({addedLiftpanner.Entity.FirstName} {addedLiftpanner.Entity.Name})");
                     SelectedLiftPlanner = LiftPlanners[addedLiftpanner.Entity.Id];
-                    UpdateDataBase();
                     _logger.LogInformation(60179, "Liftplanner: {Company} successfully add to database", addedLiftpanner.DebugView.LongView);
                 }   
             }
@@ -404,15 +401,6 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
             ZipCode = null;
             addLiftPlannerDialog.Hide();
         }
-    }
-
-    private void UpdateDataBase()
-    {
-        //const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
-        //string? dbPath = _settingService.PathDataBase;
-
-        //if (!string.IsNullOrWhiteSpace(dbPath))
-        //    File.Copy(workPathDb, dbPath, true);
     }
 
     public void OnNavigatedTo(object parameter)
