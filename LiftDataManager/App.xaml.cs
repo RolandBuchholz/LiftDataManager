@@ -215,29 +215,23 @@ public partial class App : Application
 
     public static string GetConnectionString(bool dbReadOnly)
     {
-        string? dbPath;
+        const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
+        string? dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
 
         if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var obj))
         {
-            if (string.IsNullOrWhiteSpace((string)obj))
-            {
-                dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
-            }
-            else
-            {
+            if (!string.IsNullOrWhiteSpace((string)obj))
                 dbPath = JsonConvert.DeserializeObject<string>((string)obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-            }
-        }
-        else
-        {
-            dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
         }
 
+        if (dbPath is not null && dbReadOnly)
+            File.Copy(dbPath, workPathDb, true);
+        
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
 
         return new SqliteConnectionStringBuilder()
         {
-            DataSource = dbPath,
+            DataSource = dbReadOnly ? workPathDb : dbPath,
             Mode = sqliteOpenMode,
             ForeignKeys = true,
         }.ToString();
