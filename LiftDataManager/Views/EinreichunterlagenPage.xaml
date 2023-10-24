@@ -5,6 +5,7 @@
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     mc:Ignorable="d">
@@ -18,6 +19,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -45,9 +47,539 @@
                     Header="Einreichunterlagen"
                     IsExpanded="True"
                     Style="{StaticResource ExpanderContentStyle}">
-                    <Grid>
-                        <TextBlock FontSize="36" Text="coming soon" />
-                    </Grid>
+                    <StackPanel Margin="5,0,5,0" Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="24"
+                            Text="Beschreibung der Aufzugsanlage" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Betriebsort:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Fabrik-Nr.:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_FabrikNummer'].Value}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Art des Aufzuges:" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.LiftType}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Errichtungsvorschrift:" />
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="150"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Normen'].Value}" />
+                                <CheckBox
+                                    Margin="15,5,0,5"
+                                    Content="EN 81-21"
+                                    IsChecked="{x:Bind ViewModel.ParameterDictionary['var_EN8121'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                    IsHitTestVisible="False" />
+                                <CheckBox
+                                    Margin="0,5,0,5"
+                                    Content="EN 81-72"
+                                    IsChecked="{x:Bind ViewModel.ParameterDictionary['var_EN8172'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                    IsHitTestVisible="False" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Richtlinie:" />
+                            <TextBox
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="Aufzugsrichtlinie 2014/33/EU" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Name des Betreibers:" />
+                            <TextBox
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value}" />
+                        </Grid>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="1. Allgemeine Angaben" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Hersteller und/oder Einführer" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.Manufacturer}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Tragfähigkeit:" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox Style="{StaticResource InfoTextboxStyle}" Text="{x:Bind ViewModel.ParameterDictionary['var_Q'].Value}" />
+                                <TextBlock
+                                    Margin="5,0,5,10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="kg oder" />
+                                <TextBox Style="{StaticResource InfoTextboxStyle}" Text="{x:Bind ViewModel.ParameterDictionary['var_Personen'].Value}" />
+                                <TextBlock
+                                    Margin="5,0,5,10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="Personen" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Baujahr:" />
+                            <ComboBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="100"
+                                Margin="0,0,0,5">
+                                <ComboBoxItem Content="2023" />
+                                <ComboBoxItem Content="2024" />
+                                <ComboBoxItem Content="2025" />
+                                <ComboBoxItem Content="2026" />
+                                <ComboBoxItem Content="2027" />
+                                <ComboBoxItem Content="2028" />
+                                <ComboBoxItem Content="2029" />
+                            </ComboBox>
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Errichtungsdatum:" />
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                Orientation="Horizontal">
+                                <ComboBox Width="100" Margin="0,0,5,0">
+                                    <ComboBoxItem Content="Januar" />
+                                    <ComboBoxItem Content="Februar" />
+                                    <ComboBoxItem Content="März" />
+                                    <ComboBoxItem Content="April" />
+                                    <ComboBoxItem Content="Mai" />
+                                    <ComboBoxItem Content="Juni" />
+                                    <ComboBoxItem Content="Juli" />
+                                    <ComboBoxItem Content="August" />
+                                    <ComboBoxItem Content="September" />
+                                    <ComboBoxItem Content="Oktober" />
+                                    <ComboBoxItem Content="November" />
+                                    <ComboBoxItem Content="Dezember" />
+                                </ComboBox>
+                                <ComboBox Width="100">
+                                    <ComboBoxItem Content="2023" />
+                                    <ComboBoxItem Content="2024" />
+                                    <ComboBoxItem Content="2025" />
+                                    <ComboBoxItem Content="2026" />
+                                    <ComboBoxItem Content="2027" />
+                                    <ComboBoxItem Content="2028" />
+                                    <ComboBoxItem Content="2029" />
+                                </ComboBox>
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Betriebsgeschwindigkeit:" />
+                            <StackPanel
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="100"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
+                                <TextBlock
+                                    Margin="5,0,5,12"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="m/s" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Förderhöhe:" />
+                            <StackPanel
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="100"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_FH'].Value}" />
+                                <TextBlock
+                                    Margin="5,0,5,12"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="m" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="6"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Anzahl der Schachttüren:" />
+                            <TextBox
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Zugangsstellen'].Value}" />
+                            <TextBlock
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Anzahl der Haltestellen:" />
+                            <TextBox
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Haltestellen'].Value}" />
+                            <TextBlock
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="0,5,0,10"
+                                Style="{StaticResource BodyStrongTextBlockStyle}">
+                                <Run Text="Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: " />
+                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_GemeinsamerSchachtMit'].Value}" />
+                                <Run Text=" im gleichen Schacht errichtet." />
+                            </TextBlock>
+                        </Grid>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="2. Fahrschacht - Fahrschachtzugänge" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Ausführung der Fahrschachtwände:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Schacht'].Value}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="untere Schutzraumhöhe:" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    Width="100"
+                                    Text="1000"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="mm   Art des Schutzraums" />
+                                <ComboBox Width="150">
+                                    <ComboBoxItem Content="Typ1 (Aufrecht)" />
+                                    <ComboBoxItem Content="Typ2 (Hockend)" />
+                                    <ComboBoxItem Content="Typ3 (Liegend)" />
+                                </ComboBox>
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="obere Schutzraumhöhe:" />
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    Width="100"
+                                    Text="1000"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="mm   Art des Schutzraums" />
+                                <ComboBox Width="150">
+                                    <ComboBoxItem Content="Typ1 (Aufrecht)" />
+                                    <ComboBoxItem Content="Typ2 (Hockend)" />
+                                </ComboBox>
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Art der maschinell- handbetätigten Fahrschachttüren:" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Stück Türen von m Breite und m Höhe" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Schauöffnungen (aus mm dickem Glas) in den Fahrschachttüren - nicht vorhanden." />
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.RowSpan="6"
+                                Grid.Column="3"
+                                Orientation="Horizontal">
+                                <StackPanel Margin="40,0,40,0">
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Schutzraum Schachtgrube" />
+                                    <Image
+                                        Width="150"
+                                        HorizontalAlignment="Left"
+                                        Source="/Images/TechnicalDocumentation/protectionRoomTyp1.png" />
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="BxTxH 0,40 x 0,50 x 2,00" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Schutzraum Schachtkopf" />
+                                    <Image
+                                        Width="150"
+                                        HorizontalAlignment="Left"
+                                        Source="/Images/TechnicalDocumentation/protectionRoomTyp2.png" />
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="BxTxH 0,50 x 0,70 x 1,00" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!--<Image
+                            Width="300"
+                            Height="300"
+                            Source="/Images/TechnicalDocumentation/protectionRoomTyp3.png" />-->
+                        </Grid>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="3. Tragmittel" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Anzahl und Art der Tragmittel:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_NumberOfRopes'].Value}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Aufhängung des Fahrkorbes:" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_AufhaengungsartRope'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5,0,5,12"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text=" : 1 , des Gegengewichtes " />
+                                <TextBox
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_AufhaengungsartRope'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5,0,5,12"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text=" : 1" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="0,0,0,0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Anzahl und Art der gespannten - nicht gespannten Unterseile:" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="keine" />
+                        </Grid>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="4. Antrieb" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="5. Fahrkorb-Gegengewicht" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="6. Elektrische Ausrüstung" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="7. Liste der Sicherheitsbauteile" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="8. Besonderheiten der Aufzugsanlage" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            FontSize="20"
+                            Text="Anlagen:" />
+                        <TextBlock Margin="0,0,0,10" FontSize="16">
+                            <Run Text=" Der Montagebetrieb" /> <LineBreak />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Rieblingen, den " />
+                            <Run Text="{x:Bind ViewModel.DateTimeNow}" />
+                        </TextBlock>
+                    </StackPanel>
                 </Expander>
                 <Button
                     Grid.Column="0"
@@ -71,8 +603,8 @@
             Grid.Row="0"
             Grid.Column="1"
             Margin="5,0,0,0"
-            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" 
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}" />
+            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <!--  Footer  -->
         <SpeziControls:FooterControl
             Grid.Row="1"

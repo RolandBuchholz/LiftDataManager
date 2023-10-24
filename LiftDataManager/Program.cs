@@ -23,7 +23,7 @@ public static class Program
         }
     }
 
-    private static void OnActivated(object sender, AppActivationArguments args)
+    private static void OnActivated(object? sender, AppActivationArguments args)
     {
         if (args != null)
         {

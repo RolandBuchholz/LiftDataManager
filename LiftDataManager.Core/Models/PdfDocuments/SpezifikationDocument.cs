@@ -307,8 +307,12 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Schacht"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Befestigung"]);
                 });
-                table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Maschinenraum"]);
-                table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtgrubenleiter"]);
+                table.Cell().Row(3).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Maschinenraum"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_GemeinsamerSchachtMit"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Schachtgrubenleiter"]);
+                });
                 table.Cell().Row(4).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtabmessungen\n(innen im Lichten)").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).Row(row =>
                 {
@@ -515,7 +519,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
                 table.Cell().Row(4).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(4).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
+                table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
+                table.Cell().Row(4).Column(4).ParameterStringCell(ParameterDictionary["var_Spiegelausfuehrung"]);
                 table.Cell().Row(4).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelA"], true, "Seite A");
@@ -529,8 +534,7 @@ public class SpezifikationDocument : PdfBaseDocument
 
                 table.Cell().Row(6).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelAntiKratzf"], true, "Antisplitterf.");
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true, "Spiegelpaneel");
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Spiegelleiste"], true);
                 });
                 table.Cell().Row(6).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);

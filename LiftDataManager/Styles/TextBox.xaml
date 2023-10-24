@@ -19,4 +19,10 @@
         <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
+    <Style x:Name="InfoTextboxStyle" TargetType="TextBox">
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Margin" Value="0,0,0,5" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 </ResourceDictionary>

@@ -27,7 +27,7 @@
             Margin="5,0,5,0"
             ui:TextBoxExtensions.ValidationMode="Dynamic"
             ui:TextBoxExtensions.ValidationType="Decimal"
-            Header="{x:Bind Header}"
+            Header="{x:Bind Header, Mode=OneWay}"
             IsReadOnly="{x:Bind ReadOnly, Mode=TwoWay}"
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}"

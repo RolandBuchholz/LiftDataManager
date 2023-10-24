@@ -166,7 +166,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
-        var aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
+        string aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
 
         var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
                                                         .ToList()
@@ -232,7 +232,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         const double abgehaengteDeckeGewichtproQm = 24;
         const double deckeBelegtGewichtproQm = 12;
         const double spiegelGewichtproQm = 6 * 2.5;
-        const double paneeleSpiegelGewichtproQm = 1.5 * 2.7 + 0.85 * 10 + 4 * 2.5;
+        const double paneeleSpiegelGewichtproQm = 6 * 2.5; // 1.5 * 2.7 + 0.85 * 10 + 4 * 2.5
         const double aussenVerkleidungGewichtproQm = 12;
         const double gewichtKlemmkasten = 10;
         const double gewichtSchraubenZubehoer = 5;
@@ -240,70 +240,70 @@ public partial class CalculationsModuleService : ICalculationsModule
         SetDefaultParameter(parameterDictionary);
 
         //ParameterDictionary
-        var kabinenKorrekturGewicht = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_F_Korr");
-        var abgehaengteDecke = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_abgDecke");
-        var belegteDecke = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Decke")).StartsWith("Sichtseite belegt");
-        var kabineundAbgehaengteDeckeHoehe = abgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht") + 50 :
+        double kabinenKorrekturGewicht = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_F_Korr");
+        bool abgehaengteDecke = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_abgDecke");
+        bool belegteDecke = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Decke")).StartsWith("Sichtseite belegt");
+        double kabineundAbgehaengteDeckeHoehe = abgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht") + 50 :
                                                                 LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht");
-        var kabinenhoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHA");
-        var belagAufDerDecke = !(((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach")).StartsWith("kein") ||
+        double kabinenhoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHA");
+        bool belagAufDerDecke = !(((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach")).StartsWith("kein") ||
                                string.IsNullOrEmpty((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach")));
-        var variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_Variable_Tuerdaten");
-        var oeffnungsrichtung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tueroeffnung");
-        var anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
-        var kabinentuerGewichtA = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht");
-        var kabinentuerGewichtB = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_B");
-        var kabinentuerGewichtC = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_C");
-        var kabinentuerGewichtD = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_D");
+        bool variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_Variable_Tuerdaten");
+        string oeffnungsrichtung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tueroeffnung");
+        int anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
+        double kabinentuerGewichtA = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht");
+        double kabinentuerGewichtB = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_B");
+        double kabinentuerGewichtC = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_C");
+        double kabinentuerGewichtD = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Tuergewicht_D");
 
-        var bodenTyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Bodentyp");
-        var bodenblech = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Bodenblech");
-        var bodenProfilGewicht = Math.Round(GetGewichtBodenprofil(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BoPr")), 2);
-        var bodengewichtProQM = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_SonderExternBodengewicht");
-        var bodenBelagGewichtproQm = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Bodenbelagsgewicht");
-        var schuerzeVerstaerkt = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_Schuerzeverstaerkt");
-        var schottenStaerke = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Materialstaerke");
+        string bodenTyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Bodentyp");
+        double bodenblech = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Bodenblech");
+        double bodenProfilGewicht = Math.Round(GetGewichtBodenprofil(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BoPr")), 2);
+        double bodengewichtProQM = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_SonderExternBodengewicht");
+        double bodenBelagGewichtproQm = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Bodenbelagsgewicht");
+        bool schuerzeVerstaerkt = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_Schuerzeverstaerkt");
+        double schottenStaerke = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Materialstaerke");
 
-        var spiegelA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelA");
-        var spiegelB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelB");
-        var spiegelC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelC");
-        var spiegelD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelD");
-        var spiegelHoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel");
-        var spiegelBreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel");
-        var spiegelPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
+        bool spiegelA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelA");
+        bool spiegelB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelB");
+        bool spiegelC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelC");
+        bool spiegelD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelD");
+        double spiegelHoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel");
+        double spiegelBreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel");
+        bool spiegelPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
 
-        var paneelPosA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosA");
-        var paneelPosB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosB");
-        var paneelPosC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosC");
-        var paneelPosD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosD");
+        bool paneelPosA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosA");
+        bool paneelPosB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosB");
+        bool paneelPosC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosC");
+        bool paneelPosD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosD");
 
-        var aussenverkleidungA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungA");
-        var aussenverkleidungB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungB");
-        var aussenverkleidungC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungC");
-        var aussenverkleidungD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungD");
+        bool aussenverkleidungA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungA");
+        bool aussenverkleidungB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungB");
+        bool aussenverkleidungC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungC");
+        bool aussenverkleidungD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_AussenverkleidungD");
 
-        var rammschutzA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzA");
-        var rammschutzB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzB");
-        var rammschutzC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzC");
-        var rammschutzD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzD");
+        bool rammschutzA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzA");
+        bool rammschutzB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzB");
+        bool rammschutzC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzC");
+        bool rammschutzD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_RammschutzD");
 
-        var handlaufA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufA");
-        var handlaufB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufB");
-        var handlaufC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufC");
-        var handlaufD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufD");
+        bool handlaufA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufA");
+        bool handlaufB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufB");
+        bool handlaufC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufC");
+        bool handlaufD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_HandlaufD");
 
-        var sockelleisteA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteA");
-        var sockelleisteB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteB");
-        var sockelleisteC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteC");
-        var sockelleisteD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteD");
+        bool sockelleisteA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteA");
+        bool sockelleisteB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteB");
+        bool sockelleisteC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteC");
+        bool sockelleisteD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteD");
 
         //Database
-        var sockelleisteHoehe = GetHoeheSockelleiste(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
-        var tableauGewicht = GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
-        var tableauBreite = GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
-        var belagAufDerDeckeGewichtproQm = GetGewichtSonderblech(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
-        var paneeleGewichtproQm = GetGewichtPaneele(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Paneelmaterial"));
-        var stossleisteGewichtproMeter = Math.Round(GetGewichtRammschutz(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz")), 2);
+        double sockelleisteHoehe = GetHoeheSockelleiste(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
+        double tableauGewicht = GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
+        double tableauBreite = GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
+        double belagAufDerDeckeGewichtproQm = GetGewichtSonderblech(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
+        double paneeleGewichtproQm = GetGewichtPaneele(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Paneelmaterial"));
+        double stossleisteGewichtproMeter = Math.Round(GetGewichtRammschutz(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz")), 2);
 
         //Calculations
         double bodengewicht = kabinenbreite * kabinentiefe * bodenblech * 7.85 / Math.Pow(10, 6) +
@@ -339,7 +339,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         var haelsegewicht = schottenStaerke * ((kabineundAbgehaengteDeckeHoehe + 86) *
                                    ((halsL1 + halsR1 + halsL2 + halsR2 + halsL3 + halsR3 + halsL4 + halsR4) + anzahlKabinentueren * 214 +
-                                   anzahlKabinentueren * (oeffnungsrichtung == "einseitig öffnend" ? anzahlKabinentuerfluegel * 45 : 0))
+                                   anzahlKabinentueren * (oeffnungsrichtung.StartsWith("einseitig öffnend") ? anzahlKabinentuerfluegel * 45 : 0))
                                    + anzahlKabinentueren * (tuerbreite + 104) * (kabineundAbgehaengteDeckeHoehe - tuerhoehe + 99)) * 8 / Math.Pow(10, 6);
         var andidroehnGewicht = 2 * 1000 * 150 * 1.36 / Math.Pow(10, 6) * (schottenLaenge / 275);
 
@@ -359,17 +359,16 @@ public partial class CalculationsModuleService : ICalculationsModule
         var spiegelQm = !spiegelPaneel ? (Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelB) + Convert.ToInt32(spiegelC) + Convert.ToInt32(spiegelD)) * spiegelHoehe * spiegelBreite / Math.Pow(10, 6) : 0;
         var spiegelGewicht = spiegelGewichtproQm * spiegelQm;
 
-        var paneeleQm = (paneelPosA || paneelPosB || paneelPosC || paneelPosD) ?
-                       (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
-                     ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - spiegelQm : 0;
-        var paneeleGewicht = paneeleGewichtproQm * paneeleQm;
-
         var paneeleSpiegelQm = spiegelPaneel ?
-                                        spiegelHoehe > 0 ? ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * spiegelHoehe / 1000
-                                        : ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * ((kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000)
-                                        : 0;
+                                spiegelHoehe > 0 ? ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * spiegelHoehe / 1000
+                                : ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * ((kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000)
+                                : 0;
         var paneeleSpiegelGewicht = paneeleSpiegelGewichtproQm * paneeleSpiegelQm;
 
+        var paneeleQm = (paneelPosA || paneelPosB || paneelPosC || paneelPosD) ?
+                       (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
+                     ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - (spiegelQm + paneeleSpiegelQm) : 0;
+        var paneeleGewicht = paneeleGewichtproQm * paneeleQm;
 
         var vSGTyp = (glasLaengeWandA > 1 || glasLaengeWandB > 1 || glasLaengeWandC > 1 || glasLaengeWandD > 1) ? "VSG 12" : "VSG 10";
         var vSGGewichtproQm = (vSGTyp == "VSG 10") ? 25.0 : 30.0;

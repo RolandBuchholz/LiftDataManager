@@ -1088,6 +1088,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (availableFloorColors is not null)
         {
             ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Clear();
+            ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Add("(keine Auswahl)");
             foreach (var item in availableFloorColors)
             {
                 ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Add(item!);

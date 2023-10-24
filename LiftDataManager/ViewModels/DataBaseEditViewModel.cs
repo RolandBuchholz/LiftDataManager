@@ -435,6 +435,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     [RelayCommand(CanExecute = nameof(CanChangeParameters))]
     private void ChangeParametersData()
     {
+        if (_editableparametercontext is null)
+            return;
         if (_editableparametercontext.ChangeTracker.HasChanges())
         {
             try
@@ -463,6 +465,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
     private void SetDatabaseTableValueModification(string operation, string tableName, int id, string entityName, string? newEntityValue = null)
     {
+        if (_editableparametercontext is null)
+            return;
         var timestamp = DateTime.Now.ToString();
         var userName = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
 
@@ -579,6 +583,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     [RelayCommand]
     public void LoadDatabaseTableValueModificationHistory()
     {
+        if (_editableparametercontext is null)
+            return;
         TableHistory = _editableparametercontext.Set<DatabaseTableValueModification>().OrderByDescending(x => x.Id)
                                                                                       .ToList();
     }

@@ -40,16 +40,19 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             _ = SetCalculatedValuesAsync();
         };
+
         if (message.PropertyName == "var_Bodenbelag" ||
             message.PropertyName == "var_Bodentyp" ||
             message.PropertyName == "var_Bodenbelagsdicke")
         {
             SetCanEditFlooringProperties(message.PropertyName, message.NewValue, message.OldValue);
         }
+
         if (message.PropertyName == "var_BodenbelagsTyp")
         {
             SetFloorImagePath();
         }
+
         if (carEquipment.Contains(message.PropertyName))
         {
             var liftparameter = message.Sender as Parameter;
@@ -59,6 +62,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
             }
         }
+
         if (message.PropertyName == "var_Rueckwand")
         {
             var liftparameter = message.Sender as Parameter;
@@ -66,23 +70,62 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             if (liftparameter is not null)
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
         }
+
+        if (message.PropertyName == "var_SpiegelA" ||
+            message.PropertyName == "var_SpiegelB" || 
+            message.PropertyName == "var_SpiegelC" || 
+            message.PropertyName == "var_SpiegelD" ||
+            message.PropertyName == "var_Spiegelausfuehrung")
+        {
+            CanShowMirrorDimensions();
+        }
+
+        if (message.PropertyName == "var_Sockelleiste")
+        {
+            SetSkirtingBoardHeight(true);
+        }
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
 
     [ObservableProperty]
-    public string floorImagePath = @"/Images/NoImage.png";
+    private string? mirrorDimensionsWidth1;
 
     [ObservableProperty]
-    public bool showFlooringColors;
+    private string? mirrorDimensionsWidth2;
 
     [ObservableProperty]
-    public bool canEditFlooringProperties;
+    private string? mirrorDimensionsWidth3;
 
     [ObservableProperty]
-    public bool canEditFloorWeightAndHeight;
+    private string? mirrorDimensionsHeight1;
 
-    public void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
+    [ObservableProperty]
+    private string? mirrorDimensionsHeight2;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsHeight3;
+
+    [ObservableProperty]
+    private bool showMirrorDimensions2;
+
+    [ObservableProperty]
+    private bool showMirrorDimensions3;
+
+    [ObservableProperty]
+    private string floorImagePath = @"/Images/NoImage.png";
+
+    [ObservableProperty]
+    private bool showFlooringColors;
+
+    [ObservableProperty]
+    private bool canEditFlooringProperties;
+
+    [ObservableProperty]
+    private bool canEditFloorWeightAndHeight;
+
+    private void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
     {
         CanEditFlooringProperties = ParameterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParameterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
         CanEditFloorWeightAndHeight = ParameterDictionary!["var_Bodentyp"].Value == "sonder" || ParameterDictionary["var_Bodentyp"].Value == "extern";
@@ -115,7 +158,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         };
     }
 
-    public void SetFloorImagePath()
+    private void SetFloorImagePath()
     {
         if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_BodenbelagsTyp"].Value))
         {
@@ -131,6 +174,77 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             FloorImagePath = @"/Images/NoImage.png";
         }
+    }
+
+    private void CanShowMirrorDimensions()
+    {
+        List<string> mirrors = new();
+
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
+            mirrors.Add("A");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
+            mirrors.Add("B");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelC"))
+            mirrors.Add("C");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
+            mirrors.Add("D");
+
+        ShowMirrorDimensions2 = mirrors.Count > 1;
+        ShowMirrorDimensions3 = mirrors.Count > 2;
+        MirrorDimensionsWidth1 = "Breite Spiegel";
+        MirrorDimensionsHeight1 = "Höhe Spiegel";
+
+        if (mirrors.Count > 0)
+        {
+            MirrorDimensionsWidth1 = $"Breite Spiegel Wand {mirrors[0]}";
+            MirrorDimensionsHeight1 = $"Höhe Spiegel Wand {mirrors[0]}";
+            //ParameterDictionary!["var_BreiteSpiegel"].Value = GetMirrorWidth(mirrors[0]);
+            //ParameterDictionary!["var_HoeheSpiegel"].Value = GetMirrorHeight(mirrors[0]);
+        }
+        if (mirrors.Count > 1)
+        {
+            MirrorDimensionsWidth2 = $"Breite Spiegel Wand {mirrors[1]}";
+            MirrorDimensionsHeight2 = $"Höhe Spiegel Wand {mirrors[1]}";
+            //ParameterDictionary!["var_BreiteSpiegel2"].Value = GetMirrorWidth(mirrors[1]);
+            //ParameterDictionary!["var_HoeheSpiegel2"].Value = GetMirrorHeight(mirrors[1]);
+        }
+        if (mirrors.Count > 2)
+        {
+            MirrorDimensionsWidth3 = $"Breite Spiegel Wand {mirrors[2]}";
+            MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
+            //ParameterDictionary!["var_BreiteSpiegel3"].Value = GetMirrorWidth(mirrors[2]);
+            //ParameterDictionary!["var_HoeheSpiegel3"].Value = GetMirrorHeight(mirrors[2]);
+        }
+    }
+
+    private void SetSkirtingBoardHeight(bool modify)
+    {
+        if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_Sockelleiste"].Value))
+        {
+            ParameterDictionary!["var_SockelleisteOKFF"].Value = string.Empty;
+        }
+        else
+        {
+            if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_SockelleisteOKFF"].Value) || modify)
+            {
+
+                var skirtingHeight = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == ParameterDictionary!["var_Sockelleiste"].Value)?.Height;
+                if (skirtingHeight is not null)
+                {
+                    ParameterDictionary!["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
+                }
+            }
+        }      
+    }
+
+    private string GetMirrorWidth(string zugang)
+    {
+        return string.Empty;
+    }
+
+    private string GetMirrorHeight(string zugang)
+    {
+        return string.Empty;
     }
 
     [RelayCommand]
@@ -166,6 +280,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             _ = SetModelStateAsync();
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);
             SetFloorImagePath();
+            CanShowMirrorDimensions();
+            SetSkirtingBoardHeight(false);
         }
     }
 

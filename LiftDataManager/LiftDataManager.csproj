@@ -76,6 +76,8 @@
     <None Remove="Images\carAccesses.png" />
     <None Remove="Images\CarDetails\carDoorInstallationDimensions.png" />
     <None Remove="Images\CarDetails\ConnectionAngle.png" />
+    <None Remove="Images\CarDetails\MirrorPanel.png" />
+    <None Remove="Images\CarDetails\MirrorRail.png" />
     <None Remove="Images\carDimensions.png" />
     <None Remove="Images\CFPTransparent.png" />
     <None Remove="Images\ExcelTransparent.png" />
@@ -97,6 +99,9 @@
     <None Remove="Images\OrdnerTransparent.png" />
     <None Remove="Images\Ordneryellow.png" />
     <None Remove="Images\PdfTransparent.png" />
+    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp1.png" />
+    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp2.png" />
+    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp3.png" />
     <None Remove="Images\TonerSaveOFF.png" />
     <None Remove="Images\TonerSaveON.png" />
     <None Remove="Images\VaultTransparent.png" />
@@ -114,6 +119,8 @@
     <Content Include="Images\carAccesses.png" />
     <Content Include="Images\CarDetails\carDoorInstallationDimensions.png" />
     <Content Include="Images\CarDetails\ConnectionAngle.png" />
+    <Content Include="Images\CarDetails\MirrorPanel.png" />
+    <Content Include="Images\CarDetails\MirrorRail.png" />
     <Content Include="Images\carDimensions.png" />
     <Content Include="Images\CFPTransparent.png" />
     <Content Include="Images\ExcelTransparent.png" />
@@ -134,6 +141,9 @@
     <Content Include="Images\OrdnerTransparent.png" />
     <Content Include="Images\Ordneryellow.png" />
     <Content Include="Images\PdfTransparent.png" />
+    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp1.png" />
+    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp2.png" />
+    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp3.png" />
     <Content Include="Images\TonerSaveOFF.png" />
     <Content Include="Images\TonerSaveON.png" />
     <Content Include="Images\VaultTransparent.png" />

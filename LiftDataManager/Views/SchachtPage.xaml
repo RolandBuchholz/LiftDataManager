@@ -105,13 +105,17 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Maschinenraum'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <SpeziControls:ParameterComboBox
+                                    <SpeziControls:ParameterTextBox
                                         Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GemeinsamerSchachtMit'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schachtgrubenleiter'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>

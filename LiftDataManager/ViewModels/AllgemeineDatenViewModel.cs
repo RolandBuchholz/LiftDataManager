@@ -247,6 +247,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         if (_editableparametercontext is null)
         {
             DbContextOptionsBuilder editableOptions = new();
+            editableOptions.UseSqlite(App.GetConnectionString(false));
             _editableparametercontext = new ParameterContext(editableOptions.Options);
         }
 
