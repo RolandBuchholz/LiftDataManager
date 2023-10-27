@@ -2,6 +2,7 @@
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.PdfDocuments;
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
 
@@ -501,7 +502,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
                 table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(borderColor).Bold();
-                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Beleuchtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Beleuchtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
                 table.Cell().Row(1).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"], "Stk");
                 table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin", false, true);
@@ -518,7 +519,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_1"]);
                 });
 
-                table.Cell().Row(4).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Spiegel").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(4).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Spiegel").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ParameterStringCell(ParameterDictionary["var_Spiegel"]);
                 table.Cell().Row(4).Column(4).ParameterStringCell(ParameterDictionary["var_Spiegelausfuehrung"]);
                 table.Cell().Row(4).Column(5).ColumnSpan(2).Row(row =>
@@ -528,76 +529,116 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SpiegelD"], true, "Seite D");
                 });
-                table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel"], "mm");
-                table.Cell().Row(5).Column(4).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel"], "mm");
-                table.Cell().Row(5).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_InfoSpiegel"]);
+                List<string> mirrors = new();
+                if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
+                    mirrors.Add("A");
+                if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
+                    mirrors.Add("B");
+                if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelC"))
+                    mirrors.Add("C");
+                if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
+                    mirrors.Add("D");
 
-                table.Cell().Row(6).Column(3).ColumnSpan(2).Row(row =>
+                string? mirrorNameWidth = null;
+                string? mirrorNameHeight = null;
+                string? mirrorNameWidth2 = null;
+                string? mirrorNameHeight2 = null;
+                string? mirrorNameWidth3 = null;
+                string? mirrorNameHeight3 = null;
+
+                if (mirrors.Count > 0)
+                {
+                    mirrorNameWidth = $"Breite Spiegel Wand {mirrors[0]}";
+                    mirrorNameHeight = $"Höhe Spiegel Wand {mirrors[0]}";
+
+                }
+                if (mirrors.Count > 1)
+                {
+                    mirrorNameWidth2 = $"Breite Spiegel Wand {mirrors[1]}";
+                    mirrorNameHeight2 = $"Höhe Spiegel Wand {mirrors[1]}";
+
+                }
+                if (mirrors.Count > 2)
+                {
+                    mirrorNameWidth3 = $"Breite Spiegel Wand {mirrors[2]}";
+                    mirrorNameHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
+                }
+
+                table.Cell().Row(5).Column(3).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel"], "mm", false, false, mirrorNameWidth);
+                table.Cell().Row(5).Column(4).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel"], "mm", false, false, mirrorNameHeight);
+                table.Cell().Row(5).Column(5).ColumnSpan(2).RowSpan(3).ParameterStringCell(ParameterDictionary["var_InfoSpiegel"]);
+                table.Cell().Row(6).Column(3).ShowIf(mirrors.Count > 1).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel2"], "mm", false, false, mirrorNameWidth2);
+                table.Cell().Row(6).Column(4).ShowIf(mirrors.Count > 1).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel2"], "mm", false, false, mirrorNameHeight2);
+                table.Cell().Row(7).Column(3).ShowIf(mirrors.Count > 2).ParameterStringCell(ParameterDictionary["var_BreiteSpiegel3"], "mm", false, false, mirrorNameWidth3);
+                table.Cell().Row(7).Column(4).ShowIf(mirrors.Count > 2).ParameterStringCell(ParameterDictionary["var_HoeheSpiegel3"], "mm", false, false, mirrorNameHeight3);
+                table.Cell().Row(8).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SpiegelPaneel"], true);
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Spiegelleiste"], true);
                 });
-                table.Cell().Row(6).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
-                table.Cell().Row(6).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
+                table.Cell().Row(8).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
+                table.Cell().Row(8).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
 
-                table.Cell().Row(7).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(7).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(9).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(9).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Handlauf"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheHandlauf"], "mm");
                 });
-                table.Cell().Row(7).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(9).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_HandlaufD"], true, "Seite D");
                 });
-                table.Cell().Row(8).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(10).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteOKFF"], "mm");
                 });
-                table.Cell().Row(8).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(10).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteD"], true, "Seite D");
                 });
-                table.Cell().Row(9).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(11).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Rammschutz"]);
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz"], "mm");
+                    row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_Rammschutz"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz"], "/", false, true, "Höhen");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz2"], "/", false, true, "");
+                    row.RelativeItem(1.5f).BorderColor(Colors.BlueGrey.Darken3).BorderRight(0.1f).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz3"], "mm", false, true, "");
                 });
-                table.Cell().Row(9).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(11).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzD"], true, "Seite D");
                 });
-                table.Cell().Row(10).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
-                table.Cell().Row(10).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
+                table.Cell().Row(12).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungD"], true, "Seite D");
                 });
-                table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
-                table.Cell().Row(11).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
+                table.Cell().Row(13).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(12).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
-                table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(13).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
+                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(14).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
+                table.Cell().Row(14).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(15).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }

@@ -45,6 +45,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             _ = SetCalculatedValuesAsync();
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
         };
+
+        if (message.PropertyName == "var_Index")
+        {
+            if (ParameterDictionary is not null)
+            ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
+        };
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
         //Task.Run(async () => await SetModelStateAsync());

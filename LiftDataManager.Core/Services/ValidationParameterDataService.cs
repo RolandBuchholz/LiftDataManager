@@ -429,6 +429,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_Tueroeffnung_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
 
+        ValidationDictionary.Add("var_SpiegelA",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_SpiegelB",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_SpiegelC",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
+
+        ValidationDictionary.Add("var_SpiegelD",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
+
         AddDropDownListValidation();
     }
 

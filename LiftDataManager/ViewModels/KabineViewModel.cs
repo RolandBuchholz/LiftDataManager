@@ -198,22 +198,16 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             MirrorDimensionsWidth1 = $"Breite Spiegel Wand {mirrors[0]}";
             MirrorDimensionsHeight1 = $"Höhe Spiegel Wand {mirrors[0]}";
-            //ParameterDictionary!["var_BreiteSpiegel"].Value = GetMirrorWidth(mirrors[0]);
-            //ParameterDictionary!["var_HoeheSpiegel"].Value = GetMirrorHeight(mirrors[0]);
         }
         if (mirrors.Count > 1)
         {
             MirrorDimensionsWidth2 = $"Breite Spiegel Wand {mirrors[1]}";
             MirrorDimensionsHeight2 = $"Höhe Spiegel Wand {mirrors[1]}";
-            //ParameterDictionary!["var_BreiteSpiegel2"].Value = GetMirrorWidth(mirrors[1]);
-            //ParameterDictionary!["var_HoeheSpiegel2"].Value = GetMirrorHeight(mirrors[1]);
         }
         if (mirrors.Count > 2)
         {
             MirrorDimensionsWidth3 = $"Breite Spiegel Wand {mirrors[2]}";
             MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
-            //ParameterDictionary!["var_BreiteSpiegel3"].Value = GetMirrorWidth(mirrors[2]);
-            //ParameterDictionary!["var_HoeheSpiegel3"].Value = GetMirrorHeight(mirrors[2]);
         }
     }
 
@@ -235,16 +229,6 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                 }
             }
         }      
-    }
-
-    private string GetMirrorWidth(string zugang)
-    {
-        return string.Empty;
-    }
-
-    private string GetMirrorHeight(string zugang)
-    {
-        return string.Empty;
     }
 
     [RelayCommand]

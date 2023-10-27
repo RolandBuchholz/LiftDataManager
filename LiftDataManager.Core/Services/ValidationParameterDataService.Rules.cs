@@ -1208,4 +1208,51 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
         ParameterDictionary["var_SchutzgelaenderKontakt"].Value = railingSwitch ? "True" : "False";
     }
+
+    private void ValidateMirrorDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        List<string> mirrors = new();
+
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
+            mirrors.Add("A");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
+            mirrors.Add("B");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelC"))
+            mirrors.Add("C");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
+            mirrors.Add("D");
+
+        if (mirrors.Count == 0)
+        {
+            ParameterDictionary["var_BreiteSpiegel"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel"].Value = string.Empty;
+            ParameterDictionary["var_BreiteSpiegel2"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel2"].Value = string.Empty;
+            ParameterDictionary["var_BreiteSpiegel3"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel3"].Value = string.Empty;
+        }
+        if (mirrors.Count == 1)
+        {
+            ParameterDictionary["var_BreiteSpiegel2"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel2"].Value = string.Empty;
+            ParameterDictionary["var_BreiteSpiegel3"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel3"].Value = string.Empty;
+        }
+        if (mirrors.Count == 2)
+        {
+            ParameterDictionary["var_BreiteSpiegel3"].Value = string.Empty;
+            ParameterDictionary["var_HoeheSpiegel3"].Value = string.Empty;
+        }
+
+        //TODO ChangeDimensionsBY
+        //use CalculationsModuleService by Korrekturmaßen (Spiegelbreite, Spiegelhöhe, SpiegelAbstand Decke)
+        //Kabinentiefe
+        //Kabinenbreite
+        //Kabinenhöhe
+        //Sockelleistenhöhe
+        //Handlaufhöhe
+        //Handlaufausführung
+        //Paneelematerial ??
+        //Paneelematerial Wände ??
+    }
 }

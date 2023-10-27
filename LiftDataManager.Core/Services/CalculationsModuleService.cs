@@ -270,6 +270,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         bool spiegelD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelD");
         double spiegelHoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel");
         double spiegelBreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel");
+        double spiegelHoehe2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel2");
+        double spiegelBreite2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel2");
+        double spiegelHoehe3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel3");
+        double spiegelBreite3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel3");
         bool spiegelPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
 
         bool paneelPosA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosA");
@@ -356,13 +360,10 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         var belagAufDerDeckeGewicht = belagAufDerDecke ? Math.Round(kabinenbreite * kabinentiefe * belagAufDerDeckeGewichtproQm / Math.Pow(10, 6)) : 0;
 
-        var spiegelQm = !spiegelPaneel ? (Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelB) + Convert.ToInt32(spiegelC) + Convert.ToInt32(spiegelD)) * spiegelHoehe * spiegelBreite / Math.Pow(10, 6) : 0;
+        var spiegelQm = !spiegelPaneel ? (spiegelHoehe * spiegelBreite + spiegelHoehe2 * spiegelBreite2 + spiegelHoehe3 * spiegelBreite3) / Math.Pow(10, 6) : 0;
         var spiegelGewicht = spiegelGewichtproQm * spiegelQm;
 
-        var paneeleSpiegelQm = spiegelPaneel ?
-                                spiegelHoehe > 0 ? ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * spiegelHoehe / 1000
-                                : ((Convert.ToInt32(spiegelA) + Convert.ToInt32(spiegelC)) * kabinenbreite / 1000 + (Convert.ToInt32(spiegelD) + Convert.ToInt32(spiegelB)) * kabinentiefe / 1000) * ((kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000)
-                                : 0;
+        var paneeleSpiegelQm = spiegelPaneel ? (spiegelHoehe * spiegelBreite + spiegelHoehe2 * spiegelBreite2 + spiegelHoehe3 * spiegelBreite3) / Math.Pow(10, 6) : 0;
         var paneeleSpiegelGewicht = paneeleSpiegelGewichtproQm * paneeleSpiegelQm;
 
         var paneeleQm = (paneelPosA || paneelPosB || paneelPosC || paneelPosD) ?
@@ -390,7 +391,6 @@ public partial class CalculationsModuleService : ICalculationsModule
                                         ((Convert.ToInt32(aussenverkleidungB) + Convert.ToInt32(aussenverkleidungD)) * kabinentiefe / 1000)) * kabinenhoeheAussen / 1000 -
                                         aussenVerkleidungenmitTueren * (tuerbreite / 1000 * tuerhoehe / 1000) : 0;
         var aussenVerkleidungGewicht = Math.Round(aussenVerkleidungQm * aussenVerkleidungGewichtproQm, 0);
-
 
         var stossleisteLaenge = ((Convert.ToInt32(rammschutzA) + Convert.ToInt32(rammschutzC)) * kabinenbreite / 1000) +
                                         ((Convert.ToInt32(rammschutzB) + Convert.ToInt32(rammschutzD)) * kabinentiefe / 1000);
