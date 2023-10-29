@@ -52,6 +52,12 @@
                         <Pivot.Items>
                             <PivotItem>
                                 <PivotItem.Header>
+                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Kabinenausstattung" />
+                                </PivotItem.Header>
+                                <TextBlock FontSize="36" Text="coming soon" />
+                            </PivotItem>
+                            <PivotItem>
+                                <PivotItem.Header>
                                     <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Kabinenboden" />
                                 </PivotItem.Header>
                                 <Grid>
@@ -461,6 +467,7 @@
                                                 <RowDefinition Height="auto" />
                                                 <RowDefinition Height="auto" />
                                                 <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
                                             </Grid.RowDefinitions>
                                             <Button
                                                 Grid.Row="0"
@@ -575,6 +582,19 @@
                                                 Grid.Column="0"
                                                 VerticalAlignment="Center"
                                                 Text="Abstand Dreikantverriegelung von OKFF" />
+                                            <TextBlock
+                                                Grid.Row="17"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                Text="Schwellentyp">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock Margin="5" Text="Typ1 - Standard" />
+                                                        <TextBlock Margin="5" Text="Typ2 - Gravida" />
+                                                        <TextBlock Margin="5" Text="Typ3 - verdeckte Führung" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </TextBlock>
                                             <TextBox
                                                 Grid.Row="1"
                                                 Grid.Column="1"
@@ -1151,6 +1171,42 @@
                                                 IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
                                                 IsReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutogenerateFloorDoorData'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                                 Text="{x:Bind ViewModel.CarFloorSillParameter['16_D'], Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}" />
+                                            <TextBox
+                                                Grid.Row="17"
+                                                Grid.Column="1"
+                                                Margin="5,5,0,0"
+                                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                                IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
+                                                IsReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutogenerateFloorDoorData'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                                Text="{x:Bind ViewModel.CarFloorSillParameter['17_A'], Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}" />
+                                            <TextBox
+                                                Grid.Row="17"
+                                                Grid.Column="2"
+                                                Margin="5,5,0,0"
+                                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                                IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
+                                                IsReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutogenerateFloorDoorData'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                                Text="{x:Bind ViewModel.CarFloorSillParameter['17_B'], Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}" />
+                                            <TextBox
+                                                Grid.Row="17"
+                                                Grid.Column="3"
+                                                Margin="5,5,0,0"
+                                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                                IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
+                                                IsReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutogenerateFloorDoorData'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                                Text="{x:Bind ViewModel.CarFloorSillParameter['17_C'], Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}" />
+                                            <TextBox
+                                                Grid.Row="17"
+                                                Grid.Column="4"
+                                                Margin="5,5,0,0"
+                                                ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                                ui:TextBoxExtensions.ValidationType="Decimal"
+                                                IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
+                                                IsReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutogenerateFloorDoorData'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                                                Text="{x:Bind ViewModel.CarFloorSillParameter['17_D'], Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}" />
                                         </Grid>
                                         <SpeziControls:ParameterTextBox
                                             Grid.Row="5"

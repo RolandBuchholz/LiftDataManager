@@ -92,7 +92,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     private void SetupCarFloorSillParameter()
     {
         CarFloorSillParameter.Clear();
-        for (int i = 1; i < 17; i++)
+        for (int i = 1; i < 18; i++)
         {
             CarFloorSillParameter.Add($"{i}_A", 0);
             CarFloorSillParameter.Add($"{i}_B", 0);
@@ -157,7 +157,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
                 }
                 else
                 {
-                    for (int i = 0; i < 16; i++)
+                    for (int i = 0; i < 17; i++)
                     {
                         CarFloorSillParameter[$"{i + 1}_{access}"] = 0;
                     }

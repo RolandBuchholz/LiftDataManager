@@ -406,7 +406,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateProtectiveRailingSwitch, "None", null) });
 
         ValidationDictionary.Add("var_SchwellenprofilKabTuere",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null),
+            new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_SchwellenprofilKabTuereB",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateEntryDimensions, "None", null) });
