@@ -54,7 +54,36 @@
                                 <PivotItem.Header>
                                     <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Kabinenausstattung" />
                                 </PivotItem.Header>
-                                <TextBlock FontSize="36" Text="coming soon" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="300" />
+                                        <RowDefinition Height="300" />
+                                        <RowDefinition Height="300" />
+                                        <RowDefinition Height="300" />
+                                    </Grid.RowDefinitions>
+                                    <SpeziControls:CarEquipmentControl Grid.Row="0" Grid.Column="0" />
+                                    <Border
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Background="Yellow" />
+                                    <Border
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Background="Blue" />
+                                    <Border
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Background="Green" />
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
+                                        Grid.Column="1"
+                                        Background="Pink" />
+                                </Grid>
                             </PivotItem>
                             <PivotItem>
                                 <PivotItem.Header>
