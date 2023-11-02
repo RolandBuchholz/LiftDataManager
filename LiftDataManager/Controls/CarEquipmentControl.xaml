@@ -8,6 +8,12 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Innenansicht Wand" />
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Innenansicht Wand" />
+            <TextBlock
+                Margin="10"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="coming soon" />
+        </StackPanel>
     </Grid>
 </UserControl>
