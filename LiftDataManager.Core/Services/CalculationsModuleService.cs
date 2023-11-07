@@ -107,12 +107,12 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         const int tuerspalt = 4;
         const int luftspaltoeffnung = 10;
-        const int anzahlLuftspaltoeffnungenFT = 2;
-
+        
         SetDefaultParameter(parameterDictionary);
 
         double aKabine = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_A_Kabine");
         int anzahlKabinentuerfluegel = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlTuerfluegel");
+        bool lueftungUnten = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_LueftungSchottenUnten");
 
         double aKabine1Pozent = Math.Round(aKabine * 10000);
         double belueftung1Seite = kabinentiefe * luftspaltoeffnung;
@@ -126,7 +126,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         double flaecheLuftspaltoeffnungenTH = anzahlLuftspaltoeffnungenTH * tuerspalt * tuerhoehe;
         double entlueftungTuerspalten50Pozent = (flaecheLuftspaltoeffnungenTB + flaecheLuftspaltoeffnungenTH) * 0.5;
 
-        int anzahlLuftspaltoeffnungenFB = (anzahlKabinentueren > 1) ? 0 : 1;
+        int anzahlLuftspaltoeffnungenFB = 0;
+        int anzahlLuftspaltoeffnungenFT = 0;
+
+        if (lueftungUnten)
+        {
+            anzahlLuftspaltoeffnungenFB = 2 - Convert.ToInt32(zugangA) - Convert.ToInt32(zugangC);
+            anzahlLuftspaltoeffnungenFT = 2 - Convert.ToInt32(zugangB) - Convert.ToInt32(zugangD);
+        }
 
         double flaecheLuftspaltoeffnungenFB = Math.Round(kabinenbreite / 50 * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));
         double flaecheLuftspaltoeffnungenFT = Math.Round(kabinentiefe / 50 * ((Math.Pow(9, 2) * Math.PI / 4) + ((14 - 9) * 9)));

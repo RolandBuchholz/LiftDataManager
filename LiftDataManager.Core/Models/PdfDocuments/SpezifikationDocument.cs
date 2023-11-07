@@ -2010,7 +2010,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(35).Column(1).Text("Nennstrom Netz (aufgerundet):").FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
-            table.Cell().Row(36).Column(1).Text("Maximale Netzstromaufnahme (Netzstrom x 1,8):").FontSize(fontSizeXXS);
+            table.Cell().Row(36).Column(1).Text("Max. Netzstromaufnahme (Netzstrom x1,8+10A):").FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
             table.Cell().Row(37).Column(1).Text("Leistung Netz (aufgerundet  + 2kW):").FontSize(fontSizeXXS);

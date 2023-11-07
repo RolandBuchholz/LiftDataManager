@@ -223,15 +223,9 @@
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Width="100"
-                                Margin="0,0,0,5">
-                                <ComboBoxItem Content="2023" />
-                                <ComboBoxItem Content="2024" />
-                                <ComboBoxItem Content="2025" />
-                                <ComboBoxItem Content="2026" />
-                                <ComboBoxItem Content="2027" />
-                                <ComboBoxItem Content="2028" />
-                                <ComboBoxItem Content="2029" />
-                            </ComboBox>
+                                Margin="0,0,0,5"
+                                ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
+                                SelectedValue="{x:Bind ViewModel.ManufactureYear, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Row="3"
                                 Grid.Column="0"
@@ -243,29 +237,15 @@
                                 Grid.Column="1"
                                 Margin="0,0,0,5"
                                 Orientation="Horizontal">
-                                <ComboBox Width="100" Margin="0,0,5,0">
-                                    <ComboBoxItem Content="Januar" />
-                                    <ComboBoxItem Content="Februar" />
-                                    <ComboBoxItem Content="März" />
-                                    <ComboBoxItem Content="April" />
-                                    <ComboBoxItem Content="Mai" />
-                                    <ComboBoxItem Content="Juni" />
-                                    <ComboBoxItem Content="Juli" />
-                                    <ComboBoxItem Content="August" />
-                                    <ComboBoxItem Content="September" />
-                                    <ComboBoxItem Content="Oktober" />
-                                    <ComboBoxItem Content="November" />
-                                    <ComboBoxItem Content="Dezember" />
-                                </ComboBox>
-                                <ComboBox Width="100">
-                                    <ComboBoxItem Content="2023" />
-                                    <ComboBoxItem Content="2024" />
-                                    <ComboBoxItem Content="2025" />
-                                    <ComboBoxItem Content="2026" />
-                                    <ComboBoxItem Content="2027" />
-                                    <ComboBoxItem Content="2028" />
-                                    <ComboBoxItem Content="2029" />
-                                </ComboBox>
+                                <ComboBox
+                                    Width="100"
+                                    Margin="0,0,5,0"
+                                    ItemsSource="{x:Bind ViewModel.LiftDocumentation.Months, Mode=OneWay}"
+                                    SelectedItem="{x:Bind ViewModel.MonthOfConstruction, Mode=TwoWay}" />
+                                <ComboBox
+                                    Width="100"
+                                    ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
+                                    SelectedValue="{x:Bind ViewModel.YearOfConstruction, Mode=TwoWay}" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="4"
@@ -396,11 +376,10 @@
                                     VerticalAlignment="Bottom"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     Text="mm   Art des Schutzraums" />
-                                <ComboBox Width="150">
-                                    <ComboBoxItem Content="Typ1 (Aufrecht)" />
-                                    <ComboBoxItem Content="Typ2 (Hockend)" />
-                                    <ComboBoxItem Content="Typ3 (Liegend)" />
-                                </ComboBox>
+                                <ComboBox
+                                    Width="150"
+                                    ItemsSource="{x:Bind ViewModel.LiftDocumentation.ProtectedSpacePits, Mode=OneWay}"
+                                    SelectedValue="{x:Bind ViewModel.ProtectedSpaceTypPit, Mode=TwoWay}" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="2"
@@ -423,10 +402,10 @@
                                     VerticalAlignment="Bottom"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     Text="mm   Art des Schutzraums" />
-                                <ComboBox Width="150">
-                                    <ComboBoxItem Content="Typ1 (Aufrecht)" />
-                                    <ComboBoxItem Content="Typ2 (Hockend)" />
-                                </ComboBox>
+                                <ComboBox
+                                    Width="150"
+                                    ItemsSource="{x:Bind ViewModel.LiftDocumentation.ProtectedSpaceHeads, Mode=OneWay}"
+                                    SelectedValue="{x:Bind ViewModel.ProtectedSpaceTypHead, Mode=TwoWay}" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="3"
@@ -455,27 +434,34 @@
                                 Grid.Column="3"
                                 Orientation="Horizontal">
                                 <StackPanel Margin="40,0,40,0">
-                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Schutzraum Schachtgrube" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="Schutzraum Schachtgrube" />
                                     <Image
                                         Width="150"
-                                        HorizontalAlignment="Left"
-                                        Source="/Images/TechnicalDocumentation/protectionRoomTyp1.png" />
-                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="BxTxH 0,40 x 0,50 x 2,00" />
+                                        HorizontalAlignment="Center"
+                                        Source="{x:Bind ViewModel.ProtectedSpaceTypPitImage, Mode=OneWay}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="{x:Bind ViewModel.ProtectedSpaceTypPitDescription, Mode=OneWay}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Schutzraum Schachtkopf" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="Schutzraum Schachtkopf" />
                                     <Image
                                         Width="150"
-                                        HorizontalAlignment="Left"
-                                        Source="/Images/TechnicalDocumentation/protectionRoomTyp2.png" />
-                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="BxTxH 0,50 x 0,70 x 1,00" />
+                                        HorizontalAlignment="Center"
+                                        Source="{x:Bind ViewModel.ProtectedSpaceTypHeadImage, Mode=OneWay}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="{x:Bind ViewModel.ProtectedSpaceTypHeadDescription, Mode=OneWay}" />
                                 </StackPanel>
                             </StackPanel>
-
-                            <!--<Image
-                            Width="300"
-                            Height="300"
-                            Source="/Images/TechnicalDocumentation/protectionRoomTyp3.png" />-->
                         </Grid>
                         <TextBlock
                             Margin="0,0,0,10"

@@ -1264,7 +1264,23 @@
                                 <PivotItem.Header>
                                     <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Schottengrundriss" />
                                 </PivotItem.Header>
-                                <TextBlock FontSize="36" Text="coming soon" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_LueftungSchottenUnten'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                </Grid>
                             </PivotItem>
                             <PivotItem>
                                 <PivotItem.Header>

@@ -385,6 +385,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
+
             if (_settingService.AutoSave && CheckOut)
                 StartSaveTimer();
         }
