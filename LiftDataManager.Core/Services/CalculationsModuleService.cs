@@ -275,6 +275,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         bool spiegelB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelB");
         bool spiegelC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelC");
         bool spiegelD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelD");
+
         double spiegelHoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel");
         double spiegelBreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_BreiteSpiegel");
         double spiegelHoehe2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheSpiegel2");
@@ -374,8 +375,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         var paneeleSpiegelGewicht = paneeleSpiegelGewichtproQm * paneeleSpiegelQm;
 
         var paneeleQm = (paneelPosA || paneelPosB || paneelPosC || paneelPosD) ?
-                       (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
-                     ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - (spiegelQm + paneeleSpiegelQm) : 0;
+                        (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
+                        ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - 
+                        (paneelPosA && spiegelA || paneelPosB && spiegelB || paneelPosC && spiegelC || paneelPosD && spiegelD ? spiegelQm + paneeleSpiegelQm : 0) : 0;
+        
         var paneeleGewicht = paneeleGewichtproQm * paneeleQm;
 
         var vSGTyp = (glasLaengeWandA > 1 || glasLaengeWandB > 1 || glasLaengeWandC > 1 || glasLaengeWandD > 1) ? "VSG 12" : "VSG 10";

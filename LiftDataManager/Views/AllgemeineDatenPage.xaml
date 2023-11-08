@@ -1044,7 +1044,7 @@
                             DisplayMemberPath="ShortMark"
                             IsEnabled="False"
                             ItemsSource="{x:Bind ViewModel.Countrys, Mode=OneWay}"
-                            PlaceholderText="--"
+                            PlaceholderText="-"
                             SelectedValue="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
                         <TextBlock
                             Grid.Column="1"
@@ -1145,7 +1145,7 @@
                     Style="{StaticResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Margin="10,0,10,0" Symbol="AddFriend" />
-                        <TextBlock Text="{x:Bind ViewModel.DataBaseButtonText,Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind ViewModel.DataBaseButtonText, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
                 <ProgressBar

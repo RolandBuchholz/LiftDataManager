@@ -3,7 +3,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
-
 namespace LiftDataManager.ViewModels;
 
 public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
@@ -32,9 +31,9 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private string? zipCode;
     partial void OnZipCodeChanged(string? value)
     {
-        if (value is not null && selectedCountry is not null)
+        if (value is not null && SelectedCountry is not null)
         {
-            CanShowTown = ((value.Length >= 4 && selectedCountry.ShortMark != "D") || value.Length == 5); 
+            CanShowTown = ((value.Length >= 4 && SelectedCountry.ShortMark != "D") || value.Length == 5); 
         }
     }
 
@@ -80,9 +79,9 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private bool canShowZipCode;
     partial void OnCanShowZipCodeChanged(bool value)
     {
-        if (value && selectedCountry is not null)
+        if (value && SelectedCountry is not null)
         {
-            ZipCodePlaces = selectedCountry.ShortMark != "D" ? 4 : 5;
+            ZipCodePlaces = SelectedCountry.ShortMark != "D" ? 4 : 5;
         }
     }
 
@@ -134,13 +133,20 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
 
     [ObservableProperty]
     private Country? selectedCountry;
-    partial void OnSelectedCountryChanged(Country? value)
+    partial void OnSelectedCountryChanged(Country? oldValue, Country? newValue)
     {
-        CanShowZipCode = false;
-        CanShowTown = false;
-        ZipCode = string.Empty;
-        Town = string.Empty;
-        CanShowZipCode = value is not null;
+        if (newValue is null && oldValue is not null)
+        {
+            SelectedCountry = oldValue;
+        }
+        else
+        {
+            CanShowZipCode = false;
+            CanShowTown = false;
+            ZipCode = string.Empty;
+            Town = string.Empty;
+            CanShowZipCode = newValue is not null;
+        }
     }
 
     [ObservableProperty]
@@ -203,11 +209,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     }
 
     [RelayCommand(CanExecute = nameof(CanGetLiftPlannerFromDatabase))]
-    private void GetLiftPlannerFromDatabase()
+    private void GetLiftPlannerFromDatabase(ParameterContext dbcontext)
     {
+        dbcontext ??= _parametercontext;
+
         var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
 
-        var liftPlannerDatabase = _parametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+        var liftPlannerDatabase = dbcontext.Set<LiftPlanner>().Include(i => i.ZipCode)
                                                                       .ThenInclude(t => t.Country)
                                                                       .FirstOrDefault(x => x.Id == liftPlanner.Key);
         ParameterDictionary!["var_AnPersonZ4"].Value = SelectedLiftPlanner;
@@ -244,15 +252,15 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     [RelayCommand]
     private async Task AddLiftPlannerDialogAsync(ContentDialog addLiftPlannerDialog)
     {
-        if (_editableparametercontext is null)
-        {
-            DbContextOptionsBuilder editableOptions = new();
-            editableOptions.UseSqlite(App.GetConnectionString(false));
-            _editableparametercontext = new ParameterContext(editableOptions.Options);
-        }
-
         if (!string.IsNullOrWhiteSpace(SelectedLiftPlanner))
         {
+            if (_editableparametercontext is null)
+            {
+                DbContextOptionsBuilder editableOptions = new();
+                editableOptions.UseSqlite(App.GetConnectionString(false));
+                _editableparametercontext = new ParameterContext(editableOptions.Options);
+            }
+
             var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
             var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
                                                                           .ThenInclude(t => t.Country)
@@ -276,15 +284,6 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
             await addLiftPlannerDialog.ShowAsync();
     }
 
-    private void CheckLiftplannerIsValid()
-    {
-        CanAddLiftPlannerToDatabase = !string.IsNullOrWhiteSpace(Company) &&
-                                      !string.IsNullOrWhiteSpace(Name) &&
-                                      !string.IsNullOrWhiteSpace(Street) &&
-                                      !string.IsNullOrWhiteSpace(Town) &&
-                                      !string.IsNullOrWhiteSpace(Mailadress);
-    }
-
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]
     private async Task AddLiftPlannerToDatabaseAsync(ContentDialog addLiftPlannerDialog)
     {
@@ -300,7 +299,6 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
             try
             {
                 ZipCode dBZipCode;
-
                 var storedZipCode = _editableparametercontext.Set<ZipCode>().FirstOrDefault(x => x.ZipCodeNumber == Convert.ToInt32(ZipCode));
                 if (storedZipCode is not null)
                 {
@@ -308,15 +306,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 }
                 else
                 {
-                    Country? newCountry = _editableparametercontext.Set<Country>().FirstOrDefault(x => x.Id == selectedCountry!.Id);
-
-                    if (newCountry is not null)
+                    if (SelectedCountry is not null)
                     {
                         dBZipCode = new ZipCode
                         {
                             ZipCodeNumber = Convert.ToInt32(ZipCode),
                             Name = Town!,
-                            Country = newCountry
+                            Country = SelectedCountry
                         };
                     }
                     else
@@ -351,7 +347,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
             {
                 _logger.LogError(61078, "Failed to add new Liftplanner {Company} to database", Company);
             }
-            GetLiftPlannerFromDatabase();
+
+            GetLiftPlannerFromDatabase(_editableparametercontext);
             Company = string.Empty;
             FirstName = string.Empty;
             Name = string.Empty;
@@ -366,30 +363,39 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         }
         else
         {
-            var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
-            var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
-                                                                          .ThenInclude(t => t.Country)
-                                                                          .FirstOrDefault(x => x.Id == liftPlanner.Key);
-            if (liftPlannerDatabase is not null)
+            try
             {
-                liftPlannerDatabase.Company = Company!;
-                liftPlannerDatabase.FirstName = FirstName;
-                liftPlannerDatabase.Name = Name!;
-                liftPlannerDatabase.Street = Street!;
-                liftPlannerDatabase.StreetNumber = StreetNumber;
-                liftPlannerDatabase.PhoneNumber = PhoneNumber;
-                liftPlannerDatabase.MobileNumber = MobileNumber;
-                liftPlannerDatabase.EmailAddress = Mailadress!;
-                liftPlannerDatabase.ZipCode.Country = SelectedCountry!;
-                liftPlannerDatabase.ZipCode.ZipCodeNumber = Convert.ToInt32(ZipCode);
-                liftPlannerDatabase.ZipCode.Name = Town!;
+                var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
+                var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+                                                                                      .ThenInclude(t => t.Country)
+                                                                                      .FirstOrDefault(x => x.Id == liftPlanner.Key);
+
+
+
+                if (liftPlannerDatabase is not null)
+                {
+                    liftPlannerDatabase.Company = Company!;
+                    liftPlannerDatabase.FirstName = FirstName;
+                    liftPlannerDatabase.Name = Name!;
+                    liftPlannerDatabase.Street = Street!;
+                    liftPlannerDatabase.StreetNumber = StreetNumber;
+                    liftPlannerDatabase.PhoneNumber = PhoneNumber;
+                    liftPlannerDatabase.MobileNumber = MobileNumber;
+                    liftPlannerDatabase.EmailAddress = Mailadress!;
+                    liftPlannerDatabase.ZipCode.Country = SelectedCountry!;
+                    liftPlannerDatabase.ZipCode.ZipCodeNumber = Convert.ToInt32(ZipCode);
+                    liftPlannerDatabase.ZipCode.Name = Town!;
+                }
+                await _editableparametercontext.SaveChangesAsync();
+
+                LiftPlanners[liftPlanner.Key] = $"{Company} ({FirstName} {Name})";
+                SelectedLiftPlanner = LiftPlanners[liftPlanner.Key];
             }
-            await _editableparametercontext.SaveChangesAsync();
-
-            LiftPlanners[liftPlanner.Key] = $"{Company} ({FirstName} {Name})";
-            SelectedLiftPlanner = LiftPlanners[liftPlanner.Key];
-
-            GetLiftPlannerFromDatabase();
+            catch 
+            {
+                _logger.LogError(61078, "Failed to update Liftplanner {Company}", Company);
+            }
+            GetLiftPlannerFromDatabase(_editableparametercontext);
             Company = string.Empty;
             FirstName = string.Empty;
             Name = string.Empty;
@@ -402,6 +408,15 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
             ZipCode = null;
             addLiftPlannerDialog.Hide();
         }
+    }
+
+    private void CheckLiftplannerIsValid()
+    {
+        CanAddLiftPlannerToDatabase = !string.IsNullOrWhiteSpace(Company) &&
+                                      !string.IsNullOrWhiteSpace(Name) &&
+                                      !string.IsNullOrWhiteSpace(Street) &&
+                                      !string.IsNullOrWhiteSpace(Town) &&
+                                      !string.IsNullOrWhiteSpace(Mailadress);
     }
 
     public void OnNavigatedTo(object parameter)
