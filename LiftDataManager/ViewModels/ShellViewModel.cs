@@ -24,7 +24,7 @@ public partial class ShellViewModel : ObservableRecipient
             m.Reply(CurrentSpeziProperties);
         });
 
-        Messenger.Register<SpeziPropertiesChangedMassage>(this, (r, m) =>
+        Messenger.Register<SpeziPropertiesChangedMessage>(this, (r, m) =>
         {
             CurrentSpeziProperties = m.Value;
         });

@@ -44,7 +44,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (CurrentSpeziProperties != null)
         {
             CurrentSpeziProperties.SearchInput = SearchInput;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 

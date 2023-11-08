@@ -62,7 +62,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.HideInfoErrors, value))
         {
             CurrentSpeziProperties.HideInfoErrors = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -73,7 +73,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null && !EqualityComparer<string>.Default.Equals(CurrentSpeziProperties.FullPathXml, value))
         {
             CurrentSpeziProperties.FullPathXml = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -84,7 +84,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.AuftragsbezogeneXml, value))
         {
             CurrentSpeziProperties.AuftragsbezogeneXml = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -95,7 +95,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.CheckOut, value))
         {
             CurrentSpeziProperties.CheckOut = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -106,7 +106,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.LikeEditParameter, value))
         {
             CurrentSpeziProperties.LikeEditParameter = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -117,7 +117,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.InfoSidebarPanelText = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -216,7 +216,7 @@ public partial class DataViewModelBase : ObservableRecipient
                     if (CurrentSpeziProperties is not null)
                     {
                         CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-                        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+                        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
                     }
                 }
             }

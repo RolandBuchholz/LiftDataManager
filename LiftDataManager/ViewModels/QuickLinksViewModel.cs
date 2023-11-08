@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using HtmlAgilityPack;
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
@@ -6,7 +7,7 @@ using System.Xml;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
+public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, IRecipient<QuicklinkControlMessage>
 {
     private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
@@ -27,7 +28,13 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
         _logger = logger;
+        IsActive = true;
         CheckCanOpenFiles();
+    }
+
+    public void Receive(QuicklinkControlMessage message)
+    {
+        
     }
 
     [ObservableProperty]

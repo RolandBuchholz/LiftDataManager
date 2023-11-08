@@ -372,7 +372,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
-            _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
@@ -385,7 +385,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
-
+            _ = Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
+            { 
+                SetDriveData = true,
+                UpdateQuicklinks = true
+            }));
             if (_settingService.AutoSave && CheckOut)
                 StartSaveTimer();
         }
@@ -539,7 +543,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (CurrentSpeziProperties is not null)
             {
                 CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
-                _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+                _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
             }
             LikeEditParameter = true;
             OpenReadOnly = true;
@@ -809,7 +813,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CurrentSpeziProperties.Adminmode = Adminmode;
-        _ = Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
     }
 
     private async Task<string[]> SearchWorkspaceAsync(string searchPattern)

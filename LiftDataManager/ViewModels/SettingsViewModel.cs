@@ -41,7 +41,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.CustomAccentColor = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
@@ -130,7 +130,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             _settingService.SetSettingsAsync(nameof(Adminmode), value);
             CurrentSpeziProperties.Adminmode = value;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 

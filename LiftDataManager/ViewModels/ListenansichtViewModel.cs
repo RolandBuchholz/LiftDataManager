@@ -53,7 +53,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (CurrentSpeziProperties != null)
         {
             CurrentSpeziProperties.SearchInput = SearchInput;
-            Messenger.Send(new SpeziPropertiesChangedMassage(CurrentSpeziProperties));
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
     }
 
