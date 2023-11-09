@@ -269,6 +269,9 @@
                 ui:VisualExtensions.NormalizedCenterPoint="0.5"
                 Command="{x:Bind ViewModel.ImportZAliftDataCommand}"
                 Style="{StaticResource LinkButtonSmall}">
+                <Button.CommandParameter>
+                    <x:Boolean>False</x:Boolean>
+                </Button.CommandParameter>
                 <Grid Width="30" Height="30">
                     <Image
                         Width="20"

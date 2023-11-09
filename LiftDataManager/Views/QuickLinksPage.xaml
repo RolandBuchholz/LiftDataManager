@@ -157,6 +157,9 @@
                 x:Name="ImportZAliftData"
                 Command="{x:Bind ViewModel.ImportZAliftDataCommand}"
                 Style="{StaticResource LinkButton}">
+                <Button.CommandParameter>
+                    <x:Boolean>False</x:Boolean>
+                </Button.CommandParameter>
                 <StackPanel>
                     <Grid Width="100" Height="100">
                         <Image

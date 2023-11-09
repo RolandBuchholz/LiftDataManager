@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
@@ -34,7 +33,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
 
     public void Receive(QuicklinkControlMessage message)
     {
-        
+        if (message is null)
+            return;
+        if (message.Value.UpdateQuicklinks)
+        {
+            CheckCanOpenFiles();
+        }
+        if (message.Value.SetDriveData)
+        {
+            if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+                CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
+            if (CanOpenZALiftHtml)
+            {
+                _ = ImportZAliftDataAsync(true);
+            }
+        }
     }
 
     [ObservableProperty]
@@ -542,69 +555,107 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
     }
 
     [RelayCommand(CanExecute = nameof(CanImportZAliftData))]
-    private async Task ImportZAliftDataAsync()
+    private async Task ImportZAliftDataAsync(bool onlyDiveData)
     {
-        var filePath = string.Empty;
-        var zaliftHtml = new HtmlDocument();
+        var zaliftHtml = GetZaliftHtml();
+        var zliDataDictionary = GetZliDataDictionary(zaliftHtml);
 
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
-            filePath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
-
-        if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
-            zaliftHtml.Load(filePath);
-
-        var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
-                                                                        .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-        if (zliData is null)
-        {
-            return;
-        }
-        var zliDataDictionary = new Dictionary<string, string>();
-        zliDataDictionary.Clear();
-
-        foreach (var zlipar in zliData)
-        {
-
-            if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains('='))
-            {
-                var zliPairValue = zlipar.Split('=');
-
-                if (!zliDataDictionary.ContainsKey(zliPairValue[0]))
-                {
-                    if (zliPairValue.Length == 2)
-                    {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
-                    }
-                    else if (zliPairValue.Length > 2)
-                    {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1] + "=" + zliPairValue[2]);
-                    }
-                }
-            }
-        }
-        if (ParameterDictionary is not null)
+        if (ParameterDictionary is not null && zliDataDictionary.Any())
         {
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
-            ParameterDictionary["var_Q"].Value = zliDataDictionary["Nennlast_Q"];
+
+            if (!onlyDiveData)
+            {
+                ParameterDictionary["var_Q"].Value = zliDataDictionary["Nennlast_Q"];
+                ParameterDictionary["var_Gegengewichtsmasse"].Value = zliDataDictionary["Gegengewicht_G"];
+                try
+                {
+                    double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
+                    double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_F");
+                    double counterWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Gegengewichtsmasse");
+                    ParameterDictionary["var_GGWNutzlastausgleich"].Value = Convert.ToString(Math.Round((counterWeight - carWeight) / load, 2));
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(61094, "balance not found");
+                }
+
+                var detectionDistance = "0";
+                try
+                {
+                    var detectionDistanceMeter = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
+
+                    if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
+                    {
+                        detectionDistance = (Convert.ToDouble(detectionDistanceMeter.Replace("m", "").Trim(), CultureInfo.CurrentCulture) * 1000).ToString();
+                    }
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(61094, "detectionDistance not found");
+                }
+                ParameterDictionary["var_Erkennungsweg"].Value = detectionDistance;
+                var deadTime = "0";
+                try
+                {
+                    deadTime = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(61094, "deadTime not found");
+                }
+                ParameterDictionary["var_Totzeit"].Value = deadTime;
+                var vDetector = "0";
+                try
+                {
+                    vDetector = Convert.ToDouble(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(61094, "vDetector not found");
+                }
+                ParameterDictionary["var_Vdetektor"].Value = vDetector;
+                var brakerelease = string.Empty;
+                if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                    brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
+                if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
+                    brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
+                if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                    brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
+                if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
+                    brakerelease = "207 V Bremse. mit Handl. induktiver NS";
+                if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
+                    brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
+                if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
+                    brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
+
+                ParameterDictionary["var_Handlueftung"].Value = brakerelease;
+                ParameterDictionary["var_Handlueftung"].DropDownListValue = brakerelease;
+
+                var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "True" : "False";
+                ParameterDictionary["var_Fremdbelueftung"].Value = ventilation;
+
+                try
+                {
+                    var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString();
+                    ParameterDictionary["var_ElektrBremsenansteuerung"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(brakeControl);
+                }
+                catch (Exception)
+                {
+
+                    _logger.LogWarning(61094, "ElektrBremsenansteuerung not found");
+                }
+
+                var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False";
+                ParameterDictionary["var_Treibscheibegehaertet"].Value = hardened;
+            }
+
             if (zliDataDictionary.TryGetValue("Getriebebezeichnung", out string? drive))
             {
                 ParameterDictionary["var_Antrieb"].Value = string.IsNullOrWhiteSpace(drive) ? string.Empty : drive.Replace(',', '.');
             }
             ParameterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
             ParameterDictionary["var_ZA_IMP_Treibscheibe_RIA"].Value = zliDataDictionary["Treibscheibe-RIA"];
-            ParameterDictionary["var_Gegengewichtsmasse"].Value = zliDataDictionary["Gegengewicht_G"];
-            try
-            {
-                double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
-                double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_F");
-                double counterWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Gegengewichtsmasse");
-                ParameterDictionary["var_GGWNutzlastausgleich"].Value = Convert.ToString(Math.Round((counterWeight - carWeight) / load,2));
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "balance not found");
-            }
-
             ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty;
 
             if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))
@@ -732,95 +783,73 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 _logger.LogWarning(61094, "numberofPulley not found");
             }
             ParameterDictionary["var_AnzahlUmlenkrollen"].Value = numberofPulley;
-
-
-
             ParameterDictionary["var_AnzahlUmlenkrollenFk"].Value = numberofFKPulley;
             ParameterDictionary["var_AnzahlUmlenkrollenGgw"].Value = (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString();
-            var detectionDistance = "0";
-            try
-            {
-                var detectionDistanceMeter = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
-
-                if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
-                {
-                    detectionDistance = (Convert.ToDouble(detectionDistanceMeter.Replace("m", "").Trim(), CultureInfo.CurrentCulture) * 1000).ToString();
-                }
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "detectionDistance not found");
-            }
-            ParameterDictionary["var_Erkennungsweg"].Value = detectionDistance;
-            var deadTime = "0";
-            try
-            {
-                deadTime = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "deadTime not found");
-            }
-            ParameterDictionary["var_Totzeit"].Value = deadTime;
-            var vDetector = "0";
-            try
-            {
-                vDetector = Convert.ToDouble(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "vDetector not found");
-            }
-            ParameterDictionary["var_Vdetektor"].Value = vDetector;
             ParameterDictionary["var_MotorGeber"].Value = zliDataDictionary["Geber-Typ"];
-
-            var brakerelease = string.Empty;
-            if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
-                brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
-            if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
-                brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
-            if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
-                brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
-            if (zliDataDictionary["Bremse-Handlueftung"] == "mit Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
-                brakerelease = "207 V Bremse. mit Handl. induktiver NS";
-            if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
-                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
-            if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
-                brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
-
-            ParameterDictionary["var_Handlueftung"].Value = brakerelease;
-            ParameterDictionary["var_Handlueftung"].DropDownListValue = brakerelease;
-
-            var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "True" : "False";
-            ParameterDictionary["var_Fremdbelueftung"].Value = ventilation;
-
-            try
-            {
-                var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString();
-                ParameterDictionary["var_ElektrBremsenansteuerung"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(brakeControl);
-            }
-            catch (Exception)
-            {
-
-                _logger.LogWarning(61094, "ElektrBremsenansteuerung not found");
-            }
-
-            var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False";
-            ParameterDictionary["var_Treibscheibegehaertet"].Value = hardened;
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 
-        _ = _validationParameterDataService!.ValidateAllParameterAsync();
-        await SetModelStateAsync();
-
-        if (!zAliftDataReadyForImport)
+        if (!onlyDiveData)
         {
-            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
+            _ = _validationParameterDataService!.ValidateAllParameterAsync();
+            await SetModelStateAsync();
         }
-        else
+
+        if (zAliftDataReadyForImport || onlyDiveData)
         {
             await Task.CompletedTask;
         }
+        else
+        {
+            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
+        }
+    }
+
+    private HtmlDocument GetZaliftHtml()
+    {
+        var filePath = string.Empty;
+        var zaliftHtml = new HtmlDocument();
+
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+            filePath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
+
+        if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+            zaliftHtml.Load(filePath);
+        return zaliftHtml;
+    }
+
+    private Dictionary<string, string> GetZliDataDictionary(HtmlDocument zaliftHtml)
+    {
+        var zliDataDictionary = new Dictionary<string, string>();
+        if (zaliftHtml.Text is null)
+            return zliDataDictionary;
+
+        var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+                                                                        .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+        if (zliData is null)
+            return zliDataDictionary;
+        
+        foreach (var zlipar in zliData)
+        {
+
+            if (!string.IsNullOrWhiteSpace(zlipar) && zlipar.Contains('='))
+            {
+                var zliPairValue = zlipar.Split('=');
+
+                if (!zliDataDictionary.ContainsKey(zliPairValue[0]))
+                {
+                    if (zliPairValue.Length == 2)
+                    {
+                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                    }
+                    else if (zliPairValue.Length > 2)
+                    {
+                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1] + "=" + zliPairValue[2]);
+                    }
+                }
+            }
+        }
+        return zliDataDictionary;
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]

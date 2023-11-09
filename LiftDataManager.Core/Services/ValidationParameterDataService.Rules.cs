@@ -1245,7 +1245,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
 
         //TODO ChangeDimensionsBY
-        //use CalculationsModuleService by Korrekturmaßen (Spiegelbreite, Spiegelhöhe, SpiegelAbstand Decke)
+        //use CalculationsModuleService by Korrekturmaßen (Spiegelbreite, Spiegelhöhe, SpiegelAbstand Decke, Versatz Kabinenmitte)
         //Kabinentiefe
         //Kabinenbreite
         //Kabinenhöhe
