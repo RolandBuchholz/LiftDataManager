@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ShellViewModel : ObservableRecipient
+public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPropertiesChangedMessage>, IRecipient<SpeziPropertiesRequestMessage>
 {
     private CurrentSpeziProperties CurrentSpeziProperties = new();
     public INavigationService NavigationService { get; }
@@ -19,15 +19,17 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
-        Messenger.Register<SpeziPropertiesRequestMessage>(this, (r, m) =>
-        {
-            m.Reply(CurrentSpeziProperties);
-        });
+        IsActive= true;
+    }
 
-        Messenger.Register<SpeziPropertiesChangedMessage>(this, (r, m) =>
-        {
-            CurrentSpeziProperties = m.Value;
-        });
+    public void Receive(SpeziPropertiesRequestMessage message)
+    {
+        message.Reply(CurrentSpeziProperties);
+    }
+
+    public void Receive(SpeziPropertiesChangedMessage message)
+    {
+        CurrentSpeziProperties = message.Value;
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)

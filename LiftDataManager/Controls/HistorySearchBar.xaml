@@ -22,12 +22,26 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 ItemsSource="{x:Bind Authors, Mode=OneWay}"
-                PlaceholderText="Author"
                 SelectedValue="{x:Bind Author, Mode=TwoWay}" />
+            <FontIcon Margin="5,0,5,0" Glyph="&#xE835;" />
+            <ComboBox
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind RevisionsDictionary.Keys, Mode=OneWay}"
+                SelectedValue="{x:Bind Revision, Mode=TwoWay}" />
             <SymbolIcon Margin="5,0,5,0" Symbol="Calendar" />
             <CalendarDatePicker Date="{x:Bind StartDate, Mode=TwoWay}" PlaceholderText="Start Datum" />
             <SymbolIcon Margin="5,0,5,0" Symbol="CalendarReply" />
             <CalendarDatePicker Date="{x:Bind EndDate, Mode=TwoWay}" PlaceholderText="End Datum" />
+            <Button
+                Margin="5,0,5,0"
+                Click="ResetFilterClick"
+                Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="5,0,5,0" Glyph="&#xE8D8;" />
+                    <TextBlock Text="Reset Filter" />
+                </StackPanel>
+            </Button>
             <AutoSuggestBox
                 MinWidth="250"
                 Margin="10,0,0,0"
