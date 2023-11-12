@@ -2,41 +2,26 @@
 {
     public class DateRange
     {
-        public DateOnly Start { get; private set; }
-        public DateOnly End { get; private set; }
-        public DateOnly NullDate { get; private set; }
+        public DateTime Start { get; private set; }
+        public DateTime End { get; private set; }
 
-        public DateRange(DateOnly start, DateOnly end)
+        public DateRange(DateTime start, DateTime end)
         {
             Start = start;
             End = end;
         }
 
-        public bool WithInRange(DateOnly value)
-        {
-            if (Start == DateOnly.MinValue && End == DateOnly.MinValue)
-                return true;
-            if (Start == DateOnly.MinValue)
-                return value <= End;
-            if (End == DateOnly.MinValue)
-                return Start <= value;
-            return (Start <= value) && (value <= End);
-        }
-
         public bool WithInRange(DateTime value)
         {
-            if (Start == DateOnly.MinValue && End == DateOnly.MinValue)
+            if (Start == DateTime.MinValue && End == DateTime.MinValue)
                 return true;
-
-            var valueDateOnly = DateOnly.FromDateTime(value);
-
-            if (valueDateOnly == DateOnly.MinValue)
+            if (value == DateTime.MinValue)
                 return true;
-            if (Start == DateOnly.MinValue)
-                return valueDateOnly <= End;
-            if (End == DateOnly.MinValue)
-                return Start <= valueDateOnly;
-            return (Start <= valueDateOnly) && (valueDateOnly <= End);
+            if (Start == DateTime.MinValue)
+                return value <= End;
+            if (End == DateTime.MinValue)
+                return Start <= value;
+            return (Start <= value) && (value <= End);
         }
     }
 }

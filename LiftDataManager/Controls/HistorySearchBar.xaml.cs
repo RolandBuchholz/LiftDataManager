@@ -153,27 +153,47 @@ public sealed partial class HistorySearchBar : UserControl
     {
         FilteredEntrys.Clear();
         IEnumerable<LiftHistoryEntry> filteredEntrys;
+        DateTime start = DateTime.MinValue;
+        DateTime end = DateTime.MaxValue;
 
-        var start = StartDate.GetValueOrDefault().DateTime;
-        var end = EndDate.GetValueOrDefault().DateTime;
+        if (StartDate is not null)
+        {
+            var currentStartTime = StartDate.GetValueOrDefault().DateTime;
+            start = currentStartTime.Subtract(currentStartTime.TimeOfDay);
+        }
+        if (EndDate is not null)
+        {
+            var currentEndTime = EndDate.GetValueOrDefault().DateTime;
+            end = currentEndTime.AddDays(1).Subtract(currentEndTime.TimeOfDay);
+        }
 
         if (!string.Equals(Revision, defaultRevisionName))
         {
             DateTime startRev = DateTime.MinValue;
             DateTime endRev = DateTime.MaxValue;
 
-            if (RevisionsDictionary.TryGetValue(Revision, out DateTime startValue))
+            if (string.Equals(Revision, "Erster Stand"))
             {
-                startRev = startValue;
+                if (RevisionsDictionary.TryGetValue($"Stand : A", out DateTime endValue))
+                {
+                    endRev = endValue;
+                }
             }
-            var nextRevision = RevisionHelper.GetNextRevision(Revision.Replace("Stand:", ""));
-            if (RevisionsDictionary.TryGetValue($"Stand : {nextRevision}", out DateTime endValue))
+            else
             {
-                endRev = endValue;
+                if (RevisionsDictionary.TryGetValue(Revision, out DateTime startValue))
+                {
+                    startRev = startValue;
+                }
+                var nextRevision = RevisionHelper.GetNextRevision(Revision.Replace("Stand :", ""));
+                if (RevisionsDictionary.TryGetValue($"Stand : {nextRevision}", out DateTime endValue))
+                {
+                    endRev = endValue;
+                }
             }
 
-            start = startRev;
-            end = endRev;
+            start = start > startRev ? start : startRev;
+            end = end < endRev ? end : endRev;
         }
 
         if (start == DateTime.MinValue && end == DateTime.MinValue)
@@ -182,7 +202,7 @@ public sealed partial class HistorySearchBar : UserControl
         }
         else
         {
-            DateRange range = new(DateOnly.FromDateTime(start), DateOnly.FromDateTime(end));
+            DateRange range = new(start, end);
             filteredEntrys = ItemSource.Where(FilterViewSearchInput(searchInput)).Where(p => range.WithInRange(p.TimeStamp));
         }
 
