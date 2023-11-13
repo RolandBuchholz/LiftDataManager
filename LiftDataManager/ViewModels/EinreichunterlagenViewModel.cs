@@ -88,6 +88,22 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     [ObservableProperty]
     private string protectedSpaceTypHeadDescription = "Kein Schutzraum gewählt";
 
+    [ObservableProperty]
+    private double safetySpacePit;
+    partial void OnSafetySpacePitChanged(double value)
+    {
+        LiftDocumentation.SafetySpacePit = value;
+        UpdateLiftDocumentation();
+    }
+
+    [ObservableProperty]
+    private double safetySpaceHead;
+    partial void OnSafetySpaceHeadChanged(double value)
+    {
+        LiftDocumentation.SafetySpaceHead = value;
+        UpdateLiftDocumentation();
+    }
+
     public string DateTimeNow => DateTime.Now.ToShortDateString();
 
     public string Manufacturer => """
@@ -125,6 +141,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
             MonthOfConstruction = LiftDocumentation.MonthOfConstruction.ToString();
             ProtectedSpaceTypPit = LiftDocumentation.ProtectedSpaceTypPit.Humanize();
             ProtectedSpaceTypHead = LiftDocumentation.ProtectedSpaceTypHead.Humanize();
+            SafetySpacePit = LiftDocumentation.SafetySpacePit;
+            SafetySpaceHead = LiftDocumentation.SafetySpaceHead;
         }
         UpdateProtectedSpaceTyp();
     }
@@ -132,7 +150,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private void UpdateLiftDocumentation()
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        ParameterDictionary!["var_Einreichunterlagen"].Value = JsonSerializer.Serialize(LiftDocumentation, options);
+        ParameterDictionary!["var_Einreichunterlagen"].Value = JsonSerializer.Serialize(LiftDocumentation, options).Replace("\r\n", "\n");
     }
 
     private void UpdateProtectedSpaceTyp()

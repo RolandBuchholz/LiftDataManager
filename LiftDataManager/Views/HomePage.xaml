@@ -283,9 +283,14 @@
                         Grid.Column="1"
                         Margin="10,5,10,5"
                         FontWeight="Bold"
+                        IsReadOnly="True"
                         PlaceholderText="Index"
                         Text="{x:Bind ViewModel.ParameterDictionary['var_Index'].Value, Mode=TwoWay}"
-                        TextAlignment="Center" />
+                        TextAlignment="Center">
+                        <ToolTipService.ToolTip>
+                            automatische Revisionserhöhung bei Änderungen
+                        </ToolTipService.ToolTip>
+                    </TextBox>
                 </Grid>
                 <Border
                     Grid.Row="1"

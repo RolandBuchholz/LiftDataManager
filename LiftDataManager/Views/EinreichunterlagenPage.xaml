@@ -222,7 +222,7 @@
                             <ComboBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Width="100"
+                                Width="120"
                                 Margin="0,0,0,5"
                                 ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
                                 SelectedValue="{x:Bind ViewModel.ManufactureYear, Mode=TwoWay}" />
@@ -238,12 +238,12 @@
                                 Margin="0,0,0,5"
                                 Orientation="Horizontal">
                                 <ComboBox
-                                    Width="100"
+                                    Width="120"
                                     Margin="0,0,5,0"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.Months, Mode=OneWay}"
                                     SelectedItem="{x:Bind ViewModel.MonthOfConstruction, Mode=TwoWay}" />
                                 <ComboBox
-                                    Width="100"
+                                    Width="120"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
                                     SelectedValue="{x:Bind ViewModel.YearOfConstruction, Mode=TwoWay}" />
                             </StackPanel>
@@ -258,7 +258,7 @@
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                                 <TextBox
-                                    MinWidth="100"
+                                    MinWidth="120"
                                     Style="{StaticResource InfoTextboxStyle}"
                                     Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
                                 <TextBlock
@@ -278,7 +278,7 @@
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                                 <TextBox
-                                    MinWidth="100"
+                                    MinWidth="120"
                                     Style="{StaticResource InfoTextboxStyle}"
                                     Text="{x:Bind ViewModel.ParameterDictionary['var_FH'].Value}" />
                                 <TextBlock
@@ -296,7 +296,7 @@
                             <TextBox
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                Width="100"
+                                Width="120"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Zugangsstellen'].Value}" />
@@ -309,7 +309,7 @@
                             <TextBox
                                 Grid.Row="7"
                                 Grid.Column="1"
-                                Width="100"
+                                Width="120"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Haltestellen'].Value}" />
@@ -369,7 +369,7 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
-                                    Text="1000"
+                                    Text="{x:Bind ViewModel.SafetySpacePit, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Margin="5"
@@ -395,7 +395,7 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
-                                    Text="1000"
+                                    Text="{x:Bind ViewModel.SafetySpaceHead, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Margin="5"

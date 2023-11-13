@@ -46,12 +46,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
         };
 
-        if (message.PropertyName == "var_Index")
-        {
-            if (ParameterDictionary is not null)
-            ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
-        };
-
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
         //Task.Run(async () => await SetModelStateAsync());
@@ -399,7 +393,19 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task CheckOutAsync()
     {
         OpenReadOnly = false;
+        var dialogMessage = """
+                                Änderung             => Änderungen mit Revisionserhöhung
+                                Kleine Änderung  => Änderungen ohne Revisionserhöhung
+                                """;
+        var dialogResult = await _dialogService!.WarningDialogAsync(
+                            "Datei eingechecked (schreibgeschützt)", dialogMessage,
+                            "Änderung", "Kleine Änderung");
         await LoadDataAsync();
+        if (dialogResult != null)
+        {
+            if ((bool)dialogResult)
+                IncreaseRevision();
+        }
         StartSaveTimer();
     }
 
@@ -713,14 +719,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService!.WarningDialogAsync(
-                                    $"Datei eingechecked (schreibgeschützt)",
-                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                                    $"Es sind keine Änderungen möglich!\n" +
-                                    $"\n" +
-                                    $"Soll die AutodeskTransferXml ausgechecked werden?",
-                                    "Auschecken", "Schreibgeschützt bearbeiten");
-                if ((bool)dialogResult)
+                var dialogMessage = """
+                                     Die AutodeskTransferXml wurde noch nicht ausgechecked!
+
+                                     Änderung             => Änderungen mit Revisionserhöhung
+                                     Kleine Änderung  => Änderungen ohne Revisionserhöhung
+                                     Schreibgeschützt  => Es sind keine Änderungen möglich
+                                     """;
+                var dialogResult = await _dialogService!.ConfirmationDialogAsync(
+                                    "Datei eingechecked (schreibgeschützt)", dialogMessage,
+                                    "Änderung", "Kleine Änderung", "Schreibgeschützt");
+                if (dialogResult is not null)
                 {
                     IsBusy = true;
                     OpenReadOnly = false;
@@ -735,6 +744,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         ParameterDictionary[storedParmeter.Name!] = storedParmeter;
                         CanSaveAllSpeziParameters = dirty;
                     };
+                    if ((bool)dialogResult)
+                        IncreaseRevision();
                     CheckoutDialogIsOpen = false;
                     IsBusy = false;
                 }
@@ -924,6 +935,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         ParameterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName)? "Keine Angaben" : Environment.UserName;
         ParameterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
+    }
+
+    private void IncreaseRevision()
+    {
+        if (ParameterDictionary is not null)
+        {
+            var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
+            ParameterDictionary["var_Index"].Value = newRevision;
+            ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
+        }     
     }
 
     public void OnNavigatedTo(object parameter)
