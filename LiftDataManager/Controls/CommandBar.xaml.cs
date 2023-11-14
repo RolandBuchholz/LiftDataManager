@@ -1,5 +1,6 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Collections;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
@@ -20,7 +21,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty ItemSourceProperty =
-        DependencyProperty.Register("ItemSource", typeof(ObservableDictionary<string, Parameter>), typeof(CommandBar), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(ItemSource), typeof(ObservableDictionary<string, Parameter>), typeof(CommandBar), new PropertyMetadata(null));
 
     public CollectionViewSource ViewSource
     {
@@ -29,7 +30,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty ViewSourceProperty =
-        DependencyProperty.Register("ViewSource", typeof(CollectionViewSource), typeof(CommandBar), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(ViewSource), typeof(CollectionViewSource), typeof(CommandBar), new PropertyMetadata(null));
 
     public string SearchInput
     {
@@ -42,7 +43,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty SearchInputProperty =
-        DependencyProperty.Register("SearchInput", typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(SearchInput), typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
 
     public string GroupingValue
     {
@@ -55,7 +56,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty GroupingValueProperty =
-        DependencyProperty.Register("GroupingValue", typeof(string), typeof(CommandBar), new PropertyMetadata("abc"));
+        DependencyProperty.Register(nameof(GroupingValue), typeof(string), typeof(CommandBar), new PropertyMetadata("abc"));
 
     public string FilterValue
     {
@@ -68,7 +69,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty FilterValueProperty =
-        DependencyProperty.Register("FilterValue", typeof(string), typeof(CommandBar), new PropertyMetadata("None"));
+        DependencyProperty.Register(nameof(FilterValue), typeof(string), typeof(CommandBar), new PropertyMetadata("None"));
 
     public bool CanShowUnsavedParameters
     {
@@ -79,7 +80,7 @@ public sealed partial class CommandBar : UserControl
             RefreshView();
             if (ViewSource is not null && SelectedFilter == "Unsaved")
             {
-                if (ViewSource.View.Count == 0)
+                if (ViewSource.View is not null && ViewSource.View.Count == 0)
                 {
                     SearchInput = string.Empty;
                     FilterParameter(SearchInput);
@@ -90,7 +91,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty CanShowUnsavedParametersProperty =
-        DependencyProperty.Register("CanShowUnsavedParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(CanShowUnsavedParameters), typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
     public bool CanShowErrorsParameters
     {
@@ -99,9 +100,9 @@ public sealed partial class CommandBar : UserControl
         {
             SetValue(CanShowErrorsParametersProperty, value);
             RefreshView();
-            if (ViewSource is not null && SelectedFilter == "Validation Errors")
+            if (ViewSource is not null  && SelectedFilter == "Validation Errors")
             {
-                if (ViewSource.View.Count == 0)
+                if (ViewSource.View is not null && ViewSource.View.Count == 0)
                 {
                     SearchInput = string.Empty;
                     FilterParameter(SearchInput);
@@ -112,7 +113,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty CanShowErrorsParametersProperty =
-    DependencyProperty.Register("CanShowErrorsParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+    DependencyProperty.Register(nameof(CanShowErrorsParameters), typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
     public bool CanShowHighlightedParameters
     {
@@ -121,9 +122,9 @@ public sealed partial class CommandBar : UserControl
         {
             SetValue(CanShowHighlightedParametersProperty, value);
             RefreshView();
-            if (ViewSource is not null)
+            if (ViewSource is not null && SelectedFilter == "Highlighted")
             {
-                if (ViewSource.View.Count == 0 && SelectedFilter == "Highlighted")
+                if (ViewSource.View is not null && ViewSource.View.Count == 0 )
                 {
                     SearchInput = string.Empty;
                     FilterParameter(SearchInput);
@@ -134,7 +135,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty CanShowHighlightedParametersProperty =
-    DependencyProperty.Register("CanShowHighlightedParameters", typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
+    DependencyProperty.Register(nameof(CanShowHighlightedParameters), typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
 
     public string SelectedFilter
     {
@@ -143,17 +144,20 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty SelectedFilterProperty =
-        DependencyProperty.Register("SelectedFilter", typeof(string), typeof(CommandBar), new PropertyMetadata("All"));
+        DependencyProperty.Register(nameof(SelectedFilter), typeof(string), typeof(CommandBar), new PropertyMetadata("All"));
 
-    private void RefreshView()
+    private void RefreshView([CallerMemberName] string memberName = "")
     {
         if (SelectedFilter is null)
             return;
         switch (SelectedFilter)
         {
             case "All":
-                SearchInput = string.Empty;
-                FilterParameter(SearchInput);
+                if (string.Equals(memberName, nameof(Segmented_SelectionChanged)))
+                {
+                    SearchInput = string.Empty;
+                    FilterParameter(SearchInput);
+                }
                 return;
             case "Highlighted":
                 SetHighlightedParameterView();
@@ -176,7 +180,7 @@ public sealed partial class CommandBar : UserControl
     }
 
     public static readonly DependencyProperty SaveAllCommandProperty =
-        DependencyProperty.Register("SaveAllCommand", typeof(ICommand), typeof(CommandBar), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(SaveAllCommand), typeof(ICommand), typeof(CommandBar), new PropertyMetadata(null));
 
     private void SetFilter_Click(object sender, RoutedEventArgs e)
     {
