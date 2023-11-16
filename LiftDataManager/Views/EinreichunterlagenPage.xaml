@@ -483,13 +483,27 @@
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Anzahl und Art der Tragmittel:" />
-                            <TextBox
+                            <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="100"
-                                HorizontalAlignment="Left"
-                                Style="{StaticResource InfoTextboxStyle}"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_NumberOfRopes'].Value}" />
+                                Orientation="Horizontal">
+                                <TextBox
+                                    Width="65"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_NumberOfRopes'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Width="25"
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="Stk" />
+                                <TextBox
+                                    Width="410"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tragseiltyp'].Value}" />
+                            </StackPanel>
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -538,6 +552,57 @@
                             Margin="0,0,0,10"
                             FontSize="20"
                             Text="4. Antrieb" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Art des Antriebs:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.DriveTyp}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Antriebsregelung:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.DriveControl}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="0,0,0,0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Aufstellung des Triebwerkes:" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="500"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.DrivePosition}" />
+                        </Grid>
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"

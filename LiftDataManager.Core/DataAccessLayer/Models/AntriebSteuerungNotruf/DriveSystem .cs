@@ -4,4 +4,5 @@ public class DriveSystem : BaseEntity
 {
     public DriveSystemType? DriveSystemType { get; set; }
     public int DriveSystemTypeId { get; set; }
+    public string? DriveControlTyp { get; set; }
 }

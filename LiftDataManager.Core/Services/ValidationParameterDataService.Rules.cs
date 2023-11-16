@@ -7,6 +7,9 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -1254,5 +1257,42 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         //Handlaufausführung
         //Paneelematerial ??
         //Paneelematerial Wände ??
+    }
+
+    private void ValidateCarDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_Tuerbezeichnung")))
+            return;
+
+        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+
+        var shaftSillParameterName = string.Equals(zugang,"A")? "var_Schwellenprofil" : $"var_Schwellenprofil{zugang}";
+        var carSillParameterName = string.Equals(zugang, "A") ? "var_SchwellenprofilKabTuere" : $"var_SchwellenprofilKabTuere{zugang}";
+
+        List<string> availableDoorSills;
+
+        if (name.StartsWith("var_Tuertyp"))
+        {
+            var doorDescription = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
+            availableDoorSills = GetAvailableDoorSills(value, doorDescription);
+        }
+        else
+        {
+            var doorTyp = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuertyp" : $"var_Tuertyp_{zugang}"].Value;
+            availableDoorSills = GetAvailableDoorSills(doorTyp, value);
+        }
+
+        if (availableDoorSills.Any())
+        {
+            //ParameterDictionary[shaftSillParameterName].DropDownList.Clear();
+            ParameterDictionary[carSillParameterName].DropDownList.Clear();
+            foreach (var item in availableDoorSills)
+            {
+                ParameterDictionary[shaftSillParameterName].DropDownList.Add(item);
+                ParameterDictionary[carSillParameterName].DropDownList.Add(item);
+            }
+        }
+        _ = ParameterDictionary[shaftSillParameterName].ValidateParameterAsync().Result;
+        _ = ParameterDictionary[carSillParameterName].ValidateParameterAsync().Result;
     }
 }

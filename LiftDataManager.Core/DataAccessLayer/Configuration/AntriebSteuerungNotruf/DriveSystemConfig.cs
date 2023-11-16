@@ -8,8 +8,10 @@ public class DriveSystemPositionConfig : BaseModelBuilder<DriveSystem>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
+        builder.Property(x => x.DriveControlTyp)
+               .HasMaxLength(50);
         builder.Property(x => x.DriveSystemTypeId);
     }
 }

@@ -9,7 +9,6 @@ public sealed partial class ParameterComboBox : UserControl
         InitializeComponent();
         Loaded += OnLoadParameterComboBoxControl;
         Unloaded += OnUnLoadParameterComboBoxControl;
-
     }
 
     private void OnLoadParameterComboBoxControl(object sender, RoutedEventArgs e)

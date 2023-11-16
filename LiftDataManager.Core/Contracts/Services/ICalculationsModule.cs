@@ -20,6 +20,12 @@ public interface ICalculationsModule
 
     int GetMaxFuse(string? inverter);
 
+    string GetDriveTyp(string? driveSystem, int driveSuspension);
+
+    string GetDriveControl(string? driveTyp);
+
+    string GetDrivePosition(string? drivePos);
+
     CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);

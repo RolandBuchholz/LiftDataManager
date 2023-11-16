@@ -79,6 +79,7 @@
     <None Remove="Images\CarDetails\ConnectionAngle.png" />
     <None Remove="Images\CarDetails\MirrorPanel.png" />
     <None Remove="Images\CarDetails\MirrorRail.png" />
+    <None Remove="Images\CarDetails\SillGravidaBasic.png" />
     <None Remove="Images\carDimensions.png" />
     <None Remove="Images\CFPTransparent.png" />
     <None Remove="Images\ExcelTransparent.png" />
@@ -122,6 +123,7 @@
     <Content Include="Images\CarDetails\ConnectionAngle.png" />
     <Content Include="Images\CarDetails\MirrorPanel.png" />
     <Content Include="Images\CarDetails\MirrorRail.png" />
+    <Content Include="Images\CarDetails\SillGravidaBasic.png" />
     <Content Include="Images\carDimensions.png" />
     <Content Include="Images\CFPTransparent.png" />
     <Content Include="Images\ExcelTransparent.png" />
@@ -194,7 +196,7 @@
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="WinUIEx" Version="2.3.2" />
+    <PackageReference Include="WinUIEx" Version="2.3.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -631,6 +631,30 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnmerkungSchwelleST'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
+                                    <ToolTipService.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="20"
+                                                Text="Zusatzinformationen Schwellen" />
+                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
+                                            <TextBlock FontSize="12" Text="Bei Schwellen Gravida Plus (TTS/TTK 31/32) sind" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="nur voreilende Türblätter verdeckt." />
+                                            <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="Oberfläche Edelstahl / Unterbau Stahl." />
+                                            <TextBlock FontSize="12" Text="Pos.1+2+3 aus VA der Rest aus verzinktem Stahl." />
+                                            <Image
+                                                Width="300"
+                                                Margin="0,5,0,5"
+                                                Source="/Images/CarDetails/SillGravidaBasic.png" />
+                                        </StackPanel>
+                                    </ToolTipService.ToolTip>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -900,6 +924,30 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnmerkungSchwelleKT'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
+                                    <ToolTipService.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="20"
+                                                Text="Zusatzinformationen Schwellen" />
+                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
+                                            <TextBlock FontSize="12" Text="Bei Schwellen Gravida Plus (TTS/TTK 31/32) sind" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="nur voreilende Türblätter verdeckt." />
+                                            <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="Oberfläche Edelstahl / Unterbau Stahl." />
+                                            <TextBlock FontSize="12" Text="Pos.1+2+3 aus VA der Rest aus verzinktem Stahl." />
+                                            <Image
+                                                Width="300"
+                                                Margin="0,5,0,5"
+                                                Source="/Images/CarDetails/SillGravidaBasic.png" />
+                                        </StackPanel>
+                                    </ToolTipService.ToolTip>
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -11,16 +11,23 @@ namespace LiftDataManager.ViewModels;
 public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
+    private readonly ICalculationsModule _calculationsModuleService;
 
-    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext) :
+    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+                                       ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
         _parametercontext = parametercontext;
+        _calculationsModuleService = calculationsModuleService;
         LiftDocumentation = new();
     }
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
+
+    public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary?["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
+    public string DriveControl => _calculationsModuleService.GetDriveControl(ParameterDictionary?["var_Aggregat"].Value);
+    public string DrivePosition => _calculationsModuleService.GetDrivePosition(ParameterDictionary?["var_Maschinenraum"].Value);
 
     [ObservableProperty]
     private int manufactureYear;

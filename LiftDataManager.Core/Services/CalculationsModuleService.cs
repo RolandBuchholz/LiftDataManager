@@ -103,6 +103,53 @@ public partial class CalculationsModuleService : ICalculationsModule
         return maxFuse;
     }
 
+    public string GetDriveTyp(string? driveSystem, int driveSuspension)
+    {
+        var driveTyp = string.Empty;
+        if (!string.IsNullOrWhiteSpace(driveSystem))
+        {
+            var suspension = driveSuspension <= 1 ? "direkt" : "indirekt";
+            driveTyp = driveSystem switch
+            {
+                "getriebelos" => "elektrisch getriebelos",
+                "mit Getriebe" => "elektrisch mit Getriebe",
+                "hydraulisch" => $"hydraulisch {suspension}",
+                _ => string.Empty,
+            };
+        }
+        return driveTyp;
+    }
+
+    public string GetDriveControl(string? driveTyp)
+    {
+        var driveControl = string.Empty;
+        if (!string.IsNullOrWhiteSpace(driveTyp))
+        {
+            var driveSystem = _parametercontext.Set<DriveSystem>().FirstOrDefault(x => x.Name == driveTyp);
+            driveControl = driveSystem is not null ? driveSystem.DriveControlTyp! : string.Empty;
+        }
+        return driveControl;
+    }
+
+    public string GetDrivePosition(string? drivePos)
+    {
+        var drivePosition = string.Empty;
+        if (!string.IsNullOrWhiteSpace(drivePos))
+        {
+            drivePosition = drivePos switch
+            {
+                "ohne" => "ohne Maschinenraum",
+                "oben über" => "Maschinenraum oben über",
+                "oben neben" => "Maschinenraum oben neben",
+                "unten neben" => "Maschinenraum unten neben",
+                "unten unter dem Schacht" => "Maschinenraum unter dem Schacht",
+                _ => string.Empty,
+            };
+        }
+        return drivePosition;
+    }
+
+
     public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
         const int tuerspalt = 4;

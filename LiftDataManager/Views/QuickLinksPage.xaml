@@ -193,6 +193,9 @@
             IsPrimaryButtonEnabled="{x:Bind ViewModel.ZAliftDataReadyForImport, Mode=OneWay}"
             PrimaryButtonCommand="{x:Bind ViewModel.ImportZAliftDataCommand}"
             PrimaryButtonText="Daten übernehmen">
+            <ContentDialog.PrimaryButtonCommandParameter>
+                <x:Boolean>false</x:Boolean>
+            </ContentDialog.PrimaryButtonCommandParameter>
             <StackPanel>
                 <Image
                     Width="200"
