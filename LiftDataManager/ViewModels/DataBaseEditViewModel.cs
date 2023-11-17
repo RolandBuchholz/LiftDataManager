@@ -488,59 +488,43 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     {
         if (string.IsNullOrWhiteSpace(SearchInput))
         {
-            switch (FilterValue)
+            FilteredParameterDtos = FilterValue switch
             {
-                case "None":
-                    FilteredParameterDtos = ParameterDtos;
-                    break;
-                case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    FilteredParameterDtos = ParameterDtos.Where(x => x.ParameterTyp!.Name == filterValue).ToList();
-                    break;
-                case "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
-                                       or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP":
-                    FilteredParameterDtos = ParameterDtos.Where(x => x.ParameterCategory!.Name == filterValue).ToList();
-                    break;
-                default:
-                    FilteredParameterDtos = ParameterDtos;
-                    break;
-            }
+                "None" => ParameterDtos,
+                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(x => x.ParameterTyp!.Name == filterValue).ToList(),
+                "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
+                                                       or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(x => x.ParameterCategory!.Name == filterValue).ToList(),
+                _ => ParameterDtos,
+            };
         }
         else
         {
-            switch (FilterValue)
+            FilteredParameterDtos = FilterValue switch
             {
-                case "None":
-                    FilteredParameterDtos = ParameterDtos.Where(
-                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
-                    break;
-                case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    FilteredParameterDtos = ParameterDtos.Where(
-                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                         .Where(x => x.ParameterTyp!.Name == filterValue).ToList();
-                    break;
-                case "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
-                           or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP":
-                    FilteredParameterDtos = ParameterDtos.Where(
-                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                        .Where(x => x.ParameterCategory!.Name == filterValue).ToList();
-                    break;
-                default:
-                    FilteredParameterDtos = ParameterDtos.Where(
-                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
-                    break;
-            }
+                "None" => ParameterDtos.Where(
+                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList(),
+                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(
+                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
+                                                                         .Where(x => x.ParameterTyp!.Name == filterValue).ToList(),
+                "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
+                                           or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(
+                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
+                                                                        .Where(x => x.ParameterCategory!.Name == filterValue).ToList(),
+                _ => ParameterDtos.Where(
+                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
+                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList(),
+            };
         }
     }
 
@@ -592,7 +576,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void GetDropdownValues()
     {
         if (_editableparametercontext is null)
-            return; 
+            return;
         ParameterTyps = _editableparametercontext.Set<ParameterTyp>().ToList();
         ParameterTypeCodes = _editableparametercontext.Set<ParameterTypeCode>().ToList();
         ParameterCategorys = _editableparametercontext.Set<ParameterCategory>().ToList();

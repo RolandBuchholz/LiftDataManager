@@ -7,7 +7,7 @@ public sealed partial class HistorySearchBar : UserControl
 {
     const string defaultAuthorName = "All Authors";
     const string defaultRevisionName = "All Revisions";
-    
+
     public List<LiftHistoryEntry> FilteredEntrys { get; set; }
     public ObservableCollection<string> Authors { get; set; }
     private ObservableDictionary<string, DateTime> RevisionsDictionary { get; set; }
@@ -145,7 +145,7 @@ public sealed partial class HistorySearchBar : UserControl
             else
             {
                 RevisionsDictionary.TryAdd("Erster Stand", DateTime.MinValue);
-            }      
+            }
         }
     }
 

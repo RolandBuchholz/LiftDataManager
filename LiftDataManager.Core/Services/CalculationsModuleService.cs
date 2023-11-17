@@ -154,7 +154,7 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         const int tuerspalt = 4;
         const int luftspaltoeffnung = 10;
-        
+
         SetDefaultParameter(parameterDictionary);
 
         double aKabine = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_A_Kabine");
@@ -423,9 +423,9 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         var paneeleQm = (paneelPosA || paneelPosB || paneelPosC || paneelPosD) ?
                         (((Convert.ToInt32(paneelPosA) + Convert.ToInt32(paneelPosC) * kabinenbreite / 1000) +
-                        ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 - 
+                        ((Convert.ToInt32(paneelPosB) + Convert.ToInt32(paneelPosD)) * kabinentiefe / 1000) - tableauBreite / 1000)) * (kabineundAbgehaengteDeckeHoehe - sockelleisteHoehe) / 1000 -
                         (paneelPosA && spiegelA || paneelPosB && spiegelB || paneelPosC && spiegelC || paneelPosD && spiegelD ? spiegelQm + paneeleSpiegelQm : 0) : 0;
-        
+
         var paneeleGewicht = paneeleGewichtproQm * paneeleQm;
 
         var vSGTyp = (glasLaengeWandA > 1 || glasLaengeWandB > 1 || glasLaengeWandC > 1 || glasLaengeWandD > 1) ? "VSG 12" : "VSG 10";

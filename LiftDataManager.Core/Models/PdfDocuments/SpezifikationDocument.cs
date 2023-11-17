@@ -737,7 +737,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
-                    row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"],true);
+                    row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"], true);
                     if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
                     {
                         row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);

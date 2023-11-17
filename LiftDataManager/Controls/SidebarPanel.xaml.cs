@@ -54,7 +54,7 @@ public sealed partial class SidebarPanel : UserControl
     public static readonly DependencyProperty ShowQuickLinksProperty =
         DependencyProperty.Register("ShowQuickLinks", typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
 
-    private void btn_ClearInfoText_Click(object sender, RoutedEventArgs e)
+    private void Btn_ClearInfoText_Click(object sender, RoutedEventArgs e)
     {
         InfoText = "Info Sidebar Panel Text gelöscht\n----------\n";
         CanTextClear = false;

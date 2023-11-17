@@ -166,7 +166,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateCarEquipmentPosition, "Error", null)});
 
         ValidationDictionary.Add("var_TuerEinbau",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"), 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TuerEinbauB",
@@ -178,7 +178,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TuerEinbauD",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"), 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
@@ -268,15 +268,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateEntryDimensions, "None", null)});
 
         ValidationDictionary.Add("var_TB_B",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null), 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TB_C",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null), 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TB_D",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null), 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Variable_Tuerdaten",
@@ -396,7 +396,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateHydrauliclock, "None", null)});
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateHydrauliclock, "None", null) });
 
         ValidationDictionary.Add("var_GGWNutzlastausgleich",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCounterweightMass, "None", null) });

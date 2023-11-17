@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Humanizer;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using Humanizer;
-using LiftDataManager.Helpers;
 
 namespace LiftDataManager.Models
 {

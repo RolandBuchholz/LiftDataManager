@@ -1,19 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-
-using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Newtonsoft.Json;
-
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
-
+using System.Runtime.CompilerServices;
 using Windows.Storage;
 
 namespace LiftDataManager;
@@ -231,7 +226,7 @@ public partial class App : Application
 
         if (dbPath is not null && dbReadOnly)
             File.Copy(dbPath, workPathDb, true);
-        
+
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
 
         return new SqliteConnectionStringBuilder()

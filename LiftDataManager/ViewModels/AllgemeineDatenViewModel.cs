@@ -7,7 +7,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public Dictionary<int,string> LiftPlanners { get; set; } = new();
+    public Dictionary<int, string> LiftPlanners { get; set; } = new();
     public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = new();
     public ObservableCollection<Country>? Countrys { get; set; } = new();
     private readonly ILogger<AllgemeineDatenViewModel> _logger;
@@ -33,7 +33,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     {
         if (value is not null && SelectedCountry is not null)
         {
-            CanShowTown = ((value.Length >= 4 && SelectedCountry.ShortMark != "D") || value.Length == 5); 
+            CanShowTown = ((value.Length >= 4 && SelectedCountry.ShortMark != "D") || value.Length == 5);
         }
     }
 
@@ -160,14 +160,14 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private string dataBaseActionDescription = "Neuen Fachplaner erstellen und in die Datenbank speichen";
 
     [ObservableProperty]
-    private string dataBaseButtonText= "Fachplaner erstellen und speichern";
+    private string dataBaseButtonText = "Fachplaner erstellen und speichern";
 
     private void SetLiftplanners()
     {
         var liftPlanners = _parametercontext.Set<LiftPlanner>().ToArray();
         foreach (var planner in liftPlanners)
         {
-            LiftPlanners?.Add(planner.Id ,$"{planner.Company} ({planner.FirstName} {planner.Name})");
+            LiftPlanners?.Add(planner.Id, $"{planner.Company} ({planner.FirstName} {planner.Name})");
         }
         var countrys = _parametercontext.Set<Country>().ToArray();
         foreach (var country in countrys)
@@ -281,19 +281,19 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
             }
         }
-            await addLiftPlannerDialog.ShowAsync();
+        await addLiftPlannerDialog.ShowAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]
     private async Task AddLiftPlannerToDatabaseAsync(ContentDialog addLiftPlannerDialog)
     {
-        if (_editableparametercontext is  null)
+        if (_editableparametercontext is null)
         {
-             DbContextOptionsBuilder editableOptions = new();
-             editableOptions.UseSqlite(App.GetConnectionString(false));
-             _editableparametercontext = new ParameterContext(editableOptions.Options);
+            DbContextOptionsBuilder editableOptions = new();
+            editableOptions.UseSqlite(App.GetConnectionString(false));
+            _editableparametercontext = new ParameterContext(editableOptions.Options);
         }
-         
+
         if (string.IsNullOrWhiteSpace(SelectedLiftPlanner))
         {
             try
@@ -335,13 +335,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 };
                 var addedLiftpanner = _editableparametercontext.Update(newLiftplanner);
                 await _editableparametercontext.SaveChangesAsync();
-                
+
                 if (LiftPlanners is not null)
                 {
                     LiftPlanners.Add(addedLiftpanner.Entity.Id, $"{addedLiftpanner.Entity.Company} ({addedLiftpanner.Entity.FirstName} {addedLiftpanner.Entity.Name})");
                     SelectedLiftPlanner = LiftPlanners[addedLiftpanner.Entity.Id];
                     _logger.LogInformation(60179, "Liftplanner: {Company} successfully add to database", addedLiftpanner.DebugView.LongView);
-                }   
+                }
             }
             catch
             {
@@ -391,7 +391,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 LiftPlanners[liftPlanner.Key] = $"{Company} ({FirstName} {Name})";
                 SelectedLiftPlanner = LiftPlanners[liftPlanner.Key];
             }
-            catch 
+            catch
             {
                 _logger.LogError(61078, "Failed to update Liftplanner {Company}", Company);
             }

@@ -12,7 +12,7 @@ public sealed partial class ParameterComboBox : UserControl
         Unloaded += OnUnLoadParameterComboBoxControl;
     }
 
- 
+
     private void OnLoadParameterComboBoxControl(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
@@ -182,11 +182,11 @@ public sealed partial class ParameterComboBox : UserControl
     {
         if (!IsControlActive && LiftParameter is not null)
         {
-           if (!string.IsNullOrWhiteSpace(LiftParameter.Value))
-           {
+            if (!string.IsNullOrWhiteSpace(LiftParameter.Value))
+            {
                 LiftParameter.Value = string.Empty;
                 LiftParameter.DropDownListValue = null;
-           }
+            }
         }
     }
 }

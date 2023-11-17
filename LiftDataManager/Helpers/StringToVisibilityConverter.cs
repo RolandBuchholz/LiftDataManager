@@ -26,7 +26,7 @@ public class StringToVisibilityConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if (value is Visibility && (Visibility)value == Visibility.Visible)
+        if (value is Visibility visibility && visibility == Visibility.Visible)
         {
             return "True";
         }

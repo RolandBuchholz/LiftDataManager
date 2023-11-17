@@ -364,7 +364,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             if (!string.IsNullOrWhiteSpace(liloPath))
             {
-                PathLilo = Path.Combine(liloPath,"PRG","LILO.EXE");
+                PathLilo = Path.Combine(liloPath, "PRG", "LILO.EXE");
             }
             else
             {

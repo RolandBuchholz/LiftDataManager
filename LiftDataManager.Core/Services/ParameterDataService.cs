@@ -1,7 +1,6 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -99,7 +98,7 @@ public partial class ParameterDataService : IParameterDataService
         {
             foreach (var par in parameterDtos)
             {
-                var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, par.Comment!,  _validationParameterDataService)
+                var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, par.Comment!, _validationParameterDataService)
                 {
                     Name = par.Name,
                     DisplayName = par.DisplayName,
@@ -198,7 +197,7 @@ public partial class ParameterDataService : IParameterDataService
            select para).SingleOrDefault();
 
         List<LiftHistoryEntry> historyEntrys = new();
-    
+
         if (xmlparameter is not null)
         {
             AddParameterToXml(parameter, xmlparameter);
@@ -401,9 +400,9 @@ public partial class ParameterDataService : IParameterDataService
         }
         else
         {
-            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value.Replace(".",",");
+            xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value.Replace(".", ",");
         }
-        
+
         xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
         xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
         LogSavedParameter(parameter.DisplayName!, parameter.Value!);

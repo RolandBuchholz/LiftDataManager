@@ -7,9 +7,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -381,7 +378,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
         bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
         bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
-        
+
         if (variableTuerdaten)
         {
             if (!zugangB)
@@ -1023,7 +1020,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
-        
+
         if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
@@ -1109,8 +1106,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData"))
             return;
-        
-        var zugang = string.Equals(name[^1..],"B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D")? name[^1..] : "A";
+
+        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
 
 
         if (name.StartsWith("var_TuerEinbau"))
@@ -1121,7 +1118,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 return;
             }
 
-            var liftDoor = ParameterDictionary[zugang == "A" ?"var_Tuerbezeichnung": $"var_Tuerbezeichnung_{zugang}"].Value;
+            var liftDoor = ParameterDictionary[zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
             var doorEntrance = Convert.ToDouble(value, CultureInfo.CurrentCulture);
             if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
@@ -1145,7 +1142,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
             var doorEntranceString = ParameterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value;
-            if (!string.IsNullOrWhiteSpace (doorEntranceString))
+            if (!string.IsNullOrWhiteSpace(doorEntranceString))
             {
                 var doorEntrance = Convert.ToDouble(doorEntranceString, CultureInfo.CurrentCulture);
                 if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
@@ -1175,7 +1172,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateHydrauliclock(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (string.Equals(value,"False",StringComparison.CurrentCultureIgnoreCase))
+        if (string.Equals(value, "False", StringComparison.CurrentCultureIgnoreCase))
         {
             ParameterDictionary["var_AufsetzvorrichtungSystem"].Value = string.Empty;
             ParameterDictionary["var_AufsetzvorrichtungSystem"].DropDownListValue = null;
@@ -1200,14 +1197,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         foreach (var side in sides)
         {
-           if (!string.IsNullOrWhiteSpace(ParameterDictionary[side].Value))
-           {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary[side].Value))
+            {
                 if (ParameterDictionary[side].Value!.Contains("klappbar") || ParameterDictionary[side].Value!.Contains("steckbar"))
                 {
                     railingSwitch = true;
                     break;
                 }
-           }
+            }
         }
         ParameterDictionary["var_SchutzgelaenderKontakt"].Value = railingSwitch ? "True" : "False";
     }
@@ -1266,7 +1263,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
 
-        var shaftSillParameterName = string.Equals(zugang,"A")? "var_Schwellenprofil" : $"var_Schwellenprofil{zugang}";
+        var shaftSillParameterName = string.Equals(zugang, "A") ? "var_Schwellenprofil" : $"var_Schwellenprofil{zugang}";
         var carSillParameterName = string.Equals(zugang, "A") ? "var_SchwellenprofilKabTuere" : $"var_SchwellenprofilKabTuere{zugang}";
 
         IEnumerable<string> availableDoorSills;

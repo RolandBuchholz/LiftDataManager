@@ -348,7 +348,7 @@
                         Margin="0,0,0,0"
                         Padding="0"
                         HorizontalAlignment="Left"
-                        Click="btn_ClearInfoText_Click"
+                        Click="Btn_ClearInfoText_Click"
                         Content="ClearInfoText"
                         IsEnabled="{x:Bind CanTextClear, Mode=OneWay}"
                         Style="{StaticResource AccentButtonStyle}" />

@@ -6,7 +6,7 @@ sealed internal class DataComboBox : ComboBox
 {
     public DataComboBox()
     {
-            
+
     }
 
     protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)

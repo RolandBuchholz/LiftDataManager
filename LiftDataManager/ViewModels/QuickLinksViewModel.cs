@@ -827,7 +827,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                                                                         .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
         if (zliData is null)
             return zliDataDictionary;
-        
+
         foreach (var zlipar in zliData)
         {
 
@@ -874,7 +874,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         var auftragsnummer = ParameterDictionary?["var_AuftragsNummer"].Value;
         var pathXml = Path.GetDirectoryName(FullPathXml);
 
-        if(!string.IsNullOrWhiteSpace(pathXml))
+        if (!string.IsNullOrWhiteSpace(pathXml))
         {
             var pathLiloCalculation = Path.Combine(pathXml, "Berechnungen", $"{auftragsnummer}.LILO");
             if (File.Exists(pathLiloCalculation))

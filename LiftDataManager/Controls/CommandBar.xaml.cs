@@ -100,7 +100,7 @@ public sealed partial class CommandBar : UserControl
         {
             SetValue(CanShowErrorsParametersProperty, value);
             RefreshView();
-            if (ViewSource is not null  && SelectedFilter == "Validation Errors")
+            if (ViewSource is not null && SelectedFilter == "Validation Errors")
             {
                 if (ViewSource.View is not null && ViewSource.View.Count == 0)
                 {
@@ -124,7 +124,7 @@ public sealed partial class CommandBar : UserControl
             RefreshView();
             if (ViewSource is not null && SelectedFilter == "Highlighted")
             {
-                if (ViewSource.View is not null && ViewSource.View.Count == 0 )
+                if (ViewSource.View is not null && ViewSource.View.Count == 0)
                 {
                     SearchInput = string.Empty;
                     FilterParameter(SearchInput);

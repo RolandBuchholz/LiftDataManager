@@ -103,7 +103,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             return;
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
         if (carFrameType is null)
-            return ;
+            return;
         IsCFPFrame = carFrameType.IsCFPControlled;
     }
 

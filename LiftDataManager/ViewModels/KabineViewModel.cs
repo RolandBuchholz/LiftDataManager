@@ -8,7 +8,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
- 
+
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
          base(parameterDataService, dialogService, navigationService)
     {
@@ -16,7 +16,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         _parametercontext = parametercontext;
     }
 
-    private readonly string[] carEquipment = { "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD", 
+    private readonly string[] carEquipment = { "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD",
                                                "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
                                                "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
                                                "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
@@ -71,8 +71,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         }
 
         if (message.PropertyName == "var_SpiegelA" ||
-            message.PropertyName == "var_SpiegelB" || 
-            message.PropertyName == "var_SpiegelC" || 
+            message.PropertyName == "var_SpiegelB" ||
+            message.PropertyName == "var_SpiegelC" ||
             message.PropertyName == "var_SpiegelD" ||
             message.PropertyName == "var_Spiegelausfuehrung")
         {
@@ -227,7 +227,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                     ParameterDictionary!["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
                 }
             }
-        }      
+        }
     }
 
     [RelayCommand]

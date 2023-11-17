@@ -11,7 +11,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAware
 
     public ErrorViewModel(ISettingService settingsSelectorService)
     {
-       _settingService = settingsSelectorService;
+        _settingService = settingsSelectorService;
     }
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }

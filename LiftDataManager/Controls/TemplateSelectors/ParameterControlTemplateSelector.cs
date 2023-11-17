@@ -38,22 +38,15 @@ public class ParameterControlTemplateSelector : DataTemplateSelector
         {
             var parameter = (Parameter)item;
 
-            switch (parameter.ParameterTyp)
+            return parameter.ParameterTyp switch
             {
-                case Parameter.ParameterTypValue.Text:
-                    return StringTemplate;
-                case Parameter.ParameterTypValue.NumberOnly:
-                    return NumberOnlyTemplate;
-                case Parameter.ParameterTypValue.Date:
-                    return DateTemplate;
-                case Parameter.ParameterTypValue.Boolean:
-                    return BooleanTemplate;
-                case Parameter.ParameterTypValue.DropDownList:
-                    return DropDownList;
-
-                default:
-                    return DefaultTemplate;
-            }
+                Parameter.ParameterTypValue.Text => StringTemplate,
+                Parameter.ParameterTypValue.NumberOnly => NumberOnlyTemplate,
+                Parameter.ParameterTypValue.Date => DateTemplate,
+                Parameter.ParameterTypValue.Boolean => BooleanTemplate,
+                Parameter.ParameterTypValue.DropDownList => DropDownList,
+                _ => DefaultTemplate,
+            };
         }
         else
         {

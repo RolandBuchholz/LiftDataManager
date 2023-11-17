@@ -37,7 +37,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         {
             FillCarFloorSillParameter();
         }
-            SetInfoSidebarPanelText(message);
+        SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
 
@@ -99,13 +99,13 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    public bool CanEditSillEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") && 
+    public bool CanEditSillEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") &&
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
-    public bool CanEditSillEntranceB => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B") && 
+    public bool CanEditSillEntranceB => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B") &&
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B")).StartsWith("einseitig");
-    public bool CanEditSillEntranceC => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C") && 
+    public bool CanEditSillEntranceC => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C") &&
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
-    public bool CanEditSillEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D") && 
+    public bool CanEditSillEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D") &&
                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
 
     [ObservableProperty]
@@ -116,7 +116,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     private void GoToKabine() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
 
     [RelayCommand(CanExecute = nameof(CanRefreshCarFloorSill))]
-    private void RefreshCarFloorSillParameter() 
+    private void RefreshCarFloorSillParameter()
     {
         string[] accesses = new string[] { "A", "B", "C", "D" };
         foreach (var access in accesses)
@@ -125,7 +125,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
             {
                 var carFloorSillParameterString = new StringBuilder();
                 var parameters = CarFloorSillParameter.Where(x => x.Key.EndsWith(access)).Select(s => s.Value.ToString());
-                carFloorSillParameterString.AppendJoin(';',parameters);
+                carFloorSillParameterString.AppendJoin(';', parameters);
                 ParameterDictionary![$"var_SchwellenUnterbau{access}"].Value = carFloorSillParameterString.ToString();
             }
         }

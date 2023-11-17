@@ -83,7 +83,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CustomPayloadInfo = "Gedrängelast muß größer/gleich Tabelle6 sein!";
             return;
         }
- 
+
         ParameterDictionary!["var_Q1"].Value = payload.ToString();
         CustomPayload = string.Empty;
         CustomPayloadInfo = string.Empty;
@@ -137,7 +137,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
-    private string? dataImportStatusText = "Keine Daten für Import vorhanden" ;
+    private string? dataImportStatusText = "Keine Daten für Import vorhanden";
 
     [ObservableProperty]
     private InfoBarSeverity dataImportStatus = InfoBarSeverity.Informational;
@@ -242,7 +242,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
         }
-        
+
         if (string.IsNullOrWhiteSpace(FullPathXml))
         {
             _logger.LogWarning(61033, "FullPathXml is null or whiteSpace");
@@ -283,7 +283,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     }
                     else if (item.Value.Contains('.'))
                     {
-                        updatedParameter.Value = item.Value;                                                  
+                        updatedParameter.Value = item.Value;
                     }
                     else
                     {
@@ -379,7 +379,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
             _ = Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
-            { 
+            {
                 SetDriveData = true,
                 UpdateQuicklinks = true
             }));
@@ -771,24 +771,24 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         var watch = Stopwatch.StartNew();
         var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
         var stopTimeMs = watch.ElapsedMilliseconds;
-        
+
         switch (workspaceSearch.Length)
         {
             case 0:
-            {
-                _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
-                InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
-                return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
-            }
-            case 1:
-            {
-                InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                var autoDeskTransferpath = workspaceSearch[0];
-                FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
-                if (!AutoDeskTransferInfo.IsReadOnly)
                 {
+                    _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
+                    InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
+                    return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
+                }
+            case 1:
+                {
+                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    var autoDeskTransferpath = workspaceSearch[0];
+                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                    if (!AutoDeskTransferInfo.IsReadOnly)
+                    {
                         _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
-                        return new DownloadInfo() 
+                        return new DownloadInfo()
                         {
                             ExitCode = 0,
                             CheckOutState = "CheckedOutByCurrentUser",
@@ -797,24 +797,24 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                             Success = true,
                             IsCheckOut = true
                         };
+                    }
+                    else
+                    {
+                        return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
+                    }
                 }
-                else
-                {
-                    return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
-                }
-            }
             default:
-            {
-                InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
-                _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
-                return new DownloadInfo()
                 {
-                    ExitCode = 5,
-                    FileName = searchPattern,
-                    FullFileName = searchPattern,
-                    ExitState = DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml
-                };
-            }
+                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
+                    return new DownloadInfo()
+                    {
+                        ExitCode = 5,
+                        FileName = searchPattern,
+                        FullFileName = searchPattern,
+                        ExitState = DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml
+                    };
+                }
         }
     }
 
@@ -932,7 +932,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private void SetModifyInfos()
     {
-        ParameterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName)? "Keine Angaben" : Environment.UserName;
+        ParameterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName;
         ParameterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
     }
 
@@ -943,7 +943,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
             ParameterDictionary["var_Index"].Value = newRevision;
             ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
-        }     
+        }
     }
 
     public void OnNavigatedTo(object parameter)
@@ -986,8 +986,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            if (CheckOut) SetModifyInfos();
-            
+            if (CheckOut)
+                SetModifyInfos();
+
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
 

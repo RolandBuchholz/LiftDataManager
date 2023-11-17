@@ -152,7 +152,7 @@ public class PdfBaseDocument : IDocument
                         IsStroke = true,
                         StrokeWidth = 1,
                         IsAntialias = true
-                        
+
                     };
 
                     using var path = new SKPath();

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Humanizer;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using LiftDataManager.Models;
-using static LiftDataManager.Models.TechnicalLiftDocumentation;
 using System.Text.Json;
-using Humanizer;
+using static LiftDataManager.Models.TechnicalLiftDocumentation;
 
 namespace LiftDataManager.ViewModels;
 
@@ -197,7 +197,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
-            SetLiftDocumentation();
+        SetLiftDocumentation();
     }
 
     public void OnNavigatedFrom()

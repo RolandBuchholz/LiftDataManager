@@ -19,7 +19,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
-        IsActive= true;
+        IsActive = true;
     }
 
     public void Receive(SpeziPropertiesRequestMessage message)
