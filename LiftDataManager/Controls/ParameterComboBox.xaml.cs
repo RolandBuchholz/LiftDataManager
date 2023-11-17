@@ -7,15 +7,18 @@ public sealed partial class ParameterComboBox : UserControl
     public ParameterComboBox()
     {
         InitializeComponent();
+
         Loaded += OnLoadParameterComboBoxControl;
         Unloaded += OnUnLoadParameterComboBoxControl;
     }
 
+ 
     private void OnLoadParameterComboBoxControl(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged += OnErrorsChanged;
+            //LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
         }
     }
 
@@ -24,6 +27,7 @@ public sealed partial class ParameterComboBox : UserControl
         if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged -= OnErrorsChanged;
+            //LiftParameter.DropDownList.CollectionChanged -= DropDownList_CollectionChanged;
         }
     }
 
@@ -33,6 +37,11 @@ public sealed partial class ParameterComboBox : UserControl
         {
             SetParameterState(sender as Parameter);
         }
+    }
+
+    private void DropDownList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+
     }
 
     public bool IsControlActive

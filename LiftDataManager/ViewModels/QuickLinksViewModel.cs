@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using System.Xml;

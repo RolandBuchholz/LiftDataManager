@@ -1,5 +1,4 @@
-﻿using LiftDataManager.core.Helpers;
-using LiftDataManager.Core.Models.CalculationResultsModels;
+﻿using LiftDataManager.Core.Models.CalculationResultsModels;
 
 namespace LiftDataManager.ViewModels;
 

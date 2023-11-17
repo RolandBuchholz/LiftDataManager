@@ -1,7 +1,7 @@
 ﻿using Cogs.Collections;
 using System.Globalization;
 
-namespace LiftDataManager.core.Helpers;
+namespace LiftDataManager.Core.Helpers;
 
 public class LiftParameterHelper
 {

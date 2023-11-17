@@ -13,6 +13,7 @@ public partial class Parameter : ParameterBase
     public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
+        DropDownList ??= new();
         DataImport = true;
         TypeCode = (TypeCodeValue)parameterTypeCodeId;
         ParameterTyp = (ParameterTypValue)parameterTypId;
@@ -40,7 +41,7 @@ public partial class Parameter : ParameterBase
     public string? DisplayName { get; set; }
 
     [ObservableProperty]
-    public ObservableCollection<string> dropDownList = new();
+    public ObservableCollection<string> dropDownList;
 
     [ObservableProperty]
     private bool isDirty;
@@ -53,7 +54,7 @@ public partial class Parameter : ParameterBase
         {
             IsDirty = true;
             Broadcast(oldValue, newValue, Name);
-        } 
+        }
     }
 
     [ObservableProperty]

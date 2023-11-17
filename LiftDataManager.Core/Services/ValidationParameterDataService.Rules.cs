@@ -1269,7 +1269,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var shaftSillParameterName = string.Equals(zugang,"A")? "var_Schwellenprofil" : $"var_Schwellenprofil{zugang}";
         var carSillParameterName = string.Equals(zugang, "A") ? "var_SchwellenprofilKabTuere" : $"var_SchwellenprofilKabTuere{zugang}";
 
-        List<string> availableDoorSills;
+        IEnumerable<string> availableDoorSills;
 
         if (name.StartsWith("var_Tuertyp"))
         {
@@ -1282,17 +1282,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             availableDoorSills = GetAvailableDoorSills(doorTyp, value);
         }
 
-        if (availableDoorSills.Any())
-        {
-            //ParameterDictionary[shaftSillParameterName].DropDownList.Clear();
-            ParameterDictionary[carSillParameterName].DropDownList.Clear();
-            foreach (var item in availableDoorSills)
-            {
-                ParameterDictionary[shaftSillParameterName].DropDownList.Add(item);
-                ParameterDictionary[carSillParameterName].DropDownList.Add(item);
-            }
-        }
+        UpdateDropDownList(shaftSillParameterName, availableDoorSills);
         _ = ParameterDictionary[shaftSillParameterName].ValidateParameterAsync().Result;
+        UpdateDropDownList(carSillParameterName, availableDoorSills);
         _ = ParameterDictionary[carSillParameterName].ValidateParameterAsync().Result;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Controls;
-using LiftDataManager.core.Helpers;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;

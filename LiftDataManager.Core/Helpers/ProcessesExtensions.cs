@@ -1,4 +1,5 @@
-﻿namespace LiftDataManager.Helpers;
+﻿namespace LiftDataManager.Core.Helpers;
+
 static class ProcessesExtensions
 {
     public static bool IsLocked(this FileInfo f)

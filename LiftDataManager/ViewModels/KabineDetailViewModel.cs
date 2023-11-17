@@ -1,7 +1,5 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-
-using LiftDataManager.core.Helpers;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;

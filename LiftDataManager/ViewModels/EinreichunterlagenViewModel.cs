@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
-using LiftDataManager.core.Helpers;
 using LiftDataManager.Models;
 using static LiftDataManager.Models.TechnicalLiftDocumentation;
 using System.Text.Json;

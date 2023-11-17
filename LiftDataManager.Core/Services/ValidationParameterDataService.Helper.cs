@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
+using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -172,7 +173,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = $"{supportPlateExtensionLeft};{supportPlateExtensionRight};{distanceMudHolesFloorEdge};{quantityRowMudHoles};{distanceMudHole};{distanceSillBracketHoles};{quantityRowHolesSillBracket};{distanceSillMounting};{sillExtensionLeft};{sillExtensionRight};{sillBracketExtensionLeft};{sillBracketExtensionRight};{supportPlateWidth};{offsetOKAprontoOKFF};{distanceBetweenSillBracketholes};{triangularLockingDistance};{carFloorSill.SillMountTyp}";
     }
 
-    private List<string> GetAvailableDoorSills(string? doorTyp, string? doorDescription)
+    private IEnumerable<string> GetAvailableDoorSills(string? doorTyp, string? doorDescription)
     {
         var sills = _parametercontext.Set<LiftDoorSill>();
 
@@ -180,27 +181,43 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             if (doorTyp.StartsWith("Wittur"))
             {
-                return sills.Where(x => x.Manufacturer == "Wittur").Select(s => s.Name).ToList();
+                return sills.Where(x => x.Manufacturer == "Wittur").Select(s => s.Name);
             }
             if (doorTyp.StartsWith("Riedl"))
             {
-                return sills.Where(x => x.Manufacturer == "Riedl").Select(s => s.Name).ToList();
+                return sills.Where(x => x.Manufacturer == "Riedl").Select(s => s.Name);
             }
             if (string.IsNullOrWhiteSpace(doorDescription))
             {
-                return sills.Where(x => x.Manufacturer == "Meiller").Select(s => s.Name).ToList();
+                return sills.Where(x => x.Manufacturer == "Meiller").Select(s => s.Name);
             }
             else if (doorDescription.StartsWith("DT"))
             {
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(s => s.Name).ToList();
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(s => s.Name);
             }
             else
             {
                 var doorNumber = doorDescription.Replace("HD", "")[^3..].Trim();
-                return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(s => s.Name).ToList();
+                return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(s => s.Name);
             }
         }
 
-        return sills.Select(s => s.Name).ToList();
+        return sills.Select(s => s.Name);
+    }
+
+    private void UpdateDropDownList(string? parameterName, IEnumerable<string> newList)
+    {
+        if (string.IsNullOrWhiteSpace(parameterName))
+            return;
+        if (!newList.Any())
+        {
+            ParameterDictionary[parameterName].DropDownList.Clear();
+            return;
+        }
+
+        if (ParameterDictionary[parameterName].DropDownList.SequenceEqual(newList))
+            return;
+
+        ParameterDictionary[parameterName].DropDownList = new ObservableCollection<string>(newList);
     }
 }

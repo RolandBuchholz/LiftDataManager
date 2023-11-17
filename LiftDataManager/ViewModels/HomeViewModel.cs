@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.core.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 

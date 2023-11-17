@@ -1,4 +1,4 @@
-﻿global using LiftDataManager.core.Helpers;
+﻿global using LiftDataManager.Core.Helpers;
 global using LiftDataManager.Core.DataAccessLayer.Models;
 global using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 global using LiftDataManager.Core.Models;

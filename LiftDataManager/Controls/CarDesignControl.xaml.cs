@@ -1,5 +1,4 @@
 ﻿using Cogs.Collections;
-using LiftDataManager.core.Helpers;
 using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
