@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
@@ -18,7 +19,7 @@ public sealed partial class ParameterComboBox : UserControl
         if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged += OnErrorsChanged;
-            //LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
+            LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
         }
     }
 
@@ -27,7 +28,7 @@ public sealed partial class ParameterComboBox : UserControl
         if (LiftParameter is not null)
         {
             LiftParameter.ErrorsChanged -= OnErrorsChanged;
-            //LiftParameter.DropDownList.CollectionChanged -= DropDownList_CollectionChanged;
+            LiftParameter.DropDownList.CollectionChanged -= DropDownList_CollectionChanged;
         }
     }
 
@@ -41,7 +42,14 @@ public sealed partial class ParameterComboBox : UserControl
 
     private void DropDownList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-
+        if (sender is ObservableCollection<string> dropDownList)
+        {
+            if (dropDownList.Count == 0)
+                return;
+            if (LiftParameter is null || string.IsNullOrEmpty(LiftParameter.Value) || !dropDownList.Contains(LiftParameter.Value))
+                return;
+            cmb_Liftparameter.SelectedValue = LiftParameter.Value;
+        }   
     }
 
     public bool IsControlActive

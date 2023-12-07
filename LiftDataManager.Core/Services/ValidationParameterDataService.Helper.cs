@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -62,6 +62,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (ParameterDictionary[$"var_TuerEinbau{zugang}"].Value != "0")
                 ParameterDictionary[$"var_TuerEinbau{zugang}"].Value = string.Empty;
         }
+    }
+
+    private string GetDriveSystem(string? lift)
+    {
+        string driveSystem = string.Empty;
+        if (!string.IsNullOrWhiteSpace(lift))
+        {
+            var driveSystemDB = _parametercontext.Set<LiftType>().Include(i => i.DriveType).FirstOrDefault(x => x.Name == lift)?.DriveType?.Name;
+            if (!string.IsNullOrWhiteSpace(driveSystemDB))
+                return driveSystemDB;
+        }
+        return driveSystem;
     }
 
     private void SetCarDesignParameterSill(string zugang, LiftDoorGroup liftDoorGroup)
@@ -187,9 +199,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 return sills.Where(x => x.Manufacturer == "Riedl").Select(s => s.Name);
             }
+            //Meiller Filter Optionen
+            var cat = ParameterDictionary["var_EN8171Cat012"].Value;
             if (string.IsNullOrWhiteSpace(doorDescription))
             {
-                return sills.Where(x => x.Manufacturer == "Meiller").Select(s => s.Name);
+                if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
+                {
+                    return sills.Where(x => x.Manufacturer == "Meiller").Select(s => s.Name);
+                }
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(s => s.Name);
             }
             else if (doorDescription.StartsWith("DT"))
             {
@@ -198,7 +216,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             else
             {
                 var doorNumber = doorDescription.Replace("HD", "")[^3..].Trim();
-                return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(s => s.Name);
+
+                if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
+                {
+                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(s => s.Name);
+                }
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(s => s.Name);
             }
         }
 
@@ -215,9 +238,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         }
 
-        if (ParameterDictionary[parameterName].DropDownList.SequenceEqual(newList))
+        var updateList = newList.Prepend("(keine Auswahl)");
+
+        if (ParameterDictionary[parameterName].DropDownList.SequenceEqual(updateList))
             return;
 
-        ParameterDictionary[parameterName].DropDownList = new ObservableCollection<string>(newList);
+        ParameterDictionary[parameterName].DropDownList.Clear();
+        ParameterDictionary[parameterName].DropDownList.AddRange(updateList, NotifyCollectionChangedAction.Reset);
     }
 }

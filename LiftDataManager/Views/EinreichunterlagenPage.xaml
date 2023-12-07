@@ -51,8 +51,9 @@
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="24"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Beschreibung der Aufzugsanlage" />
-                        <Grid>
+                        <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
                                 <ColumnDefinition />
@@ -157,11 +158,13 @@
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value}" />
                         </Grid>
+                        <!--  1. Allgemeine Angaben  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="1. Allgemeine Angaben" />
-                        <Grid>
+                        <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
                                 <ColumnDefinition />
@@ -324,11 +327,13 @@
                                 <Run Text=" im gleichen Schacht errichtet." />
                             </TextBlock>
                         </Grid>
+                        <!--  2. Fahrschacht - Fahrschachtzugänge  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="2. Fahrschacht - Fahrschachtzugänge" />
-                        <Grid>
+                        <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
                                 <ColumnDefinition Width="Auto" />
@@ -410,17 +415,73 @@
                             <TextBlock
                                 Grid.Row="3"
                                 Grid.Column="0"
-                                Grid.ColumnSpan="2"
+                                Grid.ColumnSpan="1"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Art der maschinell- handbetätigten Fahrschachttüren:" />
-                            <TextBlock
-                                Grid.Row="4"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Stück Türen von m Breite und m Höhe" />
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    Width="65"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Zugangsstellen'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5,5,5,10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="Stück" />
+                                <TextBlock
+                                    Margin="8,5,5,10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="Fabrikat:" />
+                                <TextBox
+                                    Width="250"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp'].Value}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Width="65"
+                                        Margin="0,0,5,10"
+                                        VerticalAlignment="Bottom"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="Türbreite:" />
+                                    <TextBox
+                                        Width="100"
+                                        Style="{StaticResource InfoTextboxStyle}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_TB'].Value}"
+                                        TextAlignment="Right" />
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        VerticalAlignment="Bottom"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="mm" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Width="65"
+                                        Margin="0,0,5,10"
+                                        VerticalAlignment="Bottom"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="Türöhe:" />
+                                    <TextBox
+                                        Width="100"
+                                        Style="{StaticResource InfoTextboxStyle}"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_TH'].Value}"
+                                        TextAlignment="Right" />
+                                    <TextBlock
+                                        Margin="5,5,5,10"
+                                        VerticalAlignment="Bottom"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="mm" />
+                                </StackPanel>
+                            </StackPanel>
                             <TextBlock
                                 Grid.Row="5"
                                 Grid.Column="0"
@@ -463,9 +524,11 @@
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
+                        <!--  3. Tragmittel  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="3. Tragmittel" />
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
@@ -548,9 +611,11 @@
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="keine" />
                         </Grid>
+                        <!--  4. Antrieb  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="4. Antrieb" />
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
@@ -603,25 +668,222 @@
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.DrivePosition}" />
                         </Grid>
+                        <!--  5. Fahrkorb-Gegengewicht  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="5. Fahrkorb-Gegengewicht" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Fahrkorbgrundfläche:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_A_Kabine'].Value}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="m²" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Fahrkorbhöhe:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_KHLicht'].Value}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="mm" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.CarDoorCount}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="Stück" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Gewicht des Fahrkorbes:" />
+                            <TextBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_F'].Value}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="kg" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Gewicht des Gegengewichtes:" />
+                            <TextBox
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'].Value}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="kg" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Margin="0,0,0,10"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Margin="5,0,5,5"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="---" />
+                        </Grid>
+                        <!--  6. Elektrische Ausrüstung  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="6. Elektrische Ausrüstung" />
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Spannung und Netzform des Anschlussnetzes:" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'].Value}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Nennstrom des Antriebsmotors:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ir'].Value}"
+                                TextAlignment="Right" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="5,0,5,5"
+                                VerticalAlignment="Center"
+                                Text="A" />
+                        </Grid>
+                        <!--  7. Liste der Sicherheitsbauteile  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="7. Liste der Sicherheitsbauteile" />
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Fangvorrichtung" />
+                            <TextBlock Text="Türverschlüsse Schachttür" />
+                            <TextBlock Text="Türverschlüsse Kabinentür" />
+                            <TextBlock Text="Geschwindigkeitsbegenzer" />
+                            <TextBlock Text="Fahrkorbpuffer" />
+                            <TextBlock Text="Gegengewichtspuffer" />
+                            <TextBlock Text="SaFÜ" />
+                            <TextBlock Text="SaFÜ" />
+                            <TextBlock Text="UCMP" />
+                            <TextBlock Text="UCMP" />
+                            <TextBlock Text="UCMP" />
+                            <TextBlock
+                                Margin="0,5,0,5"
+                                FontSize="16"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Text="Elektronische Sicherheitsschaltungen" />
+                            <TextBlock Text="---" />
+                            <TextBlock Text="---" />
+                            <TextBlock Text="---" />
+                        </StackPanel>
+                        <!--  8. Besonderheiten der Aufzugsanlage  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="8. Besonderheiten der Aufzugsanlage" />
+                        <!--  Anlagen  -->
                         <TextBlock
                             Margin="0,0,0,10"
                             FontSize="20"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Anlagen:" />
                         <TextBlock Margin="0,0,0,10" FontSize="16">
                             <Run Text=" Der Montagebetrieb" /> <LineBreak />

@@ -26,6 +26,8 @@ public interface ICalculationsModule
 
     string GetDrivePosition(string? drivePos);
 
+    int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary);
+
     CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);

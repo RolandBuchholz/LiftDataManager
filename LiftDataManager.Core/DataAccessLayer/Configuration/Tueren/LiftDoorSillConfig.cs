@@ -15,5 +15,6 @@ public class LiftDoorSillConfig : BaseModelBuilder<LiftDoorSill>
         builder.Property(x => x.SillFilterTyp)
                .HasMaxLength(50);
         builder.Property(x => x.SillMountTyp);
+        builder.Property(x => x.IsVandalResistant);
     }
 }

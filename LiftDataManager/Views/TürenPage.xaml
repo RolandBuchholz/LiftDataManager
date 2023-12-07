@@ -637,12 +637,19 @@
                                                 Margin="0,0,0,5"
                                                 FontSize="20"
                                                 Text="Zusatzinformationen Schwellen" />
-                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
-                                            <TextBlock FontSize="12" Text="Bei Schwellen Gravida Plus (TTS/TTK 31/32) sind" />
+                                            <TextBlock FontSize="12" Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2" />
+                                            <TextBlock FontSize="12" Text="sind keine verdeckten Führungen möglich." />
+                                            <TextBlock FontSize="12" Text="Bei diesen Türen kann alternativ eine Gravida Plus" />
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="12"
-                                                Text="nur voreilende Türblätter verdeckt." />
+                                                Text="eingesetzt werden." />
+                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
+                                            <TextBlock FontSize="12" Text="Bei Gravida Plus Schwellen sind nur" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="voreilende Türblätter verdeckt." />
                                             <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
                                             <TextBlock
                                                 Margin="0,0,0,5"
@@ -930,12 +937,19 @@
                                                 Margin="0,0,0,5"
                                                 FontSize="20"
                                                 Text="Zusatzinformationen Schwellen" />
-                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
-                                            <TextBlock FontSize="12" Text="Bei Schwellen Gravida Plus (TTS/TTK 31/32) sind" />
+                                            <TextBlock FontSize="12" Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2" />
+                                            <TextBlock FontSize="12" Text="sind keine verdeckten Führungen möglich." />
+                                            <TextBlock FontSize="12" Text="Bei diesen Türen kann alternativ eine Gravida Plus" />
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="12"
-                                                Text="nur voreilende Türblätter verdeckt." />
+                                                Text="eingesetzt werden." />
+                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
+                                            <TextBlock FontSize="12" Text="Bei Gravida Plus Schwellen sind nur" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="12"
+                                                Text="voreilende Türblätter verdeckt." />
                                             <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
                                             <TextBlock
                                                 Margin="0,0,0,5"

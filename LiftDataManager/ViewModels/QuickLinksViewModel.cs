@@ -242,6 +242,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             startargs = driveSystem.IsCFPControlled ? auftragsnummer + " " + identifierbausatztyp + " " + shortSymbolDirveSystem : string.Empty;
         }
 
+        if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
+        {
+            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
+        }
+
         if (!CheckOut)
         {
             var checkOutResult = await CheckOutDialogAsync();
@@ -398,6 +403,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 return;
 
             noEditMode = true;
+        }
+
+        if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
+        {
+            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
         }
 
         if (CanSaveAllSpeziParameters)

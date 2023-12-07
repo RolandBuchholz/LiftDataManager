@@ -76,13 +76,15 @@
             HorizontalAlignment="Stretch"
             Header="Parameterwert"
             ItemsSource="{Binding DropDownList, Mode=OneWay}"
+            PlaceholderForeground="IndianRed"
+            PlaceholderText="{Binding Value, Mode=OneWay}"
             SelectedValue="{Binding DropDownListValue, Mode=TwoWay}" />
     </DataTemplate>
     <DataTemplate x:Key="ParameterTypDefault">
         <TextBlock
             FontSize="30"
             FontWeight="Bold"
-            Foreground="red"
+            Foreground="IndianRed"
             Text="Kein bekannter Parametertyp gefunden." />
     </DataTemplate>
 
@@ -130,6 +132,8 @@
         <ComboBox
             HorizontalAlignment="Stretch"
             ItemsSource="{Binding DropDownList, Mode=OneWay}"
+            PlaceholderForeground="IndianRed"
+            PlaceholderText="{Binding Value, Mode=OneWay}"
             SelectedValue="{Binding DropDownListValue, Mode=TwoWay}"
             Style="{StaticResource GridComboboxStyle}" />
     </DataTemplate>
@@ -137,7 +141,7 @@
         <TextBlock
             FontSize="30"
             FontWeight="Bold"
-            Foreground="red"
+            Foreground="IndianRed"
             Text="Kein bekannter Parametertyp gefunden." />
     </DataTemplate>
 </ResourceDictionary>

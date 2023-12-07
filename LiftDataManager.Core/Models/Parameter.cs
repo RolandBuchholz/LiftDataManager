@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
+using MvvmHelpers;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Core.Models;
@@ -41,7 +42,7 @@ public partial class Parameter : ParameterBase
     public string? DisplayName { get; set; }
 
     [ObservableProperty]
-    public ObservableCollection<string> dropDownList;
+    public ObservableRangeCollection<string> dropDownList;
 
     [ObservableProperty]
     private bool isDirty;

@@ -149,6 +149,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         return drivePosition;
     }
 
+    public int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+        zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
+        zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
+        zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
+        zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+        return NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
+    }
 
     public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
     {

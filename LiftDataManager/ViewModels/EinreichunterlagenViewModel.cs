@@ -23,10 +23,10 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     }
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
-
     public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary?["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
     public string DriveControl => _calculationsModuleService.GetDriveControl(ParameterDictionary?["var_Aggregat"].Value);
     public string DrivePosition => _calculationsModuleService.GetDrivePosition(ParameterDictionary?["var_Maschinenraum"].Value);
+    public int CarDoorCount => _calculationsModuleService.GetNumberOfCardoors(ParameterDictionary);
 
     [ObservableProperty]
     private int manufactureYear;
@@ -60,6 +60,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private string? protectedSpaceTypPit;
     partial void OnProtectedSpaceTypPitChanged(string? value)
     {
+        if (string.IsNullOrWhiteSpace(value) || value == "0")
+            return;
         ProtectedSpaceTyp protectedSpace;
         if (Enum.TryParse(value?[..4], out protectedSpace))
         {
@@ -73,6 +75,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private string? protectedSpaceTypHead;
     partial void OnProtectedSpaceTypHeadChanged(string? value)
     {
+        if (string.IsNullOrWhiteSpace(value) || value == "0")
+            return;
         ProtectedSpaceTyp protectedSpace;
         if (Enum.TryParse(value?[..4], out protectedSpace))
         {
