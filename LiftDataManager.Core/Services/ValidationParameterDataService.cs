@@ -450,6 +450,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_SpiegelD",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
 
+        ValidationDictionary.Add("var_EN8171Cat012",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarDoorSill, "None", null) });
+
         AddDropDownListValidation();
     }
 

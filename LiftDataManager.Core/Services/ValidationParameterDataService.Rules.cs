@@ -1331,7 +1331,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_Tuerbezeichnung")))
+        if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_Tuerbezeichnung") || string.Equals(name, "var_EN8171Cat012")))
             return;
 
         var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
