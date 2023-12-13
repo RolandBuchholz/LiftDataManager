@@ -87,13 +87,34 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-    protected void AddError(string propertyName, ParameterStateInfo errorMessage)
+    public void AddError(string propertyName, ParameterStateInfo errorMessage)
     {
-        if (!parameterErrors.ContainsKey(propertyName))
+        if (!parameterErrors.TryGetValue(propertyName, out List<ParameterStateInfo>? value))
         {
-            parameterErrors.Add(propertyName, new List<ParameterStateInfo>());
+            value = new List<ParameterStateInfo>();
+            parameterErrors.Add(propertyName, value);
         }
-        parameterErrors[propertyName].Add(errorMessage);
+
+        if (value.Count == 0 || !value.Exists(x => x.ErrorMessage == errorMessage.ErrorMessage))
+        {
+            value.Add(errorMessage);
+        }
+
+        OnErrorsChanged(propertyName);
+    }
+
+    public void RemoveError(string propertyName, string errorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(errorMessage))
+            return;
+        if (parameterErrors.TryGetValue(propertyName, out List<ParameterStateInfo>? value))
+        {
+            var error = value.FirstOrDefault(x => x.ErrorMessage == errorMessage);
+            if (error is not null)
+                value.Remove(error);
+            if (value.Count == 0)
+                parameterErrors.Remove(propertyName);
+        }
         OnErrorsChanged(propertyName);
     }
 

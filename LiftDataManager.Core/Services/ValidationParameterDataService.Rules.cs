@@ -516,17 +516,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             UpdateDropDownList("var_Bausatz", availableCarframes);
         }
 
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value))
-        {
-            if (!ParameterDictionary["var_Bausatz"].DropDownList.Contains(ParameterDictionary["var_Bausatz"].Value!))
-            {
-                _ = ParameterDictionary["var_Bausatz"].ValidateParameterAsync().Result;
-            }
-            else
-            {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
-            }
-        }
+        CheckListContainsValue(ParameterDictionary["var_Bausatz"]);
     }
 
     private void ValidateReducedProtectionSpaces(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -982,11 +972,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (availableguideModels is not null)
         {
             UpdateDropDownList(guideTyp, availableguideModels);
-            if (!string.IsNullOrWhiteSpace(selectedguideModel) && !availableguideModels.Contains(selectedguideModel))
-            {
-                ParameterDictionary[guideTyp].Value = string.Empty;
-                ParameterDictionary[guideTyp].DropDownListValue = null;
-            }
+            CheckListContainsValue(ParameterDictionary[guideTyp]);
         }
     }
 
@@ -1027,9 +1013,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (availableLiftDoorGroups is not null)
             {
                 UpdateDropDownList(liftDoorGroups, availableLiftDoorGroups);
+                CheckListContainsValue(ParameterDictionary[liftDoorGroups]);
             }
         }
-        _ = ParameterDictionary[liftDoorGroups].ValidateParameterAsync().Result;
     }
 
     private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1066,8 +1052,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 ParameterDictionary[doorPanelCount].Value = Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount);
             }
         }
-        if (ParameterDictionary[liftDoortyp].HasErrors)
-            ParameterDictionary[liftDoortyp].ClearErrors("Value");
     }
 
     private void ValidateCarEquipmentPosition(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1155,11 +1139,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (availableFloorColors is not null)
         {
             UpdateDropDownList("var_BodenbelagsTyp", availableFloorColors);
-            if (!availableFloorColors.Contains(ParameterDictionary["var_BodenbelagsTyp"].Value))
-            {
-                ParameterDictionary["var_BodenbelagsTyp"].Value = string.Empty;
-                ParameterDictionary["var_BodenbelagsTyp"].DropDownListValue = null;
-            }
+            CheckListContainsValue(ParameterDictionary["var_BodenbelagsTyp"]);
         }
     }
 
@@ -1346,6 +1326,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             var doorDescription = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
             availableDoorSills = GetAvailableDoorSills(value, doorDescription);
         }
+        else if (string.Equals(name, "var_EN8171Cat012"))
+        {
+            var doorTyp = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuertyp" : $"var_Tuertyp_{zugang}"].Value;
+            var doorDescription = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
+            availableDoorSills = GetAvailableDoorSills(doorTyp, doorDescription);
+        }
         else
         {
             var doorTyp = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuertyp" : $"var_Tuertyp_{zugang}"].Value;
@@ -1353,28 +1339,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
 
         UpdateDropDownList(shaftSillParameterName, availableDoorSills);
-
-        var selectedShaftSill = ParameterDictionary[shaftSillParameterName];
-        if (string.IsNullOrWhiteSpace(selectedShaftSill.Value) || availableDoorSills.Contains(selectedShaftSill.Value))
-        {
-            //removeError
-        }
-        else
-        {
-            //AddError
-        }
-
-
-        //_ = ParameterDictionary[shaftSillParameterName].ValidateParameterAsync().Result;
+        CheckListContainsValue(ParameterDictionary[shaftSillParameterName]);
         UpdateDropDownList(carSillParameterName, availableDoorSills);
-        //_ = ParameterDictionary[carSillParameterName].ValidateParameterAsync().Result;
-
-        //if (name.StartsWith("var_Tuerbezeichnung"))
-        //{
-           // var dd = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"];
-           // var ss = dd.ValidationErrors;
-           //var xx = ParameterDictionary["var_Tuertyp"].GetErrors("Value");
-           // var yy = ParameterDictionary["var_Tuerbezeichnung"].GetErrors("Value");
-        //}
+        CheckListContainsValue(ParameterDictionary[carSillParameterName]);
     }
 }

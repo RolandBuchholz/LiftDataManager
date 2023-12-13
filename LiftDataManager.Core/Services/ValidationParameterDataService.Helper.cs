@@ -8,6 +8,21 @@ using System.Collections.Specialized;
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
+    private static void CheckListContainsValue(Parameter? parameter)
+    {
+        if (parameter is null)
+            return;
+
+        if (string.IsNullOrWhiteSpace(parameter.Value) || parameter.DropDownList.Contains(parameter.Value))
+        {
+            parameter.RemoveError("Value", $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.");
+        }
+        else
+        {
+            parameter.AddError("Value", new ParameterStateInfo(parameter.Name!, parameter.DisplayName!, $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.", ParameterStateInfo.ErrorLevel.Error, false));
+        }
+    }
+
     private void SetCarDoorData(string zugang)
     {
         if (string.IsNullOrWhiteSpace(zugang))
