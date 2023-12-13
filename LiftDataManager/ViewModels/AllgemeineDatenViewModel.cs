@@ -196,7 +196,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 FilteredLiftPlanners?.Add(liftplanner.Value);
             }
         }
-        if (FilteredLiftPlanners.Count == 0)
+        if (FilteredLiftPlanners?.Count == 0)
         {
             FilteredLiftPlanners.Add("Kein Fachplaner gefunden");
         }

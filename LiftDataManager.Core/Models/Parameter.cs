@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
 using MvvmHelpers;
-using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Core.Models;
 

@@ -1329,7 +1329,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         //Paneelematerial Wände ??
     }
 
-    private void ValidateCarDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
+    private void ValidateDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_Tuerbezeichnung") || string.Equals(name, "var_EN8171Cat012")))
             return;
@@ -1353,8 +1353,28 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
 
         UpdateDropDownList(shaftSillParameterName, availableDoorSills);
-        _ = ParameterDictionary[shaftSillParameterName].ValidateParameterAsync().Result;
+
+        var selectedShaftSill = ParameterDictionary[shaftSillParameterName];
+        if (string.IsNullOrWhiteSpace(selectedShaftSill.Value) || availableDoorSills.Contains(selectedShaftSill.Value))
+        {
+            //removeError
+        }
+        else
+        {
+            //AddError
+        }
+
+
+        //_ = ParameterDictionary[shaftSillParameterName].ValidateParameterAsync().Result;
         UpdateDropDownList(carSillParameterName, availableDoorSills);
-        _ = ParameterDictionary[carSillParameterName].ValidateParameterAsync().Result;
+        //_ = ParameterDictionary[carSillParameterName].ValidateParameterAsync().Result;
+
+        //if (name.StartsWith("var_Tuerbezeichnung"))
+        //{
+           // var dd = ParameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"];
+           // var ss = dd.ValidationErrors;
+           //var xx = ParameterDictionary["var_Tuertyp"].GetErrors("Value");
+           // var yy = ParameterDictionary["var_Tuerbezeichnung"].GetErrors("Value");
+        //}
     }
 }

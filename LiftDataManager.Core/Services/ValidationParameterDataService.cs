@@ -89,9 +89,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     public async Task ValidateRangeOfParameterAsync(string[] range)
     {
-        if (range == null)
-            return;
-        if (range.Length == 0)
+        if (range is null || range.Length == 0)
             return;
 
         foreach (var par in ParameterDictionary)
@@ -288,12 +286,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_Tuertyp",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null),
             new(ValidateDoorTyps, "None", null),
-            new(ValidateCarDoorSill, "None", null)});
+            new(ValidateDoorSill, "None", null)});
 
         ValidationDictionary.Add("var_Tuerbezeichnung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateVariableCarDoors, "None", null),
-            new(ValidateCarDoorSill, "None", null),
+            new(ValidateDoorSill, "None", null),
             new(ValidateEntryDimensions, "None", null)});
 
         ValidationDictionary.Add("var_Tuergewicht",
@@ -370,29 +368,29 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Tuertyp_B",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorTyps, "None", null),
-            new(ValidateCarDoorSill, "None", null) });
+            new(ValidateDoorSill, "None", null) });
 
         ValidationDictionary.Add("var_Tuertyp_C",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorTyps, "None", null),
-            new(ValidateCarDoorSill, "None", null) });
+            new(ValidateDoorSill, "None", null) });
 
         ValidationDictionary.Add("var_Tuertyp_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorTyps, "None", null),
-            new(ValidateCarDoorSill, "None", null) });
+            new(ValidateDoorSill, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_B",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
-            new(ValidateCarDoorSill, "None", null),
+            new(ValidateDoorSill, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
-            new(ValidateCarDoorSill, "None", null),
+            new(ValidateDoorSill, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
-            new(ValidateCarDoorSill, "None", null),
+            new(ValidateDoorSill, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
@@ -451,7 +449,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateMirrorDimensions, "None", null) });
 
         ValidationDictionary.Add("var_EN8171Cat012",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarDoorSill, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorSill, "None", null) });
 
         AddDropDownListValidation();
     }
