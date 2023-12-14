@@ -57,16 +57,16 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="Bausatztyp" Grid.Row="0">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
                                     Grid.Row="0"
+                                    Grid.RowSpan="3"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -116,17 +116,23 @@
                                         IsReadOnly="True"
                                         Text="{x:Bind ViewModel.FangrahmenGewicht, Mode=OneWay}" />
                                 </Grid>
-                                <Grid
-                                    x:Name="Bausatz0_1"
+                                <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    Margin="0,0,5,0"
-                                    ColumnDefinitions="*">
-                                    <SpeziControls:ParameterTextBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
-                                </Grid>
+                                    Margin="5,0,0,0"
+                                    Foreground="GreenYellow"
+                                    Visibility="{x:Bind ViewModel.ShowCFPFrameInfo, Mode=OneWay}">
+                                    <Run
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="Information:" />
+                                    <Run FontSize="14" Text=" Bausatz wurde noch nicht im Car Frame Programm angelegt!" />
+                                </TextBlock>
+                                <SpeziControls:ParameterTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
                         <Grid

@@ -44,6 +44,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     private bool isCFPFrame;
 
     [ObservableProperty]
+    private bool showCFPFrameInfo;
+
+    [ObservableProperty]
     private string cWTRailName = "Führungsschienen GGW";
 
     [ObservableProperty]
@@ -105,6 +108,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         if (carFrameType is null)
             return;
         IsCFPFrame = carFrameType.IsCFPControlled;
+        ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
     }
 
     private void SetSafetygearData()
