@@ -815,8 +815,13 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH"], "mm", false, false, "Türhöhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht"], "kg");
                 });
-                table.Cell().Row(3).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Tueroeffnung"]);
-                table.Cell().Row(3).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel"], "Stk");
+                table.Cell().Row(3).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Tueroeffnung"]);
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel"], "Stk");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferBreiteA"], "mm");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferHoeheA"], "mm");
+                });
                 table.Cell().Row(4).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat B").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(4).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
                 {
@@ -831,8 +836,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_B"], "mm", false, false, "Türhöhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_B"], "kg");
                 });
-                table.Cell().Row(6).Column(3).ColumnSpan(2).ShowIf(entranceB && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_B"]);
-                table.Cell().Row(6).Column(5).ColumnSpan(2).ShowIf(entranceB && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_B"], "Stk");
+
+                table.Cell().Row(6).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
+                {
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_B"]);
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_B"], "Stk");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferBreiteB"], "mm");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferHoeheB"], "mm");
+                });
                 table.Cell().Row(7).Column(2).BorderBottom(0.1f).ShowIf(entranceC && variableDoorData).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat C").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ColumnSpan(4).ShowIf(entranceC && variableDoorData).Row(row =>
                 {
@@ -847,9 +858,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_C"], "mm", false, false, "Türhöhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_C"], "kg");
                 });
-                table.Cell().Row(9).Column(3).ColumnSpan(2).ShowIf(entranceC && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_C"]);
-                table.Cell().Row(9).Column(5).ColumnSpan(2).ShowIf(entranceC && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_C"], "Stk");
 
+                table.Cell().Row(9).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
+                {
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_C"]);
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_C"], "Stk");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferBreiteC"], "mm");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferHoeheC"], "mm");
+                });
                 table.Cell().Row(10).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Fabrikat D").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(10).Column(3).ColumnSpan(4).ShowIf(entranceD && variableDoorData).Row(row =>
                 {
@@ -864,8 +880,13 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_D"], "mm", false, false, "Türhöhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_D"], "kg");
                 });
-                table.Cell().Row(12).Column(3).ColumnSpan(2).ShowIf(entranceD && variableDoorData).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_D"]);
-                table.Cell().Row(12).Column(5).ColumnSpan(2).ShowIf(entranceD && variableDoorData).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_D"], "Stk");
+                table.Cell().Row(12).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
+                {
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Tueroeffnung_D"]);
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_AnzahlTuerfluegel_D"], "Stk");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferBreiteD"], "mm");
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferHoeheD"], "mm");
+                });
                 //Schachttüren
                 table.Cell().Row(13).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(showShaftDoorDetails ? "Schachttüren": "Bestands Schachttüren werden weiterverwendet").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
                 table.Cell().Row(14).Column(2).ShowIf(showShaftDoorDetails).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();

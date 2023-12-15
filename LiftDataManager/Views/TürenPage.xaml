@@ -139,7 +139,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,*">
+                                    ColumnDefinitions="3*,*,*,*">
                                     <Grid
                                         Grid.Column="0"
                                         Background="Transparent"
@@ -167,6 +167,14 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferBreiteA'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheA'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -256,7 +264,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,*">
+                                    ColumnDefinitions="3*,*,*,*">
                                     <Grid
                                         Grid.Column="0"
                                         Background="Transparent"
@@ -284,6 +292,14 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferBreiteB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -374,7 +390,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,*">
+                                    ColumnDefinitions="3*,*,*,*">
                                     <Grid
                                         Grid.Column="0"
                                         Background="Transparent"
@@ -402,6 +418,14 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferBreiteC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -492,7 +516,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,*">
+                                    ColumnDefinitions="3*,*,*,*">
                                     <Grid
                                         Grid.Column="0"
                                         Background="Transparent"
@@ -520,6 +544,14 @@
                                                 Wird automtisch mit der Türauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferBreiteD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -7,7 +7,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
-using Microsoft.Extensions.Options;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
