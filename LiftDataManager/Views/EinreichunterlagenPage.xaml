@@ -488,7 +488,7 @@
                                 Grid.ColumnSpan="2"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Schauöffnungen (aus mm dickem Glas) in den Fahrschachttüren - nicht vorhanden." />
+                                Text="{x:Bind ViewModel.ViewingOpening}" />
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.RowSpan="6"

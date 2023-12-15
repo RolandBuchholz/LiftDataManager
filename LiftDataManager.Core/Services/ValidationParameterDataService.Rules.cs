@@ -7,6 +7,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
+using Microsoft.Extensions.Options;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -54,6 +55,25 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if ((string.IsNullOrWhiteSpace(value) || value == "0") && anotherParameter)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
+            { DependentParameter = new string[] { anotherBoolean } });
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
+        }
+    }
+
+    private void NotTrueWhenTheOtherIsTrue(string name, string displayname, string? value, string? severity, string? anotherBoolean)
+    {
+        if (string.IsNullOrWhiteSpace(anotherBoolean))
+            return;
+        var anotherParameter = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, anotherBoolean!);
+        if (!anotherParameter)
+            return;
+
+        if (string.Equals(value, "True", StringComparison.CurrentCultureIgnoreCase))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Es is nicht möglich beide Optionen ({name} und {anotherBoolean}) auszuwählen!", SetSeverity(severity))
             { DependentParameter = new string[] { anotherBoolean } });
         }
         else

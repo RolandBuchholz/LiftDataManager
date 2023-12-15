@@ -735,10 +735,11 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Estrichbleche'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_53'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerSchauOeffnungST'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_53'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren5"
@@ -1019,20 +1020,19 @@
                             Grid.Row="3"
                             Margin="0,0,0,5"
                             Visibility="{x:Bind ViewModel.ShowCarDoorDetails, Mode=OneWay}">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="4"
+                                    Grid.RowSpan="5"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="4"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Kabinentür Optionen" />
                                 <Grid
-                                    x:Name="Kabinentuer6"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -1048,7 +1048,6 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Kabinentuer7"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -1064,7 +1063,6 @@
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_55'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
-                                    x:Name="Kabinentuer8"
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -1078,6 +1076,16 @@
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_6'], Mode=TwoWay}" />
+                                </Grid>
+                                <Grid
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerSchauOeffnungKT'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                             </Grid>
                         </Grid>

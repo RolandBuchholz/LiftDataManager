@@ -451,6 +451,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_EN8171Cat012",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorSill, "None", null) });
 
+        ValidationDictionary.Add("var_STflRollen",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotTrueWhenTheOtherIsTrue, "Error", "var_SThlRollen") });
+
+        ValidationDictionary.Add("var_KTflRollen",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotTrueWhenTheOtherIsTrue, "Error", "var_KThlRollen") });
+
+        ValidationDictionary.Add("var_SThlRollen",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotTrueWhenTheOtherIsTrue, "Error", "var_STflRollen") });
+
+        ValidationDictionary.Add("var_KThlRollen",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotTrueWhenTheOtherIsTrue, "Error", "var_KTflRollen") });
+
         AddDropDownListValidation();
     }
 

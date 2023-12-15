@@ -13,6 +13,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private readonly ILogger<HomeViewModel> _logger;
     private readonly IPdfService _pdfService;
     private bool OpenReadOnly { get; set; } = true;
+    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
                          ISettingService settingsSelectorService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
@@ -180,7 +181,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     case "CheckedOutByCurrentUser":
                         CheckOut = true;
-                        SetModifyInfos();
                         _logger.LogInformation(60139, "{FullPathXml} loaded", downloadInfo.FullFileName);
                         break;
                     case "CheckedOutByOtherUser":
@@ -385,6 +385,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }));
             if (_settingService.AutoSave && CheckOut)
                 StartSaveTimer();
+
+            if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+                ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
         }
     }
 
@@ -406,6 +409,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 IncreaseRevision();
         }
         StartSaveTimer();
+        SetModifyInfos();
     }
 
     [RelayCommand(CanExecute = nameof(CanClearData))]
@@ -986,9 +990,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            if (CheckOut)
-                SetModifyInfos();
-
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
 

@@ -123,6 +123,9 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     86637 Rieblingen
                                     """;
 
+    public string ViewingOpening => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ? 
+                                    "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." : 
+                                    "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType
     {
         get
