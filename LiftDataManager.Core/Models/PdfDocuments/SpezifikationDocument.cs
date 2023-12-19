@@ -2027,13 +2027,13 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(33).Column(2).AlignRight().Text(ParameterDictionary["var_FyFA_GGW"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(33).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(1).ColumnSpan(3).PaddingTop(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-            table.Cell().Row(35).Column(1).Text("Nennstrom Netz (aufgerundet):").FontSize(fontSizeXXS);
+            table.Cell().Row(35).Column(1).Text("Nennstrom Netz (aufgerundet + 10A):").FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(1).Text("Max. Netzstromaufnahme (Netzstrom x1,8+10A):").FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
-            table.Cell().Row(37).Column(1).Text("Leistung Netz (aufgerundet  + 2kW):").FontSize(fontSizeXXS);
+            table.Cell().Row(37).Column(1).Text("Leistung Netz (aufgerundet + 2kW):").FontSize(fontSizeXXS);
             table.Cell().Row(37).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Leistung"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(37).Column(3).AlignLeft().PaddingLeft(2).Text("KW").FontSize(fontSizeXXS);
             table.Cell().Row(38).Column(1).Text("Spannung Netz:").FontSize(fontSizeXXS);
