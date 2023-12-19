@@ -263,18 +263,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_TB",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateVariableCarDoors, "None", null),
             new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null),
             new(ValidateEntryDimensions, "None", null)});
 
         ValidationDictionary.Add("var_TB_B",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TB_C",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_TB_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Variable_Tuerdaten",
@@ -292,6 +296,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
             new(ValidateEntryDimensions, "None", null)});
 
         ValidationDictionary.Add("var_Tuergewicht",
@@ -381,16 +386,19 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_Tuerbezeichnung_B",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
             new(ValidateEntryDimensions, "None", null) });
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
@@ -462,6 +470,33 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_KThlRollen",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotTrueWhenTheOtherIsTrue, "Error", "var_KTflRollen") });
+
+        ValidationDictionary.Add("var_KabTuerKaempferBreiteA",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferBreiteB",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferBreiteC",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferBreiteD",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferHoeheA",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferHoeheB",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferHoeheC",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_KabTuerKaempferHoeheD",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_Tuerverriegelung",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
 
         AddDropDownListValidation();
     }

@@ -174,7 +174,38 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheA'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        ShowDefaultHeader="True">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="0,0,0,5"
+                                                    FontSize="16"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Informationen Meiller Türkämpfer" />
+                                                <TextBlock FontSize="12" Text="Standardkämpferhöhe (470 mm)" />
+                                                <TextBlock FontSize="12" Text="reduzierte Kämpferhöhe (350 mm)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Bedingungen Türkämpfer 350 mm:" />
+                                                <TextBlock FontSize="12" Text=" - Keine 97 mm Kämpferbreite möglich" />
+                                                <TextBlock FontSize="12" Text=" - Keine Drehtüransteuerung möglich" />
+                                                <TextBlock FontSize="12" Text=" - Bei einseitigen Türen immer mit KBS=70mm" />
+                                                <TextBlock FontSize="12" Text=" - Nur für TA7.1/TA7.1-V (TA7.1-V kein IP54 möglich)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="minimale Türbreiten:" />
+                                                <TextBlock FontSize="12" Text="K-2-R/L     600 mm" />
+                                                <TextBlock FontSize="12" Text="K-2-Z        600 mm" />
+                                                <TextBlock FontSize="12" Text="K-4-Z      1200 mm" />
+                                                <TextBlock FontSize="12" Text="K-3-R/L   1000 mm" />
+                                                <TextBlock FontSize="12" Text="K-6-Z      2100 mm" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterComboBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -299,7 +330,38 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheB'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        ShowDefaultHeader="True">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="0,0,0,5"
+                                                    FontSize="16"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Informationen Meiller Türkämpfer" />
+                                                <TextBlock FontSize="12" Text="Standardkämpferhöhe (470 mm)" />
+                                                <TextBlock FontSize="12" Text="reduzierte Kämpferhöhe (350 mm)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Bedingungen Türkämpfer 350 mm:" />
+                                                <TextBlock FontSize="12" Text=" - Keine 97 mm Kämpferbreite möglich" />
+                                                <TextBlock FontSize="12" Text=" - Keine Drehtüransteuerung möglich" />
+                                                <TextBlock FontSize="12" Text=" - Bei einseitigen Türen immer mit KBS=70mm" />
+                                                <TextBlock FontSize="12" Text=" - Nur für TA7.1/TA7.1-V (TA7.1-V kein IP54 möglich)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="minimale Türbreiten:" />
+                                                <TextBlock FontSize="12" Text="K-2-R/L     600 mm" />
+                                                <TextBlock FontSize="12" Text="K-2-Z        600 mm" />
+                                                <TextBlock FontSize="12" Text="K-4-Z      1200 mm" />
+                                                <TextBlock FontSize="12" Text="K-3-R/L   1000 mm" />
+                                                <TextBlock FontSize="12" Text="K-6-Z      2100 mm" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterComboBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -425,7 +487,38 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheC'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        ShowDefaultHeader="True">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="0,0,0,5"
+                                                    FontSize="16"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Informationen Meiller Türkämpfer" />
+                                                <TextBlock FontSize="12" Text="Standardkämpferhöhe (470 mm)" />
+                                                <TextBlock FontSize="12" Text="reduzierte Kämpferhöhe (350 mm)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Bedingungen Türkämpfer 350 mm:" />
+                                                <TextBlock FontSize="12" Text=" - Keine 97 mm Kämpferbreite möglich" />
+                                                <TextBlock FontSize="12" Text=" - Keine Drehtüransteuerung möglich" />
+                                                <TextBlock FontSize="12" Text=" - Bei einseitigen Türen immer mit KBS=70mm" />
+                                                <TextBlock FontSize="12" Text=" - Nur für TA7.1/TA7.1-V (TA7.1-V kein IP54 möglich)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="minimale Türbreiten:" />
+                                                <TextBlock FontSize="12" Text="K-2-R/L     600 mm" />
+                                                <TextBlock FontSize="12" Text="K-2-Z        600 mm" />
+                                                <TextBlock FontSize="12" Text="K-4-Z      1200 mm" />
+                                                <TextBlock FontSize="12" Text="K-3-R/L   1000 mm" />
+                                                <TextBlock FontSize="12" Text="K-6-Z      2100 mm" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterComboBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -551,7 +644,38 @@
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTuerKaempferHoeheD'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                        ShowDefaultHeader="True">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="0,0,0,5"
+                                                    FontSize="16"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Informationen Meiller Türkämpfer" />
+                                                <TextBlock FontSize="12" Text="Standardkämpferhöhe (470 mm)" />
+                                                <TextBlock FontSize="12" Text="reduzierte Kämpferhöhe (350 mm)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="Bedingungen Türkämpfer 350 mm:" />
+                                                <TextBlock FontSize="12" Text=" - Keine 97 mm Kämpferbreite möglich" />
+                                                <TextBlock FontSize="12" Text=" - Keine Drehtüransteuerung möglich" />
+                                                <TextBlock FontSize="12" Text=" - Bei einseitigen Türen immer mit KBS=70mm" />
+                                                <TextBlock FontSize="12" Text=" - Nur für TA7.1/TA7.1-V (TA7.1-V kein IP54 möglich)" />
+                                                <TextBlock
+                                                    Margin="0,5,0,5"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Text="minimale Türbreiten:" />
+                                                <TextBlock FontSize="12" Text="K-2-R/L     600 mm" />
+                                                <TextBlock FontSize="12" Text="K-2-Z        600 mm" />
+                                                <TextBlock FontSize="12" Text="K-4-Z      1200 mm" />
+                                                <TextBlock FontSize="12" Text="K-3-R/L   1000 mm" />
+                                                <TextBlock FontSize="12" Text="K-6-Z      2100 mm" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterComboBox>
                                 </Grid>
                             </Grid>
                         </Grid>

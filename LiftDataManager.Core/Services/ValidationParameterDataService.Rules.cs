@@ -7,6 +7,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
+using System.Collections.Immutable;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
@@ -1167,8 +1168,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData"))
             return;
 
-        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
-
+        var zugang = name.StartsWith("var_TB") ? string.Equals(name[^1..], "_B") || string.Equals(name[^1..], "_C") || string.Equals(name[^1..], "_D") ? name[^1..] : "A"
+                                               : string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
 
         if (name.StartsWith("var_TuerEinbau"))
         {
@@ -1361,5 +1362,120 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         CheckListContainsValue(ParameterDictionary[shaftSillParameterName]);
         UpdateDropDownList(carSillParameterName, availableDoorSills);
         CheckListContainsValue(ParameterDictionary[carSillParameterName]);
+    }
+
+    private void ValidateCarDoorHeaders(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+
+        if (name.StartsWith("var_Tuerbezeichnung"))
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Clear();
+                ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Clear();
+                ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value = string.Empty;
+                ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value = string.Empty;
+            }
+
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
+            var carDoorHeaderDepths = liftDoorGroup?.CarDoor?.CarDoorHeaderDepth.ToImmutableList();
+            var carDoorHeaderHeights = liftDoorGroup?.CarDoor?.CarDoorHeaderHeight.ToImmutableList();
+
+            if (carDoorHeaderDepths is not null)
+            {
+                UpdateDropDownList($"var_KabTuerKaempferBreite{zugang}", carDoorHeaderDepths.ConvertAll(x => x.ToString()), false);
+                if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Count == 1)
+                {
+                    ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue = ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList[0];
+                }
+                else
+                {
+                    CheckListContainsValue(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"]);
+                }
+            }
+
+            if (carDoorHeaderHeights is not null)
+            {
+                UpdateDropDownList($"var_KabTuerKaempferHoehe{zugang}", carDoorHeaderHeights.ConvertAll(x => x.ToString()), false);
+
+                if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Count == 1)
+                {
+                    ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue = ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList[0];
+                }
+                else
+                {
+                    CheckListContainsValue(ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"]);
+                }
+            }
+        }
+    }
+
+    private void ValidateReducedCarDoorHeaderHeight(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(value) && !string.Equals(name, "var_Tuerverriegelung"))
+            return;
+
+        var zugang = name.StartsWith("var_TB") ? string.Equals(name[^1..], "_B") || string.Equals(name[^1..], "_C") || string.Equals(name[^1..], "_D") ? name[^1..] : "A"
+                                               : string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+
+        var carDoorHeaderDepthParameter = ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"];
+        var carDoorHeaderHeightParameter = ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"];
+
+        if (carDoorHeaderHeightParameter is not null && carDoorHeaderDepthParameter is not null)
+        {
+            var errorMessage = $"{carDoorHeaderHeightParameter.DisplayName}: reduzierte Kämpferhöhe 350 mm nicht möglich.";
+
+            if (carDoorHeaderHeightParameter.Value == "350")
+            {
+                if (carDoorHeaderDepthParameter.Value == "97")
+                {
+                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Tuerverriegelung"].Value) && ParameterDictionary["var_Tuerverriegelung"].Value!.Contains("54"))
+                {
+                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                    return;
+                }
+
+                int doorWidth = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, string.Equals(zugang, "A") ? "var_TB" : $"var_TB_{zugang}");
+
+                switch (ParameterDictionary[string.Equals(zugang,"A") ? "var_AnzahlTuerfluegel" : $"var_AnzahlTuerfluegel_{zugang}"].Value)
+                {
+                    case "2":
+                        if (doorWidth < 600)
+                        {
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            return;
+                        }
+                        break;
+                    case "3":
+                        if (doorWidth < 1000)
+                        {
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            return;
+                        }
+                        break;
+                    case "4":
+                        if (doorWidth < 1200)
+                        {
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            return;
+                        }
+                        break;
+                    case "6":
+                        if (doorWidth < 2100)
+                        {
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            carDoorHeaderHeightParameter.RemoveError("Value", errorMessage);
+        }
     }
 }

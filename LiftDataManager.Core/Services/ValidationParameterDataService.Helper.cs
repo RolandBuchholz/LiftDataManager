@@ -243,7 +243,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         return sills.Select(s => s.Name);
     }
 
-    private void UpdateDropDownList(string? parameterName, IEnumerable<string> newList)
+    private void UpdateDropDownList(string? parameterName, IEnumerable<string> newList, bool defaultSelection = true)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
             return;
@@ -253,7 +253,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         }
 
-        var updateList = newList.Prepend("(keine Auswahl)");
+        var updateList = defaultSelection ? newList.Prepend("(keine Auswahl)") : newList;
 
         if (ParameterDictionary[parameterName].DropDownList.SequenceEqual(updateList))
             return;

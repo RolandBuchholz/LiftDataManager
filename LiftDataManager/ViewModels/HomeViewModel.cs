@@ -260,6 +260,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             AuftragsbezogeneXml = true;
             CanValidateAllParameter = true;
+            InfoSidebarPanelText = string.Empty;
             InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
         }
 
