@@ -751,6 +751,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     if ((bool)dialogResult)
                         IncreaseRevision();
                     CheckoutDialogIsOpen = false;
+                    SetModifyInfos();
                     IsBusy = false;
                 }
                 else

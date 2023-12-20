@@ -958,7 +958,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KtSchuerzeV2A"]);
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_Schuerzeverstaerkt"]);
-                    row.RelativeItem(1).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_54"]);
+                    row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_KTteleskopSchuerze"]);
+
                 });
                 table.Cell().Row(36).Column(3).ColumnSpan(4).ShowIf(showCarDoorDetails).Row(row =>
                 {
@@ -975,6 +976,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(38).Column(3).ColumnSpan(4).ShowIf(showCarDoorDetails).Row(row =>
                 {
                     row.RelativeItem(1).ParameterBoolCell(ParameterDictionary["var_TuerSchauOeffnungKT"]);
+                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_54"]);
                 });
                 table.Cell().Row(39).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Kabinentüren").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(39).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesKabinentuere"], null, true, true);

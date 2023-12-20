@@ -1201,7 +1201,10 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schuerzeverstaerkt'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTteleskopSchuerze'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
                                 </Grid>
                                 <Grid
                                     Grid.Row="1"
@@ -1242,6 +1245,10 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerSchauOeffnungKT'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
+                                    <SpeziControls:ParameterCustomCheckBox
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
