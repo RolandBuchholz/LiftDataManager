@@ -52,6 +52,120 @@
                         <Pivot.Items>
                             <PivotItem>
                                 <PivotItem.Header>
+                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Allgemeine Daten" />
+                                </PivotItem.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="0,5,0,0"
+                                        VerticalAlignment="Top"
+                                        FontSize="24"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        Text="Grundabmessungen" />
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="-5,10,0,5"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_abgDecke'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.RowSpan="5"
+                                        Grid.Column="0"
+                                        Height="275"
+                                        Source="/Images/CarDetails/carCeilingDetail.png" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_DeckenCSchienenHoehe'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GrundDeckenhoehe'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Hauptdeckenhöhe wird automatisch gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_abgeDeckeHoehe'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                abgehängte Deckenhöhe wird automatisch gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KHRoh'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ReadOnly="True"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Kabinenhöhe roh wird automatisch gesetzt<LineBreak />
+                                                Kabinenhöhe roh = OK-FFB zu UK-Hauptdecke</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Header="Kabinendeckenhöhe gesamt"
+                                        IsEnabled="False"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_overrideDefaultCeiling'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_overrideSuspendedCeiling'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Row="4"
+                                        Grid.Column="2"
+                                        IsEnabled="False"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KHLicht'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                </Grid>
+                            </PivotItem>
+                            <PivotItem>
+                                <PivotItem.Header>
                                     <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Kabinenausstattung" />
                                 </PivotItem.Header>
                                 <Grid>

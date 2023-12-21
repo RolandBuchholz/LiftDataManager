@@ -73,7 +73,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (string.Equals(value, "True", StringComparison.CurrentCultureIgnoreCase))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Es is nicht möglich beide Optionen ({name} und {anotherBoolean}) auszuwählen!", SetSeverity(severity))
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Es is nicht möglich beide Optionen ({displayname} und {ParameterDictionary[anotherBoolean].DisplayName}) auszuwählen!", SetSeverity(severity))
             { DependentParameter = new string[] { anotherBoolean } });
         }
         else
@@ -318,29 +318,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 ParameterDictionary["var_BoPr"].DropDownList.Add("Refresh");
                 ParameterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
             }
-        }
-    }
-
-    private void ValidateCarHeight(string name, string displayname, string? value, string? severity, string? optional = null)
-    {
-        double bodenHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
-        double kabinenHoeheInnen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
-        double kabinenHoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHA");
-        double deckenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KD");
-
-        if (bodenHoehe + kabinenHoeheInnen + deckenhoehe == kabinenHoeheAussen)
-            return;
-
-        switch (name)
-        {
-            case "var_KU" or "var_KHLicht" or "var_KD":
-                ParameterDictionary["var_KHA"].Value = Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe);
-                return;
-            case "var_KHA":
-                ParameterDictionary["var_KD"].Value = Convert.ToString(kabinenHoeheAussen - (bodenHoehe + kabinenHoeheInnen));
-                return;
-            default:
-                return;
         }
     }
 
@@ -1477,5 +1454,54 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             }
             carDoorHeaderHeightParameter.RemoveError("Value", errorMessage);
         }
+    }
+
+    private void ValidateCarCeilingDetails(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        switch (name)
+        {
+            case "var_KBI" or "var_overrideDefaultCeiling":
+                ParameterDictionary["var_GrundDeckenhoehe"].Value = GetDefaultCeiling().ToString();
+                break;
+            case "var_abgDecke" or "var_overrideSuspendedCeiling":
+                var suspendedCeilingHeight = GetSuspendedCeiling();
+                ParameterDictionary["var_abgeDeckeHoehe"].Value = suspendedCeilingHeight == 0 ? string.Empty : suspendedCeilingHeight.ToString();
+                break;
+            default:
+                break;
+        }
+
+        double cRail = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_DeckenCSchienenHoehe");
+        double defaultCeiling = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GrundDeckenhoehe");
+        double suspendedCeiling = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_abgeDeckeHoehe");
+
+        ParameterDictionary["var_KD"].Value = Convert.ToString(cRail + defaultCeiling + suspendedCeiling);
+    }
+
+    private void ValidateCarHeight(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        double bodenHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
+        double kabinenHoeheInnen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
+        double kabinenHoeheAussen = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHA");
+        double deckenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KD");
+
+        if (bodenHoehe + kabinenHoeheInnen + deckenhoehe == kabinenHoeheAussen)
+            return;
+
+        ParameterDictionary["var_KHA"].Value = Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe);
+    }
+
+    private void ValidateCarHeightExcludingSuspendedCeiling(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (string.IsNullOrWhiteSpace(value) && string.Equals(name, "var_KHLicht"))
+        {
+            ParameterDictionary["var_KHRoh"].Value = string.Empty;
+            return;
+        }
+            
+        var suspendedCeilingHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_abgeDeckeHoehe");
+        var carHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
+        ParameterDictionary["var_KHRoh"].Value = Convert.ToString(carHeight + suspendedCeilingHeight, CultureInfo.CurrentCulture);
+
     }
 }

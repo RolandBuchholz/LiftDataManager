@@ -12,6 +12,4 @@ public sealed partial class KabinePage : Page
         ViewModel = App.GetService<KabineViewModel>();
         InitializeComponent();
     }
-
-
 }

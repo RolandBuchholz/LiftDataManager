@@ -234,16 +234,17 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
 
         ValidationDictionary.Add("var_KHLicht",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
-
-        ValidationDictionary.Add("var_KHA",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> {
+                new(ValidateCarHeight, "None", null),
+                new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) });;
 
         ValidationDictionary.Add("var_KD",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
 
         ValidationDictionary.Add("var_KBI",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null) });
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { 
+                new(ValidateCarEntranceRightSide, "None", null),
+                new(ValidateCarCeilingDetails, "None", null) });
 
         ValidationDictionary.Add("var_KTI",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarEntranceRightSide, "None", null) });
@@ -497,6 +498,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Tuerverriegelung",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateReducedCarDoorHeaderHeight, "Error", null) });
+
+        ValidationDictionary.Add("var_abgeDeckeHoehe",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) });
+
+        ValidationDictionary.Add("var_abgDecke",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarCeilingDetails, "None", null) });
+
+        ValidationDictionary.Add("var_DeckenCSchienenHoehe",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarCeilingDetails, "None", null) });
+
+        ValidationDictionary.Add("var_overrideDefaultCeiling",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarCeilingDetails, "None", null) });
+
+        ValidationDictionary.Add("var_overrideSuspendedCeiling",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarCeilingDetails, "None", null) });
+
 
         AddDropDownListValidation();
     }

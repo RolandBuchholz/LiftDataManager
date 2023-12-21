@@ -4,6 +4,7 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -260,5 +261,29 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ParameterDictionary[parameterName].DropDownList.Clear();
         ParameterDictionary[parameterName].DropDownList.AddRange(updateList, NotifyCollectionChangedAction.Reset);
+    }
+
+    private double GetDefaultCeiling()
+    {
+        var carWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KBI");
+
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_overrideDefaultCeiling"].Value))
+        {
+            return Convert.ToDouble(ParameterDictionary["var_overrideDefaultCeiling"].Value, CultureInfo.CurrentCulture);
+        }
+        return carWidth > 1400 ? 85 : 50;
+    }
+
+    private double GetSuspendedCeiling()
+    {
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_abgDecke"))
+        {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_overrideSuspendedCeiling"].Value))
+            {
+                return Convert.ToDouble(ParameterDictionary["var_overrideSuspendedCeiling"].Value, CultureInfo.CurrentCulture);
+            }
+            return 35; 
+        }
+        return 0;
     }
 }

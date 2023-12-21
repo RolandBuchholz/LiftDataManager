@@ -75,6 +75,7 @@
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
     <None Remove="Images\carAccesses.png" />
+    <None Remove="Images\CarDetails\carCeilingDetail.png" />
     <None Remove="Images\CarDetails\carDoorInstallationDimensions.png" />
     <None Remove="Images\CarDetails\ConnectionAngle.png" />
     <None Remove="Images\CarDetails\MirrorPanel.png" />
@@ -119,6 +120,7 @@
     <Content Include="Images\BE_Logo.png" />
     <Content Include="Images\BucherTransparent.png" />
     <Content Include="Images\carAccesses.png" />
+    <Content Include="Images\CarDetails\carCeilingDetail.png" />
     <Content Include="Images\CarDetails\carDoorInstallationDimensions.png" />
     <Content Include="Images\CarDetails\ConnectionAngle.png" />
     <Content Include="Images\CarDetails\MirrorPanel.png" />
