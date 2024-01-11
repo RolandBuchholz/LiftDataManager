@@ -5,6 +5,7 @@ public class CarDoorDesignParameter
     public string Hersteller { get; set; } = string.Empty;
     public string Typ { get; set; } = "StandardCarDoorTyp";
     public string Baumusterpruefbescheinigung { get; set; } = "None";
+    public int OeffnungsRichtungId { get; set; } = 2;
     public double Tuerbreite { get; set; } = 800;
     public int AnzahlTuerFluegel { get; set; } = 2;
     public double TuerFluegelBreite { get; set; } = 36;

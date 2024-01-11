@@ -953,7 +953,7 @@
         <ContentDialog
             x:Name="LiftDataImportDialog"
             Title="Datenimport von bestehender Spezifikation"
-            CloseButtonText="Abbrechen">
+            CloseButtonText="Importdialog schließen">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

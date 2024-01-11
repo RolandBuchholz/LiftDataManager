@@ -26,6 +26,8 @@ public interface ICalculationsModule
 
     string GetDrivePosition(string? drivePos);
 
+    string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter>? parameterDictionary, string orientation);
+
     int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary);

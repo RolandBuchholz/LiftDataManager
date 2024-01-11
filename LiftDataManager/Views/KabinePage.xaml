@@ -91,55 +91,102 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Kabine_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                                 <Grid
-                                    x:Name="Kabine1"
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterNumberTextBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KBI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                        PlaceholderText="KB"
-                                        ShowDefaultHeader="True"
-                                        Unit="mm">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterNumberTextBox>
-                                    <SpeziControls:ParameterNumberTextBox
-                                        Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                        PlaceholderText="KT"
-                                        ShowDefaultHeader="True"
-                                        Unit="mm">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Position Zugänge" />
-                                                <Image
-                                                    Width="325"
-                                                    Height="350"
-                                                    Source="/Images/carAccesses.png" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterNumberTextBox>
+                                    <Grid Grid.Column="0" ColumnDefinitions="*,Auto">
+                                        <SpeziControls:ParameterNumberTextBox
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KBI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            PlaceholderText="KB"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterNumberTextBox>
+                                        <FontIcon
+                                            Grid.Column="1"
+                                            Margin="-10,5,5,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            Foreground="Gray"
+                                            Glyph="&#xE946;"
+                                            Visibility="{x:Bind ViewModel.ShowCarWidthBetweenDoors, Mode=OneWay}">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Foreground="Gray"
+                                                        Text="Abstand zwischen den Türblättern" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        Text="{x:Bind ViewModel.InfoTextCarWidthBetweenDoors, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </FontIcon>
+                                    </Grid>
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+                                        <SpeziControls:ParameterNumberTextBox
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            PlaceholderText="KT"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterNumberTextBox>
+                                        <FontIcon
+                                            Grid.Column="1"
+                                            Margin="-10,5,5,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            Foreground="Gray"
+                                            Glyph="&#xE946;"
+                                            Visibility="{x:Bind ViewModel.ShowCarDepthBetweenDoors, Mode=OneWay}">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Foreground="Gray"
+                                                        Text="Abstand zwischen den Türblättern" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        Text="{x:Bind ViewModel.InfoTextCarDepthBetweenDoors, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </FontIcon>
+                                    </Grid>
                                 </Grid>
                                 <Grid
                                     x:Name="Kabine1_1"
@@ -174,23 +221,50 @@
                                             </StackPanel>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
-                                    <SpeziControls:ParameterNumberTextBox
-                                        x:Name="CarCeiling"
-                                        Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                        PlaceholderText="DH"
-                                        ReadOnly="True"
-                                        ShowDefaultHeader="True"
-                                        Unit="mm">
-                                        <Interactivity:Interaction.Behaviors>
-                                            <Core:EventTriggerBehavior EventName="GettingFocus">
-                                                <Core:ChangePropertyAction
-                                                    PropertyName="IsOpen"
-                                                    TargetObject="{Binding ElementName=CarCeiling_tooltip}"
-                                                    Value="True" />
-                                            </Core:EventTriggerBehavior>
-                                        </Interactivity:Interaction.Behaviors>
-                                    </SpeziControls:ParameterNumberTextBox>
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+                                        <SpeziControls:ParameterNumberTextBox
+                                            x:Name="CarCeiling"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            PlaceholderText="DH"
+                                            ReadOnly="True"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="GettingFocus">
+                                                    <Core:ChangePropertyAction
+                                                        PropertyName="IsOpen"
+                                                        TargetObject="{Binding ElementName=CarCeiling_tooltip}"
+                                                        Value="True" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                        </SpeziControls:ParameterNumberTextBox>
+                                        <FontIcon
+                                            Grid.Column="1"
+                                            Margin="-10,5,5,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            Foreground="DarkOrange"
+                                            Glyph="&#xE946;"
+                                            Visibility="{x:Bind ViewModel.IsCarCeilingOverwritten, Mode=OneWay}">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Foreground="DarkOrange"
+                                                        Text="Standardwerte Kabinendecke überschieben" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        Foreground="DarkOrange"
+                                                        Text="{x:Bind ViewModel.InfoTextCarCeiling, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </FontIcon>
+                                    </Grid>
                                     <TeachingTip x:Name="CarCeiling_tooltip" Target="{Binding ElementName=CarCeiling}">
                                         <StackPanel>
                                             <TextBlock
@@ -897,6 +971,7 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="3"
+                                        GotFocus="{x:Bind ViewModel.CarFloor_GotFocus, Mode=OneWay}"
                                         Header="Kabinenbodenhöhe (inkl. Bodenbelag)"
                                         IsEnabled="{x:Bind ViewModel.CanEditFloorWeightAndHeight, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KU'], Mode=TwoWay}"

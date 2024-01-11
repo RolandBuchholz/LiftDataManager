@@ -265,13 +265,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private double GetDefaultCeiling()
     {
-        var carWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KBI");
+        double carWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KBI");
 
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_overrideDefaultCeiling"].Value))
         {
             return Convert.ToDouble(ParameterDictionary["var_overrideDefaultCeiling"].Value, CultureInfo.CurrentCulture);
         }
-        return carWidth > 1400 ? 85 : 50;
+        return carWidth switch
+        {
+            > 2000 => 120,
+            > 1400 => 85,
+            _ => 50,
+        };
     }
 
     private double GetSuspendedCeiling()

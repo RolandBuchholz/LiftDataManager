@@ -1465,7 +1465,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 break;
             case "var_abgDecke" or "var_overrideSuspendedCeiling":
                 var suspendedCeilingHeight = GetSuspendedCeiling();
-                ParameterDictionary["var_abgeDeckeHoehe"].Value = suspendedCeilingHeight == 0 ? string.Empty : suspendedCeilingHeight.ToString();
+                if (suspendedCeilingHeight == 0)
+                {
+                    ParameterDictionary["var_abgeDeckeHoehe"].Value = string.Empty;
+                    ParameterDictionary["var_overrideSuspendedCeiling"].Value = string.Empty;
+                }
+                else
+                {
+                    ParameterDictionary["var_abgeDeckeHoehe"].Value = suspendedCeilingHeight.ToString();
+                }
                 break;
             default:
                 break;
@@ -1502,6 +1510,5 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var suspendedCeilingHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_abgeDeckeHoehe");
         var carHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
         ParameterDictionary["var_KHRoh"].Value = Convert.ToString(carHeight + suspendedCeilingHeight, CultureInfo.CurrentCulture);
-
     }
 }

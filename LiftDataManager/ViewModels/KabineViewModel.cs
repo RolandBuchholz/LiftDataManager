@@ -38,6 +38,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             message.PropertyName == "var_TuerEinbauD")
         {
             _ = SetCalculatedValuesAsync();
+            SetDistanceBetweenDoors();
         };
 
         if (message.PropertyName == "var_Bodenbelag" ||
@@ -79,6 +80,14 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             CanShowMirrorDimensions();
         }
 
+        if (message.PropertyName == "var_ZUGANSSTELLEN_A" ||
+            message.PropertyName == "var_ZUGANSSTELLEN_B" ||
+            message.PropertyName == "var_ZUGANSSTELLEN_C" ||
+            message.PropertyName == "var_ZUGANSSTELLEN_D")
+        {
+            SetDistanceBetweenDoors();
+        }
+
         if (message.PropertyName == "var_Sockelleiste")
         {
             SetSkirtingBoardHeight(true);
@@ -87,6 +96,24 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    [ObservableProperty]
+    private bool showCarWidthBetweenDoors;
+
+    [ObservableProperty]
+    private bool showCarDepthBetweenDoors;
+
+    [ObservableProperty]
+    private string? infoTextCarWidthBetweenDoors;
+
+    [ObservableProperty]
+    private string? infoTextCarDepthBetweenDoors;
+
+    [ObservableProperty]
+    private string? infoTextCarCeiling;
+
+    [ObservableProperty]
+    private bool isCarCeilingOverwritten;
 
     [ObservableProperty]
     private string? mirrorDimensionsWidth1;
@@ -123,6 +150,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     [ObservableProperty]
     private bool canEditFloorWeightAndHeight;
+
+    private double _floorHeight;
 
     private void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
     {
@@ -230,6 +259,32 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         }
     }
 
+    private void CheckCarCeilingIsOverwritten()
+    {
+        IsCarCeilingOverwritten = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideDefaultCeiling"].Value) ||
+                                  !string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideSuspendedCeiling"].Value);
+        if (IsCarCeilingOverwritten)
+        {
+            InfoTextCarCeiling += string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideDefaultCeiling"].Value) ? string.Empty : $"|{ParameterDictionary!["var_overrideDefaultCeiling"].Value} mm| Hauptdecke überschieben\n" ;
+            InfoTextCarCeiling += string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideSuspendedCeiling"].Value) ? string.Empty : $"|{ParameterDictionary!["var_overrideSuspendedCeiling"].Value} mm| abgehängte Decke überschieben";
+        }
+    }
+
+    private void SetDistanceBetweenDoors()
+    {
+        var zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A");
+        var zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
+        var zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
+        var zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
+
+        ShowCarDepthBetweenDoors = zugangA || zugangC;
+        ShowCarWidthBetweenDoors = zugangB || zugangD;
+        if (ShowCarDepthBetweenDoors)
+            InfoTextCarDepthBetweenDoors = _calculationsModuleService.GetDistanceBetweenDoors(ParameterDictionary, "Kabinentiefe");
+        if (ShowCarWidthBetweenDoors)
+            InfoTextCarWidthBetweenDoors = _calculationsModuleService.GetDistanceBetweenDoors(ParameterDictionary, "Kabinenbreite");
+    }
+
     [RelayCommand]
     private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
 
@@ -240,15 +295,19 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         await Task.CompletedTask;
     }
 
-    public void CarFloor_LostFocus(object sender, RoutedEventArgs e)
+    public void CarFloor_GotFocus(object sender, RoutedEventArgs e)
     {
         ParameterNumberTextBox CarFloortextBox = (ParameterNumberTextBox)sender;
-        double floorHeight = string.IsNullOrWhiteSpace(CarFloortextBox.LiftParameter?.Value) ? 0 : Convert.ToDouble(CarFloortextBox.LiftParameter?.Value, CultureInfo.CurrentCulture);
+        _floorHeight = string.IsNullOrWhiteSpace(CarFloortextBox.LiftParameter?.Value) ? 0 : Convert.ToDouble(CarFloortextBox.LiftParameter?.Value, CultureInfo.CurrentCulture);
+    }
+
+    public void CarFloor_LostFocus(object sender, RoutedEventArgs e)
+    {
         double currentFloorHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KU");
         double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
-        if (floorHeight + currentFloorThinkness != currentFloorHeight)
+        if (_floorHeight != currentFloorHeight)
         {
-            ParameterDictionary!["var_KU"].Value = Convert.ToString(floorHeight + currentFloorThinkness, CultureInfo.CurrentCulture);
+            ParameterDictionary!["var_KU"].Value = Convert.ToString(currentFloorHeight + currentFloorThinkness, CultureInfo.CurrentCulture);
         }
     }
 
@@ -265,6 +324,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetFloorImagePath();
             CanShowMirrorDimensions();
             SetSkirtingBoardHeight(false);
+            CheckCarCeilingIsOverwritten();
+            SetDistanceBetweenDoors();
         }
     }
 

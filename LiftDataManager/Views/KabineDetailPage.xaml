@@ -105,12 +105,17 @@
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                                Hauptdeckenhöhe wird automatisch gesetzt</TextBlock>
+                                                Hauptdeckenhöhe wird automatisch gesetzt<LineBreak />
+                                                - Kabinenbreite größer 2000 (120 mm)<LineBreak />
+                                                - Kabinenbreite größer 1400 (85 mm)<LineBreak />
+                                                - Kabinenbreite kleiner gleich 1400 (50 mm)<LineBreak />
+                                                bei Bedarf kann die Deckenhöhe überschieben werden</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Row="3"
                                         Grid.Column="1"
+                                        IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_abgDecke'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_abgeDeckeHoehe'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         ReadOnly="True"
                                         ShowDefaultHeader="True"
@@ -118,7 +123,9 @@
                                         <ToolTipService.ToolTip>
                                             <TextBlock>
                                                 <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
-                                                abgehängte Deckenhöhe wird automatisch gesetzt</TextBlock>
+                                                abgehängte Deckenhöhe wird automatisch gesetzt<LineBreak />
+                                                - Standardhöhe abgehängte Decke (35 mm)<LineBreak />
+                                                bei Bedarf kann die Deckenhöhe überschieben werden</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
@@ -152,6 +159,7 @@
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Row="3"
                                         Grid.Column="2"
+                                        IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_abgDecke'].Value, Converter={StaticResource StringToBoolConverter}, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_overrideSuspendedCeiling'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />

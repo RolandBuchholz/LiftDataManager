@@ -149,6 +149,29 @@ public partial class CalculationsModuleService : ICalculationsModule
         return drivePosition;
     }
 
+    public string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter>? parameterDictionary, string orientation)
+    {
+        double distanceBetweenDoors;
+        string? walltyp;
+        SetDefaultParameter(parameterDictionary);
+        if (orientation == "Kabinentiefe")
+        {
+            walltyp = zugangA && zugangC ? "Türblatt" : "Rückwand";
+            distanceBetweenDoors = kabinentiefe + GetCarDoorLeafSpace(parameterDictionary,"A") + GetCarDoorLeafSpace(parameterDictionary, "C");
+        }
+        else if (orientation == "Kabinenbreite")
+        {
+            walltyp = zugangB && zugangD ? "Türblatt" : "Seitenwand";
+            distanceBetweenDoors = kabinenbreite + GetCarDoorLeafSpace(parameterDictionary, "B") + GetCarDoorLeafSpace(parameterDictionary, "D");
+        }
+        else
+        {
+            return "Keine Kabinenausrichtung gewählt";
+        }
+
+        return $"{orientation} von Türblatt zu {walltyp}: {distanceBetweenDoors} mm";
+    }
+
     public int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary)
     {
         zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
@@ -716,6 +739,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             var carDoor = liftDoorGroup.CarDoor;
             kabinenTuer.Hersteller = carDoor.Manufacturer!;
             kabinenTuer.Typ = carDoor.Name;
+            kabinenTuer.OeffnungsRichtungId = carDoor.LiftDoorOpeningDirectionId;
             kabinenTuer.Baumusterpruefbescheinigung = carDoor.Name;
             kabinenTuer.Tuerbreite = tuerbreiteZugang;
             kabinenTuer.AnzahlTuerFluegel = carDoor.DoorPanelCount;
@@ -753,7 +777,9 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         return kabinenTuer.AnzahlTuerFluegel switch
         {
-            2 => Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
+            2 => kabinenTuer.OeffnungsRichtungId == 3 ?
+                        Math.Round(kabinenTuer.Tuerbreite * (tuerEinbau - kabinenTuer.TuerFluegelBreite) / Math.Pow(10, 6), 3): 
+                        Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
 
             3 => Math.Round((kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
@@ -767,7 +793,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                             2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
             _ => 0,
-        };
+        };;
     }
 
     public double GetLoadFromTable(double area, string tableName)
@@ -814,7 +840,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (area < 0.28)
             return 0;
         if (area > 3.13)
-            return Convert.ToInt32(20 + (area - 3.13) / 0.115);
+            return Convert.ToInt32(Math.Floor(20 + (area - 3.13) / 0.115));
         if (Table8.Any(x => x.Value.SecondValue == area))
         {
             personenAnzahl = Table8.FirstOrDefault(x => x.Value.SecondValue == area).Value;
@@ -940,6 +966,76 @@ public partial class CalculationsModuleService : ICalculationsModule
             }
         }
         return listOfRailHeads;
+    }
+
+    private double GetCarDoorLeafSpace(ObservableDictionary<string, Parameter>? parameterDictionary, string zugang)
+    {
+        double tuerEinbau;
+        string? tuerbezeichnung;
+        switch (zugang)
+        {
+            case "A":
+                if (!zugangA)
+                    return 0;
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbau");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung");
+                break;
+            case "B":
+                if (!zugangB)
+                    return 0;
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauB");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_B");
+                break;
+            case "C":
+                if (!zugangC)
+                    return 0;
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauC");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_C");
+                break;
+            case "D":
+                if (!zugangD)
+                    return 0;
+                tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauD");
+                tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_D");
+                break;
+            default:
+                return 0.0;
+        }
+
+        if (tuerEinbau <= 0)
+            return 0;
+
+        if (string.IsNullOrWhiteSpace(tuerbezeichnung))
+            return 0;
+
+        var kabinenTuer = new CarDoorDesignParameter();
+
+        var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor)
+                                                                  .FirstOrDefault(x => x.Name == tuerbezeichnung);
+        if (liftDoorGroup?.CarDoor is not null)
+        {
+            var carDoor = liftDoorGroup.CarDoor;
+            kabinenTuer.Hersteller = carDoor.Manufacturer!;
+            kabinenTuer.Typ = carDoor.Name;
+            kabinenTuer.OeffnungsRichtungId = carDoor.LiftDoorOpeningDirectionId;
+            kabinenTuer.Baumusterpruefbescheinigung = carDoor.Name;
+            kabinenTuer.AnzahlTuerFluegel = carDoor.DoorPanelCount;
+            kabinenTuer.TuerFluegelBreite = carDoor.DoorPanelWidth;
+            kabinenTuer.TuerFluegelAbstand = carDoor.DoorPanelSpace;
+        }
+
+        if (kabinenTuer is null)
+            return 0;
+
+        return kabinenTuer.AnzahlTuerFluegel switch
+        {
+            2 => kabinenTuer.OeffnungsRichtungId == 3 ?
+                 Math.Round(tuerEinbau - kabinenTuer.TuerFluegelBreite, 1):
+                 Math.Round(tuerEinbau - (2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand), 1),
+            3 or 6 => Math.Round(tuerEinbau - (3 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand), 1),
+            4 => Math.Round(tuerEinbau - (2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand), 1),
+            _ => 0,
+        };
     }
 
     //Database
