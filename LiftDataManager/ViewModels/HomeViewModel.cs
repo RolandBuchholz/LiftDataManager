@@ -36,6 +36,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
 
         if (message.PropertyName == "var_Rahmengewicht" ||
+            message.PropertyName == "var_KabinengewichtCAD" ||
             message.PropertyName == "var_F_Korr" ||
             message.PropertyName == "var_Q" ||
             message.PropertyName == "var_KBI" ||
@@ -63,6 +64,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     [ObservableProperty]
     private double carWeight;
+
+    [ObservableProperty]
+    private bool showFrameWeightBorder;
 
     [ObservableProperty]
     private bool showCarWeightBorder;
@@ -876,10 +880,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CarDoorWeight = carWeightResult.KabinenTuerGewicht;
             CarFrameWeight = carWeightResult.FangrahmenGewicht;
             CarWeight = carWeightResult.KabinenGewichtGesamt;
-            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value);
+            ShowFrameWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value);
+            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
             ParameterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
         }
-
         await Task.CompletedTask;
     }
 

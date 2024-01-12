@@ -35,6 +35,9 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         }
     }
 
+    [ObservableProperty]
+    private bool overridenCarWeight;
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -44,6 +47,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             _ = SetModelStateAsync();
+            OverridenCarWeight = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
             CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
             ParameterDictionary!["var_F"].Value = Convert.ToString(CarWeightResult.FahrkorbGewicht);
         }

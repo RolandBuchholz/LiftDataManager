@@ -326,6 +326,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         //ParameterDictionary
         double kabinenKorrekturGewicht = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_F_Korr");
+        double kabinenGewichtCAD = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KabinengewichtCAD");
         bool abgehaengteDecke = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_abgDecke");
         bool belegteDecke = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Decke")).StartsWith("Sichtseite belegt");
         double kabineundAbgehaengteDeckeHoehe = abgehaengteDecke ? LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht") + 50 :
@@ -504,11 +505,13 @@ public partial class CalculationsModuleService : ICalculationsModule
         var schraubenZubehoerGewicht = (kabinenbreite > 0 && kabinenbreite > 0) ? gewichtSchraubenZubehoer : 0;
 
         //<!--  KabinenGewichtDetail  -->
-        var kabinenGewichtGesamt = kabinenBodengewicht + bodenBelagGewicht + schottengewicht + andidroehnGewicht + haelsegewicht + schuerzeGewicht + deckegewicht + gewichtAbgehaengteDecke +
-                                              deckeBelegtGewicht + belagAufDerDeckeGewicht + spiegelGewicht + paneeleGewicht + paneeleSpiegelGewicht + vSGGewicht + aussenVerkleidungGewicht +
-                                              stossleisteGewicht + handlaufGewicht + sockelleisteGewicht + schutzgelaenderGewicht + klemmkastenGewicht + schraubenZubehoerGewicht + tableauGewicht;
+        double kabinenGewichtGesamt = kabinenGewichtCAD == 0 ?
+                                      kabinenBodengewicht + bodenBelagGewicht + schottengewicht + andidroehnGewicht + haelsegewicht + schuerzeGewicht + deckegewicht + gewichtAbgehaengteDecke +
+                                      deckeBelegtGewicht + belagAufDerDeckeGewicht + spiegelGewicht + paneeleGewicht + paneeleSpiegelGewicht + vSGGewicht + aussenVerkleidungGewicht +
+                                      stossleisteGewicht + handlaufGewicht + sockelleisteGewicht + schutzgelaenderGewicht + klemmkastenGewicht + schraubenZubehoerGewicht + tableauGewicht : 
+                                      kabinenGewichtCAD;
 
-        var kabinenTuerGewicht = variableTuerdaten ? (zugangA ? kabinentuerGewichtA : 0) +
+        double kabinenTuerGewicht = variableTuerdaten ? (zugangA ? kabinentuerGewichtA : 0) +
                                                                 (zugangB ? kabinentuerGewichtB : 0) +
                                                                 (zugangC ? kabinentuerGewichtC : 0) +
                                                                 (zugangD ? kabinentuerGewichtD : 0)
