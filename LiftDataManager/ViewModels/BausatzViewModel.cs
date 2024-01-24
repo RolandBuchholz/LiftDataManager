@@ -44,6 +44,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     private bool isCFPFrame;
 
     [ObservableProperty]
+    private bool isCFPDataBaseOverwritten;
+
+    [ObservableProperty]
     private bool showCFPFrameInfo;
 
     [ObservableProperty]
@@ -95,7 +98,6 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
         CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
         CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
-
         return carFrameType.CarFrameWeight;
     }
 
@@ -109,6 +111,21 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             return;
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
+        if (IsCFPFrame)
+        {
+            if (string.IsNullOrWhiteSpace(FullPathXml)) return;
+
+            var basePath = Path.GetDirectoryName(FullPathXml);
+            if (string.IsNullOrWhiteSpace(basePath)) return;
+
+            var calculationsPath = Path.Combine(basePath, "Berechnungen");
+
+            if (Directory.Exists(calculationsPath))
+            {
+                var calculations = Directory.EnumerateFiles(calculationsPath);
+                IsCFPDataBaseOverwritten = calculations.Any(x => x.Contains("DB-Anpassungen"));
+            }
+        }
     }
 
     private void SetSafetygearData()
@@ -120,14 +137,14 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
-        SynchronizeViewModelParameter();
-        SetSafetygearData();
-        SetCarWeight();
-        CheckCFPState();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
+        SynchronizeViewModelParameter();
+        SetSafetygearData();
+        SetCarWeight();
+        CheckCFPState();
     }
 
     public void OnNavigatedFrom()

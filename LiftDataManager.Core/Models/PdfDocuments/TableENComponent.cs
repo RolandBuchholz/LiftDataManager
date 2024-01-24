@@ -2,12 +2,10 @@
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-
 namespace LiftDataManager.Core.Models.PdfDocuments;
 public class TableENComponent : PdfBaseDocument, IComponent
 {
-
-    List<TableRow<int, double>> tableEN;
+    private readonly List<TableRow<int, double>> tableEN;
 
     public TableENComponent(List<TableRow<int, double>> table, bool lowColor, bool lowHighlightColor)
     {
@@ -82,8 +80,3 @@ public class TableENComponent : PdfBaseDocument, IComponent
         });
     }
 }
-
-
-
-
-

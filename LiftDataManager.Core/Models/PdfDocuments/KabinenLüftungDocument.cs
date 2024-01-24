@@ -21,7 +21,6 @@ public class KabinenLüftungDocument : PdfBaseDocument
         Title = "Be- und Entlüftung";
         LowPrintColor = lowPrintColor;
         SetPdfStyle(LowPrintColor, false);
-        LowPrintColor = lowPrintColor;
     }
 
     protected override void Content(IContainer container)

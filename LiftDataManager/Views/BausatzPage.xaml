@@ -76,7 +76,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,auto,auto">
+                                    ColumnDefinitions="*,auto,auto,auto">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz'], Mode=TwoWay}"
@@ -109,8 +109,28 @@
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Border>
-                                    <TextBox
+                                    <FontIcon
                                         Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Bottom"
+                                        Foreground="Orange"
+                                        Glyph="&#xE814;"
+                                        Visibility="{x:Bind ViewModel.IsCFPDataBaseOverwritten, Mode=OneWay}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        FontWeight="Bold"
+                                                        Foreground="Orange"
+                                                        Text="Achtung:" />
+                                                    <TextBlock Foreground="Orange" Text="Dieser Bausatz enthält Datenbankanpassungen!" />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </FontIcon>
+                                    <TextBox
+                                        Grid.Column="3"
                                         Margin="0,0,5,0"
                                         Header="Gewicht [kg]"
                                         IsReadOnly="True"
@@ -121,6 +141,7 @@
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
                                     Foreground="GreenYellow"
+                                    TextWrapping="WrapWholeWords"
                                     Visibility="{x:Bind ViewModel.ShowCFPFrameInfo, Mode=OneWay}">
                                     <Run
                                         FontSize="16"

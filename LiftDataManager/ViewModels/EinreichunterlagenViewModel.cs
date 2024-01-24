@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Humanizer;
-using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using LiftDataManager.Models;
 using System.Text.Json;
-using static LiftDataManager.Models.TechnicalLiftDocumentation;
 
 namespace LiftDataManager.ViewModels;
 
@@ -11,22 +9,51 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly IPdfService _pdfService;
 
     public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
-                                       ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
+                                       ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
          base(parameterDataService, dialogService, navigationService)
     {
         _parametercontext = parametercontext;
-        _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        _pdfService = pdfService;
         LiftDocumentation = new();
+        LiftSafetyComponents = new();
+    }
+
+    [RelayCommand]
+    public void CreatePdf()
+    {
+        if (ParameterDictionary is not null)
+        {
+            _pdfService.MakeSinglePdfDocument(nameof(EinreichunterlagenViewModel), ParameterDictionary, FullPathXml, true, false, false);
+        }
     }
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
+    public List<LiftSafetyComponent> LiftSafetyComponents { get; set; }
     public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary?["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
     public string DriveControl => _calculationsModuleService.GetDriveControl(ParameterDictionary?["var_Aggregat"].Value);
     public string DrivePosition => _calculationsModuleService.GetDrivePosition(ParameterDictionary?["var_Maschinenraum"].Value);
+    public string SameShaftWith => string.IsNullOrWhiteSpace(ParameterDictionary?["var_GemeinsamerSchachtMit"].Value) ?
+                                                    "Vorstehender Aufzug ist mit keinem weiteren Aufzug im gleichen Schacht errichtet." :
+                                                    $"Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: {ParameterDictionary["var_GemeinsamerSchachtMit"].Value} im gleichem Schacht errichtet.";
+    public string TuevExamination => ParameterDictionary?["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV";
     public int CarDoorCount => _calculationsModuleService.GetNumberOfCardoors(ParameterDictionary);
+    public string DoorTyp => !string.IsNullOrWhiteSpace(ParameterDictionary?["var_Tuertyp"].Value) ? ParameterDictionary["var_Tuertyp"].Value!.Replace(" -","") : string.Empty;
+    public string DateTimeNow => DateTime.Now.ToShortDateString();
+    public string Manufacturer => """
+                                    Berchtenbreiter GmbH
+                                    Maschinenbau - Aufzugtechnik
+                                    Mähderweg 1a
+                                    86637 Rieblingen
+                                    """;
+    public string ViewingOpening => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
+                                    "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." :
+                                    "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
+    public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary?["var_Aufzugstyp"].Value);
+    public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
 
     [ObservableProperty]
     private int manufactureYear;
@@ -48,7 +75,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private string? monthOfConstruction;
     partial void OnMonthOfConstructionChanged(string? value)
     {
-        Month month;
+        TechnicalLiftDocumentation.Month month;
         if (Enum.TryParse(value, out month))
         {
             LiftDocumentation.MonthOfConstruction = month;
@@ -62,7 +89,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     {
         if (string.IsNullOrWhiteSpace(value) || value == "0")
             return;
-        ProtectedSpaceTyp protectedSpace;
+        TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpace;
         if (Enum.TryParse(value?[..4], out protectedSpace))
         {
             LiftDocumentation.ProtectedSpaceTypPit = protectedSpace;
@@ -77,7 +104,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     {
         if (string.IsNullOrWhiteSpace(value) || value == "0")
             return;
-        ProtectedSpaceTyp protectedSpace;
+        TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpace;
         if (Enum.TryParse(value?[..4], out protectedSpace))
         {
             LiftDocumentation.ProtectedSpaceTypHead = protectedSpace;
@@ -112,31 +139,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     {
         LiftDocumentation.SafetySpaceHead = value;
         UpdateLiftDocumentation();
-    }
-
-    public string DateTimeNow => DateTime.Now.ToShortDateString();
-
-    public string Manufacturer => """
-                                    Berchtenbreiter GmbH
-                                    Maschinenbau - Aufzugtechnik
-                                    Mähderweg 1a
-                                    86637 Rieblingen
-                                    """;
-
-    public string ViewingOpening => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ? 
-                                    "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." : 
-                                    "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
-    public string LiftType
-    {
-        get
-        {
-            string aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Aufzugstyp");
-
-            var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
-                                                            .ToList()
-                                                            .FirstOrDefault(x => x.Name == aufzugstyp);
-            return cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
-        }
     }
 
     private void SetLiftDocumentation()
@@ -203,8 +205,11 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        {
             _ = SetModelStateAsync();
-        SetLiftDocumentation();
+            SetLiftDocumentation();
+            LiftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+        }
     }
 
     public void OnNavigatedFrom()

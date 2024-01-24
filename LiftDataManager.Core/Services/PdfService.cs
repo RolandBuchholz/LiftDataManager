@@ -59,6 +59,7 @@ public class PdfService : IPdfService
             "KabinenLüftungViewModel" => new KabinenLüftungDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
             "NutzlastberechnungViewModel" => new NutzlastberechnungDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
             "KabinengewichtViewModel" => new KabinengewichtDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
+            "EinreichunterlagenViewModel" => new EinreichunterlagenDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor),
             "Spezifikation" => new SpezifikationDocument(ParameterDictionary, _calculationsModuleService, lowPrintColor, lowHighlightColor),
             _ => null,
         };

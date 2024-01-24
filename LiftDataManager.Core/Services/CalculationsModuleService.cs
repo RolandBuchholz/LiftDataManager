@@ -131,6 +131,17 @@ public partial class CalculationsModuleService : ICalculationsModule
         return driveControl;
     }
 
+    public string GetLiftTyp(string? liftTyp)
+    {
+        if (string.IsNullOrWhiteSpace(liftTyp))
+            return "Aufzugstyp noch nicht gewählt !";
+        
+        var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
+                                                        .ToList()
+                                                        .FirstOrDefault(x => x.Name == liftTyp);
+        return cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
+    }
+
     public string GetDrivePosition(string? drivePos)
     {
         var drivePosition = string.Empty;
@@ -895,6 +906,36 @@ public partial class CalculationsModuleService : ICalculationsModule
                 aKabine.Value = Convert.ToString(nutzflaecheGesamt);
             }
         }
+    }
+
+    public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter>? parameterDictionary)
+    {
+
+        //var shaftdoor = "";
+        //var cardoor = "";
+        
+        
+        //var listOfSafetyComponents = new List<(string,string,string)>()
+        //{
+        //     ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
+        //     ("Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer","OverspeedGovernor"),
+        //     ("Fahrkorbpuffer","var_Puffertyp","XXX"),
+        //     ("Gegengewichtspuffer","var_Puffertyp_GGW","XXX"),
+        //     ("Schachttürverriegelung",shaftdoor,"XXX"),
+        //     ("Kabinentürverriegelung",cardoor,"XXX"),
+        //     ("Sicherheitsschaltung","var_Steuerungstyp","XXX"),
+        //};
+        var liftSafetyComponents = new List<LiftSafetyComponent>();
+
+        //foreach (var item in listOfSafetyComponents)
+        //{
+        //    var safetyType = item.Item1;
+        //    var manufacturer = "Hallo";
+        //    var model = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary,item.Item2);
+        //    var certificateNumber = "0815";
+        //    liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber));
+        //}
+        return liftSafetyComponents;
     }
 
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)

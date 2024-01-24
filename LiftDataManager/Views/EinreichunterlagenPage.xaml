@@ -15,6 +15,7 @@
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />
+        <helpers:NewLineConveter x:Key="NewLineConveter" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
@@ -59,6 +60,8 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
@@ -111,9 +114,23 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Aufzugtyp:" />
+                            <TextBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Bausatz'].Value}" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Errichtungsvorschrift:" />
                             <StackPanel
-                                Grid.Row="3"
+                                Grid.Row="4"
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                                 <TextBox
@@ -132,31 +149,45 @@
                                     IsHitTestVisible="False" />
                             </StackPanel>
                             <TextBlock
-                                Grid.Row="4"
+                                Grid.Row="5"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Richtlinie:" />
                             <TextBox
-                                Grid.Row="4"
+                                Grid.Row="5"
                                 Grid.Column="1"
                                 Width="300"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="Aufzugsrichtlinie 2014/33/EU" />
                             <TextBlock
-                                Grid.Row="5"
+                                Grid.Row="6"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Name des Betreibers:" />
                             <TextBox
-                                Grid.Row="5"
+                                Grid.Row="6"
                                 Grid.Column="1"
                                 Width="500"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value}" />
+                            <TextBlock
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Einzelprüfung:" />
+                            <TextBox
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                Width="300"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.TuevExamination}" />
                         </Grid>
                         <!--  1. Allgemeine Angaben  -->
                         <TextBlock
@@ -185,7 +216,7 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Hersteller und/oder Einführer" />
+                                Text="Hersteller und/oder Einführer:" />
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
@@ -321,11 +352,7 @@
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 Margin="0,5,0,10"
-                                Style="{StaticResource BodyStrongTextBlockStyle}">
-                                <Run Text="Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: " />
-                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_GemeinsamerSchachtMit'].Value}" />
-                                <Run Text=" im gleichen Schacht errichtet." />
-                            </TextBlock>
+                                Text="{x:Bind ViewModel.SameShaftWith}" />
                         </Grid>
                         <!--  2. Fahrschacht - Fahrschachtzugänge  -->
                         <TextBlock
@@ -442,7 +469,7 @@
                                     Width="250"
                                     HorizontalAlignment="Left"
                                     Style="{StaticResource InfoTextboxStyle}"
-                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp'].Value}" />
+                                    Text="{x:Bind ViewModel.DoorTyp}" />
                             </StackPanel>
                             <StackPanel Grid.Row="4" Grid.Column="1">
                                 <StackPanel Orientation="Horizontal">
@@ -469,7 +496,7 @@
                                         Margin="0,0,5,10"
                                         VerticalAlignment="Bottom"
                                         Style="{StaticResource BaseTextBlockStyle}"
-                                        Text="Türöhe:" />
+                                        Text="Türhöhe:" />
                                     <TextBox
                                         Width="100"
                                         Style="{StaticResource InfoTextboxStyle}"
@@ -585,16 +612,24 @@
                                     Margin="5,0,5,12"
                                     VerticalAlignment="Bottom"
                                     Style="{StaticResource BaseTextBlockStyle}"
-                                    Text=" : 1 , des Gegengewichtes " />
-                                <TextBox
-                                    Style="{StaticResource InfoTextboxStyle}"
-                                    Text="{x:Bind ViewModel.ParameterDictionary['var_AufhaengungsartRope'].Value}"
-                                    TextAlignment="Right" />
+                                    Text=" : 1" />
                                 <TextBlock
                                     Margin="5,0,5,12"
                                     VerticalAlignment="Bottom"
                                     Style="{StaticResource BaseTextBlockStyle}"
-                                    Text=" : 1" />
+                                    Text=", des Gegengewichtes "
+                                    Visibility="{x:Bind ViewModel.IsRopeLift}" />
+                                <TextBox
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_AufhaengungsartRope'].Value}"
+                                    TextAlignment="Right"
+                                    Visibility="{x:Bind ViewModel.IsRopeLift}" />
+                                <TextBlock
+                                    Margin="5,0,5,12"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text=" : 1"
+                                    Visibility="{x:Bind ViewModel.IsRopeLift}" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="2"
@@ -879,6 +914,13 @@
                             FontSize="20"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="8. Besonderheiten der Aufzugsanlage" />
+                        <TextBox
+                            Grid.Column="0"
+                            MinHeight="92"
+                            Margin="5,0,5,0"
+                            AcceptsReturn="True"
+                            Text="{x:Bind ViewModel.LiftDocumentation.SpecialFeatures, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
+                            TextWrapping="Wrap" />
                         <!--  Anlagen  -->
                         <TextBlock
                             Margin="0,0,0,10"
@@ -894,21 +936,35 @@
                         </TextBlock>
                     </StackPanel>
                 </Expander>
-                <Button
+                <StackPanel
                     Grid.Column="0"
                     Margin="0,6,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.SaveAllParameterCommand}"
-                    Style="{StaticResource SaveButton}">
-                    <ToolTipService.ToolTip>
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Save All Parameter" />
-                    </ToolTipService.ToolTip>
-                    <SymbolIcon Symbol="Save" />
-                </Button>
+                    Orientation="Horizontal">
+                    <Button
+                        Width="55"
+                        Height="34"
+                        Margin="0,0,5,0"
+                        Command="{x:Bind ViewModel.CreatePdfCommand}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Create PDF" />
+                        </ToolTipService.ToolTip>
+                        <SymbolIcon Symbol="Print" />
+                    </Button>
+                    <Button Command="{x:Bind ViewModel.SaveAllParameterCommand}" Style="{StaticResource SaveButton}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Save All Parameter" />
+                        </ToolTipService.ToolTip>
+                        <SymbolIcon Symbol="Save" />
+                    </Button>
+                </StackPanel>
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

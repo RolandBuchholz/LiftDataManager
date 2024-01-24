@@ -21,7 +21,6 @@ public class KabinengewichtDocument : PdfBaseDocument
         Title = "Kabinengewicht";
         LowPrintColor = lowPrintColor;
         SetPdfStyle(LowPrintColor, false);
-        LowPrintColor = lowPrintColor;
     }
 
     protected override void Content(IContainer container)

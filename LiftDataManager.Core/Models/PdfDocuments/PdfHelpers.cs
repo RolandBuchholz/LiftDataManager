@@ -210,4 +210,79 @@ public static class PdfHelpers
         }
         container.ParameterBoolCell(parameter, hideBorder, customvalue);
     }
+
+    public static void CheckBoxvalue(this IContainer container, Parameter parameter) => container
+        .Column(column =>
+        {
+            column.Item().Layers(layers =>
+            {
+                if (Convert.ToBoolean(parameter.Value))
+                {
+                    layers.Layer().Canvas((canvas, size) =>
+                    {
+                        using var paintPrimaryColor = new SKPaint
+                        {
+                            Color = SKColor.Parse(primaryVariantColor),
+                            IsAntialias = true
+                        };
+                        using var paintOnPrimaryColor = new SKPaint
+                        {
+                            Color = SKColor.Parse(onPrimaryVariantColor),
+                            IsAntialias = true,
+                            StrokeWidth = 1,
+                            StrokeCap = SKStrokeCap.Round,
+                            IsStroke = true,
+                        };
+                        canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintPrimaryColor);
+                        var skCheck = new SKPath();
+                        skCheck.MoveTo(1.75f, 7.75f);
+                        skCheck.LineTo(5.0f, 11.75f);
+                        skCheck.LineTo(8.5f, 5.25f);
+                        canvas.DrawPath(skCheck, paintOnPrimaryColor);
+                    });
+                }
+                layers.Layer().Canvas((canvas, size) =>
+                {
+                    using var paintSecondaryVariantColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(secondaryVariantColor),
+                        IsAntialias = true,
+                        StrokeWidth = 1,
+                        IsStroke = true,
+                    };
+                    canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintSecondaryVariantColor);
+                });
+                layers.PrimaryLayer().PaddingLeft(13).Text(parameter.DisplayName); 
+            });
+        });
+
+    public static void ProtectedSpaceTypInfoBox(this IContainer container, string position, LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp? protectedSpaceTyp) => container
+        .Width(140).Column(column =>
+        {
+            var imagePath = string.Empty;
+            var protectedSpaceTypDescription = string.Empty;
+            switch (protectedSpaceTyp)
+            {
+                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ1:
+                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp1.png");
+                    protectedSpaceTypDescription = "Aufrecht 0,40 x 0,50 x 2,00 m";
+                    break;
+                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ2:
+                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp2.png");
+                    protectedSpaceTypDescription = "Hockend 0,50 x 0,70 x 1,00 m";
+                    break;
+                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ3:
+                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp3.png");
+                    protectedSpaceTypDescription = "Liegend 0,70 x 1,00 x 0,50 m";
+                    break;
+                case null or 0:
+                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "NoImage.png");
+                    protectedSpaceTypDescription = "Kein Schutzraum gewählt";
+                    break;
+            }
+
+            column.Item().AlignCenter().Text($"Schutzraum {position}").FontSize(fontSizeS).Bold();
+            column.Item().PaddingHorizontal(20).Width(100).Image(imagePath);
+            column.Item().AlignCenter().Text(protectedSpaceTypDescription).FontSize(fontSizeS);
+        });
 }

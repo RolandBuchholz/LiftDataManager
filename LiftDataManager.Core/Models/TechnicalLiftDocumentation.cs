@@ -56,6 +56,7 @@ namespace LiftDataManager.Models
         public ProtectedSpaceTyp ProtectedSpaceTypHead { get; set; }
         public double SafetySpacePit { get; set; }
         public double SafetySpaceHead { get; set; }
+        public string? SpecialFeatures { get; set; }
 
         private static List<string> GetMonths()
         {

@@ -929,6 +929,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CanCheckOut = false;
         LikeEditParameter = true;
         SpezifikationName = string.Empty;
+        ShowFrameWeightBorder = false;
         ShowCarWeightBorder = false;
         ParameterErrorDictionary?.Clear();
         HasErrors = false;

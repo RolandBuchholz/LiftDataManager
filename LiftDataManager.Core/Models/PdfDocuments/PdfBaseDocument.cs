@@ -128,11 +128,10 @@ public class PdfBaseDocument : IDocument
             page.Header().Element(Header);
             page.Content().Element(Content);
             page.Footer().Element(Footer);
-
         });
     }
 
-    void Header(IContainer container)
+    protected virtual void Header(IContainer container)
     {
         container.Column(column =>
         {
@@ -358,7 +357,7 @@ public class PdfBaseDocument : IDocument
         });
     }
 
-    void Footer(IContainer container)
+    protected virtual void Footer(IContainer container)
     {
         container.Layers(layers =>
         {

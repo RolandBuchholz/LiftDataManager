@@ -24,6 +24,8 @@ public interface ICalculationsModule
 
     string GetDriveControl(string? driveTyp);
 
+    string GetLiftTyp(string? liftTyp);
+
     string GetDrivePosition(string? drivePos);
 
     string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter>? parameterDictionary, string orientation);
@@ -39,6 +41,8 @@ public interface ICalculationsModule
     CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+
+    List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter>? parameterDictionary);
 
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }
