@@ -584,7 +584,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(10).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Sockelleiste"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteMaterial"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteOKFF"], "mm");
                 });
                 table.Cell().Row(10).Column(5).ColumnSpan(2).Row(row =>

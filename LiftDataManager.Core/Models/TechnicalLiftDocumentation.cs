@@ -33,6 +33,8 @@ namespace LiftDataManager.Models
             Typ3 = 3
         }
 
+        public event EventHandler? OnTechnicalLiftDocumentationChanged;
+
         public TechnicalLiftDocumentation()
         {
             Years = new List<int> { 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030 };
@@ -40,27 +42,88 @@ namespace LiftDataManager.Models
             ProtectedSpacePits = GetProtectedSpacePits();
             ProtectedSpaceHeads = GetProtectedSpaceHeads();
         }
+
         [JsonIgnore]
         public List<int> Years { get; set; }
         [JsonIgnore]
-        public List<string> Months { get; set; }
+        public List<Month> Months { get; set; }
         [JsonIgnore]
         public List<string> ProtectedSpacePits { get; set; }
         [JsonIgnore]
         public List<string> ProtectedSpaceHeads { get; set; }
 
-        public int ManufactureYear { get; set; }
-        public int YearOfConstruction { get; set; }
-        public Month MonthOfConstruction { get; set; }
+        private Month monthOfConstruction;
+        public Month MonthOfConstruction
+        {
+            get => monthOfConstruction;
+            set
+            {
+                monthOfConstruction = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private int manufactureYear;
+        public int ManufactureYear
+        {
+            get => manufactureYear;
+            set
+            {
+                manufactureYear = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private int yearOfConstruction;
+        public int YearOfConstruction
+        {
+            get => yearOfConstruction;
+            set
+            {
+                yearOfConstruction = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public ProtectedSpaceTyp ProtectedSpaceTypPit { get; set; }
         public ProtectedSpaceTyp ProtectedSpaceTypHead { get; set; }
-        public double SafetySpacePit { get; set; }
-        public double SafetySpaceHead { get; set; }
-        public string? SpecialFeatures { get; set; }
 
-        private static List<string> GetMonths()
+        private double safetySpacePit;
+        public double SafetySpacePit
         {
-            return Enum.GetNames(typeof(Month)).ToList();
+            get => safetySpacePit;
+            set
+            {
+                safetySpacePit = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private double safetySpaceHead;
+        public double SafetySpaceHead
+        {
+            get => safetySpaceHead;
+            set
+            {
+                safetySpaceHead = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private string? specialFeatures;
+        public string? SpecialFeatures
+        {
+            get => specialFeatures;
+            set
+            {
+                specialFeatures = value;
+                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private static List<Month> GetMonths()
+        {
+            return Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
         }
 
         private static List<string> GetProtectedSpacePits()

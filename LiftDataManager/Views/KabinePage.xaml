@@ -1464,7 +1464,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="0.65*,0.35*,*">
+                                    ColumnDefinitions="0.7*,0.3*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Handlauf'], Mode=TwoWay}"
@@ -1590,18 +1590,22 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="0.65*,0.35*,*">
+                                    ColumnDefinitions="0.4*,0.3*,0.3*,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Sockelleiste'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <SpeziControls:ParameterNumberTextBox
+                                    <SpeziControls:ParameterComboBox
                                         Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteMaterial'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteOKFF'], Mode=TwoWay}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
                                     <Grid
-                                        Grid.Column="2"
+                                        Grid.Column="3"
                                         Margin="5,10,5,0"
                                         ColumnDefinitions="*,*,*,*">
                                         <SpeziControls:ParameterCheckBox
@@ -1693,7 +1697,6 @@
                                             </ToolTipService.ToolTip>
                                         </SpeziControls:ParameterCheckBox>
                                     </Grid>
-
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung8"
@@ -1927,10 +1930,57 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <SpeziControls:ParameterComboBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Paneelmaterial'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True" />
+                                    <Grid Grid.Column="0" ColumnDefinitions="*,auto,auto">
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="0"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Paneelmaterial'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="1"
+                                            MinWidth="150"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_PaneelmaterialGlas'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Visibility="{x:Bind ViewModel.ShowGlassPanels, Mode=OneWay}">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Info Sanco-Dur:" />
+                                                    <TextBlock Text=" - Lacobel 'Cool White' ähnlich RAL 9010" />
+                                                    <TextBlock Text=" - Lacobel 'Misty White' ähnlich RAL 9018" />
+                                                    <TextBlock Text=" - Lacobel 'Oyster White' ähnlich RAL 9001" />
+                                                    <TextBlock Text=" - 'Euro White' beliebiger RAL-Ton" />
+                                                    <TextBlock
+                                                        Margin="0,5,0,0"
+                                                        FontWeight="Bold"
+                                                        Foreground="IndianRed"
+                                                        Text="'Euro White' wird von Glaströsch beschichtet" />
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Foreground="IndianRed"
+                                                        Text="aufgrund zusätzlicher Rüstkosten und" />
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Foreground="IndianRed"
+                                                        Text="erhöhten Gefahr von Siebdruckfehlern" />
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Foreground="IndianRed"
+                                                        Text="ist wenn möglich 'Lacobel' zu verwenden!" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterComboBox>
+                                        <SpeziControls:ParameterTextBox
+                                            Grid.Column="2"
+                                            MinWidth="100"
+                                            Header="Farbton(RAL)"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_PaneelGlasRAL'], Mode=TwoWay}"
+                                            ShowDefaultHeader="False"
+                                            Visibility="{x:Bind ViewModel.ShowGlassPanelsColor, Mode=OneWay}" />
+                                    </Grid>
                                     <Grid
                                         Grid.Column="1"
                                         Margin="5,10,5,0"

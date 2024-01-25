@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Controls;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
+using WinUIEx.Messaging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -69,6 +70,16 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             string[] zugang = { "var_ZUGANSSTELLEN_C" };
             if (liftparameter is not null)
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
+        }
+
+        if (message.PropertyName == "var_Paneelmaterial")
+        {
+            CanShowGlassPanels(message.NewValue);
+        }
+
+        if (message.PropertyName == "var_PaneelmaterialGlas")
+        {
+            CanShowGlassPanelsColor(message.NewValue);
         }
 
         if (message.PropertyName == "var_SpiegelA" ||
@@ -150,6 +161,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     [ObservableProperty]
     private bool canEditFloorWeightAndHeight;
+
+    [ObservableProperty]
+    private bool showGlassPanels;
+
+    [ObservableProperty]
+    private bool showGlassPanelsColor;
 
     private double _floorHeight;
 
@@ -239,6 +256,16 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         }
     }
 
+    private void CanShowGlassPanels(string? paneelmaterial)
+    {
+        ShowGlassPanels = !string.IsNullOrWhiteSpace(paneelmaterial) && paneelmaterial.StartsWith("ESG");
+    }
+
+    private void CanShowGlassPanelsColor(string? paneelmaterialGlas)
+    {
+        ShowGlassPanelsColor = !string.IsNullOrWhiteSpace(paneelmaterialGlas) && paneelmaterialGlas.StartsWith("Euro");
+    }
+
     private void SetSkirtingBoardHeight(bool modify)
     {
         if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_Sockelleiste"].Value))
@@ -325,6 +352,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             CanShowMirrorDimensions();
             SetSkirtingBoardHeight(false);
             CheckCarCeilingIsOverwritten();
+            CanShowGlassPanels(ParameterDictionary!["var_Paneelmaterial"].Value);
+            CanShowGlassPanelsColor(ParameterDictionary!["var_PaneelmaterialGlas"].Value);
             SetDistanceBetweenDoors();
         }
     }

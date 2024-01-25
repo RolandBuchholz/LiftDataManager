@@ -259,7 +259,7 @@
                                 Width="120"
                                 Margin="0,0,0,5"
                                 ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
-                                SelectedValue="{x:Bind ViewModel.ManufactureYear, Mode=TwoWay}" />
+                                SelectedValue="{x:Bind ViewModel.LiftDocumentation.ManufactureYear, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Row="3"
                                 Grid.Column="0"
@@ -275,11 +275,11 @@
                                     Width="120"
                                     Margin="0,0,5,0"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.Months, Mode=OneWay}"
-                                    SelectedItem="{x:Bind ViewModel.MonthOfConstruction, Mode=TwoWay}" />
+                                    SelectedItem="{x:Bind ViewModel.LiftDocumentation.MonthOfConstruction, Mode=TwoWay}" />
                                 <ComboBox
                                     Width="120"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.Years, Mode=OneWay}"
-                                    SelectedValue="{x:Bind ViewModel.YearOfConstruction, Mode=TwoWay}" />
+                                    SelectedValue="{x:Bind ViewModel.LiftDocumentation.YearOfConstruction, Mode=TwoWay}" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="4"
@@ -401,7 +401,7 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
-                                    Text="{x:Bind ViewModel.SafetySpacePit, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.LiftDocumentation.SafetySpacePit, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Margin="5"
@@ -427,7 +427,7 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
-                                    Text="{x:Bind ViewModel.SafetySpaceHead, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.LiftDocumentation.SafetySpaceHead, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Margin="5"

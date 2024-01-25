@@ -388,6 +388,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             _logger.LogWarning(61075, "Failed to add parameter {DisplayName} to database", DisplayName);
         }
     }
+
     private T DetachEntity<T>(T entity) where T : class
     {
         if (_editableparametercontext is null)

@@ -18,8 +18,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;
-        LiftDocumentation = new();
-        LiftSafetyComponents = new();
+        LiftDocumentation ??= new();
+        LiftSafetyComponents ??= new();
     }
 
     [RelayCommand]
@@ -29,6 +29,11 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         {
             _pdfService.MakeSinglePdfDocument(nameof(EinreichunterlagenViewModel), ParameterDictionary, FullPathXml, true, false, false);
         }
+    }
+
+    private void LiftDocumentation_OnTechnicalLiftDocumentationChanged(object? sender, EventArgs e)
+    {
+        UpdateLiftDocumentation();
     }
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
@@ -54,34 +59,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary?["var_Aufzugstyp"].Value);
     public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
-
-    [ObservableProperty]
-    private int manufactureYear;
-    partial void OnManufactureYearChanged(int value)
-    {
-        LiftDocumentation.ManufactureYear = value;
-        UpdateLiftDocumentation();
-    }
-
-    [ObservableProperty]
-    private int yearOfConstruction;
-    partial void OnYearOfConstructionChanged(int value)
-    {
-        LiftDocumentation.YearOfConstruction = value;
-        UpdateLiftDocumentation();
-    }
-
-    [ObservableProperty]
-    private string? monthOfConstruction;
-    partial void OnMonthOfConstructionChanged(string? value)
-    {
-        TechnicalLiftDocumentation.Month month;
-        if (Enum.TryParse(value, out month))
-        {
-            LiftDocumentation.MonthOfConstruction = month;
-            UpdateLiftDocumentation();
-        }
-    }
 
     [ObservableProperty]
     private string? protectedSpaceTypPit;
@@ -125,22 +102,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     [ObservableProperty]
     private string protectedSpaceTypHeadDescription = "Kein Schutzraum gewählt";
 
-    [ObservableProperty]
-    private double safetySpacePit;
-    partial void OnSafetySpacePitChanged(double value)
-    {
-        LiftDocumentation.SafetySpacePit = value;
-        UpdateLiftDocumentation();
-    }
-
-    [ObservableProperty]
-    private double safetySpaceHead;
-    partial void OnSafetySpaceHeadChanged(double value)
-    {
-        LiftDocumentation.SafetySpaceHead = value;
-        UpdateLiftDocumentation();
-    }
-
     private void SetLiftDocumentation()
     {
         var liftDocumentation = ParameterDictionary?["var_Einreichunterlagen"].Value;
@@ -151,14 +112,10 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
             {
                 LiftDocumentation = liftdoku;
             }
-            ManufactureYear = LiftDocumentation.ManufactureYear;
-            YearOfConstruction = LiftDocumentation.YearOfConstruction;
-            MonthOfConstruction = LiftDocumentation.MonthOfConstruction.ToString();
             ProtectedSpaceTypPit = LiftDocumentation.ProtectedSpaceTypPit.Humanize();
             ProtectedSpaceTypHead = LiftDocumentation.ProtectedSpaceTypHead.Humanize();
-            SafetySpacePit = LiftDocumentation.SafetySpacePit;
-            SafetySpaceHead = LiftDocumentation.SafetySpaceHead;
         }
+        LiftDocumentation.OnTechnicalLiftDocumentationChanged += LiftDocumentation_OnTechnicalLiftDocumentationChanged;
         UpdateProtectedSpaceTyp();
     }
 
@@ -214,6 +171,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     public void OnNavigatedFrom()
     {
+        LiftDocumentation.OnTechnicalLiftDocumentationChanged -= LiftDocumentation_OnTechnicalLiftDocumentationChanged;
         IsActive = false;
     }
 }
