@@ -617,7 +617,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungD"], true, "Seite D");
                 });
-                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
+                table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
+                    if(!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
+                        row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelmaterialGlas"]);
+                    if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelGlasRAL"].Value))
+                        row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelGlasRAL"], null, false, false, "Farbton(RAL)");
+                });
                 table.Cell().Row(13).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosA"], true, "Seite A");

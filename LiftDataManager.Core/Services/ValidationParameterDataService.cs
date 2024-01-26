@@ -514,6 +514,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_overrideSuspendedCeiling",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarCeilingDetails, "None", null) });
 
+        ValidationDictionary.Add("var_Paneelmaterial",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGlassPanelColor, "None", null) });
+
+        ValidationDictionary.Add("var_PaneelmaterialGlas",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateGlassPanelColor, "None", null) });
 
         AddDropDownListValidation();
     }

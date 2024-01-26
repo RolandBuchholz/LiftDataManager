@@ -1511,4 +1511,27 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var carHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
         ParameterDictionary["var_KHRoh"].Value = Convert.ToString(carHeight + suspendedCeilingHeight, CultureInfo.CurrentCulture);
     }
+
+    private void ValidateGlassPanelColor(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        switch (name)
+        {
+            case "var_Paneelmaterial":
+                if (string.IsNullOrWhiteSpace(value) || !value.StartsWith("ESG"))
+                {
+                    ParameterDictionary["var_PaneelmaterialGlas"].Value = string.Empty;
+                    ParameterDictionary["var_PaneelmaterialGlas"].DropDownListValue = null;
+                    ParameterDictionary["var_PaneelGlasRAL"].Value = string.Empty;
+                }
+                break;
+            case "var_PaneelmaterialGlas":
+                if (string.IsNullOrWhiteSpace(value) || !value.StartsWith("Euro"))
+                {
+                    ParameterDictionary["var_PaneelGlasRAL"].Value = string.Empty;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
