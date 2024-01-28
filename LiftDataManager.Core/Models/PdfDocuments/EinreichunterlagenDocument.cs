@@ -13,7 +13,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly bool LowPrintColor;
-    public TechnicalLiftDocumentation? LiftDocumentation { get; set; }
+    public TechnicalLiftDocumentation LiftDocumentation { get; set; }
 
     public EinreichunterlagenDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
     {
@@ -21,6 +21,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         ParameterDictionary = parameterDictionary;
         Title = "Technische Unterlagen";
         LowPrintColor = lowPrintColor;
+        LiftDocumentation ??= new();
         SetPdfStyle(LowPrintColor, false);
         SetLiftDocumentation();
     }
@@ -30,7 +31,11 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         var liftDocumentation = ParameterDictionary?["var_Einreichunterlagen"].Value;
         if (!string.IsNullOrWhiteSpace(liftDocumentation))
         {
-             LiftDocumentation = JsonSerializer.Deserialize<TechnicalLiftDocumentation>(liftDocumentation);
+            var liftdoku = JsonSerializer.Deserialize<TechnicalLiftDocumentation>(liftDocumentation);
+            if (liftdoku is not null)
+            {
+                LiftDocumentation = liftdoku;
+            }
         }
     }
 
@@ -296,11 +301,11 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Ausführung der Fahrschachtwände:").Bold();
             table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text(ParameterDictionary["var_Schacht"].Value);
             table.Cell().Row(2).Column(1).PaddingVertical(10).Text("untere Schutzraumhöhe:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation?.SafetySpacePit} mm\n" +
-                                                                   $"Art des Schutzraums: {LiftDocumentation?.ProtectedSpaceTypPit}");
+            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpacePit} mm\n" +
+                                                                   $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypPit}");
             table.Cell().Row(3).Column(1).PaddingVertical(10).Text("obere Schutzraumhöhe:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation?.SafetySpaceHead} mm\n" +
-                                                                   $"Art des Schutzraums: {LiftDocumentation?.ProtectedSpaceTypHead}");
+            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpaceHead} mm\n" +
+                                                                   $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypHead}");
             table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
             table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Column(column => 
             {
@@ -314,8 +319,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                                                                                  "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.").Bold();
             table.Cell().Row(1).RowSpan(4).Column(3).Column(column =>
             {
-                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtgrube", LiftDocumentation?.ProtectedSpaceTypPit);
-                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf",LiftDocumentation?.ProtectedSpaceTypHead);
+                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtgrube", LiftDocumentation.ProtectedSpaceTypPit);
+                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf",LiftDocumentation.ProtectedSpaceTypHead);
             });
         });
     }
@@ -431,7 +436,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text(LiftDocumentation?.SpecialFeatures).Bold();
+            table.Cell().Row(1).Column(1).PaddingVertical(10).Text(LiftDocumentation.SpecialFeatures).Bold();
         });
     }
 

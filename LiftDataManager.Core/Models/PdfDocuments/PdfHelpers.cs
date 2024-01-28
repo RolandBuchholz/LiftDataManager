@@ -1,4 +1,5 @@
-﻿using QuestPDF.Fluent;
+﻿using LiftDataManager.Models;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
@@ -256,31 +257,12 @@ public static class PdfHelpers
             });
         });
 
-    public static void ProtectedSpaceTypInfoBox(this IContainer container, string position, LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp? protectedSpaceTyp) => container
+    public static void ProtectedSpaceTypInfoBox(this IContainer container, string position, TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpaceTyp) => container
         .Width(140).Column(column =>
         {
-            var imagePath = string.Empty;
-            var protectedSpaceTypDescription = string.Empty;
-            switch (protectedSpaceTyp)
-            {
-                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ1:
-                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp1.png");
-                    protectedSpaceTypDescription = "Aufrecht 0,40 x 0,50 x 2,00 m";
-                    break;
-                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ2:
-                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp2.png");
-                    protectedSpaceTypDescription = "Hockend 0,50 x 0,70 x 1,00 m";
-                    break;
-                case LiftDataManager.Models.TechnicalLiftDocumentation.ProtectedSpaceTyp.Typ3:
-                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "TechnicalDocumentation", "protectionRoomTyp3.png");
-                    protectedSpaceTypDescription = "Liegend 0,70 x 1,00 x 0,50 m";
-                    break;
-                case null or 0:
-                    imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "NoImage.png");
-                    protectedSpaceTypDescription = "Kein Schutzraum gewählt";
-                    break;
-            }
-
+            var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, TechnicalLiftDocumentation.GetProtectedSpaceTypImage(protectedSpaceTyp).TrimStart('/'));
+            var protectedSpaceTypDescription = TechnicalLiftDocumentation.GetProtectedSpaceTypDescription(protectedSpaceTyp);
+            
             column.Item().AlignCenter().Text($"Schutzraum {position}").FontSize(fontSizeS).Bold();
             column.Item().PaddingHorizontal(20).Width(100).Image(imagePath);
             column.Item().AlignCenter().Text(protectedSpaceTypDescription).FontSize(fontSizeS);

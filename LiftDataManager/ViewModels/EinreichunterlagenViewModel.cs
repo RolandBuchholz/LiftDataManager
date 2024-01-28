@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Humanizer;
 using LiftDataManager.Models;
 using System.Text.Json;
 
@@ -31,9 +30,13 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         }
     }
 
-    private void LiftDocumentation_OnTechnicalLiftDocumentationChanged(object? sender, EventArgs e)
+    private void LiftDocumentation_OnTechnicalLiftDocumentationChanged(object? sender, TechnicalLiftDocumentationEventArgs e)
     {
         UpdateLiftDocumentation();
+        if (e.PropertyName == "ProtectedSpaceTypPit" || e.PropertyName == "ProtectedSpaceTypHead")
+        {
+            UpdateProtectedSpaceTyp();
+        }
     }
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
@@ -61,36 +64,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
 
     [ObservableProperty]
-    private string? protectedSpaceTypPit;
-    partial void OnProtectedSpaceTypPitChanged(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value) || value == "0")
-            return;
-        TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpace;
-        if (Enum.TryParse(value?[..4], out protectedSpace))
-        {
-            LiftDocumentation.ProtectedSpaceTypPit = protectedSpace;
-            UpdateLiftDocumentation();
-            UpdateProtectedSpaceTyp();
-        }
-    }
-
-    [ObservableProperty]
-    private string? protectedSpaceTypHead;
-    partial void OnProtectedSpaceTypHeadChanged(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value) || value == "0")
-            return;
-        TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpace;
-        if (Enum.TryParse(value?[..4], out protectedSpace))
-        {
-            LiftDocumentation.ProtectedSpaceTypHead = protectedSpace;
-            UpdateLiftDocumentation();
-            UpdateProtectedSpaceTyp();
-        }
-    }
-
-    [ObservableProperty]
     private string protectedSpaceTypPitImage = "/Images/NoImage.png";
 
     [ObservableProperty]
@@ -112,8 +85,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
             {
                 LiftDocumentation = liftdoku;
             }
-            ProtectedSpaceTypPit = LiftDocumentation.ProtectedSpaceTypPit.Humanize();
-            ProtectedSpaceTypHead = LiftDocumentation.ProtectedSpaceTypHead.Humanize();
         }
         LiftDocumentation.OnTechnicalLiftDocumentationChanged += LiftDocumentation_OnTechnicalLiftDocumentationChanged;
         UpdateProtectedSpaceTyp();
@@ -127,32 +98,10 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     private void UpdateProtectedSpaceTyp()
     {
-        ProtectedSpaceTypPitImage = GetProtectedSpaceTypImage(protectedSpaceTypPit);
-        ProtectedSpaceTypPitDescription = GetProtectedSpaceTypDescription(protectedSpaceTypPit);
-        ProtectedSpaceTypHeadImage = GetProtectedSpaceTypImage(protectedSpaceTypHead);
-        ProtectedSpaceTypHeadDescription = GetProtectedSpaceTypDescription(protectedSpaceTypHead);
-    }
-
-    private string GetProtectedSpaceTypImage(string? protectedSpace)
-    {
-        return protectedSpace switch
-        {
-            "Typ1 (Aufrecht)" => "/Images/TechnicalDocumentation/protectionRoomTyp1.png",
-            "Typ2 (Hockend)" => "/Images/TechnicalDocumentation/protectionRoomTyp2.png",
-            "Typ3 (Liegend)" => "/Images/TechnicalDocumentation/protectionRoomTyp3.png",
-            _ => "/Images/NoImage.png",
-        };
-    }
-
-    private string GetProtectedSpaceTypDescription(string? protectedSpace)
-    {
-        return protectedSpace switch
-        {
-            "Typ1 (Aufrecht)" => "Aufrecht 0,40 m x 0,50 m x 2,00 m",
-            "Typ2 (Hockend)" => "Hockend 0,50 m x 0,70 m x 1,00 m ",
-            "Typ3 (Liegend)" => "Liegend 0,70 m x 1,00 m x 0,50 m",
-            _ => "Kein Schutzraum gewählt",
-        };
+        ProtectedSpaceTypPitImage = TechnicalLiftDocumentation.GetProtectedSpaceTypImage(LiftDocumentation.ProtectedSpaceTypPit);
+        ProtectedSpaceTypPitDescription = TechnicalLiftDocumentation.GetProtectedSpaceTypDescription(LiftDocumentation.ProtectedSpaceTypPit);
+        ProtectedSpaceTypHeadImage = TechnicalLiftDocumentation.GetProtectedSpaceTypImage(LiftDocumentation.ProtectedSpaceTypHead);
+        ProtectedSpaceTypHeadDescription = TechnicalLiftDocumentation.GetProtectedSpaceTypDescription(LiftDocumentation.ProtectedSpaceTypHead);
     }
 
     public void OnNavigatedTo(object parameter)

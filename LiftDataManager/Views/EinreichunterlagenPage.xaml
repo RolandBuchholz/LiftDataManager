@@ -21,6 +21,7 @@
             FalseValue="Visible"
             TrueValue="Collapsed" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -411,7 +412,13 @@
                                 <ComboBox
                                     Width="150"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.ProtectedSpacePits, Mode=OneWay}"
-                                    SelectedValue="{x:Bind ViewModel.ProtectedSpaceTypPit, Mode=TwoWay}" />
+                                    SelectedItem="{x:Bind ViewModel.LiftDocumentation.ProtectedSpaceTypPit, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource EnumToDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="2"
@@ -437,7 +444,13 @@
                                 <ComboBox
                                     Width="150"
                                     ItemsSource="{x:Bind ViewModel.LiftDocumentation.ProtectedSpaceHeads, Mode=OneWay}"
-                                    SelectedValue="{x:Bind ViewModel.ProtectedSpaceTypHead, Mode=TwoWay}" />
+                                    SelectedItem="{x:Bind ViewModel.LiftDocumentation.ProtectedSpaceTypHead, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource EnumToDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                             <TextBlock
                                 Grid.Row="3"

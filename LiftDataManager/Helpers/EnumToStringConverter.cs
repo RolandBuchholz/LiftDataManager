@@ -4,11 +4,11 @@ public class EnumToStringConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, string language)
     {
-        string? EnumString;
+        string? enumString;
         try
         {
-            EnumString = Enum.GetName(value.GetType(), value);
-            return EnumString;
+            enumString = Enum.GetName(value.GetType(), value);
+            return enumString;
         }
         catch
         {

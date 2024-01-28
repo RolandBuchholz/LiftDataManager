@@ -1,5 +1,5 @@
-﻿using Humanizer;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace LiftDataManager.Models
@@ -33,14 +33,14 @@ namespace LiftDataManager.Models
             Typ3 = 3
         }
 
-        public event EventHandler? OnTechnicalLiftDocumentationChanged;
+        public event EventHandler<TechnicalLiftDocumentationEventArgs>? OnTechnicalLiftDocumentationChanged;
 
         public TechnicalLiftDocumentation()
         {
             Years = new List<int> { 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030 };
-            Months = GetMonths();
-            ProtectedSpacePits = GetProtectedSpacePits();
-            ProtectedSpaceHeads = GetProtectedSpaceHeads();
+            Months = Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+            ProtectedSpacePits = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().ToList();
+            ProtectedSpaceHeads = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().Take(2).ToList();
         }
 
         [JsonIgnore]
@@ -48,9 +48,9 @@ namespace LiftDataManager.Models
         [JsonIgnore]
         public List<Month> Months { get; set; }
         [JsonIgnore]
-        public List<string> ProtectedSpacePits { get; set; }
+        public List<ProtectedSpaceTyp> ProtectedSpacePits { get; set; }
         [JsonIgnore]
-        public List<string> ProtectedSpaceHeads { get; set; }
+        public List<ProtectedSpaceTyp> ProtectedSpaceHeads { get; set; }
 
         private Month monthOfConstruction;
         public Month MonthOfConstruction
@@ -59,7 +59,7 @@ namespace LiftDataManager.Models
             set
             {
                 monthOfConstruction = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
@@ -70,7 +70,7 @@ namespace LiftDataManager.Models
             set
             {
                 manufactureYear = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
@@ -81,12 +81,31 @@ namespace LiftDataManager.Models
             set
             {
                 yearOfConstruction = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
-        public ProtectedSpaceTyp ProtectedSpaceTypPit { get; set; }
-        public ProtectedSpaceTyp ProtectedSpaceTypHead { get; set; }
+        private ProtectedSpaceTyp protectedSpaceTypPit;
+        public ProtectedSpaceTyp ProtectedSpaceTypPit
+        {
+            get => protectedSpaceTypPit;
+            set 
+            {
+                protectedSpaceTypPit = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private ProtectedSpaceTyp protectedSpaceTypHead;
+        public ProtectedSpaceTyp ProtectedSpaceTypHead 
+        { 
+            get => protectedSpaceTypHead;
+            set
+            {
+                protectedSpaceTypHead = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
 
         private double safetySpacePit;
         public double SafetySpacePit
@@ -95,7 +114,7 @@ namespace LiftDataManager.Models
             set
             {
                 safetySpacePit = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
@@ -106,7 +125,7 @@ namespace LiftDataManager.Models
             set
             {
                 safetySpaceHead = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
@@ -117,34 +136,46 @@ namespace LiftDataManager.Models
             set
             {
                 specialFeatures = value;
-                OnTechnicalLiftDocumentationChanged?.Invoke(this, EventArgs.Empty);
+                TechnicalLiftDocumentationPropertyChanged();
             }
         }
 
-        private static List<Month> GetMonths()
+        public static string GetProtectedSpaceTypImage(ProtectedSpaceTyp protectedSpace)
         {
-            return Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
-        }
-
-        private static List<string> GetProtectedSpacePits()
-        {
-            var protectedSpacePits = new List<string>();
-            foreach (ProtectedSpaceTyp item in (ProtectedSpaceTyp[])Enum.GetValues(typeof(ProtectedSpaceTyp)))
+            return protectedSpace switch
             {
-                protectedSpacePits.Add(item.Humanize());
-            }
-            return protectedSpacePits;
+                ProtectedSpaceTyp.Typ1 => "/Images/TechnicalDocumentation/protectionRoomTyp1.png",
+                ProtectedSpaceTyp.Typ2 => "/Images/TechnicalDocumentation/protectionRoomTyp2.png",
+                ProtectedSpaceTyp.Typ3 => "/Images/TechnicalDocumentation/protectionRoomTyp3.png",
+                _ => "/Images/NoImage.png",
+            };
         }
 
-        private static List<string> GetProtectedSpaceHeads()
+        public static string GetProtectedSpaceTypDescription(ProtectedSpaceTyp protectedSpace)
         {
-            var protectedSpaceHeads = new List<string>();
-            foreach (ProtectedSpaceTyp item in (ProtectedSpaceTyp[])Enum.GetValues(typeof(ProtectedSpaceTyp)))
+            return protectedSpace switch
             {
-                protectedSpaceHeads.Add(item.Humanize());
-            }
-            return protectedSpaceHeads.Take(2).ToList();
+                ProtectedSpaceTyp.Typ1 => "Aufrecht 0,40 x 0,50 x 2,00 m",
+                ProtectedSpaceTyp.Typ2 => "Hockend 0,50 x 0,70 x 1,00 m ",
+                ProtectedSpaceTyp.Typ3 => "Liegend 0,70 x 1,00 x 0,50 m",
+                _ => "Kein Schutzraum gewählt",
+            };
         }
+
+        private void TechnicalLiftDocumentationPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            OnTechnicalLiftDocumentationChanged?.Invoke(this, new TechnicalLiftDocumentationEventArgs(propertyName));
+        }
+    }
+
+    public class TechnicalLiftDocumentationEventArgs : EventArgs
+    {
+        public TechnicalLiftDocumentationEventArgs(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
+
+        public string PropertyName { get; set; }
     }
 }
 
