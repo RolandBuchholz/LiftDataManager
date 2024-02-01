@@ -207,13 +207,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             column.Item().PaddingTop(15).Element(SafetyComponents);
             column.Item().PaddingTop(5, Unit.Millimetre).Text("Elektronische Sicherheitsschaltungen").FontSize(fontSizeStandard).FontColor(primaryVariantColor).Bold();
             column.Item().PaddingTop(15).Element(ElectricalSafetyComponents);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("8. Besonderheiten der Aufzugsanlage").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
-            column.Item().PaddingTop(15).Element(SpecialFeatures);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
-            column.Item().PaddingTop(15).Element(Attachments);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
-            column.Item().PaddingTop(20, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
-
+            column.Item().PaddingTop(10).ShowEntire().Element(SpecialFeatures);
+            column.Item().PaddingTop(10).ShowEntire().Element(Attachments);
         });
     }
 
@@ -238,8 +233,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(5).Column(2).PaddingVertical(10).Row(row =>
             {
                 row.AutoItem().Text(ParameterDictionary["var_Normen"].Value);
-                row.AutoItem().PaddingLeft(10).CheckBoxvalue(ParameterDictionary["var_EN8121"]);
-                row.RelativeItem().PaddingLeft(10).CheckBoxvalue(ParameterDictionary["var_EN8172"]);
+                row.AutoItem().PaddingLeft(10).CheckBoxParameterValue(ParameterDictionary["var_EN8121"]);
+                row.RelativeItem().PaddingLeft(10).CheckBoxParameterValue(ParameterDictionary["var_EN8172"]);
             });
             table.Cell().Row(6).Column(1).PaddingVertical(10).Text("Richtlinie:").Bold();
             table.Cell().Row(6).Column(2).PaddingVertical(10).Text("Aufzugsrichtlinie 2014/33/EU");
@@ -410,7 +405,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Fangvorrichtung.........").Bold();
+            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Fangvorrichtung.........");
         });
     }
 
@@ -423,33 +418,35 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("--------").Bold();
+            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("--------");
         });
     }
 
     void SpecialFeatures(IContainer container)
     {
-        container.Table(table =>
+        container.Column(column => 
         {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(60, Unit.Millimetre);
-                columns.RelativeColumn();
-            });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text(LiftDocumentation.SpecialFeatures).Bold();
+            column.Item().PaddingBottom(5, Unit.Millimetre).Text("8. Besonderheiten der Aufzugsanlage").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().Text(LiftDocumentation.SpecialFeatures);
         });
     }
 
     void Attachments(IContainer container)
     {
-        container.Table(table =>
+        container.Column(column =>
         {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(60, Unit.Millimetre);
-                columns.RelativeColumn();
-            });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("ddd").Bold();
+            column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "Anlagenzeichnung");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment , "Gefahrenanalysen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations , "Berechnungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams , "Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions , "Prüfanleitung UCM inkl. Berechnung");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.FactoryCertificate , "Werksbescheinigungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OperatingInstructions , "Betriebsanleitungen allgemein");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.MaintenanceInstructions , "Wartungsanleitungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OtherDocuments , "Sonstige Dokumente");
+            column.Item().PaddingTop(10, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
+            column.Item().PaddingTop(15, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
         });
     }
 }

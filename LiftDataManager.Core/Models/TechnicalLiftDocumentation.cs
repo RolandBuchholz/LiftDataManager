@@ -129,13 +129,112 @@ namespace LiftDataManager.Models
             }
         }
 
-        private string? specialFeatures;
+        private string? specialFeatures = "---";
         public string? SpecialFeatures
         {
             get => specialFeatures;
             set
             {
                 specialFeatures = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool layoutdrawing;
+        public bool Layoutdrawing
+        {
+            get => layoutdrawing;
+            set
+            {
+                layoutdrawing = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool riskAssessment;
+        public bool RiskAssessment
+        {
+            get => riskAssessment;
+            set
+            {
+                riskAssessment = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool calculations;
+        public bool Calculations
+        {
+            get => calculations;
+            set
+            {
+                calculations = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool circuitDiagrams;
+        public bool CircuitDiagrams
+        {
+            get => circuitDiagrams;
+            set
+            {
+                circuitDiagrams = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool testingInstructions;
+        public bool TestingInstructions
+        {
+            get => testingInstructions;
+            set
+            {
+                testingInstructions = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool factoryCertificate;
+        public bool FactoryCertificate
+        {
+            get => factoryCertificate;
+            set
+            {
+                factoryCertificate = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool operatingInstructions;
+        public bool OperatingInstructions
+        {
+            get => operatingInstructions;
+            set
+            {
+                operatingInstructions = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool maintenanceInstructions;
+        public bool MaintenanceInstructions
+        {
+            get => maintenanceInstructions;
+            set
+            {
+                maintenanceInstructions = value;
+                TechnicalLiftDocumentationPropertyChanged();
+            }
+        }
+
+        private bool otherDocuments;
+        public bool OtherDocuments
+        {
+            get => otherDocuments;
+            set
+            {
+                otherDocuments = value;
                 TechnicalLiftDocumentationPropertyChanged();
             }
         }

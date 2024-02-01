@@ -940,7 +940,17 @@
                             FontSize="20"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Anlagen:" />
-                        <TextBlock Margin="0,0,0,10" FontSize="16">
+                        <CheckBox Content="Anlagenzeichnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.Layoutdrawing, Mode=TwoWay}" />
+                        <CheckBox Content="Gefahrenanalysen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
+                        <CheckBox Content="Berechnungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.Calculations, Mode=TwoWay}" />
+                        <CheckBox Content="Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen" IsChecked="{x:Bind ViewModel.LiftDocumentation.CircuitDiagrams, Mode=TwoWay}" />
+                        <CheckBox Content="Prüfanleitung UCM inkl. Berechnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.TestingInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="Werksbescheinigungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.FactoryCertificate, Mode=TwoWay}" />
+                        <CheckBox Content="Betriebsanleitungen allgemein" IsChecked="{x:Bind ViewModel.LiftDocumentation.OperatingInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="Wartungsanleitungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.MaintenanceInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="Sonstige Dokumente" IsChecked="{x:Bind ViewModel.LiftDocumentation.OtherDocuments, Mode=TwoWay}" />
+                        <!--  Signatur  -->
+                        <TextBlock Margin="0,10,0,10" FontSize="16">
                             <Run Text=" Der Montagebetrieb" /> <LineBreak />
                             <LineBreak />
                             <LineBreak />

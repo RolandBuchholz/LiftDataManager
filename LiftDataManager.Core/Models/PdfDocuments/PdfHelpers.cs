@@ -212,12 +212,57 @@ public static class PdfHelpers
         container.ParameterBoolCell(parameter, hideBorder, customvalue);
     }
 
-    public static void CheckBoxvalue(this IContainer container, Parameter parameter) => container
+    public static void CheckBoxParameterValue(this IContainer container, Parameter parameter) => container
+        .Column(column =>
+    {
+        column.Item().Layers(layers =>
+        {
+            if (Convert.ToBoolean(parameter.Value))
+            {
+                layers.Layer().Canvas((canvas, size) =>
+                {
+                    using var paintPrimaryColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(primaryVariantColor),
+                        IsAntialias = true
+                    };
+                    using var paintOnPrimaryColor = new SKPaint
+                    {
+                        Color = SKColor.Parse(onPrimaryVariantColor),
+                        IsAntialias = true,
+                        StrokeWidth = 1,
+                        StrokeCap = SKStrokeCap.Round,
+                        IsStroke = true,
+                    };
+                    canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintPrimaryColor);
+                    var skCheck = new SKPath();
+                    skCheck.MoveTo(1.75f, 7.75f);
+                    skCheck.LineTo(5.0f, 11.75f);
+                    skCheck.LineTo(8.5f, 5.25f);
+                    canvas.DrawPath(skCheck, paintOnPrimaryColor);
+                });
+            }
+            layers.Layer().Canvas((canvas, size) =>
+            {
+                using var paintSecondaryVariantColor = new SKPaint
+                {
+                    Color = SKColor.Parse(secondaryVariantColor),
+                    IsAntialias = true,
+                    StrokeWidth = 1,
+                    IsStroke = true,
+                };
+                canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintSecondaryVariantColor);
+            });
+            layers.PrimaryLayer().PaddingLeft(13).Text(parameter.DisplayName);
+        });
+    });
+
+    public static void CheckBoxValue(this IContainer container, bool value, string description) => container
         .Column(column =>
         {
             column.Item().Layers(layers =>
             {
-                if (Convert.ToBoolean(parameter.Value))
+                if (value)
                 {
                     layers.Layer().Canvas((canvas, size) =>
                     {
@@ -253,7 +298,7 @@ public static class PdfHelpers
                     };
                     canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintSecondaryVariantColor);
                 });
-                layers.PrimaryLayer().PaddingLeft(13).Text(parameter.DisplayName); 
+                layers.PrimaryLayer().PaddingLeft(13).Text(description); 
             });
         });
 
