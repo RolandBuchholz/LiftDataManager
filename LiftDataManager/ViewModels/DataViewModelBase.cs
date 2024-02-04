@@ -10,11 +10,8 @@ public partial class DataViewModelBase : ObservableRecipient
     public readonly INavigationService? _navigationService;
 
     public bool Adminmode { get; set; }
-    public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
-
     public DispatcherTimer? AutoSaveTimer { get; set; }
-
     public CurrentSpeziProperties? CurrentSpeziProperties;
     public ObservableDictionary<string, Parameter>? ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>>? ParameterErrorDictionary { get; set; } = new();
@@ -165,25 +162,8 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
-            ParameterErrorDictionary ??= new();
-            ParameterErrorDictionary.Clear();
             if (HasErrors)
-            {
-                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
-                foreach (var error in errors)
-                {
-                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
-                    {
-                        var errorList = new List<ParameterStateInfo>();
-                        errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParameterErrorDictionary.Add(error.Name!, errorList);
-                    }
-                    else
-                    {
-                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
-                    }
-                }
-            }
+                SetErrorDictionary();
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -194,9 +174,8 @@ public partial class DataViewModelBase : ObservableRecipient
             {
                 CanSaveAllSpeziParameters = dirty;
             }
-            else if (dirty && !CheckoutDialogIsOpen)
+            else if (dirty)
             {
-                CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -206,12 +185,10 @@ public partial class DataViewModelBase : ObservableRecipient
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {
-                    CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
-                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                     if (CurrentSpeziProperties is not null)
                     {
@@ -222,6 +199,28 @@ public partial class DataViewModelBase : ObservableRecipient
             }
         }
         await Task.CompletedTask;
+    }
+
+    public void SetErrorDictionary()
+    {
+        ParameterErrorDictionary ??= new();
+        ParameterErrorDictionary.Clear();
+        var errors = ParameterDictionary?.Values.Where(e => e.HasErrors);
+        if (errors is null)
+            return;
+        foreach (var error in errors)
+        {
+            if (ParameterErrorDictionary.TryGetValue(error.Name!, out List<ParameterStateInfo>? value))
+            {
+                value.AddRange(error.parameterErrors["Value"].ToList());
+            }
+            else
+            {
+                var errorList = new List<ParameterStateInfo>();
+                errorList.AddRange(error.parameterErrors["Value"].ToList());
+                ParameterErrorDictionary.Add(error.Name!, errorList);
+            }
+        }
     }
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)

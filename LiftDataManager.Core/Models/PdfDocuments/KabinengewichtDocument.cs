@@ -266,7 +266,7 @@ public class KabinengewichtDocument : PdfBaseDocument
                 columns.RelativeColumn(1);
             });
             table.Cell().Row(1).Column(1).ColumnSpan(2).Text("Kabinendetailgewichte").FontSize(fontSizeXL).Bold();
-            table.Cell().Row(2).Column(1).Background(string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value)? secondaryVariantColor : highlightColor).Text(string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value) ? "Kabinengewicht gesamt": "ermitteltes Kabinengewicht CAD/berechnet");
+            table.Cell().Row(2).Column(1).Background(string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value) ? secondaryVariantColor : highlightColor).Text(string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value) ? "Kabinengewicht gesamt" : "ermitteltes Kabinengewicht CAD/berechnet");
             table.Cell().Row(2).Column(2).PaddingRight(80, Unit.Millimetre).Background(string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value) ? secondaryVariantColor : highlightColor).AlignRight().Text($"{Math.Round(CarWeightResult.KabinenGewichtGesamt)} kg  ");
             table.Cell().Row(3).Column(1).Background(secondaryVariantColor).Text("Kabinenkorrekturgewicht");
             table.Cell().Row(3).Column(2).PaddingRight(80, Unit.Millimetre).Background(secondaryVariantColor).AlignRight().Text($"{ParameterDictionary["var_F_Korr"].Value} kg  ");

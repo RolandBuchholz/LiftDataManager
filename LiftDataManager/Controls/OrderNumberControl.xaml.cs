@@ -7,35 +7,35 @@ public sealed partial class OrderNumberControl : UserControl
         InitializeComponent();
     }
 
-    private string? _OrderYear;
+    private string? orderYear;
     public string? OrderYear
     {
-        get => _OrderYear;
+        get => orderYear;
         set
         {
-            _OrderYear = value;
+            orderYear = value;
             SetOrderNumber();
         }
     }
 
-    private string? _OrderMonth;
+    private string? orderMonth;
     public string? OrderMonth
     {
-        get => _OrderMonth;
+        get => orderMonth;
         set
         {
-            _OrderMonth = value;
+            orderMonth = value;
             SetOrderNumber();
         }
     }
 
-    private string? _OrderId;
+    private string? orderId;
     public string? OrderId
     {
-        get => _OrderId;
+        get => orderId;
         set
         {
-            _OrderId = value;
+            orderId = value;
             SetOrderNumber();
         }
     }
@@ -43,7 +43,7 @@ public sealed partial class OrderNumberControl : UserControl
     public string OrderNumber
     {
         get => (string)GetValue(OrderNumberProperty);
-        set => SetValue(OrderNumberProperty, value);
+        set => SetValue(OrderNumberProperty, value); 
     }
 
     public static readonly DependencyProperty OrderNumberProperty =

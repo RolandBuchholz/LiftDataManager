@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using System.Xml;
+using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
@@ -270,7 +271,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         ExWorkStatus = "CFP Auslegung wird bearbeitet";
         CanImportCFPData = false;
 
-        var dialog = cFPEditDialog.ShowAsync();
+        var dialog = cFPEditDialog.ShowAsyncQueueDraggable();
 
         using FileSystemWatcher watcher = new(Path.GetDirectoryName(FullPathXml)!);
         watcher.IncludeSubdirectories = false;
@@ -424,7 +425,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         ZAliftHtmlUpdated = false;
         ZAliftAusUpdated = false;
 
-        var dialog = zaliftEditDialog.ShowAsync();
+        var dialog = zaliftEditDialog.ShowAsyncQueueDraggable();
 
         if (!File.Exists(pathSynchronizeZAlift))
         {

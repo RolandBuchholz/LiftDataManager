@@ -54,25 +54,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         {
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
-            ParameterErrorDictionary ??= new();
-            ParameterErrorDictionary.Clear();
             if (HasErrors)
-            {
-                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
-                foreach (var error in errors)
-                {
-                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
-                    {
-                        var errorList = new List<ParameterStateInfo>();
-                        errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParameterErrorDictionary.Add(error.Name!, errorList);
-                    }
-                    else
-                    {
-                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
-                    }
-                }
-            }
+                SetErrorDictionary();
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -85,9 +68,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
                 CanShowUnsavedParameters = dirty;
                 CanSaveAllSpeziParameters = dirty;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckOut)
             {
-                CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -97,12 +79,10 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {
-                    CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
-                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                 }
             }

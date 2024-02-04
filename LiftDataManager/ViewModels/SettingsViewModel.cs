@@ -5,6 +5,7 @@ using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
@@ -207,11 +208,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [RelayCommand]
-    private async Task PinDialogAsync(ContentDialog? pwdDialog)
+    private async Task PinDialogAsync(ContentDialog pwdDialog)
     {
         if (!Adminmode)
         {
-            var result = await pwdDialog?.ShowAsync();
+            var result = await pwdDialog.ShowAsyncQueueDraggable();
 
             if (result == ContentDialogResult.Primary)
             {

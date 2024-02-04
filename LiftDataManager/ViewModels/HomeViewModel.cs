@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
@@ -122,10 +125,31 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
+    private string? dataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
+
+    [ObservableProperty]
+    private string? dataImportDescriptionImage = "/Images/TonerSaveOFF.png";
+
+    [ObservableProperty]
     private string? importSpezifikationStatusTyp;
     partial void OnImportSpezifikationStatusTypChanged(string? value)
     {
         ImportSpezifikationName = string.Empty;
+        switch (value)
+        {
+            case "Auftrag" or "Angebot" or "Vorplanung":
+                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
+                break;
+            case "Anfrage Formular":
+                DataImportDescription = "Daten aus einem Anfrage Formular importieren.";
+                DataImportDescriptionImage = "/Images/PdfTransparent.png";
+                break;
+            default:
+                DataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
+                DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
+                break;
+        }
         _logger.LogInformation(60132, "ImportSpezifikationStatusTyp changed {Typ}", value);
     }
 
@@ -137,7 +161,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             CanImportSpeziData = ((value.Length >= 6) && (ImportSpezifikationStatusTyp == "Auftrag")) ||
                                ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Angebot")) ||
-                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Vorplanung"));
+                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Vorplanung"))||
+                               ((value.EndsWith("pdf",true, CultureInfo.CurrentCulture)) && (ImportSpezifikationStatusTyp == "Anfrage Formular"));
+
+            DataImportStatusText = CanImportSpeziData ? $"{importSpezifikationName} kann importiert werden." : "Keine Daten für Import vorhanden";
         }
     }
 
@@ -517,13 +544,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         _logger.LogInformation(60138, "Validate all parameter startet");
         _ = _validationParameterDataService.ValidateAllParameterAsync();
-        if (!CheckoutDialogIsOpen)
-        {
-            _ = await _dialogService!.MessageConfirmationDialogAsync("Validation Result",
-                        $"Es wurden {ParameterDictionary!.Count} Parameter überprüft.\n" +
-                        $"Es wurden {ParameterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
-                         "Ok");
-        }
+
+        _ = await _dialogService!.MessageConfirmationDialogAsync("Validation Result",
+                    $"Es wurden {ParameterDictionary!.Count} Parameter überprüft.\n" +
+                    $"Es wurden {ParameterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
+                        "Ok");
         await SetModelStateAsync();
     }
 
@@ -570,7 +595,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
     private async Task DataImportAsync(ContentDialog LiftDataImportDialog)
     {
-        await LiftDataImportDialog.ShowAsync();
+        await LiftDataImportDialog.ShowAsyncQueueDraggable();
+    }
+    [RelayCommand]
+    private async Task PickFilePathAsync(ContentDialog LiftDataImportDialog)
+    {
+        var filePicker = App.MainWindow.CreateOpenFilePicker();
+        filePicker.ViewMode = PickerViewMode.Thumbnail;
+        filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        filePicker.FileTypeFilter.Add(".pdf");
+        StorageFile file = await filePicker.PickSingleFileAsync();
+
+        ImportSpezifikationName = (file is not null) ? file.Path : string.Empty;
     }
 
     [RelayCommand(CanExecute = nameof(CanImportSpeziData))]
@@ -684,7 +720,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
 
         DataImportStatus = InfoBarSeverity.Success;
-        DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert";
+        DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
+                               $"Detailinformationen im Info Sidebar Panel.\n" +
+                               $" Importdialog kann geschlossen werden´.";
     }
 
     protected override async Task SetModelStateAsync()
@@ -694,25 +732,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             HasErrors = false;
             CanClearData = AuftragsbezogeneXml;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
-            ParameterErrorDictionary ??= new();
-            ParameterErrorDictionary.Clear();
             if (HasErrors)
-            {
-                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
-                foreach (var error in errors)
-                {
-                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
-                    {
-                        var errorList = new List<ParameterStateInfo>();
-                        errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParameterErrorDictionary.Add(error.Name!, errorList);
-                    }
-                    else
-                    {
-                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
-                    }
-                }
-            }
+                SetErrorDictionary();
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -724,9 +745,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 CanSaveAllSpeziParameters = dirty;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckOut)
             {
-                CheckoutDialogIsOpen = true;
                 var dialogMessage = """
                                      Die AutodeskTransferXml wurde noch nicht ausgechecked!
 
@@ -754,13 +774,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     };
                     if ((bool)dialogResult)
                         IncreaseRevision();
-                    CheckoutDialogIsOpen = false;
                     SetModifyInfos();
                     IsBusy = false;
                 }
                 else
                 {
-                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                 }
             }

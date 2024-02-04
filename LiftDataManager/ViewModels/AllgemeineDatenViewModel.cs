@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
+using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
@@ -281,7 +282,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
                 ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
             }
         }
-        await addLiftPlannerDialog.ShowAsync();
+        await addLiftPlannerDialog.ShowAsyncQueueDraggable();
     }
 
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]

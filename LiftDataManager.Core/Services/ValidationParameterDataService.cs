@@ -236,13 +236,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_KHLicht",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> {
                 new(ValidateCarHeight, "None", null),
-                new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) });;
+                new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) });
 
         ValidationDictionary.Add("var_KD",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCarHeight, "None", null) });
 
         ValidationDictionary.Add("var_KBI",
-            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { 
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> {
                 new(ValidateCarEntranceRightSide, "None", null),
                 new(ValidateCarCeilingDetails, "None", null) });
 

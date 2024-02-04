@@ -987,7 +987,7 @@
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
         <ContentDialog
             x:Name="LiftDataImportDialog"
-            Title="Datenimport von bestehender Spezifikation"
+            Title="Datenimport"
             CloseButtonText="Importdialog schließen">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -1001,7 +1001,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -1009,9 +1009,10 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
-                    Margin="0,-5,0,5"
-                    FontSize="12"
-                    Text="Daten aus einer vorhandenen Spezifikation importieren." />
+                    MinWidth="425"
+                    Margin="0,-5,0,10"
+                    FontSize="14"
+                    Text="{x:Bind ViewModel.DataImportDescription, Mode=OneWay}" />
                 <Image
                     Grid.Row="1"
                     Grid.RowSpan="2"
@@ -1021,7 +1022,7 @@
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Source="/Images/TonerSaveOFF.png" />
+                    Source="{x:Bind ViewModel.DataImportDescriptionImage, Mode=OneWay}" />
                 <FontIcon
                     Grid.Row="1"
                     Grid.Column="1"
@@ -1064,6 +1065,7 @@
                     <x:String>Auftrag</x:String>
                     <x:String>Angebot</x:String>
                     <x:String>Vorplanung</x:String>
+                    <x:String>Anfrage Formular</x:String>
                 </ComboBox>
                 <controls:SwitchPresenter
                     Grid.Row="4"
@@ -1087,6 +1089,14 @@
                     <controls:Case Value="Vorplanung">
                         <SpeziControls:PrePlanningNumberControl PrePlanningNumber="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </controls:Case>
+                    <controls:Case Value="Anfrage Formular">
+                        <Button HorizontalAlignment="Stretch" Command="{x:Bind ViewModel.PickFilePathCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Anfrage Formular(Pdf)" />
+                                <SymbolIcon Margin="10,0,0,0" Symbol="Share" />
+                            </StackPanel>
+                        </Button>
+                    </controls:Case>
                 </controls:SwitchPresenter>
                 <InfoBar
                     Title="Import Status"
@@ -1109,7 +1119,7 @@
                     Style="{StaticResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="10,0,10,0" Glyph="&#xE8B5;" />
-                        <TextBlock Text="Import Spezifikationsdaten" />
+                        <TextBlock Text="Start Datenimport" />
                     </StackPanel>
                 </Button>
                 <ProgressBar

@@ -135,7 +135,7 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         if (string.IsNullOrWhiteSpace(liftTyp))
             return "Aufzugstyp noch nicht gewählt !";
-        
+
         var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
                                                         .ToList()
                                                         .FirstOrDefault(x => x.Name == liftTyp);
@@ -168,7 +168,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (orientation == "Kabinentiefe")
         {
             walltyp = zugangA && zugangC ? "Türblatt" : "Rückwand";
-            distanceBetweenDoors = kabinentiefe + GetCarDoorLeafSpace(parameterDictionary,"A") + GetCarDoorLeafSpace(parameterDictionary, "C");
+            distanceBetweenDoors = kabinentiefe + GetCarDoorLeafSpace(parameterDictionary, "A") + GetCarDoorLeafSpace(parameterDictionary, "C");
         }
         else if (orientation == "Kabinenbreite")
         {
@@ -519,7 +519,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         double kabinenGewichtGesamt = kabinenGewichtCAD == 0 ?
                                       kabinenBodengewicht + bodenBelagGewicht + schottengewicht + andidroehnGewicht + haelsegewicht + schuerzeGewicht + deckegewicht + gewichtAbgehaengteDecke +
                                       deckeBelegtGewicht + belagAufDerDeckeGewicht + spiegelGewicht + paneeleGewicht + paneeleSpiegelGewicht + vSGGewicht + aussenVerkleidungGewicht +
-                                      stossleisteGewicht + handlaufGewicht + sockelleisteGewicht + schutzgelaenderGewicht + klemmkastenGewicht + schraubenZubehoerGewicht + tableauGewicht : 
+                                      stossleisteGewicht + handlaufGewicht + sockelleisteGewicht + schutzgelaenderGewicht + klemmkastenGewicht + schraubenZubehoerGewicht + tableauGewicht :
                                       kabinenGewichtCAD;
 
         double kabinenTuerGewicht = variableTuerdaten ? (zugangA ? kabinentuerGewichtA : 0) +
@@ -792,7 +792,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return kabinenTuer.AnzahlTuerFluegel switch
         {
             2 => kabinenTuer.OeffnungsRichtungId == 3 ?
-                        Math.Round(kabinenTuer.Tuerbreite * (tuerEinbau - kabinenTuer.TuerFluegelBreite) / Math.Pow(10, 6), 3): 
+                        Math.Round(kabinenTuer.Tuerbreite * (tuerEinbau - kabinenTuer.TuerFluegelBreite) / Math.Pow(10, 6), 3) :
                         Math.Round((kabinenTuer.Tuerbreite / 2 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
 
@@ -807,7 +807,8 @@ public partial class CalculationsModuleService : ICalculationsModule
                             2 * kabinenTuer.Tuerbreite / 3 * (kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand) +
                             kabinenTuer.Tuerbreite * (tuerEinbau - (kabinenTuer.AnzahlTuerFluegel / 2 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand))) / Math.Pow(10, 6), 3),
             _ => 0,
-        };;
+        };
+        ;
     }
 
     public double GetLoadFromTable(double area, string tableName)
@@ -913,8 +914,8 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         //var shaftdoor = "";
         //var cardoor = "";
-        
-        
+
+
         //var listOfSafetyComponents = new List<(string,string,string)>()
         //{
         //     ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
@@ -1074,7 +1075,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return kabinenTuer.AnzahlTuerFluegel switch
         {
             2 => kabinenTuer.OeffnungsRichtungId == 3 ?
-                 Math.Round(tuerEinbau - kabinenTuer.TuerFluegelBreite, 1):
+                 Math.Round(tuerEinbau - kabinenTuer.TuerFluegelBreite, 1) :
                  Math.Round(tuerEinbau - (2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand), 1),
             3 or 6 => Math.Round(tuerEinbau - (3 * kabinenTuer.TuerFluegelBreite + 2 * kabinenTuer.TuerFluegelAbstand), 1),
             4 => Math.Round(tuerEinbau - (2 * kabinenTuer.TuerFluegelBreite + kabinenTuer.TuerFluegelAbstand), 1),

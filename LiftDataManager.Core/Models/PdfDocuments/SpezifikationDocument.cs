@@ -620,7 +620,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
-                    if(!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
+                    if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelmaterialGlas"]);
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelGlasRAL"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelGlasRAL"], null, false, false, "Farbton(RAL)");
@@ -896,7 +896,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_KabTuerKaempferHoeheD"], "mm");
                 });
                 //Schachttüren
-                table.Cell().Row(13).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(showShaftDoorDetails ? "Schachttüren": "Bestands Schachttüren werden weiterverwendet").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
+                table.Cell().Row(13).Column(2).ColumnSpan(5).PaddingLeft(0.25f).PaddingRight(0.75f).Background(secondaryColor).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(showShaftDoorDetails ? "Schachttüren" : "Bestands Schachttüren werden weiterverwendet").FontSize(fontSizeXS).FontColor(onPrimaryVariantColor).Bold();
                 table.Cell().Row(14).Column(2).ShowIf(showShaftDoorDetails).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Material").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ColumnSpan(2).ShowIf(showShaftDoorDetails).ParameterStringCell(ParameterDictionary["var_Tueroberflaeche"]);
                 table.Cell().Row(14).Column(5).ColumnSpan(2).ShowIf(showShaftDoorDetails).ParameterStringCell(ParameterDictionary["var_RalSchachtuere"]);

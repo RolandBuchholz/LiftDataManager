@@ -113,10 +113,12 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         if (IsCFPFrame)
         {
-            if (string.IsNullOrWhiteSpace(FullPathXml)) return;
+            if (string.IsNullOrWhiteSpace(FullPathXml))
+                return;
 
             var basePath = Path.GetDirectoryName(FullPathXml);
-            if (string.IsNullOrWhiteSpace(basePath)) return;
+            if (string.IsNullOrWhiteSpace(basePath))
+                return;
 
             var calculationsPath = Path.Combine(basePath, "Berechnungen");
 

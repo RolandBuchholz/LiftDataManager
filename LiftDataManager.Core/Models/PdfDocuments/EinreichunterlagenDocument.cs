@@ -263,7 +263,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Hersteller und/oder Einführer:").Bold();
             table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text(manufacturer);
             table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Tragfähigkeit:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_Q"].Value} kg oder {ParameterDictionary["var_Personen"].Value} Personen" );
+            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_Q"].Value} kg oder {ParameterDictionary["var_Personen"].Value} Personen");
             table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Baujahr:").Bold();
             table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation?.ManufactureYear}");
             table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Errichtungsdatum:").Bold();
@@ -302,10 +302,10 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpaceHead} mm\n" +
                                                                    $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypHead}");
             table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Column(column => 
+            table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Column(column =>
             {
                 column.Item().Text($"{ParameterDictionary["var_Zugangsstellen"].Value} Stück");
-                column.Item().Text($"Fabrikat: {ParameterDictionary["var_Tuertyp"].Value?.Replace(" -","")}");
+                column.Item().Text($"Fabrikat: {ParameterDictionary["var_Tuertyp"].Value?.Replace(" -", "")}");
                 column.Item().Text($"Türbreite: {ParameterDictionary["var_TB"].Value} mm");
                 column.Item().Text($"Türhöhe: {ParameterDictionary["var_TH"].Value} mm");
             });
@@ -315,7 +315,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).RowSpan(4).Column(3).Column(column =>
             {
                 column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtgrube", LiftDocumentation.ProtectedSpaceTypPit);
-                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf",LiftDocumentation.ProtectedSpaceTypHead);
+                column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf", LiftDocumentation.ProtectedSpaceTypHead);
             });
         });
     }
@@ -424,7 +424,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 
     void SpecialFeatures(IContainer container)
     {
-        container.Column(column => 
+        container.Column(column =>
         {
             column.Item().PaddingBottom(5, Unit.Millimetre).Text("8. Besonderheiten der Aufzugsanlage").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
             column.Item().Text(LiftDocumentation.SpecialFeatures);
@@ -437,14 +437,14 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         {
             column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "Anlagenzeichnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment , "Gefahrenanalysen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations , "Berechnungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams , "Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions , "Prüfanleitung UCM inkl. Berechnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.FactoryCertificate , "Werksbescheinigungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OperatingInstructions , "Betriebsanleitungen allgemein");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.MaintenanceInstructions , "Wartungsanleitungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OtherDocuments , "Sonstige Dokumente");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "Gefahrenanalysen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "Berechnungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams, "Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions, "Prüfanleitung UCM inkl. Berechnung");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.FactoryCertificate, "Werksbescheinigungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OperatingInstructions, "Betriebsanleitungen allgemein");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.MaintenanceInstructions, "Wartungsanleitungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OtherDocuments, "Sonstige Dokumente");
             column.Item().PaddingTop(10, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
             column.Item().PaddingTop(15, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
         });

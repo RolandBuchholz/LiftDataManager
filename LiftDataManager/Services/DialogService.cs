@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Text;
+using WinUICommunity;
 
 namespace LiftDataManager.Services;
 
@@ -23,7 +24,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        await dialog.ShowAsync();
+        await dialog.ShowAsyncQueueDraggable();
     }
 
     /// <summary>
@@ -43,7 +44,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        await dialog.ShowAsync();
+        await dialog.ShowAsyncQueueDraggable();
     }
 
     /// <summary>
@@ -63,7 +64,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsync();
+        var result = await dialog.ShowAsyncQueueDraggable();
 
         if (result == ContentDialogResult.None)
         {
@@ -114,7 +115,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsync();
+        var result = await dialog.ShowAsyncQueueDraggable();
 
         if (result == ContentDialogResult.None)
         {
@@ -145,7 +146,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsync();
+        var result = await dialog.ShowAsyncQueueDraggable();
 
         if (result == ContentDialogResult.None)
         {
@@ -175,7 +176,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsync();
+        var result = await dialog.ShowAsyncQueueDraggable();
 
         if (result == ContentDialogResult.None)
         {
@@ -225,7 +226,7 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsync();
+        var result = await dialog.ShowAsyncQueueDraggable();
 
         if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
         {
@@ -319,6 +320,6 @@ public class DialogService : IDialogService
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme
         };
-        await dialog.ShowAsync();
+        await dialog.ShowAsyncQueueDraggable();
     }
 }

@@ -115,7 +115,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
+        var infotext = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
         InfoSidebarPanelText += infotext;
         CanSaveParameter = false;
         Selected.IsDirty = false;
@@ -160,25 +160,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         {
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
-            ParameterErrorDictionary ??= new();
-            ParameterErrorDictionary.Clear();
             if (HasErrors)
-            {
-                var errors = ParameterDictionary.Values.Where(e => e.HasErrors);
-                foreach (var error in errors)
-                {
-                    if (!ParameterErrorDictionary.ContainsKey(error.Name!))
-                    {
-                        var errorList = new List<ParameterStateInfo>();
-                        errorList.AddRange(error.parameterErrors["Value"].ToList());
-                        ParameterErrorDictionary.Add(error.Name!, errorList);
-                    }
-                    else
-                    {
-                        ParameterErrorDictionary[error.Name!].AddRange(error.parameterErrors["Value"].ToList());
-                    }
-                }
-            }
+                SetErrorDictionary();
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -191,9 +174,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                 CanShowUnsavedParameters = dirty;
                 CanSaveAllSpeziParameters = dirty;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckOut)
             {
-                CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -203,12 +185,10 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {
-                    CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
-                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                 }
             }
@@ -225,11 +205,11 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         {
             foreach (var entry in result)
             {
-                if (!HistoryEntrysDictionary.ContainsKey(entry.Name))
+                if (HistoryEntrysDictionary.TryGetValue(entry.Name, out List<LiftHistoryEntry>? value))
                 {
-                    HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
+                    value.Add(entry);
                 }
-                HistoryEntrysDictionary[entry.Name].Add(entry);
+                HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
             }
         }
     }

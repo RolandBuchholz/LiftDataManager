@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using WinUICommunity;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl
@@ -21,7 +22,7 @@ public sealed partial class FooterControl : UserControl
     [RelayCommand]
     private async Task ErrorDialogAsync()
     {
-        await DetailErrorDialog?.ShowAsync();
+        await DetailErrorDialog.ShowAsyncQueueDraggable();
     }
 
     [RelayCommand]

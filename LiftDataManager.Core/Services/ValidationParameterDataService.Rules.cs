@@ -1418,7 +1418,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
                 int doorWidth = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, string.Equals(zugang, "A") ? "var_TB" : $"var_TB_{zugang}");
 
-                switch (ParameterDictionary[string.Equals(zugang,"A") ? "var_AnzahlTuerfluegel" : $"var_AnzahlTuerfluegel_{zugang}"].Value)
+                switch (ParameterDictionary[string.Equals(zugang, "A") ? "var_AnzahlTuerfluegel" : $"var_AnzahlTuerfluegel_{zugang}"].Value)
                 {
                     case "2":
                         if (doorWidth < 600)
@@ -1506,7 +1506,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             ParameterDictionary["var_KHRoh"].Value = string.Empty;
             return;
         }
-            
+
         var suspendedCeilingHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_abgeDeckeHoehe");
         var carHeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KHLicht");
         ParameterDictionary["var_KHRoh"].Value = Convert.ToString(carHeight + suspendedCeilingHeight, CultureInfo.CurrentCulture);

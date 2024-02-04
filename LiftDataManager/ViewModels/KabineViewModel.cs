@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Controls;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
-using WinUIEx.Messaging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -292,7 +291,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
                                   !string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideSuspendedCeiling"].Value);
         if (IsCarCeilingOverwritten)
         {
-            InfoTextCarCeiling += string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideDefaultCeiling"].Value) ? string.Empty : $"|{ParameterDictionary!["var_overrideDefaultCeiling"].Value} mm| Hauptdecke überschieben\n" ;
+            InfoTextCarCeiling += string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideDefaultCeiling"].Value) ? string.Empty : $"|{ParameterDictionary!["var_overrideDefaultCeiling"].Value} mm| Hauptdecke überschieben\n";
             InfoTextCarCeiling += string.IsNullOrWhiteSpace(ParameterDictionary!["var_overrideSuspendedCeiling"].Value) ? string.Empty : $"|{ParameterDictionary!["var_overrideSuspendedCeiling"].Value} mm| abgehängte Decke überschieben";
         }
     }
