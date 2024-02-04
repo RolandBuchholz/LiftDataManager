@@ -543,20 +543,19 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 }
             }
         }
-
     }
 
-    private static ParameterStateInfo.ErrorLevel SetSeverity(string? severity)
+    private static ErrorLevel SetSeverity(string? severity)
     {
         if (severity is null)
-            return ParameterStateInfo.ErrorLevel.Error;
+            return ErrorLevel.Error;
 
         return severity switch
         {
-            "Error" => ParameterStateInfo.ErrorLevel.Error,
-            "Warning" => ParameterStateInfo.ErrorLevel.Warning,
-            "Informational" => ParameterStateInfo.ErrorLevel.Informational,
-            _ => ParameterStateInfo.ErrorLevel.Error,
+            "Error" => ErrorLevel.Error,
+            "Warning" => ErrorLevel.Warning,
+            "Informational" => ErrorLevel.Informational,
+            _ => ErrorLevel.Error,
         };
     }
 }

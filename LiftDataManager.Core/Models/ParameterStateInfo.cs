@@ -2,14 +2,6 @@
 
 public class ParameterStateInfo
 {
-    public enum ErrorLevel
-    {
-        Valid,
-        Informational,
-        Warning,
-        Error
-    }
-
     public string Name { get; set; }
     public string DisplayName { get; set; }
     public bool IsValid { get; set; }

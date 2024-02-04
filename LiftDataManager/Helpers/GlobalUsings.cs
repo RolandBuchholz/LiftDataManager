@@ -30,3 +30,4 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using Windows.UI;
 global using WinUIEx;
+global using LiftDataManager.Core.Enums;

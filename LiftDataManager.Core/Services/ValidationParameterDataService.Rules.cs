@@ -1407,12 +1407,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 if (carDoorHeaderDepthParameter.Value == "97")
                 {
-                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                     return;
                 }
                 if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Tuerverriegelung"].Value) && ParameterDictionary["var_Tuerverriegelung"].Value!.Contains("54"))
                 {
-                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                    carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                     return;
                 }
 
@@ -1423,28 +1423,28 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     case "2":
                         if (doorWidth < 600)
                         {
-                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                             return;
                         }
                         break;
                     case "3":
                         if (doorWidth < 1000)
                         {
-                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                             return;
                         }
                         break;
                     case "4":
                         if (doorWidth < 1200)
                         {
-                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                             return;
                         }
                         break;
                     case "6":
                         if (doorWidth < 2100)
                         {
-                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ParameterStateInfo.ErrorLevel.Error, false));
+                            carDoorHeaderHeightParameter.AddError("Value", new ParameterStateInfo(carDoorHeaderHeightParameter.Name!, carDoorHeaderHeightParameter.DisplayName!, errorMessage, ErrorLevel.Error, false));
                             return;
                         }
                         break;

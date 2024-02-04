@@ -1,51 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections;
 using System.ComponentModel;
-using static LiftDataManager.Core.Models.ParameterStateInfo;
 
 namespace LiftDataManager.Core.Models;
 public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 {
-    public enum ParameterTypValue
-    {
-        Text = 1,
-        Boolean = 2,
-        Date = 3,
-        NumberOnly = 4,
-        DropDownList = 5
-    }
-
-    public enum ParameterCategoryValue
-    {
-        AllgemeineDaten = 1,
-        Schacht = 2,
-        Bausatz = 3,
-        Fahrkorb = 4,
-        Tueren = 5,
-        AntriebSteuerungNotruf = 6,
-        Signalisation = 7,
-        Wartung = 8,
-        MontageTUEV = 9,
-        RWA = 10,
-        Sonstiges = 11,
-        KommentareVault = 12,
-        CFP = 13,
-        CarDesign = 14,
-    }
-
-    public enum TypeCodeValue
-    {
-        String = 1,
-        Boolean = 2,
-        Date = 3,
-        N = 4,
-        mm = 5,
-        m = 6,
-        kg = 7,
-        oE = 8,
-        mps = 9
-    }
-
     public ParameterTypValue ParameterTyp { get; set; }
     public ParameterCategoryValue ParameterCategory { get; set; }
     public TypeCodeValue TypeCode { get; set; }

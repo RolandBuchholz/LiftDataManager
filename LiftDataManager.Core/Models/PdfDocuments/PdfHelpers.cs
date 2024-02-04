@@ -302,7 +302,7 @@ public static class PdfHelpers
             });
         });
 
-    public static void ProtectedSpaceTypInfoBox(this IContainer container, string position, TechnicalLiftDocumentation.ProtectedSpaceTyp protectedSpaceTyp) => container
+    public static void ProtectedSpaceTypInfoBox(this IContainer container, string position, ProtectedSpaceTyp protectedSpaceTyp) => container
         .Width(140).Column(column =>
         {
             var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, TechnicalLiftDocumentation.GetProtectedSpaceTypImage(protectedSpaceTyp).TrimStart('/'));

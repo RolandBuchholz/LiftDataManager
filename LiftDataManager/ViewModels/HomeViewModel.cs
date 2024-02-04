@@ -205,7 +205,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         var downloadInfo = await GetAutoDeskTransferAsync(SpezifikationName, OpenReadOnly);
         if (downloadInfo is not null)
         {
-            if (downloadInfo.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+            if (downloadInfo.ExitState == ExitCodeEnum.NoError)
             {
                 FullPathXml = downloadInfo.FullFileName;
                 switch (downloadInfo.CheckOutState)
@@ -230,7 +230,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         break;
                 }
             }
-            else if (downloadInfo.ExitState == DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml)
+            else if (downloadInfo.ExitState == ExitCodeEnum.MultipleAutoDeskTransferXml)
             {
                 InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden\n";
 
@@ -242,7 +242,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, true);
 
-                    if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+                    if (downloadResult.ExitState == ExitCodeEnum.NoError)
                     {
                         _logger.LogInformation(60139, "{FullPathXml} loaded", downloadResult.FullFileName);
                         FullPathXml = downloadResult.FullFileName;
@@ -303,11 +303,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
-                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
+                if (updatedParameter.ParameterTyp == ParameterTypValue.Boolean)
                 {
                     updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
                 }
-                else if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.Date)
+                else if (updatedParameter.ParameterTyp == ParameterTypValue.Date)
                 {
                     if (string.IsNullOrWhiteSpace(item.Value) || item.Value == "0")
                     {
@@ -338,7 +338,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
-                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
                     updatedParameter.DropDownListValue = updatedParameter.Value;
                 }
@@ -474,7 +474,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             InfoSidebarPanelText += $"----------\n";
 
             var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
-            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+            if (downloadResult.ExitState == ExitCodeEnum.NoError)
             {
                 if (File.Exists(FullPathXml))
                 {
@@ -521,7 +521,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             var downloadResult = await _vaultDataService.SetFileAsync(SpezifikationName);
             var stopTimeMs = watch.ElapsedMilliseconds;
 
-            if (downloadResult.ExitState == DownloadInfo.ExitCodeEnum.NoError)
+            if (downloadResult.ExitState == ExitCodeEnum.NoError)
             {
                 InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
                 InfoSidebarPanelText += $"----------\n";
@@ -633,7 +633,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             DataImportStatusText = "Datenimport fehlgeschlagen";
             return;
         }
-        if (downloadInfo.ExitState is not DownloadInfo.ExitCodeEnum.NoError)
+        if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
         {
             DataImportStatus = InfoBarSeverity.Warning;
             DataImportStatusText = downloadInfo.DownloadInfoEnumToString();
@@ -675,7 +675,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (ParameterDictionary!.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
-                if (updatedParameter.ParameterTyp != ParameterBase.ParameterTypValue.Boolean)
+                if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
                 {
                     updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
                 }
@@ -685,7 +685,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
                 updatedParameter.Comment = item.Comment;
                 updatedParameter.IsKey = item.IsKey;
-                if (updatedParameter.ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
                     updatedParameter.DropDownListValue = updatedParameter.Value;
                 }
@@ -820,7 +820,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         {
                             ExitCode = 0,
                             CheckOutState = "CheckedOutByCurrentUser",
-                            ExitState = DownloadInfo.ExitCodeEnum.NoError,
+                            ExitState = ExitCodeEnum.NoError,
                             FullFileName = workspaceSearch[0],
                             Success = true,
                             IsCheckOut = true
@@ -840,7 +840,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         ExitCode = 5,
                         FileName = searchPattern,
                         FullFileName = searchPattern,
-                        ExitState = DownloadInfo.ExitCodeEnum.MultipleAutoDeskTransferXml
+                        ExitState = ExitCodeEnum.MultipleAutoDeskTransferXml
                     };
                 }
         }

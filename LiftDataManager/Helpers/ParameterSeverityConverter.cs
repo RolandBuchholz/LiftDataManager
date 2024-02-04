@@ -4,17 +4,17 @@ public class ParameterSeverityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value == null || value.GetType() != typeof(ParameterStateInfo.ErrorLevel))
+        if (value == null || value.GetType() != typeof(ErrorLevel))
         {
             return InfoBarSeverity.Success;
         }
 
         return value switch
         {
-            ParameterStateInfo.ErrorLevel.Error => InfoBarSeverity.Error,
-            ParameterStateInfo.ErrorLevel.Warning => InfoBarSeverity.Warning,
-            ParameterStateInfo.ErrorLevel.Informational => InfoBarSeverity.Informational,
-            ParameterStateInfo.ErrorLevel.Valid => InfoBarSeverity.Success,
+            ErrorLevel.Error => InfoBarSeverity.Error,
+            ErrorLevel.Warning => InfoBarSeverity.Warning,
+            ErrorLevel.Informational => InfoBarSeverity.Informational,
+            ErrorLevel.Valid => InfoBarSeverity.Success,
             _ => (object)InfoBarSeverity.Success,
         };
     }

@@ -102,7 +102,7 @@ public partial class ParameterDataService : IParameterDataService
                 {
                     Name = par.Name,
                     DisplayName = par.DisplayName,
-                    ParameterCategory = (ParameterBase.ParameterCategoryValue)par.ParameterCategoryId,
+                    ParameterCategory = (ParameterCategoryValue)par.ParameterCategoryId,
                     DefaultUserEditable = par.DefaultUserEditable,
                     IsKey = par.IsKey,
                     IsDirty = false
@@ -366,11 +366,11 @@ public partial class ParameterDataService : IParameterDataService
                 {
                     if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
                         continue;
-                    if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.Boolean)
+                    if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterTypValue.Boolean)
                     {
                         ParameterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
                     }
-                    else if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterBase.ParameterTypValue.DropDownList)
+                    else if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterTypValue.DropDownList)
                     {
                         ParameterDictionary[dictionary.Name!].Value = param.Value;
                         ParameterDictionary[dictionary.Name!].DropDownListValue = param.Value;
@@ -394,7 +394,7 @@ public partial class ParameterDataService : IParameterDataService
 
     private void AddParameterToXml(Parameter parameter, XElement xmlparameter)
     {
-        if (parameter.ParameterTyp is not ParameterBase.ParameterTypValue.NumberOnly)
+        if (parameter.ParameterTyp is not ParameterTypValue.NumberOnly)
         {
             xmlparameter.Element("value")!.Value = parameter.Value is null ? string.Empty : parameter.Value;
         }

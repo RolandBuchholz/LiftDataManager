@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace LiftDataManager.Models
@@ -7,38 +6,12 @@ namespace LiftDataManager.Models
     [Serializable]
     public class TechnicalLiftDocumentation
     {
-        public enum Month
-        {
-            Januar = 1,
-            Februar,
-            März,
-            April,
-            Mai,
-            Juni,
-            Juli,
-            August,
-            September,
-            Oktober,
-            November,
-            Dezember
-        }
-
-        public enum ProtectedSpaceTyp
-        {
-            [Display(Name = "Typ1 (Aufrecht)")]
-            Typ1 = 1,
-            [Display(Name = "Typ2 (Hockend)")]
-            Typ2 = 2,
-            [Display(Name = "Typ3 (Liegend)")]
-            Typ3 = 3
-        }
-
         public event EventHandler<TechnicalLiftDocumentationEventArgs>? OnTechnicalLiftDocumentationChanged;
 
         public TechnicalLiftDocumentation()
         {
             Years = new List<int> { 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030 };
-            Months = Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+            Months = Enum.GetValues(typeof(MonthGerman)).Cast<MonthGerman>().ToList();
             ProtectedSpacePits = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().ToList();
             ProtectedSpaceHeads = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().Take(2).ToList();
         }
@@ -46,14 +19,14 @@ namespace LiftDataManager.Models
         [JsonIgnore]
         public List<int> Years { get; set; }
         [JsonIgnore]
-        public List<Month> Months { get; set; }
+        public List<MonthGerman> Months { get; set; }
         [JsonIgnore]
         public List<ProtectedSpaceTyp> ProtectedSpacePits { get; set; }
         [JsonIgnore]
         public List<ProtectedSpaceTyp> ProtectedSpaceHeads { get; set; }
 
-        private Month monthOfConstruction;
-        public Month MonthOfConstruction
+        private MonthGerman monthOfConstruction;
+        public MonthGerman MonthOfConstruction
         {
             get => monthOfConstruction;
             set

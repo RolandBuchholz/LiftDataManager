@@ -40,11 +40,11 @@ public class ParameterControlTemplateSelector : DataTemplateSelector
 
             return parameter.ParameterTyp switch
             {
-                Parameter.ParameterTypValue.Text => StringTemplate,
-                Parameter.ParameterTypValue.NumberOnly => NumberOnlyTemplate,
-                Parameter.ParameterTypValue.Date => DateTemplate,
-                Parameter.ParameterTypValue.Boolean => BooleanTemplate,
-                Parameter.ParameterTypValue.DropDownList => DropDownList,
+                ParameterTypValue.Text => StringTemplate,
+                ParameterTypValue.NumberOnly => NumberOnlyTemplate,
+                ParameterTypValue.Date => DateTemplate,
+                ParameterTypValue.Boolean => BooleanTemplate,
+                ParameterTypValue.DropDownList => DropDownList,
                 _ => DefaultTemplate,
             };
         }

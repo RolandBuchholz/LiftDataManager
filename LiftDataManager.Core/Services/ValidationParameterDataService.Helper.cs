@@ -20,7 +20,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
         else
         {
-            parameter.AddError("Value", new ParameterStateInfo(parameter.Name!, parameter.DisplayName!, $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.", ParameterStateInfo.ErrorLevel.Error, false));
+            parameter.AddError("Value", new ParameterStateInfo(parameter.Name!, parameter.DisplayName!, $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.", ErrorLevel.Error, false));
         }
     }
 

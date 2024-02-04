@@ -60,7 +60,7 @@ public sealed partial class ParameterDetailControl : UserControl
         {
             ErrorsList.Add(new ParameterStateInfo(liftParameter.Name!, liftParameter.DisplayName!, true)
             {
-                Severity = ParameterStateInfo.ErrorLevel.Valid,
+                Severity = ErrorLevel.Valid,
                 ErrorMessage = "Keine Information, Warnungen oder Fehler vorhanden"
             });
         }

@@ -220,7 +220,7 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterTypValue filterTypEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterTypValue filterTypEnum);
                     if (result)
                     {
                         return p => p.Name != null && p.ParameterTyp == filterTypEnum;
@@ -228,7 +228,7 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 default:
-                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterCategoryValue filterCatEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterCategoryValue filterCatEnum);
                     if (result)
                     {
                         return p => p.Name != null && p.ParameterCategory == filterCatEnum;
@@ -248,7 +248,7 @@ public sealed partial class CommandBar : UserControl
                                                 || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase));
 
                 case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterTypValue filterTypEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterTypValue filterTypEnum);
                     if (result)
                     {
                         return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
@@ -261,7 +261,7 @@ public sealed partial class CommandBar : UserControl
                     return p => p.Name != null;
 
                 default:
-                    result = Enum.TryParse(FilterValue, true, out ParameterBase.ParameterCategoryValue filterCatEnum);
+                    result = Enum.TryParse(FilterValue, true, out ParameterCategoryValue filterCatEnum);
                     if (result)
                     {
                         return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))

@@ -96,9 +96,9 @@ public sealed partial class ParameterComboBox : UserControl
             {
                 ErrorGlyph = error.Severity switch
                 {
-                    ParameterStateInfo.ErrorLevel.Informational => "\ue946",
-                    ParameterStateInfo.ErrorLevel.Warning => "\ue7ba",
-                    ParameterStateInfo.ErrorLevel.Error => "\ue730",
+                    ErrorLevel.Informational => "\ue946",
+                    ErrorLevel.Warning => "\ue7ba",
+                    ErrorLevel.Error => "\ue730",
                     _ => string.Empty,
                 };
                 ErrorType = error.Severity.ToString();

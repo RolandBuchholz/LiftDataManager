@@ -2,22 +2,6 @@
 
 public class DownloadInfo
 {
-    public enum ExitCodeEnum
-    {
-        NoError = 0,
-        UpDownLoadError = 1,
-        LoginError = 2,
-        UpdatePropertiesError = 3,
-        PowerShellStartError = 4,
-        MultipleAutoDeskTransferXml = 5,
-        InvalideOrderNumber = 6,
-        MissingVaultFile = 7,
-        MissingAdskLicensingSDK_5 = 8,
-        MissingVaultClient_DataStandard = 9,
-        CheckedOutByOtherUser = 10,
-        CheckedOutLinkedFilesByOtherUser = 11
-    }
-
     public bool Success { get; set; }
     public string? FileName { get; set; }
     public string? FullFileName { get; set; }
