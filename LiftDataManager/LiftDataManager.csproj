@@ -59,7 +59,6 @@
     <Content Remove="Assets\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Controls\BaseValidationTextBox.xaml" />
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\CarEquipmentControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
@@ -71,6 +70,7 @@
     <None Remove="Controls\ParameterRadioButton.xaml" />
     <None Remove="Controls\ParameterTextBox.xaml" />
     <None Remove="Controls\PrePlanningNumberControl.xaml" />
+    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
@@ -210,10 +210,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Controls\CarEquipmentControl.xaml">
+    <Page Update="Controls\SpezifikationsNumberControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\BaseValidationTextBox.xaml">
+    <Page Update="Controls\CarEquipmentControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\HistorySearchBar.xaml">

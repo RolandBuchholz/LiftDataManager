@@ -105,11 +105,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private bool canEditCustomPayload;
 
     [ObservableProperty]
-    private string? spezifikationStatusTyp;
-    partial void OnSpezifikationStatusTypChanged(string? value)
+    private string? spezifikationTyp;
+    partial void OnSpezifikationTypChanged(string? value)
     {
         SpezifikationName = string.Empty;
-        _logger.LogInformation(60132, "SpezifikationStatusTyp changed {Typ}", value);
+        _logger.LogInformation(60132, "SpezifikationTyp changed {Typ}", value);
     }
 
     [ObservableProperty]
@@ -118,9 +118,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         if (value is not null)
         {
-            CanLoadSpeziData = ((value.Length >= 6) && (SpezifikationStatusTyp == "Auftrag")) ||
-                               ((value.Length == 10) && (SpezifikationStatusTyp == "Angebot")) ||
-                               ((value.Length == 10) && (SpezifikationStatusTyp == "Vorplanung"));
+            CanLoadSpeziData = ((value.Length >= 6) && (SpezifikationTyp == "Auftrag")) ||
+                               ((value.Length == 10) && (SpezifikationTyp == "Angebot")) ||
+                               ((value.Length == 10) && (SpezifikationTyp == "Vorplanung"));
         }
     }
 
@@ -131,8 +131,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private string? dataImportDescriptionImage = "/Images/TonerSaveOFF.png";
 
     [ObservableProperty]
-    private string? importSpezifikationStatusTyp;
-    partial void OnImportSpezifikationStatusTypChanged(string? value)
+    private string? importSpezifikationTyp;
+    partial void OnImportSpezifikationTypChanged(string? value)
     {
         ImportSpezifikationName = string.Empty;
         switch (value)
@@ -150,7 +150,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
                 break;
         }
-        _logger.LogInformation(60132, "ImportSpezifikationStatusTyp changed {Typ}", value);
+        _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);
     }
 
     [ObservableProperty]
@@ -159,10 +159,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         if (value is not null)
         {
-            CanImportSpeziData = ((value.Length >= 6) && (ImportSpezifikationStatusTyp == "Auftrag")) ||
-                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Angebot")) ||
-                               ((value.Length == 10) && (ImportSpezifikationStatusTyp == "Vorplanung"))||
-                               ((value.EndsWith("pdf",true, CultureInfo.CurrentCulture)) && (ImportSpezifikationStatusTyp == "Anfrage Formular"));
+            CanImportSpeziData = ((value.Length >= 6) && (ImportSpezifikationTyp == "Auftrag")) ||
+                               ((value.Length == 10) && (ImportSpezifikationTyp == "Angebot")) ||
+                               ((value.Length == 10) && (ImportSpezifikationTyp == "Vorplanung"))||
+                               ((value.EndsWith("pdf",true, CultureInfo.CurrentCulture)) && (ImportSpezifikationTyp == "Anfrage Formular"));
 
             DataImportStatusText = CanImportSpeziData ? $"{importSpezifikationName} kann importiert werden." : "Keine Daten für Import vorhanden";
         }
@@ -861,7 +861,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         string? path;
 
-        if (SpezifikationStatusTyp == "Auftrag")
+        if (SpezifikationTyp == "Auftrag")
         {
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
             if (!Directory.Exists(path))
@@ -987,7 +987,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-        SpezifikationStatusTyp = (CurrentSpeziProperties.SpezifikationStatusTyp is not null) ? CurrentSpeziProperties.SpezifikationStatusTyp : "Auftrag";
+        SpezifikationTyp = (CurrentSpeziProperties.SpezifikationTyp is not null) ? CurrentSpeziProperties.SpezifikationTyp : "Auftrag";
         InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
         if (CurrentSpeziProperties.FullPathXml is not null)
         {

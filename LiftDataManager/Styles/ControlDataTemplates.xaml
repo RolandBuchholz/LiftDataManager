@@ -144,4 +144,17 @@
             Foreground="IndianRed"
             Text="Kein bekannter Parametertyp gefunden." />
     </DataTemplate>
+    <!--  ControlDataTemplates.xaml  -->
+    <DataTemplate x:Key="SpezifikationsTypOrder">
+        <TextBox Text="Hallo1" />
+    </DataTemplate>
+    <DataTemplate x:Key="SpezifikationsTypOffer">
+        <TextBox Text="Hallo2" />
+    </DataTemplate>
+    <DataTemplate x:Key="SpezifikationsTypPlanning">
+        <TextBox Text="Hallo3" />
+    </DataTemplate>
+    <DataTemplate x:Key="SpezifikationsTypRequest">
+        <TextBox Text="Hallo4" />
+    </DataTemplate>
 </ResourceDictionary>

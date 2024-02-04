@@ -1,0 +1,26 @@
+<UserControl
+    x:Class="LiftDataManager.Controls.SpezifikationsNumberControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:LiftDataManager.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <selectors:SpezifikationsNumberControlTemplateSelector
+            x:Key="SpezifikationsControlTemplateSelector"
+            OfferNumberTemplate="{StaticResource SpezifikationsTypOffer}"
+            OrderNumberTemplate="{StaticResource SpezifikationsTypOrder}"
+            PlanningNumberTemplate="{StaticResource SpezifikationsTypPlanning}"
+            RequestTemplate="{StaticResource SpezifikationsTypRequest}" />
+    </UserControl.Resources>
+    <StackPanel>
+        <ComboBox ItemsSource="{x:Bind SpezifikationTyps, Mode=OneWay}" SelectedItem="" />
+        <!--<ContentControl
+                Margin="0,10,0,0"
+                HorizontalContentAlignment="Stretch"
+                Content="{x:Bind ListDetailsMenuItem, Mode=OneWay}"
+                ContentTemplateSelector="{StaticResource SpezifikationsControlTemplateSelector}"/>-->
+    </StackPanel>
+</UserControl>
