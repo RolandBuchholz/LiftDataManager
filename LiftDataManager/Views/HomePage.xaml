@@ -2,18 +2,14 @@
     x:Class="LiftDataManager.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:behaviors="using:LiftDataManager.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:sys="using:System"
-    xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
@@ -57,7 +53,6 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -65,48 +60,20 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--  Control Panel  -->
-            <ComboBox
+
+            <SpeziControls:SpezifikationsNumberControl
                 Grid.Column="0"
-                Margin="0,0,5,0"
-                HorizontalAlignment="Stretch"
-                IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}"
-                SelectedItem="{x:Bind ViewModel.SpezifikationTyp, Mode=TwoWay}">
-                <x:String>Auftrag</x:String>
-                <x:String>Angebot</x:String>
-                <x:String>Vorplanung</x:String>
-            </ComboBox>
-            <!--<SpeziControls:SpezifikationsNumberControl Grid.Column="1" Margin="5,0,5,0" />-->
-            <controls:SwitchPresenter
-                Grid.Column="1"
-                Margin="5,0,5,0"
-                Value="{x:Bind ViewModel.SpezifikationTyp, Mode=OneWay}">
-                <controls:Case Value="Auftrag">
-                    <TextBox
-                        x:Name="AuftragsTextbox"
-                        MinWidth="125"
-                        ui:TextBoxExtensions.Regex="[0-9-VP]"
-                        ui:TextBoxExtensions.ValidationMode="Dynamic"
-                        IsReadOnly="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
-                        MaxLength="10"
-                        PlaceholderText="Auftragsnummer"
-                        Text="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <Interactivity:Interaction.Behaviors>
-                            <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadDataCommand}" />
-                            </toolkitbehaviors:KeyDownTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
-                    </TextBox>
-                </controls:Case>
-                <controls:Case Value="Angebot">
-                    <SpeziControls:OrderNumberControl IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}" OrderNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </controls:Case>
-                <controls:Case Value="Vorplanung">
-                    <SpeziControls:PrePlanningNumberControl IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay, Converter={StaticResource InvertBoolToSting}}" PrePlanningNumber="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </controls:Case>
-            </controls:SwitchPresenter>
+                Margin="0,0,0,0"
+                IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                IsOrderRelated="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
+                IsValid="{x:Bind ViewModel.CanLoadSpeziData, Mode=TwoWay}"
+                LoadCommand="{x:Bind ViewModel.LoadDataCommand}"
+                RequestEnabled="False"
+                SpezifikationName="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay}"
+                SpezifikationTyp="{x:Bind ViewModel.CurrentSpezifikationTyp, Mode=TwoWay}" />
             <Button
-                Grid.Column="2"
-                Margin="5,0,5,0"
+                Grid.Column="1"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.LoadDataCommand}"
                 FontWeight="Bold"
@@ -122,8 +89,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="3"
-                Margin="5,0,5,0"
+                Grid.Column="2"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.UploadDataCommand}"
                 FontWeight="Bold"
@@ -139,8 +106,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="4"
-                Margin="5,0,5,0"
+                Grid.Column="3"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CheckOutCommand}"
                 FontWeight="Bold"
@@ -156,8 +123,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="5"
-                Margin="5,0,5,0"
+                Grid.Column="4"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.ClearDataCommand}"
                 FontWeight="Bold"
@@ -173,8 +140,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="7"
-                Margin="5,0,5,0"
+                Grid.Column="6"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CreatePdfCommand}"
                 FontWeight="Bold"
@@ -189,8 +156,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="8"
-                Margin="5,0,5,0"
+                Grid.Column="7"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.DataImportCommand}"
                 CommandParameter="{x:Bind LiftDataImportDialog}"
@@ -206,8 +173,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="9"
-                Margin="5,0,5,0"
+                Grid.Column="8"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.ValidateAllParameterCommand}"
                 FontWeight="Bold"
@@ -222,8 +189,8 @@
                 </StackPanel>
             </Button>
             <Button
-                Grid.Column="10"
-                Margin="5,0,5,0"
+                Grid.Column="9"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.SaveAllParameterCommand}"
                 FontWeight="Bold"
@@ -1068,7 +1035,7 @@
                     <x:String>Vorplanung</x:String>
                     <x:String>Anfrage Formular</x:String>
                 </ComboBox>
-                <controls:SwitchPresenter
+                <!--<controls:SwitchPresenter
                     Grid.Row="4"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
@@ -1098,7 +1065,7 @@
                             </StackPanel>
                         </Button>
                     </controls:Case>
-                </controls:SwitchPresenter>
+                </controls:SwitchPresenter>-->
                 <InfoBar
                     Title="Import Status"
                     Grid.Row="5"

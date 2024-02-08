@@ -29,7 +29,7 @@ public sealed partial class SidebarPanel : UserControl
     }
 
     public static readonly DependencyProperty InfoTextProperty =
-        DependencyProperty.Register("InfoText", typeof(string), typeof(SidebarPanel), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(InfoText), typeof(string), typeof(SidebarPanel), new PropertyMetadata(string.Empty));
 
     public bool CanTextClear
     {
@@ -38,7 +38,7 @@ public sealed partial class SidebarPanel : UserControl
     }
 
     public static readonly DependencyProperty CanTextClearProperty =
-        DependencyProperty.Register("CanTextClear", typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(CanTextClear), typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
 
     public bool ShowQuickLinks
     {
@@ -52,7 +52,7 @@ public sealed partial class SidebarPanel : UserControl
     }
 
     public static readonly DependencyProperty ShowQuickLinksProperty =
-        DependencyProperty.Register("ShowQuickLinks", typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowQuickLinks), typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
 
     private void Btn_ClearInfoText_Click(object sender, RoutedEventArgs e)
     {

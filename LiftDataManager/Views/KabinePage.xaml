@@ -1949,7 +1949,7 @@
                                                         FontWeight="Bold"
                                                         Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                                         Text="Info Sanco-Dur:" />
-                                                    <TextBlock Text=" - Lacobel 'Cool White' ähnlich RAL 9010" />
+                                                    <TextBlock Text=" - Lacobel 'Cool White' ähnlich RAL 9003" />
                                                     <TextBlock Text=" - Lacobel 'Misty White' ähnlich RAL 9018" />
                                                     <TextBlock Text=" - Lacobel 'Oyster White' ähnlich RAL 9001" />
                                                     <TextBlock Text=" - 'Euro White' beliebiger RAL-Ton" />

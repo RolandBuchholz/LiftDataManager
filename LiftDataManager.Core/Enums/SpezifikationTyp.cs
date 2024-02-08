@@ -1,32 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ardalis.SmartEnum;
 
 namespace LiftDataManager.Core.Enums;
 /// <summary>
 /// SpezifikationTyps with german humanized Displayname
 /// </summary>
-public enum SpezifikationTyp
+
+public sealed class SpezifikationTyp : SmartEnum<SpezifikationTyp, ushort>
 {
-    /// <summary>
-    /// SpezifikationTyp order with german humanized Displayname
-    /// </summary>
-    [Display(Name = "Auftrag")]
-    order,
+    //    /// <summary>
+    //    /// SpezifikationTyp order with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp Order = new("Auftrag", 1);
 
-    /// <summary>
-    /// SpezifikationTyp offer with german humanized Displayname
-    /// </summary>
-    [Display(Name = "Angebot")]
-    offer,
+    //    /// <summary>
+    //    /// SpezifikationTyp offer with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp Offer = new("Angebot", 2);
 
-    /// <summary>
-    /// SpezifikationTyp planning with german humanized Displayname
-    /// </summary>
-    [Display(Name = "Vorplanung")]
-    planning,
+    //    /// <summary>
+    //    /// SpezifikationTyp planning with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp Planning = new("Vorplanung", 3);
 
-    /// <summary>
-    /// SpezifikationTyp request with german humanized Displayname
-    /// </summary>
-    [Display(Name = "Anfrage Formular")]
-    request
+    //    /// <summary>
+    //    /// SpezifikationTyp request with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp Request = new("Anfrage Formular", 4);
+
+    private SpezifikationTyp(string name, ushort value) : base(name, value)
+    {
+    }
 }

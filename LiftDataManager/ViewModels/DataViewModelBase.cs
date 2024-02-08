@@ -10,6 +10,7 @@ public partial class DataViewModelBase : ObservableRecipient
     public readonly INavigationService? _navigationService;
 
     public bool Adminmode { get; set; }
+    public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     public DispatcherTimer? AutoSaveTimer { get; set; }
     public CurrentSpeziProperties? CurrentSpeziProperties;
@@ -174,8 +175,9 @@ public partial class DataViewModelBase : ObservableRecipient
             {
                 CanSaveAllSpeziParameters = dirty;
             }
-            else if (dirty)
+            else if (dirty && !CheckoutDialogIsOpen)
             {
+                CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -185,10 +187,12 @@ public partial class DataViewModelBase : ObservableRecipient
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {
+                    CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
+                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                     if (CurrentSpeziProperties is not null)
                     {

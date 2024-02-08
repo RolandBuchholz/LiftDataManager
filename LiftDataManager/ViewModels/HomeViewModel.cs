@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinUICommunity;
+using Humanizer;
 
 namespace LiftDataManager.ViewModels;
 
@@ -60,6 +61,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private bool isBusy;
 
     [ObservableProperty]
+    private SpezifikationTyp? currentSpezifikationTyp;
+    partial void OnCurrentSpezifikationTypChanged(SpezifikationTyp? value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<SpezifikationTyp?>.Default.Equals(CurrentSpeziProperties.CurrentSpezifikationTyp, value))
+        {
+            CurrentSpeziProperties.CurrentSpezifikationTyp = value;
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+        }
+        _logger.LogInformation(60132, "SpezifikationTyp changed {Typ}", value);
+    }
+
+    [ObservableProperty]
     private double carFrameWeight;
 
     [ObservableProperty]
@@ -105,24 +118,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private bool canEditCustomPayload;
 
     [ObservableProperty]
-    private string? spezifikationTyp;
-    partial void OnSpezifikationTypChanged(string? value)
-    {
-        SpezifikationName = string.Empty;
-        _logger.LogInformation(60132, "SpezifikationTyp changed {Typ}", value);
-    }
-
-    [ObservableProperty]
     private string? spezifikationName;
-    partial void OnSpezifikationNameChanged(string? value)
-    {
-        if (value is not null)
-        {
-            CanLoadSpeziData = ((value.Length >= 6) && (SpezifikationTyp == "Auftrag")) ||
-                               ((value.Length == 10) && (SpezifikationTyp == "Angebot")) ||
-                               ((value.Length == 10) && (SpezifikationTyp == "Vorplanung"));
-        }
-    }
 
     [ObservableProperty]
     private string? dataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
@@ -485,18 +481,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     }
                     File.Delete(FullPathXml);
                 }
-                ClearExpiredLiftData();
-                await LoadDataAsync();
             }
             else
             {
                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                 _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
                 InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+
             }
             ClearExpiredLiftData();
             await LoadDataAsync();
-
         }
         AutoSaveTimer?.Stop();
     }
@@ -636,7 +630,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
         {
             DataImportStatus = InfoBarSeverity.Warning;
-            DataImportStatusText = downloadInfo.DownloadInfoEnumToString();
+            DataImportStatusText = downloadInfo.ExitState.Humanize();
             return;
         }
         if (downloadInfo.FullFileName is null)
@@ -745,8 +739,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 CanSaveAllSpeziParameters = dirty;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
             }
-            else if (dirty && !CheckOut)
+            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
+                CheckoutDialogIsOpen = true;
                 var dialogMessage = """
                                      Die AutodeskTransferXml wurde noch nicht ausgechecked!
 
@@ -774,11 +769,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     };
                     if ((bool)dialogResult)
                         IncreaseRevision();
+
+                    CheckoutDialogIsOpen = false;
                     SetModifyInfos();
                     IsBusy = false;
                 }
                 else
                 {
+                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                 }
             }
@@ -861,7 +859,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         string? path;
 
-        if (SpezifikationTyp == "Auftrag")
+        if (CurrentSpezifikationTyp is not null && 
+            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))  
         {
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
             if (!Directory.Exists(path))
@@ -940,13 +939,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         InfoSidebarPanelText = string.Empty;
         AuftragsbezogeneXml = false;
+        SpezifikationName = string.Empty;
         CanValidateAllParameter = false;
         CanLoadSpeziData = false;
         CanSaveAllSpeziParameters = false;
         CheckOut = false;
         CanCheckOut = false;
         LikeEditParameter = true;
-        SpezifikationName = string.Empty;
         ShowFrameWeightBorder = false;
         ShowCarWeightBorder = false;
         ParameterErrorDictionary?.Clear();
@@ -956,7 +955,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CarFrameWeight = 0;
         PayloadTable6 = 0;
         PayloadTable7 = 0;
-
     }
 
     private void SetModifyInfos()
@@ -987,7 +985,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-        SpezifikationTyp = (CurrentSpeziProperties.SpezifikationTyp is not null) ? CurrentSpeziProperties.SpezifikationTyp : "Auftrag";
+        CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
         InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
         if (CurrentSpeziProperties.FullPathXml is not null)
         {

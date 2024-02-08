@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Text;
+﻿using Humanizer;
+using Microsoft.UI.Text;
 using WinUICommunity;
 
 namespace LiftDataManager.Services;
@@ -307,7 +308,7 @@ public class DialogService : IDialogService
         mainPanel.Children.Add(new TextBlock
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Text = downloadResult.DownloadInfoEnumToString(),
+            Text = downloadResult.ExitState.Humanize(),
             TextWrapping = TextWrapping.Wrap,
         });
         mainPanel.Children.Add(exp);

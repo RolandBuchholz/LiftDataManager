@@ -68,9 +68,7 @@
     <None Remove="Controls\ParameterCustomCheckBox.xaml" />
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
     <None Remove="Controls\ParameterRadioButton.xaml" />
-    <None Remove="Controls\ParameterTextBox.xaml" />
-    <None Remove="Controls\PrePlanningNumberControl.xaml" />
-    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
+    <None Remove="Controls\ParameterTextBox.xaml" />    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
@@ -158,9 +156,7 @@
     <None Remove="Controls\CommandBar.xaml" />
     <None Remove="Controls\EntranceControl.xaml" />
     <None Remove="Controls\FooterControl.xaml" />
-    <None Remove="Controls\HeaderControl.xaml" />
-    <None Remove="Controls\OrderNumberControl.xaml" />
-    <None Remove="Controls\SidebarPanel.xaml" />
+    <None Remove="Controls\HeaderControl.xaml" />    <None Remove="Controls\SidebarPanel.xaml" />
     <None Remove="Styles\ControlDataTemplates.xaml" />
   </ItemGroup>
 
@@ -187,7 +183,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Humanizer.Core.de" Version="2.14.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -247,16 +243,10 @@
     <Page Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\PrePlanningNumberControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Controls\SidebarPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\ParameterDetailControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\OrderNumberControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\HeaderControl.xaml">

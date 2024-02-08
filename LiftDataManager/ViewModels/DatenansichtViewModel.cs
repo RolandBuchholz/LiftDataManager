@@ -54,8 +54,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
                 CanShowUnsavedParameters = dirty;
                 CanSaveAllSpeziParameters = dirty;
             }
-            else if (dirty && !CheckOut)
+            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
             {
+                CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService!.WarningDialogAsync(
                                     $"Datei eingechecked (schreibgeschützt)",
                                     $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
@@ -65,10 +66,12 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
                                     "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
                 if ((bool)dialogResult)
                 {
+                    CheckoutDialogIsOpen = false;
                     _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
+                    CheckoutDialogIsOpen = false;
                     LikeEditParameter = false;
                 }
             }
