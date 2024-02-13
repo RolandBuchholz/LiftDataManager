@@ -2,6 +2,9 @@
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.Extensions.Logging;
+using PdfSharp.Fonts;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Snippets.Font;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -135,7 +138,7 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<TransferData>> LoadParameterAsync(string path)
     {
         XElement doc = XElement.Load(path);
-        var TransferDataList = (from para in doc.Elements("parameters").Elements("ParamWithValue")
+        var transferDataList = (from para in doc.Elements("parameters").Elements("ParamWithValue")
                                 select new TransferData(
                                                      para.Element("name")!.GetAs<string>()!,
                                                      para.Element("value")!.GetAs<string>()!,
@@ -144,8 +147,34 @@ public partial class ParameterDataService : IParameterDataService
                                   .ToList();
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from {path} loaded", path);
-        return TransferDataList;
+        return transferDataList;
     }
+
+    public async Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path)
+    {
+        var transferDataList = new List<TransferData>();
+        GlobalFontSettings.FontResolver = new FailsafeFontResolver();
+
+        using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.ReadOnly))
+        {
+            var fields = pdfDocument.AcroForm.Fields;
+            var fields2 = pdfDocument.AcroForm.Fields.Elements.Items;
+            var names = pdfDocument.AcroForm.Fields.Names;
+            var xx = pdfDocument.AcroForm.Fields.Internals;
+            var yy = pdfDocument.AcroForm.Fields.DescendantNames;
+
+            foreach (var field in fields2)
+            {
+                var ff = field.ToString();
+                transferDataList.Add(new TransferData("hallo","hhhh","fffff",false));
+            }
+        }   
+        await Task.CompletedTask;
+        _logger.LogInformation(60101, "Parameter from Pdf: {path} loaded", path);
+        return transferDataList;
+    }
+
+
 
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path)
     {

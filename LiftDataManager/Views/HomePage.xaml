@@ -1024,48 +1024,16 @@
                     Margin="0,5,0,5"
                     FontSize="16"
                     Text="Import Daten auswählen:" />
-                <ComboBox
+                <SpeziControls:SpezifikationsNumberControl
                     Grid.Row="4"
                     Grid.Column="0"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Stretch"
-                    SelectedItem="{x:Bind ViewModel.ImportSpezifikationTyp, Mode=TwoWay}">
-                    <x:String>Auftrag</x:String>
-                    <x:String>Angebot</x:String>
-                    <x:String>Vorplanung</x:String>
-                    <x:String>Anfrage Formular</x:String>
-                </ComboBox>
-                <!--<controls:SwitchPresenter
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Margin="5,0,0,0"
-                    Value="{x:Bind ViewModel.ImportSpezifikationTyp, Mode=OneWay}">
-                    <controls:Case Value="Auftrag">
-                        <TextBox
-                            x:Name="AuftragsTextboxImport"
-                            MinWidth="125"
-                            ui:TextBoxExtensions.Regex="[0-9-VP]"
-                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                            MaxLength="10"
-                            PlaceholderText="Auftragsnummer"
-                            Text="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </controls:Case>
-                    <controls:Case Value="Angebot">
-                        <SpeziControls:OrderNumberControl OrderNumber="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </controls:Case>
-                    <controls:Case Value="Vorplanung">
-                        <SpeziControls:PrePlanningNumberControl PrePlanningNumber="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </controls:Case>
-                    <controls:Case Value="Anfrage Formular">
-                        <Button HorizontalAlignment="Stretch" Command="{x:Bind ViewModel.PickFilePathCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Anfrage Formular(Pdf)" />
-                                <SymbolIcon Margin="10,0,0,0" Symbol="Share" />
-                            </StackPanel>
-                        </Button>
-                    </controls:Case>
-                </controls:SwitchPresenter>-->
+                    IsValid="{x:Bind ViewModel.CanImportSpeziData, Mode=TwoWay}"
+                    PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
+                    RequestEnabled="True"
+                    SpezifikationName="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay}"
+                    SpezifikationTyp="{x:Bind ViewModel.ImportSpezifikationTyp, Mode=TwoWay}" />
                 <InfoBar
                     Title="Import Status"
                     Grid.Row="5"

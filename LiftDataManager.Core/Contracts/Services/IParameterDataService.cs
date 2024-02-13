@@ -12,6 +12,8 @@ public interface IParameterDataService
 
     Task<IEnumerable<TransferData>> LoadParameterAsync(string path);
 
+    Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path);
+
     Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path);
 
     Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();

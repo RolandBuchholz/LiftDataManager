@@ -5,6 +5,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinUICommunity;
 using Humanizer;
+using LiftDataManager.Core.Models;
 
 namespace LiftDataManager.ViewModels;
 
@@ -127,42 +128,44 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private string? dataImportDescriptionImage = "/Images/TonerSaveOFF.png";
 
     [ObservableProperty]
-    private string? importSpezifikationTyp;
-    partial void OnImportSpezifikationTypChanged(string? value)
+    private SpezifikationTyp? importSpezifikationTyp = SpezifikationTyp.Order;
+    partial void OnImportSpezifikationTypChanged(SpezifikationTyp? value)
     {
         ImportSpezifikationName = string.Empty;
-        switch (value)
-        {
-            case "Auftrag" or "Angebot" or "Vorplanung":
+
+        if (value is null)
+            return;
+        value
+            .When(SpezifikationTyp.Order).Then(() => 
+            {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
-                break;
-            case "Anfrage Formular":
+            })
+            .When(SpezifikationTyp.Offer).Then(() =>
+            {
+                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
+            })
+            .When(SpezifikationTyp.Planning).Then(() =>
+            {
+                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
+            })
+            .When(SpezifikationTyp.Request).Then(() =>
+            {
                 DataImportDescription = "Daten aus einem Anfrage Formular importieren.";
                 DataImportDescriptionImage = "/Images/PdfTransparent.png";
-                break;
-            default:
+            })
+            .Default(() => 
+            {
                 DataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
                 DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
-                break;
-        }
+            });
         _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);
     }
 
     [ObservableProperty]
     private string? importSpezifikationName;
-    partial void OnImportSpezifikationNameChanged(string? value)
-    {
-        if (value is not null)
-        {
-            CanImportSpeziData = ((value.Length >= 6) && (ImportSpezifikationTyp == "Auftrag")) ||
-                               ((value.Length == 10) && (ImportSpezifikationTyp == "Angebot")) ||
-                               ((value.Length == 10) && (ImportSpezifikationTyp == "Vorplanung"))||
-                               ((value.EndsWith("pdf",true, CultureInfo.CurrentCulture)) && (ImportSpezifikationTyp == "Anfrage Formular"));
-
-            DataImportStatusText = CanImportSpeziData ? $"{importSpezifikationName} kann importiert werden." : "Keine Daten für Import vorhanden";
-        }
-    }
 
     [ObservableProperty]
     private string? dataImportStatusText = "Keine Daten für Import vorhanden";
@@ -592,7 +595,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         await LiftDataImportDialog.ShowAsyncQueueDraggable();
     }
     [RelayCommand]
-    private async Task PickFilePathAsync(ContentDialog LiftDataImportDialog)
+    private async Task PickFilePathAsync()
     {
         var filePicker = App.MainWindow.CreateOpenFilePicker();
         filePicker.ViewMode = PickerViewMode.Thumbnail;
@@ -619,32 +622,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
         DataImportStatus = InfoBarSeverity.Informational;
         DataImportStatusText = "Datenimport gestartet";
-
-        var downloadInfo = await GetAutoDeskTransferAsync(ImportSpezifikationName, true);
-        if (downloadInfo is null)
-        {
-            DataImportStatus = InfoBarSeverity.Error;
-            DataImportStatusText = "Datenimport fehlgeschlagen";
-            return;
-        }
-        if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
-        {
-            DataImportStatus = InfoBarSeverity.Warning;
-            DataImportStatusText = downloadInfo.ExitState.Humanize();
-            return;
-        }
-        if (downloadInfo.FullFileName is null)
-        {
-            DataImportStatus = InfoBarSeverity.Error;
-            DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
-            return;
-        }
-
-        CheckOut = true;
-        var importParameter = await _parameterDataService!.LoadParameterAsync(downloadInfo.FullFileName);
-
+        IEnumerable<TransferData>? importParameter = null;
         string[] ignoreImportParameters =
-        {
+{
             "var_Index",
             "var_FabrikNummer",
             "var_AuftragsNummer",
@@ -658,7 +638,39 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             "var_FertigstellungAm",
             "var_GeaendertAm",
             "var_GeaendertVon"
-        };
+            };
+
+        if (importSpezifikationTyp != SpezifikationTyp.Request)
+        {
+            var downloadInfo = await GetAutoDeskTransferAsync(ImportSpezifikationName, true);
+            if (downloadInfo is null)
+            {
+                DataImportStatus = InfoBarSeverity.Error;
+                DataImportStatusText = "Datenimport fehlgeschlagen";
+                return;
+            }
+            if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
+            {
+                DataImportStatus = InfoBarSeverity.Warning;
+                DataImportStatusText = downloadInfo.ExitState.Humanize();
+                return;
+            }
+            if (downloadInfo.FullFileName is null)
+            {
+                DataImportStatus = InfoBarSeverity.Error;
+                DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
+                return;
+            }
+
+            importParameter = await _parameterDataService!.LoadParameterAsync(downloadInfo.FullFileName);
+        }
+        else
+        {
+            importParameter = await _parameterDataService!.LoadPdfOfferAsync(ImportSpezifikationName);
+        }
+
+        if (importParameter is null)
+            return;
 
         foreach (var item in importParameter)
         {
