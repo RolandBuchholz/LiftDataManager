@@ -38,15 +38,15 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             case var s when s.Equals(SpezifikationTyp.Offer):
                 if (speziNameArray is not null && speziNameArray.Length == 3)
                 {
-                    cmb_Year.SelectedItem = speziNameArray[1].ConvertToInt();
+                    cmb_Year.SelectedItem = speziNameArray[0].ConvertToInt();
+                    cmb_Month.SelectedItem = speziNameArray[1];
                     NumberBoxText = speziNameArray[2].ConvertToInt();
                 }
                 break;
             case var s when s.Equals(SpezifikationTyp.Planning):
                 if (speziNameArray is not null && speziNameArray.Length == 3)
                 {
-                    cmb_Year.SelectedItem = speziNameArray[0].ConvertToInt();
-                    cmb_Month.SelectedItem = speziNameArray[1];
+                    cmb_Year.SelectedItem = speziNameArray[1].ConvertToInt();
                     NumberBoxText = speziNameArray[2].ConvertToInt();
                 }
                 break;
@@ -110,6 +110,10 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         { 
             SetValue(SpezifikationNameProperty, value);
             IsValid = CheckSpezifikationNameIsValid(value);
+            if (string.IsNullOrWhiteSpace(value) && NumberBoxText is not null)
+            {
+                NumberBoxText = null;
+            }
         }
     }
 

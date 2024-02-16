@@ -3,8 +3,10 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Fonts;
+using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Snippets.Font;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -153,28 +155,26 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path)
     {
         var transferDataList = new List<TransferData>();
-        GlobalFontSettings.FontResolver = new FailsafeFontResolver();
+        GlobalFontSettings.FontResolver ??= new FailsafeFontResolver();
 
         using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.ReadOnly))
         {
             var fields = pdfDocument.AcroForm.Fields;
-            var fields2 = pdfDocument.AcroForm.Fields.Elements.Items;
-            var names = pdfDocument.AcroForm.Fields.Names;
-            var xx = pdfDocument.AcroForm.Fields.Internals;
-            var yy = pdfDocument.AcroForm.Fields.DescendantNames;
-
-            foreach (var field in fields2)
+            foreach (var pdfName in fields.Names)
             {
-                var ff = field.ToString();
-                transferDataList.Add(new TransferData("hallo","hhhh","fffff",false));
+                var field = fields[pdfName];
+                if (field is null) 
+                    continue;
+                KeyValuePair<string,string> parameter = field.Value is null ? new KeyValuePair<string, string>(string.Empty,string.Empty) : ValidatePdfValue(field);
+                if (!parameter.Key.StartsWith("var_"))
+                    continue;
+                transferDataList.Add(new TransferData(parameter.Key, parameter.Value, string.Empty,false));
             }
         }   
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from Pdf: {path} loaded", path);
         return transferDataList;
     }
-
-
 
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path)
     {
@@ -419,6 +419,36 @@ public partial class ParameterDataService : IParameterDataService
             _ = AddParameterListToHistoryAsync(syncedLiftHistoryEntries, path, false);
         }
         return syncedParameter;
+    }
+
+    private KeyValuePair<string, string> ValidatePdfValue(PdfAcroField field)
+    {
+        var name = field.Name;
+
+        if (field.Value is null)
+            return new KeyValuePair<string, string>(name, string.Empty);
+
+        var fieldTyp = field.GetType().ToString();
+
+        var pdfValue = fieldTyp switch
+        {
+            "PdfTextField" => ((PdfSharp.Pdf.PdfStringObject)field.Value).Value,
+            "PdfCheckBoxField" => field.Value.ToString(),
+            "PdfRadioButtonField" => field.Value.ToString(),
+            _ => string.Empty,
+        };
+
+        if (string.Equals(pdfValue, "<FEFF>", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, string.Empty);
+        if (string.Equals(pdfValue, "/Off", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, "False");
+        if (string.Equals(pdfValue, "/Yes", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, "True");
+
+        return name switch
+        {
+            var n when n.StartsWith("var_Aufzugstyp") => new KeyValuePair<string, string>(name, pdfValue == "/1" ? "Personen Seil-Aufzug" : "Lasten Seil-Aufzug"),
+            var n when n.StartsWith("var_AuslieferungAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDateFromCalendarWeek(pdfValue)),
+            var n when n.StartsWith("var_ErstelltAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDate(pdfValue)),
+            _ => new KeyValuePair<string, string>(name, pdfValue.Trim('(', ')')),
+        };
     }
 
     private void AddParameterToXml(Parameter parameter, XElement xmlparameter)

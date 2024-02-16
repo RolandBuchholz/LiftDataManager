@@ -47,4 +47,39 @@ public class LiftParameterHelper
         return $"{destination}{input.AsSpan(1)}";
     }
 
+    public static string GetShortDate(string dateString)
+    {
+        if (DateTime.TryParse(dateString, CultureInfo.CurrentCulture, out DateTime date))
+        {
+            return date.ToShortDateString();
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+
+    public static string GetShortDateFromCalendarWeek(string calendarWeek)
+    {
+        var dateSplitt = calendarWeek.Split('/', '.', '-');
+        if (dateSplitt.Length != 2) return string.Empty;
+        if (!int.TryParse(dateSplitt[0], out int weekOfYear)) return string.Empty;
+        if (!int.TryParse(dateSplitt[1], out int year)) return string.Empty;
+        if (weekOfYear > 53) return string.Empty;
+        if (year < 2000 || weekOfYear > 2099) return string.Empty;
+
+        var jan1 = new DateTime(year, 1, 1);
+        var daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
+        var firstThursday = jan1.AddDays(daysOffset);
+        var cal = CultureInfo.CurrentCulture.Calendar;
+        var firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        var weekNum = weekOfYear;
+
+        if (firstWeek == 1)
+        {
+            weekNum -= 1;
+        }
+        var result = firstThursday.AddDays(weekNum * 7);
+        return result.AddDays(2).ToShortDateString();
+    }
 }

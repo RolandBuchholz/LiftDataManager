@@ -152,6 +152,7 @@
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="2"
                                     Grid.Column="1"
+                                    Margin="0,0,5,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatz_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                             </Grid>

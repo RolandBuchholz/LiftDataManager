@@ -6,6 +6,8 @@ using Windows.Storage;
 using WinUICommunity;
 using Humanizer;
 using LiftDataManager.Core.Models;
+using PdfSharp.Pdf.Content.Objects;
+using Cogs.Collections;
 
 namespace LiftDataManager.ViewModels;
 
@@ -174,6 +176,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private InfoBarSeverity dataImportStatus = InfoBarSeverity.Informational;
 
     [ObservableProperty]
+    private bool showImportCarFrames;
+
+    [ObservableProperty]
+    private string? selectedImportCarFrame;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoadDataCommand))]
     private bool canLoadSpeziData;
 
@@ -197,6 +205,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StartDataImportCommand))]
     private bool canImportSpeziData;
+    partial void OnCanImportSpeziDataChanged(bool value)
+    {
+        DataImportStatusText = value ? $"{ImportSpezifikationName} kann importiert werden." : "Keine Daten für Import vorhanden";
+    }
 
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
@@ -622,26 +634,27 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
         DataImportStatus = InfoBarSeverity.Informational;
         DataImportStatusText = "Datenimport gestartet";
-        IEnumerable<TransferData>? importParameter = null;
-        string[] ignoreImportParameters =
-{
+
+        var ignoreImportParameters = new List<string>
+        {
             "var_Index",
             "var_FabrikNummer",
             "var_AuftragsNummer",
             "var_Kennwort",
             "var_ErstelltVon",
-            "var_ErstelltAm",
             "var_FabriknummerBestand",
             "var_FreigabeErfolgtAm",
             "var_Demontage",
-            "var_AuslieferungAm",
             "var_FertigstellungAm",
             "var_GeaendertAm",
             "var_GeaendertVon"
-            };
+        };
 
+        IEnumerable<TransferData>? importParameter;
         if (importSpezifikationTyp != SpezifikationTyp.Request)
         {
+            ignoreImportParameters.Add("var_ErstelltAm");
+            ignoreImportParameters.Add("var_AuslieferungAm");
             var downloadInfo = await GetAutoDeskTransferAsync(ImportSpezifikationName, true);
             if (downloadInfo is null)
             {
@@ -666,7 +679,57 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
         else
         {
-            importParameter = await _parameterDataService!.LoadPdfOfferAsync(ImportSpezifikationName);
+            var importParameterPdf = await _parameterDataService!.LoadPdfOfferAsync(ImportSpezifikationName);
+            var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
+            ShowImportCarFrames = isMultiCarframe;
+            if (!isMultiCarframe) SelectedImportCarFrame = null;
+
+            if (isMultiCarframe && SelectedImportCarFrame is null)
+            {
+                DataImportStatus = InfoBarSeverity.Warning;
+                DataImportStatusText = "Mehrere Bausatztypen für DatenImport vorhanden.\n" +
+                                       "Wählen sie den gewünschten Bausatztyp aus!";
+                return;
+            }
+
+            var carTypPrefix = SelectedImportCarFrame switch
+            {
+                "Tiger TG2" => "_TG2",
+                "BR1 1:1" => "_BR1",
+                "BR2 2:1" => "_BR2",
+                "Jupiter BT1" => "_BT1",
+                "Jupiter BT2" => "_BT2",
+                "Seil-Rucksack BRR" => "_BRR",
+                "Seil-Zentral ZZE-S" => "_ZZE_S",
+                _ => "_EZE_SR"
+            };
+
+            var cleanImport = new List<TransferData>();
+
+            foreach (var item in importParameterPdf)
+            {
+                if (item.Name.EndsWith(carTypPrefix))
+                {
+                    item.Name = item.Name.Replace(carTypPrefix, "");
+                    cleanImport.Add(item);
+                }  
+            }
+
+            var carTyp = carTypPrefix switch
+            {
+                "_TG2" => "TG2-15 MK2",
+                "_BR1" => "BR1-15 MK2",
+                "_BR2" => "BR2-15 MK2",
+                "_BT1" => "BT1-40",
+                "_BT2" => "BT2-40",
+                "_BRR" => "BRR-15 MK2",
+                "_ZZE_S" => "ZZE-S1600",
+                _ => "EZE-SR3200 SAO"
+            };
+
+            cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
+
+            importParameter = cleanImport;
         }
 
         if (importParameter is null)
@@ -689,7 +752,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
                 }
-                updatedParameter.Comment = item.Comment;
+                if (!string.IsNullOrWhiteSpace(item.Comment))
+                {
+                    updatedParameter.Comment = item.Comment;
+                }   
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
@@ -728,7 +794,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         DataImportStatus = InfoBarSeverity.Success;
         DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
                                $"Detailinformationen im Info Sidebar Panel.\n" +
-                               $" Importdialog kann geschlossen werden´.";
+                               $" Importdialog kann geschlossen werden.";
     }
 
     protected override async Task SetModelStateAsync()
