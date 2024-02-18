@@ -794,7 +794,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         DataImportStatus = InfoBarSeverity.Success;
         DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
                                $"Detailinformationen im Info Sidebar Panel.\n" +
-                               $" Importdialog kann geschlossen werden.";
+                               $"Importdialog kann geschlossen werden.";
     }
 
     protected override async Task SetModelStateAsync()

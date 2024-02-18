@@ -6,7 +6,6 @@ using PdfSharp.Fonts;
 using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Snippets.Font;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -428,23 +427,37 @@ public partial class ParameterDataService : IParameterDataService
         if (field.Value is null)
             return new KeyValuePair<string, string>(name, string.Empty);
 
-        var fieldTyp = field.GetType().ToString();
+        var fieldTypName = field.GetType().Name;
 
-        var pdfValue = fieldTyp switch
+        var pdfValue = fieldTypName switch
         {
-            "PdfTextField" => ((PdfSharp.Pdf.PdfStringObject)field.Value).Value,
-            "PdfCheckBoxField" => field.Value.ToString(),
+            "PdfTextField" => ((PdfSharp.Pdf.PdfString)field.Value).Value,
+            "PdfCheckBoxField" => string.Equals(field.Value.ToString(), "/Yes", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False",
             "PdfRadioButtonField" => field.Value.ToString(),
             _ => string.Empty,
         };
 
-        if (string.Equals(pdfValue, "<FEFF>", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, string.Empty);
-        if (string.Equals(pdfValue, "/Off", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, "False");
-        if (string.Equals(pdfValue, "/Yes", StringComparison.CurrentCultureIgnoreCase)) return new KeyValuePair<string, string>(name, "True");
+        if (name.StartsWith("var_FH"))
+        {
+            if (string.IsNullOrWhiteSpace(pdfValue))
+                pdfValue = "0";
+            if (double.TryParse(pdfValue, out double travel))
+            {
+                pdfValue = (travel/1000).ToString();
+            } 
+            else
+            {
+                pdfValue = "0";
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(pdfValue))
+            return new KeyValuePair<string, string>(name, string.Empty);
 
         return name switch
         {
             var n when n.StartsWith("var_Aufzugstyp") => new KeyValuePair<string, string>(name, pdfValue == "/1" ? "Personen Seil-Aufzug" : "Lasten Seil-Aufzug"),
+            var n when n.StartsWith("var_Zugang") => new KeyValuePair<string, string>(name.Replace("Zugang_bei", "ZUGANSSTELLEN"), pdfValue),
             var n when n.StartsWith("var_AuslieferungAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDateFromCalendarWeek(pdfValue)),
             var n when n.StartsWith("var_ErstelltAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDate(pdfValue)),
             _ => new KeyValuePair<string, string>(name, pdfValue.Trim('(', ')')),
