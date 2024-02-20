@@ -799,6 +799,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task FinishDataImportAsync()
     {
         ShowImportCarFrames = false;
+        SelectedImportCarFrame = null;
         DataImportStatus = InfoBarSeverity.Informational;
         ImportSpezifikationTyp = SpezifikationTyp.Order;
         ImportSpezifikationName = string.Empty;

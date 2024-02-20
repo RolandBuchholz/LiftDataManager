@@ -442,7 +442,7 @@ public partial class ParameterDataService : IParameterDataService
     {
         var name = field.Name;
 
-        if (field.Value is null)
+        if (field.Value is null || field.Value.ToString() == "<FEFF>")
             return new KeyValuePair<string, string>(name, string.Empty);
 
         var fieldTypName = field.GetType().Name;
