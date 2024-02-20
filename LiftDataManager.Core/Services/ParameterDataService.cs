@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Fonts;
 using PdfSharp.Pdf.AcroForms;
@@ -158,6 +159,7 @@ public partial class ParameterDataService : IParameterDataService
 
         using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.ReadOnly))
         {
+            var cfPOptions = new CarFrameProgramOptions();
             var fields = pdfDocument.AcroForm.Fields;
             foreach (var pdfName in fields.Names)
             {
@@ -166,8 +168,24 @@ public partial class ParameterDataService : IParameterDataService
                     continue;
                 KeyValuePair<string,string> parameter = field.Value is null ? new KeyValuePair<string, string>(string.Empty,string.Empty) : ValidatePdfValue(field);
                 if (!parameter.Key.StartsWith("var_"))
+                {
+                    if (cfPOptions.IsCFPOption(parameter.Key))
+                    {
+                        var option = ValidatePdfValue(field);
+                        if (int.TryParse(option.Value, out int optionValue))
+                        {
+                            cfPOptions.SetOption(parameter.Key, optionValue);
+                        } 
+                    }
                     continue;
+                }       
                 transferDataList.Add(new TransferData(parameter.Key, parameter.Value, string.Empty,false));
+            }
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var cfPOptionsJson = JsonSerializer.Serialize(cfPOptions, options).Replace("\r\n", "\n");
+            if (!string.IsNullOrWhiteSpace(cfPOptionsJson))
+            {
+                transferDataList.Add(new TransferData("var_CFPOption", cfPOptionsJson, string.Empty, false));
             }
         }   
         await Task.CompletedTask;
@@ -420,7 +438,7 @@ public partial class ParameterDataService : IParameterDataService
         return syncedParameter;
     }
 
-    private KeyValuePair<string, string> ValidatePdfValue(PdfAcroField field)
+    private static KeyValuePair<string, string> ValidatePdfValue(PdfAcroField field)
     {
         var name = field.Name;
 
@@ -433,7 +451,7 @@ public partial class ParameterDataService : IParameterDataService
         {
             "PdfTextField" => ((PdfSharp.Pdf.PdfString)field.Value).Value,
             "PdfCheckBoxField" => string.Equals(field.Value.ToString(), "/Yes", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False",
-            "PdfRadioButtonField" => field.Value.ToString(),
+            "PdfRadioButtonField" => string.Equals(field.Value.ToString(), "/Off", StringComparison.CurrentCultureIgnoreCase) ? string.Empty : field.Value.ToString()?.Replace("/",""),
             _ => string.Empty,
         };
 

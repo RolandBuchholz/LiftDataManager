@@ -956,6 +956,7 @@
         <ContentDialog
             x:Name="LiftDataImportDialog"
             Title="Datenimport"
+            CloseButtonCommand="{x:Bind ViewModel.FinishDataImportCommand}"
             CloseButtonText="Importdialog schließen">
             <Grid>
                 <Grid.ColumnDefinitions>

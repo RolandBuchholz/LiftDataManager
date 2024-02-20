@@ -5,9 +5,6 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinUICommunity;
 using Humanizer;
-using LiftDataManager.Core.Models;
-using PdfSharp.Pdf.Content.Objects;
-using Cogs.Collections;
 
 namespace LiftDataManager.ViewModels;
 
@@ -606,6 +603,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         await LiftDataImportDialog.ShowAsyncQueueDraggable();
     }
+
     [RelayCommand]
     private async Task PickFilePathAsync()
     {
@@ -708,7 +706,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             foreach (var item in importParameterPdf)
             {
-                if (item.Name.EndsWith(carTypPrefix))
+                if (item.Name.EndsWith(carTypPrefix) || item.Name == "var_CFPOption")
                 {
                     item.Name = item.Name.Replace(carTypPrefix, "");
                     cleanImport.Add(item);
@@ -795,6 +793,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
                                $"Detailinformationen im Info Sidebar Panel.\n" +
                                $"Importdialog kann geschlossen werden.";
+    }
+
+    [RelayCommand]
+    private async Task FinishDataImportAsync()
+    {
+        ShowImportCarFrames = false;
+        DataImportStatus = InfoBarSeverity.Informational;
+        ImportSpezifikationTyp = SpezifikationTyp.Order;
+        ImportSpezifikationName = string.Empty;
+        await Task.CompletedTask;
     }
 
     protected override async Task SetModelStateAsync()
@@ -1017,6 +1025,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     {
         InfoSidebarPanelText = string.Empty;
         AuftragsbezogeneXml = false;
+        CurrentSpezifikationTyp = SpezifikationTyp.Order;
         SpezifikationName = string.Empty;
         CanValidateAllParameter = false;
         CanLoadSpeziData = false;
