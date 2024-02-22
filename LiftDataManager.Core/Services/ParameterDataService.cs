@@ -3,12 +3,13 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
-using PdfSharp.Fonts;
-using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
+using PdfSharp.Fonts;
 using PdfSharp.Snippets.Font;
+using PdfSharp;
 using System.Text.Json;
 using System.Xml.Linq;
+using PdfSharp.Pdf.AcroForms;
 
 namespace LiftDataManager.Core.Services;
 
@@ -155,12 +156,25 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path)
     {
         var transferDataList = new List<TransferData>();
-        GlobalFontSettings.FontResolver ??= new FailsafeFontResolver();
+        if (Capabilities.Build.IsCoreBuild)
+            GlobalFontSettings.FontResolver ??= new FailsafeFontResolver();
 
         using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.ReadOnly))
         {
             var cfPOptions = new CarFrameProgramOptions();
-            var fields = pdfDocument.AcroForm.Fields;
+            PdfAcroForm pdfDocumentAcroForm;
+
+            try
+            {
+                pdfDocumentAcroForm = pdfDocument.AcroForm;
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(60202, "Pdfdocument has no AcroForm Parameter: {path} failed", path);
+                return transferDataList;
+            }
+
+            var fields = pdfDocumentAcroForm.Fields;
             foreach (var pdfName in fields.Names)
             {
                 var field = fields[pdfName];
@@ -172,10 +186,10 @@ public partial class ParameterDataService : IParameterDataService
                     if (cfPOptions.IsCFPOption(parameter.Key))
                     {
                         var option = ValidatePdfValue(field);
-                        if (int.TryParse(option.Value, out int optionValue))
+                        if (double.TryParse(option.Value, out double optionValue))
                         {
-                            cfPOptions.SetOption(parameter.Key, optionValue);
-                        } 
+                            cfPOptions.SetOption(parameter.Key, (int)optionValue);
+                        }
                     }
                     continue;
                 }       
@@ -474,8 +488,9 @@ public partial class ParameterDataService : IParameterDataService
 
         return name switch
         {
-            var n when n.StartsWith("var_Aufzugstyp") => new KeyValuePair<string, string>(name, pdfValue == "/1" ? "Personen Seil-Aufzug" : "Lasten Seil-Aufzug"),
+            var n when n.StartsWith("var_Aufzugstyp") => new KeyValuePair<string, string>(name, GetLiftTyp(name, pdfValue)),
             var n when n.StartsWith("var_Zugang") => new KeyValuePair<string, string>(name.Replace("Zugang_bei", "ZUGANSSTELLEN"), pdfValue),
+            var n when n.StartsWith("var_KabTueF") => new KeyValuePair<string, string>(name.Replace("KabTueF", "KabinengewichtCAD"), pdfValue),
             var n when n.StartsWith("var_AuslieferungAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDateFromCalendarWeek(pdfValue)),
             var n when n.StartsWith("var_ErstelltAm") => new KeyValuePair<string, string>(name, LiftParameterHelper.GetShortDate(pdfValue)),
             _ => new KeyValuePair<string, string>(name, pdfValue.Trim('(', ')')),
@@ -496,6 +511,18 @@ public partial class ParameterDataService : IParameterDataService
         xmlparameter.Element("comment")!.Value = parameter.Comment is null ? string.Empty : parameter.Comment;
         xmlparameter.Element("isKey")!.Value = parameter.IsKey ? "true" : "false";
         LogSavedParameter(parameter.DisplayName!, parameter.Value!);
+    }
+
+    private static string GetLiftTyp(string name , string value)
+    {
+        var typ = value == "1" ? "Personen" : "Lasten";
+        var drive = name.Replace("var_Aufzugstyp","") switch
+        {
+            "_TG2" or "_BR1" or "_BR2" or "_BT1" or "_BT2" => "Hydraulik",
+            "_BRR" or "_ZZE_S" or "_EZE_SR"=> "Seil",
+            _ => "Seil"
+        };
+        return $"{typ} {drive}-Aufzug";
     }
 
     [LoggerMessage(60104, LogLevel.Information,

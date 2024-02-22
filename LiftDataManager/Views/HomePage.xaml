@@ -405,7 +405,7 @@
                     <TextBlock
                         Grid.Row="3"
                         VerticalAlignment="Center"
-                        Text="Kabinengewicht errechnet:" />
+                        Text="{x:Bind ViewModel.CarWeightDescription, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="4"
                         VerticalAlignment="Center"
@@ -1030,7 +1030,7 @@
                     Grid.Row="4"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
-                    Margin="5,0,0,0"
+                    Margin="0,0,0,0"
                     IsValid="{x:Bind ViewModel.CanImportSpeziData, Mode=TwoWay}"
                     PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                     RequestEnabled="True"

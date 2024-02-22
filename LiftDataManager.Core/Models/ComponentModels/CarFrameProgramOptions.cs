@@ -207,4 +207,16 @@ public class CarFrameProgramOptions
 
     [JsonPropertyName("Staplerbeladung_BT2")]
     public int StackerLoadingBT2 { get; set; }
+
+    [JsonPropertyName("XL_BT1")]
+    public int XLBT1 { get; set; }
+
+    [JsonPropertyName("XR_BT1")]
+    public int XRBT1 { get; set; }
+
+    [JsonPropertyName("XL_BT2")]
+    public int XLBT2 { get; set; }
+
+    [JsonPropertyName("XR_BT2")]
+    public int XRBT2 { get; set; }
 }

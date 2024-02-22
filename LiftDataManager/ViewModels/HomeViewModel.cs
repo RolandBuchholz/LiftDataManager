@@ -73,6 +73,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
+    private string carWeightDescription = "Kabinengewicht errechnet:";
+
+    [ObservableProperty]
     private double carFrameWeight;
 
     [ObservableProperty]
@@ -678,6 +681,15 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         else
         {
             var importParameterPdf = await _parameterDataService!.LoadPdfOfferAsync(ImportSpezifikationName);
+
+            if (!importParameterPdf.Any())
+            {
+                DataImportStatus = InfoBarSeverity.Warning;
+                DataImportStatusText = $"Die ausgewählte PDF-Datei enthält keine Daten für den Import.\n" +
+                                       $"{ImportSpezifikationName}";
+                return;
+            }
+
             var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
             ShowImportCarFrames = isMultiCarframe;
             if (!isMultiCarframe) SelectedImportCarFrame = null;
@@ -726,8 +738,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             };
 
             cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
-
+            cleanImport.Add(new TransferData("var_Fahrkorbtyp", "Fremdkabine", string.Empty, false));
             importParameter = cleanImport;
+
+            CopyPdfOffer(ImportSpezifikationName);
         }
 
         if (importParameter is null)
@@ -803,7 +817,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         DataImportStatus = InfoBarSeverity.Informational;
         ImportSpezifikationTyp = SpezifikationTyp.Order;
         ImportSpezifikationName = string.Empty;
-        await Task.CompletedTask;
+        await SetCalculatedValuesAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -988,6 +1002,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
             ParameterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
         }
+
+        string? carTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Fahrkorbtyp");
+        CarWeightDescription = string.IsNullOrWhiteSpace(carTyp) || !string.Equals(carTyp, "Fremdkabine") ? "Kabinengewicht errechnet:" : "Fremdkabine Gewicht:";
         await Task.CompletedTask;
     }
 
@@ -1058,6 +1075,32 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
             ParameterDictionary["var_Index"].Value = newRevision;
             ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
+        }
+    }
+
+    private void CopyPdfOffer(string fullPath)
+    {
+        if (!File.Exists(fullPath))
+            return;
+
+        var currentFileName = Path.GetFileName(fullPath);
+        var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
+        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!,"SV", newFileName);
+
+        if (string.Equals(fullPath, newFullPath, StringComparison.CurrentCultureIgnoreCase))
+            return;
+
+        if (!string.IsNullOrWhiteSpace(newFullPath) && Path.IsPathFullyQualified(newFullPath))
+        {
+            if (File.Exists(newFullPath))
+            {
+                FileInfo pdfOfferFileInfo = new(newFullPath);
+                if (pdfOfferFileInfo.IsReadOnly)
+                {
+                    pdfOfferFileInfo.IsReadOnly = false;
+                }
+            }
+            File.Copy(fullPath, newFullPath, true);
         }
     }
 
