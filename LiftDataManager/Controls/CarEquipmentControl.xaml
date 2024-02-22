@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <UserControl
     x:Class="LiftDataManager.Controls.CarEquipmentControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -5,15 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LiftDataManager.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:skiasharp="using:SkiaSharp.Views.Windows"
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Innenansicht Wand" />
             <TextBlock
-                Margin="10"
-                Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="coming soon" />
+                Margin="5,0,0,0"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="{x:Bind Side}" />
         </StackPanel>
+        <Viewbox Grid.Row="1" Margin="5">
+            <skiasharp:SKXamlCanvas
+                x:Name="xamlCanvas"
+                Width="{x:Bind ViewBoxWidth, Mode=OneWay}"
+                Height="{x:Bind ViewBoxHeight, Mode=OneWay}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                PaintSurface="OnPaintSurface" />
+        </Viewbox>
     </Grid>
 </UserControl>

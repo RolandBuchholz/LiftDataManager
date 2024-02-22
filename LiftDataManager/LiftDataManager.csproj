@@ -196,6 +196,7 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="WinUICommunity.Core" Version="6.4.0" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.6" />
     <PackageReference Include="WinUIEx" Version="2.3.3" />
   </ItemGroup>
 
@@ -206,10 +207,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Controls\SpezifikationsNumberControl.xaml">
+    <Page Update="Controls\CarEquipmentControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\CarEquipmentControl.xaml">
+    <Page Update="Controls\SpezifikationsNumberControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\HistorySearchBar.xaml">
