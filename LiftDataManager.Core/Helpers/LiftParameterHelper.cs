@@ -24,11 +24,15 @@ public class LiftParameterHelper
         }
         else if (typeof(T) == typeof(double))
         {
-            return string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToDouble(value, CultureInfo.CurrentCulture);
+            return string.IsNullOrWhiteSpace(value) ? 0d : Convert.ToDouble(value, CultureInfo.CurrentCulture);
         }
         else if (typeof(T) == typeof(bool))
         {
             return !string.IsNullOrWhiteSpace(value) && Convert.ToBoolean(value, CultureInfo.CurrentCulture);
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            return string.IsNullOrWhiteSpace(value) ? 0f : float.Parse(value, CultureInfo.CurrentCulture);
         }
         else
         {
