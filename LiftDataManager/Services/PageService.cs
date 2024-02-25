@@ -31,6 +31,8 @@ public class PageService : IPageService
         Configure<DataBaseEditViewModel, DataBaseEditPage>();
         Configure<LiftHistoryViewModel, LiftHistoryPage>();
         Configure<HelpViewModel, HelpPage>();
+        Configure<BausatzDetailViewModel, BausatzDetailPage>();
+        Configure<SchachtDetailViewModel, SchachtDetailPage>();
     }
 
     public Type GetPageType(string key)
