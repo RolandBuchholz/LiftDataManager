@@ -1,14 +1,19 @@
-﻿using LiftDataManager.Core.Services;
+﻿using System.Runtime.CompilerServices;
+
+using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
+
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Newtonsoft.Json;
+
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
-using System.Runtime.CompilerServices;
+
 using Windows.Storage;
 
 namespace LiftDataManager;
@@ -74,6 +79,10 @@ public partial class App : Application
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
 
             // Views and ViewModels
+            services.AddTransient<SchachtDetailViewModel>();
+            services.AddTransient<SchachtDetailPage>();
+            services.AddTransient<BausatzDetailViewModel>();
+            services.AddTransient<BausatzDetailPage>();
             services.AddTransient<HelpViewModel>();
             services.AddTransient<HelpPage>();
             services.AddTransient<LiftHistoryViewModel>();

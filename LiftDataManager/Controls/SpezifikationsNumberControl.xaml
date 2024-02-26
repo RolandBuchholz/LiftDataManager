@@ -40,8 +40,8 @@
         <TextBox
             x:Name="tbx_Numberbox"
             Margin="5,0,0,0"
-            ui:TextBoxExtensions.Regex="[0-9-VP]"
             ui:TextBoxExtensions.ValidationMode="Dynamic"
+            ui:TextBoxExtensions.ValidationType="Number"
             MaxLength="10"
             Text="{x:Bind NumberBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Interactivity:Interaction.Behaviors>
@@ -53,8 +53,8 @@
         <Button
             x:Name="btn_Request"
             Margin="5,0,5,0"
-            Command="{x:Bind PickFilePath}"
-            HorizontalAlignment="Stretch">
+            HorizontalAlignment="Stretch"
+            Command="{x:Bind PickFilePath}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Anfrage Formular(Pdf)" />
                 <SymbolIcon Margin="10,0,0,0" Symbol="Share" />

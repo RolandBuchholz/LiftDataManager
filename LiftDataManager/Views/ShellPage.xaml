@@ -102,8 +102,16 @@
                 <NavigationViewItem x:Uid="Shell_LiftDetailData" Icon="Edit">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem
+                            x:Uid="Shell_SchachtDetail"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.SchachtDetailViewModel"
+                            Icon="PreviewLink" />
+                        <NavigationViewItem
                             x:Uid="Shell_KabineDetail"
                             helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.KabineDetailViewModel"
+                            Icon="PreviewLink" />
+                        <NavigationViewItem
+                            x:Uid="Shell_BausatzDetail"
+                            helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.BausatzDetailViewModel"
                             Icon="PreviewLink" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>

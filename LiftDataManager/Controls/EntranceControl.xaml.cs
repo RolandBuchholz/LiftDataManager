@@ -25,7 +25,7 @@ public sealed partial class EntranceControl : UserControl
     }
 
     public static readonly DependencyProperty ItemSourceProperty =
-        DependencyProperty.Register("ItemSource", typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(ItemSource), typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
 
     public string DisplayNameHauptzugang
     {
@@ -34,7 +34,7 @@ public sealed partial class EntranceControl : UserControl
     }
 
     public static readonly DependencyProperty DisplayNameHauptzugangProperty =
-        DependencyProperty.Register("DisplayNameHauptzugang", typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(DisplayNameHauptzugang), typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
 
     private void TextCommandBarFlyout_Opening(object sender, object e)
     {

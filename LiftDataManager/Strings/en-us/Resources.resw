@@ -231,4 +231,10 @@
   <data name="Shell_Help.Content" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="Shell_BausatzDetail.Content" xml:space="preserve">
+    <value>BausatzDetail</value>
+  </data>
+  <data name="Shell_SchachtDetail.Content" xml:space="preserve">
+    <value>SchachtDetail</value>
+  </data>
 </root>
