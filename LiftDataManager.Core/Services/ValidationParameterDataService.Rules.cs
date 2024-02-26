@@ -1458,6 +1458,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarCeilingDetails(string name, string displayname, string? value, string? severity, string? optional = null)
     {
+        if (!LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary["var_Fahrkorbtyp"].Value))
+            return;
+
         switch (name)
         {
             case "var_KBI" or "var_overrideDefaultCeiling":

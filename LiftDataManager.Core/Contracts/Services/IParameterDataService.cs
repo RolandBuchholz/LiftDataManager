@@ -14,7 +14,7 @@ public interface IParameterDataService
 
     Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path);
 
-    Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path);
+    Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false);
 
     Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();
 

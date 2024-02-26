@@ -7,9 +7,11 @@ public sealed partial class HistorySearchBar : UserControl
 {
     const string defaultAuthorName = "All Authors";
     const string defaultRevisionName = "All Revisions";
+    private readonly ParameterCategoryValue defaultCategoryName = ParameterCategoryValue.None;
 
     public List<LiftHistoryEntry> FilteredEntrys { get; set; }
     public ObservableCollection<string> Authors { get; set; }
+    public List<ParameterCategoryValue> Categorys { get; set; }
     private ObservableDictionary<string, DateTime> RevisionsDictionary { get; set; }
 
     public HistorySearchBar()
@@ -17,6 +19,7 @@ public sealed partial class HistorySearchBar : UserControl
         InitializeComponent();
         FilteredEntrys ??= new();
         Authors ??= new();
+        Categorys = ParameterCategoryValue.List.ToList();
         RevisionsDictionary ??= new();
     }
 
@@ -110,6 +113,19 @@ public sealed partial class HistorySearchBar : UserControl
 
     public static readonly DependencyProperty RevisionProperty =
         DependencyProperty.Register(nameof(Revision), typeof(string), typeof(HistorySearchBar), new PropertyMetadata(defaultRevisionName));
+
+    public ParameterCategoryValue Category
+    {
+        get => (ParameterCategoryValue)GetValue(CategoryProperty);
+        set
+        {
+            SetValue(CategoryProperty, value);
+            FilterParameter(SearchInput);
+        }
+    }
+
+    public static readonly DependencyProperty CategoryProperty =
+        DependencyProperty.Register(nameof(Category), typeof(ParameterCategoryValue), typeof(HistorySearchBar), new PropertyMetadata(ParameterCategoryValue.None));
 
     private void InitializeValues()
     {
@@ -214,11 +230,18 @@ public sealed partial class HistorySearchBar : UserControl
 
     private Func<LiftHistoryEntry, bool> FilterViewSearchInput(string searchInput)
     {
-        if (string.IsNullOrWhiteSpace(searchInput) && Author == defaultAuthorName)
-            return p => p.Name != null;
         if (string.IsNullOrWhiteSpace(searchInput))
         {
-            return p => p.Name != null && p.Author == Author;
+            if (Author == defaultAuthorName && Category == defaultCategoryName)
+                return p => p.Name != null;
+
+            if (Category == defaultCategoryName)
+                return p => p.Name != null && p.Author == Author;
+
+            if (Author == defaultAuthorName)
+                return p => p.Name != null && p.Category == Category;
+
+            return p => p.Name != null && p.Author == Author && p.Category == Category;
         }
         else
         {
@@ -226,7 +249,8 @@ public sealed partial class HistorySearchBar : UserControl
                      || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                      || (p.NewValue != null && p.NewValue.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
                      || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))
-                     && ((Author == defaultAuthorName) || p.Author == Author);
+                     && ((Author == defaultAuthorName) || p.Author == Author)
+                     && ((Category == defaultCategoryName) || p.Category == Category);
         }
     }
 
@@ -234,6 +258,7 @@ public sealed partial class HistorySearchBar : UserControl
     {
         Author = defaultAuthorName;
         Revision = defaultRevisionName;
+        Category = defaultCategoryName;
         StartDate = null;
         EndDate = null;
         SearchInput = string.Empty;

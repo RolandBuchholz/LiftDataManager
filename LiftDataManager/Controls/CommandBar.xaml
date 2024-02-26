@@ -106,7 +106,7 @@
                                 Click="SetFilter_Click"
                                 Text="Rauch- und Wärmeabzugsanlage" />
                             <MenuFlyoutItem
-                                x:Name="FilterSonstiges"
+                                x:Name="Sonstiges"
                                 Click="SetFilter_Click"
                                 Text="Sonstiges" />
                             <MenuFlyoutItem

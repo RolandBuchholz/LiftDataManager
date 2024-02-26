@@ -27,13 +27,10 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware,
     {
         if (string.IsNullOrWhiteSpace(path))
             return;
-        CanShowHistoryEntrys = false;
-        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path);
-        if (result != null)
-        {
-            HistoryEntrys.AddRange(result);
-            CanShowHistoryEntrys = HistoryEntrys.Any();
-        }
+        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path, true);
+        if (result is null)
+            return;
+        HistoryEntrys.AddRange(result);
     }
 
     [RelayCommand]
@@ -83,6 +80,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware,
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
             _ = SetModelStateAsync();
         _ = GetLiftHistoryEntrysAsync(FullPathXml);
+        CanShowHistoryEntrys = HistoryEntrys.Any();
     }
 
     public void OnNavigatedFrom()

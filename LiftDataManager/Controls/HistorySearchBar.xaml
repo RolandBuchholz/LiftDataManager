@@ -29,6 +29,12 @@
                 VerticalAlignment="Center"
                 ItemsSource="{x:Bind RevisionsDictionary.Keys, Mode=OneWay}"
                 SelectedValue="{x:Bind Revision, Mode=TwoWay}" />
+            <FontIcon Margin="5,0,5,0" Glyph="&#xE799;" />
+            <ComboBox
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind Categorys, Mode=OneWay}"
+                SelectedValue="{x:Bind Category, Mode=TwoWay}" />
             <SymbolIcon Margin="5,0,5,0" Symbol="Calendar" />
             <CalendarDatePicker Date="{x:Bind StartDate, Mode=TwoWay}" PlaceholderText="Start Datum" />
             <SymbolIcon Margin="5,0,5,0" Symbol="CalendarReply" />

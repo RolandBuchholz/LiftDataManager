@@ -97,7 +97,6 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (_selected is null)
             return;
         ParameterHistoryEntrys.Clear();
-
         if (HistoryEntrysDictionary.TryGetValue(_selected.Name!, out var historyEntry))
         {
             foreach (var item in historyEntry.OrderByDescending(x => x.TimeStamp))
@@ -212,7 +211,10 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                 {
                     value.Add(entry);
                 }
-                HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
+                else
+                {
+                    HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
+                }
             }
         }
     }

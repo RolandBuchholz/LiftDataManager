@@ -82,4 +82,12 @@ public class LiftParameterHelper
         var result = firstThursday.AddDays(weekNum * 7);
         return result.AddDays(2).ToShortDateString();
     }
+
+    public static bool IsDefaultCarTyp(string? carTyp)
+    {
+        if (string.IsNullOrWhiteSpace(carTyp))
+        return true;
+        return string.Equals(carTyp, "C100 (aufg. Sockel)", StringComparison.CurrentCultureIgnoreCase) || 
+               string.Equals(carTyp, "C200 (vers. Sockel)", StringComparison.CurrentCultureIgnoreCase);
+    }
 }

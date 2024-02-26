@@ -237,6 +237,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [RelayCommand]
     private async Task UpdateCheckAsync()
     {
+        InfoText = string.Empty;
         var pm = new PackageManager();
         Package? package = pm.FindPackagesForUser(string.Empty, "BD956274-5B08-468A-AE87-B6190C6A8210", "CN=Buchholz").FirstOrDefault();
         if (package is not null)

@@ -207,9 +207,10 @@ public partial class ParameterDataService : IParameterDataService
         return transferDataList;
     }
 
-    public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path)
+    public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false)
     {
         var historyEntrys = new List<LiftHistoryEntry>();
+        Dictionary<string,int> parameterCategory = new();
 
         if (!ValidatePath(path, true))
             return historyEntrys;
@@ -219,6 +220,18 @@ public partial class ParameterDataService : IParameterDataService
 
         var entrys = File.ReadAllLines(historyPath);
 
+        if (includeCategory)
+        {
+            var parDto = _parametercontext.ParameterDtos;
+            if (parDto is not null)
+            {
+                foreach (var item in parDto)
+                {
+                    parameterCategory.Add(item.Name, item.ParameterCategoryId);
+                }
+            }
+        }
+            
         foreach (var entry in entrys)
         {
             if (string.IsNullOrWhiteSpace(entry))
@@ -233,8 +246,17 @@ public partial class ParameterDataService : IParameterDataService
                 _logger.LogError(61101, "Deserialize failed LiftHistory failed");
                 continue;
             }
-            if (lifthistoryentry != null)
+            if (lifthistoryentry is null)
+             continue;
+            if (!includeCategory)
+            {
                 historyEntrys.Add(lifthistoryentry);
+            }
+            else
+            {
+                lifthistoryentry.Category = GetLiftParameterCategory(parameterCategory, lifthistoryentry.Name);
+                historyEntrys.Add(lifthistoryentry);
+            }
         }
         await Task.CompletedTask;
         return historyEntrys;
@@ -523,6 +545,15 @@ public partial class ParameterDataService : IParameterDataService
             _ => "Seil"
         };
         return $"{typ} {drive}-Aufzug";
+    }
+
+    private static ParameterCategoryValue GetLiftParameterCategory(Dictionary<string,int> parameterDto, string parameterName)
+    {
+        if (parameterDto.TryGetValue(parameterName, out int category))
+        {
+            return (ParameterCategoryValue)category;
+        }
+        return ParameterCategoryValue.AllgemeineDaten;
     }
 
     [LoggerMessage(60104, LogLevel.Information,
