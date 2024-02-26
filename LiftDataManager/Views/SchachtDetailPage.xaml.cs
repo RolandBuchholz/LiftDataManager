@@ -1,8 +1,4 @@
-﻿using LiftDataManager.ViewModels;
-
-using Microsoft.UI.Xaml.Controls;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class SchachtDetailPage : Page
 {
@@ -15,5 +11,10 @@ public sealed partial class SchachtDetailPage : Page
     {
         ViewModel = App.GetService<SchachtDetailViewModel>();
         InitializeComponent();
+    }
+
+    private void xamlCanvas_PaintSurface(object sender, SkiaSharp.Views.Windows.SKPaintSurfaceEventArgs e)
+    {
+
     }
 }
