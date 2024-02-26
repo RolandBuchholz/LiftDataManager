@@ -16,8 +16,8 @@ public sealed partial class CarEquipmentControl : UserControl
         CarDepth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource,"var_KTI");
         CarWidth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KBI");
         CarHeightRaw = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KHRoh");
-        ViewBoxWidth = Side == CarSide.A || Side == CarSide.C ? CarWidth / 2 : CarDepth / 2;
-        ViewBoxHeight = CarHeightRaw / 2;
+        ViewBoxWidth = Side == CarSide.A || Side == CarSide.C ? CarWidth : CarDepth;
+        ViewBoxHeight = CarHeightRaw;
     }
 
     public double ViewBoxWidth
@@ -68,7 +68,7 @@ public sealed partial class CarEquipmentControl : UserControl
     public static readonly DependencyProperty ItemSourceProperty =
         DependencyProperty.Register(nameof(ItemSource), typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
 
-    private void RefreshView()
+    public void RefreshView()
     {
         xamlCanvas.Invalidate();
     }
@@ -114,7 +114,7 @@ public sealed partial class CarEquipmentControl : UserControl
             Color = SKColors.Black,
             IsAntialias = true,
             IsStroke = true,
-            StrokeWidth = 10,
+            StrokeWidth = 20,
             Style = SKPaintStyle.Stroke
         };
         using var paintStrokeSmall = new SKPaint
@@ -122,7 +122,7 @@ public sealed partial class CarEquipmentControl : UserControl
             Color = SKColors.Black,
             IsAntialias = true,
             IsStroke = true,
-            StrokeWidth = 5,
+            StrokeWidth = 10,
             Style = SKPaintStyle.Stroke
         };
         using var paintGreen = new SKPaint
@@ -171,7 +171,7 @@ public sealed partial class CarEquipmentControl : UserControl
                         float arrowOffset = startOffset - j * 150;
                         arrow = SkiaSharpHelpers.CreateArrow(doorDistanceR - panelWidth / 2 + doorPanelCount * panelWidth - panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f + arrowOffset, 180);
                         canvas.DrawPath(arrow, paintGreen);
-                        canvas.DrawPath(arrow, paintStroke);
+                        canvas.DrawPath(arrow, paintStrokeSmall);
                     }
                 }
                 break;
@@ -184,7 +184,7 @@ public sealed partial class CarEquipmentControl : UserControl
                         float arrowOffset = startOffset - j * 150;
                         arrow = SkiaSharpHelpers.CreateArrow(doorDistanceR + panelWidth / 2 + panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f + arrowOffset, 0);
                         canvas.DrawPath(arrow, paintGreen);
-                        canvas.DrawPath(arrow, paintStroke);
+                        canvas.DrawPath(arrow, paintStrokeSmall);
                     }
                 }
                 break;
@@ -197,7 +197,7 @@ public sealed partial class CarEquipmentControl : UserControl
                         float arrowOffset = startOffset - j * 150;
                         arrow = SkiaSharpHelpers.CreateArrow(doorDistanceR + doorWidth / 2 + panelWidth / 2 + panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f + arrowOffset, 0);
                         canvas.DrawPath(arrow, paintGreen);
-                        canvas.DrawPath(arrow, paintStroke);
+                        canvas.DrawPath(arrow, paintStrokeSmall);
                     }
                 }
                 for (int i = 0; i < doorPanelCount / 2; i++)
@@ -208,7 +208,7 @@ public sealed partial class CarEquipmentControl : UserControl
                         float arrowOffset = startOffset - j * 150;
                         arrow = SkiaSharpHelpers.CreateArrow(doorDistanceR - doorWidth / 2 - panelWidth / 2 + doorPanelCount * panelWidth - panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f + arrowOffset, 180);
                         canvas.DrawPath(arrow, paintGreen);
-                        canvas.DrawPath(arrow, paintStroke);
+                        canvas.DrawPath(arrow, paintStrokeSmall);
                     }
                 }
                 break;
@@ -240,7 +240,7 @@ public sealed partial class CarEquipmentControl : UserControl
             Color = SKColors.Black,
             IsAntialias = true,
             IsStroke = true,
-            StrokeWidth = 5,
+            StrokeWidth = 10,
             Style = SKPaintStyle.Stroke
         };
         canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paint);
