@@ -49,6 +49,7 @@ public sealed partial class CarEquipmentControl : UserControl
         DrawWall(canvas);
         DrawSkirtingBoard(canvas);
         DrawCarDoor(canvas);
+        DrawMirror(canvas);
     }
     public CarSide Side
     {
@@ -245,5 +246,36 @@ public sealed partial class CarEquipmentControl : UserControl
         };
         canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paint);
         canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paintStrokeSmall);
+    }
+
+    private void DrawMirror(SKCanvas canvas)
+    {
+        //if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Sockelleiste{Side}"))
+        //    return;
+        //float skirtingHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_SockelleisteOKFF");
+        //float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
+        //string skirting = LiftParameterHelper.GetLiftParameterValue<string>(ItemSource, "var_Sockelleiste");
+        //if (string.IsNullOrWhiteSpace(skirting))
+        //    return;
+        //var skirtingHeightString = skirting.Replace("V2A", "").Replace("V4A", "").Split("x").FirstOrDefault()?.Trim();
+        //if (!float.TryParse(skirtingHeightString, out float skirtingHeight))
+        //    return;
+
+        //using var paint = new SKPaint
+        //{
+        //    Color = SKColors.DimGray,
+        //    IsAntialias = true,
+        //    Style = SKPaintStyle.Fill,
+        //};
+        //using var paintStrokeSmall = new SKPaint
+        //{
+        //    Color = SKColors.Black,
+        //    IsAntialias = true,
+        //    IsStroke = true,
+        //    StrokeWidth = 10,
+        //    Style = SKPaintStyle.Stroke
+        //};
+        //canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paint);
+        //canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paintStrokeSmall);
     }
 }

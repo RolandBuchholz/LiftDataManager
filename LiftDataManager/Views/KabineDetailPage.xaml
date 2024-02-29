@@ -227,6 +227,12 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <TextBlock
                                             Grid.Row="0"
@@ -295,6 +301,122 @@
                                             Grid.Column="2"
                                             VerticalAlignment="Center"
                                             Text="mm" />
+                                        <TextBlock
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Margin="0,5,0,5"
+                                            VerticalAlignment="Top"
+                                            FontSize="18"
+                                            FontWeight="Bold"
+                                            Text="Türdaten" />
+                                        <TextBlock
+                                            Grid.Row="5"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                            <Run
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Zugang A  " />
+                                            <Run FontWeight="Bold" Text="TürTyp: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].Value}" />
+                                            <Run FontWeight="Bold" Text="Türbreite: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TB'].Value}" />
+                                            <Run Text=" mm" />
+                                            <Run FontWeight="Bold" Text="Türhöhe: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TH'].Value}" />
+                                            <Run Text=" mm " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung'].Value}" />
+                                        </TextBlock>
+                                        <TextBlock
+                                            Grid.Row="6"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                            <Run
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Zugang B  " />
+                                            <Run FontWeight="Bold" Text="TürTyp: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].Value}" />
+                                            <Run FontWeight="Bold" Text="Türbreite: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TB_B'].Value}" />
+                                            <Run Text=" mm" />
+                                            <Run FontWeight="Bold" Text="Türhöhe: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TH_B'].Value}" />
+                                            <Run Text=" mm " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_B'].Value}" />
+                                        </TextBlock>
+                                        <TextBlock
+                                            Grid.Row="7"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                            <Run
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Zugang C  " />
+                                            <Run FontWeight="Bold" Text="TürTyp: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].Value}" />
+                                            <Run FontWeight="Bold" Text="Türbreite: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TB_C'].Value}" />
+                                            <Run Text=" mm" />
+                                            <Run FontWeight="Bold" Text="Türhöhe: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TH_C'].Value}" />
+                                            <Run Text=" mm " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_C'].Value}" />
+                                        </TextBlock>
+                                        <TextBlock
+                                            Grid.Row="8"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                            <Run
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Zugang D  " />
+                                            <Run FontWeight="Bold" Text="TürTyp: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].Value}" />
+                                            <Run FontWeight="Bold" Text="Türbreite: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TB_D'].Value}" />
+                                            <Run Text=" mm" />
+                                            <Run FontWeight="Bold" Text="Türhöhe: " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_TH_D'].Value}" />
+                                            <Run Text=" mm " />
+                                            <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_D'].Value}" />
+                                        </TextBlock>
+                                        <TextBlock
+                                            Grid.Row="9"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Margin="0,5,0,5"
+                                            VerticalAlignment="Top"
+                                            FontSize="18"
+                                            FontWeight="Bold"
+                                            Text="Spiegel Detaileingabe" />
+                                        <StackPanel
+                                            Grid.Row="10"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Orientation="Horizontal">
+                                            <CheckBox
+                                                Content="Spiegel A"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelA'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                                IsHitTestVisible="False" />
+                                            <CheckBox
+                                                Content="Spiegel B"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelB'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                                IsHitTestVisible="False" />
+                                            <CheckBox
+                                                Content="Spiegel C"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelC'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                                IsHitTestVisible="False" />
+                                            <CheckBox
+                                                Content="Spiegel D"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelD'].Value, Converter={StaticResource StringToBoolConverter}}"
+                                                IsHitTestVisible="False" />
+                                        </StackPanel>
                                     </Grid>
                                 </Grid>
                             </PivotItem>

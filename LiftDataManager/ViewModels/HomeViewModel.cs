@@ -225,21 +225,26 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         CheckOut = true;
                         _logger.LogInformation(60139, "{FullPathXml} loaded", downloadInfo.FullFileName);
                         break;
-                    case "CheckedOutByOtherUser":
-                        await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadInfo);
-                        _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
-                        InfoSidebarPanelText += $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n";
-                        InfoSidebarPanelText += $"Kein speichern möglich!\n";
-                        InfoSidebarPanelText += $"{downloadInfo.FullFileName?.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
-                        AuftragsbezogeneXml = true;
-                        CanValidateAllParameter = true;
-                        CheckOut = false;
-                        LikeEditParameter = false;
-                        break;
                     default:
                         CheckOut = false;
                         break;
                 }
+            }
+            else if (downloadInfo.ExitState == ExitCodeEnum.CheckedOutByOtherUser || downloadInfo.ExitState == ExitCodeEnum.CheckedOutLinkedFilesByOtherUser)
+            {
+                FullPathXml = downloadInfo.FullFileName;
+                await _dialogService!.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet", 
+                    "Kein speichern möglich!\n"+
+                    "\n"+
+                    "Datei kann nur schreibgeschützt geöffnet werden.");
+                _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
+                InfoSidebarPanelText += $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n";
+                InfoSidebarPanelText += $"Kein speichern möglich!\n";
+                InfoSidebarPanelText += $"{downloadInfo.FullFileName?.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                AuftragsbezogeneXml = true;
+                CanValidateAllParameter = true;
+                CheckOut = false;
+                LikeEditParameter = false;
             }
             else if (downloadInfo.ExitState == ExitCodeEnum.MultipleAutoDeskTransferXml)
             {
@@ -535,6 +540,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
                 InfoSidebarPanelText += $"----------\n";
                 InfoSidebarPanelText += $"Standard Daten geladen\n";
+                _logger.LogInformation(60137, "upload successful");
+                ClearExpiredLiftData();
+                await LoadDataAsync();
+            }
+            else if (downloadResult.ExitState == ExitCodeEnum.UpdatePropertiesError)
+            {
+                InfoSidebarPanelText += $"Vault-Ordner-Eigenschaften konnten nicht aktualisiert werden";
+                InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
+                InfoSidebarPanelText += $"----------\n";
+                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                _logger.LogInformation(60138, "upload successful / property matching failed");
                 ClearExpiredLiftData();
                 await LoadDataAsync();
             }

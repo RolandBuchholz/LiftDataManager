@@ -250,14 +250,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                     InfoBarVersionsUpdateIsOpen = true;
                     InfoBarVersionsUpdateText = $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
                     InfoBarVersionsUpdateSeverity = InfoBarSeverity.Informational;
-                    var dialogResult = await _dialogService.ConfirmationDialogAsync("LiftDataManagerVersionsUpdateCheck", "Liftdatamanager wird nach dem Update neugestartet.\n" +
+                    var dialogResult = await _dialogService.ConfirmationDialogAsync("LiftDataManagerVersionsUpdateCheck", "Liftdatamanager muss nach dem Update neugestartet werden.\n" +
                         "Nicht gespeicherte Daten gehen verloren!", "Update starten", "Später updaten", "Abbrechen");
                     if (dialogResult is not null && (bool)dialogResult)
                     {
                         InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
                         _logger.LogInformation(60181, "LiftDataManagerupdate found and installing...");
                         await pm.AddPackageByAppInstallerFileAsync(new Uri(@"\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager\LiftDataManager_x64.appinstaller"),
-                            AddPackageByAppInstallerOptions.ForceTargetAppShutdown, pm.GetDefaultPackageVolume());
+                            AddPackageByAppInstallerOptions.None, pm.GetDefaultPackageVolume());  
                     }
                     break;
                 case PackageUpdateAvailability.NoUpdates:

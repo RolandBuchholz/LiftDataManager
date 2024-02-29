@@ -24,6 +24,10 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <converters:BoolToObjectConverter
+            x:Key="BoolToObjectConverter"
+            FalseValue="Collapsed"
+            TrueValue="Visible" />
         <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
@@ -226,7 +230,7 @@
                                             x:Name="CarCeiling"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KD'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                             PlaceholderText="DH"
-                                            ReadOnly="True"
+                                            ReadOnly="{x:Bind ViewModel.IsCarCeilingReadOnly, Mode=OneWay}"
                                             ShowDefaultHeader="True"
                                             Unit="mm">
                                             <Interactivity:Interaction.Behaviors>
@@ -273,9 +277,15 @@
                                                 FontWeight="Bold"
                                                 Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                                 Text="Deckenhöhe gesamt" />
-                                            <TextBlock Margin="5" TextWrapping="Wrap">
-                                                Deckenhöhe inkl. C-Schiene und abgehängter Decke.<LineBreak />
-                                                Parameter wird automatisch gesetzt</TextBlock>
+                                            <TextBlock
+                                                Margin="5"
+                                                Text="Deckenhöhe inkl. C-Schiene und abgehängter Decke."
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Margin="5"
+                                                Text="Parameter wird automatisch gesetzt"
+                                                TextWrapping="Wrap"
+                                                Visibility="{x:Bind ViewModel.IsCarCeilingReadOnly, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}" />
                                             <Button
                                                 Margin="5"
                                                 HorizontalAlignment="Stretch"

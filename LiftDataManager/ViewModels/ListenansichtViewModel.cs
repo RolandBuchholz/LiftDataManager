@@ -214,6 +214,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                 else
                 {
                     HistoryEntrysDictionary.Add(entry.Name, new List<LiftHistoryEntry>());
+                    HistoryEntrysDictionary[entry.Name].Add(entry);
                 }
             }
         }

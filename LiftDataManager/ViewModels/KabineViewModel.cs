@@ -103,9 +103,18 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetSkirtingBoardHeight(true);
         }
 
+        if (message.PropertyName == "var_Fahrkorbtyp")
+        {
+            if (ParameterDictionary is not null)
+                IsCarCeilingReadOnly = LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary[message.PropertyName].Value);
+        }
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    [ObservableProperty]
+    private bool isCarCeilingReadOnly;
 
     [ObservableProperty]
     private bool showCarWidthBetweenDoors;
@@ -311,6 +320,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             InfoTextCarWidthBetweenDoors = _calculationsModuleService.GetDistanceBetweenDoors(ParameterDictionary, "Kabinenbreite");
     }
 
+    private void CheckIsDefaultCarTyp()
+    {
+        IsCarCeilingReadOnly = LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary!["var_Fahrkorbtyp"].Value);
+    }
+
     [RelayCommand]
     private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
 
@@ -354,6 +368,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             CanShowGlassPanels(ParameterDictionary!["var_Paneelmaterial"].Value);
             CanShowGlassPanelsColor(ParameterDictionary!["var_PaneelmaterialGlas"].Value);
             SetDistanceBetweenDoors();
+            CheckIsDefaultCarTyp();
         }
     }
 
