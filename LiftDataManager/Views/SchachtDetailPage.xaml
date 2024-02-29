@@ -11,9 +11,13 @@
 
     <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Viewbox Grid.Row="0" Grid.Column="0">
             <skiasharp:SKXamlCanvas
                 x:Name="xamlCanvas"
@@ -28,5 +32,17 @@
                 </Interactivity:Interaction.Behaviors>
             </skiasharp:SKXamlCanvas>
         </Viewbox>
+        <Grid
+            Grid.Row="0"
+            Grid.Column="1"
+            Background="Aqua" />
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Background="BurlyWood" />
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1"
+            Background="Chocolate" />
     </Grid>
 </Page>

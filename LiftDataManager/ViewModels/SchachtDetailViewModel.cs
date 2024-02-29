@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using CommunityToolkit.WinUI.Animations;
 using SkiaSharp;
 
 namespace LiftDataManager.ViewModels;
@@ -26,19 +25,42 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     [RelayCommand]
     private void OnPaintSurface(SkiaSharp.Views.Windows.SKPaintSurfaceEventArgs e)
     {
-        var canvas = e.Surface.Canvas;
+        //SKImageInfo info = e.Info;
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
         canvas.Clear();
         DrawShaftWall(canvas);
     }
 
     private void DrawShaftWall(SKCanvas canvas)
     {
-        using var paintWall = new SKPaint
+        float hatchStokeWith = ((float)shaftWidth + (float)shaftDepth) / 400f;
+
+        SKPathEffect diagLinesPath = SKPathEffect.Create2DLine(hatchStokeWith,
+        SkiaSharpHelpers.Multiply(SKMatrix.CreateScale(hatchStokeWith * 10, hatchStokeWith * 10), SKMatrix.CreateRotationDegrees(45)));
+        SKRect shaftHatch = new(-hatchStokeWith * 10, -hatchStokeWith * 10, (float)ViewBoxWidth, (float)ViewBoxHeight);
+        SKRect shaftWall = new(0f, 0f, (float)ViewBoxWidth, (float)ViewBoxHeight);
+
+        using var paintWallSolid = new SKPaint
         {
             Color = SKColors.DarkGray,
             IsAntialias = true,
-            
-            Style = SKPaintStyle.StrokeAndFill
+            Style = SKPaintStyle.Fill
+        };
+        using var paintHatch = new SKPaint
+        {
+            Color = SKColors.DarkRed,
+            PathEffect = diagLinesPath,
+            IsAntialias = true,
+            IsStroke = true,
+            Style = SKPaintStyle.Stroke
+        };
+        using var paintHatchOutline = new SKPaint
+        {
+            Color = SKColors.DarkRed,
+            IsAntialias = true,
+            StrokeWidth= hatchStokeWith * 2,
+            Style = SKPaintStyle.Stroke
         };
         using var paintShaft = new SKPaint
         {
@@ -46,9 +68,12 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             IsAntialias = true,
             Style = SKPaintStyle.Fill
         };
-
-        canvas.DrawRect(0f, 0f, (float)ShaftWidth + 500f, (float)ViewBoxHeight + 500f, paintWall);
+        canvas.ClipRect(shaftWall);
+        canvas.DrawRect(shaftWall, paintWallSolid);
+        canvas.DrawRect(shaftHatch, paintHatch);
+        canvas.DrawRect(shaftWall, paintHatchOutline);
         canvas.DrawRect(250f, 250f, (float)ShaftWidth, (float)ShaftDepth, paintShaft);
+        canvas.DrawRect(250f, 250f, (float)ShaftWidth, (float)ShaftDepth, paintHatchOutline);
     }
 
     public void RefreshView()

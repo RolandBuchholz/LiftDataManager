@@ -20,4 +20,10 @@ public static class SkiaSharpHelpers
 
         return arrow;
     }
+    public static SKMatrix Multiply(SKMatrix first, SKMatrix second)
+    {
+        SKMatrix target = SKMatrix.CreateIdentity();
+        SKMatrix.Concat(ref target, first, second);
+        return target;
+    }
 }
