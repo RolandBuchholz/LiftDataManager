@@ -30,6 +30,7 @@
                 Height="{x:Bind ViewBoxHeight, Mode=OneWay}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
+                IgnorePixelScaling="True"
                 PaintSurface="OnPaintSurface" />
         </Viewbox>
     </Grid>
