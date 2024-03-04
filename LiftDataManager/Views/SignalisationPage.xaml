@@ -705,13 +705,13 @@
                                         Grid.Column="1"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabCodeKinLiefenth'], Mode=TwoWay}"
-                                        RadioButtonGroupName="CodeKartenleser"
+                                        RadioButtonGroupName="CodeKartenleserKab"
                                         ShowDefaultRadioButtonContent="True" />
                                     <SpeziControls:ParameterRadioButton
                                         Grid.Column="2"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleser, Path=IsChecked, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabkundenseit'], Mode=TwoWay}"
-                                        RadioButtonGroupName="CodeKartenleser"
+                                        RadioButtonGroupName="CodeKartenleserKab"
                                         ShowDefaultRadioButtonContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"
@@ -1350,13 +1350,13 @@
                                         Grid.Column="1"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabinLiefenth'], Mode=TwoWay}"
-                                        RadioButtonGroupName="CodeKartenleser"
+                                        RadioButtonGroupName="CodeKartenleserAT"
                                         ShowDefaultRadioButtonContent="True" />
                                     <SpeziControls:ParameterRadioButton
                                         Grid.Column="2"
                                         IsEnabled="{Binding ElementName=chb_CodeKartenleserAT, Path=IsChecked, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AussTabkundenseit'], Mode=TwoWay}"
-                                        RadioButtonGroupName="CodeKartenleser"
+                                        RadioButtonGroupName="CodeKartenleserAT"
                                         ShowDefaultRadioButtonContent="True" />
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="3"

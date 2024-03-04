@@ -233,6 +233,9 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <TextBlock
                                             Grid.Row="0"
@@ -395,28 +398,195 @@
                                             FontSize="18"
                                             FontWeight="Bold"
                                             Text="Spiegel Detaileingabe" />
-                                        <StackPanel
+                                        <Grid
                                             Grid.Row="10"
                                             Grid.Column="0"
-                                            Grid.ColumnSpan="3"
-                                            Orientation="Horizontal">
+                                            Grid.ColumnSpan="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
                                             <CheckBox
+                                                Grid.Column="0"
                                                 Content="Spiegel A"
                                                 IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelA'].Value, Converter={StaticResource StringToBoolConverter}}"
                                                 IsHitTestVisible="False" />
                                             <CheckBox
+                                                Grid.Column="1"
                                                 Content="Spiegel B"
                                                 IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelB'].Value, Converter={StaticResource StringToBoolConverter}}"
                                                 IsHitTestVisible="False" />
                                             <CheckBox
+                                                Grid.Column="2"
                                                 Content="Spiegel C"
                                                 IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelC'].Value, Converter={StaticResource StringToBoolConverter}}"
                                                 IsHitTestVisible="False" />
                                             <CheckBox
+                                                Grid.Column="3"
                                                 Content="Spiegel D"
                                                 IsChecked="{x:Bind ViewModel.ParameterDictionary['var_SpiegelD'].Value, Converter={StaticResource StringToBoolConverter}}"
                                                 IsHitTestVisible="False" />
-                                        </StackPanel>
+                                        </Grid>
+                                        <Grid
+                                            Grid.Row="11"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsWidth1, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelvonLinks'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsHeight1, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelDecke'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                        </Grid>
+                                        <Grid
+                                            Grid.Row="12"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Visibility="{x:Bind ViewModel.ShowMirrorDimensions2, Mode=OneWay}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsWidth2, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelvonLinks2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsHeight2, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelDecke2'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                        </Grid>
+                                        <Grid
+                                            Grid.Row="13"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Visibility="{x:Bind ViewModel.ShowMirrorDimensions3, Mode=OneWay}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsWidth3, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelvonLinks3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Header="{x:Bind ViewModel.MirrorDimensionsHeight3, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandSpiegelDecke3'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </PivotItem>

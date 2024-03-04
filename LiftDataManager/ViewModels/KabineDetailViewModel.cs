@@ -42,6 +42,30 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
+    private string? mirrorDimensionsWidth1;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsWidth2;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsWidth3;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsHeight1;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsHeight2;
+
+    [ObservableProperty]
+    private string? mirrorDimensionsHeight3;
+
+    [ObservableProperty]
+    private bool showMirrorDimensions2;
+
+    [ObservableProperty]
+    private bool showMirrorDimensions3;
+
+    [ObservableProperty]
     public string? openingDirectionA;
     partial void OnOpeningDirectionAChanged(string? value)
     {
@@ -172,6 +196,41 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
                                       (!string.IsNullOrWhiteSpace(openingDirectionD) && string.Equals(openingDirectionD, "einseitig öffnend"));
     }
 
+    private void CanShowMirrorDimensions()
+    {
+        List<string> mirrors = new();
+
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
+            mirrors.Add("A");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
+            mirrors.Add("B");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelC"))
+            mirrors.Add("C");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
+            mirrors.Add("D");
+
+        ShowMirrorDimensions2 = mirrors.Count > 1;
+        ShowMirrorDimensions3 = mirrors.Count > 2;
+        MirrorDimensionsWidth1 = "Breite Spiegel";
+        MirrorDimensionsHeight1 = "Höhe Spiegel";
+
+        if (mirrors.Count > 0)
+        {
+            MirrorDimensionsWidth1 = $"Breite Spiegel Wand {mirrors[0]}";
+            MirrorDimensionsHeight1 = $"Höhe Spiegel Wand {mirrors[0]}";
+        }
+        if (mirrors.Count > 1)
+        {
+            MirrorDimensionsWidth2 = $"Breite Spiegel Wand {mirrors[1]}";
+            MirrorDimensionsHeight2 = $"Höhe Spiegel Wand {mirrors[1]}";
+        }
+        if (mirrors.Count > 2)
+        {
+            MirrorDimensionsWidth3 = $"Breite Spiegel Wand {mirrors[2]}";
+            MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         IsActive = true;
@@ -189,6 +248,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C");
         OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
         CheckIsOpeningDirectionSelected();
+        CanShowMirrorDimensions();
     }
 
     public void OnNavigatedFrom()

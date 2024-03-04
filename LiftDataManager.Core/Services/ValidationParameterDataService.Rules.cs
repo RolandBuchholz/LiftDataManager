@@ -1460,6 +1460,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (!LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary["var_Fahrkorbtyp"].Value))
             return;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value))
+            return;
 
         switch (name)
         {

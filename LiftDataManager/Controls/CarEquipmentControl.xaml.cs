@@ -44,12 +44,16 @@ public sealed partial class CarEquipmentControl : UserControl
 
     private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
-        var canvas = e.Surface.Canvas;
+        //SKImageInfo info = e.Info;
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
+
         canvas.Clear();
         DrawWall(canvas);
         DrawSkirtingBoard(canvas);
-        DrawCarDoor(canvas);
         DrawMirror(canvas);
+        DrawHandrail(canvas);
+        DrawCarDoor(canvas);
     }
     public CarSide Side
     {
@@ -250,20 +254,52 @@ public sealed partial class CarEquipmentControl : UserControl
 
     private void DrawMirror(SKCanvas canvas)
     {
-        //if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Sockelleiste{Side}"))
-        //    return;
-        //float skirtingHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_SockelleisteOKFF");
-        //float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
-        //string skirting = LiftParameterHelper.GetLiftParameterValue<string>(ItemSource, "var_Sockelleiste");
-        //if (string.IsNullOrWhiteSpace(skirting))
-        //    return;
-        //var skirtingHeightString = skirting.Replace("V2A", "").Replace("V4A", "").Split("x").FirstOrDefault()?.Trim();
-        //if (!float.TryParse(skirtingHeightString, out float skirtingHeight))
-        //    return;
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Spiegel{Side}"))
+            return;
+        List<string> mirrors = new();
 
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, "var_SpiegelA"))
+            mirrors.Add("A");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, "var_SpiegelB"))
+            mirrors.Add("B");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, "var_SpiegelC"))
+            mirrors.Add("C");
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, "var_SpiegelD"))
+            mirrors.Add("D");
+
+        //ShowMirrorDimensions2 = mirrors.Count > 1;
+        //ShowMirrorDimensions3 = mirrors.Count > 2;
+        //MirrorDimensionsWidth1 = "Breite Spiegel";
+        //MirrorDimensionsHeight1 = "Höhe Spiegel";
+
+        //if (mirrors.Count > 0)
+        //{
+        //    MirrorDimensionsWidth1 = $"Breite Spiegel Wand {mirrors[0]}";
+        //    MirrorDimensionsHeight1 = $"Höhe Spiegel Wand {mirrors[0]}";
+        //}
+        //if (mirrors.Count > 1)
+        //{
+        //    MirrorDimensionsWidth2 = $"Breite Spiegel Wand {mirrors[1]}";
+        //    MirrorDimensionsHeight2 = $"Höhe Spiegel Wand {mirrors[1]}";
+        //}
+        //if (mirrors.Count > 2)
+        //{
+        //    MirrorDimensionsWidth3 = $"Breite Spiegel Wand {mirrors[2]}";
+        //    MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
+        //}
+
+        //float mirrorHeightFFB = (float)CarHeightRaw -15;
+        //float width = 1030f;
+        //float mirrorHeight = 1194f;
+        //SKRect mirror = new(10, (float)CarHeightRaw - mirrorHeightFFB, width, mirrorHeight);
         //using var paint = new SKPaint
         //{
-        //    Color = SKColors.DimGray,
+        //    Shader= SKShader.CreateLinearGradient(
+        //                        new SKPoint(mirror.Left, mirror.Top),
+        //                        new SKPoint(mirror.Right, mirror.Bottom),
+        //                        new SKColor[] { SKColors.LightBlue, SKColors.FloralWhite },
+        //                        new float[] { 0, 1 },
+        //                        SKShaderTileMode.Repeat),
         //    IsAntialias = true,
         //    Style = SKPaintStyle.Fill,
         //};
@@ -275,7 +311,33 @@ public sealed partial class CarEquipmentControl : UserControl
         //    StrokeWidth = 10,
         //    Style = SKPaintStyle.Stroke
         //};
-        //canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paint);
-        //canvas.DrawRect(0, (float)CarHeightRaw - skirtingHeightFFB, width, skirtingHeight, paintStrokeSmall);
+        //canvas.DrawRect(mirror, paint);
+        //canvas.DrawRect(mirror, paintStrokeSmall);
+    }
+
+    private void DrawHandrail(SKCanvas canvas)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Handlauf{Side}"))
+            return;
+        float handrailHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheHandlauf");
+        float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
+        float handrailHeight = 40f;
+
+        using var paint = new SKPaint
+        {
+            Color = SKColors.DarkGray,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+        };
+        using var paintStrokeSmall = new SKPaint
+        {
+            Color = SKColors.Black,
+            IsAntialias = true,
+            IsStroke = true,
+            StrokeWidth = 10,
+            Style = SKPaintStyle.Stroke
+        };
+        canvas.DrawRect(10f, (float)CarHeightRaw - handrailHeightFFB, width - 20f, handrailHeight, paint);
+        canvas.DrawRect(10f, (float)CarHeightRaw - handrailHeightFFB, width - 20f, handrailHeight, paintStrokeSmall);
     }
 }
