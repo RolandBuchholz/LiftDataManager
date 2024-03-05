@@ -14,6 +14,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     public ParameterBase()
     {
+        ParameterCategory ??= ParameterCategoryValue.None;
     }
 
     [ObservableProperty]

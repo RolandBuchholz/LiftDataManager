@@ -1500,8 +1500,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (bodenHoehe + kabinenHoeheInnen + deckenhoehe == kabinenHoeheAussen)
             return;
-
-        ParameterDictionary["var_KHA"].Value = Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe);
+        ParameterDictionary["var_KHA"].AutoUpdateParameterValue(Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe));
     }
 
     private void ValidateCarHeightExcludingSuspendedCeiling(string name, string displayname, string? value, string? severity, string? optional = null)

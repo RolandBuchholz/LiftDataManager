@@ -10,6 +10,8 @@ public partial class Parameter : ParameterBase
     public bool DataImport { get; set; }
     public bool DefaultUserEditable { get; set; }
 
+    public bool IsAutoUpdated { get; private set; }
+
     public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
@@ -37,8 +39,8 @@ public partial class Parameter : ParameterBase
         DataImport = false;
     }
 
-    public string? Name { get; set; }
-    public string? DisplayName { get; set; }
+    public required string Name { get; set; }
+    public required string DisplayName { get; set; }
 
     [ObservableProperty]
     public ObservableRangeCollection<string> dropDownList;
@@ -83,6 +85,7 @@ public partial class Parameter : ParameterBase
                 }
             }
             IsDirty = true;
+            IsAutoUpdated = false;
             Broadcast(oldValue, newValue, Name);
         }
     }
@@ -119,5 +122,11 @@ public partial class Parameter : ParameterBase
     public async Task AfterValidateRangeParameterAsync(string[] dependentParameters)
     {
         await _validationParameterDataService.ValidateRangeOfParameterAsync(dependentParameters);
+    }
+
+    public void AutoUpdateParameterValue(string? newParamterValue)
+    {
+        Value = newParamterValue;
+        IsAutoUpdated = true;
     }
 }
