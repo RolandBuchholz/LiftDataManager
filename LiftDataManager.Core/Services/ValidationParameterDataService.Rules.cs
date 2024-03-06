@@ -9,6 +9,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Immutable;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -111,6 +112,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     }
 
     // Spezial validationrules
+
+    private void ValidateCreationDate(string name, string displayname, string? value, string? severity, string? odernummerName)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+            return;
+        ParameterDictionary["var_ErstelltAm"].Value = DateTime.Now.ToShortDateString();
+    }
 
     private void ValidateJobNumber(string name, string displayname, string? value, string? severity, string? odernummerName)
     {
@@ -1460,9 +1468,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (!LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary["var_Fahrkorbtyp"].Value))
             return;
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value))
-            return;
 
+        var ruleActivationDate = new DateTime(2024, 01, 11);
+        var creationDate = DateTime.MinValue;
+
+        if (DateTime.TryParse(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_ErstelltAm"), out DateTime parsedDate))
+            creationDate = parsedDate;
+
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value) && ruleActivationDate.CompareTo(creationDate) > 0)
+            return;
+        
         switch (name)
         {
             case "var_KBI" or "var_overrideDefaultCeiling":

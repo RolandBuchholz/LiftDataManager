@@ -103,6 +103,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void GetValidationDictionary()
     {
+        ValidationDictionary.Add("var_ErstelltAm",
+            new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(ValidateCreationDate, "None", null) });
+
         ValidationDictionary.Add("var_AuftragsNummer",
             new List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>> { new(NotEmpty, "Error", null) });
 

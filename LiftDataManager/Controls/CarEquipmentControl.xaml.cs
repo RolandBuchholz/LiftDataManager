@@ -288,31 +288,31 @@ public sealed partial class CarEquipmentControl : UserControl
         //    MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
         //}
 
-        //float mirrorHeightFFB = (float)CarHeightRaw -15;
-        //float width = 1030f;
-        //float mirrorHeight = 1194f;
-        //SKRect mirror = new(10, (float)CarHeightRaw - mirrorHeightFFB, width, mirrorHeight);
-        //using var paint = new SKPaint
-        //{
-        //    Shader= SKShader.CreateLinearGradient(
-        //                        new SKPoint(mirror.Left, mirror.Top),
-        //                        new SKPoint(mirror.Right, mirror.Bottom),
-        //                        new SKColor[] { SKColors.LightBlue, SKColors.FloralWhite },
-        //                        new float[] { 0, 1 },
-        //                        SKShaderTileMode.Repeat),
-        //    IsAntialias = true,
-        //    Style = SKPaintStyle.Fill,
-        //};
-        //using var paintStrokeSmall = new SKPaint
-        //{
-        //    Color = SKColors.Black,
-        //    IsAntialias = true,
-        //    IsStroke = true,
-        //    StrokeWidth = 10,
-        //    Style = SKPaintStyle.Stroke
-        //};
-        //canvas.DrawRect(mirror, paint);
-        //canvas.DrawRect(mirror, paintStrokeSmall);
+        float mirrorHeightFFB = (float)CarHeightRaw - 15;
+        float width = 1030f;
+        float mirrorHeight = 1194f;
+        SKRect mirror = new(10, (float)CarHeightRaw - mirrorHeightFFB, width, mirrorHeight);
+        using var paint = new SKPaint
+        {
+            Shader = SKShader.CreateLinearGradient(
+                                new SKPoint(mirror.Left, mirror.Top),
+                                new SKPoint(mirror.Right, mirror.Bottom),
+                                new SKColor[] { SKColors.LightBlue, SKColors.FloralWhite },
+                                new float[] { 0, 1 },
+                                SKShaderTileMode.Repeat),
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+        };
+        using var paintStrokeSmall = new SKPaint
+        {
+            Color = SKColors.Black,
+            IsAntialias = true,
+            IsStroke = true,
+            StrokeWidth = 10,
+            Style = SKPaintStyle.Stroke
+        };
+        canvas.DrawRect(mirror, paint);
+        canvas.DrawRect(mirror, paintStrokeSmall);
     }
 
     private void DrawHandrail(SKCanvas canvas)

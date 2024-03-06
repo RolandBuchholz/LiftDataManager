@@ -16,7 +16,13 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                        "var_MauerOeffnungBreiteA", "var_MauerOeffnungAbstandA",
                                                        "var_MauerOeffnungBreiteB", "var_MauerOeffnungAbstandB",
                                                        "var_MauerOeffnungBreiteC", "var_MauerOeffnungAbstandC",
-                                                       "var_MauerOeffnungBreiteD", "var_MauerOeffnungAbstandD"};
+                                                       "var_MauerOeffnungBreiteD", "var_MauerOeffnungAbstandD",
+                                                       "var_KBI", "var_KTI",
+                                                       "var_AbstandKabineA", "var_AbstandKabineD",
+                                                       "var_L1","var_L2","var_L3","var_L4",
+                                                       "var_TB","var_TB_B","var_TB_C","var_TB_D",
+                                                       "var_TuerEinbau","var_TuerEinbauB","var_TuerEinbauC","var_TuerEinbauD",
+                                                       "var_Tueroeffnung","var_Tueroeffnung_B","var_Tueroeffnung_C","var_Tueroeffnung_D" };
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -49,6 +55,27 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     [ObservableProperty]
     private double shaftDepth;
 
+    [ObservableProperty]
+    private float carDistanceWallA;
+
+    [ObservableProperty]
+    private float carDistanceWallB;
+
+    [ObservableProperty]
+    private float carDistanceWallC;
+
+    [ObservableProperty]
+    private float carDistanceWallD;
+
+    public bool CanEditOpeningDirectionEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") &&
+                                                    ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
+    public bool CanEditOpeningDirectionEntranceB => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B") &&
+                                                    ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B")).StartsWith("einseitig");
+    public bool CanEditOpeningDirectionEntranceC => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C") &&
+                                                    ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
+    public bool CanEditOpeningDirectionEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D") &&
+                                                    ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
+
     private float _stokeWith;
 
     private SKXamlCanvas? _xamlCanvas;
@@ -64,6 +91,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         _stokeWith = ((float)shaftWidth + (float)shaftDepth) / 600f;
         DrawShaftWall(canvas);
         DrawEntranceWall(canvas);
+        DrawLiftCar(canvas);
     }
 
     [RelayCommand]
@@ -126,8 +154,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
         canvas.DrawRect(shaftWallOutSide, paintWallSolid);
         canvas.DrawRect(shaftWallOutSide, paintHatchOutline);
+        canvas.Save();
         canvas.ClipRect(shaftWallOutSide);
         canvas.DrawRect(shaftWallHatch, paintHatch);
+        canvas.Restore();
         canvas.DrawRect(shaftWallInSide, paintShaft);
         canvas.DrawRect(shaftWallInSide, paintHatchOutline);
   
@@ -215,6 +245,110 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             canvas.DrawRect(entranceRect, paintOutline);
             canvas.DrawText(entrance, entranceRect.MidX, entranceRect.MidY - textRect.MidY, paintText);
         }
+    }
+
+    private void DrawLiftCar(SKCanvas canvas)
+    {
+        float carWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KBI");
+        float carDepth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KTI");
+        float carWallA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineA");
+        float carWallD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineD");
+
+        float carR1 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R1");
+        float carR2 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R2");
+        float carR3 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R3");
+        float carR4 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R4");
+
+        float carDoorMountingA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbau");
+        float carDoorMountingB = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauB");
+        float carDoorMountingC = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauC");
+        float carDoorMountingD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauD");
+
+        float carDoorWidthA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB");
+        float carDoorWidthB = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_B");
+        float carDoorWidthC = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_C");
+        float carDoorWidthD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_D");
+
+        if (carWidth == 0 || carDepth == 0)
+            return;
+        CarDistanceWallA = carWallA - carDepth / 2;
+        CarDistanceWallD = carWallD - carWidth / 2;
+        CarDistanceWallB = (float)shaftWidth - (CarDistanceWallD + carWidth);
+        CarDistanceWallC = (float)shaftDepth - (CarDistanceWallA + carDepth);
+
+        SKPath midLineCarHorizontal = new();
+        midLineCarHorizontal.MoveTo(-(float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
+        midLineCarHorizontal.LineTo((float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
+
+        SKPath midLineCarVertical = new();
+        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + carWallD, (float)viewBoxHeight / 2);
+        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + carWallD, -(float)viewBoxHeight / 2);
+
+        SKPath liftCar = new();
+        liftCar.MoveTo(-carWidth / 2, carDepth / 2);
+        if (carDoorMountingD != 0 && carDoorWidthD != 0)
+        {
+            liftCar.LineTo(-carWidth / 2, carDepth / 2 - carR4);
+            liftCar.RLineTo(-carDoorMountingD, 0);
+            liftCar.RLineTo(0, -carDoorWidthD);
+            liftCar.RLineTo(carDoorMountingD, 0);
+        }
+        liftCar.LineTo(-carWidth / 2, -carDepth / 2);
+        if (carDoorMountingC != 0 && carDoorWidthC != 0)
+        {
+            liftCar.RLineTo(carR2, 0);
+            liftCar.RLineTo(0, -carDoorMountingC);
+            liftCar.RLineTo(carDoorWidthC, 0);
+            liftCar.RLineTo(0, carDoorMountingC);
+        }
+        liftCar.LineTo(carWidth / 2, -carDepth / 2);
+        if (carDoorMountingB != 0 && carDoorWidthB != 0)
+        {
+            liftCar.RLineTo(0, carR3);
+            liftCar.RLineTo(carDoorMountingB, 0);
+            liftCar.RLineTo(0, carDoorWidthB);
+            liftCar.RLineTo(-carDoorMountingB,0);
+        }
+        liftCar.LineTo(carWidth / 2, carDepth / 2);
+        if (carDoorMountingA != 0 && carDoorWidthA != 0)
+        {
+            liftCar.RLineTo(-carR1, 0);
+            liftCar.RLineTo(0, carDoorMountingA);
+            liftCar.RLineTo(-carDoorWidthA, 0);
+            liftCar.RLineTo(0, -carDoorMountingA);
+        }
+        liftCar.Close();
+
+        liftCar.Transform(SKMatrix.CreateTranslation(midLineCarVertical.LastPoint.X,  midLineCarHorizontal.LastPoint.Y));
+
+        using var paintCar = new SKPaint
+        {
+            Color = SKColors.MediumPurple,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+        };
+
+        using var paintCarStoke = new SKPaint
+        {
+            Color = SKColors.Black,
+            IsAntialias = true,
+            StrokeWidth = _stokeWith * 1.5f,
+            Style = SKPaintStyle.Stroke
+        };
+        canvas.DrawPath(liftCar, paintCar);
+        canvas.DrawPath(liftCar, paintCarStoke);
+
+        using var paintCarMidLine = new SKPaint
+        {
+            Color = SKColors.DarkGreen,
+            PathEffect = SKPathEffect.CreateDash(new float[] { 250, 50, 20, 50 }, 1),
+            IsAntialias = true,
+            StrokeWidth = _stokeWith * 1.5f,
+            Style = SKPaintStyle.Stroke
+
+        };
+        canvas.DrawPath(midLineCarHorizontal, paintCarMidLine);
+        canvas.DrawPath(midLineCarVertical, paintCarMidLine);
     }
 
     public void RefreshView()

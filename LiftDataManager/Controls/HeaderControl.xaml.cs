@@ -6,4 +6,13 @@ public sealed partial class HeaderControl : UserControl
     {
         InitializeComponent();
     }
+
+    public bool ReadOnlyMode
+    {
+        get => (bool)GetValue(ReadOnlyModeProperty);
+        set => SetValue(ReadOnlyModeProperty, value);
+    }
+
+    public static readonly DependencyProperty ReadOnlyModeProperty =
+        DependencyProperty.Register(nameof(ReadOnlyMode), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 }

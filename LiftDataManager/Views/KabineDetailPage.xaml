@@ -66,6 +66,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <TextBlock
@@ -170,6 +171,20 @@
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KHLicht'], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         ShowDefaultHeader="True"
                                         Unit="mm" />
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        Margin="5,10,5,5"
+                                        Foreground="IndianRed"
+                                        TextWrapping="WrapWholeWords">
+                                        <Run
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="Achtung:" />
+                                        <Run FontSize="14" Text="Automatische Kabinendeckenvalidierung erst ab einem Erstellungsdatum der Spezifikation nach dem 10.01.2024 aktiv." />
+                                    </TextBlock>
+
                                 </Grid>
                             </PivotItem>
                             <PivotItem x:Name="CarEquipment">

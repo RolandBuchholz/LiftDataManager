@@ -27,7 +27,6 @@
             Date="{x:Bind LiftParameter.Value, Converter={StaticResource ExcelDate}, Mode=TwoWay}"
             DateFormat="{}{day.integer}/{month.integer}/{year.full}"
             Header="{x:Bind Header}"
-            IsRightTapEnabled="True"
             Language="de"
             PlaceholderText="Datum selektieren">
             <CalendarDatePicker.ContextFlyout>
