@@ -5,9 +5,9 @@ namespace LiftDataManager.ViewModels;
 
 public partial class DataViewModelBase : ObservableRecipient
 {
-    public readonly IParameterDataService? _parameterDataService;
-    public readonly IDialogService? _dialogService;
-    public readonly INavigationService? _navigationService;
+    public readonly IParameterDataService _parameterDataService;
+    public readonly IDialogService _dialogService;
+    public readonly INavigationService _navigationService;
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
@@ -17,9 +17,11 @@ public partial class DataViewModelBase : ObservableRecipient
     public ObservableDictionary<string, Parameter>? ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>>? ParameterErrorDictionary { get; set; } = new();
 
+#pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
     public DataViewModelBase()
     {
     }
+#pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
 
     public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
     {

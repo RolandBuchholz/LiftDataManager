@@ -7,8 +7,10 @@ namespace LiftDataManager.Core.Models;
 public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private bool _autoUpdatedRunning;
     public bool DataImport { get; set; }
     public bool DefaultUserEditable { get; set; }
+    public bool IsAutoUpdated { get; private set; }
 
     public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
     {
@@ -37,8 +39,8 @@ public partial class Parameter : ParameterBase
         DataImport = false;
     }
 
-    public string? Name { get; set; }
-    public string? DisplayName { get; set; }
+    public required string Name { get; set; }
+    public required string DisplayName { get; set; }
 
     [ObservableProperty]
     public ObservableRangeCollection<string> dropDownList;
@@ -74,6 +76,8 @@ public partial class Parameter : ParameterBase
     {
         if (!DataImport)
         {
+            IsDirty = true;
+            IsAutoUpdated = _autoUpdatedRunning;
             var result = ValidateParameterAsync().Result;
             foreach (var item in result.ToList())
             {
@@ -82,7 +86,6 @@ public partial class Parameter : ParameterBase
                     _ = AfterValidateRangeParameterAsync(item.DependentParameter);
                 }
             }
-            IsDirty = true;
             Broadcast(oldValue, newValue, Name);
         }
     }
@@ -119,5 +122,19 @@ public partial class Parameter : ParameterBase
     public async Task AfterValidateRangeParameterAsync(string[] dependentParameters)
     {
         await _validationParameterDataService.ValidateRangeOfParameterAsync(dependentParameters);
+    }
+
+    public void AutoUpdateParameterValue(string? newParamterValue)
+    {
+        _autoUpdatedRunning = true;
+        if (ParameterTyp == ParameterTypValue.DropDownList)
+        {
+            DropDownListValue = newParamterValue;
+        }
+        else
+        {
+            Value = newParamterValue;
+        }
+        _autoUpdatedRunning = false;
     }
 }

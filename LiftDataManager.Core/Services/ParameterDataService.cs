@@ -80,10 +80,10 @@ public partial class ParameterDataService : IParameterDataService
 
     public LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter)
     {
-        return new LiftHistoryEntry(parameter.Name!,
-            parameter.DisplayName!,
+        return new LiftHistoryEntry(parameter.Name,
+            parameter.DisplayName,
             parameter.Value is not null ? parameter.Value : string.Empty,
-            user,
+            parameter.IsAutoUpdated ? "LDM-AutoUpdated" : user,
             parameter.Comment is not null ? parameter.Comment : string.Empty);
     }
 
