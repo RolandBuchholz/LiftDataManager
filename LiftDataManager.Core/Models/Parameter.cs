@@ -7,9 +7,9 @@ namespace LiftDataManager.Core.Models;
 public partial class Parameter : ParameterBase
 {
     private readonly IValidationParameterDataService _validationParameterDataService;
+    private bool _autoUpdatedRunning;
     public bool DataImport { get; set; }
     public bool DefaultUserEditable { get; set; }
-
     public bool IsAutoUpdated { get; private set; }
 
     public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
@@ -76,6 +76,8 @@ public partial class Parameter : ParameterBase
     {
         if (!DataImport)
         {
+            IsDirty = true;
+            IsAutoUpdated = _autoUpdatedRunning;
             var result = ValidateParameterAsync().Result;
             foreach (var item in result.ToList())
             {
@@ -84,8 +86,6 @@ public partial class Parameter : ParameterBase
                     _ = AfterValidateRangeParameterAsync(item.DependentParameter);
                 }
             }
-            IsDirty = true;
-            IsAutoUpdated = false;
             Broadcast(oldValue, newValue, Name);
         }
     }
@@ -126,7 +126,15 @@ public partial class Parameter : ParameterBase
 
     public void AutoUpdateParameterValue(string? newParamterValue)
     {
-        Value = newParamterValue;
-        IsAutoUpdated = true;
+        _autoUpdatedRunning = true;
+        if (ParameterTyp == ParameterTypValue.DropDownList)
+        {
+            DropDownListValue = newParamterValue;
+        }
+        else
+        {
+            Value = newParamterValue;
+        }
+        _autoUpdatedRunning = false;
     }
 }

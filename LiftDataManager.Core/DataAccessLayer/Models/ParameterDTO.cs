@@ -3,12 +3,12 @@
 public class ParameterDto : BaseEntity
 {
     public int ParameterCategoryId { get; set; }
-    public ParameterCategory? ParameterCategory { get; set; }
+    public required ParameterCategory ParameterCategory { get; set; }
     public int ParameterTypId { get; set; }
-    public ParameterTyp? ParameterTyp { get; set; }
+    public required ParameterTyp ParameterTyp { get; set; }
     public int ParameterTypeCodeId { get; set; }
-    public ParameterTypeCode? ParameterTypeCode { get; set; }
-    public string? DisplayName { get; set; }
+    public required ParameterTypeCode ParameterTypeCode { get; set; }
+    public required string DisplayName { get; set; }
     public string? Value { get; set; }
     public string? Comment;
     public bool IsKey;
