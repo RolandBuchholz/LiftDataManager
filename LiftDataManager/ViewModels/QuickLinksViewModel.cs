@@ -577,14 +577,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
 
             if (!onlyDiveData)
             {
-                ParameterDictionary["var_Q"].Value = zliDataDictionary["Nennlast_Q"];
-                ParameterDictionary["var_Gegengewichtsmasse"].Value = zliDataDictionary["Gegengewicht_G"];
+                ParameterDictionary["var_Q"].AutoUpdateParameterValue(zliDataDictionary["Nennlast_Q"]);
+                ParameterDictionary["var_Gegengewichtsmasse"].AutoUpdateParameterValue(zliDataDictionary["Gegengewicht_G"]);
                 try
                 {
                     double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
                     double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_F");
                     double counterWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Gegengewichtsmasse");
-                    ParameterDictionary["var_GGWNutzlastausgleich"].Value = Convert.ToString(Math.Round((counterWeight - carWeight) / load, 2));
+                    ParameterDictionary["var_GGWNutzlastausgleich"].AutoUpdateParameterValue(Convert.ToString(Math.Round((counterWeight - carWeight) / load, 2)));
                 }
                 catch (Exception)
                 {
@@ -605,7 +605,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 {
                     _logger.LogWarning(61094, "detectionDistance not found");
                 }
-                ParameterDictionary["var_Erkennungsweg"].Value = detectionDistance;
+                ParameterDictionary["var_Erkennungsweg"].AutoUpdateParameterValue(detectionDistance);
                 var deadTime = "0";
                 try
                 {
@@ -615,7 +615,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 {
                     _logger.LogWarning(61094, "deadTime not found");
                 }
-                ParameterDictionary["var_Totzeit"].Value = deadTime;
+                ParameterDictionary["var_Totzeit"].AutoUpdateParameterValue(deadTime);
                 var vDetector = "0";
                 try
                 {
@@ -640,16 +640,15 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 if (zliDataDictionary["Bremse-Handlueftung"] == "fuer Bowdenzug" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Naeherungsschalter")
                     brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
 
-                ParameterDictionary["var_Handlueftung"].Value = brakerelease;
-                ParameterDictionary["var_Handlueftung"].DropDownListValue = brakerelease;
+                ParameterDictionary["var_Handlueftung"].AutoUpdateParameterValue(brakerelease);
 
                 var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "True" : "False";
-                ParameterDictionary["var_Fremdbelueftung"].Value = ventilation;
+                ParameterDictionary["var_Fremdbelueftung"].AutoUpdateParameterValue(ventilation);
 
                 try
                 {
                     var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString();
-                    ParameterDictionary["var_ElektrBremsenansteuerung"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(brakeControl);
+                    ParameterDictionary["var_ElektrBremsenansteuerung"].AutoUpdateParameterValue(LiftParameterHelper.FirstCharToUpperAsSpan(brakeControl));
                 }
                 catch (Exception)
                 {
@@ -658,24 +657,24 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
                 }
 
                 var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False";
-                ParameterDictionary["var_Treibscheibegehaertet"].Value = hardened;
+                ParameterDictionary["var_Treibscheibegehaertet"].AutoUpdateParameterValue(hardened);
             }
 
             if (zliDataDictionary.TryGetValue("Getriebebezeichnung", out string? drive))
             {
-                ParameterDictionary["var_Antrieb"].Value = string.IsNullOrWhiteSpace(drive) ? string.Empty : drive.Replace(',', '.');
+                ParameterDictionary["var_Antrieb"].AutoUpdateParameterValue(string.IsNullOrWhiteSpace(drive) ? string.Empty : drive.Replace(',', '.'));
             }
-            ParameterDictionary["var_Treibscheibendurchmesser"].Value = zliDataDictionary["Treibscheibe-D"];
-            ParameterDictionary["var_ZA_IMP_Treibscheibe_RIA"].Value = zliDataDictionary["Treibscheibe-RIA"];
-            ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value = !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty;
+            ParameterDictionary["var_Treibscheibendurchmesser"].AutoUpdateParameterValue(zliDataDictionary["Treibscheibe-D"]);
+            ParameterDictionary["var_ZA_IMP_Treibscheibe_RIA"].AutoUpdateParameterValue(zliDataDictionary["Treibscheibe-RIA"]);
+            ParameterDictionary["var_ZA_IMP_Regler_Typ"].AutoUpdateParameterValue(!string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty);
 
             if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))
             {
-                ParameterDictionary["var_Tragseiltyp"].Value = "D " + ropeDiameter + "mm " + zliDataDictionary["Treibscheibe-Seiltyp"];
+                ParameterDictionary["var_Tragseiltyp"].AutoUpdateParameterValue("D " + ropeDiameter + "mm " + zliDataDictionary["Treibscheibe-Seiltyp"]);
             }
             else
             {
-                ParameterDictionary["var_Tragseiltyp"].Value = zliDataDictionary["Treibscheibe-Seiltyp"];
+                ParameterDictionary["var_Tragseiltyp"].AutoUpdateParameterValue(zliDataDictionary["Treibscheibe-Seiltyp"]);
             }
 
             var numberOfRopes = string.Empty;
@@ -687,7 +686,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "numberOfRopes not found");
             }
-            ParameterDictionary["var_NumberOfRopes"].Value = numberOfRopes;
+            ParameterDictionary["var_NumberOfRopes"].AutoUpdateParameterValue(numberOfRopes);
 
             var breakingload = string.Empty;
             try
@@ -698,7 +697,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "breakingload not found");
             }
-            ParameterDictionary["var_Mindestbruchlast"].Value = breakingload;
+            ParameterDictionary["var_Mindestbruchlast"].AutoUpdateParameterValue(breakingload);
 
             var ropeSafety = string.Empty;
             try
@@ -709,7 +708,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "ropeSafety not found");
             }
-            ParameterDictionary["var_ZA_IMP_RopeSafety"].Value = ropeSafety;
+            ParameterDictionary["var_ZA_IMP_RopeSafety"].AutoUpdateParameterValue(ropeSafety);
 
             var ratedCurrent = string.Empty;
             var maxCurrent = string.Empty;
@@ -735,14 +734,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "ratedCurrent, ratedCapacity or nominalVoltage not found");
             }
-            ParameterDictionary["var_ZA_IMP_Nennstrom"].Value = ratedCurrent;
-            ParameterDictionary["var_ZA_IMP_Leistung"].Value = ratedCapacity;
-            ParameterDictionary["var_ZA_IMP_Stromart"].Value = nominalVoltage;
-            ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].Value = maxCurrent;
+            ParameterDictionary["var_ZA_IMP_Nennstrom"].AutoUpdateParameterValue(ratedCurrent);
+            ParameterDictionary["var_ZA_IMP_Leistung"].AutoUpdateParameterValue(ratedCapacity);
+            ParameterDictionary["var_ZA_IMP_Stromart"].AutoUpdateParameterValue(nominalVoltage);
+            ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].AutoUpdateParameterValue(maxCurrent);
 
-            ParameterDictionary["var_ZA_IMP_Motor_Pr"].Value = zliDataDictionary["Motor-Pr"];
-            ParameterDictionary["var_ZA_IMP_Motor_Ur"].Value = zliDataDictionary["Bemessungsspannung"];
-            ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value = zliDataDictionary["Bemessungsstrom"];
+            ParameterDictionary["var_ZA_IMP_Motor_Pr"].AutoUpdateParameterValue(zliDataDictionary["Motor-Pr"]);
+            ParameterDictionary["var_ZA_IMP_Motor_Ur"].AutoUpdateParameterValue(zliDataDictionary["Bemessungsspannung"]);
+            ParameterDictionary["var_ZA_IMP_Motor_Ir"].AutoUpdateParameterValue(zliDataDictionary["Bemessungsstrom"]);
 
             var maxEngineCurrent = string.Empty;
             try
@@ -753,7 +752,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "maxEngineCurrent not found");
             }
-            ParameterDictionary["var_ZA_IMP_Motor_FE_"].Value = maxEngineCurrent;
+            ParameterDictionary["var_ZA_IMP_Motor_FE_"].AutoUpdateParameterValue(maxEngineCurrent);
             var powerDissipation = string.Empty;
             try
             {
@@ -765,8 +764,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             }
             ParameterDictionary["var_ZA_IMP_VerlustLeistung"].Value = powerDissipation;
 
-            ParameterDictionary["var_AufhaengungsartRope"].Value = zliDataDictionary["Aufhaengung_is"];
-            ParameterDictionary["var_Umschlingungswinkel"].Value = zliDataDictionary["Treibscheibe-Umschlingung"];
+            ParameterDictionary["var_AufhaengungsartRope"].AutoUpdateParameterValue(zliDataDictionary["Aufhaengung_is"]);
+            ParameterDictionary["var_Umschlingungswinkel"].AutoUpdateParameterValue(zliDataDictionary["Treibscheibe-Umschlingung"]);
             var pulleyDiameter = "0";
             var numberofFKPulley = "0";
             try
@@ -782,7 +781,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "pulleyDiameter or numberofFKPulley not found");
             }
-            ParameterDictionary["var_Umlenkrollendurchmesser"].Value = pulleyDiameter;
+            ParameterDictionary["var_Umlenkrollendurchmesser"].AutoUpdateParameterValue(pulleyDiameter);
 
             var numberofPulley = "0";
             try
@@ -793,10 +792,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
             {
                 _logger.LogWarning(61094, "numberofPulley not found");
             }
-            ParameterDictionary["var_AnzahlUmlenkrollen"].Value = numberofPulley;
-            ParameterDictionary["var_AnzahlUmlenkrollenFk"].Value = numberofFKPulley;
-            ParameterDictionary["var_AnzahlUmlenkrollenGgw"].Value = (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString();
-            ParameterDictionary["var_MotorGeber"].Value = zliDataDictionary["Geber-Typ"];
+            ParameterDictionary["var_AnzahlUmlenkrollen"].AutoUpdateParameterValue(numberofPulley);
+            ParameterDictionary["var_AnzahlUmlenkrollenFk"].AutoUpdateParameterValue(numberofFKPulley);
+            ParameterDictionary["var_AnzahlUmlenkrollenGgw"].AutoUpdateParameterValue((Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString());
+            ParameterDictionary["var_MotorGeber"].AutoUpdateParameterValue(zliDataDictionary["Geber-Typ"]);
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 

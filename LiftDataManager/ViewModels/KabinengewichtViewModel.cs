@@ -49,7 +49,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
             _ = SetModelStateAsync();
             OverridenCarWeight = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
             CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
-            ParameterDictionary!["var_F"].Value = Convert.ToString(CarWeightResult.FahrkorbGewicht);
+            ParameterDictionary!["var_F"].AutoUpdateParameterValue(Convert.ToString(CarWeightResult.FahrkorbGewicht));
         }
     }
 

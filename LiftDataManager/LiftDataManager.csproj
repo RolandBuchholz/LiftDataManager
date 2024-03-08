@@ -198,7 +198,6 @@
     <PackageReference Include="WinUICommunity.Components" Version="6.5.0" />
     <PackageReference Include="WinUICommunity.Core" Version="6.5.0" />
     <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.7" />
-    <PackageReference Include="WinUICommunity.Win2D" Version="6.5.0" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
 

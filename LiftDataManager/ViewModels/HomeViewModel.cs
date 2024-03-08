@@ -1016,7 +1016,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             CarWeight = carWeightResult.KabinenGewichtGesamt;
             ShowFrameWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value);
             ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
-            ParameterDictionary!["var_F"].Value = Convert.ToString(carWeightResult.FahrkorbGewicht);
+            ParameterDictionary!["var_F"].AutoUpdateParameterValue(Convert.ToString(carWeightResult.FahrkorbGewicht));
         }
 
         string? carTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Fahrkorbtyp");
@@ -1089,8 +1089,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (ParameterDictionary is not null)
         {
             var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
-            ParameterDictionary["var_Index"].Value = newRevision;
-            ParameterDictionary["var_StandVom"].Value = DateTime.Today.ToShortDateString();
+            ParameterDictionary["var_Index"].AutoUpdateParameterValue(newRevision);
+            ParameterDictionary["var_StandVom"].AutoUpdateParameterValue(DateTime.Today.ToShortDateString());
         }
     }
 

@@ -93,7 +93,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private void UpdateLiftDocumentation()
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        ParameterDictionary!["var_Einreichunterlagen"].Value = JsonSerializer.Serialize(LiftDocumentation, options).Replace("\r\n", "\n");
+        ParameterDictionary!["var_Einreichunterlagen"].AutoUpdateParameterValue(JsonSerializer.Serialize(LiftDocumentation, options).Replace("\r\n", "\n"));
     }
 
     private void UpdateProtectedSpaceTyp()

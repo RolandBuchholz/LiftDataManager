@@ -188,7 +188,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         {
             if (ParameterDictionary["var_SonderExternBodengewicht"].Value != "0")
             {
-                ParameterDictionary["var_SonderExternBodengewicht"].Value = string.Empty;
+                ParameterDictionary["var_SonderExternBodengewicht"].AutoUpdateParameterValue(string.Empty);
             }
             return;
         }
@@ -200,11 +200,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             case "var_Bodenbelagsdicke":
                 double newFloorThinkness = string.IsNullOrWhiteSpace(newValue) ? 0 : Convert.ToDouble(newValue, CultureInfo.CurrentCulture);
                 double oldFloorThinkness = string.IsNullOrWhiteSpace(oldValue) ? 0 : Convert.ToDouble(oldValue, CultureInfo.CurrentCulture);
-                ParameterDictionary["var_KU"].Value = currentFloorHeight <= 0 ? Convert.ToString(newFloorThinkness) :
-                                                                              Convert.ToString(currentFloorHeight - oldFloorThinkness + newFloorThinkness);
+                ParameterDictionary["var_KU"].AutoUpdateParameterValue(currentFloorHeight <= 0 ? Convert.ToString(newFloorThinkness) :
+                                                                              Convert.ToString(currentFloorHeight - oldFloorThinkness + newFloorThinkness));
                 break;
             case "var_Bodentyp":
-                ParameterDictionary["var_KU"].Value = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelagsdicke");
+                ParameterDictionary["var_KU"].AutoUpdateParameterValue(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenbelagsdicke"));
                 break;
             default:
                 break;
@@ -347,7 +347,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
         if (_floorHeight != currentFloorHeight)
         {
-            ParameterDictionary!["var_KU"].Value = Convert.ToString(currentFloorHeight + currentFloorThinkness, CultureInfo.CurrentCulture);
+            ParameterDictionary!["var_KU"].AutoUpdateParameterValue(Convert.ToString(currentFloorHeight + currentFloorThinkness, CultureInfo.CurrentCulture));
         }
     }
 
