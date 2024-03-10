@@ -1,19 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-
-using LiftDataManager.Core.Services;
+﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Newtonsoft.Json;
-
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
-
+using System.Runtime.CompilerServices;
 using Windows.Storage;
 
 namespace LiftDataManager;
@@ -67,6 +62,7 @@ public partial class App : Application
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<IPdfService, PdfService>();
+            services.AddSingleton<IInfoCenterService, InfoCenterService>();
 
             // DataBase Services
             services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))

@@ -49,7 +49,7 @@ public sealed partial class ParameterComboBox : UserControl
             if (LiftParameter is null || string.IsNullOrEmpty(LiftParameter.Value) || !dropDownList.Contains(LiftParameter.Value))
                 return;
             cmb_Liftparameter.SelectedValue = LiftParameter.Value;
-        }   
+        }
     }
 
     public bool IsControlActive

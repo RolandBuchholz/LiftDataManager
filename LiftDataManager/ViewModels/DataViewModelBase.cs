@@ -1,5 +1,7 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Messenger;
+using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
@@ -8,14 +10,16 @@ public partial class DataViewModelBase : ObservableRecipient
     public readonly IParameterDataService _parameterDataService;
     public readonly IDialogService _dialogService;
     public readonly INavigationService _navigationService;
+    public readonly IInfoCenterService _infoCenterService;
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     public DispatcherTimer? AutoSaveTimer { get; set; }
     public CurrentSpeziProperties? CurrentSpeziProperties;
-    public ObservableDictionary<string, Parameter>? ParameterDictionary { get; set; }
-    public ObservableDictionary<string, List<ParameterStateInfo>>? ParameterErrorDictionary { get; set; } = new();
+    public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
+    public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; } = new();
+    public ObservableCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
 #pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
     public DataViewModelBase()
@@ -23,11 +27,15 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 #pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
 
-    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService)
+    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService)
     {
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
         _navigationService = navigationService;
+        _infoCenterService = infoCenterService;
+        ParameterDictionary ??= new();
+        ParameterErrorDictionary ??= new();
+        InfoCenterEntrys ??= new();
     }
 
     public virtual void Receive(PropertyChangedMessage<string> message)
@@ -111,17 +119,6 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
-    private string? infoSidebarPanelText;
-    partial void OnInfoSidebarPanelTextChanged(string? value)
-    {
-        if (CurrentSpeziProperties is not null)
-        {
-            CurrentSpeziProperties.InfoSidebarPanelText = value;
-            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        }
-    }
-
-    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveAllParameterCommand))]
     private bool canSaveAllSpeziParameters;
 
@@ -132,9 +129,13 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
-        InfoSidebarPanelText += infotext;
+        var saveResult = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
+        if (saveResult.Any())
+        {
+            await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+        }
         await SetModelStateAsync();
+
         if (AutoSaveTimer is not null)
         {
             var saveTimeIntervall = AutoSaveTimer.Interval;
@@ -151,12 +152,13 @@ public partial class DataViewModelBase : ObservableRecipient
             FullPathXml = CurrentSpeziProperties.FullPathXml;
         if (CurrentSpeziProperties.ParameterDictionary is not null)
             ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
+        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
-        InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
     }
 
     protected async virtual Task SetModelStateAsync()
@@ -231,25 +233,35 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        InfoSidebarPanelText += $"{message.PropertyName} : {message.OldValue} => {message.NewValue} geändert \n";
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, message.NewValue, message.OldValue);
     }
 
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)
     {
         var sender = (Parameter)message.Sender;
-
-        if (message.NewValue)
-        {
-            InfoSidebarPanelText += $"|{sender.DisplayName}| Markierung hinzugefügt\n";
-        }
-        else
-        {
-            InfoSidebarPanelText += $"|{sender.DisplayName}| Markierung entfernt\n";
-        }
+        _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"|{sender.DisplayName}| Markierung " + (message.NewValue ? "hinzugefügt" : "entfernt"));
     }
 
     public CurrentSpeziProperties GetCurrentSpeziProperties()
     {
         return Messenger.Send<SpeziPropertiesRequestMessage>();
+    }
+    protected void NavigatedToBaseActions()
+    {
+        IsActive = true;
+        SynchronizeViewModelParameter();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+            _ = SetModelStateAsync();
+    }
+    protected void NavigatedFromBaseActions()
+    {
+        IsActive = false;
+        if (CurrentSpeziProperties is not null)
+        {
+            CurrentSpeziProperties.InfoCenterEntrys = InfoCenterEntrys;
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+        }
     }
 }

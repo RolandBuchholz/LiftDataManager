@@ -986,7 +986,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].AutoUpdateParameterValue("False");
             return;
         }
-        ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].AutoUpdateParameterValue(value == "Schachtgrubenleiter EN81:20 mit el. Kontakt"?"True":"False");
+        ParameterDictionary["var_SchachtgrubenleiterKontaktgesichert"].AutoUpdateParameterValue(value == "Schachtgrubenleiter EN81:20 mit el. Kontakt" ? "True" : "False");
     }
 
     private void ValidateDoorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1465,7 +1465,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value) && ruleActivationDate.CompareTo(creationDate) > 0)
             return;
-        
+
         switch (name)
         {
             case "var_KBI" or "var_overrideDefaultCeiling":

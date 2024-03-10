@@ -18,9 +18,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
     private readonly ILogger<QuickLinksViewModel> _logger;
     private readonly IValidationParameterDataService _validationParameterDataService;
 
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IValidationParameterDataService validationParameterDataService,
-        ISettingService settingsSelectorService, ParameterContext parametercontext, IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
-         base(parameterDataService, dialogService, navigationService)
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+        IValidationParameterDataService validationParameterDataService, ISettingService settingsSelectorService, ParameterContext parametercontext,
+        IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _parametercontext = parametercontext;
@@ -125,7 +126,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         CanOpenCalculations = CanOpenVault;
         CanOpenCFP = File.Exists(_settingService.PathCFP);
 
-        if (ParameterDictionary is null || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
+        if (!ParameterDictionary.Any() || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
         {
             CanOpenLilo = File.Exists(_settingService.PathLilo);
             CanOpenZALift = File.Exists(_settingService.PathZALift);

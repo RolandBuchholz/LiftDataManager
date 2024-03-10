@@ -62,7 +62,7 @@ namespace LiftDataManager.Models
         public ProtectedSpaceTyp ProtectedSpaceTypPit
         {
             get => protectedSpaceTypPit;
-            set 
+            set
             {
                 protectedSpaceTypPit = value;
                 TechnicalLiftDocumentationPropertyChanged();
@@ -70,8 +70,8 @@ namespace LiftDataManager.Models
         }
 
         private ProtectedSpaceTyp protectedSpaceTypHead;
-        public ProtectedSpaceTyp ProtectedSpaceTypHead 
-        { 
+        public ProtectedSpaceTyp ProtectedSpaceTypHead
+        {
             get => protectedSpaceTypHead;
             set
             {

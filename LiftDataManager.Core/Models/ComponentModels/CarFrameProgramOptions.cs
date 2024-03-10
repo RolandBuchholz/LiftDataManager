@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using System.Xml.Schema;
 
 namespace LiftDataManager.Core.Models.ComponentModels;
 public class CarFrameProgramOptions
 {
-    private readonly Dictionary<string,string> _listofProperty = new();
+    private readonly Dictionary<string, string> _listofProperty = new();
 
     public CarFrameProgramOptions()
     {
@@ -27,7 +26,7 @@ public class CarFrameProgramOptions
 
     public bool IsCFPOption(string optionName)
     {
-       return _listofProperty.ContainsValue(optionName);
+        return _listofProperty.ContainsValue(optionName);
     }
 
     public void SetOption(string optionName, int optionValue)

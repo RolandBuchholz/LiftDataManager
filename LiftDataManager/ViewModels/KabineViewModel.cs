@@ -9,8 +9,9 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
 
-    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-         base(parameterDataService, dialogService, navigationService)
+    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+                           ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
+                           base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -353,13 +354,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);
             SetFloorImagePath();
             CanShowMirrorDimensions();
@@ -374,6 +373,6 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

@@ -4,8 +4,8 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-         base(parameterDataService, dialogService, navigationService)
+    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
 
     }
@@ -79,17 +79,12 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAware, IRec
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
+        NavigatedToBaseActions();
         SetCarDoorDataVisibility();
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

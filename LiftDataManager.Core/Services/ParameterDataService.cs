@@ -3,13 +3,13 @@ using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
-using PdfSharp.Pdf.IO;
-using PdfSharp.Fonts;
-using PdfSharp.Snippets.Font;
 using PdfSharp;
+using PdfSharp.Fonts;
+using PdfSharp.Pdf.AcroForms;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Snippets.Font;
 using System.Text.Json;
 using System.Xml.Linq;
-using PdfSharp.Pdf.AcroForms;
 
 namespace LiftDataManager.Core.Services;
 
@@ -178,9 +178,9 @@ public partial class ParameterDataService : IParameterDataService
             foreach (var pdfName in fields.Names)
             {
                 var field = fields[pdfName];
-                if (field is null) 
+                if (field is null)
                     continue;
-                KeyValuePair<string,string> parameter = field.Value is null ? new KeyValuePair<string, string>(string.Empty,string.Empty) : ValidatePdfValue(field);
+                KeyValuePair<string, string> parameter = field.Value is null ? new KeyValuePair<string, string>(string.Empty, string.Empty) : ValidatePdfValue(field);
                 if (!parameter.Key.StartsWith("var_"))
                 {
                     if (cfPOptions.IsCFPOption(parameter.Key))
@@ -192,8 +192,8 @@ public partial class ParameterDataService : IParameterDataService
                         }
                     }
                     continue;
-                }       
-                transferDataList.Add(new TransferData(parameter.Key, parameter.Value, string.Empty,false));
+                }
+                transferDataList.Add(new TransferData(parameter.Key, parameter.Value, string.Empty, false));
             }
             var options = new JsonSerializerOptions { WriteIndented = true };
             var cfPOptionsJson = JsonSerializer.Serialize(cfPOptions, options).Replace("\r\n", "\n");
@@ -201,7 +201,7 @@ public partial class ParameterDataService : IParameterDataService
             {
                 transferDataList.Add(new TransferData("var_CFPOption", cfPOptionsJson, string.Empty, false));
             }
-        }   
+        }
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from Pdf: {path} loaded", path);
         return transferDataList;
@@ -210,7 +210,7 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false)
     {
         var historyEntrys = new List<LiftHistoryEntry>();
-        Dictionary<string,int> parameterCategory = new();
+        Dictionary<string, int> parameterCategory = new();
 
         if (!ValidatePath(path, true))
             return historyEntrys;
@@ -231,7 +231,7 @@ public partial class ParameterDataService : IParameterDataService
                 }
             }
         }
-            
+
         foreach (var entry in entrys)
         {
             if (string.IsNullOrWhiteSpace(entry))
@@ -247,7 +247,7 @@ public partial class ParameterDataService : IParameterDataService
                 continue;
             }
             if (lifthistoryentry is null)
-             continue;
+                continue;
             if (!includeCategory)
             {
                 historyEntrys.Add(lifthistoryentry);
@@ -262,15 +262,13 @@ public partial class ParameterDataService : IParameterDataService
         return historyEntrys;
     }
 
-    public async Task<string> SaveParameterAsync(Parameter parameter, string path)
+    public async Task<KeyValuePair<string, string?>> SaveParameterAsync(Parameter parameter, string path)
     {
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
-            return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
+            return new KeyValuePair<string, string?>("Error", "AutoDeskTransferXml Pfad ist nicht gültig");
         }
-
-        string infotext;
 
         XElement doc = XElement.Load(path);
         XElement? xmlparameter =
@@ -284,32 +282,26 @@ public partial class ParameterDataService : IParameterDataService
         {
             AddParameterToXml(parameter, xmlparameter);
             historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-            infotext = $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
-            infotext += $"----------\n";
         }
         else
         {
             _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-            infotext = $"Speichern fehlgeschlagen |{parameter.Name}|\n";
-            infotext += $"----------\n";
+            return new KeyValuePair<string, string?>("Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
-        await Task.CompletedTask;
-
-        return infotext;
+        return await Task.FromResult(new KeyValuePair<string, string?>(parameter.Name, parameter.Value));
     }
 
-    public async Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
+    public async Task<List<KeyValuePair<string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
     {
+        var saveResult = new List<KeyValuePair<string, string?>>();
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
-            return "AutoDeskTransferXml Pfad ist nicht gültig.\n";
+            saveResult.Add(new KeyValuePair<string, string?>("Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
+            return saveResult;
         }
-
-        var infotext = $"Folgende Parameter wurden in {path} gespeichet \n";
-
         XElement doc = XElement.Load(path);
         var unsavedParameter = ParameterDictionary.Values.Where(p => p.IsDirty);
 
@@ -331,28 +323,24 @@ public partial class ParameterDataService : IParameterDataService
                     AddParameterToXml(parameter, xmlparameter);
                     parameter.IsDirty = false;
                     historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-                    infotext += $"Parameter gespeichet: {parameter.Name} => {parameter.Value}  \n";
+                    saveResult.Add(new KeyValuePair<string, string?>(parameter.Name, parameter.Value));
                 }
                 else
                 {
                     _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-                    infotext += $"Achtung: Speichern fehlgeschlagen |{parameter.Name}|\n";
+                    saveResult.Add(new KeyValuePair<string, string?>("Warning", $"Speichern fehlgeschlagen |{parameter.Name}|"));
                 }
             }
             else
             {
                 _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name);
-                infotext += $"----------\n";
-                infotext += $"Parameter: {parameter.Name} ist scheibgeschützt! \n";
-                infotext += $"Speichern nur im Adminmode möglich!\n";
-                infotext += $"----------\n";
+                saveResult.Add(new KeyValuePair<string, string?>("Warning", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
             }
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
         await Task.CompletedTask;
-        infotext += $"----------\n";
-        return infotext;
+        return saveResult;
     }
 
     public async Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory)
@@ -487,7 +475,7 @@ public partial class ParameterDataService : IParameterDataService
         {
             "PdfTextField" => ((PdfSharp.Pdf.PdfString)field.Value).Value,
             "PdfCheckBoxField" => string.Equals(field.Value.ToString(), "/Yes", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False",
-            "PdfRadioButtonField" => string.Equals(field.Value.ToString(), "/Off", StringComparison.CurrentCultureIgnoreCase) ? string.Empty : field.Value.ToString()?.Replace("/",""),
+            "PdfRadioButtonField" => string.Equals(field.Value.ToString(), "/Off", StringComparison.CurrentCultureIgnoreCase) ? string.Empty : field.Value.ToString()?.Replace("/", ""),
             _ => string.Empty,
         };
 
@@ -497,8 +485,8 @@ public partial class ParameterDataService : IParameterDataService
                 pdfValue = "0";
             if (double.TryParse(pdfValue, out double travel))
             {
-                pdfValue = (travel/1000).ToString();
-            } 
+                pdfValue = (travel / 1000).ToString();
+            }
             else
             {
                 pdfValue = "0";
@@ -535,19 +523,19 @@ public partial class ParameterDataService : IParameterDataService
         LogSavedParameter(parameter.DisplayName!, parameter.Value!);
     }
 
-    private static string GetLiftTyp(string name , string value)
+    private static string GetLiftTyp(string name, string value)
     {
         var typ = value == "1" ? "Personen" : "Lasten";
-        var drive = name.Replace("var_Aufzugstyp","") switch
+        var drive = name.Replace("var_Aufzugstyp", "") switch
         {
             "_TG2" or "_BR1" or "_BR2" or "_BT1" or "_BT2" => "Hydraulik",
-            "_BRR" or "_ZZE_S" or "_EZE_SR"=> "Seil",
+            "_BRR" or "_ZZE_S" or "_EZE_SR" => "Seil",
             _ => "Seil"
         };
         return $"{typ} {drive}-Aufzug";
     }
 
-    private static ParameterCategoryValue GetLiftParameterCategory(Dictionary<string,int> parameterDto, string parameterName)
+    private static ParameterCategoryValue GetLiftParameterCategory(Dictionary<string, int> parameterDto, string parameterName)
     {
         if (parameterDto.TryGetValue(parameterName, out int category))
         {

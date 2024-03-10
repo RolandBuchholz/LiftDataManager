@@ -11,9 +11,9 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
 
     public CarVentilationResult CarVentilationResult = new();
 
-    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
                                    ICalculationsModule calculationsModuleService, IPdfService pdfService, ISettingService settingsSelectorService) :
-         base(parameterDataService, dialogService, navigationService)
+                                   base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
         _settingService = settingsSelectorService;
@@ -41,17 +41,12 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
+        NavigatedToBaseActions();
         CarVentilationResult = _calculationsModuleService.GetCarVentilationCalculation(ParameterDictionary);
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

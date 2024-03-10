@@ -257,7 +257,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                         InfoText += $"Es wurde eine neuere LiftDataManagerVersion gefunden und wird installiert...";
                         _logger.LogInformation(60181, "LiftDataManagerupdate found and installing...");
                         await pm.AddPackageByAppInstallerFileAsync(new Uri(@"\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager\LiftDataManager_x64.appinstaller"),
-                            AddPackageByAppInstallerOptions.None, pm.GetDefaultPackageVolume());  
+                            AddPackageByAppInstallerOptions.None, pm.GetDefaultPackageVolume());
                     }
                     break;
                 case PackageUpdateAvailability.NoUpdates:

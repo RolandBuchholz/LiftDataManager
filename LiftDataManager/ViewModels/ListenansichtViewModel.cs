@@ -11,8 +11,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new();
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
 
-    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-         base(parameterDataService, dialogService, navigationService)
+    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -114,8 +114,15 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
-        InfoSidebarPanelText += infotext;
+        var saveResult = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
+        if (saveResult.Key != "Error")
+        {
+            await _infoCenterService.AddInfoCenterSaveInfoAsync(InfoCenterEntrys, saveResult);
+        }
+        else
+        {
+            await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Value!);
+        }
         CanSaveParameter = false;
         Selected.IsDirty = false;
         await SetModelStateAsync();
@@ -229,14 +236,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
             SearchInput = CurrentSpeziProperties.SearchInput;
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
 
         _ = GetHistoryEntrysAsync(FullPathXml);
         HasHighlightedParameters = CheckhasHighlightedParameters();
@@ -252,7 +254,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 
     public void EnsureItemSelected()

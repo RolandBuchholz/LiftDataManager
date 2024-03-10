@@ -10,9 +10,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private ParameterContext? _editableparametercontext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
-    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
                                  ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger) :
-                                 base(parameterDataService, dialogService, navigationService)
+                                 base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;

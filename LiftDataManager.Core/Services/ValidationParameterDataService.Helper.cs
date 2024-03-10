@@ -287,7 +287,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 return Convert.ToDouble(ParameterDictionary["var_overrideSuspendedCeiling"].Value, CultureInfo.CurrentCulture);
             }
-            return 35; 
+            return 35;
         }
         return 0;
     }

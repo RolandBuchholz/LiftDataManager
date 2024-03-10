@@ -902,7 +902,7 @@
             Grid.RowSpan="2"
             Grid.Column="1"
             Margin="5,0,0,0"
-            InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=TwoWay}"
             ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"

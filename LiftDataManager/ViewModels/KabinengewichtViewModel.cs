@@ -12,9 +12,9 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
 
     public CarWeightResult CarWeightResult = new();
 
-    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext,
-                                   ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, IPdfService pdfService) :
-         base(parameterDataService, dialogService, navigationService)
+    public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+        ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, IPdfService pdfService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -40,13 +40,11 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             OverridenCarWeight = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
             CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
             ParameterDictionary!["var_F"].AutoUpdateParameterValue(Convert.ToString(CarWeightResult.FahrkorbGewicht));
@@ -55,6 +53,6 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

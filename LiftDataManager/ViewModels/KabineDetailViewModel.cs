@@ -9,8 +9,8 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
-    public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-     base(parameterDataService, dialogService, navigationService)
+    public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+     base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         CarFloorSillParameter = new ObservableDictionary<string, double?>();
         SetupCarFloorSillParameter();
@@ -233,13 +233,11 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             CanRefreshCarFloorSill = !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData");
             FillCarFloorSillParameter();
         }
@@ -253,6 +251,6 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

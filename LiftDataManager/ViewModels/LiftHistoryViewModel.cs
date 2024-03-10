@@ -7,8 +7,8 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware,
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-                                base(parameterDataService, dialogService, navigationService)
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+                                base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         FilteredItems = new CollectionViewSource
         {
@@ -73,18 +73,13 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware,
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
+        NavigatedToBaseActions();
         _ = GetLiftHistoryEntrysAsync(FullPathXml);
         CanShowHistoryEntrys = HistoryEntrys.Any();
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

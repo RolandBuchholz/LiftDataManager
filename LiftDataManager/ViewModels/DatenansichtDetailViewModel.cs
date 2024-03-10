@@ -26,8 +26,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         }
     }
 
-    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-         base(parameterDataService, dialogService, navigationService)
+    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         ErrorsList ??= new();
     }
@@ -62,8 +62,15 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             return;
         if (FullPathXml == null)
             return;
-        var infotext = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
-        InfoSidebarPanelText += infotext;
+        var saveResult = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
+        if (saveResult.Key != "Error")
+        {
+            await _infoCenterService.AddInfoCenterSaveInfoAsync(InfoCenterEntrys, saveResult);
+        }
+        else
+        {
+            await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Value!);
+        }
         CanSaveParameter = false;
         if (Item is not null)
         {
@@ -139,7 +146,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
         if (Item != null)
             Item.PropertyChanged -= OnPropertyChanged;
     }

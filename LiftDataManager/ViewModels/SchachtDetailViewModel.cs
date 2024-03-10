@@ -6,8 +6,8 @@ namespace LiftDataManager.ViewModels;
 
 public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-     base(parameterDataService, dialogService, navigationService)
+    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+     base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
     }
 
@@ -117,7 +117,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             Location = shaftWallOutSide.Location
         };
 
-        shaftWallHatch.Inflate(100f,100f);
+        shaftWallHatch.Inflate(100f, 100f);
 
         SKRect shaftWallInSide = new()
         {
@@ -142,7 +142,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         {
             Color = SKColors.DarkRed,
             IsAntialias = true,
-            StrokeWidth= _stokeWith * 2,
+            StrokeWidth = _stokeWith * 2,
             Style = SKPaintStyle.Stroke
         };
         using var paintShaft = new SKPaint
@@ -160,22 +160,22 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         canvas.Restore();
         canvas.DrawRect(shaftWallInSide, paintShaft);
         canvas.DrawRect(shaftWallInSide, paintHatchOutline);
-  
+
     }
 
     private void DrawEntranceWall(SKCanvas canvas)
     {
-        string[] entrances = new[] { "A","B","C","D" };
+        string[] entrances = new[] { "A", "B", "C", "D" };
 
         foreach (var entrance in entrances)
         {
             if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{entrance}"))
-             continue;
+                continue;
             float wallOpeningWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_MauerOeffnungBreite{entrance}");
             if (wallOpeningWidth == 0)
                 continue;
             float wallOpeningLeft = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_MauerOeffnungAbstand{entrance}");
-            
+
             using var paintShaftEntrace = new SKPaint
             {
                 Color = SKColors.LightSlateGray,
@@ -307,7 +307,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             liftCar.RLineTo(0, carR3);
             liftCar.RLineTo(carDoorMountingB, 0);
             liftCar.RLineTo(0, carDoorWidthB);
-            liftCar.RLineTo(-carDoorMountingB,0);
+            liftCar.RLineTo(-carDoorMountingB, 0);
         }
         liftCar.LineTo(carWidth / 2, carDepth / 2);
         if (carDoorMountingA != 0 && carDoorWidthA != 0)
@@ -319,7 +319,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
         liftCar.Close();
 
-        liftCar.Transform(SKMatrix.CreateTranslation(midLineCarVertical.LastPoint.X,  midLineCarHorizontal.LastPoint.Y));
+        liftCar.Transform(SKMatrix.CreateTranslation(midLineCarVertical.LastPoint.X, midLineCarHorizontal.LastPoint.Y));
 
         using var paintCar = new SKPaint
         {
@@ -369,19 +369,15 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
-        {
-            _ = SetModelStateAsync();
             SetViewBoxDimensions();
-        }
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

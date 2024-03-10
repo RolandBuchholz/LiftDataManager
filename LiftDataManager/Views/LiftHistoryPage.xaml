@@ -176,7 +176,7 @@
             <speziControls:SidebarPanel
                 Grid.Column="1"
                 Margin="0"
-                InfoText="{x:Bind ViewModel.InfoSidebarPanelText, Mode=TwoWay}"
+            InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=TwoWay}"
                 ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <!--  Footer  -->

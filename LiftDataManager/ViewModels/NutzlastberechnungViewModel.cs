@@ -15,9 +15,9 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public PayLoadResult PayLoadResult = new();
 
-    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
                                        ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, navigationService)
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -57,13 +57,11 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
             _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
         }
@@ -71,6 +69,6 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

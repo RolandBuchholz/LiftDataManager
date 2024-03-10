@@ -3,8 +3,8 @@ namespace LiftDataManager.ViewModels;
 
 public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public AntriebSteuerungNotrufViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-         base(parameterDataService, dialogService, navigationService)
+    public AntriebSteuerungNotrufViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
     }
 
@@ -33,19 +33,17 @@ public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavig
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             SetDriveTyp();
         }
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

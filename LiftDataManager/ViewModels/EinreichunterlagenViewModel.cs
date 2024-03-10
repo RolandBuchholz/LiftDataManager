@@ -10,9 +10,9 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;
 
-    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
                                        ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, navigationService)
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -106,13 +106,11 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            _ = SetModelStateAsync();
             SetLiftDocumentation();
             LiftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
         }
@@ -121,6 +119,6 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     public void OnNavigatedFrom()
     {
         LiftDocumentation.OnTechnicalLiftDocumentationChanged -= LiftDocumentation_OnTechnicalLiftDocumentationChanged;
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

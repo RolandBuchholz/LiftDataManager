@@ -66,11 +66,16 @@ public class LiftParameterHelper
     public static string GetShortDateFromCalendarWeek(string calendarWeek)
     {
         var dateSplitt = calendarWeek.Split('/', '.', '-');
-        if (dateSplitt.Length != 2) return string.Empty;
-        if (!int.TryParse(dateSplitt[0], out int weekOfYear)) return string.Empty;
-        if (!int.TryParse(dateSplitt[1], out int year)) return string.Empty;
-        if (weekOfYear > 53) return string.Empty;
-        if (year < 2000 || weekOfYear > 2099) return string.Empty;
+        if (dateSplitt.Length != 2)
+            return string.Empty;
+        if (!int.TryParse(dateSplitt[0], out int weekOfYear))
+            return string.Empty;
+        if (!int.TryParse(dateSplitt[1], out int year))
+            return string.Empty;
+        if (weekOfYear > 53)
+            return string.Empty;
+        if (year < 2000 || weekOfYear > 2099)
+            return string.Empty;
 
         var jan1 = new DateTime(year, 1, 1);
         var daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
@@ -90,8 +95,8 @@ public class LiftParameterHelper
     public static bool IsDefaultCarTyp(string? carTyp)
     {
         if (string.IsNullOrWhiteSpace(carTyp))
-        return true;
-        return string.Equals(carTyp, "C100 (aufg. Sockel)", StringComparison.CurrentCultureIgnoreCase) || 
+            return true;
+        return string.Equals(carTyp, "C100 (aufg. Sockel)", StringComparison.CurrentCultureIgnoreCase) ||
                string.Equals(carTyp, "C200 (vers. Sockel)", StringComparison.CurrentCultureIgnoreCase);
     }
 }

@@ -20,7 +20,7 @@ public class DownloadInfo
         {
             exitCode = value;
             if (Enum.IsDefined(typeof(ExitCodeEnum), value))
-                ExitState = (ExitCodeEnum)exitCode; 
+                ExitState = (ExitCodeEnum)exitCode;
         }
     }
 }

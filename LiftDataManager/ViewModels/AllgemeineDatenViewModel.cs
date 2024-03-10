@@ -15,8 +15,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private readonly ParameterContext _parametercontext;
     private ParameterContext? _editableparametercontext;
 
-    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
-         base(parameterDataService, dialogService, navigationService)
+    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _logger = logger;
@@ -422,17 +422,12 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
+        NavigatedToBaseActions();
         SetLiftplanners();
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

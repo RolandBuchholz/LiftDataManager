@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Humanizer;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
-using Windows.Storage.Pickers;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using WinUICommunity;
-using Humanizer;
 
 namespace LiftDataManager.ViewModels;
 
@@ -19,10 +19,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private bool OpenReadOnly { get; set; } = true;
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
-    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService,
+    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
                          ISettingService settingsSelectorService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
-        : base(parameterDataService, dialogService, navigationService)
+        : base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
@@ -138,7 +138,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (value is null)
             return;
         value
-            .When(SpezifikationTyp.Order).Then(() => 
+            .When(SpezifikationTyp.Order).Then(() =>
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
@@ -158,7 +158,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 DataImportDescription = "Daten aus einem Anfrage Formular importieren.";
                 DataImportDescriptionImage = "/Images/PdfTransparent.png";
             })
-            .Default(() => 
+            .Default(() =>
             {
                 DataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
                 DataImportDescriptionImage = "/Images/TonerSaveOFF.png";
@@ -233,14 +233,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else if (downloadInfo.ExitState == ExitCodeEnum.CheckedOutByOtherUser || downloadInfo.ExitState == ExitCodeEnum.CheckedOutLinkedFilesByOtherUser)
             {
                 FullPathXml = downloadInfo.FullFileName;
-                await _dialogService!.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet", 
-                    "Kein speichern möglich!\n"+
-                    "\n"+
+                await _dialogService!.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet",
+                    "Kein speichern möglich!\n" +
+                    "\n" +
                     "Datei kann nur schreibgeschützt geöffnet werden.");
                 _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
-                InfoSidebarPanelText += $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n";
-                InfoSidebarPanelText += $"Kein speichern möglich!\n";
-                InfoSidebarPanelText += $"{downloadInfo.FullFileName?.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n" +
+                                                                                      "Kein speichern möglich!");
                 AuftragsbezogeneXml = true;
                 CanValidateAllParameter = true;
                 CheckOut = false;
@@ -248,7 +247,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
             else if (downloadInfo.ExitState == ExitCodeEnum.MultipleAutoDeskTransferXml)
             {
-                InfoSidebarPanelText += $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden\n";
+                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden");
 
                 var confirmed = await _dialogService!.ConfirmationDialogAsync(
                                         $"Es wurden mehrere {downloadInfo.FileName} Dateien gefunden?",
@@ -267,7 +266,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                     {
                         await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
                         _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName!, downloadResult.ExitState);
-                        InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
+                        await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
                         FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                     }
                 }
@@ -280,8 +279,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else
             {
                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadInfo);
-                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, downloadInfo.ExitState);
-                InfoSidebarPanelText += $"Fehler: {downloadInfo.ExitState}\n";
+                _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadInfo.ExitState}", SpezifikationName, downloadInfo.ExitState);
+                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadInfo.ExitState}");
                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
             }
         }
@@ -301,14 +300,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             SpezifikationName = string.Empty;
             AuftragsbezogeneXml = false;
             CanValidateAllParameter = false;
-            InfoSidebarPanelText += $"Standard Daten geladen\n";
+            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Standard Daten geladen");
         }
         else
         {
             AuftragsbezogeneXml = true;
             CanValidateAllParameter = true;
-            InfoSidebarPanelText = string.Empty;
-            InfoSidebarPanelText += $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen\n";
+            InfoCenterEntrys.Clear();
+            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen");
         }
 
         var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
@@ -338,7 +337,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                         try
                         {
                             updatedParameter.Value = DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
-                            InfoSidebarPanelText += $"{updatedParameter.Name} => Exceldatum in String konvertiert!\n";
+                            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{updatedParameter.Name} => Exceldatum in String konvertiert");
                         }
                         catch
                         {
@@ -367,10 +366,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else
             {
                 LogUnsupportedParameter(item.Name);
-                InfoSidebarPanelText += $"----------\n";
-                InfoSidebarPanelText += $"Parameter {item.Name} wird nicht unterstützt\n";
-                InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
-                InfoSidebarPanelText += $"----------\n";
+                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Parameter {item.Name} wird nicht unterstützt\n" +
+                                                                                      "Überprüfen Sie die AutodeskTransfer.XML Datei");
             }
         }
 
@@ -416,8 +413,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
-        InfoSidebarPanelText += $"Daten aus {FullPathXml} geladen \n";
-        InfoSidebarPanelText += $"----------\n";
+        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {FullPathXml} geladen");
         LikeEditParameter = true;
         OpenReadOnly = true;
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
@@ -486,8 +482,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         if (delete is not null && (bool)delete)
         {
             _logger.LogInformation(60137, "Reset Data");
-            InfoSidebarPanelText += $"Daten werden auf die Standardwerte zurückgesetzt\n";
-            InfoSidebarPanelText += $"----------\n";
+            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Daten werden auf die Standardwerte zurückgesetzt");
 
             var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
             if (downloadResult.ExitState == ExitCodeEnum.NoError)
@@ -506,8 +501,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
                 _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
-                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-
+                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
             ClearExpiredLiftData();
             await LoadDataAsync();
@@ -537,19 +531,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             if (downloadResult.ExitState == ExitCodeEnum.NoError)
             {
-                InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
-                InfoSidebarPanelText += $"----------\n";
-                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
+                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Standard Daten geladen");
                 _logger.LogInformation(60137, "upload successful");
                 ClearExpiredLiftData();
                 await LoadDataAsync();
             }
             else if (downloadResult.ExitState == ExitCodeEnum.UpdatePropertiesError)
             {
-                InfoSidebarPanelText += $"Vault-Ordner-Eigenschaften konnten nicht aktualisiert werden";
-                InfoSidebarPanelText += $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)\n";
-                InfoSidebarPanelText += $"----------\n";
-                InfoSidebarPanelText += $"Standard Daten geladen\n";
+                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, "Vault-Ordner-Eigenschaften konnten nicht aktualisiert werden");
+                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
+                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Standard Daten geladen");
                 _logger.LogInformation(60138, "upload successful / property matching failed");
                 ClearExpiredLiftData();
                 await LoadDataAsync();
@@ -557,8 +549,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else
             {
                 await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
-                InfoSidebarPanelText += $"Fehler: {downloadResult.ExitState}\n";
-                InfoSidebarPanelText += $"----------\n";
+                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
         }
         AutoSaveTimer?.Stop();
@@ -612,7 +603,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             LikeEditParameter = true;
             OpenReadOnly = true;
             CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-
+            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Parameter erfolgreich aus Datenbank geladen");
             return true;
         }
     }
@@ -708,7 +699,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
             var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
             ShowImportCarFrames = isMultiCarframe;
-            if (!isMultiCarframe) SelectedImportCarFrame = null;
+            if (!isMultiCarframe)
+                SelectedImportCarFrame = null;
 
             if (isMultiCarframe && SelectedImportCarFrame is null)
             {
@@ -738,7 +730,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 {
                     item.Name = item.Name.Replace(carTypPrefix, "");
                     cleanImport.Add(item);
-                }  
+                }
             }
 
             var carTyp = carTypPrefix switch
@@ -783,7 +775,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 if (!string.IsNullOrWhiteSpace(item.Comment))
                 {
                     updatedParameter.Comment = item.Comment;
-                }   
+                }
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
@@ -797,10 +789,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             else
             {
                 LogUnsupportedParameter(item.Name);
-                InfoSidebarPanelText += $"----------\n";
-                InfoSidebarPanelText += $"Parameter {item.Name} wird nicht unterstützt\n";
-                InfoSidebarPanelText += $"Überprüfen Sie die AutodeskTransfer.XML Datei\n";
-                InfoSidebarPanelText += $"----------\n";
+                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Parameter {item.Name} wird nicht unterstützt\n" +
+                                                                                      "Überprüfen Sie die AutodeskTransfer.XML Datei");
             }
         }
 
@@ -808,8 +798,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
         if (FullPathXml is null)
             return;
-        var infotext = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
-        InfoSidebarPanelText += infotext;
+        var saveResult = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
+        if (saveResult.Any())
+            await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+
         await SetModelStateAsync();
         if (AutoSaveTimer is not null)
         {
@@ -920,12 +912,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             case 0:
                 {
                     _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
-                    InfoSidebarPanelText += $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)\n";
+                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)");
                     return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
                 }
             case 1:
                 {
-                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
                     var autoDeskTransferpath = workspaceSearch[0];
                     FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
                     if (!AutoDeskTransferInfo.IsReadOnly)
@@ -948,7 +940,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 }
             default:
                 {
-                    InfoSidebarPanelText += $"Suche im Arbeitsbereich beendet {stopTimeMs} ms\n";
+                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
                     _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
                     return new DownloadInfo()
                     {
@@ -972,12 +964,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
     {
         _logger.LogInformation(60139, "Workspacesearch started");
-        InfoSidebarPanelText += $"Suche im Arbeitsbereich gestartet\n";
+        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
 
         string? path;
 
-        if (CurrentSpezifikationTyp is not null && 
-            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))  
+        if (CurrentSpezifikationTyp is not null &&
+            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))
         {
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
             if (!Directory.Exists(path))
@@ -1057,7 +1049,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private void ClearExpiredLiftData()
     {
-        InfoSidebarPanelText = string.Empty;
+        InfoCenterEntrys.Clear();
         AuftragsbezogeneXml = false;
         CurrentSpezifikationTyp = SpezifikationTyp.Order;
         SpezifikationName = string.Empty;
@@ -1101,7 +1093,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         var currentFileName = Path.GetFileName(fullPath);
         var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
-        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!,"SV", newFileName);
+        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "SV", newFileName);
 
         if (string.Equals(fullPath, newFullPath, StringComparison.CurrentCultureIgnoreCase))
             return;
@@ -1133,14 +1125,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
         CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
-        InfoSidebarPanelText = CurrentSpeziProperties.InfoSidebarPanelText;
+        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
         if (CurrentSpeziProperties.FullPathXml is not null)
         {
             FullPathXml = CurrentSpeziProperties.FullPathXml;
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
-        ParameterDictionary ??= new();
-
         //Refactor
 
         if (CurrentSpeziProperties.ParameterDictionary is not null)
@@ -1185,7 +1176,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 
     [LoggerMessage(61035, LogLevel.Warning,

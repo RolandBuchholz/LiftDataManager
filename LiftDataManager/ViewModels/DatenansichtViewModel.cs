@@ -6,8 +6,8 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
 {
     public CollectionViewSource GroupedItems { get; set; }
 
-    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService) :
-         base(parameterDataService, dialogService, navigationService)
+    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -87,20 +87,15 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
             SearchInput = CurrentSpeziProperties.SearchInput;
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 
     [RelayCommand]

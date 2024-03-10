@@ -8,8 +8,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
 
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-         base(parameterDataService, dialogService, navigationService)
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+         base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -138,12 +138,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
-        SynchronizeViewModelParameter();
+        NavigatedToBaseActions();
         SetSafetygearData();
         SetCarWeight();
         CheckCFPState();
@@ -151,6 +146,6 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
 
     public void OnNavigatedFrom()
     {
-        IsActive = false;
+        NavigatedFromBaseActions();
     }
 }

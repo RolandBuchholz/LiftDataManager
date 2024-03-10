@@ -7,7 +7,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 {
     public List<SpezifikationTyp>? SpezifikationTyps { get; set; }
     public int[] Years { get; set; } = Enumerable.Range(10, 20).ToArray();
-    public string[] Months { get; } = {"01","02","03","04","05", "06", "07", "08", "09", "10", "11", "12" };
+    public string[] Months { get; } = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 
     public SpezifikationsNumberControl()
     {
@@ -18,7 +18,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     private void OnSpezifikationsNumberControlLoaded(object sender, RoutedEventArgs e)
     {
         SpezifikationTyps = SpezifikationTyp.List.ToList();
-        if(!RequestEnabled)
+        if (!RequestEnabled)
             SpezifikationTyps.Remove(SpezifikationTyp.Request);
 
         cmb_SpezifikationTyp.ItemsSource = SpezifikationTyps;
@@ -106,8 +106,8 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     public string SpezifikationName
     {
         get => (string)GetValue(SpezifikationNameProperty);
-        set 
-        { 
+        set
+        {
             SetValue(SpezifikationNameProperty, value);
             IsValid = CheckSpezifikationNameIsValid(value);
             if (string.IsNullOrWhiteSpace(value) && NumberBoxText is not null)
@@ -199,9 +199,11 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     private void SetSpezifikationName()
     {
-        if (IsOrderRelated) return;
+        if (IsOrderRelated)
+            return;
 
-        if (SpezifikationTyp is null) return;
+        if (SpezifikationTyp is null)
+            return;
 
         SpezifikationName = SpezifikationTyp switch
         {
@@ -214,10 +216,11 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     private bool CheckSpezifikationNameIsValid(string value)
     {
-        if (string.IsNullOrEmpty(value)) return false;
+        if (string.IsNullOrEmpty(value))
+            return false;
         return (value.Length >= 6 && SpezifikationTyp.Equals(SpezifikationTyp.Order)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Offer)) ||
-               (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Planning))||
+               (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Planning)) ||
                (!string.IsNullOrWhiteSpace(value) && SpezifikationTyp.Equals(SpezifikationTyp.Request));
     }
 }

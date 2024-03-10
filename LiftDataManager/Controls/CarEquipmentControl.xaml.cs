@@ -13,7 +13,7 @@ public sealed partial class CarEquipmentControl : UserControl
 
     private void CarEquipmentControl_Loaded(object sender, RoutedEventArgs e)
     {
-        CarDepth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource,"var_KTI");
+        CarDepth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KTI");
         CarWidth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KBI");
         CarHeightRaw = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KHRoh");
         ViewBoxWidth = Side == CarSide.A || Side == CarSide.C ? CarWidth : CarDepth;
@@ -91,7 +91,8 @@ public sealed partial class CarEquipmentControl : UserControl
     }
     private void DrawCarDoor(SKCanvas canvas)
     {
-       if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_ZUGANSSTELLEN_{Side}")) return;
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_ZUGANSSTELLEN_{Side}"))
+            return;
 
         float doorHeight = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, Side.ToString() == "A" ? "var_TH" : $"var_TH_{Side}");
         float doorWidth = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, Side.ToString() == "A" ? "var_TB" : $"var_TB_{Side}");
@@ -152,7 +153,7 @@ public sealed partial class CarEquipmentControl : UserControl
         switch (dooropening)
         {
             case "einseitig öffnend":
-                using (SKPaint paintText = new ())
+                using (SKPaint paintText = new())
                 {
                     paintText.Style = SKPaintStyle.Fill;
                     paintText.IsAntialias = true;
@@ -163,16 +164,16 @@ public sealed partial class CarEquipmentControl : UserControl
 
                     for (int i = 0; i < doorPanelCount; i++)
                     {
-                        canvas.DrawText("?", doorDistanceR + panelWidth/2 + panelWidth * i, (float)CarHeightRaw - doorHeight/1.5f, paintText);
-                    }   
+                        canvas.DrawText("?", doorDistanceR + panelWidth / 2 + panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f, paintText);
+                    }
                 }
                 break;
             case "einseitig öffnend (rechts)":
                 for (int i = 0; i < doorPanelCount; i++)
                 {
-                    for (int j = 0; j < doorPanelCount-i; j++)
+                    for (int j = 0; j < doorPanelCount - i; j++)
                     {
-                        float startOffset = doorPanelCount-i*75;
+                        float startOffset = doorPanelCount - i * 75;
                         float arrowOffset = startOffset - j * 150;
                         arrow = SkiaSharpHelpers.CreateArrow(doorDistanceR - panelWidth / 2 + doorPanelCount * panelWidth - panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f + arrowOffset, 180);
                         canvas.DrawPath(arrow, paintGreen);
@@ -230,7 +231,7 @@ public sealed partial class CarEquipmentControl : UserControl
         string skirting = LiftParameterHelper.GetLiftParameterValue<string>(ItemSource, "var_Sockelleiste");
         if (string.IsNullOrWhiteSpace(skirting))
             return;
-        var skirtingHeightString = skirting.Replace("V2A","").Replace("V4A","").Split("x").FirstOrDefault()?.Trim();
+        var skirtingHeightString = skirting.Replace("V2A", "").Replace("V4A", "").Split("x").FirstOrDefault()?.Trim();
         if (!float.TryParse(skirtingHeightString, out float skirtingHeight))
             return;
 

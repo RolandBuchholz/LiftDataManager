@@ -18,9 +18,9 @@ public interface IParameterDataService
 
     Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync();
 
-    Task<string> SaveParameterAsync(Parameter parameter, string path);
+    Task<KeyValuePair<string, string?>> SaveParameterAsync(Parameter parameter, string path);
 
-    Task<string> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode);
+    Task<List<KeyValuePair<string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode);
 
     Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 

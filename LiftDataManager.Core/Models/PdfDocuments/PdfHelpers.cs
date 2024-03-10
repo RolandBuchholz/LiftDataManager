@@ -298,7 +298,7 @@ public static class PdfHelpers
                     };
                     canvas.DrawRoundRect(0, 3.5f, 10, 10, 1, 1, paintSecondaryVariantColor);
                 });
-                layers.PrimaryLayer().PaddingLeft(13).Text(description); 
+                layers.PrimaryLayer().PaddingLeft(13).Text(description);
             });
         });
 
@@ -307,7 +307,7 @@ public static class PdfHelpers
         {
             var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, TechnicalLiftDocumentation.GetProtectedSpaceTypImage(protectedSpaceTyp).TrimStart('/'));
             var protectedSpaceTypDescription = TechnicalLiftDocumentation.GetProtectedSpaceTypDescription(protectedSpaceTyp);
-            
+
             column.Item().AlignCenter().Text($"Schutzraum {position}").FontSize(fontSizeS).Bold();
             column.Item().PaddingHorizontal(20).Width(100).Image(imagePath);
             column.Item().AlignCenter().Text(protectedSpaceTypDescription).FontSize(fontSizeS);
