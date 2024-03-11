@@ -354,11 +354,11 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         {
             var newParameterDto = new ParameterDto
             {
-                ParameterTyp = SelectedParameterTyp,
-                ParameterTypeCode = SelectedParameterTypeCode,
-                ParameterCategory = SelectedParameterCategory,
+                ParameterTyp = SelectedParameterTyp!,
+                ParameterTypeCode = SelectedParameterTypeCode!,
+                ParameterCategory = SelectedParameterCategory!,
                 Name = "var_" + UniqueName,
-                DisplayName = DisplayName,
+                DisplayName = DisplayName!,
                 Value = ParameterValue,
                 Comment = Comment,
                 IsKey = (bool)IsKey!,

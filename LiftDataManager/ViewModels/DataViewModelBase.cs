@@ -1,7 +1,7 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Messenger;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace LiftDataManager.ViewModels;
 
@@ -148,6 +148,8 @@ public partial class DataViewModelBase : ObservableRecipient
     protected virtual void SynchronizeViewModelParameter()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (CurrentSpeziProperties is null)
+            return; 
         if (CurrentSpeziProperties.FullPathXml is not null)
             FullPathXml = CurrentSpeziProperties.FullPathXml;
         if (CurrentSpeziProperties.ParameterDictionary is not null)
@@ -246,22 +248,30 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         return Messenger.Send<SpeziPropertiesRequestMessage>();
     }
-    protected void NavigatedToBaseActions()
+
+    private void OnInfoCenterEntrys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) 
     {
-        IsActive = true;
-        SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
-            _ = SetModelStateAsync();
-    }
-    protected void NavigatedFromBaseActions()
-    {
-        IsActive = false;
         if (CurrentSpeziProperties is not null)
         {
             CurrentSpeziProperties.InfoCenterEntrys = InfoCenterEntrys;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
+    }
+
+    protected void NavigatedToBaseActions()
+    {
+        IsActive = true;
+        SynchronizeViewModelParameter();
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties?.ParameterDictionary is not null &&
+            CurrentSpeziProperties?.ParameterDictionary?.Values is not null)
+            _ = SetModelStateAsync();
+        InfoCenterEntrys.CollectionChanged += OnInfoCenterEntrys_CollectionChanged;
+    }
+
+    protected void NavigatedFromBaseActions()
+    {
+        IsActive = false;
+        InfoCenterEntrys.CollectionChanged -= OnInfoCenterEntrys_CollectionChanged;
     }
 }

@@ -15,7 +15,21 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate x:Key="InfoCenterItemTemplate" x:DataType="models:InfoCenterEntry">
-                <TextBlock Text="{x:Bind Message}" />
+                <Grid
+                    Width="250"
+                    MinHeight="50"
+                    MaxHeight="150"
+                    Padding="5">
+                    <Border Style="{ThemeResource InfoBorderPanelStyle}" />
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="{x:Bind State}" />
+                        <TextBlock Text="{x:Bind Message}" TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </Grid>
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>

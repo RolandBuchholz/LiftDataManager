@@ -893,6 +893,48 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         _logger.LogInformation(60139, "Set ModelStateAsync finished");
     }
 
+    protected override void SynchronizeViewModelParameter()
+    {
+        if (CurrentSpeziProperties is null)
+            SetSettings();
+        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (CurrentSpeziProperties is null)
+            return;
+
+        AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
+        CanValidateAllParameter = AuftragsbezogeneXml;
+        CheckOut = CurrentSpeziProperties.CheckOut;
+        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
+        LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
+        Adminmode = CurrentSpeziProperties.Adminmode;
+        HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
+
+        if (CurrentSpeziProperties.FullPathXml is not null)
+        {
+            FullPathXml = CurrentSpeziProperties.FullPathXml;
+            SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
+        }
+
+        CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
+        
+        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
+
+        if (CurrentSpeziProperties.ParameterDictionary is not null)
+            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
+
+        if (ParameterDictionary.Values.Count == 0)
+        {
+            var success = InitializeParametereAsync();
+
+            if (!success.Result)
+            {
+                _logger.LogCritical(61131, "Initialize LiftDataParameter.db failed");
+                throw new Exception("Initialize LiftDataParameter.db failed");
+            }
+        }
+    }
+
     private async Task<DownloadInfo?> GetAutoDeskTransferAsync(string? liftNumber, bool ReadOnly = true)
     {
         if (!AuftragsbezogeneXml && string.IsNullOrEmpty(liftNumber))
@@ -1114,39 +1156,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     public void OnNavigatedTo(object parameter)
     {
-        IsActive = true;
-        if (CurrentSpeziProperties is null)
-            SetSettings();
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
-        canValidateAllParameter = AuftragsbezogeneXml;
-        CheckOut = CurrentSpeziProperties.CheckOut;
-        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-        LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
-        HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-        CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
-        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
-            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
-        if (CurrentSpeziProperties.FullPathXml is not null)
-        {
-            FullPathXml = CurrentSpeziProperties.FullPathXml;
-            SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
-        }
-        //Refactor
+        NavigatedToBaseActions();
 
-        if (CurrentSpeziProperties.ParameterDictionary is not null)
-            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
-
-        if (ParameterDictionary.Values.Count == 0)
-        {
-            var success = InitializeParametereAsync();
-
-            if (!success.Result)
-            {
-                _logger.LogCritical(61131, "Initialize LiftDataParameter.db failed");
-                throw new Exception("Initialize LiftDataParameter.db failed");
-            }
-        }
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)

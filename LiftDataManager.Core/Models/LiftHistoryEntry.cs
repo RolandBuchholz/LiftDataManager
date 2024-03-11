@@ -11,9 +11,9 @@ public class LiftHistoryEntry
     public DateTime TimeStamp { get; set; }
     public string? Comment { get; set; }
     [JsonIgnore]
-    public ParameterCategoryValue Category { get; set; }
+    public ParameterCategoryValue? Category { get; set; }
 
-    public LiftHistoryEntry(string name, string displayName, string newValue, string author, string comment, ParameterCategoryValue category = default)
+    public LiftHistoryEntry(string name, string displayName, string newValue, string author, string comment, ParameterCategoryValue? category = default)
     {
         TimeStamp = DateTime.Now;
         Name = name;
