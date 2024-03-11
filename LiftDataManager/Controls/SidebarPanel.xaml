@@ -9,12 +9,21 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
-    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:ui="using:CommunityToolkit.WinUI" 
+    xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
     mc:Ignorable="d">
 
     <Grid>
         <Grid.Resources>
-            <DataTemplate x:Key="InfoCenterItemTemplate" x:DataType="models:InfoCenterEntry">
+            <selectors:InfoCenterEntryStateTemplateSelector
+            x:Key="InfoCenterTemplateSelector"
+            None="{StaticResource InfoCenterNone}"
+            InfoCenterMessage="{StaticResource InfoCenterMessage}"
+            InfoCenterWarning="{StaticResource InfoCenterWarning}"
+            InfoCenterError="{StaticResource InfoCenterError}"
+            InfoCenterParameterChanged="{StaticResource InfoCenterParameterChanged}"
+            InfoCenterSaveParameter="{StaticResource InfoCenterSaveParameter}" />
+            <DataTemplate x:Key="InfoCenterMessage" x:DataType="models:InfoCenterEntry">
                 <Grid
                     Width="250"
                     MinHeight="50"
@@ -345,7 +354,7 @@
             ExpandDirection="Up"
             Header="Info Sidebar Panel"
             Style="{StaticResource HorizontalExpanderStyle}">
-            <ListView ItemTemplate="{StaticResource InfoCenterItemTemplate}" ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}" />
+            <ListView ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}" ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}" />
         </Expander>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"
