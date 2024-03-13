@@ -290,7 +290,7 @@ public partial class ParameterDataService : IParameterDataService
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
-        return await Task.FromResult(new KeyValuePair<string, string?>(parameter.Name, parameter.Value));
+        return await Task.FromResult(new KeyValuePair<string, string?>(parameter.DisplayName, parameter.Value));
     }
 
     public async Task<List<KeyValuePair<string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
@@ -323,7 +323,7 @@ public partial class ParameterDataService : IParameterDataService
                     AddParameterToXml(parameter, xmlparameter);
                     parameter.IsDirty = false;
                     historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-                    saveResult.Add(new KeyValuePair<string, string?>(parameter.Name, parameter.Value));
+                    saveResult.Add(new KeyValuePair<string, string?>(parameter.DisplayName, parameter.Value));
                 }
                 else
                 {

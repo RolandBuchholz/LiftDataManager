@@ -34,11 +34,11 @@ public class InfoCenterEntryStateTemplateSelector : DataTemplateSelector
 
     protected override DataTemplate? SelectTemplateCore(object item, DependencyObject? container)
     {
-        if (item is not null)
+        if (item is not null and InfoCenterEntry)
         {
-            var entryState = (InfoCenterEntryState)item;
+            var infoCenterEntry = (InfoCenterEntry)item;
 
-            return entryState.Value switch
+            return infoCenterEntry.State.Value switch
             {
                 0 => None,
                 1 => InfoCenterMessage,

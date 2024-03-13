@@ -1,5 +1,6 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using MvvmHelpers;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -19,7 +20,7 @@ public partial class DataViewModelBase : ObservableRecipient
     public CurrentSpeziProperties? CurrentSpeziProperties;
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; } = new();
-    public ObservableCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
+    public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
 #pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
     public DataViewModelBase()
@@ -235,7 +236,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, message.NewValue, message.OldValue);
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, ((Parameter)message.Sender).DisplayName, message.OldValue, message.NewValue);
     }
 
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)

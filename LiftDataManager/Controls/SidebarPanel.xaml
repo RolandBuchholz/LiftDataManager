@@ -9,37 +9,20 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
-    xmlns:ui="using:CommunityToolkit.WinUI" 
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
     <Grid>
         <Grid.Resources>
             <selectors:InfoCenterEntryStateTemplateSelector
-            x:Key="InfoCenterTemplateSelector"
-            None="{StaticResource InfoCenterNone}"
-            InfoCenterMessage="{StaticResource InfoCenterMessage}"
-            InfoCenterWarning="{StaticResource InfoCenterWarning}"
-            InfoCenterError="{StaticResource InfoCenterError}"
-            InfoCenterParameterChanged="{StaticResource InfoCenterParameterChanged}"
-            InfoCenterSaveParameter="{StaticResource InfoCenterSaveParameter}" />
-            <DataTemplate x:Key="InfoCenterMessage" x:DataType="models:InfoCenterEntry">
-                <Grid
-                    Width="250"
-                    MinHeight="50"
-                    MaxHeight="150"
-                    Padding="5">
-                    <Border Style="{ThemeResource InfoBorderPanelStyle}" />
-                    <StackPanel>
-                        <TextBlock
-                            Margin="0,0,0,5"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Text="{x:Bind State}" />
-                        <TextBlock Text="{x:Bind Message}" TextWrapping="WrapWholeWords" />
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
+                x:Key="InfoCenterTemplateSelector"
+                InfoCenterError="{StaticResource InfoCenterError}"
+                InfoCenterMessage="{StaticResource InfoCenterMessage}"
+                InfoCenterParameterChanged="{StaticResource InfoCenterParameterChanged}"
+                InfoCenterSaveParameter="{StaticResource InfoCenterSaveParameter}"
+                InfoCenterWarning="{StaticResource InfoCenterWarning}"
+                None="{StaticResource InfoCenterNone}" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -354,7 +337,19 @@
             ExpandDirection="Up"
             Header="Info Sidebar Panel"
             Style="{StaticResource HorizontalExpanderStyle}">
-            <ListView ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}" ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}" />
+            <ListView
+                Margin="-10,0,-10,0"
+                ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
+                ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}">
+                <!--<ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                -->
+                <!--<Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />-->
+                <!--
+                    </Style>
+                </ListView.ItemContainerStyle>-->
+            </ListView>
         </Expander>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"

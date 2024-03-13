@@ -2,12 +2,8 @@
     x:Class="LiftDataManager.Styles.ControlDataTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:models="using:LiftDataManager.Core.Models"
-    xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI">
 
     <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
@@ -149,4 +145,195 @@
             Text="Kein bekannter Parametertyp gefunden." />
     </DataTemplate>
 
+    <!--  InfoCenterDataTemplates.xaml  -->
+    <DataTemplate x:Key="InfoCenterNone" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Style="{ThemeResource WarningBorderPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock
+                    FontSize="12"
+                    Text="No infoCenter data found"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="InfoCenterMessage" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Style="{ThemeResource BaseBorderInfoPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock
+                    FontSize="12"
+                    Text="{Binding Message}"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="InfoCenterWarning" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Style="{ThemeResource WarningBorderPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock
+                    FontSize="12"
+                    Text="{Binding Message}"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="InfoCenterError" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Style="{ThemeResource WarningBorderPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock
+                    FontSize="12"
+                    Text="{Binding Message}"
+                    TextWrapping="WrapWholeWords" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="InfoCenterParameterChanged" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Background="CornflowerBlue" Style="{ThemeResource BaseBorderInfoPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock FontSize="12">
+                    <Run FontWeight="SemiBold" Text="Name: " />
+                    <Run FontWeight="Thin" Text="{Binding ParameterName}" />
+                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Alter Wert:" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Neuer Wert:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        FontSize="12"
+                        Text="{Binding OldValue}"
+                        TextWrapping="WrapWholeWords" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,0,5,0"
+                        FontSize="12"
+                        Text="{Binding NewValue}"
+                        TextWrapping="WrapWholeWords" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="InfoCenterSaveParameter" x:DataType="models:InfoCenterEntry">
+        <Grid
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
+            <Border Background="Green" Style="{ThemeResource BaseBorderInfoPanelStyle}" />
+            <StackPanel Margin="7,3,3,3">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                </TextBlock>
+                <TextBlock FontSize="12">
+                    <Run FontWeight="SemiBold" Text="Name: " />
+                    <Run FontWeight="Thin" Text="{Binding ParameterName}" />
+                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Neuer Wert:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        FontSize="12"
+                        Text="{Binding NewValue}"
+                        TextWrapping="WrapWholeWords" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

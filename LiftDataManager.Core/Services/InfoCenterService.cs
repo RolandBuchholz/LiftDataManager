@@ -1,64 +1,105 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
-using System.Collections.ObjectModel;
+using MvvmHelpers;
 
 namespace LiftDataManager.Core.Services;
 
 public class InfoCenterService : IInfoCenterService
 {
     /// <summary>
-    /// add a message to the infoCenter.
+    /// add a message to the infoCenter
     /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys.</param>
-    /// <param name="message">The message.</param>
-    /// <returns>Task.</returns>
-    public async Task AddInfoCenterMessageAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, string message)
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="message">The message</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterMessageAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string message)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterMessage) 
         { 
-            State =InfoCenterEntryState.InfoCenterMessage, 
             Message = await Task.FromResult(message)
         });
     }
 
-    public async Task AddInfoCenterWarningAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, string warning)
+    /// <summary>
+    /// add a warning to the infoCenter
+    /// </summary>
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="message">The warning</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterWarningAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string warning)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterWarning)
         { 
-            State=InfoCenterEntryState.InfoCenterWarning,
             Message = await Task.FromResult(warning) 
         });
     }
-    public async Task AddInfoCenterErrorAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, string error)
+
+    /// <summary>
+    /// add a error to the infoCenter
+    /// </summary>
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="message">The error</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterErrorAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string error)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterError)
         { 
-            State = InfoCenterEntryState.InfoCenterError,
             Message = await Task.FromResult(error) 
         });
     }
-    public async Task AddInfoCenterParameterChangedAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, string newValue, string oldValue)
+
+    /// <summary>
+    /// add a parameter changed info to the infoCenter
+    /// </summary>
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="parameterName">ParameterName.</param>
+    /// <param name="oldValue">Old Value</param>
+    /// <param name="newValue">New Value</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterParameterChanged)
         { 
-            State = InfoCenterEntryState.InfoCenterParameterChanged,
-            Message = await Task.FromResult(newValue) 
+            ParameterName = parameterName,
+            OldValue = oldValue,
+            NewValue = newValue
         });
+        await Task.CompletedTask;
     }
 
-    public async Task AddInfoCenterSaveInfoAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, KeyValuePair<string, string?> savedParameter)
+    /// <summary>
+    /// add a parameter changed info to the infoCenter
+    /// </summary>
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="savedParameter">KeyValuePair*ParameterName-New Value*</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, KeyValuePair<string, string?> savedParameter)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry 
-        { 
-            State = InfoCenterEntryState.InfoCenterSaveParameter,
-            Message = await Task.FromResult(savedParameter.Key) 
-        });
-    }
-    public async Task AddInfoCenterSaveAllInfoAsync(ObservableCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<KeyValuePair<string, string?>> savedParameters)
-    {
-        infoCenterEntrys.Add(new InfoCenterEntry 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
         {
-            State = InfoCenterEntryState.InfoCenterSaveParameter,
-            Message = await Task.FromResult("Hallo") 
+            ParameterName = savedParameter.Key,
+            NewValue = savedParameter.Value
         });
+        await Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// add a parameter changed info to the infoCenter
+    /// </summary>
+    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
+    /// <param name="savedParameters">IEnumerable*KeyValuePair*ParameterName-New Value*</param>
+    /// <returns>Task</returns>
+    public async Task AddInfoCenterSaveAllInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<KeyValuePair<string, string?>> savedParameters)
+    {
+        List<InfoCenterEntry> newEntrys = new();
+        foreach (var savedParameter in savedParameters)
+        {
+            newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
+            {
+                ParameterName = savedParameter.Key,
+                NewValue = savedParameter.Value
+            });
+        }
+        infoCenterEntrys.AddRange(newEntrys);
+        await Task.CompletedTask;
     }
 }
