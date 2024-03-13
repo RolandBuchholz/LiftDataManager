@@ -3,6 +3,14 @@
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="SpeziCardBorderBrush" Color="#19000000" />
             <SolidColorBrush x:Key="InfoSidebarBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush
+                x:Key="InfoCenterParameterChanged"
+                Opacity="0.75"
+                Color="CornflowerBlue" />
+            <SolidColorBrush
+                x:Key="InfoCenterParameterSaved"
+                Opacity="0.75"
+                Color="LightSeaGreen" />
             <AcrylicBrush
                 x:Key="SpeziCardBackground"
                 FallbackColor="{ThemeResource SystemListLowColor}"
@@ -15,6 +23,14 @@
                 Opacity="0.6"
                 Color="{ThemeResource SystemAltMediumColor}" />
             <SolidColorBrush x:Key="InfoSidebarBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush
+                x:Key="InfoCenterParameterChanged"
+                Opacity="0.4"
+                Color="CornflowerBlue" />
+            <SolidColorBrush
+                x:Key="InfoCenterParameterSaved"
+                Opacity="0.75"
+                Color="LightSeaGreen" />
             <AcrylicBrush
                 x:Key="SpeziCardBackground"
                 FallbackColor="{ThemeResource SystemChromeMediumColor}"

@@ -2,6 +2,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ColorStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
     <Style x:Name="SpeziRowBorderStyle" TargetType="Border">
         <Setter Property="Margin" Value="0,0,5,5" />
         <Setter Property="Background" Value="Transparent" />
@@ -9,10 +10,55 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{ThemeResource SpeziCardBorderBrush}" />
     </Style>
+
     <Style x:Name="BorderDataItemStyle" TargetType="Border">
         <Setter Property="Width" Value="160" />
         <Setter Property="Height" Value="160" />
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Background" Value="{ThemeResource SystemControlPageBackgroundListLowBrush}" />
     </Style>
+
+    <!--  InfoCenterBorderPanelStyles  -->
+
+    <Style x:Key="BaseBorderInfoCenterPanelStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{ThemeResource InfoBarBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{ThemeResource InfoBarBorderThickness}" />
+        <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+    </Style>
+
+    <Style
+        x:Key="InfoBorderInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+    </Style>
+
+    <Style
+        x:Key="WarningBorderInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource InfoBarWarningSeverityBackgroundBrush}" />
+    </Style>
+
+    <Style
+        x:Key="ErrorBorderInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource InfoBarErrorSeverityBackgroundBrush}" />
+    </Style>
+
+    <Style
+        x:Key="ParameterChangedBorderInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource InfoCenterParameterChanged}" />
+    </Style>
+
+    <Style
+        x:Key="ParameterSavedBorderInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource InfoCenterParameterSaved}" />
+    </Style>
+
 </ResourceDictionary>
