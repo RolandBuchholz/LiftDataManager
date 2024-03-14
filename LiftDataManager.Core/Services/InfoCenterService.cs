@@ -74,6 +74,8 @@ public class InfoCenterService : IInfoCenterService
     /// <returns>Task</returns>
     public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, KeyValuePair<string, string?> savedParameter)
     {
+        var obsoleteEntrys = infoCenterEntrys.Where(x => x.ParameterName == savedParameter.Key).ToList();
+        infoCenterEntrys.RemoveRange(obsoleteEntrys);
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
         {
             ParameterName = savedParameter.Key,
@@ -91,14 +93,19 @@ public class InfoCenterService : IInfoCenterService
     public async Task AddInfoCenterSaveAllInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<KeyValuePair<string, string?>> savedParameters)
     {
         List<InfoCenterEntry> newEntrys = new();
+        List<InfoCenterEntry> obsoleteEntrys = new();
+
         foreach (var savedParameter in savedParameters)
         {
+            obsoleteEntrys.AddRange(infoCenterEntrys.Where(x => x.ParameterName == savedParameter.Key).ToList());
             newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
             {
                 ParameterName = savedParameter.Key,
                 NewValue = savedParameter.Value
             });
         }
+
+        infoCenterEntrys.RemoveRange(obsoleteEntrys);
         infoCenterEntrys.AddRange(newEntrys);
         await Task.CompletedTask;
     }

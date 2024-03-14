@@ -14,6 +14,15 @@ public sealed partial class SidebarPanel : UserControl
         InitializeComponent();
     }
 
+    public CollectionViewSource ViewSource
+    {
+        get => (CollectionViewSource)GetValue(ViewSourceProperty);
+        set => SetValue(ViewSourceProperty, value);
+    }
+
+    public static readonly DependencyProperty ViewSourceProperty =
+        DependencyProperty.Register(nameof(ViewSource), typeof(CollectionViewSource), typeof(SidebarPanel), new PropertyMetadata(null));
+
     public ObservableCollection<InfoCenterEntry> InfoCenterEntrys
     {
         get { return (ObservableCollection<InfoCenterEntry>)GetValue(InfoCenterEntrysProperty); }
@@ -45,4 +54,9 @@ public sealed partial class SidebarPanel : UserControl
 
     public static readonly DependencyProperty ShowQuickLinksProperty =
         DependencyProperty.Register(nameof(ShowQuickLinks), typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
+
+    private void ClearEntrys_Click(object sender, RoutedEventArgs e)
+    {
+        InfoCenterEntrys.Clear();
+    }
 }

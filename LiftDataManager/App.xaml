@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="/Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="/Styles/Border.xaml" />
                 <ResourceDictionary Source="/Styles/TextBox.xaml" />
+                <ResourceDictionary Source="/Styles/ItemContainer.xaml" />
                 <ResourceDictionary Source="/Styles/ControlDataTemplates.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.DataGrid/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>

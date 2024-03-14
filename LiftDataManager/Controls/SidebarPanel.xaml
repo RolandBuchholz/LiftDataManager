@@ -8,7 +8,6 @@
     xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
@@ -337,19 +336,42 @@
             ExpandDirection="Up"
             Header="Info Sidebar Panel"
             Style="{StaticResource HorizontalExpanderStyle}">
-            <ListView
-                Margin="-10,0,-10,0"
-                ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
-                ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}">
-                <!--<ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                -->
-                <!--<Setter Property="Padding" Value="0" />
-                        <Setter Property="Margin" Value="0" />-->
-                <!--
-                    </Style>
-                </ListView.ItemContainerStyle>-->
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <ComboBox SelectedIndex="0">
+                        <ComboBox.Items>
+                            <ComboBoxItem>30 Einträge</ComboBoxItem>
+                            <ComboBoxItem>50 Einträge</ComboBoxItem>
+                            <ComboBoxItem>Alle Einträge</ComboBoxItem>
+                        </ComboBox.Items>
+                    </ComboBox>
+                    <ComboBox SelectedIndex="0">
+                        <ComboBox.Items>
+                            <ComboBoxItem>Kein Filter</ComboBoxItem>
+                            <ComboBoxItem>Nachrichten</ComboBoxItem>
+                            <ComboBoxItem>Warnungen</ComboBoxItem>
+                            <ComboBoxItem>Fehler</ComboBoxItem>
+                            <ComboBoxItem>Änderungen</ComboBoxItem>
+                            <ComboBoxItem>Gespeichert</ComboBoxItem>
+                        </ComboBox.Items>
+                    </ComboBox>
+                    <Button Content="Delete" Style="{ThemeResource AccentButtonStyle}" Click="ClearEntrys_Click"/>
+                </StackPanel>
+                <ListView
+                    Grid.Row="1"
+                    Margin="-10,0,-10,0"
+                    ItemContainerStyle="{StaticResource ListViewInfoCenterItemContainer}"
+                    ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
+                    ItemsSource="{x:Bind InfoCenterEntrys, Mode=OneWay}" />
+            </Grid>
         </Expander>
         <ContentDialog
             x:Name="ZAliftBearbeitungDialog"
