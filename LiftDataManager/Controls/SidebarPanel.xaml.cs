@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.WinUI.Collections;
+using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Controls;
 
@@ -12,21 +13,56 @@ public sealed partial class SidebarPanel : UserControl
     {
         ViewModel = App.GetService<QuickLinksViewModel>();
         InitializeComponent();
+        InfoCenterEntrysView ??= new();
     }
 
-    public CollectionViewSource ViewSource
+    public AdvancedCollectionView InfoCenterEntrysView { get; set; }
+
+    private int selectedIndexQuantity;
+    public int SelectedIndexQuantity
     {
-        get => (CollectionViewSource)GetValue(ViewSourceProperty);
-        set => SetValue(ViewSourceProperty, value);
+        get { return selectedIndexQuantity; }
+        set 
+        {
+            selectedIndexQuantity = value;
+            InfoCenterEntrysView.Filter = value switch
+            {
+                0 => x => x != null,
+                1 => x => ((InfoCenterEntry)x).State.Value == 1,
+                2 => x => x != null,
+                _ => x => x != null,
+            };
+        }
     }
 
-    public static readonly DependencyProperty ViewSourceProperty =
-        DependencyProperty.Register(nameof(ViewSource), typeof(CollectionViewSource), typeof(SidebarPanel), new PropertyMetadata(null));
+    private int selectedIndexInfoCenterTyp;
+    public int SelectedIndexInfoCenterTyp
+    {
+        get { return selectedIndexInfoCenterTyp; }
+        set
+        {
+            selectedIndexInfoCenterTyp = value;
+            InfoCenterEntrysView.Filter = value switch
+            {
+                0 => x => x != null,
+                1 => x => ((InfoCenterEntry)x).State.Value == 1,
+                2 => x => ((InfoCenterEntry)x).State.Value == 2,
+                3 => x => ((InfoCenterEntry)x).State.Value == 3,
+                4 => x => ((InfoCenterEntry)x).State.Value == 4,
+                5 => x => ((InfoCenterEntry)x).State.Value == 5,
+                _ => x => x != null,
+            };
+        }
+    }
 
     public ObservableCollection<InfoCenterEntry> InfoCenterEntrys
     {
         get { return (ObservableCollection<InfoCenterEntry>)GetValue(InfoCenterEntrysProperty); }
-        set { SetValue(InfoCenterEntrysProperty, value); }
+        set
+        {
+            SetValue(InfoCenterEntrysProperty, value);
+            InfoCenterEntrysView = new AdvancedCollectionView(value, true);
+        }
     }
 
     public static readonly DependencyProperty InfoCenterEntrysProperty =
