@@ -275,7 +275,8 @@
             <speziControls:SidebarPanel
                 Grid.Column="1"
                 Margin="0,0,0,24"
-                InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=TwoWay}"
+                InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=OneWay}"
+                InfoCenterIsOpen="{x:Bind ViewModel.InfoCenterIsOpen, Mode=TwoWay}"
                 ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
         </Grid>
         <VisualStateManager.VisualStateGroups>

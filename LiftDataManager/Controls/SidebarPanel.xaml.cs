@@ -25,13 +25,13 @@ public sealed partial class SidebarPanel : UserControl
         set 
         {
             selectedIndexQuantity = value;
-            InfoCenterEntrysView.Filter = value switch
-            {
-                0 => x => x != null,
-                1 => x => ((InfoCenterEntry)x).State.Value == 1,
-                2 => x => x != null,
-                _ => x => x != null,
-            };
+
+            //InfoCenterEntrysView.Source.RemoveAt(2);
+            //InfoCenterEntrysView.Filter = _ => true;
+            //InfoCenterEntrysView.Source = InfoCenterEntrys;
+            //InfoCenterEntrysView = new AdvancedCollectionView(InfoCenterEntrys, true);
+            //InfoCenterEntrysView.SortDescriptions.Add(new SortDescription("TimeStamp", SortDirection.Descending));
+
         }
     }
 
@@ -42,16 +42,7 @@ public sealed partial class SidebarPanel : UserControl
         set
         {
             selectedIndexInfoCenterTyp = value;
-            InfoCenterEntrysView.Filter = value switch
-            {
-                0 => x => x != null,
-                1 => x => ((InfoCenterEntry)x).State.Value == 1,
-                2 => x => ((InfoCenterEntry)x).State.Value == 2,
-                3 => x => ((InfoCenterEntry)x).State.Value == 3,
-                4 => x => ((InfoCenterEntry)x).State.Value == 4,
-                5 => x => ((InfoCenterEntry)x).State.Value == 5,
-                _ => x => x != null,
-            };
+            InfoCenterEntrysView.Filter = FilterInfoCenterEntrys(value);
         }
     }
 
@@ -62,6 +53,7 @@ public sealed partial class SidebarPanel : UserControl
         {
             SetValue(InfoCenterEntrysProperty, value);
             InfoCenterEntrysView = new AdvancedCollectionView(value, true);
+            InfoCenterEntrysView.SortDescriptions.Add(new SortDescription("TimeStamp", SortDirection.Descending));
         }
     }
 
@@ -84,15 +76,28 @@ public sealed partial class SidebarPanel : UserControl
             ViewModel.CheckCanOpenFiles();
             return (bool)GetValue(ShowQuickLinksProperty);
         }
-
         set => SetValue(ShowQuickLinksProperty, value);
     }
 
     public static readonly DependencyProperty ShowQuickLinksProperty =
         DependencyProperty.Register(nameof(ShowQuickLinks), typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
 
+    public bool InfoCenterIsOpen
+    {
+        get { return (bool)GetValue(InfoCenterIsOpenProperty); }
+        set { SetValue(InfoCenterIsOpenProperty, value); }
+    }
+
+    public static readonly DependencyProperty InfoCenterIsOpenProperty =
+        DependencyProperty.Register(nameof(InfoCenterIsOpen), typeof(bool), typeof(SidebarPanel), new PropertyMetadata(false));
+
     private void ClearEntrys_Click(object sender, RoutedEventArgs e)
     {
         InfoCenterEntrys.Clear();
+    }
+
+    private static Predicate<object> FilterInfoCenterEntrys(int index)
+    {
+        return (index < 1 || index > 6) ? _ => true : x => ((InfoCenterEntry)x).State.Value == index;
     }
 }

@@ -54,10 +54,11 @@ public class InfoCenterService : IInfoCenterService
     /// <param name="parameterName">ParameterName.</param>
     /// <param name="oldValue">Old Value</param>
     /// <param name="newValue">New Value</param>
+    /// <param name="autoUpdated">LDM updated</param>
     /// <returns>Task</returns>
-    public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue)
+    public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue, bool autoUpdated)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterParameterChanged)
+        infoCenterEntrys.Add(new InfoCenterEntry(autoUpdated ? InfoCenterEntryState.InfoCenterAutoUpdate : InfoCenterEntryState.InfoCenterParameterChanged)
         { 
             ParameterName = parameterName,
             OldValue = oldValue,

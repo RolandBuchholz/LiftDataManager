@@ -10,7 +10,7 @@ public interface IInfoCenterService
 
     Task AddInfoCenterErrorAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string error);
 
-    Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue);
+    Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue, bool autoUpdated);
 
     Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, KeyValuePair<string, string?> savedParameter);
 

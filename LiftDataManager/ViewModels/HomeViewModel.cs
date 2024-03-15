@@ -825,6 +825,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         DataImportStatus = InfoBarSeverity.Informational;
         ImportSpezifikationTyp = SpezifikationTyp.Order;
         ImportSpezifikationName = string.Empty;
+        InfoCenterIsOpen = true;
         await SetCalculatedValuesAsync();
     }
 

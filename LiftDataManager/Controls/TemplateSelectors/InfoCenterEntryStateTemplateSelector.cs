@@ -27,6 +27,11 @@ public class InfoCenterEntryStateTemplateSelector : DataTemplateSelector
         get; set;
     }
 
+    public DataTemplate? InfoCenterAutoUpdated
+    {
+        get; set;
+    }
+
     protected override DataTemplate? SelectTemplateCore(object item)
     {
         return SelectTemplateCore(item, null);
@@ -46,6 +51,7 @@ public class InfoCenterEntryStateTemplateSelector : DataTemplateSelector
                 3 => InfoCenterError,
                 4 => InfoCenterParameterChanged,
                 5 => InfoCenterSaveParameter,
+                6 => InfoCenterAutoUpdated,
                 _ => None,
             };
         }

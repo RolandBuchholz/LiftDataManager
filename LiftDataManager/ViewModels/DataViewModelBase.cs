@@ -1,7 +1,6 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MvvmHelpers;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace LiftDataManager.ViewModels;
@@ -63,6 +62,9 @@ public partial class DataViewModelBase : ObservableRecipient
 
     [ObservableProperty]
     private bool hasErrors;
+
+    [ObservableProperty]
+    private bool infoCenterIsOpen;
 
     [ObservableProperty]
     private bool hideInfoErrors;
@@ -236,7 +238,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, ((Parameter)message.Sender).DisplayName, message.OldValue, message.NewValue);
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, ((Parameter)message.Sender).DisplayName, message.OldValue, message.NewValue, ((Parameter)message.Sender).IsAutoUpdated);
     }
 
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)

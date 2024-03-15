@@ -16,6 +16,7 @@
         <Grid.Resources>
             <selectors:InfoCenterEntryStateTemplateSelector
                 x:Key="InfoCenterTemplateSelector"
+                InfoCenterAutoUpdated="{StaticResource InfoCenterAutoUpdated}"
                 InfoCenterError="{StaticResource InfoCenterError}"
                 InfoCenterMessage="{StaticResource InfoCenterMessage}"
                 InfoCenterParameterChanged="{StaticResource InfoCenterParameterChanged}"
@@ -334,12 +335,14 @@
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Top"
             ExpandDirection="Up"
-            Header="Info Sidebar Panel"
+            Header="Infocenter Sidebarpanel"
+            IsExpanded="{x:Bind InfoCenterIsOpen, Mode=TwoWay}"
             Style="{StaticResource HorizontalExpanderStyle}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel
                     Grid.Row="0"
@@ -361,6 +364,7 @@
                             <ComboBoxItem>Fehler</ComboBoxItem>
                             <ComboBoxItem>Änderungen</ComboBoxItem>
                             <ComboBoxItem>Gespeichert</ComboBoxItem>
+                            <ComboBoxItem>Auto Updated</ComboBoxItem>
                         </ComboBox.Items>
                     </ComboBox>
                     <Button
@@ -374,6 +378,11 @@
                     ItemContainerStyle="{StaticResource ListViewInfoCenterItemContainer}"
                     ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
                     ItemsSource="{x:Bind InfoCenterEntrysView, Mode=OneWay}" />
+                <!--<TextBlock
+                    Grid.Row="2"
+                    VerticalAlignment="Bottom"
+                    Text="{x:Bind InfoCenterEntrysView.Count, Mode=OneWay}"
+                    TextAlignment="Center" />-->
             </Grid>
         </Expander>
         <ContentDialog

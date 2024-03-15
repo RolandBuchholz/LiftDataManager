@@ -55,6 +55,13 @@
     </Style>
 
     <Style
+        x:Key="InfoCenterAutoUpdatedInfoCenterPanelStyle"
+        BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource InfoCenterAutoUpdated}" />
+    </Style>
+
+    <Style
         x:Key="ParameterSavedBorderInfoCenterPanelStyle"
         BasedOn="{StaticResource BaseBorderInfoCenterPanelStyle}"
         TargetType="Border">
