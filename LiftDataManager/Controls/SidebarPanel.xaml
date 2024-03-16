@@ -333,7 +333,7 @@
             Grid.Column="1"
             Margin="2,0,0,0"
             VerticalAlignment="Stretch"
-            VerticalContentAlignment="Top"
+            VerticalContentAlignment="Stretch"
             ExpandDirection="Up"
             Header="Infocenter Sidebarpanel"
             IsExpanded="{x:Bind InfoCenterIsOpen, Mode=TwoWay}"
@@ -368,21 +368,36 @@
                         </ComboBox.Items>
                     </ComboBox>
                     <Button
+                        x:Name="btn_ClearEntrys"
                         Click="ClearEntrys_Click"
-                        Content="Delete"
-                        Style="{ThemeResource AccentButtonStyle}" />
+                        FontWeight="Bold"
+                        Style="{StaticResource AccentButtonStyle}"
+                        ToolTipService.Placement="Bottom">
+                        <ToolTipService.ToolTip>
+                            InfoCenter Einträge werden gelöscht
+                        </ToolTipService.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Margin="-5,0,2,0" Glyph="&#xED62;" />
+                            <TextBlock Margin="0,0,-5,0" Text="Clear" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <ListView
                     Grid.Row="1"
                     Margin="-10,0,-10,0"
                     ItemContainerStyle="{StaticResource ListViewInfoCenterItemContainer}"
                     ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
-                    ItemsSource="{x:Bind InfoCenterEntrysView, Mode=OneWay}" />
-                <!--<TextBlock
+                    ItemsSource="{x:Bind InfoCenterEntrysView.View, Mode=OneWay}" />
+                <TextBlock
                     Grid.Row="2"
-                    VerticalAlignment="Bottom"
-                    Text="{x:Bind InfoCenterEntrysView.Count, Mode=OneWay}"
-                    TextAlignment="Center" />-->
+                    FontWeight="SemiBold" 
+                    Margin="0,0,10,-10"
+                    TextAlignment="Right">
+                    <Run Text="{x:Bind InfoCenterEntrysView.View.Count, Mode=OneWay}" />
+                    <Run Text=" von " />
+                    <Run Text="{x:Bind InfoCenterEntrys.Count, Mode=OneWay}" />
+                    <Run Text=" Einträgen " />
+                </TextBlock>
             </Grid>
         </Expander>
         <ContentDialog

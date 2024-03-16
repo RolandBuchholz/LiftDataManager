@@ -433,6 +433,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
                 ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
         }
+        InfoCenterIsOpen = true;
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
@@ -1115,8 +1116,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
     private void SetModifyInfos()
     {
-        ParameterDictionary!["var_GeaendertVon"].Value = string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName;
-        ParameterDictionary!["var_GeaendertAm"].Value = DateTime.Now.ToShortDateString();
+        ParameterDictionary["var_GeaendertVon"].AutoUpdateParameterValue(string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName);
+        ParameterDictionary["var_GeaendertAm"].AutoUpdateParameterValue(DateTime.Now.ToShortDateString());
     }
 
     private void IncreaseRevision()

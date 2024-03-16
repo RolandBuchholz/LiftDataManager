@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI.Collections;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace LiftDataManager.Controls;
 
@@ -14,9 +13,17 @@ public sealed partial class SidebarPanel : UserControl
         ViewModel = App.GetService<QuickLinksViewModel>();
         InitializeComponent();
         InfoCenterEntrysView ??= new();
+        Unloaded += SidebarPanel_Unloaded;
     }
 
-    public AdvancedCollectionView InfoCenterEntrysView { get; set; }
+    private void SidebarPanel_Unloaded(object sender, RoutedEventArgs e)
+    {
+        InfoCenterEntrys.CollectionChanged -= InfoCenterEntrys_CollectionChanged;
+    }
+
+    public CollectionViewSource InfoCenterEntrysView { get; set; }
+
+    private int _maxEntryCount = 30;
 
     private int selectedIndexQuantity;
     public int SelectedIndexQuantity
@@ -25,13 +32,14 @@ public sealed partial class SidebarPanel : UserControl
         set 
         {
             selectedIndexQuantity = value;
-
-            //InfoCenterEntrysView.Source.RemoveAt(2);
-            //InfoCenterEntrysView.Filter = _ => true;
-            //InfoCenterEntrysView.Source = InfoCenterEntrys;
-            //InfoCenterEntrysView = new AdvancedCollectionView(InfoCenterEntrys, true);
-            //InfoCenterEntrysView.SortDescriptions.Add(new SortDescription("TimeStamp", SortDirection.Descending));
-
+            _maxEntryCount = value switch
+            {
+                0 => 30,
+                1 => 50,
+                2 => int.MaxValue,
+                _ => 30,
+            };
+            FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
         }
     }
 
@@ -42,7 +50,7 @@ public sealed partial class SidebarPanel : UserControl
         set
         {
             selectedIndexInfoCenterTyp = value;
-            InfoCenterEntrysView.Filter = FilterInfoCenterEntrys(value);
+            FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
         }
     }
 
@@ -52,8 +60,18 @@ public sealed partial class SidebarPanel : UserControl
         set
         {
             SetValue(InfoCenterEntrysProperty, value);
-            InfoCenterEntrysView = new AdvancedCollectionView(value, true);
-            InfoCenterEntrysView.SortDescriptions.Add(new SortDescription("TimeStamp", SortDirection.Descending));
+            InfoCenterEntrys.CollectionChanged += InfoCenterEntrys_CollectionChanged;
+            InfoCenterEntrysView = new CollectionViewSource() { IsSourceGrouped = false};
+            FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
+        }
+    }
+
+    private void InfoCenterEntrys_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        if (sender != null && sender is ObservableCollection<InfoCenterEntry>)
+        {
+            btn_ClearEntrys.IsEnabled = ((ObservableCollection<InfoCenterEntry>)sender).Count > 0;
+            FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
         }
     }
 
@@ -85,7 +103,11 @@ public sealed partial class SidebarPanel : UserControl
     public bool InfoCenterIsOpen
     {
         get { return (bool)GetValue(InfoCenterIsOpenProperty); }
-        set { SetValue(InfoCenterIsOpenProperty, value); }
+        set 
+        {
+            SetValue(InfoCenterIsOpenProperty, value);
+            FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
+        }
     }
 
     public static readonly DependencyProperty InfoCenterIsOpenProperty =
@@ -96,8 +118,17 @@ public sealed partial class SidebarPanel : UserControl
         InfoCenterEntrys.Clear();
     }
 
-    private static Predicate<object> FilterInfoCenterEntrys(int index)
+    private void FilterInfoCenterEntrys(int infoCenterTyp)
     {
-        return (index < 1 || index > 6) ? _ => true : x => ((InfoCenterEntry)x).State.Value == index;
+        if (!InfoCenterIsOpen) return;
+
+        if (infoCenterTyp < 1 || infoCenterTyp > 6)
+        {
+            InfoCenterEntrysView.Source = InfoCenterEntrys.OrderByDescending(x => x.TimeStamp).Take(_maxEntryCount);
+        }
+        else
+        {
+            InfoCenterEntrysView.Source = InfoCenterEntrys.OrderByDescending(x => x.TimeStamp).Where(y => y.State == infoCenterTyp).Take(_maxEntryCount);
+        }
     }
 }
