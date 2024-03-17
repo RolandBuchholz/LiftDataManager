@@ -35,7 +35,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     private bool hasHighlightedParameters;
 
     [ObservableProperty]
-    private string selectedFilter = "All";
+    private SelectorBarItem? selectedFilter;
 
     [ObservableProperty]
     private string? searchInput;

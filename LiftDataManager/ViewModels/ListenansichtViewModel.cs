@@ -43,7 +43,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     private bool hasHighlightedParameters;
 
     [ObservableProperty]
-    private string selectedFilter = "All";
+    private SelectorBarItem? selectedFilter;
 
     [ObservableProperty]
     private string? searchInput;
@@ -249,7 +249,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         if (!HasHighlightedParameters)
             return;
-        SelectedFilter = "Highlighted";
+        
+        SelectedFilter = new SelectorBarItem() { Text = "RequestHighlighted" };
     }
 
     public void OnNavigatedFrom()

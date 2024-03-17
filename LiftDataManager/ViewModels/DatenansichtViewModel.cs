@@ -22,7 +22,7 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     private bool hasHighlightedParameters;
 
     [ObservableProperty]
-    private string selectedFilter = "All";
+    private SelectorBarItem? selectedFilter;
 
     [ObservableProperty]
     private string? searchInput;

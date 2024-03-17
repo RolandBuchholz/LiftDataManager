@@ -6,7 +6,6 @@
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:animations="using:CommunityToolkit.WinUI.Animations"
     xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -113,8 +112,8 @@
                 CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
+                SelectedFilter="{x:Bind ViewModel.SelectedFilter, Mode=OneWay}"
                 SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedFilter="{x:Bind ViewModel.SelectedFilter}"
                 ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid Grid.Row="1">
@@ -168,52 +167,6 @@
                     </GroupStyle>
                 </GridView.GroupStyle>
             </GridView>
-
-            <!--<controls:AdaptiveGridView
-                Padding="10,10,10,5"
-                animations:Connected.ListItemElementName="itemThumbnail"
-                animations:Connected.ListItemKey="animationKeyContentGrid"
-                DesiredWidth="160"
-                IsItemClickEnabled="True"
-                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
-                ItemHeight="160"
-                ItemTemplate="{StaticResource ItemTemplate}"
-                ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
-                SelectionMode="None"
-                StretchContentForSingleRow="False">
-                <GridView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate x:DataType="collections:IReadOnlyObservableGroup">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        FontFamily="Segoe UI"
-                                        FontSize="32"
-                                        FontStyle="Normal"
-                                        FontWeight="Bold"
-                                        Foreground="{StaticResource SystemAccentColor}"
-                                        Text="{Binding Key}" />
-                                    <TextBlock
-                                        Margin="10,0,0,5"
-                                        VerticalAlignment="Bottom"
-                                        FontFamily="Segoe UI"
-                                        FontSize="16"
-                                        Foreground="{StaticResource SystemAccentColor}"
-                                        Text="{Binding Count}" />
-                                    <TextBlock
-                                        Margin="7,0,0,5"
-                                        VerticalAlignment="Bottom"
-                                        FontFamily="Segoe UI"
-                                        FontSize="16"
-                                        Foreground="{StaticResource SystemAccentColor}"
-                                        Text="Parameter" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </GridView.GroupStyle>
-            </controls:AdaptiveGridView>-->
             <!--  InfoSidebarPanel  -->
             <speziControls:SidebarPanel
                 Grid.Row="1"

@@ -25,7 +25,8 @@
                 <AppBarButton
                     x:Name="btn_Filter"
                     Icon="Filter"
-                    Label="{x:Bind FilterValue, Mode=OneWay}">
+                    Label="{x:Bind FilterValue, Mode=OneWay}"
+                    ToolTipService.Placement="Bottom">
                     <ToolTipService.ToolTip>
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center" Text="Aktueller Filter:" />
@@ -127,6 +128,7 @@
                 <AppBarButton
                     x:Name="btn_Grouping"
                     Icon="AllApps"
+                    ToolTipService.Placement="Bottom">
                     Label="{x:Bind GroupingValue, Mode=OneWay}">
                     <ToolTipService.ToolTip>
                         <StackPanel>
@@ -169,40 +171,31 @@
             Grid.Column="1"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-            <StackPanel.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
-                    </ResourceDictionary.MergedDictionaries>
-                </ResourceDictionary>
-            </StackPanel.Resources>
-            <controls:Segmented
+            <SelectorBar
+                x:Name="SelectorBarFilter"
                 HorizontalAlignment="Right"
-                SelectedValue="{x:Bind SelectedFilter, Mode=TwoWay}"
-                SelectedValuePath="Content"
-                SelectionChanged="Segmented_SelectionChanged"
-                SelectionMode="Single"
-                Style="{StaticResource ButtonSegmentedStyle}">
-                <controls:SegmentedItem
-                    Content="All"
+                SelectedItem="{x:Bind SelectedFilter, Mode=TwoWay}"
+                SelectionChanged="SelectorBarFilter_SelectionChanged">
+                <SelectorBarItem
                     Icon="AllApps"
+                    Text="All"
                     ToolTipService.ToolTip="Zeigt alle Parameter an" />
-                <controls:SegmentedItem
-                    Content="Highlighted"
+                <SelectorBarItem
                     Icon="Highlight"
                     IsEnabled="{x:Bind CanShowHighlightedParameters, Mode=OneWay}"
+                    Text="Highlighted"
                     ToolTipService.ToolTip="Zeigt alle markierte Parameter an" />
-                <controls:SegmentedItem
-                    Content="Validation Errors"
+                <SelectorBarItem
                     Icon="ReportHacked"
                     IsEnabled="{x:Bind CanShowErrorsParameters, Mode=OneWay}"
+                    Text="Validation Errors"
                     ToolTipService.ToolTip="Zeigt Parameter mit Validierungsfehleren an" />
-                <controls:SegmentedItem
-                    Content="Unsaved"
+                <SelectorBarItem
                     Icon="Sync"
                     IsEnabled="{x:Bind CanShowUnsavedParameters, Mode=OneWay}"
+                    Text="Unsaved"
                     ToolTipService.ToolTip="Zeigt nicht gespeicherte Parameter an" />
-            </controls:Segmented>
+            </SelectorBar>
             <Button
                 Width="85"
                 Height="41"

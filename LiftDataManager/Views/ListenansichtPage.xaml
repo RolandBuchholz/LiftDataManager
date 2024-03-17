@@ -79,7 +79,7 @@
                 ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
                 SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedFilter="{x:Bind ViewModel.SelectedFilter}"
+                SelectedFilter="{x:Bind ViewModel.SelectedFilter, Mode=OneWay}"
                 ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid Grid.Row="1">
