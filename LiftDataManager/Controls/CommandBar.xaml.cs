@@ -1,6 +1,5 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Collections;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
@@ -15,8 +14,8 @@ public sealed partial class CommandBar : UserControl
         Loaded += CommandBar_Loaded;
     }
 
-    private void CommandBar_Loaded(object sender, RoutedEventArgs e) 
-    { 
+    private void CommandBar_Loaded(object sender, RoutedEventArgs e)
+    {
         SelectedFilter ??= SelectorBarFilter.Items.FirstOrDefault();
     }
 
@@ -44,12 +43,29 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(SearchInputProperty, value);
-            FilterParameter(SearchInput);
+            DrawupFilterView(SelectedFilter, SearchInput);
         }
     }
 
     public static readonly DependencyProperty SearchInputProperty =
         DependencyProperty.Register(nameof(SearchInput), typeof(string), typeof(CommandBar), new PropertyMetadata(string.Empty));
+
+    public SelectorBarItem? SelectedFilter
+    {
+        get { return (SelectorBarItem)GetValue(SelectedFilterProperty); }
+        set
+        {
+            if (value is not null && value.Text.StartsWith("Request"))
+            {
+                value = SelectorBarFilter.Items.SingleOrDefault(x => x.Text == value.Text.Replace("Request", ""));
+            }
+
+            SetValue(SelectedFilterProperty, value);
+        }
+    }
+
+    public static readonly DependencyProperty SelectedFilterProperty =
+        DependencyProperty.Register(nameof(SelectedFilter), typeof(SelectorBarItem), typeof(CommandBar), new PropertyMetadata(default));
 
     public string GroupingValue
     {
@@ -57,7 +73,7 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(GroupingValueProperty, value);
-            FilterParameter(SearchInput);
+            DrawupFilterView(SelectedFilter, SearchInput);
         }
     }
 
@@ -70,7 +86,7 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(FilterValueProperty, value);
-            FilterParameter(SearchInput);
+            DrawupFilterView(SelectedFilter, SearchInput);
         }
     }
 
@@ -83,7 +99,7 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(CanShowUnsavedParametersProperty, value);
-            RefreshView(SelectedFilter);
+            DrawupFilterView(SelectedFilter, SearchInput);
             if (ViewSource is not null && SelectedFilter?.Text == "Unsaved")
                 ResetParameterView();
         }
@@ -98,7 +114,7 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(CanShowErrorsParametersProperty, value);
-            RefreshView(SelectedFilter);
+            DrawupFilterView(SelectedFilter, SearchInput);
             if (ViewSource is not null && SelectedFilter?.Text == "Validation Errors")
                 ResetParameterView();
         }
@@ -113,7 +129,7 @@ public sealed partial class CommandBar : UserControl
         set
         {
             SetValue(CanShowHighlightedParametersProperty, value);
-            RefreshView(SelectedFilter);RefreshView(SelectedFilter);
+            DrawupFilterView(SelectedFilter, SearchInput);
             if (ViewSource is not null && SelectedFilter?.Text == "Highlighted")
                 ResetParameterView();
         }
@@ -121,48 +137,6 @@ public sealed partial class CommandBar : UserControl
 
     public static readonly DependencyProperty CanShowHighlightedParametersProperty =
         DependencyProperty.Register(nameof(CanShowHighlightedParameters), typeof(bool), typeof(CommandBar), new PropertyMetadata(false));
-
-    public SelectorBarItem? SelectedFilter
-    {
-        get { return (SelectorBarItem)GetValue(SelectedFilterProperty); }
-        set
-        {
-            if(value is not null && value.Text.StartsWith("Request"))
-            {
-                value = SelectorBarFilter.Items.SingleOrDefault(x => x.Text == value.Text.Replace("Request",""));
-            }
-
-            SetValue(SelectedFilterProperty, value); 
-        }
-    }
-
-    public static readonly DependencyProperty SelectedFilterProperty =
-        DependencyProperty.Register(nameof(SelectedFilter), typeof(SelectorBarItem), typeof(CommandBar), new PropertyMetadata(default));
-
-    private void RefreshView(SelectorBarItem? selectedFilterItem, [CallerMemberName] string memberName = "")
-    {
-        if (selectedFilterItem is null)
-            return;
-        switch (selectedFilterItem.Text)
-        {
-            case "All":
-                if (string.Equals(memberName, nameof(SelectorBarFilter_SelectionChanged)))
-                    SearchInput = string.Empty;
-                FilterParameter(SearchInput);
-                return;
-            case "Highlighted":
-                SetHighlightedParameterView();
-                return;
-            case "Validation Errors":
-                SetErrorsParameterView();
-                return;
-            case "Unsaved":
-                SetUnsavedParameterView();
-                return;
-            default:
-                return;
-        }
-    }
 
     public ICommand SaveAllCommand
     {
@@ -177,157 +151,99 @@ public sealed partial class CommandBar : UserControl
     {
         FilterValue = ((MenuFlyoutItem)sender).Name;
     }
-
     private void GroupParameter_Click(object sender, RoutedEventArgs e)
     {
         GroupingValue = ((MenuFlyoutItem)sender).Name;
     }
-
-    private void FilterParameter(string searchInput)
+    private void SelectorBarFilter_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
+        DrawupFilterView(sender.SelectedItem, SearchInput);
+    }
+    private void ResetParameterView()
+    {
+        if (ViewSource.View is not null && ViewSource.View.Count == 0)
+        {
+            SelectedFilter = SelectorBarFilter.Items.FirstOrDefault();
+            SearchInput = string.Empty;
+        }
+    }
+    private void DrawupFilterView(SelectorBarItem? selectedFilterItem, string searchValue)
+    {
+        if (selectedFilterItem is null)
+            return;
         GroupedFilteredParameters.Clear();
-        var groupedParameters = ItemSource?.Values.Where(FilterViewSearchInput(searchInput)).
-                                                GroupBy(GroupView()).
-                                                OrderBy(g => g.Key);
+        IEnumerable<Parameter> filteredParameters = Enumerable.Empty<Parameter>();
+        switch (selectedFilterItem.Text)
+        {
+            case "All":
+                filteredParameters = ItemSource.Values;
+                break;
+            case "Highlighted":
+                filteredParameters = ItemSource.Values.Where(p => p.IsKey);
+                break;
+            case "Validation Errors":
+                filteredParameters = ItemSource.Values.Where(p => p.HasErrors);
+                break;
+            case "Unsaved":
+                filteredParameters = ItemSource.Values.Where(p => p.IsDirty);
+                break;
+            default:
+                return;
+        }
+        var groupedParameters = filteredParameters.Where(FilterView(FilterValue))
+                                                  .Where(FilterViewSearchValue(searchValue))
+                                                  .GroupBy(GroupView(GroupingValue))
+                                                  .OrderBy(g => g.Key);
         if (groupedParameters is null)
             return;
         foreach (var group in groupedParameters)
         {
             GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
         }
-
         if (ViewSource is not null)
             ViewSource.Source = GroupedFilteredParameters;
     }
 
-    private Func<Parameter, bool> FilterViewSearchInput(string searchInput)
+    private static Func<Parameter, bool> FilterView(string filter)
     {
-        if (string.IsNullOrWhiteSpace(searchInput))
+        switch (filter)
         {
-            switch (FilterValue)
-            {
-                case "None":
-                    return p => p.Name != null;
+            case "None":
+                return p => p.Name != null;
 
-                case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    if (Enum.TryParse(FilterValue, true, out ParameterTypValue filterTypEnum))
-                    {
-                        return p => p.Name != null && p.ParameterTyp == filterTypEnum;
-                    }
-                    return p => p.Name != null;
+            case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
+                if (Enum.TryParse(filter, true, out ParameterTypValue filterTypEnum))
+                {
+                    return p => p.Name != null && p.ParameterTyp == filterTypEnum;
+                }
+                return p => p.Name != null;
 
-                default:
-                    if (ParameterCategoryValue.TryFromName(FilterValue, true, out ParameterCategoryValue filterCatEnum))
-                    {
-                        return p => p.Name != null && p.ParameterCategory == filterCatEnum;
-                    }
-                    return p => p.Name != null;
-            }
-        }
-        else
-        {
-            switch (FilterValue)
-            {
-                case "None":
-                    return p => (p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase));
-
-                case "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList":
-                    if (Enum.TryParse(FilterValue, true, out ParameterTypValue filterTypEnum))
-                    {
-                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))
-                                                    && p.ParameterTyp == filterTypEnum;
-
-                    }
-                    return p => p.Name != null;
-
-                default:
-                    if (ParameterCategoryValue.TryFromName(FilterValue, true, out ParameterCategoryValue filterCatEnum))
-                    {
-                        return p => ((p.Name != null && p.Name.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.DisplayName != null && p.DisplayName.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.Value != null && p.Value.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                    || (p.Comment != null && p.Comment.Contains(searchInput, StringComparison.CurrentCultureIgnoreCase)))
-                                                    && p.ParameterCategory == filterCatEnum;
-                    }
-                    return p => p.Name != null;
-            }
+            default:
+                if (ParameterCategoryValue.TryFromName(filter, true, out ParameterCategoryValue filterCatEnum))
+                {
+                    return p => p.Name != null && p.ParameterCategory == filterCatEnum;
+                }
+                return p => p.Name != null;
         }
     }
 
-    private Func<Parameter, string> GroupView()
+    private static Func<Parameter, string> GroupView(string group)
     {
-        return GroupingValue switch
+        return group switch
         {
-            "abc" => g => g.DisplayName![0].ToString().ToUpper(new CultureInfo("de-DE", false)),
+            "abc" => g => g.DisplayName[0].ToString().ToUpper(new CultureInfo("de-DE", false)),
             "typ" => g => g.ParameterTyp.ToString(),
             "cat" => g => g.ParameterCategory.ToString(),
-            _ => g => g.DisplayName![0].ToString().ToUpper(new CultureInfo("de-DE", false)),
+            _ => g => g.DisplayName[0].ToString().ToUpper(new CultureInfo("de-DE", false)),
         };
     }
-
-    private void SetUnsavedParameterView()
+    private static Func<Parameter, bool> FilterViewSearchValue(string searchValue)
     {
-        GroupedFilteredParameters.Clear();
-        var unsavedParameters = ItemSource.Values.Where(p => p.IsDirty)
-                                                 .GroupBy(GroupView())
-                                                 .OrderBy(g => g.Key);
-        foreach (var group in unsavedParameters)
-        {
-            GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
-        }
-        if (ViewSource is not null)
-            ViewSource.Source = GroupedFilteredParameters;
-    }
-
-    private void SetErrorsParameterView()
-    {
-        GroupedFilteredParameters.Clear();
-        var errorParameters = ItemSource.Values.Where(p => p.HasErrors)
-                                               .GroupBy(GroupView())
-                                               .OrderBy(g => g.Key);
-        foreach (var group in errorParameters)
-        {
-            GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
-        }
-        if (ViewSource is not null)
-            ViewSource.Source = GroupedFilteredParameters;
-    }
-
-    private void SetHighlightedParameterView()
-    {
-        GroupedFilteredParameters.Clear();
-        var highlightedParameters = ItemSource?.Values.Where(p => p.IsKey)
-                                               .GroupBy(GroupView())
-                                               .OrderBy(g => g.Key);
-        if (highlightedParameters is not null)
-        {
-            foreach (var group in highlightedParameters)
-            {
-                GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
-            }
-        }
-        if (ViewSource is not null)
-            ViewSource.Source = GroupedFilteredParameters;
-    }
-
-    private void SelectorBarFilter_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
-    {
-        RefreshView(sender.SelectedItem);
-    }
-
-    private void ResetParameterView()
-    {
-        if (ViewSource.View is not null && ViewSource.View.Count == 0)
-        {
-            SearchInput = string.Empty;
-            FilterParameter(SearchInput);
-            SelectedFilter = SelectorBarFilter.Items.FirstOrDefault();
-        }
+        return string.IsNullOrWhiteSpace(searchValue) ? 
+            p => true : 
+            p => (p.Name != null && p.Name.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))
+            || (p.DisplayName != null && p.DisplayName.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))
+            || (p.Value != null && p.Value.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))
+            || (p.Comment != null && p.Comment.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase));
     }
 }

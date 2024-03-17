@@ -98,12 +98,12 @@ public sealed partial class ParameterNumberTextBox : UserControl
             };
             ToolTipService.SetToolTip(highLightParameter, highLightParameterToolTip);
 
-            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "Show all HighLighted Parameter" };
+            var goToHighLightedParameter = new AppBarButton() { Icon = new SymbolIcon(Symbol.ShowResults), Label = "All High Lighted" };
             goToHighLightedParameter.Click += NavigateToHighlightParameters_Click;
-            var setMainEntranceToolTip = new ToolTip { Content = "All HighLighted Parameter" };
+            var setMainEntranceToolTip = new ToolTip { Content = "Show all HighLighted Parameter" };
             ToolTipService.SetToolTip(goToHighLightedParameter, setMainEntranceToolTip);
 
-            var goToParameterDetails = new AppBarButton() { Icon = new SymbolIcon(Symbol.PreviewLink), Label = "Show Parameterdetails" };
+            var goToParameterDetails = new AppBarButton() { Icon = new SymbolIcon(Symbol.PreviewLink), Label = "Parameterdetails" };
             goToParameterDetails.Click += NavigateToParameterDetails_Click;
             var setParameterDetailToolTip = new ToolTip { Content = "Show Parameterdetails" };
             ToolTipService.SetToolTip(goToParameterDetails, setParameterDetailToolTip);
