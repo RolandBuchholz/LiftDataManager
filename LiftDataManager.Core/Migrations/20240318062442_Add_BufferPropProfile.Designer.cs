@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20240318062442_Add_BufferPropProfile")]
+    partial class Add_BufferPropProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
@@ -619,22 +622,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToView("DropdownValues", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.BufferPropMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BufferPropMaterials", (string)null);
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.BufferPropProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -671,9 +658,6 @@ namespace LiftDataManager.Core.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CFPStartIndex")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CarFrameBaseTypeId")

@@ -15,7 +15,9 @@ public class CarFrameTypeConfig : BaseModelBuilder<CarFrameType>
                .IsRequired();
         builder.Property(x => x.HasMachineRoom)
                .IsRequired();
+        builder.Property(x => x.CFPStartIndex);
         builder.Property(x => x.DriveTypeId);
         builder.Property(x => x.CarFrameBaseTypeId);
+        builder.Property(x => x.CFPStartIndex);
     }
 }

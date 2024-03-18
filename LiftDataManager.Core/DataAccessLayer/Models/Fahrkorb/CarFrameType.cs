@@ -9,4 +9,5 @@ public class CarFrameType : BaseEntity
     public DriveType? DriveType { get; set; }
     public int CarFrameBaseTypeId { get; set; }
     public CarFrameBaseType? CarFrameBaseType { get; set; }
+    public int CFPStartIndex { get; set; }
 }
