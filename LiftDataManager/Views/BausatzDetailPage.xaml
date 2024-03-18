@@ -2,11 +2,33 @@
     x:Class="LiftDataManager.Views.BausatzDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <TextBlock FontSize="36" Text="coming soon" />
+        <StackPanel Width="400">
+            <TextBlock FontSize="36" Text="Pufferberechnungstest" />
+            <SpeziControls:ParameterNumberTextBox
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="Stk." />
+            <SpeziControls:ParameterNumberTextBox
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_GGW'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="Stk." />
+            <SpeziControls:ParameterNumberTextBox
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="mm" />
+            <SpeziControls:ParameterNumberTextBox
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_GGW'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="mm" />
+            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}" ShowDefaultHeader="True" />
+            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_GGW'], Mode=TwoWay}" ShowDefaultHeader="True" />
+            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}" ShowDefaultHeader="True" />
+        </StackPanel>
     </Grid>
 </Page>
