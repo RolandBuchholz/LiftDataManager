@@ -23,6 +23,7 @@
                 FalseValue="Visible"
                 TrueValue="Collapsed" />
             <media:AttachedCardShadow
+                InnerContentClipMode="CompositionMaskBrush"
                 x:Key="CommonShadow"
                 CornerRadius="5"
                 Offset="5" />

@@ -11,6 +11,7 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
+            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
             Offset="5" />

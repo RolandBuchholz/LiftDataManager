@@ -27,6 +27,7 @@
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="4"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="4" />
     </Page.Resources>
     <Grid>
@@ -46,7 +47,7 @@
             Grid.ColumnSpan="2"
             Margin="0,-12,0,10"
             ReadOnlyMode="{x:Bind ViewModel.LikeEditParameter, Mode=TwoWay, Converter={StaticResource BoolNegationConverter}}" />
-        <!--  Optionen  --><!--
+        <!--  Optionen  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -60,7 +61,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            --><!--  Control Panel  --><!--
+            <!--  Control Panel  -->
 
             <SpeziControls:SpezifikationsNumberControl
                 Grid.Column="0"
@@ -206,7 +207,7 @@
                 </StackPanel>
             </Button>
         </Grid>
-        --><!--  Parameter  --><!--
+        <!--  Parameter  -->
         <ScrollViewer
             Grid.Row="2"
             Margin="0,5,0,0"
@@ -356,7 +357,7 @@
                         Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                         TextWrapping="Wrap" />
                 </Grid>
-                --><!--  Datafield carweight  --><!--
+                <!--  Datafield carweight  -->
                 <Border
                     Grid.Row="1"
                     Grid.RowSpan="2"
@@ -896,7 +897,7 @@
                     TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>
-        --><!--  InfoSidebarPanel  -->
+        <!--  InfoSidebarPanel  -->
         <SpeziControls:SidebarPanel
             Grid.Row="1"
             Grid.RowSpan="2"
@@ -955,7 +956,7 @@
             Foreground="SpringGreen"
             IsActive="{x:Bind ViewModel.IsBusy, FallbackValue=False, Mode=OneWay}" />
         <!--  Footer  -->
-        <!--<SpeziControls:FooterControl
+        <SpeziControls:FooterControl
             Grid.Row="3"
             Grid.ColumnSpan="2"
             Margin="0"
@@ -964,7 +965,7 @@
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
-            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />-->
+            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
         <ContentDialog
             x:Name="LiftDataImportDialog"
             Title="Datenimport"
