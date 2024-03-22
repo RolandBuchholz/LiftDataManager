@@ -8,8 +8,11 @@ public class LiftBufferConfig : BaseModelBuilder<LiftBuffer>
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(25)
+               .IsRequired();
+        builder.Property(x => x.Manufacturer)
+               .HasMaxLength(25)
+               .IsRequired();
         builder.Property(x => x.TypeExaminationCertificateId);
         builder.Property(x => x.MinLoad063);
         builder.Property(x => x.MaxLoad063);

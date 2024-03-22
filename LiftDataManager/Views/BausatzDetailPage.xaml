@@ -5,30 +5,306 @@
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <StackPanel Width="400">
-            <TextBlock FontSize="36" Text="Pufferberechnungstest" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            FontSize="36"
+            Text="Pufferberechnungstest" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <wuc:Divider
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="5"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"
+                Content="Fahrkorb"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStrokeThickness="2" />
             <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="0"
                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
                 ShowDefaultHeader="True"
                 Unit="Stk." />
             <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="mm" />
+            <SpeziControls:ParameterComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
+                ShowDefaultHeader="True" />
+            <SpeziControls:ParameterTextBox
+                Grid.Row="1"
+                Grid.Column="3"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
+                ReadOnly="True"
+                ShowDefaultHeader="True" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="4"
+                Header="Pufferdaten Fahrkorb"
+                IsReadOnly="True"
+                Text="" />
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <wuc:Divider
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="5"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"
+                Content="Gegengewicht"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStrokeThickness="2" />
+            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="0"
                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_GGW'], Mode=TwoWay}"
                 ShowDefaultHeader="True"
                 Unit="Stk." />
             <SpeziControls:ParameterNumberTextBox
-                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
-                ShowDefaultHeader="True"
-                Unit="mm" />
-            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="1"
                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_GGW'], Mode=TwoWay}"
                 ShowDefaultHeader="True"
                 Unit="mm" />
-            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}" ShowDefaultHeader="True" />
-            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_GGW'], Mode=TwoWay}" ShowDefaultHeader="True" />
-            <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}" ShowDefaultHeader="True" />
-        </StackPanel>
+            <SpeziControls:ParameterComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_GGW'], Mode=TwoWay}"
+                ShowDefaultHeader="True" />
+            <SpeziControls:ParameterTextBox
+                Grid.Row="1"
+                Grid.Column="3"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'], Mode=TwoWay}"
+                ReadOnly="True"
+                ShowDefaultHeader="True" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="4"
+                Header="Pufferdaten Gegengewicht"
+                IsReadOnly="True"
+                Text="" />
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <wuc:Divider
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="5"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"
+                Content="Ersatzmaßnamen Fahrkorb"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStrokeThickness="2" />
+            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SG'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="Stk." />
+            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SG'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="mm" />
+            <SpeziControls:ParameterComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SG'], Mode=TwoWay}"
+                ShowDefaultHeader="True" />
+            <SpeziControls:ParameterTextBox
+                Grid.Row="1"
+                Grid.Column="3"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SG'], Mode=TwoWay}"
+                ReadOnly="True"
+                ShowDefaultHeader="True" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="4"
+                Header="Pufferdaten Eratzmaßnahmen Schachtgrube"
+                IsReadOnly="True"
+                Text="" />
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <wuc:Divider
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="6"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"
+                Content="Ersatzmaßnamen Gegengewicht"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStrokeThickness="2" />
+            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SK'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="Stk." />
+            <SpeziControls:ParameterNumberTextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SK'], Mode=TwoWay}"
+                ShowDefaultHeader="True"
+                Unit="mm" />
+            <SpeziControls:ParameterComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SK'], Mode=TwoWay}"
+                ShowDefaultHeader="True" />
+            <SpeziControls:ParameterTextBox
+                Grid.Row="1"
+                Grid.Column="3"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SK'], Mode=TwoWay}"
+                ReadOnly="True"
+                ShowDefaultHeader="True" />
+            <SpeziControls:ParameterCheckBox
+                Grid.Row="1"
+                Grid.Column="4"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_unter_GGW'], Mode=TwoWay}"
+                ShowDefaultCheckBoxContent="True" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="5"
+                Header="Pufferdaten Eratzmaßnahmen Schachtkopf"
+                IsReadOnly="True"
+                Text="" />
+        </Grid>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <wuc:Divider
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"
+                Content="Material"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                LineStrokeThickness="2" />
+            <SpeziControls:ParameterComboBox
+                Grid.Row="1"
+                Grid.Column="0"
+                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}"
+                ShowDefaultHeader="True" />
+        </Grid>
+        <Grid
+            Grid.Row="6"
+            ColumnSpacing="10"
+            RowSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                Grid.Column="0"
+                AcceptsReturn="True"
+                Header="Pufferdaten Fahrkorb"
+                IsReadOnly="True"
+                Text="" />
+            <TextBox
+                Grid.Column="1"
+                AcceptsReturn="True"
+                Header="Pufferdaten Gegengewicht"
+                IsReadOnly="True"
+                Text="" />
+            <TextBox
+                Grid.Column="2"
+                AcceptsReturn="True"
+                Header="Pufferdaten Ersatzmaßnahmen Schachtgrube"
+                IsReadOnly="True"
+                Text="" />
+            <TextBox
+                Grid.Column="3"
+                AcceptsReturn="True"
+                Header="Pufferdaten Ersatzmaßnahmen Schachtkopf"
+                IsReadOnly="True"
+                Text="" />
+        </Grid>
     </Grid>
 </Page>
