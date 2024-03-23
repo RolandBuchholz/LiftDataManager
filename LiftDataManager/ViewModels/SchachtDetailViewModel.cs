@@ -367,6 +367,9 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    [RelayCommand]
+    private void GoToSchachtViewModel() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.SchachtViewModel");
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();

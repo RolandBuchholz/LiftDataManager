@@ -433,7 +433,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
                 ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
         }
-        InfoCenterIsOpen = true;
+        InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]

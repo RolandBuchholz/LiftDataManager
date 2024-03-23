@@ -8,6 +8,8 @@ public partial class SchachtViewModel : DataViewModelBase, INavigationAware, IRe
          base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
     }
+    [RelayCommand]
+    private void GoToSchachtDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.SchachtDetailViewModel");
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();

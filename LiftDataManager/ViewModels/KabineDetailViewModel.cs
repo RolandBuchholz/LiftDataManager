@@ -137,7 +137,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     private bool canRefreshCarFloorSill;
 
     [RelayCommand]
-    private void GoToKabine() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
+    private void GoToKabine() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
 
     [RelayCommand(CanExecute = nameof(CanRefreshCarFloorSill))]
     private void RefreshCarFloorSillParameter()

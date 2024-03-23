@@ -136,6 +136,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
     }
 
+    [RelayCommand]
+    private void GoToBausatzDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzDetailViewModel");
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();

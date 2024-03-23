@@ -55,6 +55,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
     [ObservableProperty]
+    private bool autoOpenInfoCenter;
+    partial void OnAutoOpenInfoCenterChanged(bool value)
+    {
+        if (!Equals(value, _settingService.AutoOpenInfoCenter))
+            _settingService.SetSettingsAsync(nameof(AutoOpenInfoCenter), value);
+    }
+
+    [ObservableProperty]
     private bool tonerSaveMode;
     partial void OnTonerSaveModeChanged(bool value)
     {
@@ -395,6 +403,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         AutoSavePeriod = _settingService.AutoSavePeriod;
         TonerSaveMode = _settingService.TonerSaveMode;
         LowHighlightMode = _settingService.LowHighlightMode;
+        AutoOpenInfoCenter = _settingService.AutoOpenInfoCenter;
     }
     public void OnNavigatedFrom()
     {

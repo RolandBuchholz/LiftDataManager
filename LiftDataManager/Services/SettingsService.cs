@@ -15,6 +15,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyAutoSavePeriod = "AppAutoSavePeriodRequested";
     private const string SettingsKeyTonerSaveMode = "AppTonerSaveModeRequested";
     private const string SettingsKeyLowHighlightMode = "AppLowHighlightModeRequested";
+    private const string SettingsKeyAutoOpenInfoCenter = "AppAutoOpenInfoCenterRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -36,6 +37,7 @@ public class SettingsService : ISettingService
     public string? AutoSavePeriod { get; set; }
     public bool TonerSaveMode { get; set; }
     public bool LowHighlightMode { get; set; }
+    public bool AutoOpenInfoCenter { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -99,6 +101,10 @@ public class SettingsService : ISettingService
                 LowHighlightMode = (bool)value;
                 await SaveSettingsAsync(key, LowHighlightMode);
                 return;
+            case nameof(AutoOpenInfoCenter):
+                AutoOpenInfoCenter = (bool)value;
+                await SaveSettingsAsync(key, AutoOpenInfoCenter);
+                return;
             default:
                 return;
         }
@@ -131,7 +137,8 @@ public class SettingsService : ISettingService
         TonerSaveMode = !string.IsNullOrWhiteSpace(storedTonerSaveMode) && Convert.ToBoolean(storedTonerSaveMode);
         var storedLowHighlightMode = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyLowHighlightMode);
         LowHighlightMode = !string.IsNullOrWhiteSpace(storedLowHighlightMode) && Convert.ToBoolean(storedLowHighlightMode);
-
+        var storedAutoOpenInfoCenter = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoOpenInfoCenter);
+        AutoOpenInfoCenter = string.IsNullOrWhiteSpace(storedAutoOpenInfoCenter) ? true : Convert.ToBoolean(storedAutoOpenInfoCenter);
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -177,6 +184,9 @@ public class SettingsService : ISettingService
             case nameof(LowHighlightMode):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyLowHighlightMode, ((bool)value).ToString());
                 return;
+            case nameof(AutoOpenInfoCenter):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyAutoOpenInfoCenter, ((bool)value).ToString());
+                return;
             default:
                 return;
         }
@@ -191,6 +201,7 @@ public class SettingsService : ISettingService
         await SetSettingsAsync(nameof(PathDataBase), @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
         await SetSettingsAsync(nameof(LogLevel), @"Information");
         await SetSettingsAsync(nameof(TonerSaveMode), true);
+        await SetSettingsAsync(nameof(AutoOpenInfoCenter), true);
         await SetSettingsAsync(nameof(FirstSetup), true);
     }
 }

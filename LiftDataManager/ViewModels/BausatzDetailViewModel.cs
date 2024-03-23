@@ -14,6 +14,9 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         _calculationsModuleService = calculationsModuleService;
     }
 
+    [RelayCommand]
+    private void GoToBausatzViewModel() => _navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzViewModel");
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
