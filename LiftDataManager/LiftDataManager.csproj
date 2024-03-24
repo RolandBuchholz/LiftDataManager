@@ -108,6 +108,7 @@
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
     <None Remove="MainWindow.xaml" />
+    <None Remove="Styles\Divider.xaml" />
     <None Remove="Styles\ItemContainer.xaml" />
     <None Remove="Views\EinreichunterlagenPage.xaml" />
     <None Remove="Views\KabinengewichtPage.xaml" />
@@ -209,6 +210,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Styles\Divider.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Styles\ItemContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

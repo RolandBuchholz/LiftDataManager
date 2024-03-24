@@ -16,8 +16,13 @@
         <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
+        <Grid.Resources>
+            <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+        </Grid.Resources>
         <Expander
+            Grid.Column="0"
             Margin="0,0,0,10"
+            VerticalAlignment="Stretch"
             Header="Bausatzdaten"
             IsExpanded="True"
             Style="{StaticResource ExpanderContentStyle}">
@@ -27,7 +32,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="4*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="0" Grid.Column="0">
@@ -76,19 +81,15 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,5,0"
-                            VerticalAlignment="Top"
                             Content="Schachtabmessungen"
-                            FontSize="22"
-                            FontWeight="Bold"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStrokeThickness="2" />
+                            Style="{StaticResource DividerHeader2Style}" />
                         <Grid
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,0,5"
+                            Margin="0,0,10,0"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}">
                             <Grid.ColumnDefinitions>
@@ -103,32 +104,27 @@
                             <SpeziControls:ParameterCheckBox
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Margin="0,5,5,0"
                                 IsEnabled="False"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'], Mode=TwoWay}"
                                 ShowDefaultCheckBoxContent="True" />
                             <SpeziControls:ParameterCheckBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Margin="0,5,5,0"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'], Mode=TwoWay}"
                                 ShowDefaultCheckBoxContent="True" />
                             <SpeziControls:ParameterCheckBox
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="0,5,5,0"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'], Mode=TwoWay}"
                                 ShowDefaultCheckBoxContent="True" />
                             <SpeziControls:ParameterCheckBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Margin="0,5,5,0"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'], Mode=TwoWay}"
                                 ShowDefaultCheckBoxContent="True" />
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Row="2"
                                 Grid.Column="0"
-                                Margin="0,5,5,0"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SB'], Mode=TwoWay}"
                                 PlaceholderText="Schachtbreite"
                                 ShowDefaultHeader="True"
@@ -136,7 +132,6 @@
                             <SpeziControls:ParameterNumberTextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Margin="0,5,5,0"
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ST'], Mode=TwoWay}"
                                 PlaceholderText="Schachttiefe"
                                 ShowDefaultHeader="True"
@@ -146,18 +141,14 @@
                             Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            VerticalAlignment="Top"
                             Content="Maueröffnungen"
-                            FontSize="20"
-                            FontWeight="Bold"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStrokeThickness="2" />
+                            Style="{StaticResource DividerHeader2Style}" />
                         <Grid
                             Grid.Row="3"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
+                            Margin="0,0,10,0"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}"
                             Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
@@ -309,14 +300,10 @@
                             Grid.Row="7"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            VerticalAlignment="Top"
                             Content="Kabinendaten"
-                            FontSize="20"
-                            FontWeight="Bold"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStrokeThickness="2" />
+                            Style="{StaticResource DividerHeader2Style}" />
                         <Grid
                             Grid.Row="8"
                             Grid.ColumnSpan="2"
@@ -585,14 +572,10 @@
                         </Grid.RowDefinitions>
                         <wuc:Divider
                             Grid.Row="0"
-                            Margin="0,5,0,0"
-                            VerticalAlignment="Top"
                             Content="Berechnente Werte"
-                            FontSize="22"
-                            FontWeight="Bold"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStrokeThickness="2" />
+                            Style="{StaticResource DividerHeader2Style}" />
                         <ScrollViewer Grid.Row="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>

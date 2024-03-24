@@ -294,22 +294,22 @@
     </DataTemplate>
     <DataTemplate x:Key="InfoCenterAutoUpdated" x:DataType="models:InfoCenterEntry">
         <Grid
-        Width="300"
-        MinHeight="50"
-        MaxHeight="150"
-        Padding="-5,5,-5,5">
+            Width="300"
+            MinHeight="50"
+            MaxHeight="150"
+            Padding="-5,5,-5,5">
             <Border Style="{ThemeResource InfoCenterAutoUpdatedInfoCenterPanelStyle}" />
             <StackPanel Margin="7,3,3,3">
                 <TextBlock
-                Margin="0,0,0,3"
-                FontSize="12"
-                FontWeight="Bold">
-                <Run Text="{Binding State}" />
-                <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
+                    Margin="0,0,0,3"
+                    FontSize="12"
+                    FontWeight="Bold">
+                    <Run Text="{Binding State}" />
+                    <Run FontWeight="Thin" Text="{Binding TimeStamp}" />
                 </TextBlock>
                 <TextBlock FontSize="12">
-                <Run FontWeight="SemiBold" Text="Name: " />
-                <Run FontWeight="Thin" Text="{Binding ParameterName}" />
+                    <Run FontWeight="SemiBold" Text="Name: " />
+                    <Run FontWeight="Thin" Text="{Binding ParameterName}" />
                 </TextBlock>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -321,31 +321,31 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    FontSize="12"
-                    FontWeight="SemiBold"
-                    Text="Alter Wert:" />
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Alter Wert:" />
                     <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    FontSize="12"
-                    FontWeight="SemiBold"
-                    Text="Neuer Wert:" />
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Text="Neuer Wert:" />
                     <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Margin="0,0,5,0"
-                    FontSize="12"
-                    Text="{Binding OldValue}"
-                    TextWrapping="WrapWholeWords" />
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        FontSize="12"
+                        Text="{Binding OldValue}"
+                        TextWrapping="WrapWholeWords" />
                     <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="0,0,5,0"
-                    FontSize="12"
-                    Text="{Binding NewValue}"
-                    TextWrapping="WrapWholeWords" />
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,0,5,0"
+                        FontSize="12"
+                        Text="{Binding NewValue}"
+                        TextWrapping="WrapWholeWords" />
                 </Grid>
             </StackPanel>
         </Grid>

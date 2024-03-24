@@ -8,6 +8,7 @@
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d">
 
@@ -25,6 +26,9 @@
         <helpers:DoubleToStringConverter x:Key="DoubleToStringConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
+        <Grid.Resources>
+            <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -52,15 +56,176 @@
                         <Pivot.Items>
                             <PivotItem>
                                 <PivotItem.Header>
-                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Allgemeine Daten" />
+                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Allgemeine Bausatzdaten" />
                                 </PivotItem.Header>
-                                <TextBlock>hallo1</TextBlock>
+                                <Grid Margin="5,10,0,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="0,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            FontSize="24"
+                                            FontWeight="Bold"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="{x:Bind ViewModel.CarFrameTyp}" />
+                                        <Border
+                                            Grid.Column="1"
+                                            Height="34"
+                                            Margin="5,0,5,0"
+                                            VerticalAlignment="Bottom"
+                                            BorderBrush="YellowGreen"
+                                            BorderThickness="2"
+                                            CornerRadius="4"
+                                            Visibility="{x:Bind ViewModel.IsCFPFrame, Mode=OneWay}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon
+                                                    Margin="5,5,0,5"
+                                                    VerticalAlignment="Center"
+                                                    Glyph="&#xEDB1;" />
+                                                <TextBlock
+                                                    Margin="5"
+                                                    VerticalAlignment="Center"
+                                                    Text="CFP - Bausatz" />
+                                            </StackPanel>
+                                            <Border.Background>
+                                                <SolidColorBrush Opacity="0.2" Color="YellowGreen" />
+                                            </Border.Background>
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip>
+                                                    Empfehlung: Bausatzkonfiguration im CFP erstellen
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </Border>
+                                        <FontIcon
+                                            Grid.Column="2"
+                                            Margin="5"
+                                            VerticalAlignment="Bottom"
+                                            Foreground="Orange"
+                                            Glyph="&#xE814;"
+                                            Visibility="{x:Bind ViewModel.IsCFPDataBaseOverwritten, Mode=OneWay}">
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="14"
+                                                            FontWeight="Bold"
+                                                            Foreground="Orange"
+                                                            Text="Achtung:" />
+                                                        <TextBlock Foreground="Orange" Text="Dieser Bausatz enthält Datenbankanpassungen!" />
+                                                    </StackPanel>
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </FontIcon>
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="3"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Foreground="GreenYellow"
+                                            TextWrapping="WrapWholeWords"
+                                            Visibility="{x:Bind ViewModel.ShowCFPFrameInfo, Mode=OneWay}">
+                                            <Run
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="Information:" />
+                                            <Run FontSize="14" Text=" Bausatz wurde noch nicht im Car Frame Programm angelegt!" />
+                                        </TextBlock>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.Column="0"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm" />
+                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.Column="1"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm" />
+                                    </Grid>
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="10" />
+                                        </Grid.RowDefinitions>
+                                        <Border
+                                            Grid.RowSpan="3"
+                                            Grid.ColumnSpan="2"
+                                            ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                            Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="0"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="Fahrkorbpuffer" />
+                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Unit="Stk." />
+                                        <!--<SpeziControls:ParameterNumberTextBox
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Unit="mm" />
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                        <SpeziControls:ParameterTextBox
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
+                                            ReadOnly="True"
+                                            ShowDefaultHeader="True" />
+                                        <TextBox
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            Header="Pufferdaten Fahrkorb"
+                                            IsReadOnly="True"
+                                            Text="" />-->
+                                    </Grid>
+                                </Grid>
                             </PivotItem>
-                            <PivotItem x:Name="CarEquipment">
+                            <PivotItem>
                                 <PivotItem.Header>
-                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Kabinenausstattung" />
+                                    <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Schienenbügeleinteilung" />
                                 </PivotItem.Header>
-                                <TextBlock>hallo2</TextBlock>
+                                <TextBlock>coming soon</TextBlock>
                             </PivotItem>
                         </Pivot.Items>
                     </Pivot>
@@ -112,6 +277,8 @@
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
+
+
 
 
     <!--<Grid x:Name="ContentArea">
