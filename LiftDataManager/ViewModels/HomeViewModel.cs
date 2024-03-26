@@ -422,6 +422,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
+            if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+                ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
+            
             _ = Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
             {
                 SetDriveData = true,
@@ -429,9 +432,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }));
             if (_settingService.AutoSave && CheckOut)
                 StartSaveTimer();
-
-            if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
-                ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
     }

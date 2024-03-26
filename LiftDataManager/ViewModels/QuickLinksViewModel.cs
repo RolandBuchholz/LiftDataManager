@@ -66,6 +66,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
     }
 
     [ObservableProperty]
+    private bool showCFPDataBaseOverriddenWarning;
+
+    [ObservableProperty]
     private bool zAliftRegEditSuccessful;
 
     [ObservableProperty]
@@ -125,8 +128,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
         CanOpenCalculations = CanOpenVault;
         CanOpenCFP = File.Exists(_settingService.PathCFP);
-
-        if (!ParameterDictionary.Any() || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
+        
+        if (ParameterDictionary.Count == 0 || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
         {
             CanOpenLilo = File.Exists(_settingService.PathLilo);
             CanOpenZALift = File.Exists(_settingService.PathZALift);
@@ -139,6 +142,23 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
             CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
         CanImportZAliftData = CanOpenZALiftHtml && CheckOut;
+
+        if (ParameterDictionary.Count != 0 &&
+            !string.IsNullOrWhiteSpace(FullPathXml) &&
+            string.Equals(ParameterDictionary["var_CFPdefiniert"].Value, "True", StringComparison.CurrentCultureIgnoreCase))
+        {
+            var basePath = Path.GetDirectoryName(FullPathXml);
+            if (!string.IsNullOrWhiteSpace(basePath))
+            {
+                var calculationsPath = Path.Combine(basePath, "Berechnungen");
+
+                if (Directory.Exists(calculationsPath))
+                {
+                    var calculations = Directory.EnumerateFiles(calculationsPath);
+                    ShowCFPDataBaseOverriddenWarning = calculations.Any(x => x.Contains("DB-Anpassungen"));
+                }
+            }
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenSpeziPdf))]

@@ -182,11 +182,38 @@
                 Command="{x:Bind ViewModel.OpenCFPCommand}"
                 CommandParameter="{x:Bind CFPBearbeitungDialog}"
                 Style="{StaticResource LinkButtonSmall}">
-                <PathIcon Data="m1,18.16c1.23,5.55 5.66,9.91 11.25,11.03l-11.25,0l0,-11.03zm25.06,5.67c-2.58,3.23 -6.55,5.3 -11,5.3c-7.76,0 -14.07,-6.3 -14.07,-14.07c0,-7.76 6.3,-14.07 14.07,-14.07c4.86,0 9.15,2.47 11.68,6.22l-8.82,5.79c-0.64,-0.89 -1.68,-1.47 -2.86,-1.47c-1.94,0 -3.52,1.58 -3.52,3.52c0,1.94 1.58,3.52 3.52,3.52c1.07,0 2.02,-0.47 2.67,-1.22l8.33,6.47zm0.91,-16.26c1.37,2.17 2.16,4.74 2.16,7.49c0,3.16 -1.05,6.09 -2.81,8.44l-8.33,-6.48c0.38,-0.56 0.6,-1.23 0.6,-1.96c0,-0.61 -0.16,-1.19 -0.43,-1.69l8.82,-5.8z" Foreground="{ThemeResource TextFillColorPrimaryBrush}">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Text="Car Frame Program" />
-                    </ToolTipService.ToolTip>
-                </PathIcon>
+                <Grid>
+                    <PathIcon Data="m1,18.16c1.23,5.55 5.66,9.91 11.25,11.03l-11.25,0l0,-11.03zm25.06,5.67c-2.58,3.23 -6.55,5.3 -11,5.3c-7.76,0 -14.07,-6.3 -14.07,-14.07c0,-7.76 6.3,-14.07 14.07,-14.07c4.86,0 9.15,2.47 11.68,6.22l-8.82,5.79c-0.64,-0.89 -1.68,-1.47 -2.86,-1.47c-1.94,0 -3.52,1.58 -3.52,3.52c0,1.94 1.58,3.52 3.52,3.52c1.07,0 2.02,-0.47 2.67,-1.22l8.33,6.47zm0.91,-16.26c1.37,2.17 2.16,4.74 2.16,7.49c0,3.16 -1.05,6.09 -2.81,8.44l-8.33,-6.48c0.38,-0.56 0.6,-1.23 0.6,-1.96c0,-0.61 -0.16,-1.19 -0.43,-1.69l8.82,-5.8z" Foreground="{ThemeResource TextFillColorPrimaryBrush}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="Car Frame Program" />
+                        </ToolTipService.ToolTip>
+                    </PathIcon>
+                    <InfoBadge
+                        Margin="15,-5,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="Orange"
+                        Visibility="{x:Bind ViewModel.ShowCFPDataBaseOverriddenWarning, Mode=OneWay}">
+                        <InfoBadge.IconSource>
+                            <FontIconSource
+                                FontWeight="ExtraBold"
+                                Foreground="Black"
+                                Glyph="&#xE7BA;" />
+                        </InfoBadge.IconSource>
+                        <ToolTipService.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Foreground="Orange"
+                                        Text="Achtung:" />
+                                    <TextBlock Foreground="Orange" Text="Dieser Bausatz enthält Datenbankanpassungen!" />
+                                </StackPanel>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </InfoBadge>
+                </Grid>
                 <interactivity:Interaction.Behaviors>
                     <interactions:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
@@ -390,8 +417,8 @@
                     ItemsSource="{x:Bind InfoCenterEntrysView.View, Mode=OneWay}" />
                 <TextBlock
                     Grid.Row="2"
-                    FontWeight="SemiBold" 
                     Margin="0,0,10,-10"
+                    FontWeight="SemiBold"
                     TextAlignment="Right">
                     <Run Text="{x:Bind InfoCenterEntrysView.View.Count, Mode=OneWay}" />
                     <Run Text=" von " />
