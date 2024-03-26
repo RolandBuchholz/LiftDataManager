@@ -50,6 +50,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     private bool showCFPFrameInfo;
 
     [ObservableProperty]
+    private string cFPFrameInfoToolTip = "Empfehlung: Bausatzkonfiguration im CFP konfigurieren";
+
+    [ObservableProperty]
     private string cWTRailName = "Führungsschienen GGW";
 
     [ObservableProperty]
@@ -111,6 +114,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
             return;
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
+        CFPFrameInfoToolTip = ShowCFPFrameInfo ? "Empfehlung: Bausatzkonfiguration im CFP konfigurieren" : "Bausatz wurde im CFP konfiguriert";
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))
