@@ -17,6 +17,7 @@
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="4"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="4" />
         <helpers:ParameterNameConverter x:Key="ParameterNameConverter" />
         <helpers:ParameterSeverityConverter x:Key="ParameterSeverityConverter" />

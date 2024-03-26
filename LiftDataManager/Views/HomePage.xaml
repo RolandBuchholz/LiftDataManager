@@ -27,6 +27,7 @@
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="4"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="4" />
     </Page.Resources>
     <Grid>

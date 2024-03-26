@@ -11,6 +11,7 @@
         <media:AttachedCardShadow
             x:Key="CommonShadow"
             CornerRadius="8"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="8" />
     </UserControl.Resources>
     <Grid CornerRadius="8,8,8,8">
