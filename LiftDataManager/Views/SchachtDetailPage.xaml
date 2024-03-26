@@ -16,82 +16,59 @@
         <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
-        <Grid.Resources>
-            <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
-        </Grid.Resources>
-        <Expander
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid
+            Grid.Row="0"
             Grid.Column="0"
-            Margin="0,0,0,10"
-            VerticalAlignment="Stretch"
-            Header="Bausatzdaten"
-            IsExpanded="True"
-            Style="{StaticResource ExpanderContentStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="4*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Viewbox Grid.Row="0" Grid.Column="0">
-                    <skiasharp:SKXamlCanvas
-                        x:Name="xamlCanvas"
-                        Width="{x:Bind ViewModel.ViewBoxWidth, Mode=OneWay}"
-                        Height="{x:Bind ViewModel.ViewBoxHeight, Mode=OneWay}"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        IgnorePixelScaling="True">
-                        <Interactivity:Interaction.Behaviors>
-                            <Core:EventTriggerBehavior EventName="PaintSurface">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.PaintSurfaceCommand}" />
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadedSKXamlCanvasCommand}" CommandParameter="{Binding ElementName=xamlCanvas}" />
-                            </Core:EventTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
-                    </skiasharp:SKXamlCanvas>
-                </Viewbox>
-                <ScrollViewer
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Padding="0,0,5,0">
-                    <Grid VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <wuc:Divider
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Content="Schachtabmessungen"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            Style="{StaticResource DividerHeader2Style}" />
-                        <Grid
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,0"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}">
+            Margin="0,0,15,0">
+            <Grid.Resources>
+                <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />
+            </Grid.Resources>
+            <Expander
+                Grid.Column="0"
+                Margin="0,0,0,0"
+                VerticalAlignment="Stretch"
+                Header="Bausatzdaten"
+                IsExpanded="True"
+                Style="{StaticResource ExpanderContentStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.Row="0" Grid.Column="0">
+                        <skiasharp:SKXamlCanvas
+                            x:Name="xamlCanvas"
+                            Width="{x:Bind ViewModel.ViewBoxWidth, Mode=OneWay}"
+                            Height="{x:Bind ViewModel.ViewBoxHeight, Mode=OneWay}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            IgnorePixelScaling="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="PaintSurface">
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.PaintSurfaceCommand}" />
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadedSKXamlCanvasCommand}" CommandParameter="{Binding ElementName=xamlCanvas}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </skiasharp:SKXamlCanvas>
+                    </Viewbox>
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Padding="0,0,5,0">
+                        <Grid VerticalAlignment="Top">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -100,484 +77,295 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <SpeziControls:ParameterCheckBox
+                            <wuc:Divider
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                IsEnabled="False"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'], Mode=TwoWay}"
-                                ShowDefaultCheckBoxContent="True" />
-                            <SpeziControls:ParameterCheckBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'], Mode=TwoWay}"
-                                ShowDefaultCheckBoxContent="True" />
-                            <SpeziControls:ParameterCheckBox
+                                Grid.ColumnSpan="2"
+                                Content="Schachtabmessungen"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Style="{StaticResource DividerHeader2Style}" />
+                            <Grid
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'], Mode=TwoWay}"
-                                ShowDefaultCheckBoxContent="True" />
-                            <SpeziControls:ParameterCheckBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'], Mode=TwoWay}"
-                                ShowDefaultCheckBoxContent="True" />
-                            <SpeziControls:ParameterNumberTextBox
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,0"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterCheckBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    IsEnabled="False"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'], Mode=TwoWay}"
+                                    ShowDefaultCheckBoxContent="True" />
+                                <SpeziControls:ParameterCheckBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'], Mode=TwoWay}"
+                                    ShowDefaultCheckBoxContent="True" />
+                                <SpeziControls:ParameterCheckBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'], Mode=TwoWay}"
+                                    ShowDefaultCheckBoxContent="True" />
+                                <SpeziControls:ParameterCheckBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'], Mode=TwoWay}"
+                                    ShowDefaultCheckBoxContent="True" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SB'], Mode=TwoWay}"
+                                    PlaceholderText="Schachtbreite"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ST'], Mode=TwoWay}"
+                                    PlaceholderText="Schachttiefe"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <wuc:Divider
                                 Grid.Row="2"
                                 Grid.Column="0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SB'], Mode=TwoWay}"
-                                PlaceholderText="Schachtbreite"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ST'], Mode=TwoWay}"
-                                PlaceholderText="Schachttiefe"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <wuc:Divider
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Content="Maueröffnungen"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            Style="{StaticResource DividerHeader2Style}" />
-                        <Grid
-                            Grid.Row="3"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,0"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteA'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheA'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Content="Maueröffnungen"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Style="{StaticResource DividerHeader2Style}" />
+                            <Grid
+                                Grid.Row="3"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,0"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteA'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheA'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandA'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="4"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteB'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheB'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandB'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="5"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteC'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheC'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandC'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="6"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteD'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheD'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandD'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <wuc:Divider
+                                Grid.Row="7"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandA'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="4"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteB'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheB'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
+                                Content="Kabinendaten"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Style="{StaticResource DividerHeader2Style}" />
+                            <Grid
+                                Grid.Row="8"
                                 Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandB'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="5"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteC'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheC'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KBI'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandKabineA'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandKabineD'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="9"
                                 Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandC'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="6"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungBreiteD'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungHoeheD'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MauerOeffnungAbstandD'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <wuc:Divider
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Content="Kabinendaten"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            Style="{StaticResource DividerHeader2Style}" />
-                        <Grid
-                            Grid.Row="8"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KBI'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandKabineA'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="0,5,5,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandKabineD'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="9"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L1'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbau'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <TextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="5,5,5,0"
-                                Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].DisplayName, Mode=OneTime}"
-                                IsEnabled="False"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].Value, Mode=OneTime}" />
-                            <SpeziControls:ParameterComboBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceA}"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
-                                ShowDefaultHeader="True" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="10"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L3'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauB'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_B'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <TextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="5,5,5,0"
-                                Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].DisplayName, Mode=OneTime}"
-                                IsEnabled="False"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].Value, Mode=OneTime}" />
-                            <SpeziControls:ParameterComboBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceB}"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
-                                ShowDefaultHeader="True" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="11"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L2'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauC'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_C'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <TextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="5,5,5,0"
-                                Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].DisplayName, Mode=OneTime}"
-                                IsEnabled="False"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].Value, Mode=OneTime}" />
-                            <SpeziControls:ParameterComboBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceC}"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
-                                ShowDefaultHeader="True" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="12"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,10,5"
-                            Padding="5"
-                            Style="{ThemeResource GridCardPanel}"
-                            Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L4'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauD'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <SpeziControls:ParameterNumberTextBox
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Margin="0,5,0,0"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_D'], Mode=TwoWay}"
-                                ShowDefaultHeader="True"
-                                Unit="mm" />
-                            <TextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="5,5,5,0"
-                                Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].DisplayName, Mode=OneTime}"
-                                IsEnabled="False"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].Value, Mode=OneTime}" />
-                            <SpeziControls:ParameterComboBox
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Margin="0,5,5,0"
-                                IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceD}"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
-                                ShowDefaultHeader="True" />
-                        </Grid>
-                    </Grid>
-                </ScrollViewer>
-                <Grid
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Margin="0,10,10,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <wuc:Divider
-                            Grid.Row="0"
-                            Content="Berechnente Werte"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            Style="{StaticResource DividerHeader2Style}" />
-                        <ScrollViewer Grid.Row="1">
-                            <Grid>
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
@@ -586,124 +374,368 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <TextBox
+                                <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Abstand Kabine Wand D (mm)"
-                                    TextAlignment="Center" />
-                                <TextBox
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L1'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="0"
                                     Grid.Column="1"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Kabinenbreite (mm)"
-                                    TextAlignment="Center" />
-                                <TextBox
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbau'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="0"
                                     Grid.Column="2"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Abstand Kabine Wand B (mm)"
-                                    TextAlignment="Center" />
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
                                 <TextBox
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.CarDistanceWallD, Mode=OneWay}"
-                                    TextAlignment="Center" />
-                                <TextBox
+                                    Margin="5,5,5,0"
+                                    Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].DisplayName, Mode=OneTime}"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung'].Value, Mode=OneTime}" />
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.ParameterDictionary['var_KBI'].Value, Mode=OneWay}"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="1"
-                                    Grid.Column="2"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.CarDistanceWallB, Mode=OneWay}"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Abstand Kabine Wand A (mm)"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Kabinentiefe (mm)"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="2"
-                                    Grid.Column="2"
-                                    Margin="2"
-                                    IsEnabled="False"
-                                    Text="Abstand Kabine Wand C (mm)"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.CarDistanceWallA, Mode=OneWay}"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.ParameterDictionary['var_KTI'].Value, Mode=OneWay}"
-                                    TextAlignment="Center" />
-                                <TextBox
-                                    Grid.Row="3"
-                                    Grid.Column="2"
-                                    Margin="2"
-                                    IsReadOnly="True"
-                                    Text="{x:Bind ViewModel.CarDistanceWallC, Mode=OneWay}"
-                                    TextAlignment="Center" />
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceA}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
                             </Grid>
-                        </ScrollViewer>
+                            <Grid
+                                Grid.Row="10"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L3'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauB'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_B'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="5,5,5,0"
+                                    Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].DisplayName, Mode=OneTime}"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_B'].Value, Mode=OneTime}" />
+                                <SpeziControls:ParameterComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceB}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_B'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="11"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L2'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauC'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_C'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="5,5,5,0"
+                                    Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].DisplayName, Mode=OneTime}"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_C'].Value, Mode=OneTime}" />
+                                <SpeziControls:ParameterComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceC}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_C'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                            </Grid>
+                            <Grid
+                                Grid.Row="12"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,10,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}"
+                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_L4'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerEinbauD'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="0,5,0,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB_D'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="5,5,5,0"
+                                    Header="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].DisplayName, Mode=OneTime}"
+                                    IsEnabled="False"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_Tuerbezeichnung_D'].Value, Mode=OneTime}" />
+                                <SpeziControls:ParameterComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,5,5,0"
+                                    IsEnabled="{x:Bind ViewModel.CanEditOpeningDirectionEntranceD}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tueroeffnung_D'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,10,10,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <wuc:Divider
+                                Grid.Row="0"
+                                Content="Berechnente Werte"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Style="{StaticResource DividerHeader2Style}" />
+                            <ScrollViewer Grid.Row="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Abstand Kabine Wand D (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Kabinenbreite (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Abstand Kabine Wand B (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.CarDistanceWallD, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_KBI'].Value, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.CarDistanceWallB, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Abstand Kabine Wand A (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Kabinentiefe (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Margin="2"
+                                        IsEnabled="False"
+                                        Text="Abstand Kabine Wand C (mm)"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.CarDistanceWallA, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_KTI'].Value, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        Margin="2"
+                                        IsReadOnly="True"
+                                        Text="{x:Bind ViewModel.CarDistanceWallC, Mode=OneWay}"
+                                        TextAlignment="Center" />
+                                </Grid>
+                            </ScrollViewer>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-        </Expander>
-        <StackPanel
-            Grid.Column="0"
-            Margin="0,4,50,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <Button Command="{x:Bind ViewModel.GoToSchachtViewModelCommand}" Style="{StaticResource SaveButton}">
-                <ToolTipService.ToolTip>
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="Bold"
-                        Text="Standardeingaben Schacht" />
-                </ToolTipService.ToolTip>
-                <SymbolIcon Symbol="PostUpdate" />
-            </Button>
-            <Button Command="{x:Bind ViewModel.SaveAllParameterCommand}" Style="{StaticResource SaveButton}">
-                <ToolTipService.ToolTip>
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="Bold"
-                        Text="Save All Parameter" />
-                </ToolTipService.ToolTip>
-                <SymbolIcon Symbol="Save" />
-            </Button>
-        </StackPanel>
+            </Expander>
+            <StackPanel
+                Grid.Column="0"
+                Margin="0,4,50,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Button Command="{x:Bind ViewModel.GoToSchachtViewModelCommand}" Style="{StaticResource SaveButton}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="Standardeingaben Schacht" />
+                    </ToolTipService.ToolTip>
+                    <SymbolIcon Symbol="PostUpdate" />
+                </Button>
+                <Button Command="{x:Bind ViewModel.SaveAllParameterCommand}" Style="{StaticResource SaveButton}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="Save All Parameter" />
+                    </ToolTipService.ToolTip>
+                    <SymbolIcon Symbol="Save" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <!--  InfoSidebarPanel  -->
+        <SpeziControls:SidebarPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=OneWay}"
+            InfoCenterIsOpen="{x:Bind ViewModel.InfoCenterIsOpen, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+        <!--  Footer  -->
+        <SpeziControls:FooterControl
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0"
+            CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
+            HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
+            HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>
