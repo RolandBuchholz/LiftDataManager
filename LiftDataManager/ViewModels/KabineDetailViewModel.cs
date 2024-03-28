@@ -12,14 +12,14 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
      base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
-        CarFloorSillParameter = new ObservableDictionary<string, double?>();
+        CarFloorSillParameter = [];
         SetupCarFloorSillParameter();
-        OpeningDirections = new ObservableCollection<string?>
-        {
+        OpeningDirections =
+        [
             "einseitig öffnend",
             "einseitig öffnend (rechts)",
             "einseitig öffnend (links)"
-        };
+        ];
     }
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -198,7 +198,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
 
     private void CanShowMirrorDimensions()
     {
-        List<string> mirrors = new();
+        List<string> mirrors = [];
 
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
@@ -230,6 +230,8 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
             MirrorDimensionsHeight3 = $"Höhe Spiegel Wand {mirrors[2]}";
         }
     }
+
+
 
     public void OnNavigatedTo(object parameter)
     {

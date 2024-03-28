@@ -420,11 +420,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
-            await ValidateAllParameterAsync();
-            await SetCalculatedValuesAsync();
             if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
                 ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
-            
+            await ValidateAllParameterAsync();
+            await SetCalculatedValuesAsync();
             _ = Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
             {
                 SetDriveData = true,
@@ -1018,7 +1017,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
             if (!Directory.Exists(path))
             {
-                return Array.Empty<string>();
+                return [];
             }
         }
         else
@@ -1026,7 +1025,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             path = @"C:\Work\AUFTRÄGE NEU\Angebote";
             if (!Directory.Exists(path))
             {
-                return Array.Empty<string>();
+                return [];
             }
         }
 

@@ -196,7 +196,8 @@
                         Visibility="{x:Bind ViewModel.ShowCFPDataBaseOverriddenWarning, Mode=OneWay}">
                         <InfoBadge.IconSource>
                             <FontIconSource
-                                FontWeight="ExtraBold"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                FontWeight="SemiBold"
                                 Foreground="Black"
                                 Glyph="&#xE7BA;" />
                         </InfoBadge.IconSource>
