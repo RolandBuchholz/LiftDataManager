@@ -12,6 +12,12 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     private bool isBackEnabled;
 
     [ObservableProperty]
+    private bool showGlobalSearch;
+
+    [ObservableProperty]
+    private string? globalSearchInput;
+
+    [ObservableProperty]
     private object? selected;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
@@ -32,6 +38,16 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         CurrentSpeziProperties = message.Value;
     }
 
+    [RelayCommand]
+    private void StartGlobalSearch() 
+    {
+        var searchInput = GlobalSearchInput;
+        GlobalSearchInput = string.Empty;
+        NavigationService.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel",searchInput);
+    }
+
+    [RelayCommand]
+    private void GoToHelpViewModel() => NavigationService.NavigateTo("LiftDataManager.ViewModels.HelpViewModel");
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
@@ -45,6 +61,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         if (selectedItem != null)
         {
             Selected = selectedItem;
+            ShowGlobalSearch = selectedItem.Tag is null;
         }
     }
 }

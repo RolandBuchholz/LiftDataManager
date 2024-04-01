@@ -45,7 +45,7 @@
         <SpeziControls:HeaderControl
             Grid.Row="0"
             Grid.ColumnSpan="2"
-            Margin="0,-12,0,10"
+            Margin="0,0,0,10"
             ReadOnlyMode="{x:Bind ViewModel.LikeEditParameter, Mode=TwoWay, Converter={StaticResource BoolNegationConverter}}" />
         <!--  Optionen  -->
         <Grid Grid.Row="1">

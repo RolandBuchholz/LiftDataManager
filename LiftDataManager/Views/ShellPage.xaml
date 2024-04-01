@@ -3,39 +3,80 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:LiftDataManager.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:helpers="using:LiftDataManager.Helpers"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:LiftDataManager"
+    xmlns:wuc="using:WinUICommunity"
     Loaded="OnLoaded">
 
     <Grid>
-        <Grid
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <wuc:TitleBar
             x:Name="AppTitleBar"
-            Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
-            VerticalAlignment="Top"
-            Canvas.ZIndex="1"
-            IsHitTestVisible="True">
-            <Image
-                Width="20"
-                Height="20"
-                HorizontalAlignment="Left"
-                Source="/Assets/WindowIcon.png" />
-            <TextBlock
-                x:Name="AppTitleBarText"
-                Margin="32,0,0,0"
-                VerticalAlignment="Center"
-                Style="{StaticResource CaptionTextBlockStyle}"
-                TextWrapping="NoWrap" />
-        </Grid>
+            Title="{x:Bind local:App.Current.AppName}"
+            Height="40"
+            BackButtonClick="AppTitleBar_BackButtonClick"
+            Icon="{wuc:BitmapIcon Source=ms-appx:///Assets/WindowIcon.png}"
+            IsBackButtonVisible="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IsPaneButtonVisible="True"
+            PaneButtonClick="AppTitleBar_PaneButtonClick"
+            Subtitle="{x:Bind local:App.Current.AppVersion}">
+            <wuc:TitleBar.Content>
+                <AutoSuggestBox
+                    PlaceholderText="globale Suche"
+                    QueryIcon="Find"
+                    Text="{x:Bind ViewModel.GlobalSearchInput, Mode=TwoWay}"
+                    Visibility="{x:Bind ViewModel.ShowGlobalSearch, Mode=OneWay}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="QuerySubmitted">
+                            <core:InvokeCommandAction Command="{x:Bind ViewModel.StartGlobalSearchCommand}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AutoSuggestBox>
+            </wuc:TitleBar.Content>
+            <wuc:TitleBar.Footer>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        x:Name="ThemeButton"
+                        Height="32"
+                        Margin="0,0,4,0"
+                        Click="ThemeButton_Click"
+                        Style="{ThemeResource SubtleButtonStyle}"
+                        ToolTipService.ToolTip="Temporär Theme umschalten">
+                        <FontIcon FontSize="16" Glyph="&#xE793;" />
+                    </Button>
+                    <Button
+                        x:Name="HelpButton"
+                        Height="32"
+                        Margin="0,0,4,0"
+                        Command="{x:Bind ViewModel.GoToHelpViewModelCommand}"
+                        Style="{ThemeResource SubtleButtonStyle}"
+                        ToolTipService.ToolTip="Hilfe">
+                        <FontIcon
+                            FontSize="16"
+                            FontWeight="ExtraBold"
+                            Glyph="&#xE897;" />
+                    </Button>
+                </StackPanel>
+            </wuc:TitleBar.Footer>
+        </wuc:TitleBar>
         <NavigationView
             x:Name="NavigationViewControl"
+            Grid.Row="1"
             Canvas.ZIndex="0"
-            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             ExpandedModeThresholdWidth="1280"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
-            IsBackButtonVisible="Visible"
-            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleButtonVisible="False"
             IsSettingsVisible="True"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            <NavigationView.Resources>
+                <Thickness x:Key="NavigationViewHeaderMargin">24,0,0,-6</Thickness>
+            </NavigationView.Resources>
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Uid="Shell_Home"
@@ -118,23 +159,36 @@
                 <NavigationViewItem
                     x:Uid="Shell_LiftHistory"
                     helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.LiftHistoryViewModel"
-                    Icon="Library" />
-                <NavigationViewItem x:Uid="Shell_Listenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel">
+                    Icon="Library"
+                    Tag="LiftHistoryView" />
+                <NavigationViewItem
+                    x:Uid="Shell_Listenansicht"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.ListenansichtViewModel"
+                    Tag="ListView">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Datenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DatenansichtViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_Datenansicht"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DatenansichtViewModel"
+                    Tag="DataView">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Tabellenansicht" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.TabellenansichtViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_Tabellenansicht"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.TabellenansichtViewModel"
+                    Tag="TableView">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_DataBaseEdit" helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DataBaseEditViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_DataBaseEdit"
+                    helpers:NavigationHelper.NavigateTo="LiftDataManager.ViewModels.DataBaseEditViewModel"
+                    Tag="DataBaseEditView">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Rename" />
                     </NavigationViewItem.Icon>
@@ -153,21 +207,21 @@
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
+                        <TextBlock Style="{ThemeResource PageTitleStyle}" Text="{Binding}" />
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
-            <i:Interaction.Behaviors>
+            <interactivity:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
+                                <TextBlock Style="{ThemeResource PageTitleStyle}" Text="{Binding}" />
                             </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
-            </i:Interaction.Behaviors>
+            </interactivity:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
             </Grid>
