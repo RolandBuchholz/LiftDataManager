@@ -246,7 +246,11 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (parameter is null and not string)
             return;
         if (!Equals(parameter, "ShowHighlightParameter"))
+        {
+            SearchInput = parameter as string;
             return;
+        }
+            
         if (!HasHighlightedParameters)
             return;
         

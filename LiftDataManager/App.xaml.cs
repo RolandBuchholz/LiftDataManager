@@ -8,8 +8,11 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
+using System;
 using System.Runtime.CompilerServices;
+using Windows.ApplicationModel;
 using Windows.Storage;
+using WinUICommunity;
 
 namespace LiftDataManager;
 
@@ -17,10 +20,11 @@ public partial class App : Application
 {
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();
-    public static UIElement? AppTitlebar { get; set; }
+    public new static App Current => (App)Application.Current;
+    public string AppVersion { get; set; } = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
+    public string AppName { get;} = AssemblyInfoHelper.GetAppName();
     private bool IgnoreSaveWarning { get; set; }
     public static FrameworkElement? MainRoot { get; set; }
-
     public static T GetService<T>()
     where T : class
     {
@@ -255,7 +259,6 @@ public partial class App : Application
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-
         await GetService<IActivationService>().ActivateAsync(args);
     }
 
