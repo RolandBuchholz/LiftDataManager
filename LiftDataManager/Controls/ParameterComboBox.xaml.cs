@@ -87,7 +87,7 @@ public sealed partial class ParameterComboBox : UserControl
         {
             if (errorList is null)
                 return;
-            if (!errorList.Any())
+            if (errorList.Count == 0)
                 return;
 
             var error = errorList.OrderByDescending(p => p.Severity).FirstOrDefault();

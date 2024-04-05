@@ -39,11 +39,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(value) && anotherParameter)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
-            { DependentParameter = new string[] { anotherBoolean } });
+            { DependentParameter = [anotherBoolean] });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [anotherBoolean] });
         }
     }
 
@@ -55,11 +55,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if ((string.IsNullOrWhiteSpace(value) || value == "0") && anotherParameter)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} darf nicht leer sein wenn {anotherBoolean} gesetzt (wahr) ist", SetSeverity(severity))
-            { DependentParameter = new string[] { anotherBoolean } });
+            { DependentParameter = [anotherBoolean] });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [anotherBoolean] });
         }
     }
 
@@ -74,11 +74,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.Equals(value, "True", StringComparison.CurrentCultureIgnoreCase))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Es is nicht möglich beide Optionen ({displayname} und {ParameterDictionary[anotherBoolean].DisplayName}) auszuwählen!", SetSeverity(severity))
-            { DependentParameter = new string[] { anotherBoolean } });
+            { DependentParameter = [anotherBoolean] });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherBoolean } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [anotherBoolean] });
         }
     }
 
@@ -92,11 +92,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (valueToBool && (string.IsNullOrWhiteSpace(stringValue)))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{name} gesetzt (wahr) ist, darf {anotherString} nicht leer sein", SetSeverity(severity))
-            { DependentParameter = new string[] { anotherString } });
+            { DependentParameter = [anotherString] });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { anotherString } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [anotherString] });
         }
     }
 
@@ -139,11 +139,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 if (auftragsnummer != fabriknummer)
                 {
                     ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Neuanlagen und Ersatzanlagen muß die Auftragsnummer und Fabriknummer identisch sein", SetSeverity(severity))
-                    { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
                 }
                 else
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
                 }
                 return;
             case "Umbau":
@@ -152,15 +152,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 if (fabriknummerBestand != fabriknummer)
                 {
                     ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
-                    { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
                 }
                 else
                 {
-                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
                 }
                 return;
             default:
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand" } });
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
                 return;
         }
     }
@@ -210,11 +210,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (etagenhoeheTotal != foerderhoehe)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Die Förderhöhe ({foerderhoehe} mm) stimmt nicht mit Etagenabständen ({etagenhoeheTotal} mm) überein.", SetSeverity(severity))
-            { DependentParameter = new string[] { "var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8" } });
+            { DependentParameter = ["var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8"] });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8" } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FH", "var_Etagenhoehe0", "var_Etagenhoehe1", "var_Etagenhoehe2", "var_Etagenhoehe3", "var_Etagenhoehe4", "var_Etagenhoehe5", "var_Etagenhoehe6", "var_Etagenhoehe7", "var_Etagenhoehe8"] });
         }
     }
 
@@ -586,11 +586,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (!ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
-                { DependentParameter = new string[] { optional! } });
+                { DependentParameter = [optional!] });
             }
             else
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { optional! } });
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
             }
         }
     }
@@ -601,7 +601,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var selectedSafetyGear = ParameterDictionary["var_TypFV"].Value;
         IEnumerable<string> availablseafetyGears = value switch
         {
-            "keine" => Enumerable.Empty<string>(),
+            "keine" => [],
             "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(s => s.Name),
             "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(s => s.Name),
             "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(s => s.Name),
@@ -736,11 +736,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             if (!_calculationsModuleService.ValdidateLiftLoad(load, area, cargotyp, drivesystem))
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)) { DependentParameter = new string[] { "var_Aufzugstyp", "var_Q", "var_A_Kabine" } });
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Nennlast enspricht nicht der EN81:20!", SetSeverity(severity)) { DependentParameter = ["var_Aufzugstyp", "var_Q", "var_A_Kabine"] });
             }
             else
             {
-                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { "var_Aufzugstyp", "var_Q", "var_A_Kabine" } });
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_Aufzugstyp", "var_Q", "var_A_Kabine"] });
             }
         }
     }
@@ -1109,12 +1109,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (validSystem)
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = new string[] { optional! } });
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
         }
         else
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewähltes Schachtinformationssystem: {liftPositionSystem} ist mit der Steuerung: {controler} nicht zulässig!", SetSeverity(severity))
-            { DependentParameter = new string[] { optional! } });
+            { DependentParameter = [optional!] });
         }
     }
 
@@ -1238,7 +1238,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateProtectiveRailingSwitch(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        string[] sides = { "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D" };
+        string[] sides = ["var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"];
         bool railingSwitch = false;
 
         foreach (var side in sides)
@@ -1257,7 +1257,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateMirrorDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        List<string> mirrors = new();
+        List<string> mirrors = [];
 
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
@@ -1538,6 +1538,68 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 break;
             default:
                 break;
+        }
+    }
+
+    private void ValidateCarFramePosition(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        bool zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
+        ParameterDictionary["var_Durchladung"].AutoUpdateParameterValue(zugangA && zugangC || zugangB && zugangD ? "True" : "False");
+
+        var fangrahmenTyp = ParameterDictionary["var_Bausatz"].Value;
+        bool centralLift = false;
+        if (!string.IsNullOrWhiteSpace(fangrahmenTyp))
+        {
+            var carFrameType = _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
+                                                                    .FirstOrDefault(x => x.Name == fangrahmenTyp);
+            if (carFrameType is not null)
+            {
+                centralLift = carFrameType.CarFrameBaseTypeId != 1;
+            }
+        }
+
+        var availableCarFramePositions = new List<string>();
+        if (!zugangA) availableCarFramePositions.Add("A");
+        if (!zugangB) availableCarFramePositions.Add("B");
+        if (!zugangC && !centralLift) availableCarFramePositions.Add("C");
+        if (!zugangD) availableCarFramePositions.Add("D");
+
+        UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
+
+        var carFramePosition = ParameterDictionary["var_Bausatzlage"].Value;
+        if (!string.IsNullOrWhiteSpace(carFramePosition))
+        {
+            switch (carFramePosition)
+            {
+                case "A":
+                    ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("False");
+                    break;
+                case "B":
+                    ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("True");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("False");
+                    break;
+                case "C":
+                    ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("True");
+                    break;
+                case "D":
+                    ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("True");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("False");
+                    break;
+                default:
+                    ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("False");
+                    break;
+            }
         }
     }
 }

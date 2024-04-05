@@ -10,7 +10,6 @@ public sealed partial class ParameterNumberTextBox : UserControl
         InitializeComponent();
         Loaded += OnLoadParameterNumberTextBox;
         Unloaded += OnUnLoadParameterNumberTextBox;
-
     }
 
     private void OnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
@@ -50,7 +49,8 @@ public sealed partial class ParameterNumberTextBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = 
+        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -121,7 +121,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty ReadOnlyProperty =
-        DependencyProperty.Register("ReadOnly", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
     public bool ShowDefaultHeader
     {
@@ -130,7 +130,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultHeaderProperty =
-        DependencyProperty.Register("ShowDefaultHeader", typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
 
     public string Header
     {
@@ -139,7 +139,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register("Header", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string Unit
     {
@@ -148,7 +148,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty UnitProperty =
-        DependencyProperty.Register("Unit", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Unit), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -157,7 +157,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty PlaceholderTextProperty =
-        DependencyProperty.Register("PlaceholderText", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -166,7 +166,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register("ErrorGlyph", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -175,7 +175,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register("ErrorType", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     public int BorderHeight
     {
@@ -184,7 +184,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register("BorderHeight", typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
 
     public string HighlightAction
     {
@@ -193,7 +193,7 @@ public sealed partial class ParameterNumberTextBox : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register("HighlightAction", typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {

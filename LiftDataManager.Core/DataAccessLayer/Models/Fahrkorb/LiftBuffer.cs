@@ -5,6 +5,8 @@ public class LiftBuffer : BaseEntity
     public int TypeExaminationCertificateId { get; set; }
     public TypeExaminationCertificate? TypeExaminationCertificate { get; set; }
     public required string Manufacturer { get; set; }
+    public int Diameter { get; set; }
+    public int Height { get; set; }
     public int MinLoad063 { get; set; }
     public int MaxLoad063 { get; set; }
     public int MinLoad100 { get; set; }

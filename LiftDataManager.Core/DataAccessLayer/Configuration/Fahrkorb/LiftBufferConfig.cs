@@ -14,6 +14,8 @@ public class LiftBufferConfig : BaseModelBuilder<LiftBuffer>
                .HasMaxLength(25)
                .IsRequired();
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.Property(x => x.Diameter);
+        builder.Property(x => x.Height);
         builder.Property(x => x.MinLoad063);
         builder.Property(x => x.MaxLoad063);
         builder.Property(x => x.MinLoad100);

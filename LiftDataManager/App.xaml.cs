@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Compact;
-using System;
 using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Windows.Storage;

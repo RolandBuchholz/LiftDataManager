@@ -28,7 +28,7 @@ public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavig
 
     private void SetDriveTyp()
     {
-        IsRopedrive = string.IsNullOrWhiteSpace(ParameterDictionary!["var_Getriebe"].Value) || ParameterDictionary!["var_Getriebe"].Value != "hydraulisch";
+        IsRopedrive = string.IsNullOrWhiteSpace(ParameterDictionary["var_Getriebe"].Value) || ParameterDictionary["var_Getriebe"].Value != "hydraulisch";
     }
 
     public void OnNavigatedTo(object parameter)

@@ -30,6 +30,7 @@
                     PlaceholderText="globale Suche"
                     QueryIcon="Find"
                     Text="{x:Bind ViewModel.GlobalSearchInput, Mode=TwoWay}"
+                    ToolTipService.ToolTip="globale Suche"
                     Visibility="{x:Bind ViewModel.ShowGlobalSearch, Mode=OneWay}">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="QuerySubmitted">
@@ -46,7 +47,7 @@
                         Margin="0,0,4,0"
                         Click="ThemeButton_Click"
                         Style="{ThemeResource SubtleButtonStyle}"
-                        ToolTipService.ToolTip="Temporär Theme umschalten">
+                        ToolTipService.ToolTip="temporärer Themewechsel">
                         <FontIcon FontSize="16" Glyph="&#xE793;" />
                     </Button>
                     <Button
@@ -75,7 +76,7 @@
             IsSettingsVisible="True"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
             <NavigationView.Resources>
-                <Thickness x:Key="NavigationViewHeaderMargin">24,0,0,-6</Thickness>
+                <Thickness x:Key="NavigationViewHeaderMargin">24,6,0,-6</Thickness>
             </NavigationView.Resources>
             <NavigationView.MenuItems>
                 <NavigationViewItem

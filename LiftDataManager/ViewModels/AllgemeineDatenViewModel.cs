@@ -8,9 +8,9 @@ namespace LiftDataManager.ViewModels;
 
 public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public Dictionary<int, string> LiftPlanners { get; set; } = new();
-    public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = new();
-    public ObservableCollection<Country>? Countrys { get; set; } = new();
+    public Dictionary<int, string> LiftPlanners { get; set; } = [];
+    public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = [];
+    public ObservableCollection<Country>? Countrys { get; set; } = [];
     private readonly ILogger<AllgemeineDatenViewModel> _logger;
     private readonly ParameterContext _parametercontext;
     private ParameterContext? _editableparametercontext;
@@ -217,8 +217,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
 
         var liftPlannerDatabase = dbcontext.Set<LiftPlanner>().Include(i => i.ZipCode)
-                                                                      .ThenInclude(t => t.Country)
-                                                                      .FirstOrDefault(x => x.Id == liftPlanner.Key);
+                                                              .ThenInclude(t => t.Country)
+                                                              .FirstOrDefault(x => x.Id == liftPlanner.Key);
         ParameterDictionary!["var_AnPersonZ4"].Value = SelectedLiftPlanner;
         ParameterDictionary!["var_FP_Adresse"].Value = $"{liftPlannerDatabase?.ZipCode.Country.ShortMark} - {liftPlannerDatabase?.ZipCode.ZipCodeNumber} {liftPlannerDatabase?.ZipCode.Name} {liftPlannerDatabase?.Street} {liftPlannerDatabase?.StreetNumber}";
         ParameterDictionary!["var_AnPersonPhone"].Value = liftPlannerDatabase?.PhoneNumber;

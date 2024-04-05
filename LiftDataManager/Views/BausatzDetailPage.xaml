@@ -7,8 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI"
-    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -39,6 +37,10 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Expander
@@ -62,6 +64,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
+                                    <!--  Carframe  -->
                                     <Grid
                                         Grid.Row="0"
                                         Grid.Column="0"
@@ -72,18 +75,26 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock
-                                            Grid.Row="0"
                                             Grid.Column="0"
                                             VerticalAlignment="Center"
                                             FontSize="24"
                                             FontWeight="Bold"
                                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                             Text="{x:Bind ViewModel.CarFrameTyp}" />
-                                        <Border
+                                        <TextBlock
                                             Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="{x:Bind ViewModel.CarFrameDescription}" />
+                                        <Border
+                                            Grid.Column="2"
                                             Height="34"
                                             Margin="10,0,10,0"
                                             VerticalAlignment="Bottom"
@@ -106,7 +117,7 @@
                                             </Border.Background>
                                         </Border>
                                         <FontIcon
-                                            Grid.Column="2"
+                                            Grid.Column="3"
                                             Margin="5"
                                             VerticalAlignment="Bottom"
                                             Foreground="Orange"
@@ -126,8 +137,7 @@
                                             </ToolTipService.ToolTip>
                                         </FontIcon>
                                         <TextBlock
-                                            Grid.Row="0"
-                                            Grid.Column="3"
+                                            Grid.Column="4"
                                             Margin="10,0,0,0"
                                             VerticalAlignment="Center"
                                             Foreground="GreenYellow"
@@ -140,6 +150,7 @@
                                             <Run FontSize="14" Text=" Bausatz wurde noch nicht im Car Frame Programm angelegt!" />
                                         </TextBlock>
                                     </Grid>
+                                    <!--  Carframe basedata  -->
                                     <Grid
                                         Grid.Row="1"
                                         Margin="0,0,0,5"
@@ -148,42 +159,128 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <TextBlock
                                             Grid.Row="0"
-                                            Grid.RowSpan="2"
+                                            Grid.RowSpan="3"
                                             Grid.Column="0"
                                             Margin="10,0,0,0"
                                             VerticalAlignment="Center"
                                             FontSize="16"
                                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                             Text="Grunddaten" />
-                                        <SpeziControls:ParameterNumberTextBox
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True"
-                                            Unit="mm" />
-                                        <SpeziControls:ParameterNumberTextBox
-                                            Grid.Row="0"
-                                            Grid.Column="2"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass_GGW'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True"
-                                            Unit="mm" />
-                                        <SpeziControls:ParameterNumberTextBox
-                                            Grid.Row="0"
-                                            Grid.Column="3"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass_GGW'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True"
-                                            Unit="mm" />
-
+                                        <Grid Grid.Row="0" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="1"
+                                                Header="{x:Bind ViewModel.CWTDGBName, Mode=OneWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stichmass_GGW'], Mode=TwoWay}"
+                                                ShowDefaultHeader="False"
+                                                Unit="mm" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="2"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassD'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                ToolTipService.Placement="Bottom"
+                                                Unit="mm">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Abstand Schachtwand - Fahrkorbstichmaß" />
+                                                        <TextBlock
+                                                            FontSize="12"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Rucksackbausatz" />
+                                                        <TextBlock FontSize="12" Text="Schachtwand Bausatz bis STM-Fahrkorb" />
+                                                        <Image Margin="5" Source="/Images/CarFrameDetails/Cantilever_MassD.png" />
+                                                        <TextBlock
+                                                            FontSize="12"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Zentralrahmen" />
+                                                        <TextBlock FontSize="12" Text="Schachtvorderwand(A) bis STM-Fahrkorb" />
+                                                        <Image Margin="5" Source="/Images/CarFrameDetails/CentralLift_MassD.png" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:ParameterNumberTextBox>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="3"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassF'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm"
+                                                Visibility="{x:Bind ViewModel.IsCantilever, Mode=OneWay}" />
+                                            <SpeziControls:ParameterCheckBox
+                                                Grid.Column="4"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelbildlich'], Mode=TwoWay}"
+                                                ShowDefaultCheckBoxContent="True" />
+                                        </Grid>
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatzlage'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <SpeziControls:ParameterCheckBox
+                                                Grid.Column="1"
+                                                IsEnabled="False"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RahmenPosL'], Mode=TwoWay}"
+                                                ShowDefaultCheckBoxContent="True" />
+                                            <SpeziControls:ParameterCheckBox
+                                                Grid.Column="2"
+                                                IsEnabled="False"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RahmenPosR'], Mode=TwoWay}"
+                                                ShowDefaultCheckBoxContent="True" />
+                                            <SpeziControls:ParameterCheckBox
+                                                Grid.Column="3"
+                                                IsEnabled="False"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RahmenPosH'], Mode=TwoWay}"
+                                                ShowDefaultCheckBoxContent="True" />
+                                            <SpeziControls:ParameterCheckBox
+                                                Grid.Column="5"
+                                                IsEnabled="False"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Durchladung'], Mode=TwoWay}"
+                                                ShowDefaultCheckBoxContent="True" />
+                                        </Grid>
+                                        <Grid Grid.Row="2" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                IsEnabled="False"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Ersatzmassnahmen'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="1"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                        </Grid>
                                     </Grid>
+                                    <!--  Carframe buffer  -->
                                     <Grid
                                         Grid.Row="2"
                                         Margin="0,0,0,5"
@@ -192,7 +289,136 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
-                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="0"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Fahrkorbpuffer"
+                                            TextWrapping="WrapWholeWords" />
+                                        <Grid Grid.Row="0" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="Stk." />
+                                            <SpeziControls:ParameterTextBox
+                                                Grid.Column="1"
+                                                Margin="-10,0,0,0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
+                                                ReadOnly="True"
+                                                ShowDefaultHeader="True"
+                                                ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                            <TextBox
+                                                Grid.Column="2"
+                                                Margin="5,0,5,0"
+                                                Header="Pufferdaten Fahrkorb"
+                                                IsReadOnly="True"
+                                                Text="" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="3"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Text="Stützenlänge:" />
+                                                        <TextBlock Text="Unterkante Puffer bis Grundelement" />
+                                                        <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:ParameterNumberTextBox>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <TextBox
+                                                Grid.Column="1"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment X"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <TextBox
+                                                Grid.Column="3"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment Y"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <SpeziControls:DataComboBox
+                                                Grid.Column="5"
+                                                Margin="5,0,5,0"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Eulersche Knickfall"
+                                                ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCarFrame}"
+                                                Style="{StaticResource ParameterDataComboBox}" />
+                                            <TextBox
+                                                Grid.Column="6"
+                                                Margin="5,0,5,0"
+                                                Header="Knicklänge"
+                                                IsReadOnly="True"
+                                                Text="888"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="7"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Text="mm" />
+                                        </Grid>
+                                    </Grid>
+                                    <!--  Counterweight buffer  -->
+                                    <Grid
+                                        Grid.Row="3"
+                                        Margin="0,0,0,5"
+                                        Padding="5"
+                                        Style="{ThemeResource GridCardPanel}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -207,37 +433,376 @@
                                             VerticalAlignment="Center"
                                             FontSize="16"
                                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                            Text="Fahrkorbpuffer" />
-                                        <SpeziControls:ParameterNumberTextBox
+                                            Text="Gegengewichts- puffer"
+                                            TextWrapping="WrapWholeWords" />
+                                        <Grid Grid.Row="0" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_GGW'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="Stk." />
+                                            <SpeziControls:ParameterTextBox
+                                                Grid.Column="1"
+                                                Margin="-10,0,0,0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'], Mode=TwoWay}"
+                                                ReadOnly="True"
+                                                ShowDefaultHeader="True"
+                                                ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                            <TextBox
+                                                Grid.Column="2"
+                                                Margin="5,0,5,0"
+                                                Header="Pufferdaten Fahrkorb"
+                                                IsReadOnly="True"
+                                                Text="" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="3"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_GGW'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Text="Stützenlänge:" />
+                                                        <TextBlock Text="Unterkante Puffer bis Grundelement" />
+                                                        <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:ParameterNumberTextBox>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <TextBox
+                                                Grid.Column="1"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment X"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <TextBox
+                                                Grid.Column="3"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment Y"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <SpeziControls:DataComboBox
+                                                Grid.Column="5"
+                                                Margin="5,0,5,0"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Eulersche Knickfall"
+                                                ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCounterWeight}"
+                                                Style="{StaticResource ParameterDataComboBox}" />
+                                            <TextBox
+                                                Grid.Column="6"
+                                                Margin="5,0,5,0"
+                                                Header="Knicklänge"
+                                                IsReadOnly="True"
+                                                Text="888"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="7"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Text="mm" />
+                                        </Grid>
+                                    </Grid>
+                                    <!--  SafetyRoom Headroom buffer  -->
+                                    <Grid
+                                        Grid.Row="4"
+                                        Margin="0,0,0,5"
+                                        Padding="5"
+                                        Style="{ThemeResource GridCardPanel}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock
                                             Grid.Row="0"
-                                            Grid.Column="1"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True"
-                                            Unit="Stk." />
-                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.RowSpan="2"
+                                            Grid.Column="0"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Puffer Ersatzmaßnahmen Schachtkopf"
+                                            TextWrapping="WrapWholeWords" />
+                                        <Grid Grid.Row="0" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="Stk." />
+                                            <SpeziControls:ParameterTextBox
+                                                Grid.Column="1"
+                                                Margin="-10,0,0,0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SK'], Mode=TwoWay}"
+                                                ReadOnly="True"
+                                                ShowDefaultHeader="True"
+                                                ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                            <TextBox
+                                                Grid.Column="2"
+                                                Margin="5,0,5,0"
+                                                Header="Pufferdaten Fahrkorb"
+                                                IsReadOnly="True"
+                                                Text="" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="3"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Text="Stützenlänge:" />
+                                                        <TextBlock Text="Unterkante Puffer bis Grundelement" />
+                                                        <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:ParameterNumberTextBox>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SK'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <TextBox
+                                                Grid.Column="1"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment X"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <TextBox
+                                                Grid.Column="3"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment Y"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <SpeziControls:DataComboBox
+                                                Grid.Column="5"
+                                                Margin="5,0,5,0"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Eulersche Knickfall"
+                                                ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomHead}"
+                                                Style="{StaticResource ParameterDataComboBox}" />
+                                            <TextBox
+                                                Grid.Column="6"
+                                                Margin="5,0,5,0"
+                                                Header="Knicklänge"
+                                                IsReadOnly="True"
+                                                Text="888"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="7"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Text="mm" />
+                                        </Grid>
+                                    </Grid>
+                                    <!--  SafetyRoom Pit buffer  -->
+                                    <Grid
+                                        Grid.Row="5"
+                                        Margin="0,0,0,5"
+                                        Padding="5"
+                                        Style="{ThemeResource GridCardPanel}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock
                                             Grid.Row="0"
-                                            Grid.Column="2"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True"
-                                            Unit="mm" />
-                                        <SpeziControls:ParameterComboBox
-                                            Grid.Row="0"
-                                            Grid.Column="3"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
-                                            ShowDefaultHeader="True" />
-                                        <SpeziControls:ParameterTextBox
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
-                                            ReadOnly="True"
-                                            ShowDefaultHeader="True" />
-                                        <TextBox
-                                            Grid.Row="1"
-                                            Grid.Column="2"
-                                            Grid.ColumnSpan="2"
-                                            Header="Pufferdaten Fahrkorb"
-                                            IsReadOnly="True"
-                                            Text="" />
+                                            Grid.RowSpan="2"
+                                            Grid.Column="0"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Puffer Ersatzmaßnahmen Schachtgrube"
+                                            TextWrapping="WrapWholeWords" />
+                                        <Grid Grid.Row="0" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SG'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="Stk." />
+                                            <SpeziControls:ParameterTextBox
+                                                Grid.Column="1"
+                                                Margin="-10,0,0,0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SG'], Mode=TwoWay}"
+                                                ReadOnly="True"
+                                                ShowDefaultHeader="True"
+                                                ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                            <TextBox
+                                                Grid.Column="2"
+                                                Margin="5,0,5,0"
+                                                Header="Pufferdaten Fahrkorb"
+                                                IsReadOnly="True"
+                                                Text="" />
+                                            <SpeziControls:ParameterNumberTextBox
+                                                Grid.Column="3"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SG'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True"
+                                                Unit="mm">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Text="Stützenlänge:" />
+                                                        <TextBlock Text="Unterkante Puffer bis Grundelement" />
+                                                        <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:ParameterNumberTextBox>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
+                                            </Grid.ColumnDefinitions>
+                                            <SpeziControls:ParameterComboBox
+                                                Grid.Column="0"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SG'], Mode=TwoWay}"
+                                                ShowDefaultHeader="True" />
+                                            <TextBox
+                                                Grid.Column="1"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment X"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <TextBox
+                                                Grid.Column="3"
+                                                Margin="5,0,5,0"
+                                                Header="Flächenträgheitsmoment Y"
+                                                IsReadOnly="True"
+                                                Text="0815"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom">
+                                                <Run>mm</Run>
+                                                <Run Typography.Variants="Superscript">4</Run>
+                                            </TextBlock>
+                                            <SpeziControls:DataComboBox
+                                                Grid.Column="5"
+                                                Margin="5,0,5,0"
+                                                HorizontalAlignment="Stretch"
+                                                Header="Eulersche Knickfall"
+                                                ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomPit}"
+                                                Style="{StaticResource ParameterDataComboBox}" />
+                                            <TextBox
+                                                Grid.Column="6"
+                                                Margin="5,0,5,0"
+                                                Header="Knicklänge"
+                                                IsReadOnly="True"
+                                                Text="888"
+                                                TextAlignment="Right" />
+                                            <TextBlock
+                                                Grid.Column="7"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Bottom"
+                                                Text="mm" />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </PivotItem>
@@ -297,311 +862,4 @@
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
-
-
-
-
-    <!--<Grid x:Name="ContentArea">
-        <ScrollViewer>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    FontSize="36"
-                    Text="Pufferberechnungstest" />
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <wuc:Divider
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="5"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Top"
-                        Content="Fahrkorb"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStrokeThickness="2" />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="Stk." />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="mm" />
-                    <SpeziControls:ParameterComboBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True" />
-                    <SpeziControls:ParameterTextBox
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
-                        ReadOnly="True"
-                        ShowDefaultHeader="True" />
-                    <TextBox
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        Header="Pufferdaten Fahrkorb"
-                        IsReadOnly="True"
-                        Text="" />
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <wuc:Divider
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="5"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Top"
-                        Content="Gegengewicht"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStrokeThickness="2" />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_GGW'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="Stk." />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_GGW'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="mm" />
-                    <SpeziControls:ParameterComboBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_GGW'], Mode=TwoWay}"
-                        ShowDefaultHeader="True" />
-                    <SpeziControls:ParameterTextBox
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'], Mode=TwoWay}"
-                        ReadOnly="True"
-                        ShowDefaultHeader="True" />
-                    <TextBox
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        Header="Pufferdaten Gegengewicht"
-                        IsReadOnly="True"
-                        Text="" />
-                </Grid>
-                <Grid Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <wuc:Divider
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="5"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Top"
-                        Content="Ersatzmaßnamen Fahrkorb"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStrokeThickness="2" />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SG'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="Stk." />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SG'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="mm" />
-                    <SpeziControls:ParameterComboBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SG'], Mode=TwoWay}"
-                        ShowDefaultHeader="True" />
-                    <SpeziControls:ParameterTextBox
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SG'], Mode=TwoWay}"
-                        ReadOnly="True"
-                        ShowDefaultHeader="True" />
-                    <TextBox
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        Header="Pufferdaten Eratzmaßnahmen Schachtgrube"
-                        IsReadOnly="True"
-                        Text="" />
-                </Grid>
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <wuc:Divider
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="6"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Top"
-                        Content="Ersatzmaßnamen Gegengewicht"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStrokeThickness="2" />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="Stk." />
-                    <SpeziControls:ParameterNumberTextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True"
-                        Unit="mm" />
-                    <SpeziControls:ParameterComboBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_EM_SK'], Mode=TwoWay}"
-                        ShowDefaultHeader="True" />
-                    <SpeziControls:ParameterTextBox
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SK'], Mode=TwoWay}"
-                        ReadOnly="True"
-                        ShowDefaultHeader="True" />
-                    <SpeziControls:ParameterCheckBox
-                        Grid.Row="1"
-                        Grid.Column="4"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_unter_GGW'], Mode=TwoWay}"
-                        ShowDefaultCheckBoxContent="True" />
-                    <TextBox
-                        Grid.Row="1"
-                        Grid.Column="5"
-                        Header="Pufferdaten Eratzmaßnahmen Schachtkopf"
-                        IsReadOnly="True"
-                        Text="" />
-                </Grid>
-                <Grid Grid.Row="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <wuc:Divider
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="0,0,5,0"
-                        VerticalAlignment="Top"
-                        Content="Material"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStroke="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        LineStrokeThickness="2" />
-                    <SpeziControls:ParameterComboBox
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}"
-                        ShowDefaultHeader="True" />
-                </Grid>
-                <Grid
-                    Grid.Row="6"
-                    ColumnSpacing="10"
-                    RowSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBox
-                        Grid.Column="0"
-                        AcceptsReturn="True"
-                        Header="Pufferdaten Fahrkorb"
-                        IsReadOnly="True"
-                        Text="" />
-                    <TextBox
-                        Grid.Column="1"
-                        AcceptsReturn="True"
-                        Header="Pufferdaten Gegengewicht"
-                        IsReadOnly="True"
-                        Text="" />
-                    <TextBox
-                        Grid.Column="2"
-                        AcceptsReturn="True"
-                        Header="Pufferdaten Ersatzmaßnahmen Schachtgrube"
-                        IsReadOnly="True"
-                        Text="" />
-                    <TextBox
-                        Grid.Column="3"
-                        AcceptsReturn="True"
-                        Header="Pufferdaten Ersatzmaßnahmen Schachtkopf"
-                        IsReadOnly="True"
-                        Text="" />
-                </Grid>
-            </Grid>
-        </ScrollViewer>
-    </Grid>-->
 </Page>
