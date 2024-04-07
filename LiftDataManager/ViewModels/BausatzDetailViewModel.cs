@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
 
@@ -7,15 +8,18 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
+    private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3,4];
+    public BufferCalculationData? BufferCalculationDataCarFrame { get; set; }
+    public BufferCalculationData? BufferCalculationDataCounterWeight { get; set; }
+    public BufferCalculationData? BufferCalculationDataReducedSafetyRoomHead { get; set; }
+    public BufferCalculationData? BufferCalculationDataReducedSafetyRoomPit { get; set; }
 
     public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
          base(parameterDataService, dialogService, navigationService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
-        
-
     }
 
     public string CarFrameTyp => string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value) ? "Kein Bausatz gewählt" : ParameterDictionary["var_Bausatz"].Value!;
@@ -52,6 +56,21 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     private int selectedEulerCaseReducedSafetyRoomPit = 1;
+
+    [ObservableProperty]
+    private bool bufferUnderCounterweight;
+
+    [ObservableProperty]
+    private string bufferDataCarFrame = "Keine Pufferdaten vorhanden";
+
+    [ObservableProperty]
+    private string bufferDataCounterWeight = "Keine Pufferdaten vorhanden";
+
+    [ObservableProperty]
+    private string bufferDataReducedSafetyRoomHead = "Keine Pufferdaten vorhanden";
+
+    [ObservableProperty]
+    private string bufferDataReducedSafetyRoomPit = "Keine Pufferdaten vorhanden";
 
     [RelayCommand]
     private void GoToBausatzViewModel() => _navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzViewModel");
@@ -91,10 +110,34 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private BufferCalculationData GetBufferCalculationData(string parameterName, bool bufferUnderCounterweight)
+    {
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[parameterName].Value))
+        {
+            var bufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[parameterName].Value!);
+            if (bufferCalculation is not null)
+            {
+                return bufferCalculation;
+            }
+        }
+        var newBufferCalculation = _calculationsModuleService.GetBufferCalculationData(ParameterDictionary, parameterName, selectedEulerCaseCarFrame, bufferUnderCounterweight);
+        SetBufferCalculationData(parameterName, newBufferCalculation);
+        return newBufferCalculation;
+    }
+
+    private void SetBufferCalculationData(string prameterName, BufferCalculationData bufferCalculation)
+    {
+        ParameterDictionary[prameterName].AutoUpdateParameterValue(JsonSerializer.Serialize(bufferCalculation, _options).Replace("\r\n", "\n"));
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         CheckCFPState();
+        BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", false);
+        BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", false);
+        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", bufferUnderCounterweight);
+        BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG",false);
     }
 
     public void OnNavigatedFrom()

@@ -44,5 +44,7 @@ public interface ICalculationsModule
 
     List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter>? parameterDictionary);
 
+    BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight);
+
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }

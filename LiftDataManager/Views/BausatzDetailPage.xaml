@@ -328,7 +328,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
                                                 IsReadOnly="True"
-                                                Text="" />
+                                                Text="{x:Bind ViewModel.BufferDataCarFrame, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
                                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_FK'], Mode=TwoWay}"
@@ -339,6 +339,7 @@
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                                             Text="Stützenlänge:" />
                                                         <TextBlock Text="Unterkante Puffer bis Grundelement" />
                                                         <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
@@ -366,7 +367,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.MomentOfInertiaX, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="2"
@@ -380,7 +381,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.MomentOfInertiaY, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="4"
@@ -396,13 +397,56 @@
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
                                                 SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCarFrame}"
-                                                Style="{StaticResource ParameterDataComboBox}" />
+                                                Style="{StaticResource ParameterDataComboBox}">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Eulersche Knickfälle" />
+                                                        <Image Margin="0,5,0,5" Source="/Images/CarFrameDetails/BucklingCases.png" />
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 1: " />
+                                                            <Run Text="eingespannt/frei (2x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 2: " />
+                                                            <Run Text="gelenkig/gelenkig (1x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 3: " />
+                                                            <Run Text="eingespannt/gelenkig (0.7x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 4: " />
+                                                            <Run Text="eingespannt/eingespannt  (0,5x L)" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:DataComboBox>
                                             <TextBox
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
                                                 IsReadOnly="True"
-                                                Text="888"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="7"
@@ -459,7 +503,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
                                                 IsReadOnly="True"
-                                                Text="" />
+                                                Text="{x:Bind ViewModel.BufferDataCounterWeight, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
                                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UK_Puffer_GGW'], Mode=TwoWay}"
@@ -470,6 +514,7 @@
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                                             Text="Stützenlänge:" />
                                                         <TextBlock Text="Unterkante Puffer bis Grundelement" />
                                                         <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
@@ -497,7 +542,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.MomentOfInertiaX, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="2"
@@ -511,7 +556,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.MomentOfInertiaY, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="4"
@@ -527,13 +572,56 @@
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
                                                 SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCounterWeight}"
-                                                Style="{StaticResource ParameterDataComboBox}" />
+                                                Style="{StaticResource ParameterDataComboBox}">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Eulersche Knickfälle" />
+                                                        <Image Margin="0,5,0,5" Source="/Images/CarFrameDetails/BucklingCases.png" />
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 1: " />
+                                                            <Run Text="eingespannt/frei (2x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 2: " />
+                                                            <Run Text="gelenkig/gelenkig (1x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 3: " />
+                                                            <Run Text="eingespannt/gelenkig (0.7x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 4: " />
+                                                            <Run Text="eingespannt/eingespannt  (0,5x L)" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:DataComboBox>
                                             <TextBox
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
                                                 IsReadOnly="True"
-                                                Text="888"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="7"
@@ -542,7 +630,7 @@
                                                 Text="mm" />
                                         </Grid>
                                     </Grid>
-                                    <!--  SafetyRoom Headroom buffer  -->
+                                    <!--  SafetyRoom headroom buffer  -->
                                     <Grid
                                         Grid.Row="4"
                                         Margin="0,0,0,5"
@@ -590,7 +678,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
                                                 IsReadOnly="True"
-                                                Text="" />
+                                                Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomHead, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
                                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SK'], Mode=TwoWay}"
@@ -601,6 +689,7 @@
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                                             Text="Stützenlänge:" />
                                                         <TextBlock Text="Unterkante Puffer bis Grundelement" />
                                                         <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
@@ -617,6 +706,7 @@
                                                 <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition />
                                                 <ColumnDefinition Width="40" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterComboBox
@@ -628,7 +718,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.MomentOfInertiaX, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="2"
@@ -642,7 +732,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.MomentOfInertiaY, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="4"
@@ -658,16 +748,65 @@
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
                                                 SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomHead}"
-                                                Style="{StaticResource ParameterDataComboBox}" />
-                                            <TextBox
+                                                Style="{StaticResource ParameterDataComboBox}">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Eulersche Knickfälle" />
+                                                        <Image Margin="0,5,0,5" Source="/Images/CarFrameDetails/BucklingCases.png" />
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 1: " />
+                                                            <Run Text="eingespannt/frei (2x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 2: " />
+                                                            <Run Text="gelenkig/gelenkig (1x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 3: " />
+                                                            <Run Text="eingespannt/gelenkig (0.7x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 4: " />
+                                                            <Run Text="eingespannt/eingespannt  (0,5x L)" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:DataComboBox>
+                                            <CheckBox
                                                 Grid.Column="6"
+                                                Margin="5,0,5,0"
+                                                VerticalAlignment="Bottom"
+                                                Content="Puffer unter GGW"
+                                                IsChecked="{x:Bind ViewModel.BufferUnderCounterweight, Mode=TwoWay}" />
+                                            <TextBox
+                                                Grid.Column="7"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
                                                 IsReadOnly="True"
-                                                Text="888"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
-                                                Grid.Column="7"
+                                                Grid.Column="8"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Bottom"
                                                 Text="mm" />
@@ -721,7 +860,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
                                                 IsReadOnly="True"
-                                                Text="" />
+                                                Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomPit, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
                                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SG'], Mode=TwoWay}"
@@ -732,6 +871,7 @@
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                                             Text="Stützenlänge:" />
                                                         <TextBlock Text="Unterkante Puffer bis Grundelement" />
                                                         <TextBlock Text="Bei einer Pufferstützenverbindung größter Abstand" />
@@ -759,7 +899,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.MomentOfInertiaX, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="2"
@@ -773,7 +913,7 @@
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
                                                 IsReadOnly="True"
-                                                Text="0815"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.MomentOfInertiaY, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="4"
@@ -789,13 +929,56 @@
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
                                                 SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomPit}"
-                                                Style="{StaticResource ParameterDataComboBox}" />
+                                                Style="{StaticResource ParameterDataComboBox}">
+                                                <ToolTipService.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            FontSize="16"
+                                                            FontWeight="SemiBold"
+                                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                            Text="Eulersche Knickfälle" />
+                                                        <Image Margin="0,5,0,5" Source="/Images/CarFrameDetails/BucklingCases.png" />
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 1: " />
+                                                            <Run Text="eingespannt/frei (2x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 2: " />
+                                                            <Run Text="gelenkig/gelenkig (1x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 3: " />
+                                                            <Run Text="eingespannt/gelenkig (0.7x L)" />
+                                                        </TextBlock>
+                                                        <TextBlock>
+                                                            <Run
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                                Text="Fall 4: " />
+                                                            <Run Text="eingespannt/eingespannt  (0,5x L)" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </ToolTipService.ToolTip>
+                                            </SpeziControls:DataComboBox>
                                             <TextBox
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
                                                 IsReadOnly="True"
-                                                Text="888"
+                                                Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
                                                 Grid.Column="7"

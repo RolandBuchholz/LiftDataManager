@@ -18,7 +18,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;
         LiftDocumentation ??= new();
-        LiftSafetyComponents ??= new();
+        LiftSafetyComponents ??= [];
     }
 
     [RelayCommand]

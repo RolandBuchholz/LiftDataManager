@@ -81,6 +81,7 @@
     <None Remove="Images\CarDetails\MirrorRail.png" />
     <None Remove="Images\CarDetails\SillGravidaBasic.png" />
     <None Remove="Images\carDimensions.png" />
+    <None Remove="Images\CarFrameDetails\BucklingCases.png" />
     <None Remove="Images\CarFrameDetails\Cantilever_MassD.png" />
     <None Remove="Images\CarFrameDetails\CentralLift_MassD.png" />
     <None Remove="Images\CFPTransparent.png" />
@@ -130,6 +131,7 @@
     <Content Include="Images\CarDetails\MirrorRail.png" />
     <Content Include="Images\CarDetails\SillGravidaBasic.png" />
     <Content Include="Images\carDimensions.png" />
+    <Content Include="Images\CarFrameDetails\BucklingCases.png" />
     <Content Include="Images\CarFrameDetails\Cantilever_MassD.png" />
     <Content Include="Images\CarFrameDetails\CentralLift_MassD.png" />
     <Content Include="Images\CFPTransparent.png" />

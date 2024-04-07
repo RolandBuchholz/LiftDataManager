@@ -1083,6 +1083,70 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
+    {
+        int numberOfBuffer = 0;
+        int bufferPillarLength = 0;
+        switch (parameterName)
+        {
+            case "var_PufferCalculationData_FK":
+                numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_FK");
+                bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_UK_Puffer_FK");
+                break;
+            case "var_PufferCalculationData_GGW":
+                numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_GGW");
+                bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_UK_Puffer_GGW");
+                break;
+            case "var_PufferCalculationData_EM_SK":
+                numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SK");
+                bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Pufferstuezenlaenge_EM_SK");
+                break;
+            case "var_PufferCalculationData_EM_SG":
+                numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SG");
+                bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Pufferstuezenlaenge_EM_SG");
+                break;
+            default:
+                break;
+        }
+
+        return new BufferCalculationData() 
+        {
+            NumberOfBuffer = numberOfBuffer,
+            BufferPillarLength = bufferPillarLength,
+            BucklingLength = GetBucklingLength(bufferPillarLength, eulerCase), 
+            MomentOfInertiaX = 0,
+            MomentOfInertiaY = 0,
+            ProfilMaterial = "",
+            ProfilDescription = "",
+            ReducedSafetyRoomBufferUnderCounterweight = bufferUnderCounterweight,
+        };
+    }
+
+    private static int GetBucklingLength(int length, int eulerCase )
+    {
+        int bucklingLength = 0;
+
+        switch (eulerCase)
+            {
+            case 1:
+                bucklingLength = length * 2;
+                break;
+            case 2:
+                bucklingLength = length;
+                break;
+            case 3:
+                bucklingLength = Convert.ToInt16(Math.Floor(length * 0.7));
+                break;
+            case 4:
+                bucklingLength = Convert.ToInt16(Math.Floor(length * 0.5));
+                break;
+            default:
+                break;
+        }
+
+        return bucklingLength;
+    }
+
     //Database
 
     private double? GetGewichtSonderblech(string bodenblech)
