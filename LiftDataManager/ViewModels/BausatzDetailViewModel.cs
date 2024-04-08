@@ -9,11 +9,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
-    public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3,4];
-    public BufferCalculationData? BufferCalculationDataCarFrame { get; set; }
-    public BufferCalculationData? BufferCalculationDataCounterWeight { get; set; }
-    public BufferCalculationData? BufferCalculationDataReducedSafetyRoomHead { get; set; }
-    public BufferCalculationData? BufferCalculationDataReducedSafetyRoomPit { get; set; }
+    public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
     public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
          base(parameterDataService, dialogService, navigationService, infoCenterService)
@@ -22,7 +18,67 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         _calculationsModuleService = calculationsModuleService;
     }
 
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+
+        if (message.PropertyName == "var_Anzahl_Puffer_FK" ||
+            message.PropertyName == "var_Puffer_Profil_FK" ||
+            message.PropertyName == "var_UK_Puffer_FK")
+        {
+            BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
+        };
+
+        if (message.PropertyName == "var_Anzahl_Puffer_GGW" ||
+            message.PropertyName == "var_Puffer_Profil_GGW" ||
+            message.PropertyName == "var_UK_Puffer_GGW")
+        {
+            BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", SelectedEulerCaseCounterWeight, false);
+        };
+
+        if (message.PropertyName == "var_Anzahl_Puffer_EM_SK" ||
+            message.PropertyName == "var_Puffer_Profil_EM_SK" ||
+            message.PropertyName == "var_Pufferstuezenlaenge_EM_SK")
+        {
+            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
+        };
+
+        if (message.PropertyName == "var_Anzahl_Puffer_EM_SG" ||
+            message.PropertyName == "var_Puffer_Profil_EM_SG" ||
+            message.PropertyName == "var_Pufferstuezenlaenge_EM_SG")
+        {
+            BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", SelectedEulerCaseReducedSafetyRoomPit, false);
+        };
+
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
+    }
+
     public string CarFrameTyp => string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value) ? "Kein Bausatz gewählt" : ParameterDictionary["var_Bausatz"].Value!;
+
+    [ObservableProperty]
+    private bool showCounterWeightBuffer;
+
+    [ObservableProperty]
+    private bool showReducedSafetyRoomHeadBuffer;
+
+    [ObservableProperty]
+    private bool showReducedSafetyRoomPitBuffer;
+
+    [ObservableProperty]
+    private BufferCalculationData? bufferCalculationDataCarFrame;
+
+    [ObservableProperty]
+    private BufferCalculationData? bufferCalculationDataCounterWeight;
+
+    [ObservableProperty]
+    private BufferCalculationData? bufferCalculationDataReducedSafetyRoomHead;
+
+    [ObservableProperty]
+    private BufferCalculationData? bufferCalculationDataReducedSafetyRoomPit;
 
     [ObservableProperty]
     private string carFrameDescription = "Keine Bausatzinformationen";
@@ -47,18 +103,38 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     private int selectedEulerCaseCarFrame = 1;
+    partial void OnSelectedEulerCaseCarFrameChanged(int value)
+    {
+        BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", value, false);
+    }
 
     [ObservableProperty]
     private int selectedEulerCaseCounterWeight = 1;
+    partial void OnSelectedEulerCaseCounterWeightChanged(int value)
+    {
+        BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", value, false);
+    }
 
     [ObservableProperty]
     private int selectedEulerCaseReducedSafetyRoomHead = 1;
+    partial void OnSelectedEulerCaseReducedSafetyRoomHeadChanged(int value)
+    {
+        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", value, BufferUnderCounterweight);
+    }
 
     [ObservableProperty]
     private int selectedEulerCaseReducedSafetyRoomPit = 1;
+    partial void OnSelectedEulerCaseReducedSafetyRoomPitChanged(int value)
+    {
+        BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", value, false);
+    }
 
     [ObservableProperty]
     private bool bufferUnderCounterweight;
+    partial void OnBufferUnderCounterweightChanged(bool value)
+    {
+        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, value);
+    }
 
     [ObservableProperty]
     private string bufferDataCarFrame = "Keine Pufferdaten vorhanden";
@@ -110,34 +186,105 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
-    private BufferCalculationData GetBufferCalculationData(string parameterName, bool bufferUnderCounterweight)
+    private BufferCalculationData GetBufferCalculationData(string parameterName, int eulerCase, bool bufferUnderCounterweight)
     {
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[parameterName].Value))
-        {
-            var bufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[parameterName].Value!);
-            if (bufferCalculation is not null)
-            {
-                return bufferCalculation;
-            }
-        }
-        var newBufferCalculation = _calculationsModuleService.GetBufferCalculationData(ParameterDictionary, parameterName, selectedEulerCaseCarFrame, bufferUnderCounterweight);
-        SetBufferCalculationData(parameterName, newBufferCalculation);
-        return newBufferCalculation;
+        var bufferCalculation = _calculationsModuleService.GetBufferCalculationData(ParameterDictionary, parameterName, eulerCase, bufferUnderCounterweight);
+        ParameterDictionary[parameterName].AutoUpdateParameterValue(JsonSerializer.Serialize(bufferCalculation, _options).Replace("\r\n", "\n"));
+        return bufferCalculation;
     }
 
-    private void SetBufferCalculationData(string prameterName, BufferCalculationData bufferCalculation)
+    private void RestorePufferCalculationData() 
     {
-        ParameterDictionary[prameterName].AutoUpdateParameterValue(JsonSerializer.Serialize(bufferCalculation, _options).Replace("\r\n", "\n"));
+        string[] pufferCalculationDataValues = ["var_PufferCalculationData_FK", "var_PufferCalculationData_GGW", "var_PufferCalculationData_EM_SK", "var_PufferCalculationData_EM_SG"];
+        foreach (var item in pufferCalculationDataValues)
+        {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary[item].Value))
+            {
+                var restoredBufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[item].Value!);
+                if (restoredBufferCalculation is not null)
+                {
+                    switch (item)
+                    {
+                        case "var_PufferCalculationData_FK":
+                            selectedEulerCaseCarFrame = restoredBufferCalculation.EulerCase;
+                            break;
+                        case "var_PufferCalculationData_GGW":
+                            selectedEulerCaseCounterWeight = restoredBufferCalculation.EulerCase;
+                            break;
+                        case "var_PufferCalculationData_EM_SK":
+                            selectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
+                            bufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
+                            break;
+                        case "var_PufferCalculationData_EM_SG":
+                            selectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
+                            break;
+                        default:
+                            break;
+                    }
+                }     
+            }
+        }
+    }
+
+    private void GetPufferDetailData()
+    {
+        Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"), 
+                                           new("var_Puffertyp_GGW", "BufferDataCounterWeight"),
+                                           new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomHead"),
+                                           new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomPit")];
+
+        double liftSpeed = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_v");
+
+        if (liftSpeed == 0.0)
+        return;
+
+        foreach (var puffer in puffers)
+        {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary[puffer.Item1].Value))
+            {
+                var bufferProperty = GetType().GetProperty(puffer.Item2);
+                bufferProperty?.SetValue(this, _calculationsModuleService.GetBufferDetails(ParameterDictionary[puffer.Item1].Value!, liftSpeed), null);
+            }
+        }
+    }
+
+    private void SetBufferVisibility()
+    {
+        ShowCounterWeightBuffer = IsRopedrive;
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Ersatzmassnahmen"].Value))
+        {
+            switch (ParameterDictionary["var_Ersatzmassnahmen"].Value)
+            {
+                case "Schachtkopf":
+                    ShowReducedSafetyRoomHeadBuffer = true;
+                    break;
+                case "Schachtgrube":
+                    ShowReducedSafetyRoomPitBuffer = true;
+                    break;
+                case "Schachtkopf und Schachtgrube":
+                    ShowReducedSafetyRoomHeadBuffer = true;
+                    ShowReducedSafetyRoomPitBuffer = true;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         CheckCFPState();
-        BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", false);
-        BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", false);
-        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", bufferUnderCounterweight);
-        BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG",false);
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Pufferstuetzenmaterial"].Value))
+            ParameterDictionary["var_Pufferstuetzenmaterial"].AutoUpdateParameterValue("1.0038-ST37-2-S235");
+
+        SetBufferVisibility();
+        RestorePufferCalculationData();
+        GetPufferDetailData();
+        BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
+        BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", SelectedEulerCaseCounterWeight, false);
+        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
+        BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", SelectedEulerCaseReducedSafetyRoomPit, false);
     }
 
     public void OnNavigatedFrom()

@@ -1087,37 +1087,55 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
+        string profilDescription = string.Empty;
+        double momentOfInertiaX = 0;
+        double momentOfInertiaY = 0;
         switch (parameterName)
         {
             case "var_PufferCalculationData_FK":
                 numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_FK");
                 bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_UK_Puffer_FK");
+                profilDescription = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Puffer_Profil_FK");
                 break;
             case "var_PufferCalculationData_GGW":
                 numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_GGW");
                 bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_UK_Puffer_GGW");
+                profilDescription = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Puffer_Profil_GGW");
                 break;
             case "var_PufferCalculationData_EM_SK":
                 numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SK");
                 bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Pufferstuezenlaenge_EM_SK");
+                profilDescription = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Puffer_Profil_EM_SK");
                 break;
             case "var_PufferCalculationData_EM_SG":
                 numberOfBuffer = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SG");
                 bufferPillarLength = LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Pufferstuezenlaenge_EM_SG");
+                profilDescription = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Puffer_Profil_EM_SG");
                 break;
             default:
                 break;
+        }
+
+        if (!string.IsNullOrWhiteSpace(profilDescription))
+        {
+            var profilData = _parametercontext.Set<BufferPropProfile>().FirstOrDefault(x => x.Name.Contains(profilDescription));
+            if(profilData != null)
+            {
+                momentOfInertiaX = profilData.MomentOfInertiaX;
+                momentOfInertiaY = profilData.MomentOfInertiaY;
+            }
         }
 
         return new BufferCalculationData() 
         {
             NumberOfBuffer = numberOfBuffer,
             BufferPillarLength = bufferPillarLength,
-            BucklingLength = GetBucklingLength(bufferPillarLength, eulerCase), 
-            MomentOfInertiaX = 0,
-            MomentOfInertiaY = 0,
-            ProfilMaterial = "",
-            ProfilDescription = "",
+            EulerCase = eulerCase,
+            BucklingLength = GetBucklingLength(bufferPillarLength, eulerCase),
+            ProfilDescription = profilDescription,
+            MomentOfInertiaX = momentOfInertiaX,
+            MomentOfInertiaY = momentOfInertiaY,
+            ProfilMaterial = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Pufferstuetzenmaterial"),
             ReducedSafetyRoomBufferUnderCounterweight = bufferUnderCounterweight,
         };
     }
@@ -1145,6 +1163,40 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         return bucklingLength;
+    }
+
+    public string GetBufferDetails(string buffertyp, double liftSpeed)
+    {
+        string bufferDetails = "Keine Pufferdaten vorhanden";
+
+        var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
+        if (buffer is not null)
+        {
+            int minLoad = liftSpeed switch
+            {
+                <= 0.63 => buffer.MinLoad063,
+                <= 1.00 => buffer.MinLoad100,
+                <= 1.30 => buffer.MinLoad130,
+                <= 1.60 => buffer.MinLoad160,
+                <= 2.00 => buffer.MinLoad200,
+                <= 2.50 => buffer.MinLoad250,
+                _ => 0
+            };
+
+            int maxLoad = liftSpeed switch
+            {
+                <= 0.63 => buffer.MaxLoad063,
+                <= 1.00 => buffer.MaxLoad100,
+                <= 1.30 => buffer.MaxLoad130,
+                <= 1.60 => buffer.MaxLoad160,
+                <= 2.00 => buffer.MaxLoad200,
+                <= 2.50 => buffer.MaxLoad250,
+                _ => 0
+            };
+
+            bufferDetails = $"{buffer.Manufacturer} {buffer.Name} ( Ø{buffer.Diameter} x {buffer.Height} )  min Last: {minLoad} kg  max Last: {maxLoad} kg";
+        }
+        return bufferDetails;
     }
 
     //Database

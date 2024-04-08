@@ -693,6 +693,11 @@
                                     IsReadOnly="{x:Bind ViewModel.CanEditCustomPayload, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                     Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     TextAlignment="Right">
+                                    <TextBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                        </DataTemplate>
+                                    </TextBox.HeaderTemplate>
                                     <ToolTipService.ToolTip>
                                         <TextBlock>
                                             <Run FontSize="16" Text="Benutzerdefinierte Gedrängelast:" /><LineBreak />
@@ -725,7 +730,13 @@
                                     Header="Nutzlast Tabelle 6 (EN 81-20 5.4.2)"
                                     IsEnabled="False"
                                     Text="{x:Bind ViewModel.PayloadTable6, Mode=OneWay}"
-                                    TextAlignment="Right" />
+                                    TextAlignment="Right">
+                                    <TextBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                        </DataTemplate>
+                                    </TextBox.HeaderTemplate>
+                                </TextBox>
                                 <TextBlock
                                     Grid.Column="1"
                                     MinWidth="35"
@@ -746,7 +757,13 @@
                                     Header="reduzierte Nutzlastlast Tabelle 7 (EN 81-20 5.4.2)"
                                     IsEnabled="False"
                                     Text="{x:Bind ViewModel.PayloadTable7, Mode=OneWay}"
-                                    TextAlignment="Right" />
+                                    TextAlignment="Right">
+                                    <TextBox.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                        </DataTemplate>
+                                    </TextBox.HeaderTemplate>
+                                </TextBox>
                                 <TextBlock
                                     Grid.Column="1"
                                     MinWidth="35"

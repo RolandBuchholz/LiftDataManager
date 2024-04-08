@@ -32,6 +32,11 @@
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}"
             TextAlignment="Right">
+            <TextBox.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </TextBox.HeaderTemplate>
             <Interactivity:Interaction.Behaviors>
                 <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
                     <Core:CallMethodAction MethodName="MoveFocus" TargetObject="{x:Bind}" />

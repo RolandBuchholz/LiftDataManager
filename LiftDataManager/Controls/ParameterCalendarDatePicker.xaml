@@ -29,6 +29,11 @@
             Header="{x:Bind Header}"
             Language="de"
             PlaceholderText="Datum selektieren">
+            <CalendarDatePicker.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </CalendarDatePicker.HeaderTemplate>
             <CalendarDatePicker.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Click="HighlightParameter_Click" Text="{x:Bind HighlightAction, Mode=OneWay}">

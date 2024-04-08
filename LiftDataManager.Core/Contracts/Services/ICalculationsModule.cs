@@ -46,5 +46,7 @@ public interface ICalculationsModule
 
     BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight);
 
+    string GetBufferDetails(string buffertyp, double liftSpeed);
+
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }

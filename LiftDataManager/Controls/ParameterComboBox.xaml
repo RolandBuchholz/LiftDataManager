@@ -32,6 +32,11 @@
             PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
             SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}"
             Style="{StaticResource ParameterDataComboBox}">
+            <ComboBox.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </ComboBox.HeaderTemplate>
             <controls:DataComboBox.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Click="HighlightParameter_Click" Text="{x:Bind HighlightAction, Mode=OneWay}">

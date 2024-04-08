@@ -307,9 +307,9 @@
                                         <Grid Grid.Row="0" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="150" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="0"
@@ -327,7 +327,7 @@
                                                 Grid.Column="2"
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferDataCarFrame, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
@@ -349,13 +349,13 @@
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="300" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="160" />
                                                 <ColumnDefinition Width="40" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterComboBox
@@ -366,9 +366,15 @@
                                                 Grid.Column="1"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.MomentOfInertiaX, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Left"
@@ -380,9 +386,15 @@
                                                 Grid.Column="3"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.MomentOfInertiaY, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="4"
                                                 HorizontalAlignment="Left"
@@ -396,8 +408,13 @@
                                                 HorizontalAlignment="Stretch"
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
-                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCarFrame}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCarFrame, Mode=TwoWay}"
                                                 Style="{StaticResource ParameterDataComboBox}">
+                                                <SpeziControls:DataComboBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </SpeziControls:DataComboBox.HeaderTemplate>
                                                 <ToolTipService.ToolTip>
                                                     <StackPanel>
                                                         <TextBlock
@@ -445,7 +462,7 @@
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCarFrame.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
@@ -460,7 +477,8 @@
                                         Grid.Row="3"
                                         Margin="0,0,0,5"
                                         Padding="5"
-                                        Style="{ThemeResource GridCardPanel}">
+                                        Style="{ThemeResource GridCardPanel}"
+                                        Visibility="{x:Bind ViewModel.ShowCounterWeightBuffer, Mode=OneWay}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
@@ -482,9 +500,9 @@
                                         <Grid Grid.Row="0" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="120" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="0"
@@ -502,7 +520,7 @@
                                                 Grid.Column="2"
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferDataCounterWeight, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
@@ -524,26 +542,32 @@
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="300" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="160" />
                                                 <ColumnDefinition Width="40" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterComboBox
                                                 Grid.Column="0"
-                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_FK'], Mode=TwoWay}"
+                                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffer_Profil_GGW'], Mode=TwoWay}"
                                                 ShowDefaultHeader="True" />
                                             <TextBox
                                                 Grid.Column="1"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.MomentOfInertiaX, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Left"
@@ -555,9 +579,15 @@
                                                 Grid.Column="3"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.MomentOfInertiaY, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="4"
                                                 HorizontalAlignment="Left"
@@ -571,8 +601,13 @@
                                                 HorizontalAlignment="Stretch"
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
-                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCounterWeight}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseCounterWeight, Mode=TwoWay}"
                                                 Style="{StaticResource ParameterDataComboBox}">
+                                                <SpeziControls:DataComboBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </SpeziControls:DataComboBox.HeaderTemplate>
                                                 <ToolTipService.ToolTip>
                                                     <StackPanel>
                                                         <TextBlock
@@ -620,7 +655,7 @@
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataCounterWeight.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
@@ -635,7 +670,8 @@
                                         Grid.Row="4"
                                         Margin="0,0,0,5"
                                         Padding="5"
-                                        Style="{ThemeResource GridCardPanel}">
+                                        Style="{ThemeResource GridCardPanel}"
+                                        Visibility="{x:Bind ViewModel.ShowReducedSafetyRoomHeadBuffer, Mode=OneWay}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
@@ -657,9 +693,9 @@
                                         <Grid Grid.Row="0" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="150" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="0"
@@ -677,7 +713,7 @@
                                                 Grid.Column="2"
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomHead, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
@@ -699,14 +735,14 @@
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="300" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="160" />
                                                 <ColumnDefinition Width="40" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterComboBox
@@ -717,9 +753,15 @@
                                                 Grid.Column="1"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.MomentOfInertiaX, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Left"
@@ -731,9 +773,15 @@
                                                 Grid.Column="3"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.MomentOfInertiaY, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="4"
                                                 HorizontalAlignment="Left"
@@ -747,8 +795,13 @@
                                                 HorizontalAlignment="Stretch"
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
-                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomHead}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomHead, Mode=TwoWay}"
                                                 Style="{StaticResource ParameterDataComboBox}">
+                                                <SpeziControls:DataComboBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </SpeziControls:DataComboBox.HeaderTemplate>
                                                 <ToolTipService.ToolTip>
                                                     <StackPanel>
                                                         <TextBlock
@@ -794,7 +847,7 @@
                                             </SpeziControls:DataComboBox>
                                             <CheckBox
                                                 Grid.Column="6"
-                                                Margin="5,0,5,0"
+                                                Margin="5,0,5,-3"
                                                 VerticalAlignment="Bottom"
                                                 Content="Puffer unter GGW"
                                                 IsChecked="{x:Bind ViewModel.BufferUnderCounterweight, Mode=TwoWay}" />
@@ -802,7 +855,7 @@
                                                 Grid.Column="7"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomHead.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
@@ -817,7 +870,8 @@
                                         Grid.Row="5"
                                         Margin="0,0,0,5"
                                         Padding="5"
-                                        Style="{ThemeResource GridCardPanel}">
+                                        Style="{ThemeResource GridCardPanel}"
+                                        Visibility="{x:Bind ViewModel.ShowReducedSafetyRoomPitBuffer, Mode=OneWay}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition />
@@ -839,9 +893,9 @@
                                         <Grid Grid.Row="0" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="150" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="0"
@@ -859,7 +913,7 @@
                                                 Grid.Column="2"
                                                 Margin="5,0,5,0"
                                                 Header="Pufferdaten Fahrkorb"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomPit, Mode=OneWay}" />
                                             <SpeziControls:ParameterNumberTextBox
                                                 Grid.Column="3"
@@ -881,13 +935,13 @@
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="300" />
                                                 <ColumnDefinition />
                                                 <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="40" />
                                                 <ColumnDefinition />
+                                                <ColumnDefinition Width="160" />
                                                 <ColumnDefinition Width="40" />
                                             </Grid.ColumnDefinitions>
                                             <SpeziControls:ParameterComboBox
@@ -898,9 +952,15 @@
                                                 Grid.Column="1"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment X"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.MomentOfInertiaX, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Left"
@@ -912,9 +972,15 @@
                                                 Grid.Column="3"
                                                 Margin="5,0,5,0"
                                                 Header="Flächenträgheitsmoment Y"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.MomentOfInertiaY, Mode=OneWay}"
-                                                TextAlignment="Right" />
+                                                TextAlignment="Right">
+                                                <TextBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </TextBox.HeaderTemplate>
+                                            </TextBox>
                                             <TextBlock
                                                 Grid.Column="4"
                                                 HorizontalAlignment="Left"
@@ -928,8 +994,13 @@
                                                 HorizontalAlignment="Stretch"
                                                 Header="Eulersche Knickfall"
                                                 ItemsSource="{x:Bind ViewModel.EulerscheBucklingLoadCases, Mode=OneWay}"
-                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomPit}"
+                                                SelectedValue="{x:Bind ViewModel.SelectedEulerCaseReducedSafetyRoomPit, Mode=TwoWay}"
                                                 Style="{StaticResource ParameterDataComboBox}">
+                                                <SpeziControls:DataComboBox.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                    </DataTemplate>
+                                                </SpeziControls:DataComboBox.HeaderTemplate>
                                                 <ToolTipService.ToolTip>
                                                     <StackPanel>
                                                         <TextBlock
@@ -977,7 +1048,7 @@
                                                 Grid.Column="6"
                                                 Margin="5,0,5,0"
                                                 Header="Knicklänge"
-                                                IsReadOnly="True"
+                                                IsEnabled="False"
                                                 Text="{x:Bind ViewModel.BufferCalculationDataReducedSafetyRoomPit.BucklingLength, Mode=OneWay}"
                                                 TextAlignment="Right" />
                                             <TextBlock
