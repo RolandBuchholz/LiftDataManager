@@ -107,7 +107,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         if (message.PropertyName == "var_Fahrkorbtyp")
         {
             if (ParameterDictionary is not null)
-                IsCarCeilingReadOnly = LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary[message.PropertyName].Value);
+                CheckIsDefaultCarTyp();
         }
 
         SetInfoSidebarPanelText(message);
@@ -116,6 +116,9 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     [ObservableProperty]
     private bool isCarCeilingReadOnly;
+
+    [ObservableProperty]
+    private string carCeilingReadOnlyInfo = "Parameter wird automatisch gesetzt";
 
     [ObservableProperty]
     private bool showCarWidthBetweenDoors;
@@ -324,6 +327,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     private void CheckIsDefaultCarTyp()
     {
         IsCarCeilingReadOnly = LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary!["var_Fahrkorbtyp"].Value);
+        CarCeilingReadOnlyInfo = IsCarCeilingReadOnly ? "Parameter wird automatisch gesetzt" : "Parameter können von händisch eingegeben werden";
     }
 
     [RelayCommand]

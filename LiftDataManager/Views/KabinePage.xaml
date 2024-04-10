@@ -17,9 +17,9 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
@@ -284,14 +284,14 @@
                                                 TextWrapping="Wrap" />
                                             <TextBlock
                                                 Margin="5"
-                                                Text="Parameter wird automatisch gesetzt"
-                                                TextWrapping="Wrap"
-                                                Visibility="{x:Bind ViewModel.IsCarCeilingReadOnly, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}" />
+                                                Text="{x:Bind ViewModel.CarCeilingReadOnlyInfo, Mode=OneWay}"
+                                                TextWrapping="Wrap" />
                                             <Button
                                                 Margin="5"
                                                 HorizontalAlignment="Stretch"
                                                 Command="{x:Bind ViewModel.GoToKabineDetailCommand}"
-                                                Style="{StaticResource AccentButtonStyle}">
+                                                Style="{StaticResource AccentButtonStyle}"
+                                                Visibility="{x:Bind ViewModel.IsCarCeilingReadOnly, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <SymbolIcon Margin="5,0,5,0" Symbol="PostUpdate" />
                                                     <TextBlock Text="Detailinformationen" />

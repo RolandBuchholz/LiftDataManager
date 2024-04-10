@@ -13,7 +13,7 @@ public static class Program
         var isRedirect = DecideRedirection();
         if (!isRedirect)
         {
-            Microsoft.UI.Xaml.Application.Start((p) =>
+            Application.Start((p) =>
             {
                 var context = new DispatcherQueueSynchronizationContext(
                     DispatcherQueue.GetForCurrentThread());

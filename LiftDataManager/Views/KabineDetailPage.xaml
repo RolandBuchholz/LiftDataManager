@@ -478,7 +478,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="0"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegelKorrektur'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox
@@ -497,7 +497,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="1"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegelKorrektur'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox
@@ -530,7 +530,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="0"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel2'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegelKorrektur2'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox
@@ -549,7 +549,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="1"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel2'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegelKorrektur2'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox
@@ -579,7 +579,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="0"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel3'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegelKorrektur3'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox
@@ -598,7 +598,7 @@
                                                 <SpeziControls:ParameterNumberTextBox
                                                     Grid.Row="1"
                                                     Grid.Column="1"
-                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel3'], Mode=TwoWay}"
+                                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegelKorrektur3'], Mode=TwoWay}"
                                                     ShowDefaultHeader="True"
                                                     Unit="mm" />
                                                 <SpeziControls:ParameterNumberTextBox

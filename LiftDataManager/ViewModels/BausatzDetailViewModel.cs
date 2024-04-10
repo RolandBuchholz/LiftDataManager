@@ -230,8 +230,8 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     {
         Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"), 
                                            new("var_Puffertyp_GGW", "BufferDataCounterWeight"),
-                                           new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomHead"),
-                                           new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomPit")];
+                                           new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomHead"),
+                                           new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomPit")];
 
         double liftSpeed = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_v");
 
