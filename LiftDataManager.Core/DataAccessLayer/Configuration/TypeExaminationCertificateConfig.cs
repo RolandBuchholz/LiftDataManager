@@ -14,6 +14,7 @@ public class TypeExaminationCertificateConfig : BaseModelBuilder<TypeExamination
         builder.Property(x => x.ManufacturerName)
                .HasMaxLength(50)
                .IsRequired();
+        builder.Property(x => x.SafetyComponentTypId);
         builder.HasMany(t => t.SafetyGearModelTypes)
                .WithOne(g => g.TypeExaminationCertificate)
                .HasForeignKey(t => t.TypeExaminationCertificateId);
