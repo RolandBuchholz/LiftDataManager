@@ -47,7 +47,8 @@ public sealed partial class ParameterCheckBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty =
+        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {

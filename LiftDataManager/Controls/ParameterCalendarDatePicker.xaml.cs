@@ -17,6 +17,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         {
             LiftParameter.ErrorsChanged += OnErrorsChanged;
         }
+        SetBorderHeight();
     }
 
     private void OnUnLoadParameterCalendarDatePicker(object sender, RoutedEventArgs e)
@@ -46,7 +47,8 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = 
+        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -116,14 +118,14 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     public static readonly DependencyProperty ErrorTypeProperty =
         DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
-    public int BorderHeight
+    public double BorderHeight
     {
-        get { return (int)GetValue(BorderHeightProperty); }
+        get { return (double)GetValue(BorderHeightProperty); }
         set { SetValue(BorderHeightProperty, value); }
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register(nameof(BorderHeight), typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterComboBox), new PropertyMetadata(default));
 
     public string HighlightAction
     {
@@ -140,6 +142,15 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         {
             LiftParameter.IsKey = !LiftParameter.IsKey;
             HighlightAction = GetHighlightAction();
+        }
+    }
+
+    private void SetBorderHeight()
+    {
+        var controlHeight = cdp_Liftparameter.ActualHeight;
+        if (controlHeight > 24d)
+        {
+            BorderHeight = controlHeight - 24d;
         }
     }
 

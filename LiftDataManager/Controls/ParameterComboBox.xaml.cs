@@ -21,6 +21,7 @@ public sealed partial class ParameterComboBox : UserControl
             LiftParameter.ErrorsChanged += OnErrorsChanged;
             LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
         }
+        SetBorderHeight();
     }
 
     private void OnUnLoadParameterComboBoxControl(object sender, RoutedEventArgs e)
@@ -142,14 +143,14 @@ public sealed partial class ParameterComboBox : UserControl
     public static readonly DependencyProperty ErrorTypeProperty =
         DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
 
-    public int BorderHeight
+    public double BorderHeight
     {
-        get { return (int)GetValue(BorderHeightProperty); }
+        get { return (double)GetValue(BorderHeightProperty); }
         set { SetValue(BorderHeightProperty, value); }
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register(nameof(BorderHeight), typeof(int), typeof(ParameterComboBox), new PropertyMetadata(33));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterComboBox), new PropertyMetadata(default));
 
     public string HighlightAction
     {
@@ -166,6 +167,15 @@ public sealed partial class ParameterComboBox : UserControl
         {
             LiftParameter.IsKey = !LiftParameter.IsKey;
             HighlightAction = GetHighlightAction();
+        }
+    }
+
+    private void SetBorderHeight()
+    {
+        var controlHeight = cmb_Liftparameter.ActualHeight;
+        if (controlHeight > 24d)
+        {
+            BorderHeight = controlHeight - 24d;
         }
     }
 
