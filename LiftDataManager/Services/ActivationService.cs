@@ -1,22 +1,24 @@
-﻿namespace LiftDataManager.Services;
+﻿using WinUICommunity;
+
+namespace LiftDataManager.Services;
 
 public class ActivationService : IActivationService
 {
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly ISettingService _settingService;
+    private readonly IThemeService _themeService;
     private UIElement? _shell = null;
 
     public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
         IEnumerable<IActivationHandler> activationHandlers,
-        IThemeSelectorService themeSelectorService,
+        IThemeService themeService,
         ISettingService settingService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
-        _themeSelectorService = themeSelectorService;
         _settingService = settingService;
+        _themeService = themeService;
     }
 
     public async Task ActivateAsync(object activationArgs)
@@ -59,14 +61,15 @@ public class ActivationService : IActivationService
 
     private async Task InitializeAsync()
     {
-        await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
         await _settingService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;
     }
 
     private async Task StartupAsync()
     {
-        await _themeSelectorService.SetRequestedThemeAsync();
+        _themeService.Initialize(App.MainWindow);
+        _themeService.ConfigBackdrop();
+        _themeService.ConfigElementTheme();
         await Task.CompletedTask;
     }
 }

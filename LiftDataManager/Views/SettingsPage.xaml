@@ -12,14 +12,15 @@
     xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:sys="using:System"
     xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:wuc="using:WinUICommunity"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <Style x:Name="ContentDialogButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{ThemeResource AccentButtonForeground}" />
@@ -132,7 +133,7 @@
                 <StackPanel x:Name="ContentArea" Margin="0,0,15,0">
                     <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                        <controls:SettingsCard Description="Auswahl Theme" Header="Theme">
+                        <!--<controls:SettingsCard Description="Auswahl Theme" Header="Theme">
                             <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE12B;" />
                             </controls:SettingsCard.HeaderIcon>
@@ -168,7 +169,52 @@
                                     </RadioButton.CommandParameter>
                                 </RadioButton>
                             </StackPanel>
+                        </controls:SettingsCard>-->
+                        <controls:SettingsCard
+                            Description="Select the theme that suits your mood and preference. You can choose from dark, light, or system themes."
+                            Header="App theme"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/theme.png}">
+                            <ComboBox x:Name="CmbTheme">
+                                <ComboBoxItem Content="Light" Tag="Light" />
+                                <ComboBoxItem Content="Dark" Tag="Dark" />
+                                <ComboBoxItem Content="Default" Tag="Default" />
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="SelectionChanged">
+                                        <Core:EventTriggerBehavior.Actions>
+                                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.ThemeChangedCommand}" CommandParameter="{Binding ElementName=CmbTheme}" />
+                                        </Core:EventTriggerBehavior.Actions>
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </ComboBox>
                         </controls:SettingsCard>
+                        <controls:SettingsCard
+                            Description="Change the appearance of the backdrop material behind your app. You can choose from mica, acrylic, or transparent options."
+                            Header="Material"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/backdrop.png}">
+                            <ComboBox x:Name="CmbBackdrop">
+                                <ComboBoxItem Content="None" Tag="None" />
+                                <ComboBoxItem Content="Mica" Tag="Mica" />
+                                <ComboBoxItem Content="Mica Alt" Tag="MicaAlt" />
+                                <ComboBoxItem Content="Desktop Acrylic" Tag="DesktopAcrylic" />
+                                <ComboBoxItem Content="Acrylic Base" Tag="AcrylicBase" />
+                                <ComboBoxItem Content="Acrylic Thin" Tag="AcrylicThin" />
+                                <ComboBoxItem Content="Transparent" Tag="Transparent" />
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="SelectionChanged">
+                                        <Core:EventTriggerBehavior.Actions>
+                                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.BackdropChangedCommand}" CommandParameter="{Binding ElementName=CmbBackdrop}" />
+                                        </Core:EventTriggerBehavior.Actions>
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </ComboBox>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard
+                            ActionIcon="{wuc:BitmapIcon Source=Assets/Fluent/external.png}"
+                            Command="{x:Bind ViewModel.OpenWindowsColorSettingsCommand}"
+                            Description="Sync your app’s color with your Windows accent color. You can open the Windows accent color setting by clicking this card."
+                            Header="Accent color"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/color.png}"
+                            IsClickEnabled="True" />
                         <controls:SettingsCard Description="Auswahl AccentColor" Header="AccentColor">
                             <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE193;" />

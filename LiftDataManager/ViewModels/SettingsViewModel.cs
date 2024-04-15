@@ -5,6 +5,7 @@ using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.System;
 using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
@@ -12,27 +13,23 @@ namespace LiftDataManager.ViewModels;
 public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 {
     private const string adminpasswort = "2342";
-    private readonly IThemeSelectorService _themeSelectorService;
+    public IThemeService _themeService;
     private CurrentSpeziProperties? CurrentSpeziProperties = new();
     private readonly ISettingService _settingService;
     private readonly IDialogService _dialogService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<SettingsViewModel> _logger;
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ISettingService settingsSelectorService, IDialogService dialogService,
+    public SettingsViewModel( ISettingService settingsSelectorService, IDialogService dialogService, IThemeService themeService,
                              ParameterContext parametercontext, ILogger<SettingsViewModel> logger)
     {
-        _themeSelectorService = themeSelectorService;
+        _themeService = themeService;
         _settingService = settingsSelectorService;
         _dialogService = dialogService;
         _parametercontext = parametercontext;
         _logger = logger;
-        ElementTheme = _themeSelectorService.Theme;
         VersionDescription = GetVersionDescription();
     }
-
-    [ObservableProperty]
-    private ElementTheme elementTheme;
 
     [ObservableProperty]
     private bool customAccentColor;
@@ -87,7 +84,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             _settingService.SetSettingsAsync(nameof(AutoSavePeriod), value);
     }
 
-    public string[] SavePeriods = { "2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min" };
+    public string[] SavePeriods = ["2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min"];
 
 #pragma warning disable CA1822 // Member als statisch markieren
     public string UserName => string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name;
@@ -99,7 +96,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     public string AdskLicensingSDKInstalled => File.Exists(@"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\AdskLicensingSDK_6.dll") ? "installiert" : "nicht installiert";
 #pragma warning restore CA1822 // Member als statisch markieren
 
-    public List<string> LogLevel = new() { "Verbose", "Debug", "Information", "Warning", "Error", "Fatal" };
+    public List<string> LogLevel = ["Verbose", "Debug", "Information", "Warning", "Error", "Fatal"];
 
     [ObservableProperty]
     private string? selectedLogLevel;
@@ -206,13 +203,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private InfoBarSeverity infoBarVersionsUpdateSeverity;
 
     [RelayCommand]
-    private async Task SwitchThemeAsync(ElementTheme param)
+    private void OnBackdropChanged(object sender)
     {
-        if (ElementTheme != param)
-        {
-            ElementTheme = param;
-            await _themeSelectorService.SetThemeAsync(param);
-        }
+        _themeService.OnBackdropComboBoxSelectionChanged(sender);
+    }
+
+    [RelayCommand]
+    private void OnThemeChanged(object sender)
+    {
+        _themeService.OnThemeComboBoxSelectionChanged(sender);
     }
 
     [RelayCommand]
@@ -234,6 +233,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             }
         }
         await Task.CompletedTask;
+    }
+    [RelayCommand]
+    private async Task OpenWindowsColorSettings()
+    {
+        _ = await Launcher.LaunchUriAsync(new Uri("ms-settings:colors"));
     }
 
     [RelayCommand]
@@ -395,6 +399,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         if (CurrentSpeziProperties is not null)
             CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         GetProgrammsPath();
+        
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
         PathDataBase = _settingService.PathDataBase;

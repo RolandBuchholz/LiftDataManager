@@ -31,3 +31,4 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using Windows.UI;
 global using WinUIEx;
+global using static LiftDataManager.Common.AppHelper;
