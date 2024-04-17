@@ -1,4 +1,6 @@
-﻿using WinUICommunity;
+﻿using LiftDataManager.Contracts.Services;
+using Windows.UI.ViewManagement;
+using WinUICommunity;
 
 namespace LiftDataManager.Services;
 
@@ -33,7 +35,7 @@ public class ActivationService : IActivationService
             App.MainWindow.Content = _shell ?? new Frame();
             App.MainRoot = App.MainWindow.Content as FrameworkElement;
         }
-
+        await SetAccentColorAsync();
         // Handle activation via ActivationHandlers.
         await HandleActivationAsync(activationArgs);
 
@@ -70,6 +72,30 @@ public class ActivationService : IActivationService
         _themeService.Initialize(App.MainWindow);
         _themeService.ConfigBackdrop();
         _themeService.ConfigElementTheme();
+        await Task.CompletedTask;
+    }
+
+    private async Task SetAccentColorAsync()
+    {
+        var defaultAccentColor = Convert.ToBoolean(_settingService.CustomAccentColor);
+        if (!defaultAccentColor)
+        {
+            var systemAccentColor = Color.FromArgb(255, 0, 85, 173);
+            var systemAccentColorLight1 = Color.FromArgb(255, 0, 100, 190);
+            var systemAccentColorLight2 = Color.FromArgb(255, 72, 178, 234);
+            var systemAccentColorLight3 = Color.FromArgb(255, 29, 133, 215);
+            var systemAccentColorDark1 = Color.FromArgb(255, 0, 69, 157);
+            var systemAccentColorDark2 = Color.FromArgb(255, 0, 54, 140);
+            var systemAccentColorDark3 = Color.FromArgb(255, 0, 39, 123);
+
+            App.Current.Resources["SystemAccentColor"] = systemAccentColor;
+            App.Current.Resources["SystemAccentColorLight1"] = systemAccentColorLight1;
+            App.Current.Resources["SystemAccentColorLight2"] = systemAccentColorLight2;
+            App.Current.Resources["SystemAccentColorLight3"] = systemAccentColorLight3;
+            App.Current.Resources["SystemAccentColorDark1"] = systemAccentColorDark1;
+            App.Current.Resources["SystemAccentColorDark2"] = systemAccentColorDark2;
+            App.Current.Resources["SystemAccentColorDark3"] = systemAccentColorDark3;
+        }
         await Task.CompletedTask;
     }
 }
