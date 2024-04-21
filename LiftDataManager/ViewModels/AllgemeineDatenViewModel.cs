@@ -2,11 +2,10 @@
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public Dictionary<int, string> LiftPlanners { get; set; } = [];
     public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = [];
@@ -15,8 +14,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private readonly ParameterContext _parametercontext;
     private ParameterContext? _editableparametercontext;
 
-    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _logger = logger;

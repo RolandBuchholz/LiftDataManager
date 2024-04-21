@@ -6,11 +6,10 @@ using Windows.Management.Deployment;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
-using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class SettingsViewModel : ObservableRecipient, INavigationAware
+public partial class SettingsViewModel : ObservableRecipient, INavigationAwareEx
 {
     private const string adminpasswort = "2342";
     public IThemeService _themeService;
@@ -20,7 +19,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<SettingsViewModel> _logger;
 
-    public SettingsViewModel( ISettingService settingsSelectorService, IDialogService dialogService, IThemeService themeService,
+    public SettingsViewModel(ISettingService settingsSelectorService, IDialogService dialogService, IThemeService themeService,
                              ParameterContext parametercontext, ILogger<SettingsViewModel> logger)
     {
         _themeService = themeService;
@@ -399,7 +398,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         if (CurrentSpeziProperties is not null)
             CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         GetProgrammsPath();
-        
+
         Adminmode = _settingService.Adminmode;
         CustomAccentColor = _settingService.CustomAccentColor;
         PathDataBase = _settingService.PathDataBase;

@@ -2,12 +2,12 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
 
-    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -81,7 +81,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    //TODO navigationService
+                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {

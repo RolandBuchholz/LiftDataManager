@@ -2,10 +2,10 @@
 
 namespace LiftDataManager.ViewModels;
 
-public class SonstigesViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public class SonstigesViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public SonstigesViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public SonstigesViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
     }
 

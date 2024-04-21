@@ -4,11 +4,10 @@ using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
@@ -19,10 +18,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     private bool OpenReadOnly { get; set; } = true;
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
-    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                          ISettingService settingsSelectorService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
-        : base(parameterDataService, dialogService, navigationService, infoCenterService)
+        : base(parameterDataService, dialogService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
@@ -917,7 +916,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
 
         CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
-        
+
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
             InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
 

@@ -1,0 +1,248 @@
+﻿{
+  "Groups": [
+    {
+      "UniqueId": "LiftDataManager",
+      "Title": "0_LiftDataManager",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": true,
+      "Order": false,
+      "IsExpanded": false,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.HomePage",
+          "Title": "Home",
+          "Subtitle": "LiftDataManager Startansicht",
+          "ImagePath": "ms-appx:///Assets/Fluent/home.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/home.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.AllgemeineDatenPage",
+          "Title": "Allgemeine Daten",
+          "Subtitle": "Allgemeine DatenAnsicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.SchachtPage",
+          "Title": "Schacht",
+          "Subtitle": "Schacht Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabinePage",
+          "Title": "Kabine",
+          "Subtitle": "Kabinen Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.TürenPage",
+          "Title": "Türen",
+          "Subtitle": "Türen Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.AntriebSteuerungNotruftPage",
+          "Title": "Antrieb Steuerung Notruf",
+          "Subtitle": "Antrieb Steuerung Notruf Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.SignalisationPage",
+          "Title": "Signalisation",
+          "Subtitle": "Signalisation Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.WartungMontageTüvPage",
+          "Title": "Wartung Montage Tüv",
+          "Subtitle": "Wartung Montage Tüv Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.SonstigesPage",
+          "Title": "Sonstiges",
+          "Subtitle": "Sonstiges Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
+    },
+    {
+      "UniqueId": "LiftDataManagerBerechnungen",
+      "Title": "Berechnungen",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": false,
+      "Order": false,
+      "IsExpanded": false,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.EinreichunterlagenPage",
+          "Title": "Einreichunterlagen",
+          "Subtitle": "Einreichunterlagen zur TÜV Vorprüfung",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabinengewichtPage",
+          "Title": "Kabinengewicht",
+          "Subtitle": "Kabinengewicht Berechnung",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.NutzlastberechnungPage",
+          "Title": "Nutzlastberechnung",
+          "Subtitle": "Nutzlast Berechnung",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabinenLüftungPage",
+          "Title": "Kabinenlüftungsberechnung",
+          "Subtitle": "Kabinenlüftungsberechnung",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
+    },
+    {
+      "UniqueId": "LiftDataManagerDetailPages",
+      "Title": "Detaileingaben",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": false,
+      "Order": false,
+      "IsExpanded": false,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.SchachtDetailPage",
+          "Title": "Schacht Detaileingabe",
+          "Subtitle": "Schacht Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailPage",
+          "Title": "Kabine Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.BausatzDetailPage",
+          "Title": "Bausatz Detaileingabe",
+          "Subtitle": "Bausatz Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
+    },
+    {
+      "UniqueId": "LiftDataManagerParameterDetails",
+      "Title": "ParameterDetails",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": true,
+      "Order": false,
+      "IsExpanded": false,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.ListenansichtPage",
+          "Title": "Parameter Listenansicht",
+          "Subtitle": "Parameter Listenansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.DatenansichtPage",
+          "Title": "Parameter Rasteransicht",
+          "Subtitle": "Parameterdaten Rasteransicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.TabellenansichtPage",
+          "Title": "Parameter Tabellenansicht",
+          "Subtitle": "Parameterdaten Tabellenansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.LiftHistoryPage",
+          "Title": "Lift History",
+          "Subtitle": "Lift History",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.DataBaseEditPage",
+          "Title": "Databank bearbeiten",
+          "Subtitle": "Databank bearbeiten",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
+    },
+    {
+      "UniqueId": "LiftDataManagerFooter",
+      "Title": "LiftDataManager Footer",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": true,
+      "IsExpanded": false,
+      "IsFooterNavigationViewItem": true,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.QuickLinksPage",
+          "Title": "QuickLinks",
+          "Subtitle": "Links zu häufig verwendeten Programmen",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.HelpPage",
+          "Title": "Hilfe",
+          "Subtitle": "Hilfe Ansicht",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
+    }
+  ]
+}

@@ -4,25 +4,25 @@ using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
 
-    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                            ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-                           base(parameterDataService, dialogService, navigationService, infoCenterService)
+                           base(parameterDataService, dialogService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
     }
 
-    private readonly string[] carEquipment = { "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD",
+    private readonly string[] carEquipment = [ "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD",
                                                "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
                                                "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
                                                "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
                                                "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD",
-                                               "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"};
+                                               "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"];
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -331,7 +331,11 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     }
 
     [RelayCommand]
-    private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+    private void GoToKabineDetail()
+    {
+        //TODO navigationService
+        //_navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+    }
 
     private async Task SetCalculatedValuesAsync()
     {

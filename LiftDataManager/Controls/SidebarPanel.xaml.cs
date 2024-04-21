@@ -29,7 +29,7 @@ public sealed partial class SidebarPanel : UserControl
     public int SelectedIndexQuantity
     {
         get { return selectedIndexQuantity; }
-        set 
+        set
         {
             selectedIndexQuantity = value;
             _maxEntryCount = value switch
@@ -61,7 +61,7 @@ public sealed partial class SidebarPanel : UserControl
         {
             SetValue(InfoCenterEntrysProperty, value);
             InfoCenterEntrys.CollectionChanged += InfoCenterEntrys_CollectionChanged;
-            InfoCenterEntrysView = new CollectionViewSource() { IsSourceGrouped = false};
+            InfoCenterEntrysView = new CollectionViewSource() { IsSourceGrouped = false };
             FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
         }
     }
@@ -103,7 +103,7 @@ public sealed partial class SidebarPanel : UserControl
     public bool InfoCenterIsOpen
     {
         get { return (bool)GetValue(InfoCenterIsOpenProperty); }
-        set 
+        set
         {
             SetValue(InfoCenterIsOpenProperty, value);
             FilterInfoCenterEntrys(SelectedIndexInfoCenterTyp);
@@ -120,7 +120,8 @@ public sealed partial class SidebarPanel : UserControl
 
     private void FilterInfoCenterEntrys(int infoCenterTyp)
     {
-        if (!InfoCenterIsOpen) return;
+        if (!InfoCenterIsOpen)
+            return;
 
         if (infoCenterTyp < 1 || infoCenterTyp > 6)
         {

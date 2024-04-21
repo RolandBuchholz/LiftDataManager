@@ -1562,10 +1562,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
 
         var availableCarFramePositions = new List<string>();
-        if (!zugangA) availableCarFramePositions.Add("A");
-        if (!zugangB) availableCarFramePositions.Add("B");
-        if (!zugangC && !centralLift) availableCarFramePositions.Add("C");
-        if (!zugangD) availableCarFramePositions.Add("D");
+        if (!zugangA)
+            availableCarFramePositions.Add("A");
+        if (!zugangB)
+            availableCarFramePositions.Add("B");
+        if (!zugangC && !centralLift)
+            availableCarFramePositions.Add("C");
+        if (!zugangD)
+            availableCarFramePositions.Add("D");
 
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 

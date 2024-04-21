@@ -5,14 +5,14 @@ using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ListenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
     private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new();
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
 
-    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -193,7 +193,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    //TODO navigationService
+                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
@@ -250,10 +251,10 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             SearchInput = parameter as string;
             return;
         }
-            
+
         if (!HasHighlightedParameters)
             return;
-        
+
         SelectedFilter = new SelectorBarItem() { Text = "RequestHighlighted" };
     }
 

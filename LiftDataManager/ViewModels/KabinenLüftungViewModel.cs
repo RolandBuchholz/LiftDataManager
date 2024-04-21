@@ -3,7 +3,7 @@ using LiftDataManager.Core.Models.CalculationResultsModels;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ISettingService _settingService;
@@ -11,9 +11,9 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
 
     public CarVentilationResult CarVentilationResult = new();
 
-    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                    ICalculationsModule calculationsModuleService, IPdfService pdfService, ISettingService settingsSelectorService) :
-                                   base(parameterDataService, dialogService, navigationService, infoCenterService)
+                                   base(parameterDataService, dialogService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
         _settingService = settingsSelectorService;

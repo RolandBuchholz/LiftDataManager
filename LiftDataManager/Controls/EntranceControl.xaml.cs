@@ -1,5 +1,4 @@
 ﻿using Cogs.Collections;
-using CommunityToolkit.WinUI;
 
 namespace LiftDataManager.Controls;
 
@@ -107,8 +106,9 @@ public sealed partial class EntranceControl : UserControl
         {
             var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
 
-            var nav = App.GetService<INavigationService>();
-            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", ItemSource[entranceName].Name);
+            //TODO navigationService
+            //var nav = App.GetService<INavigationService>();
+            //nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", ItemSource[entranceName].Name);
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigationAware
+public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigationAwareEx
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ISettingService _settingService;
@@ -15,9 +15,9 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public PayLoadResult PayLoadResult = new();
 
-    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                        ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

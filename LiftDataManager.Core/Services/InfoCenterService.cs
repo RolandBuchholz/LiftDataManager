@@ -13,8 +13,8 @@ public class InfoCenterService : IInfoCenterService
     /// <returns>Task</returns>
     public async Task AddInfoCenterMessageAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string message)
     {
-        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterMessage) 
-        { 
+        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterMessage)
+        {
             Message = await Task.FromResult(message)
         });
     }
@@ -28,8 +28,8 @@ public class InfoCenterService : IInfoCenterService
     public async Task AddInfoCenterWarningAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string warning)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterWarning)
-        { 
-            Message = await Task.FromResult(warning) 
+        {
+            Message = await Task.FromResult(warning)
         });
     }
 
@@ -42,8 +42,8 @@ public class InfoCenterService : IInfoCenterService
     public async Task AddInfoCenterErrorAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string error)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterError)
-        { 
-            Message = await Task.FromResult(error) 
+        {
+            Message = await Task.FromResult(error)
         });
     }
 
@@ -59,7 +59,7 @@ public class InfoCenterService : IInfoCenterService
     public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue, bool autoUpdated)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(autoUpdated ? InfoCenterEntryState.InfoCenterAutoUpdate : InfoCenterEntryState.InfoCenterParameterChanged)
-        { 
+        {
             ParameterName = parameterName,
             OldValue = oldValue,
             NewValue = newValue

@@ -5,8 +5,8 @@ namespace LiftDataManager.ViewModels;
 public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPropertiesChangedMessage>, IRecipient<SpeziPropertiesRequestMessage>
 {
     private CurrentSpeziProperties CurrentSpeziProperties = new();
-    public INavigationService NavigationService { get; }
-    public INavigationViewService NavigationViewService { get; }
+
+    public IJsonNavigationViewService JsonNavigationViewService { get; }
 
     [ObservableProperty]
     private bool isBackEnabled;
@@ -20,11 +20,10 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     [ObservableProperty]
     private object? selected;
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
+    public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
     {
-        NavigationService = navigationService;
-        NavigationService.Navigated += OnNavigated;
-        NavigationViewService = navigationViewService;
+        JsonNavigationViewService = jsonNavigationViewService;
+        JsonNavigationViewService.Navigated += OnNavigated;
         IsActive = true;
     }
 
@@ -39,29 +38,30 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     }
 
     [RelayCommand]
-    private void StartGlobalSearch() 
+    private void StartGlobalSearch()
     {
         var searchInput = GlobalSearchInput;
         GlobalSearchInput = string.Empty;
-        NavigationService.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel",searchInput);
+        JsonNavigationViewService.NavigateTo(typeof(ListenansichtPage), searchInput);
     }
 
     [RelayCommand]
-    private void GoToHelpViewModel() => NavigationService.NavigateTo("LiftDataManager.ViewModels.HelpViewModel");
+    private void GoToHelpViewModel() => JsonNavigationViewService.NavigateTo(typeof(HelpPage));
+
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
-        IsBackEnabled = NavigationService.CanGoBack;
-        if (e.SourcePageType == typeof(SettingsPage))
-        {
-            Selected = NavigationViewService.SettingsItem;
-            return;
-        }
+        //IsBackEnabled = NavigationService.CanGoBack;
+    //    if (e.SourcePageType == typeof(SettingsPage))
+    //    {
+    //        Selected = NavigationViewService.SettingsItem;
+    //        return;
+    //    }
 
-        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
-        {
-            Selected = selectedItem;
-            ShowGlobalSearch = selectedItem.Tag is null;
-        }
+    //    var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+    //    if (selectedItem != null)
+    //    {
+    //        Selected = selectedItem;
+    //        ShowGlobalSearch = selectedItem.Tag is null;
+    //    }
     }
 }

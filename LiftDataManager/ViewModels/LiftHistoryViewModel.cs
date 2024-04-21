@@ -2,19 +2,19 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
 {
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-                                base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+                                base(parameterDataService, dialogService, infoCenterService)
     {
         FilteredItems = new CollectionViewSource
         {
             IsSourceGrouped = false
         };
-        HistoryEntrys ??= new();
+        HistoryEntrys ??= [];
     }
 
     [ObservableProperty]

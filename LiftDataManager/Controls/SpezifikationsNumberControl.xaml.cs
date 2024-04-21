@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using WinUICommunity;
 
 namespace LiftDataManager.Controls;
 

@@ -9,7 +9,6 @@ public partial class DataViewModelBase : ObservableRecipient
 {
     public readonly IParameterDataService _parameterDataService;
     public readonly IDialogService _dialogService;
-    public readonly INavigationService _navigationService;
     public readonly IInfoCenterService _infoCenterService;
 
     public bool Adminmode { get; set; }
@@ -27,15 +26,14 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 #pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
 
-    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService)
+    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService)
     {
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
-        _navigationService = navigationService;
         _infoCenterService = infoCenterService;
-        ParameterDictionary ??= new();
-        ParameterErrorDictionary ??= new();
-        InfoCenterEntrys ??= new();
+        ParameterDictionary ??= [];
+        ParameterErrorDictionary ??= [];
+        InfoCenterEntrys ??= [];
     }
 
     public virtual void Receive(PropertyChangedMessage<string> message)
@@ -152,7 +150,7 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties is null)
-            return; 
+            return;
         if (CurrentSpeziProperties.FullPathXml is not null)
             FullPathXml = CurrentSpeziProperties.FullPathXml;
         if (CurrentSpeziProperties.ParameterDictionary is not null)
@@ -197,7 +195,8 @@ public partial class DataViewModelBase : ObservableRecipient
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    //TODO: navigationService
+                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
@@ -252,7 +251,7 @@ public partial class DataViewModelBase : ObservableRecipient
         return Messenger.Send<SpeziPropertiesRequestMessage>();
     }
 
-    private void OnInfoCenterEntrys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) 
+    private void OnInfoCenterEntrys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (CurrentSpeziProperties is not null)
         {

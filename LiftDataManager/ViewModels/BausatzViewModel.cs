@@ -3,13 +3,13 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
 
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -141,7 +141,11 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAware, IRe
     }
 
     [RelayCommand]
-    private void GoToBausatzDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzDetailViewModel");
+    private void GoToBausatzDetail()
+    {
+        //TODO navigationService
+        //_navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzDetailViewModel");
+    }
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();

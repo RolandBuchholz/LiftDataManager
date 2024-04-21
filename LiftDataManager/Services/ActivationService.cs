@@ -1,8 +1,4 @@
-﻿using LiftDataManager.Contracts.Services;
-using Windows.UI.ViewManagement;
-using WinUICommunity;
-
-namespace LiftDataManager.Services;
+﻿namespace LiftDataManager.Services;
 
 public class ActivationService : IActivationService
 {

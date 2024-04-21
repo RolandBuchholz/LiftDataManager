@@ -4,13 +4,13 @@ using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
-    public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-     base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+     base(parameterDataService, dialogService, infoCenterService)
     {
         CarFloorSillParameter = [];
         SetupCarFloorSillParameter();
@@ -137,7 +137,11 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     private bool canRefreshCarFloorSill;
 
     [RelayCommand]
-    private void GoToKabine() => _navigationService.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
+    private void GoToKabine()
+    {
+        //TODO navigationService
+        //_navigationService.NavigateTo("LiftDataManager.ViewModels.KabineViewModel");
+    }
 
     [RelayCommand(CanExecute = nameof(CanRefreshCarFloorSill))]
     private void RefreshCarFloorSillParameter()

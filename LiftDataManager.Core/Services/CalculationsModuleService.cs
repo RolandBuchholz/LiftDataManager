@@ -1083,7 +1083,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
+    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight)
     {
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
@@ -1119,14 +1119,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (!string.IsNullOrWhiteSpace(profilDescription))
         {
             var profilData = _parametercontext.Set<BufferPropProfile>().FirstOrDefault(x => x.Name.Contains(profilDescription));
-            if(profilData != null)
+            if (profilData != null)
             {
                 momentOfInertiaX = profilData.MomentOfInertiaX;
                 momentOfInertiaY = profilData.MomentOfInertiaY;
             }
         }
 
-        return new BufferCalculationData() 
+        return new BufferCalculationData()
         {
             NumberOfBuffer = numberOfBuffer,
             BufferPillarLength = bufferPillarLength,
@@ -1140,12 +1140,12 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    private static int GetBucklingLength(int length, int eulerCase )
+    private static int GetBucklingLength(int length, int eulerCase)
     {
         int bucklingLength = 0;
 
         switch (eulerCase)
-            {
+        {
             case 1:
                 bucklingLength = length * 2;
                 break;

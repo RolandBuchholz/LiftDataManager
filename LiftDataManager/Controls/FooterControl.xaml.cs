@@ -1,7 +1,6 @@
 ﻿using Cogs.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using WinUICommunity;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl
@@ -30,9 +29,9 @@ public sealed partial class FooterControl : UserControl
     {
         if (SelectedError is not null)
         {
-            DetailErrorDialog.Hide();
-            var nav = App.GetService<INavigationService>();
-            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", SelectedError.Name);
+            //TODO navigationService
+            //var nav = App.GetService<INavigationService>();
+            //nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", SelectedError.Name);
         }
     }
 

@@ -5,7 +5,7 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ErrorViewModel : DataViewModelBase, INavigationAware
+public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
 {
     private readonly ISettingService _settingService;
 

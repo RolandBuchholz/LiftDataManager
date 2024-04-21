@@ -2,12 +2,12 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public CollectionViewSource GroupedItems { get; set; }
 
-    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -67,7 +67,8 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    //TODO navigationService
+                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
                 }
                 else
                 {
@@ -103,8 +104,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
         if (e.ClickedItem is Parameter parameter)
         {
-            _navigationService!.SetListDataItemForNextConnectedAnimation(parameter);
-            _navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, parameter.Name);
+            //TODO navigationService
+            //_navigationService!.SetListDataItemForNextConnectedAnimation(parameter);
+            //_navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, parameter.Name);
         }
     }
 }

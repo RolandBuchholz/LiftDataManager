@@ -11,7 +11,6 @@ using Serilog.Formatting.Compact;
 using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using WinUICommunity;
 
 namespace LiftDataManager;
 
@@ -21,7 +20,7 @@ public partial class App : Application
     public static WindowEx MainWindow { get; } = new MainWindow();
     public new static App Current => (App)Application.Current;
     public string AppVersion { get; set; } = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
-    public string AppName { get;} = AssemblyInfoHelper.GetAppName();
+    public string AppName { get; } = AssemblyInfoHelper.GetAppName();
     private bool IgnoreSaveWarning { get; set; }
     public static FrameworkElement? MainRoot { get; set; }
     public static T GetService<T>()
@@ -58,10 +57,14 @@ public partial class App : Application
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeService, ThemeService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
+            services.AddSingleton<IJsonNavigationViewService>(factory =>
+            {
+                var json = new JsonNavigationViewService();
+                json.ConfigDefaultPage(typeof(HomePage));
+                json.ConfigSettingsPage(typeof(SettingsPage));
+                return json;
+            });
             services.AddSingleton<IActivationService, ActivationService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<IPdfService, PdfService>();
@@ -264,7 +267,8 @@ public partial class App : Application
     private static void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
         MainWindow.Activate();
-        var _navigationService = GetService<INavigationService>();
-        _navigationService?.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
+        //TODO navigationService
+        //var _navigationService = GetService<INavigationService>();
+        //_navigationService?.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
     }
 }

@@ -1,6 +1,4 @@
-﻿using WinUICommunity;
-
-namespace LiftDataManager.Common;
+﻿namespace LiftDataManager.Common;
 
 public static class Constants
 {
