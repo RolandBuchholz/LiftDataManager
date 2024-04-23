@@ -33,6 +33,7 @@
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:StringToBoolInvertConverter x:Key="StringToBoolInvertConverter" />
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -1339,14 +1340,40 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth1, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight1, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_InfoSpiegel'], Mode=TwoWay}"
@@ -1362,14 +1389,40 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth2, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel2'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight2, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel2'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     Grid.Row="3"
@@ -1381,14 +1434,40 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth3, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel3'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight3, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel3'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     Grid.Row="4"

@@ -347,6 +347,14 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         }
     }
 
+    private void AktivateAutoMirrorCalculation() 
+    {
+       if (string.IsNullOrWhiteSpace(ParameterDictionary["var_BreiteSpiegel"].Value) && string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheSpiegel"].Value))
+       {
+            ParameterDictionary["var_AutoDimensionsMirror"].AutoUpdateParameterValue("True");
+       }
+    }
+
     [RelayCommand]
     private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
 
@@ -390,6 +398,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetDistanceBetweenDoors();
             CheckIsDefaultCarTyp();
             SetHandRailHeight();
+            AktivateAutoMirrorCalculation();
         }
     }
 
