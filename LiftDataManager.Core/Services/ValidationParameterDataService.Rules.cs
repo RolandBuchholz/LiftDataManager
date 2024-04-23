@@ -1257,8 +1257,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateMirrorDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
     {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutoDimensionsMirror"))
+            return;
+        
         List<string> mirrors = [];
-
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
@@ -1268,38 +1270,83 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
             mirrors.Add("D");
 
-        if (mirrors.Count == 0)
-        {
-            ParameterDictionary["var_BreiteSpiegel"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
-        }
+        var mirrorWidth = string.Empty;
+        var mirrorHeight = string.Empty;
+        var mirrorWidth2 = string.Empty;
+        var mirrorHeight2 = string.Empty;
+        var mirrorWidth3 = string.Empty;
+        var mirrorHeight3 = string.Empty;
+        var mirrorDistanceLeft = string.Empty;
+        var mirrorDistanceLeft2 = string.Empty;
+        var mirrorDistanceLeft3 = string.Empty;
+        var mirrorDistanceCeiling = string.Empty;
+        var mirrorDistanceCeiling2 = string.Empty;
+        var mirrorDistanceCeiling3 = string.Empty;
+
         if (mirrors.Count == 1)
         {
-            ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
-        }
-        if (mirrors.Count == 2)
-        {
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
-        }
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
 
-        //TODO ChangeDimensionsBY
-        //use CalculationsModuleService by Korrekturmaßen (Spiegelbreite, Spiegelhöhe, SpiegelAbstand Decke, Versatz Kabinenmitte)
-        //Kabinentiefe
-        //Kabinenbreite
-        //Kabinenhöhe
-        //Sockelleistenhöhe
-        //Handlaufhöhe
-        //Handlaufausführung
-        //Paneelematerial ??
-        //Paneelematerial Wände ??
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
+        }
+        else if (mirrors.Count == 2)
+        {
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
+            var mirrorWidthSet2 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[1], 2);
+            var mirrorHeightSet2 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[1], 2);
+
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
+
+            mirrorWidth2 = mirrorWidthSet2.Item1.ToString();
+            mirrorHeight2 = mirrorHeightSet2.Item1.ToString();
+            mirrorDistanceLeft2 = mirrorWidthSet2.Item2.ToString();
+            mirrorDistanceCeiling2 = mirrorHeightSet2.Item2.ToString();
+        }
+        else if (mirrors.Count == 3)
+        {
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
+            var mirrorWidthSet2 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[1], 2);
+            var mirrorHeightSet2 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[1], 2);
+            var mirrorWidthSet3 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[2], 3);
+            var mirrorHeightSet3 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[2], 3);
+
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
+
+            mirrorWidth2 = mirrorWidthSet2.Item1.ToString();
+            mirrorHeight2 = mirrorHeightSet2.Item1.ToString();
+            mirrorDistanceLeft2 = mirrorWidthSet2.Item2.ToString();
+            mirrorDistanceCeiling2 = mirrorHeightSet2.Item2.ToString();
+
+            mirrorWidth3 = mirrorWidthSet3.Item1.ToString();
+            mirrorHeight3 = mirrorHeightSet3.Item1.ToString();
+            mirrorDistanceLeft3 = mirrorWidthSet3.Item2.ToString();
+            mirrorDistanceCeiling3 = mirrorHeightSet3.Item2.ToString();
+        }
+   
+        ParameterDictionary["var_BreiteSpiegel"].AutoUpdateParameterValue(mirrorWidth);
+        ParameterDictionary["var_HoeheSpiegel"].AutoUpdateParameterValue(mirrorHeight);
+        ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(mirrorWidth2);
+        ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(mirrorHeight2);
+        ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(mirrorWidth3);
+        ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(mirrorHeight3);
+        ParameterDictionary["var_AbstandSpiegelvonLinks"].AutoUpdateParameterValue(mirrorDistanceLeft);
+        ParameterDictionary["var_AbstandSpiegelvonLinks2"].AutoUpdateParameterValue(mirrorDistanceLeft2);
+        ParameterDictionary["var_AbstandSpiegelvonLinks3"].AutoUpdateParameterValue(mirrorDistanceLeft3);
+        ParameterDictionary["var_AbstandSpiegelDecke"].AutoUpdateParameterValue(mirrorDistanceCeiling);
+        ParameterDictionary["var_AbstandSpiegelDecke2"].AutoUpdateParameterValue(mirrorDistanceCeiling2);
+        ParameterDictionary["var_AbstandSpiegelDecke3"].AutoUpdateParameterValue(mirrorDistanceCeiling3);
     }
 
     private void ValidateDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1587,7 +1634,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 case "C":
                     ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
                     ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
-                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("True");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("True");
                     break;
                 case "D":
                     ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("True");

@@ -249,10 +249,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_KBI",
             [new(ValidateCarEntranceRightSide, "None", null),
-             new(ValidateCarCeilingDetails, "None", null) ]);
+             new(ValidateCarCeilingDetails, "None", null),
+             new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_KTI",
-            [new(ValidateCarEntranceRightSide, "None", null)]);
+            [new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_L1",
             [new(ValidateCarEntranceRightSide, "None", null)]);
@@ -530,6 +532,66 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Bausatzlage",
             [new(ValidateCarFramePosition, "None", null)]);
+
+        ValidationDictionary.Add("var_AutoDimensionsMirror",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_SpiegelPaneel",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosA",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosB",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosC",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosD",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_KHRoh",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheHandlauf",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_SockelleisteOKFF",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufA",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufB",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufC",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufD",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur2",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur3",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur2",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur3",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_Spiegelausfuehrung",
+            [new(ValidateMirrorDimensions, "None", null)]);
 
         AddDropDownListValidation();
     }

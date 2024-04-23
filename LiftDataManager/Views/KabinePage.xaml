@@ -1394,63 +1394,78 @@
                                     Grid.Row="4"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*,*">
-                                    <SpeziControls:ParameterCheckBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Spiegelpaneel" />
-                                                <Image
-                                                    Width="350"
-                                                    Height="350"
-                                                    Source="/Images/CarDetails/MirrorPanel.png" />
-                                                <TextBlock
-                                                    Margin="5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="12"
-                                                    FontWeight="Bold"
-                                                    Text="VSG-Spiegel (3/0,76/3) direkt verklebt" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterCheckBox>
-                                    <SpeziControls:ParameterCheckBox
-                                        Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Spiegelleiste" />
-                                                <Image
-                                                    Width="350"
-                                                    Height="350"
-                                                    Source="/Images/CarDetails/MirrorRail.png" />
-                                                <TextBlock
-                                                    Margin="5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="12"
-                                                    FontWeight="Bold"
-                                                    Text="VSG-Spiegel (3/0,76/3) in Leisten gehalten" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterCheckBox>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
+                                    ColumnDefinitions="2*,*,*">
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelpaneel" />
+                                                    <Image
+                                                        Width="350"
+                                                        Height="350"
+                                                        Source="/Images/CarDetails/MirrorPanel.png" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Text="VSG-Spiegel (3/0,76/3) direkt verklebt" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelleiste" />
+                                                    <Image
+                                                        Width="350"
+                                                        Height="350"
+                                                        Source="/Images/CarDetails/MirrorRail.png" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Text="VSG-Spiegel (3/0,76/3) in Leisten gehalten" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelgrößenberechnung" />
+                                                    <TextBlock Margin="5" FontSize="12">
+                                                        <Span>Spiegelgrößen werden automatisch ermittelt</Span><LineBreak />
+                                                        <Span>Korrekturmaße können in den Detaileingaben</Span><LineBreak />
+                                                        <Span>Kabine gesetzt werden</Span>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                    </StackPanel>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -24,6 +24,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     private double kabinenbreite;
     private double kabinentiefe;
+    private double kabinenhoehe;
     bool zugangA;
     bool zugangB;
     bool zugangC;
@@ -49,6 +50,31 @@ public partial class CalculationsModuleService : ICalculationsModule
         _logger = logger;
 
         InitializeTableData();
+    }
+
+    private void SetDefaultParameter(ObservableDictionary<string, Parameter> parameterDictionary)
+    {
+        kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
+        kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
+        kabinenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht");
+        zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
+        zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
+        zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
+        zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
+        anzahlKabinentueren = NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
+        tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
+        tuerbreiteB = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_B");
+        tuerbreiteC = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_C");
+        tuerbreiteD = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_D");
+        tuerhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TH");
+        halsL1 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L1");
+        halsR1 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R1");
+        halsL2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L2");
+        halsR2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R2");
+        halsL3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L3");
+        halsR3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R3");
+        halsL4 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L4");
+        halsR4 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R4");
     }
 
     private void InitializeTableData()
@@ -160,7 +186,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return drivePosition;
     }
 
-    public string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter>? parameterDictionary, string orientation)
+    public string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter> parameterDictionary, string orientation)
     {
         double distanceBetweenDoors;
         string? walltyp;
@@ -183,7 +209,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return $"{orientation} von Türblatt zu {walltyp}: {distanceBetweenDoors} mm";
     }
 
-    public int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public int GetNumberOfCardoors(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
         zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
@@ -192,7 +218,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
     }
 
-    public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         const int tuerspalt = 4;
         const int luftspaltoeffnung = 10;
@@ -260,18 +286,18 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         string aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
 
         var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
-                                                        .ToList()
-                                                        .FirstOrDefault(x => x.Name == aufzugstyp);
+                                                          .ToList()
+                                                          .FirstOrDefault(x => x.Name == aufzugstyp);
         var cargoTyp = cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
 
         var driveSystemDB = _parametercontext.Set<LiftType>().Include(i => i.DriveType)
-                                                           .ToList()
-                                                           .FirstOrDefault(x => x.Name == aufzugstyp);
+                                                             .ToList()
+                                                             .FirstOrDefault(x => x.Name == aufzugstyp);
         var driveSystem = driveSystemDB is not null ? driveSystemDB.DriveType!.Name! : "";
 
         SetDefaultParameter(parameterDictionary);
@@ -322,7 +348,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         const double gewichtDecke = 42.6;
         const double abgehaengteDeckeGewichtproQm = 24;
@@ -597,7 +623,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         var carRailSurface = string.Empty;
         var lubrication = string.Empty;
@@ -675,36 +701,12 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    private void SetDefaultParameter(ObservableDictionary<string, Parameter>? parameterDictionary)
-    {
-        kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
-        kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
-        zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
-        zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_B");
-        zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_C");
-        zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_D");
-        anzahlKabinentueren = NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
-        tuerbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB");
-        tuerbreiteB = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_B");
-        tuerbreiteC = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_C");
-        tuerbreiteD = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TB_D");
-        tuerhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TH");
-        halsL1 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L1");
-        halsR1 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R1");
-        halsL2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L2");
-        halsR2 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R2");
-        halsL3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L3");
-        halsR3 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R3");
-        halsL4 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_L4");
-        halsR4 = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_R4");
-    }
-
     public static int NumberOfCardoors(bool zugangA, bool zugangB, bool zugangC, bool zugangD)
     {
         return Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
     }
 
-    private double GetCarDoorArea(ObservableDictionary<string, Parameter>? parameterDictionary, string zugang)
+    private double GetCarDoorArea(ObservableDictionary<string, Parameter> parameterDictionary, string zugang)
     {
         double tuerbreiteZugang;
         double tuerEinbau;
@@ -868,14 +870,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         return personenAnzahl.FirstValue;
     }
 
-    public double GetCarFrameWeight(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public double GetCarFrameWeight(ObservableDictionary<string, Parameter> parameterDictionary)
     {
 
-        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_Rahmengewicht"].Value))
+        if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Rahmengewicht"].Value))
         {
             return LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Rahmengewicht");
         }
-        else if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_Bausatz"].Value))
+        else if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Bausatz"].Value))
         {
             var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary!["var_Bausatz"].Value);
             if (carFrameType is null)
@@ -888,9 +890,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
-    public CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-        return _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary!["var_Bausatz"].Value);
+        return _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary["var_Bausatz"].Value);
     }
 
     public void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt)
@@ -909,7 +911,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
-    public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter>? parameterDictionary)
+    public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary)
     {
 
         //var shaftdoor = "";
@@ -1083,7 +1085,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
+    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
     {
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
@@ -1197,6 +1199,86 @@ public partial class CalculationsModuleService : ICalculationsModule
             bufferDetails = $"{buffer.Manufacturer} {buffer.Name} ( Ø{buffer.Diameter} x {buffer.Height} )  min Last: {minLoad} kg  max Last: {maxLoad} kg";
         }
         return bufferDetails;
+    }
+
+    public (double,double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
+    {
+        kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
+        kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
+        double mirrorCorrectionWidth = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_BreiteSpiegelKorrektur" 
+                                                                                                                         : $"var_BreiteSpiegelKorrektur{index}");
+        string mirrorDistanceLeftString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelvonLinks"
+                                                                                                                         : $"var_AbstandSpiegelvonLinks{index}");
+        bool mirrorIsPanel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
+        bool hasPanelSideA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosA");
+        bool hasPanelSideB = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosB");
+        bool hasPanelSideC = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosC");
+        bool hasPanelSideD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_PaneelPosD");
+
+        double defaultGap = mirrorIsPanel ? 3d : 5d;
+        double gapA = hasPanelSideA ? 10d : defaultGap;
+        double gapB = hasPanelSideB ? 10d : defaultGap;
+        double gapC = hasPanelSideC ? 10d : defaultGap;
+        double gapD = hasPanelSideD ? 10d : defaultGap;
+
+        double mirrorDistanceLeft = wallSide switch
+        {
+            "A" => hasPanelSideB ? 10d : defaultGap,
+            "B" => hasPanelSideC ? 10d : defaultGap,
+            "C" => hasPanelSideD ? 10d : defaultGap,
+            "D" => hasPanelSideA ? 10d : defaultGap,
+            _ => 0d
+        };
+        
+        if (!string.IsNullOrWhiteSpace(mirrorDistanceLeftString))
+        {
+            if (double.TryParse(mirrorDistanceLeftString, out double oldValue))
+            {
+                if (oldValue != 3d && oldValue != 5d && oldValue != 10d)
+                    mirrorDistanceLeft = oldValue;
+            }
+        }
+
+        var width = wallSide == "A" || wallSide == "C" ? kabinenbreite - gapB - gapD + mirrorCorrectionWidth : kabinentiefe - gapA - gapC + mirrorCorrectionWidth;
+        return (width, mirrorDistanceLeft);    
+    }
+
+    public (double, double) GetMirrorHeight(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
+    {
+        kabinenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht");
+        double skirtingBoardsHeight = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_SockelleisteOKFF");
+        double handRailHeight = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_HoeheHandlauf");
+        double mirrorCorrectionHeight = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_HoeheSpiegelKorrektur"
+                                                                                                                          : $"var_HoeheSpiegelKorrektur{index}");
+        string mirrorDistanceCeilingString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelDecke"
+                                                                                                                               : $"var_AbstandSpiegelDecke{index}");
+        bool mirrorIsPanel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
+        
+        double mirrorDistanceCeiling = mirrorIsPanel ? 3d : 20d;
+        double mirrorDistanceBottom = mirrorIsPanel ? 3d : 30d;
+
+        if (!string.IsNullOrWhiteSpace(mirrorDistanceCeilingString))
+        {
+            if (double.TryParse(mirrorDistanceCeilingString, out double oldValue))
+            {
+                if (oldValue != 3d && oldValue != 20d)
+                    mirrorDistanceCeiling = oldValue;
+            }
+        }
+
+        double handRailTypCorrectionHeight = 0d;
+        if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Spiegelausfuehrung"].Value))
+            handRailTypCorrectionHeight = parameterDictionary["var_Spiegelausfuehrung"].Value!.Contains("HL13") ? 32d : 0d;
+        
+        var mirrorDistanceFloor = parameterDictionary["var_Spiegelausfuehrung"].Value switch
+        {
+            "halbhoher Spiegel" => handRailHeight == 0 ? 900 : handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight,
+            "raumhoher Spiegel" => skirtingBoardsHeight + mirrorDistanceBottom,
+            _ => LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, $"var_Handlauf{wallSide}") ? handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight
+                                                                                                           : skirtingBoardsHeight + mirrorDistanceBottom,
+        };
+        var height = kabinenhoehe - mirrorDistanceCeiling - mirrorDistanceFloor + mirrorCorrectionHeight;
+        return (height, mirrorDistanceCeiling);
     }
 
     //Database

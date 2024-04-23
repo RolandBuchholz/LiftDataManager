@@ -13,9 +13,9 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
@@ -895,8 +895,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -908,8 +912,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_pro_Schiene_auf_Grundelement_GGW_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -921,8 +929,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -934,8 +946,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_GGW'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Belastung_Pufferstuetze_auf_Grundelement_GGW_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -947,8 +963,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FxF'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FxF'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FxF_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -960,8 +980,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FyF'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FyF'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FyF_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -973,8 +997,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FxFA_GGW'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FxFA_GGW'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FxFA_GGW_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -986,8 +1014,12 @@
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_FyFA_GGW'].Value, Mode=OneWay}" />
+                                        VerticalAlignment="Center">
+                                        <Span>(</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FyFA_GGW'].Value, Mode=OneWay}" />
+                                        <Span>)</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_FyFA_GGW_AZ'].Value, Mode=OneWay}" />
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -999,20 +1031,28 @@
                                     FontWeight="Medium"
                                     Text="Anschlusswerte" />
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Nennstrom Netz (aufgerundet + 10A):" />
+                                    <TextBlock VerticalAlignment="Center" Text="">
+                                        <Span>Nennstrom Netz (</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Nennstrom'].Value, Mode=OneWay}" />
+                                        <Span>A aufgerundet + 10A):</Span>
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Nennstrom'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Nennstrom_AZ'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
                                         Text="A" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Maximale Netzstromaufnahme (Netzstrom x 1,8 + 10A):" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Span>Maximale Netzstromaufnahme (</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Nennstrom'].Value, Mode=OneWay}" />
+                                        <Span>A x 1,8 + 10A):</Span>
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -1025,17 +1065,21 @@
                                         Text="A" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Leistung Netz (aufgerundet  + 2kW):" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Span>Leistung Netz (</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Leistung'].Value, Mode=OneWay}" />
+                                        <Span>kW aufgerundet  + 2kW):</Span>
+                                    </TextBlock>
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Leistung'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Leistung_AZ'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
-                                        Text="KW" />
+                                        Text="kW" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Spannung Netz:" />
@@ -1061,7 +1105,7 @@
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
-                                        Text="KW" />
+                                        Text="kW" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
                                     <TextBlock VerticalAlignment="Center" Text="Bemessungsspannung Motor:" />
@@ -1096,7 +1140,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_FE_'].Value, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Strom_Maximalmoment'].Value, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
