@@ -431,13 +431,17 @@ public partial class CalculationsModuleService : ICalculationsModule
         double tableauBreite = GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
         double belagAufDerDeckeGewichtproQm = GetGewichtSonderblech(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
         double paneeleGewichtproQm = GetGewichtPaneele(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Paneelmaterial"));
-        double stossleisteGewichtproMeter = Math.Round(GetGewichtRammschutz(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz")), 2);
+        double sockelleisteGewichtproMeter = Math.Round(GetGewichtSockelleiste(parameterDictionary, LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste")), 2);
+
+        (double, int) stossleisteData = GetGewichtRammschutz(parameterDictionary, LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz"));
+        double stossleisteGewichtproMeter = Math.Round(stossleisteData.Item1, 2);
+        int anzahlReihenStossleiste = stossleisteData.Item2;
 
         //Calculations
         double bodengewicht = kabinenbreite * kabinentiefe * bodenblech * 7.85 / Math.Pow(10, 6) +
-                                    ((((kabinenbreite / 230) + 1 + ((kabinenbreite > 2000) ? 1 : 0)) * kabinentiefe / 1000 +
-                                    (((kabinenbreite > 1250) || (kabinentiefe > 2350)) ? 3 : 2) * kabinenbreite / 1000 +
-                                    anzahlKabinentueren * tuerbreite / 1000) * bodenProfilGewicht);
+                              ((((kabinenbreite / 230) + 1 + ((kabinenbreite > 2000) ? 1 : 0)) * kabinentiefe / 1000 +
+                              (((kabinenbreite > 1250) || (kabinentiefe > 2350)) ? 3 : 2) * kabinenbreite / 1000 +
+                              anzahlKabinentueren * tuerbreite / 1000) * bodenProfilGewicht);
         var kabinenBodengewicht =
             bodenTyp switch
             {
@@ -450,38 +454,38 @@ public partial class CalculationsModuleService : ICalculationsModule
         var bodenBelagGewicht = kabinenbreite * kabinentiefe * bodenBelagGewichtproQm / Math.Pow(10, 6);
 
         var glasLaengeWandA = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Eingangswand")).StartsWith("VSG")
-                                         ? (kabinenbreite - Convert.ToInt32(zugangA) * tuerbreite) / 1000 : 0;
+                              ? (kabinenbreite - Convert.ToInt32(zugangA) * tuerbreite) / 1000 : 0;
         var glasLaengeWandB = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Seitenwaende")).Contains("Seite B")
-                                         ? (kabinentiefe - Convert.ToInt32(zugangB) * tuerbreiteB) / 1000 : 0;
+                              ? (kabinentiefe - Convert.ToInt32(zugangB) * tuerbreiteB) / 1000 : 0;
         var glasLaengeWandC = ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rueckwand")).StartsWith("VSG")
-                                         ? (kabinenbreite - Convert.ToInt32(zugangC) * tuerbreiteC) / 1000 : 0;
+                              ? (kabinenbreite - Convert.ToInt32(zugangC) * tuerbreiteC) / 1000 : 0;
         var glasLaengeWandD = (((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Seitenwaende")).Contains("Seite D") ||
-                                         ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Seitenwaende")).Contains("Seite B/D"))
-                                         ? (kabinentiefe - Convert.ToInt32(zugangD) * tuerbreiteD) / 1000 : 0;
+                              ((string)LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Seitenwaende")).Contains("Seite B/D"))
+                              ? (kabinentiefe - Convert.ToInt32(zugangD) * tuerbreiteD) / 1000 : 0;
 
         var schottenLaenge = (!zugangB ? glasLaengeWandB > 0 ? 0 : kabinentiefe : 0) +
-                                     (!zugangC ? glasLaengeWandC > 0 ? 0 : kabinenbreite : 0) +
-                                     (!zugangD ? glasLaengeWandD > 0 ? 0 : kabinentiefe : 0);
+                             (!zugangC ? glasLaengeWandC > 0 ? 0 : kabinenbreite : 0) +
+                             (!zugangD ? glasLaengeWandD > 0 ? 0 : kabinentiefe : 0);
 
         var schottengewicht = schottenLaenge > 0 ? schottenStaerke * (kabineundAbgehaengteDeckeHoehe + 161) * 339 * 8 / Math.Pow(10, 6) * (schottenLaenge / 275) : 0;
 
         var haelsegewicht = schottenStaerke * ((kabineundAbgehaengteDeckeHoehe + 86) *
-                                   ((halsL1 + halsR1 + halsL2 + halsR2 + halsL3 + halsR3 + halsL4 + halsR4) + anzahlKabinentueren * 214 +
-                                   anzahlKabinentueren * (oeffnungsrichtung.StartsWith("einseitig öffnend") ? anzahlKabinentuerfluegel * 45 : 0))
-                                   + anzahlKabinentueren * (tuerbreite + 104) * (kabineundAbgehaengteDeckeHoehe - tuerhoehe + 99)) * 8 / Math.Pow(10, 6);
+                            ((halsL1 + halsR1 + halsL2 + halsR2 + halsL3 + halsR3 + halsL4 + halsR4) + anzahlKabinentueren * 214 +
+                            anzahlKabinentueren * (oeffnungsrichtung.StartsWith("einseitig öffnend") ? anzahlKabinentuerfluegel * 45 : 0))
+                            + anzahlKabinentueren * (tuerbreite + 104) * (kabineundAbgehaengteDeckeHoehe - tuerhoehe + 99)) * 8 / Math.Pow(10, 6);
+
         var andidroehnGewicht = 2 * 1000 * 150 * 1.36 / Math.Pow(10, 6) * (schottenLaenge / 275);
 
         var schuerzeGewicht = (kabinenbreite > 0 && kabinenbreite > 0) ?
-                                     anzahlKabinentueren * (((schuerzeVerstaerkt ? 5 : 3) * 1.5 * (tuerbreite - 100) *
-                                     266 + 1.5 * tuerbreite * 800 + (tuerbreite / 300 + 1) *
-                                     1.5 * 380 * 109 + 7 * (schuerzeVerstaerkt ? 5 : 3) * 100 * 81) * 8 / Math.Pow(10, 6)) : 0;
+                              anzahlKabinentueren * (((schuerzeVerstaerkt ? 5 : 3) * 1.5 * (tuerbreite - 100) *
+                              266 + 1.5 * tuerbreite * 800 + (tuerbreite / 300 + 1) *
+                              1.5 * 380 * 109 + 7 * (schuerzeVerstaerkt ? 5 : 3) * 100 * 81) * 8 / Math.Pow(10, 6)) : 0;
 
         var deckegewicht = kabinenbreite * kabinentiefe * gewichtDecke / Math.Pow(10, 6);
+
         var gewichtAbgehaengteDecke = abgehaengteDecke ? kabinenbreite * kabinentiefe * abgehaengteDeckeGewichtproQm / Math.Pow(10, 6) : 0;
 
         var deckeBelegtGewicht = belegteDecke ? kabinenbreite * kabinentiefe * deckeBelegtGewichtproQm / Math.Pow(10, 6) : 0;
-
-
         var belagAufDerDeckeGewicht = belagAufDerDecke ? Math.Round(kabinenbreite * kabinentiefe * belagAufDerDeckeGewichtproQm / Math.Pow(10, 6)) : 0;
 
         var spiegelQm = !spiegelPaneel ? (spiegelHoehe * spiegelBreite + spiegelHoehe2 * spiegelBreite2 + spiegelHoehe3 * spiegelBreite3) / Math.Pow(10, 6) : 0;
@@ -500,44 +504,43 @@ public partial class CalculationsModuleService : ICalculationsModule
         var vSGTyp = (glasLaengeWandA > 1 || glasLaengeWandB > 1 || glasLaengeWandC > 1 || glasLaengeWandD > 1) ? "VSG 12" : "VSG 10";
         var vSGGewichtproQm = (vSGTyp == "VSG 10") ? 25.0 : 30.0;
         var vSGQm = ((glasLaengeWandA > 0.15 ? glasLaengeWandA - 0.15 : 0) +
-                                       (glasLaengeWandB > 0.15 ? glasLaengeWandB - 0.15 : 0) +
-                                       (glasLaengeWandC > 0.15 ? glasLaengeWandC - 0.15 : 0) +
-                                       (glasLaengeWandD > 0.15 ? glasLaengeWandD - 0.15 : 0) -
-                                       ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0))
-                                       * (kabineundAbgehaengteDeckeHoehe > 0 ? (kabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
+                    (glasLaengeWandB > 0.15 ? glasLaengeWandB - 0.15 : 0) +
+                    (glasLaengeWandC > 0.15 ? glasLaengeWandC - 0.15 : 0) +
+                    (glasLaengeWandD > 0.15 ? glasLaengeWandD - 0.15 : 0) -
+                    ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0))* 
+                    (kabineundAbgehaengteDeckeHoehe > 0 ? (kabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
         var vSGGewicht = vSGQm * vSGGewichtproQm;
 
         int aussenVerkleidungenmitTueren = Convert.ToInt32(aussenverkleidungA) * Convert.ToInt32(zugangA) +
-                                         Convert.ToInt32(aussenverkleidungB) * Convert.ToInt32(zugangB) +
-                                         Convert.ToInt32(aussenverkleidungC) * Convert.ToInt32(zugangC) +
-                                         Convert.ToInt32(aussenverkleidungD) * Convert.ToInt32(zugangD);
+                                           Convert.ToInt32(aussenverkleidungB) * Convert.ToInt32(zugangB) +
+                                           Convert.ToInt32(aussenverkleidungC) * Convert.ToInt32(zugangC) +
+                                           Convert.ToInt32(aussenverkleidungD) * Convert.ToInt32(zugangD);
 
         var aussenVerkleidungQm = (aussenverkleidungA || aussenverkleidungB || aussenverkleidungC || aussenverkleidungD) ?
-                                        (((Convert.ToInt32(aussenverkleidungA) + Convert.ToInt32(aussenverkleidungC)) * kabinenbreite / 1000) +
-                                        ((Convert.ToInt32(aussenverkleidungB) + Convert.ToInt32(aussenverkleidungD)) * kabinentiefe / 1000)) * kabinenhoeheAussen / 1000 -
+                                  (((Convert.ToInt32(aussenverkleidungA) + Convert.ToInt32(aussenverkleidungC)) * kabinenbreite / 1000) +
+                                  ((Convert.ToInt32(aussenverkleidungB) + Convert.ToInt32(aussenverkleidungD)) * kabinentiefe / 1000)) * kabinenhoeheAussen / 1000 -
                                         aussenVerkleidungenmitTueren * (tuerbreite / 1000 * tuerhoehe / 1000) : 0;
         var aussenVerkleidungGewicht = Math.Round(aussenVerkleidungQm * aussenVerkleidungGewichtproQm, 0);
 
         var stossleisteLaenge = ((Convert.ToInt32(rammschutzA) + Convert.ToInt32(rammschutzC)) * kabinenbreite / 1000) +
-                                        ((Convert.ToInt32(rammschutzB) + Convert.ToInt32(rammschutzD)) * kabinentiefe / 1000);
-        var stossleisteGewicht = stossleisteGewichtproMeter * stossleisteLaenge;
+                                ((Convert.ToInt32(rammschutzB) + Convert.ToInt32(rammschutzD)) * kabinentiefe / 1000);
+        var stossleisteGewicht = stossleisteGewichtproMeter * anzahlReihenStossleiste * stossleisteLaenge;
 
         var handlaufGewichtproMeter = GetGewichtHandlauf(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Handlauf"));
         var handlaufLaenge = ((Convert.ToInt32(handlaufA) + Convert.ToInt32(handlaufC)) * kabinenbreite / 1000) +
-                                        ((Convert.ToInt32(handlaufB) + Convert.ToInt32(handlaufD)) * kabinentiefe / 1000);
+                             ((Convert.ToInt32(handlaufB) + Convert.ToInt32(handlaufD)) * kabinentiefe / 1000);
         var handlaufGewicht = handlaufGewichtproMeter * handlaufLaenge;
 
-        var sockelleisteGewichtproMeter = GetGewichtSockelleiste(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
         var sockelleisteLaenge = ((Convert.ToInt32(sockelleisteA) + Convert.ToInt32(sockelleisteC)) * kabinenbreite / 1000) +
-                                        ((Convert.ToInt32(sockelleisteB) + Convert.ToInt32(sockelleisteD)) * kabinentiefe / 1000);
+                                 ((Convert.ToInt32(sockelleisteB) + Convert.ToInt32(sockelleisteD)) * kabinentiefe / 1000);
         var sockelleisteGewicht = sockelleisteLaenge * sockelleisteGewichtproMeter;
 
         //<!--  KabinenZubehör  -->
         var schutzgelaenderAnzahlPfosten = Math.Ceiling(kabinentiefe / 400 * 2 + kabinenbreite / 400 + 2);
         var schutzgelaenderGewicht = (kabinenbreite > 0 && kabinenbreite > 0) ?
-                                  ((2 * 3 * 1.5 * (kabinentiefe > 0 ? (kabinentiefe - 250) : 0) * 137 +
-                                  (anzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * kabinenbreite * 137) * 8 / Math.Pow(10, 6) +
-                                   (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * schutzgelaenderAnzahlPfosten) : 0;
+                                     ((2 * 3 * 1.5 * (kabinentiefe > 0 ? (kabinentiefe - 250) : 0) * 137 +
+                                     (anzahlKabinentueren > 1 ? 0 : 1) * 3 * 1.5 * kabinenbreite * 137) * 8 / Math.Pow(10, 6) +
+                                     (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * schutzgelaenderAnzahlPfosten) : 0;
         var klemmkastenGewicht = (kabinenbreite > 0 && kabinenbreite > 0) ? gewichtKlemmkasten : 0;
         var schraubenZubehoerGewicht = (kabinenbreite > 0 && kabinenbreite > 0) ? gewichtSchraubenZubehoer : 0;
 
@@ -549,10 +552,10 @@ public partial class CalculationsModuleService : ICalculationsModule
                                       kabinenGewichtCAD;
 
         double kabinenTuerGewicht = variableTuerdaten ? (zugangA ? kabinentuerGewichtA : 0) +
-                                                                (zugangB ? kabinentuerGewichtB : 0) +
-                                                                (zugangC ? kabinentuerGewichtC : 0) +
-                                                                (zugangD ? kabinentuerGewichtD : 0)
-                                                               : kabinentuerGewichtA * anzahlKabinentueren;
+                                                        (zugangB ? kabinentuerGewichtB : 0) +
+                                                        (zugangC ? kabinentuerGewichtC : 0) +
+                                                        (zugangD ? kabinentuerGewichtD : 0)
+                                                      : kabinentuerGewichtA * anzahlKabinentueren;
 
         var fangrahmenGewicht = GetCarFrameWeight(parameterDictionary);
 
@@ -605,6 +608,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             AussenVerkleidungQm = aussenVerkleidungQm,
             AussenVerkleidungGewicht = aussenVerkleidungGewicht,
             StossleisteLaenge = stossleisteLaenge,
+            AnzahlReihenStossleiste = anzahlReihenStossleiste,
             StossleisteGewicht = stossleisteGewicht,
             HandlaufLaenge = handlaufLaenge,
             HandlaufGewicht = handlaufGewicht,
@@ -704,6 +708,17 @@ public partial class CalculationsModuleService : ICalculationsModule
     public static int NumberOfCardoors(bool zugangA, bool zugangB, bool zugangC, bool zugangD)
     {
         return Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
+    }
+
+    public int GetRammingProtectionRows(ObservableDictionary<string, Parameter> parameterDictionary, string? rammingProtectionTyp)
+    {
+        if (string.IsNullOrWhiteSpace(rammingProtectionTyp))
+            return -1;
+        var rammingProtectionTypDB = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammingProtectionTyp);
+        if (rammingProtectionTypDB is null)
+            return -1;
+
+            return rammingProtectionTypDB.NumberOfRows;
     }
 
     private double GetCarDoorArea(ObservableDictionary<string, Parameter> parameterDictionary, string zugang)
@@ -1313,14 +1328,17 @@ public partial class CalculationsModuleService : ICalculationsModule
         return coverPanel.WeightPerSquareMeter;
     }
 
-    private double? GetGewichtRammschutz(string rammschutz)
+    private (double, int) GetGewichtRammschutz(ObservableDictionary<string, Parameter> parameterDictionary, string rammschutz)
     {
         if (string.IsNullOrEmpty(rammschutz))
-            return 0;
+            return (0, 0);
+        if (string.Equals(rammschutz, "Rammschutz siehe Beschreibung"))
+            return (LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_RammschutzGewichtBenutzerdefiniert"),
+                   LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlReihenRammschutz"));
         var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammschutz);
         if (rammingProtection is null)
-            return 0;
-        return rammingProtection.WeightPerMeter;
+            return (0, 0);
+        return (rammingProtection.WeightPerMeter, rammingProtection.NumberOfRows);
     }
 
     private double? GetGewichtHandlauf(string handlauf)
@@ -1333,19 +1351,21 @@ public partial class CalculationsModuleService : ICalculationsModule
         return handrail.WeightPerMeter;
     }
 
-    private double? GetGewichtSockelleiste(string sockelleiste)
+    private double GetGewichtSockelleiste(ObservableDictionary<string, Parameter> parameterDictionary, string sockelleiste)
     {
-        if (string.IsNullOrEmpty(sockelleiste))
+        if (string.IsNullOrWhiteSpace(sockelleiste))
             return 0;
+        if (string.Equals(sockelleiste, "gemäß Beschreibung"))
+            return LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_SockelleisteGewichtBenutzerdefiniert");
         var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
         if (skirtingBoard is null)
             return 0;
         return skirtingBoard.WeightPerMeter;
     }
 
-    private double? GetHoeheSockelleiste(string sockelleiste)
+    private double GetHoeheSockelleiste(string sockelleiste)
     {
-        if (string.IsNullOrEmpty(sockelleiste))
+        if (string.IsNullOrWhiteSpace(sockelleiste))
             return 0;
         var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
         if (skirtingBoard is null)

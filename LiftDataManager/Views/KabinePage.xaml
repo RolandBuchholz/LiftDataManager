@@ -1351,7 +1351,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1370,7 +1370,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1400,7 +1400,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1419,7 +1419,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1445,7 +1445,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1464,7 +1464,7 @@
                                                     FontSize="14"
                                                     FontWeight="Bold"
                                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                                    Text="automaische Spiegelberechnung ist aktiv" />
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </SpeziControls:ParameterNumberTextBox>
@@ -1475,7 +1475,10 @@
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="2*,*,*">
                                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}"
+                                            RadioButtonGroupName="MirrorTyp"
+                                            ShowDefaultRadioButtonContent="True">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1499,8 +1502,11 @@
                                                         Text="VSG-Spiegel (3/0,76/3) direkt verklebt" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </SpeziControls:ParameterCheckBox>
-                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                        </SpeziControls:ParameterRadioButton>
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}"
+                                            RadioButtonGroupName="MirrorTyp"
+                                            ShowDefaultRadioButtonContent="True">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
                                                     <TextBlock
@@ -1524,7 +1530,7 @@
                                                         Text="VSG-Spiegel (3/0,76/3) in Leisten gehalten" />
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
-                                        </SpeziControls:ParameterCheckBox>
+                                        </SpeziControls:ParameterRadioButton>
                                         <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
                                             <ToolTipService.ToolTip>
                                                 <StackPanel>
@@ -1542,6 +1548,8 @@
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
                                         </SpeziControls:ParameterCheckBox>
+
+
                                     </StackPanel>
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
@@ -1552,14 +1560,14 @@
                             x:Name="Ausstattung"
                             Grid.Row="2"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="6"
+                                    Grid.RowSpan="8"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="4"
+                                    Grid.RowSpan="7"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -1804,8 +1812,34 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
-                                    x:Name="Ausstattung8"
+                                    x:Name="SockelleisteBenutzerDefiniert"
                                     Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="auto,auto,auto,*"
+                                    Visibility="{x:Bind ViewModel.ShowCustomSkirtingBoards, Mode=OneWay}">
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="0"
+                                        Header="benutzerdef. Höhe"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteHoeheBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="1"
+                                        Header="benutzerdef. Breite"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteBreiteBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        Header="benutzerdef. Gewicht"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteGewichtBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="kg/m" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Ausstattung8"
+                                    Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
@@ -1816,24 +1850,25 @@
                                             ShowDefaultHeader="True" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="1"
-                                            Margin="0,0,-35,0"
                                             Header="Höhe 1"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="/" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight1, Mode=OneWay}" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="2"
-                                            Margin="0,0,-35,0"
                                             Header="Höhe 2"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz2'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="/" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight2, Mode=OneWay}" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="3"
                                             Header="Höhe 3"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz3'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="mm" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight3, Mode=OneWay}" />
                                     </Grid>
                                     <Grid
                                         Grid.Column="1"
@@ -1930,8 +1965,42 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
+                                    x:Name="RammschutzBenutzerDefiniert"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="auto,auto,auto,auto,*">
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="0"
+                                        Header="Anz. Reihen"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlReihenRammschutz'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowsCount, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="1"
+                                        Header="benutzerdef. Höhe"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzHoeheBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        Header="benutzerdef. Breite"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzBreiteBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="3"
+                                        Header="benutzerdef. Gewicht"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzGewichtBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="kg/m"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                </Grid>
+                                <Grid
                                     x:Name="Ausstattung9"
-                                    Grid.Row="3"
+                                    Grid.Row="5"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
@@ -2031,7 +2100,7 @@
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung10"
-                                    Grid.Row="4"
+                                    Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">

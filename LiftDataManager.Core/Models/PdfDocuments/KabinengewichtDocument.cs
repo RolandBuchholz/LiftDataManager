@@ -218,7 +218,7 @@ public class KabinengewichtDocument : PdfBaseDocument
             table.Cell().Row(6).Column(4).PaddingLeft(30).Text($"{Math.Round(CarWeightResult.AussenVerkleidungQm, 2)} m²");
             table.Cell().Row(7).Column(1).Text("Stoßleiste");
             table.Cell().Row(7).Column(2).AlignRight().Text($"{Math.Round(CarWeightResult.StossleisteGewicht)} kg");
-            table.Cell().Row(7).Column(3).AlignRight().PaddingRight(15).Text($"{Math.Round(CarWeightResult.StossleisteGewichtproMeter, 2)} kg/m");
+            table.Cell().Row(7).Column(3).AlignRight().PaddingRight(15).Text($"({CarWeightResult.AnzahlReihenStossleiste}x) {Math.Round(CarWeightResult.StossleisteGewichtproMeter, 2)} kg/m");
             table.Cell().Row(7).Column(4).PaddingLeft(30).Text($"{Math.Round(CarWeightResult.StossleisteLaenge, 2)} m");
             table.Cell().Row(8).Column(1).Text($"Handlauf {ParameterDictionary["var_Handlauf"].Value}");
             table.Cell().Row(8).Column(2).AlignRight().Text($"{Math.Round(CarWeightResult.HandlaufGewicht)} kg");

@@ -12,5 +12,7 @@ public class RammingProtectionConfig : BaseModelBuilder<RammingProtection>
                .IsRequired();
         builder.Property(x => x.WeightPerMeter)
                .IsRequired();
+        builder.Property(x => x.NumberOfRows)
+               .IsRequired();
     }
 }

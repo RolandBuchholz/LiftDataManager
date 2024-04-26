@@ -32,6 +32,8 @@ public interface ICalculationsModule
 
     int GetNumberOfCardoors(ObservableDictionary<string, Parameter> parameterDictionary);
 
+    int GetRammingProtectionRows(ObservableDictionary<string, Parameter> parameterDictionary, string? rammingProtectionTyp);
+
     CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter> parameterDictionary);
 
     CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter> parameterDictionary);

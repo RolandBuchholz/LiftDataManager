@@ -177,16 +177,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
     }
 
-    private void ValidateRammingProtections(string name, string displayname, string? value, string? severity, string? optional = null)
-    {
-        if (value is null)
-            return;
-        if (value == "Rammschutz siehe Beschreibung")
-        {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Rammschutz |{value}| muss das Gewicht über das Kabinenkorrekturgewicht mitgegeben werden!", SetSeverity(severity)));
-        }
-    }
-
     private void ValidateTravel(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))

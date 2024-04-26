@@ -595,29 +595,47 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteD"], true, "Seite D");
                 });
-                table.Cell().Row(11).Column(3).ColumnSpan(2).Row(row =>
+                var showCustomSkirtingBoards = string.Equals(ParameterDictionary["var_Sockelleiste"].Value,"gemäß Beschreibung");
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(showCustomSkirtingBoards).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "mm", false, false, "benutzerdef. Gewicht");
+                });
+                table.Cell().Row(12).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_Rammschutz"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz"], "/", false, true, "Höhen");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz2"], "/", false, true, "");
                     row.RelativeItem(1.5f).BorderColor(Colors.BlueGrey.Darken3).BorderRight(0.1f).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz3"], "mm", false, true, "");
                 });
-                table.Cell().Row(11).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(12).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzD"], true, "Seite D");
                 });
-                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
-                table.Cell().Row(12).Column(5).ColumnSpan(2).Row(row =>
+
+                var showCustomRammingProtections = string.Equals(ParameterDictionary["var_Rammschutz"].Value, "Rammschutz siehe Beschreibung");
+                var showRammingProtectionsRowsCount = showCustomRammingProtections || 
+                                                      _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary,ParameterDictionary["var_Rammschutz"].Value) == 0;
+                table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(1).ShowIf(showRammingProtectionsRowsCount).ParameterStringCell(ParameterDictionary["var_AnzahlReihenRammschutz"], null, false, false, "Reihen");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzGewichtBenutzerdefiniert"], "kg/m", false, false, "Gewicht");
+                });
+                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
+                table.Cell().Row(14).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungD"], true, "Seite D");
                 });
-                table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
@@ -625,18 +643,18 @@ public class SpezifikationDocument : PdfBaseDocument
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelGlasRAL"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelGlasRAL"], null, false, false, "Farbton(RAL)");
                 });
-                table.Cell().Row(13).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(15).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(14).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
-                table.Cell().Row(14).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
+                table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(16).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
+                table.Cell().Row(16).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }

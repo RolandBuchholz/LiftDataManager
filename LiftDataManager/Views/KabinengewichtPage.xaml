@@ -12,9 +12,9 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
@@ -968,8 +968,12 @@
                         Grid.Row="5"
                         Grid.Column="3"
                         HorizontalAlignment="Right"
-                        Style="{StaticResource BodyTextStyle}"
-                        Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.StossleisteGewichtproMeter)}" />
+                        Style="{StaticResource BodyTextStyle}">
+                        <Run>(</Run>
+                        <Run Text="{x:Bind ViewModel.CarWeightResult.AnzahlReihenStossleiste, Mode=OneTime}" />
+                        <Run>x )</Run>
+                        <Run Text="{x:Bind sys:String.Format('{0:N2}', ViewModel.CarWeightResult.StossleisteGewichtproMeter)}" />
+                    </TextBlock>
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="4"

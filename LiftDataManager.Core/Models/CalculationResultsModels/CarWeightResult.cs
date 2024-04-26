@@ -20,6 +20,7 @@ public class CarWeightResult
     public double AussenVerkleidungGewichtproQm { get; set; }
     public double BelagAufDerDeckeGewichtproQm { get; set; }
     public double VSGGewichtproQm { get; set; }
+    public int AnzahlReihenStossleiste { get; set; }
     public double StossleisteGewichtproMeter { get; set; }
     public double HandlaufGewichtproMeter { get; set; }
     public double SockelleisteGewichtproMeter { get; set; }

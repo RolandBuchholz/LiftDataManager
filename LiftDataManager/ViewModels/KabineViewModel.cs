@@ -99,9 +99,16 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetDistanceBetweenDoors();
         }
 
-        if (message.PropertyName == "var_Sockelleiste")
+        if (message.PropertyName == "var_Sockelleiste" ||
+            message.PropertyName == "var_SockelleisteHoeheBenutzerdefiniert")
         {
             SetSkirtingBoardHeight(true);
+        }
+
+        if (message.PropertyName == "var_Rammschutz" ||
+            message.PropertyName == "var_AnzahlReihenRammschutz")
+        {
+            SetRammingProtectionSelection();
         }
 
         if (message.PropertyName == "var_Fahrkorbtyp")
@@ -185,6 +192,24 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     [ObservableProperty]
     private bool showGlassPanelsColor;
+
+    [ObservableProperty]
+    private bool showCustomSkirtingBoards;
+
+    [ObservableProperty]
+    private bool showCustomRammingProtections;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowsCount;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight1;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight2;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight3;
 
     private double _floorHeight;
 
@@ -286,21 +311,45 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
 
     private void SetSkirtingBoardHeight(bool modify)
     {
-        if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_Sockelleiste"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Sockelleiste"].Value))
         {
-            ParameterDictionary!["var_SockelleisteOKFF"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteOKFF"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"].Value = string.Empty;
+            ShowCustomSkirtingBoards = false;
         }
         else
         {
-            if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_SockelleisteOKFF"].Value) || modify)
+            if (string.IsNullOrWhiteSpace(ParameterDictionary["var_SockelleisteOKFF"].Value) || modify)
             {
-
-                var skirtingHeight = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == ParameterDictionary!["var_Sockelleiste"].Value)?.Height;
+                var skirtingHeight = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == ParameterDictionary["var_Sockelleiste"].Value)?.Height;
                 if (skirtingHeight is not null)
                 {
-                    ParameterDictionary!["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
+                    if (skirtingHeight != 0)
+                    {
+                        ParameterDictionary["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
+                        ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value = string.Empty;
+                        ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"].Value = string.Empty;
+                        ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"].Value = string.Empty;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value))
+                        {
+                            if (double.TryParse(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value, out double customSkirtingHeight))
+                            {
+                                ParameterDictionary["var_SockelleisteOKFF"].Value = (customSkirtingHeight + 10d).ToString();
+                            }
+                        }
+                        else
+                        {
+                            ParameterDictionary["var_SockelleisteOKFF"].Value = string.Empty;
+                        }
+                    }
                 }
             }
+            ShowCustomSkirtingBoards = ParameterDictionary["var_Sockelleiste"].Value == "gemäß Beschreibung";
         }
     }
 
@@ -344,6 +393,57 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         if (handrailTypSelected)
         {
             ParameterDictionary["var_HoeheHandlauf"].Value = "900";
+        }
+    }
+
+    private void SetRammingProtectionSelection()
+    {
+        var rammingProtectionTyp = ParameterDictionary["var_Rammschutz"].Value;
+
+        if (string.IsNullOrWhiteSpace(rammingProtectionTyp))
+        {
+            ParameterDictionary["var_AnzahlReihenRammschutz"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzHoeheBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzBreiteBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzGewichtBenutzerdefiniert"].Value = string.Empty;
+            ShowCustomRammingProtections = false;
+            ShowRammingProtectionsRowsCount = false;
+            ShowRammingProtectionsRowHeight1 = false;
+            ShowRammingProtectionsRowHeight2 = false;
+            ShowRammingProtectionsRowHeight3 = false;
+        }
+        else
+        {
+            ShowCustomRammingProtections = rammingProtectionTyp == "Rammschutz siehe Beschreibung";
+
+            var rammingRowsDB = _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary, rammingProtectionTyp);
+            if (rammingRowsDB != -1)
+            {
+                ShowRammingProtectionsRowsCount = rammingRowsDB == 0;
+
+                int rammingRows;
+
+                if (rammingRowsDB == 0)
+                {
+                   if (int.TryParse(ParameterDictionary["var_AnzahlReihenRammschutz"].Value, out int result))
+                   {
+                        rammingRows = result;
+                   }
+                   else
+                   {
+                        rammingRows = 1;
+                        ParameterDictionary["var_AnzahlReihenRammschutz"].Value = rammingRows.ToString();
+                   }
+                }
+                else
+                {
+                    rammingRows = rammingRowsDB;
+                    ParameterDictionary["var_AnzahlReihenRammschutz"].Value = rammingRowsDB.ToString();
+                }
+                ShowRammingProtectionsRowHeight1 = rammingRows >= 1;
+                ShowRammingProtectionsRowHeight2 = rammingRows >= 2;
+                ShowRammingProtectionsRowHeight3 = rammingRows >= 3;
+            }
         }
     }
 
@@ -398,6 +498,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetDistanceBetweenDoors();
             CheckIsDefaultCarTyp();
             SetHandRailHeight();
+            SetRammingProtectionSelection();
             AktivateAutoMirrorCalculation();
         }
     }

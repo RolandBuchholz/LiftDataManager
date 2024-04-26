@@ -373,9 +373,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_Schacht",
             [new(ValidateShaftWalls, "Informational", null)]);
 
-        ValidationDictionary.Add("var_Rammschutz",
-            [new(ValidateRammingProtections, "Informational", null)]);
-
         ValidationDictionary.Add("var_Schachtgrubenleiter",
             [new(ValidatePitLadder, "None", null)]);
 
