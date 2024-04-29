@@ -13,7 +13,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     public string? FullPathXml { get; set; }
     private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     private DateTime ZaHtmlCreationTime { get; set; }
+    private DateTime CFPCreationTime { get; set; }
     private Dictionary<string, string> ZliDataDictionary { get; set; }
+    private Dictionary<string, string> CFPDataDictionary { get; set; }
     private Dictionary<string, List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = [];
     private List<ParameterStateInfo> ValidationResult { get; set; }
     private readonly ParameterContext _parametercontext;
@@ -24,6 +26,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         IsActive = true;
         ParameterDictionary ??= [];
         ZliDataDictionary ??= [];
+        CFPDataDictionary ??= [];
         ValidationResult ??= [];
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -118,10 +121,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateCounterweightMass, "None", null),
             new(ValidateCarArea, "Error", null),
             new(ValidateSafetyRange, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateZAliftData, "Warning", null) ]);
 
         ValidationDictionary.Add("var_F",
             [new(ValidateZAliftData, "Warning", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateSafetyRange, "Error", null),
             new(ValidateCarweightWithoutFrame, "None", null),
             new(ValidateCounterweightMass, "None", null) ]);
@@ -187,11 +192,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
-            [new(ValidateJungblutOSG, "Informational", null)]);
+            [new(ValidateJungblutOSG, "Informational", null),
+            new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_FH",
             [new(NotEmptyOr0, "Error", null),
             new(ValidateTravel, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateZAliftData, "Warning", null)]);
 
         ValidationDictionary.Add("var_Etagenhoehe0",
@@ -242,6 +249,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_KHLicht",
             [new(ValidateCarHeight, "None", null),
+             new(ValidateCarFrameProgramData, "Warning", null),
              new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) ]);
 
         ValidationDictionary.Add("var_KD",
@@ -250,10 +258,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_KBI",
             [new(ValidateCarEntranceRightSide, "None", null),
              new(ValidateCarCeilingDetails, "None", null),
+             new(ValidateCarFrameProgramData, "Warning", null),
              new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_KTI",
             [new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_L1",
@@ -318,7 +328,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateSafetyRange, "Error", null)]);
 
         ValidationDictionary.Add("var_FuehrungsschieneFahrkorb",
-            [new(ValidateSafetyRange, "Error", null)]);
+            [new(ValidateSafetyRange, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_FuehrungsschieneGegengewicht",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_Fuehrungsart_GGW",
             [new(ValidateGuideModel, "None", null)]);
@@ -328,6 +342,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_TypFV",
             [new(ValidateSafetyRange, "None", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateReducedProtectionSpaces, "Warning", "var_Ersatzmassnahmen")]);
 
         ValidationDictionary.Add("var_Aggregat",
@@ -589,6 +604,27 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Spiegelausfuehrung",
             [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_TypFuehrung",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_TypFuehrung_GGW",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SG",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SK",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SB",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_ST",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_CFPdefiniert",
+            [new(ValidateLayOutDrawingLoads, "None", null)]);
 
         AddDropDownListValidation();
     }

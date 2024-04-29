@@ -1249,7 +1249,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     {
         if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutoDimensionsMirror"))
             return;
-        
+
         List<string> mirrors = [];
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
@@ -1324,7 +1324,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             mirrorDistanceLeft3 = mirrorWidthSet3.Item2.ToString();
             mirrorDistanceCeiling3 = mirrorHeightSet3.Item2.ToString();
         }
-   
+
         ParameterDictionary["var_BreiteSpiegel"].AutoUpdateParameterValue(mirrorWidth);
         ParameterDictionary["var_HoeheSpiegel"].AutoUpdateParameterValue(mirrorHeight);
         ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(mirrorWidth2);
@@ -1599,10 +1599,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
 
         var availableCarFramePositions = new List<string>();
-        if (!zugangA) availableCarFramePositions.Add("A");
-        if (!zugangB) availableCarFramePositions.Add("B");
-        if (!zugangC && !centralLift) availableCarFramePositions.Add("C");
-        if (!zugangD) availableCarFramePositions.Add("D");
+        if (!zugangA)
+            availableCarFramePositions.Add("A");
+        if (!zugangB)
+            availableCarFramePositions.Add("B");
+        if (!zugangC && !centralLift)
+            availableCarFramePositions.Add("C");
+        if (!zugangD)
+            availableCarFramePositions.Add("D");
 
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 
@@ -1638,5 +1642,145 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     break;
             }
         }
+    }
+
+    private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+            return;
+
+        var cFPPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
+        if (!File.Exists(cFPPath))
+            return;
+        var lastWriteTime = File.GetLastWriteTime(cFPPath);
+        if (lastWriteTime != CFPCreationTime)
+        {
+            string cFPDataFile = string.Empty;
+            using (var sr = new StreamReader(cFPPath))
+            {
+                cFPDataFile = sr.ReadToEnd();
+            }
+
+            var cFPDataFileLines = cFPDataFile.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
+
+            if (cFPDataFileLines.Length > 0 )
+            {
+                CFPDataDictionary.Clear();
+                foreach (var line in cFPDataFileLines)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        break;
+                    }
+                    var keyValuePair = line.Split(' ', StringSplitOptions.None);
+                    if (keyValuePair.Length == 2)
+                    {
+                        CFPDataDictionary.TryAdd(keyValuePair[0], keyValuePair[1]);
+                    }
+                }
+            }
+            CFPCreationTime = lastWriteTime;
+        }
+
+        //    var zaLiftValue = string.Empty;
+        //    var zaLiftValue2 = string.Empty;
+        //    var brakerelease = string.Empty;
+
+        //    var searchString = name switch
+        //    {
+        //        "var_Q" => "Nennlast_Q",
+        //        "var_F" => "Fahrkorbgewicht_F",
+        //        "var_FH" => "Anlage-FH",
+        //        "var_Fremdbelueftung" => "Motor-Fan",
+        //        "var_ElektrBremsenansteuerung" => "ElektrBremsenansteuerung",
+        //        "var_Treibscheibegehaertet" => "Treibscheibe-RF",
+        //        "var_Handlueftung" => "Bremse-Handlueftung",
+        //        "var_Erkennungsweg" => "DetectionDistance",
+        //        "var_Totzeit" => "DeadTime",
+        //        "var_Vdetektor" => "VDetector",
+        //        _ => string.Empty,
+        //    };
+
+        //    ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
+
+        //    if (string.IsNullOrWhiteSpace(zaLiftValue))
+        //        return;
+
+        //    if (name == "var_Handlueftung")
+        //    {
+        //        ZliDataDictionary.TryGetValue("Bremse-Lueftueberwachung", out zaLiftValue2);
+        //        if (string.IsNullOrWhiteSpace(zaLiftValue2))
+        //            return;
+        //        if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Mikroschalter")
+        //            brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
+        //        if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+        //            brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
+        //        if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Mikroschalter")
+        //            brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
+        //        if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
+        //            brakerelease = "207 V Bremse. mit Handl. induktiver NS";
+        //        if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Mikroschalter")
+        //            brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
+        //        if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Naeherungsschalter")
+        //            brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
+        //    }
+
+        //    var isValid = name switch
+        //    {
+        //        "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+        //        "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
+        //        "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
+        //        "var_Fremdbelueftung" => string.Equals(value, Convert.ToString(!zaLiftValue.StartsWith("ohne")), StringComparison.CurrentCultureIgnoreCase),
+        //        "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+        //        "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
+        //        "var_Handlueftung" => string.Equals(value, brakerelease, StringComparison.CurrentCultureIgnoreCase),
+        //        "var_Erkennungsweg" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+        //        "var_Totzeit" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+        //        "var_Vdetektor" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
+        //        _ => true,
+        //    };
+        //    ;
+
+        //    if (!isValid)
+        //    {
+        //        if (name != "var_Handlueftung")
+        //        {
+        //            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
+        //        }
+        //        else
+        //        {
+        //            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue} - {zaLiftValue2} ", SetSeverity(severity)));
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        //    }
+        //}
+    }
+
+    private void ValidateLayOutDrawingLoads(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        // Rule only invoked by var_CFPdefiniert
+        if (value == "False") 
+        {
+            return;
+        }
+
+        string[] loadNames = ["var_Belastung_pro_Schiene_auf_Grundelement",
+                          "var_Belastung_pro_Schiene_auf_Grundelement_GGW",
+                          "var_Belastung_Pufferstuetze_auf_Grundelement",
+                          "var_Belastung_Pufferstuetze_auf_Grundelement_GGW",
+                          "var_FxF",
+                          "var_FyF",
+                          "var_FxFA_GGW",
+                          "var_FyFA_GGW"];
+
+        foreach (var loadName in loadNames)
+        {
+            double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, loadName);
+            ParameterDictionary[$"{loadName}_AZ"].Value = LiftParameterHelper.GetLayoutDrawingLoad(load).ToString();
+        }      
     }
 }

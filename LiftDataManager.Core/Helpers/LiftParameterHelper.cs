@@ -99,4 +99,24 @@ public class LiftParameterHelper
         return string.Equals(carTyp, "C100 (aufg. Sockel)", StringComparison.CurrentCultureIgnoreCase) ||
                string.Equals(carTyp, "C200 (vers. Sockel)", StringComparison.CurrentCultureIgnoreCase);
     }
+
+    public static double GetLayoutDrawingLoad(double load)
+    {
+        var loadWithSafetyLoading = load * 1.03;
+        //return loadWithSafetyLoading switch
+        //{
+        //    < 99 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
+        //    < 999 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
+        //    < 9999 => Math.Ceiling(loadWithSafetyLoading / 100) * 100,
+        //    _ => Math.Ceiling(loadWithSafetyLoading / 1000) * 1000,
+        //}; ;
+        return loadWithSafetyLoading switch
+        {
+            < 99 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
+            < 999 => loadWithSafetyLoading % 100 < 50 ? Math.Floor(loadWithSafetyLoading / 100) * 100 + 50 : Math.Ceiling(loadWithSafetyLoading / 100) * 100,
+            < 9999 => loadWithSafetyLoading % 1000 < 500 ? Math.Floor(loadWithSafetyLoading / 1000) * 1000 + 500 : Math.Ceiling(loadWithSafetyLoading / 1000) * 1000,
+            _ => Math.Ceiling(loadWithSafetyLoading / 1000) * 1000,
+        };
+        ;
+    }
 }
