@@ -1683,6 +1683,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (lastWriteTime != CFPCreationTime)
         {
             string cFPDataFile = string.Empty;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Encoding win1252 = Encoding.GetEncoding(1252);
             using (var sr = new StreamReader(cFPPath, win1252, true))
             {
@@ -1809,5 +1810,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 }
             }
         }
+    }
+
+    private void ValidateCarDoorMountingDimensions(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        // Doortyp
+        //Einbau A,B,C,D
     }
 }
