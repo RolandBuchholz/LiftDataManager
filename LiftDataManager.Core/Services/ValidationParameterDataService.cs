@@ -623,6 +623,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_ST",
             [new(ValidateCarFrameProgramData, "Warning", null)]);
 
+        ValidationDictionary.Add("var_KHA",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_v",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
         ValidationDictionary.Add("var_CFPdefiniert",
             [new(ValidateLayOutDrawingLoads, "None", null)]);
 

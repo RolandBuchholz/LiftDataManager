@@ -1644,126 +1644,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
     }
 
-    private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
-    {
-        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
-            return;
-
-        var cFPPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
-        if (!File.Exists(cFPPath))
-            return;
-        var lastWriteTime = File.GetLastWriteTime(cFPPath);
-        if (lastWriteTime != CFPCreationTime)
-        {
-            string cFPDataFile = string.Empty;
-            using (var sr = new StreamReader(cFPPath))
-            {
-                cFPDataFile = sr.ReadToEnd();
-            }
-
-            var cFPDataFileLines = cFPDataFile.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
-
-            if (cFPDataFileLines.Length > 0 )
-            {
-                CFPDataDictionary.Clear();
-                foreach (var line in cFPDataFileLines)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        break;
-                    }
-                    var keyValuePair = line.Split(' ', StringSplitOptions.None);
-                    if (keyValuePair.Length == 2)
-                    {
-                        CFPDataDictionary.TryAdd(keyValuePair[0], keyValuePair[1]);
-                    }
-                }
-            }
-            CFPCreationTime = lastWriteTime;
-        }
-
-        //    var zaLiftValue = string.Empty;
-        //    var zaLiftValue2 = string.Empty;
-        //    var brakerelease = string.Empty;
-
-        //    var searchString = name switch
-        //    {
-        //        "var_Q" => "Nennlast_Q",
-        //        "var_F" => "Fahrkorbgewicht_F",
-        //        "var_FH" => "Anlage-FH",
-        //        "var_Fremdbelueftung" => "Motor-Fan",
-        //        "var_ElektrBremsenansteuerung" => "ElektrBremsenansteuerung",
-        //        "var_Treibscheibegehaertet" => "Treibscheibe-RF",
-        //        "var_Handlueftung" => "Bremse-Handlueftung",
-        //        "var_Erkennungsweg" => "DetectionDistance",
-        //        "var_Totzeit" => "DeadTime",
-        //        "var_Vdetektor" => "VDetector",
-        //        _ => string.Empty,
-        //    };
-
-        //    ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
-
-        //    if (string.IsNullOrWhiteSpace(zaLiftValue))
-        //        return;
-
-        //    if (name == "var_Handlueftung")
-        //    {
-        //        ZliDataDictionary.TryGetValue("Bremse-Lueftueberwachung", out zaLiftValue2);
-        //        if (string.IsNullOrWhiteSpace(zaLiftValue2))
-        //            return;
-        //        if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Mikroschalter")
-        //            brakerelease = "207 V Bremse. ohne Handl. Mikrosch.";
-        //        if (zaLiftValue == "ohne Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
-        //            brakerelease = "207 V Bremse. ohne Hand. Indukt. NS";
-        //        if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Mikroschalter")
-        //            brakerelease = "207 V Bremse. mit Handl. Mikrosch.";
-        //        if (zaLiftValue == "mit Handlueftung" && zaLiftValue2 == "Naeherungsschalter")
-        //            brakerelease = "207 V Bremse. mit Handl. induktiver NS";
-        //        if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Mikroschalter")
-        //            brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Mikrosch.";
-        //        if (zaLiftValue == "fuer Bowdenzug" && zaLiftValue2 == "Naeherungsschalter")
-        //            brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
-        //    }
-
-        //    var isValid = name switch
-        //    {
-        //        "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-        //        "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
-        //        "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
-        //        "var_Fremdbelueftung" => string.Equals(value, Convert.ToString(!zaLiftValue.StartsWith("ohne")), StringComparison.CurrentCultureIgnoreCase),
-        //        "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-        //        "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
-        //        "var_Handlueftung" => string.Equals(value, brakerelease, StringComparison.CurrentCultureIgnoreCase),
-        //        "var_Erkennungsweg" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-        //        "var_Totzeit" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-        //        "var_Vdetektor" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-        //        _ => true,
-        //    };
-        //    ;
-
-        //    if (!isValid)
-        //    {
-        //        if (name != "var_Handlueftung")
-        //        {
-        //            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue}", SetSeverity(severity)));
-        //        }
-        //        else
-        //        {
-        //            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation {value} | Wert ZALiftauslegung {zaLiftValue} - {zaLiftValue2} ", SetSeverity(severity)));
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
-        //    }
-        //}
-    }
-
     private void ValidateLayOutDrawingLoads(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         // Rule only invoked by var_CFPdefiniert
-        if (value == "False") 
+        if (value == "False")
         {
             return;
         }
@@ -1781,6 +1665,146 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, loadName);
             ParameterDictionary[$"{loadName}_AZ"].Value = LiftParameterHelper.GetLayoutDrawingLoad(load).ToString();
-        }      
+        }
+    }
+
+    private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+            return;
+
+        var cFPPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
+        if (!File.Exists(cFPPath))
+            return;
+        var lastWriteTime = File.GetLastWriteTime(cFPPath);
+        if (lastWriteTime != CFPCreationTime)
+        {
+            string cFPDataFile = string.Empty;
+            Encoding win1252 = Encoding.GetEncoding(1252);
+            using (var sr = new StreamReader(cFPPath, win1252, true))
+            {
+                cFPDataFile = sr.ReadToEnd();
+            }
+
+            var cFPDataFileLines = cFPDataFile.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
+
+            if (cFPDataFileLines.Length > 0 )
+            {
+                CFPDataDictionary.Clear();
+                foreach (var line in cFPDataFileLines)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        break;
+                    }
+
+                    var keyCFPParameter = line[1..line.IndexOf(']')];
+                    string valueCFPParameter;
+                    if (line.Contains('¦'))
+                    {
+                        valueCFPParameter = line[(line.IndexOf(']') + 2)..line.IndexOf('¦')];
+                    }
+                    else
+                    {
+                        valueCFPParameter = line[(line.IndexOf(']') + 2)..];
+                    }
+                    CFPDataDictionary.TryAdd(keyCFPParameter, valueCFPParameter);
+                }
+            }
+            CFPCreationTime = lastWriteTime;
+        }
+
+        var searchString = name switch
+        {
+            "var_Q" => "Nutzmasse",
+            "var_F" => "Kabinenmasse",
+            "var_FH" => "Foerderhoehe",
+            "var_SG" => "Schachtgrube",
+            "var_SK" => "Schachtkopf",
+            "var_SB" => "Schachtbreite_innen",
+            "var_ST" => "Schachttiefe_innen",
+            "var_KBI" => "Kabinenbreite_innen",
+            "var_KTI" => "Kabinentiefe_innen",
+            "var_KHLicht" => "Kabinenhoehe_innen",
+            "var_KHA" => "Kabinenhoehe_aussen",
+            "var_v" => "Sollgeschwindigkeit abw",
+            "var_TypFV" => "Fangvorrichtung",
+            "var_FuehrungsschieneFahrkorb" => "Schienentyp",
+            "var_FuehrungsschieneGegengewicht" => "Hilfsschienentyp",
+            "var_Geschwindigkeitsbegrenzer" => "GB_ID",
+            "var_TypFuehrung" => "Fuehrungsart",
+            _ => string.Empty,
+        };
+
+        if (CFPDataDictionary.TryGetValue(searchString, out string? cFPValue))
+        {
+            if (cFPValue is not null)
+            {
+                var isValid = name switch
+                {
+                    "var_Q" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(cFPValue)) <= 10,
+                    "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(cFPValue) * 1000) <= 20,
+                    "var_SG" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_SK" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_SB" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_ST" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KBI" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KTI" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KHLicht" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KHA" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
+                    "var_TypFV" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_FuehrungsschieneFahrkorb" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_Geschwindigkeitsbegrenzer" => cFPValue switch
+                    {
+                        "1" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
+                        "2" => string.Equals(value, "GB durch Kunde", StringComparison.CurrentCultureIgnoreCase),
+                        "3" => string.Equals(value, "Jungblut HJ 200", StringComparison.CurrentCultureIgnoreCase),
+                        "4" => string.Equals(value, "Bode Typ 5 mit FA 12V", StringComparison.CurrentCultureIgnoreCase),
+                        "5" => string.Equals(value, "Jungblut HJ200 mit FA 24V", StringComparison.CurrentCultureIgnoreCase),
+                        "6" => string.Equals(value, "Jungblut HJ200 mit FA 230V", StringComparison.CurrentCultureIgnoreCase),
+                        "7" => string.Equals(value, "Jungblut HJ200 mit AS 12V", StringComparison.CurrentCultureIgnoreCase),
+                        "8" => string.Equals(value, "Jungblut HJ200 mit AS 24V", StringComparison.CurrentCultureIgnoreCase),
+                        "9" => string.Equals(value, "Jungblut HJ200 mit ASV 12V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
+                        "10" => string.Equals(value, "Jungblut HJ200 mit ASV 12V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
+                        "11" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
+                        "12" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
+                        "13" => string.Equals(value, "PFB LK 200, FA, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        "14" => string.Equals(value, "FV ESG25 - Limax", StringComparison.CurrentCultureIgnoreCase),
+                        "15" => string.Equals(value, "HJ200, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        "16" => string.Equals(value, "HJ200, AS 24V, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        _ => true
+                    },
+                    "var_TypFuehrung" => cFPValue switch
+                    {
+                        "1" => string.Equals(value, "HSM 140", StringComparison.CurrentCultureIgnoreCase),
+                        "2" => string.Equals(value, "HSML 180", StringComparison.CurrentCultureIgnoreCase),
+                        "3" => string.Equals(value, "HSMEL 300", StringComparison.CurrentCultureIgnoreCase),
+                        "4" => string.Equals(value, "Gleitfuehrung", StringComparison.CurrentCultureIgnoreCase),
+                        "5" => string.Equals(value, "Rollenfuehrung BR", StringComparison.CurrentCultureIgnoreCase),
+                        "6" => string.Equals(value, "RF FK 3", StringComparison.CurrentCultureIgnoreCase),
+                        "7" => string.Equals(value, "Gleitfuehrung 903940", StringComparison.CurrentCultureIgnoreCase),
+                        "8" => string.Equals(value, "Gleitfuehrung 903809", StringComparison.CurrentCultureIgnoreCase),
+                        "9" => string.Equals(value, "Rollenfuehrung 903800", StringComparison.CurrentCultureIgnoreCase),
+                        "10" => string.Equals(value, "Rollenfuehrung 903935", StringComparison.CurrentCultureIgnoreCase),
+                        "11" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
+                        "12" => string.Equals(value, "HSM 140 gedämpft", StringComparison.CurrentCultureIgnoreCase),
+                        _ => true
+                    },
+                    _ => true
+                };
+                
+                if (!isValid)
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation: {value} | Wert CarFrameProgram: {cFPValue}", SetSeverity(severity)));
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+                }
+            }
+        }
     }
 }

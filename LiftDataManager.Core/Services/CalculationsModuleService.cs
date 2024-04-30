@@ -1283,12 +1283,12 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         double handRailTypCorrectionHeight = 0d;
         if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Spiegelausfuehrung"].Value))
-            handRailTypCorrectionHeight = parameterDictionary["var_Spiegelausfuehrung"].Value!.Contains("HL13") ? 32d : 0d;
+            handRailTypCorrectionHeight = parameterDictionary["var_Spiegelausfuehrung"].Value!.Contains("HL13") ? 52d : 0d;
         
         var mirrorDistanceFloor = parameterDictionary["var_Spiegelausfuehrung"].Value switch
         {
             "halbhoher Spiegel" => handRailHeight == 0 ? 900 : handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight,
-            "raumhoher Spiegel" => skirtingBoardsHeight + mirrorDistanceBottom,
+            "raumhoher Spiegel" or "horizontal geteilter Spiegel" => skirtingBoardsHeight + mirrorDistanceBottom,
             _ => LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, $"var_Handlauf{wallSide}") ? handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight
                                                                                                            : skirtingBoardsHeight + mirrorDistanceBottom,
         };
