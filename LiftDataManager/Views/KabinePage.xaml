@@ -1560,14 +1560,14 @@
                             x:Name="Ausstattung"
                             Grid.Row="2"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="8"
+                                    Grid.RowSpan="9"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="7"
+                                    Grid.RowSpan="8"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -2249,6 +2249,119 @@
                                         </SpeziControls:ParameterCheckBox>
                                     </Grid>
                                 </Grid>
+                                <Grid
+                                    x:Name="AusstattungTeilungsleiste"
+                                    Grid.Row="7"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="0.4*,0.3*,0.3*,*">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Teilungsleiste'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteMaterial'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteOKFF'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="*,*,*,*">
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="0"
+                                            CheckBoxContent="Seite A"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="1"
+                                            CheckBoxContent="Seite B"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="2"
+                                            CheckBoxContent="Seite C"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="3"
+                                            CheckBoxContent="Seite D"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid
@@ -2281,13 +2394,14 @@
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
+                                        IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorAnzahl'], Mode=TwoWay}"
                                         ShowDefaultHeader="False" />
                                     <TextBlock
                                         Grid.Column="2"
-                                        Margin="15,5,0,0"
+                                        Margin="5,0,0,7"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
+                                        VerticalAlignment="Bottom"
                                         FontSize="14"
                                         Text="Anzahl Ventilatoren" />
                                 </Grid>

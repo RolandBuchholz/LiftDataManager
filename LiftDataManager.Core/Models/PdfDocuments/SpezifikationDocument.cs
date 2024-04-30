@@ -650,11 +650,24 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(16).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
-                table.Cell().Row(16).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(17).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
+                table.Cell().Row(16).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Teilungsleiste"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TeilungsleisteMaterial"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TeilungsleisteOKFF"], "mm");
+                });
+                table.Cell().Row(16).Column(5).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteA"], true, "Seite A");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteB"], true, "Seite B");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteC"], true, "Seite C");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteD"], true, "Seite D");
+                });
+                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
+                table.Cell().Row(17).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(18).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }

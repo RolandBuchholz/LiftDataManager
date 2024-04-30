@@ -1052,13 +1052,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Rammschutz{zugang}");
         bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_PaneelPos{zugang}");
         bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
+        bool hasTeilungsleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Teilungsleiste{zugang}");
         bool hasRueckwand = false;
         if (zugang == 'C')
         {
             hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
 
-        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
+        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
             if (hasSpiegel)
@@ -1067,6 +1068,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 errorMessage += " Handlauf,";
             if (hasSockelleiste)
                 errorMessage += " Sockelleiste,";
+            if (hasTeilungsleiste)
+                errorMessage += " Teilungsleiste,";
             if (hasRammschutz)
                 errorMessage += " Rammschutz,";
             if (hasPaneel)

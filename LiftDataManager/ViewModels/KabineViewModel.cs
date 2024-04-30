@@ -20,6 +20,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     private readonly string[] carEquipment = [ "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD",
                                                "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
                                                "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
+                                               "var_TeilungsleisteA", "var_TeilungsleisteB", "var_TeilungsleisteC", "var_TeilungsleisteD",
                                                "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
                                                "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD",
                                                "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"];
