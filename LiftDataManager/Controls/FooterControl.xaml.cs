@@ -13,7 +13,7 @@ public sealed partial class FooterControl : UserControl
         InitializeComponent();
         Loaded += OnLoadFooterControl;
         Unloaded += OnUnLoadFooterControl;
-        ErrorsList ??= new();
+        ErrorsList ??= [];
     }
 
     public ParameterStateInfo? SelectedError { get; set; }
@@ -29,9 +29,9 @@ public sealed partial class FooterControl : UserControl
     {
         if (SelectedError is not null)
         {
-            //TODO navigationService
-            //var nav = App.GetService<INavigationService>();
-            //nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", SelectedError.Name);
+            DetailErrorDialog.Hide();
+            var navigationService = App.GetService<IJsonNavigationViewService>();
+            navigationService.NavigateTo(typeof(DatenansichtDetailPage), SelectedError.Name);
         }
     }
 
@@ -117,7 +117,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty ErrorsDictionaryProperty =
-        DependencyProperty.Register("ErrorsDictionary", typeof(ObservableDictionary<string, List<ParameterStateInfo>>), typeof(FooterControl), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(ErrorsDictionary), typeof(ObservableDictionary<string, List<ParameterStateInfo>>), typeof(FooterControl), new PropertyMetadata(null));
 
 
     public string ErrorMessage
@@ -127,7 +127,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty ErrorMessageProperty =
-        DependencyProperty.Register("ErrorMessage", typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorMessage), typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
 
     public string FileInfo
     {
@@ -136,7 +136,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty FileInfoProperty =
-        DependencyProperty.Register("FileInfo", typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(FileInfo), typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
 
     public SolidColorBrush FileInfoForeground
     {
@@ -145,7 +145,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty FileInfoForegroundProperty =
-        DependencyProperty.Register("FileInfoForeground", typeof(SolidColorBrush), typeof(FooterControl), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(FileInfoForeground), typeof(SolidColorBrush), typeof(FooterControl), new PropertyMetadata(null));
 
     public bool CheckOut
     {
@@ -159,7 +159,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty CheckOutProperty =
-        DependencyProperty.Register("CheckOut", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(CheckOut), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
 
     public bool HasErrors
     {
@@ -172,7 +172,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty HasErrorsProperty =
-        DependencyProperty.Register("HasErrors", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(HasErrors), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
 
     public bool HideInfoErrors
     {
@@ -185,7 +185,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty HideInfoErrorsProperty =
-        DependencyProperty.Register("HideInfoErrors", typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(HideInfoErrors), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
 
     public string XmlPath
     {
@@ -194,7 +194,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty XmlPathProperty =
-        DependencyProperty.Register("XmlPath", typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(XmlPath), typeof(string), typeof(FooterControl), new PropertyMetadata(string.Empty));
 
     public int ParameterFound
     {
@@ -203,7 +203,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty ParameterFoundProperty =
-        DependencyProperty.Register("ParameterFound", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
+        DependencyProperty.Register(nameof(ParameterFound), typeof(int), typeof(FooterControl), new PropertyMetadata(0));
 
     public int ErrorCount
     {
@@ -212,7 +212,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty ErrorCountProperty =
-        DependencyProperty.Register("ErrorCount", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
+        DependencyProperty.Register(nameof(ErrorCount), typeof(int), typeof(FooterControl), new PropertyMetadata(0));
 
     public int WarningCount
     {
@@ -221,7 +221,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty WarningCountProperty =
-        DependencyProperty.Register("WarningCount", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
+        DependencyProperty.Register(nameof(WarningCount), typeof(int), typeof(FooterControl), new PropertyMetadata(0));
 
     public int InfoCount
     {
@@ -230,7 +230,7 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty InfoCountProperty =
-        DependencyProperty.Register("InfoCount", typeof(int), typeof(FooterControl), new PropertyMetadata(0));
+        DependencyProperty.Register(nameof(InfoCount), typeof(int), typeof(FooterControl), new PropertyMetadata(0));
 
     public InfoBarSeverity InfoBarState
     {
@@ -239,5 +239,5 @@ public sealed partial class FooterControl : UserControl
     }
 
     public static readonly DependencyProperty InfoBarStateProperty =
-        DependencyProperty.Register("InfoBarState", typeof(InfoBarSeverity), typeof(FooterControl), new PropertyMetadata(InfoBarSeverity.Informational));
+        DependencyProperty.Register(nameof(InfoBarState), typeof(InfoBarSeverity), typeof(FooterControl), new PropertyMetadata(InfoBarSeverity.Informational));
 }

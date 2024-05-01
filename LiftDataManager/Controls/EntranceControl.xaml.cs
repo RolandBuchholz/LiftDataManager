@@ -105,10 +105,8 @@ public sealed partial class EntranceControl : UserControl
         if (entrance is not null && entrance.StartsWith("txtBox_"))
         {
             var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
-
-            //TODO navigationService
-            //var nav = App.GetService<INavigationService>();
-            //nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", ItemSource[entranceName].Name);
+            var navigationService = App.GetService<IJsonNavigationViewService>();
+            navigationService.NavigateTo(typeof(DatenansichtDetailPage), ItemSource[entranceName].Name);
         }
     }
 

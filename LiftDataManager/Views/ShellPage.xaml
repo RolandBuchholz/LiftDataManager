@@ -19,6 +19,7 @@
             Height="40"
             BackButtonClick="AppTitleBar_BackButtonClick"
             Icon="{wuc:BitmapIcon Source=ms-appx:///Assets/WindowIcon.png}"
+            IsBackButtonVisible="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsPaneButtonVisible="True"
             PaneButtonClick="AppTitleBar_PaneButtonClick"
             Subtitle="{x:Bind local:App.Current.AppVersion}">
@@ -94,7 +95,7 @@
                 </behaviors:NavigationViewHeaderBehavior>
             </interactivity:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <Frame x:Name="NavigationFrame" Navigated="NavFrame_Navigated" />
+                <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
     </Grid>

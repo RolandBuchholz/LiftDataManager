@@ -149,10 +149,9 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private string bufferDataReducedSafetyRoomPit = "Keine Pufferdaten vorhanden";
 
     [RelayCommand]
-    private void GoToBausatzViewModel()
+    private static void GoToBausatzViewModel()
     {
-        //TODO navigationService
-        //_navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzViewModel")
+        LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzPage));
     }
 
     private void CheckCFPState()

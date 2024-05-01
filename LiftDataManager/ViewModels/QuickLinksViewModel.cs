@@ -957,8 +957,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         {
             if ((bool)checkOutResult)
             {
-                //TODO navigationService
-                //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel", "CheckOut");
+                LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage), "CheckOut");
                 return true;
             }
             else

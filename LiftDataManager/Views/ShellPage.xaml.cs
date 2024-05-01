@@ -43,22 +43,5 @@ public sealed partial class ShellPage : Page
             element.RequestedTheme = ElementTheme.Light;
         }
     }
-
-    private void NavFrame_Navigated(object sender, NavigationEventArgs e)
-    {
-        //AppTitleBar.IsBackButtonVisible = NavigationFrame.CanGoBack;
-
-        //if (e.SourcePageType == typeof(SettingsPage))
-        //{
-        //    ViewModel.Selected = NavigationViewService.SettingsItem;
-        //    return;
-        //}
-        //var xx = ViewModel.Selected;
-        //var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        //if (selectedItem != null)
-        //{
-        //    Selected = selectedItem;
-        //    ShowGlobalSearch = selectedItem.Tag is null;
-        //}
-    }
 }
+    

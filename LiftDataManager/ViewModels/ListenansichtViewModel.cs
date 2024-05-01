@@ -193,8 +193,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    //TODO navigationService
-                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
                 }
                 else
                 {

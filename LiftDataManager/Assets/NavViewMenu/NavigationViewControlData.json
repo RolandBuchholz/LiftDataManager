@@ -22,40 +22,48 @@
           "UniqueId": "LiftDataManager.Views.AllgemeineDatenPage",
           "Title": "Allgemeine Daten",
           "Subtitle": "Allgemeine DatenAnsicht",
-          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/text.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/text.png",
           "HideItem": true
         },
         {
           "UniqueId": "LiftDataManager.Views.SchachtPage",
           "Title": "Schacht",
           "Subtitle": "Schacht Ansicht",
-          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/shaft.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/shaft.png",
           "HideItem": true
         },
         {
           "UniqueId": "LiftDataManager.Views.KabinePage",
           "Title": "Kabine",
           "Subtitle": "Kabinen Ansicht",
-          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftcar.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftcar.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.BausatzPage",
+          "Title": "Bausatz",
+          "Subtitle": "Bauastz Ansicht",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftcar.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftcar.png",
           "HideItem": true
         },
         {
           "UniqueId": "LiftDataManager.Views.TürenPage",
           "Title": "Türen",
           "Subtitle": "Türen Ansicht",
-          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftdoors.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftdoors.png",
           "HideItem": true
         },
         {
-          "UniqueId": "LiftDataManager.Views.AntriebSteuerungNotruftPage",
+          "UniqueId": "LiftDataManager.Views.AntriebSteuerungNotrufPage",
           "Title": "Antrieb Steuerung Notruf",
           "Subtitle": "Antrieb Steuerung Notruf Ansicht",
-          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/controler.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/controler.png",
           "HideItem": true
         },
         {
@@ -224,6 +232,7 @@
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": true,
       "IsExpanded": false,
+      "Order": false,
       "IsFooterNavigationViewItem": true,
       "Items": [
         {

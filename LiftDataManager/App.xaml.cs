@@ -267,8 +267,7 @@ public partial class App : Application
     private static void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
         MainWindow.Activate();
-        //TODO navigationService
-        //var _navigationService = GetService<INavigationService>();
-        //_navigationService?.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
+        var navigationService = GetService<IJsonNavigationViewService>();
+        navigationService?.NavigateTo(typeof(ErrorPage), new ErrorPageInfo(membername, sender, e), true);
     }
 }

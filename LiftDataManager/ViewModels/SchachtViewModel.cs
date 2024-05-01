@@ -9,10 +9,9 @@ public partial class SchachtViewModel : DataViewModelBase, INavigationAwareEx, I
     {
     }
     [RelayCommand]
-    private void GoToSchachtDetail()
+    private static void GoToSchachtDetail()
     {
-        //TODO navigationService
-        //_navigationService.NavigateTo("LiftDataManager.ViewModels.SchachtDetailViewModel")
+        LiftParameterNavigationHelper.NavigateToPage(typeof(SchachtDetailPage));
     }
 
     public void OnNavigatedTo(object parameter)

@@ -141,10 +141,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     }
 
     [RelayCommand]
-    private void GoToBausatzDetail()
+    private static void GoToBausatzDetail()
     {
-        //TODO navigationService
-        //_navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzDetailViewModel");
+        LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzDetailPage));
     }
     public void OnNavigatedTo(object parameter)
     {

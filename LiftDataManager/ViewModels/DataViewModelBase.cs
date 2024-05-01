@@ -195,8 +195,7 @@ public partial class DataViewModelBase : ObservableRecipient
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    //TODO: navigationService
-                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
                 }
                 else
                 {

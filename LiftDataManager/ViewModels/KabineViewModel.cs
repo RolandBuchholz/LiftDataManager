@@ -331,10 +331,9 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     }
 
     [RelayCommand]
-    private void GoToKabineDetail()
+    private static void GoToKabineDetail()
     {
-        //TODO navigationService
-        //_navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+        LiftParameterNavigationHelper.NavigateToPage(typeof(KabineDetailPage));
     }
 
     private async Task SetCalculatedValuesAsync()

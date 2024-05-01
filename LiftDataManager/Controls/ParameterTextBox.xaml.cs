@@ -207,19 +207,12 @@ public sealed partial class ParameterTextBox : UserControl
 
     private void NavigateToHighlightParameters_Click(object sender, RoutedEventArgs e)
     {
-        //TODO navigationService
-        //var nav = App.GetService<INavigationService>();
-        //nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
+        LiftParameterNavigationHelper.NavigateToHighlightParameters();
     }
 
     private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
     {
-        if (LiftParameter?.Name is not null)
-        {
-            //TODO navigationService
-            //var nav = App.GetService<INavigationService>();
-            //nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
-        }
+        LiftParameterNavigationHelper.NavigateToParameterDetails(LiftParameter?.Name);
     }
 
     public void MoveFocus(Object sender, KeyRoutedEventArgs e)

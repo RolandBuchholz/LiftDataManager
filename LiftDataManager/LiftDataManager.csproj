@@ -60,7 +60,12 @@
     <Content Remove="Assets\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Fluent\controler.png" />
     <None Remove="Assets\Fluent\home.png" />
+    <None Remove="Assets\Fluent\liftcar.png" />
+    <None Remove="Assets\Fluent\liftdoors.png" />
+    <None Remove="Assets\Fluent\shaft.png" />
+    <None Remove="Assets\Fluent\text.png" />
     <None Remove="Assets\NavViewMenu\NavigationViewControlData.json" />
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\CarEquipmentControl.xaml" />

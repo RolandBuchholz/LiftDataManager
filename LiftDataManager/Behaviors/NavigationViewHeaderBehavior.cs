@@ -47,9 +47,9 @@ public class NavigationViewHeaderBehavior : Behavior<NavigationView>
     protected override void OnAttached()
     {
         base.OnAttached();
-        //TODO navigationService
-        //var navigationService = App.GetService<INavigationService>();
-        //navigationService.Navigated += OnNavigated;
+        
+        var navigationService = App.GetService<IJsonNavigationViewService>();
+        navigationService.Navigated += OnNavigated;
 
         _current = this;
     }
@@ -57,9 +57,8 @@ public class NavigationViewHeaderBehavior : Behavior<NavigationView>
     protected override void OnDetaching()
     {
         base.OnDetaching();
-        //TODO navigationService
-        //var navigationService = App.GetService<INavigationService>();
-        //navigationService.Navigated -= OnNavigated;
+        var navigationService = App.GetService<IJsonNavigationViewService>();
+        navigationService.Navigated -= OnNavigated;
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)

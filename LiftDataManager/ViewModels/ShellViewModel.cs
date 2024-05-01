@@ -12,7 +12,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     private bool isBackEnabled;
 
     [ObservableProperty]
-    private bool showGlobalSearch;
+    private bool showGlobalSearch = true;
 
     [ObservableProperty]
     private string? globalSearchInput;
@@ -50,18 +50,21 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
-        //IsBackEnabled = NavigationService.CanGoBack;
-    //    if (e.SourcePageType == typeof(SettingsPage))
-    //    {
-    //        Selected = NavigationViewService.SettingsItem;
-    //        return;
-    //    }
-
-    //    var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-    //    if (selectedItem != null)
-    //    {
-    //        Selected = selectedItem;
-    //        ShowGlobalSearch = selectedItem.Tag is null;
-    //    }
+        IsBackEnabled = JsonNavigationViewService.CanGoBack;
+        if (e.SourcePageType == typeof(SettingsPage))
+        {
+            Selected = JsonNavigationViewService.SettingsItem;
+            return;
+        }
+        var menuItems = JsonNavigationViewService.MenuItems;
+        if (menuItems != null)
+        {
+            var selectedItem = JsonNavigationViewService.GetSelectedItem(menuItems, e.SourcePageType);
+            if (selectedItem != null)
+            {
+                Selected = selectedItem;
+                ShowGlobalSearch = selectedItem.Tag != null;
+            }
+        }
     }
 }

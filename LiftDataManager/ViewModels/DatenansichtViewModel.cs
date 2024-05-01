@@ -1,14 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.WinUI.Animations;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
+    private readonly IJsonNavigationViewService _jsonNavigationViewService;
     public CollectionViewSource GroupedItems { get; set; }
 
-    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, IJsonNavigationViewService jsonNavigationViewService) :
          base(parameterDataService, dialogService, infoCenterService)
     {
+        _jsonNavigationViewService = jsonNavigationViewService;
         GroupedItems = new CollectionViewSource
         {
             IsSourceGrouped = true
@@ -67,8 +71,7 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
                 if ((bool)dialogResult)
                 {
                     CheckoutDialogIsOpen = false;
-                    //TODO navigationService
-                    //_navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel");
+                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
                 }
                 else
                 {
@@ -104,9 +107,8 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
         if (e.ClickedItem is Parameter parameter)
         {
-            //TODO navigationService
-            //_navigationService!.SetListDataItemForNextConnectedAnimation(parameter);
-            //_navigationService.NavigateTo(typeof(DatenansichtDetailViewModel).FullName!, parameter.Name);
+            _jsonNavigationViewService.Frame?.SetListDataItemForNextConnectedAnimation(parameter);
+            _jsonNavigationViewService.NavigateTo(typeof(DatenansichtDetailPage), parameter.Name);
         }
     }
 }
