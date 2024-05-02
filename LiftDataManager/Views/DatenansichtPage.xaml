@@ -5,7 +5,6 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:animations="using:CommunityToolkit.WinUI.Animations"
-    xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,7 +14,6 @@
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
 
     <Page.Resources>

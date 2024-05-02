@@ -18,7 +18,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     private string? globalSearchInput;
 
     [ObservableProperty]
-    private object? selected;
+    private string? header;
 
     public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
     {
@@ -51,20 +51,12 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = JsonNavigationViewService.CanGoBack;
-        if (e.SourcePageType == typeof(SettingsPage))
+        var viewPage = JsonNavigationViewService.DataSource.GetItem(e.SourcePageType.FullName);
+        
+        if (viewPage != null)
         {
-            Selected = JsonNavigationViewService.SettingsItem;
-            return;
-        }
-        var menuItems = JsonNavigationViewService.MenuItems;
-        if (menuItems != null)
-        {
-            var selectedItem = JsonNavigationViewService.GetSelectedItem(menuItems, e.SourcePageType);
-            if (selectedItem != null)
-            {
-                Selected = selectedItem;
-                ShowGlobalSearch = selectedItem.Tag != null;
-            }
+            Header = viewPage.Description;
+            ShowGlobalSearch = !viewPage.HideItem;
         }
     }
 }
