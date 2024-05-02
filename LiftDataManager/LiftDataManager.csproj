@@ -126,6 +126,10 @@
     <None Remove="Views\KabinengewichtPage.xaml" />
     <None Remove="Views\KabinenLüftungPage.xaml" />
     <None Remove="Views\NutzlastberechnungPage.xaml" />
+    <None Remove="Views\Settings\AboutSettingPage.xaml" />
+    <None Remove="Views\Settings\GeneralSettingPage.xaml" />
+    <None Remove="Views\Settings\MaintenancePage.xaml" />
+    <None Remove="Views\Settings\ThemeSettingPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\Berechnungen.png" />
@@ -298,6 +302,21 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Settings\ThemeSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\MaintenancePage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\AboutSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\GeneralSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <None Update="Styles\Border.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -372,6 +391,10 @@
   <ItemGroup>
     <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
+    <Folder Include="ViewModels\GeneralData\" />
+    <Folder Include="ViewModels\DetailData\" />
+    <Folder Include="Views\GeneralData\" />
+    <Folder Include="Views\DetailData\" />
   </ItemGroup>
 
   <ItemGroup>
