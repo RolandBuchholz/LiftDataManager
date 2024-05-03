@@ -10,5 +10,7 @@ public class BufferCalculationData
     public required int EulerCase { get; set; }
     public double MomentOfInertiaX { get; set; }
     public double MomentOfInertiaY { get; set; }
+    public double RadiusOfInertiaX { get; set; }
+    public double RadiusOfInertiaY { get; set; }
     public bool ReducedSafetyRoomBufferUnderCounterweight { get; set; }
 }

@@ -1814,29 +1814,52 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarDoorMountingDimensions(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        //var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+        string doorTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}");
 
-        //if (name.StartsWith("var_Tuerbezeichnung"))
-        //{
-        //    if (string.IsNullOrWhiteSpace(value))
-        //    {
+        if (string.IsNullOrWhiteSpace(doorTyp))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
+        else
+        {
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == doorTyp);
+            if (liftDoorGroup == null || liftDoorGroup.CarDoor == null)
+            {
+                return;
+            }
+            double minMountingSpace = liftDoorGroup.CarDoor.MinimalMountingSpace;
+            double minMountingSpaceReduced = 0d;
+            if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value == "97")
+            {
+                 minMountingSpaceReduced = liftDoorGroup.CarDoor.ReducedMinimalMountingSpace;
+            }
+            string doorMounting = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}");
 
-        //    }
-        //}
+            if (double.TryParse(doorMounting, out double selectedMountingSpace))
+            {
+                if (selectedMountingSpace <= 0)
+                {
+                    return ;
+                }
 
+                string[] dependentParameter = name switch
+                {
+                    var n when n.StartsWith("var_Tuerbezeichnung") => [zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}", $"var_KabTuerKaempferBreite{zugang}"],
+                    var n when n.StartsWith("var_TuerEinbau") => [zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}", $"var_KabTuerKaempferBreite{zugang}"],
+                    var n when n.StartsWith("var_KabTuerKaempferBreite") => [zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}", zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"],
+                    _ => []
+                };
 
-        //if (fabriknummerBestand != fabriknummer)
-        //{
-        //    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
-        //    { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
-        //}
-        //else
-        //{
-        //    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
-        //}
-
-
-
-
+                if (minMountingSpace != selectedMountingSpace && minMountingSpaceReduced != selectedMountingSpace)
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Türanbau: {selectedMountingSpace} mm enspricht nicht unserem standard Türanbau: {minMountingSpace} mm bzw. reduziertem Türanbau: {minMountingSpaceReduced} mm.", SetSeverity(severity)) { DependentParameter = dependentParameter });
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = dependentParameter });
+                }
+            }
+        }
     }
 }

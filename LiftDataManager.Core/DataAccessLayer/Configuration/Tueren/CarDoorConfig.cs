@@ -26,6 +26,7 @@ public class CarDoorConfig : BaseModelBuilder<CarDoor>
                .IsRequired();
         builder.Property(x => x.SillWidth);
         builder.Property(x => x.MinimalMountingSpace);
+        builder.Property(x => x.ReducedMinimalMountingSpace);
         builder.Property(x => x.DoorPanelWidth);
         builder.Property(x => x.DoorPanelSpace);
         builder.Property(x => x.DoorPanelCount);

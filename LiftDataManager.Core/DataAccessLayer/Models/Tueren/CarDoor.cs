@@ -5,6 +5,7 @@ public class CarDoor : BaseEntity
     public string? Manufacturer { get; set; }
     public double SillWidth { get; set; }
     public double MinimalMountingSpace { get; set; }
+    public double ReducedMinimalMountingSpace { get; set; }
     public double DoorPanelWidth { get; set; }
     public double DoorPanelSpace { get; set; }
     public int DoorPanelCount { get; set; }

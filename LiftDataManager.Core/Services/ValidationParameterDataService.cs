@@ -176,24 +176,24 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateCarEquipmentPosition, "Error", null)]);
 
         ValidationDictionary.Add("var_TuerEinbau",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),]);
 
         ValidationDictionary.Add("var_TuerEinbauB",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_TuerEinbauC",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_TuerEinbauD",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
             [new(ValidateJungblutOSG, "Informational", null),
@@ -500,16 +500,20 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             [new(NotTrueWhenTheOtherIsTrue, "Error", "var_KTflRollen")]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteA",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteB",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteC",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteD",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferHoeheA",
             [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
