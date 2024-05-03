@@ -177,18 +177,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_TuerEinbau",
             [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_TuerEinbauB",
             [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_TuerEinbauC",
             [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_TuerEinbauD",
             [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
@@ -315,6 +319,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_Tuergewicht",
@@ -407,18 +412,21 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",

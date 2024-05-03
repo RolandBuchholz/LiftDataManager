@@ -115,13 +115,33 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
         if (message.PropertyName == "var_Fahrkorbtyp")
         {
             if (ParameterDictionary is not null)
+            {
                 CheckIsDefaultCarTyp();
+            }     
         }
 
         if (message.PropertyName == "var_Handlauf")
         {
             if (ParameterDictionary is not null)
+            {
                 SetHandRailHeight();
+            } 
+        }
+
+        if (message.PropertyName == "var_VentilatorLuftmenge")
+        {
+            if (ParameterDictionary is not null && message.NewValue == "False")
+            {
+                ParameterDictionary["var_VentilatorAnzahl"].Value = string.Empty;
+            }    
+        }
+
+        if (message.PropertyName == "var_Teilungsleiste")
+        {
+            if (ParameterDictionary is not null)
+            {
+                SetDivisionBarHeight();
+            }
         }
 
         SetInfoSidebarPanelText(message);
@@ -389,12 +409,36 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     private void SetHandRailHeight()
     {
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheHandlauf"].Value))
-            return;
-        bool handrailTypSelected = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value);
-        if (handrailTypSelected)
         {
-            ParameterDictionary["var_HoeheHandlauf"].Value = "900";
+            return;
         }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
+        {
+            return;
+        }
+        ParameterDictionary["var_HoeheHandlauf"].Value = "900";
+    }
+
+    private void SetDivisionBarHeight()
+    {
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_TeilungsleisteOKFF"].Value))
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Teilungsleiste"].Value))
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
+        {
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = "900";
+        }
+        else
+        {
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = !ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ? 
+                                                                  ParameterDictionary["var_HoeheHandlauf"].Value :
+                                                                  (LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_HoeheHandlauf") - 52d).ToString();
+        } 
     }
 
     private void SetRammingProtectionSelection()
@@ -501,6 +545,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
             SetHandRailHeight();
             SetRammingProtectionSelection();
             AktivateAutoMirrorCalculation();
+            SetDivisionBarHeight();
         }
     }
 

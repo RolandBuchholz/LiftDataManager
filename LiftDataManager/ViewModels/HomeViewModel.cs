@@ -73,6 +73,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
     }
 
     [ObservableProperty]
+    private bool importInfo;
+
+    [ObservableProperty]
     private string carWeightDescription = "Kabinengewicht errechnet:";
 
     [ObservableProperty]
@@ -278,7 +281,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             }
             else
             {
-                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadInfo);
+                await _dialogService.LiftDataManagerdownloadInfoAsync(downloadInfo);
                 _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadInfo.ExitState}", SpezifikationName, downloadInfo.ExitState);
                 await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadInfo.ExitState}");
                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -683,11 +686,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
                 return;
             }
 
-            importParameter = await _parameterDataService!.LoadParameterAsync(downloadInfo.FullFileName);
+            importParameter = await _parameterDataService.LoadParameterAsync(downloadInfo.FullFileName);
         }
         else
         {
-            var importParameterPdf = await _parameterDataService!.LoadPdfOfferAsync(ImportSpezifikationName);
+            var importParameterPdf = await _parameterDataService.LoadPdfOfferAsync(ImportSpezifikationName);
 
             if (!importParameterPdf.Any())
             {
@@ -754,6 +757,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
 
         if (importParameter is null)
             return;
+        CheckOut = true;
 
         foreach (var item in importParameter)
         {
@@ -761,7 +765,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             {
                 continue;
             }
-            if (ParameterDictionary!.TryGetValue(item.Name, out Parameter value))
+            if (ParameterDictionary.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
                 if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
@@ -798,8 +802,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
             return;
         if (FullPathXml is null)
             return;
-        var saveResult = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
-        if (saveResult.Any())
+        var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
+        if (saveResult.Count != 0)
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
 
         await SetModelStateAsync();
@@ -812,6 +816,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         }
 
         DataImportStatus = InfoBarSeverity.Success;
+        ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(ImportSpezifikationName);
         DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
                                $"Detailinformationen im Info Sidebar Panel.\n" +
                                $"Importdialog kann geschlossen werden.";
@@ -1165,7 +1170,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAware, IRecip
         {
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
-
+            ImportInfo = !string.IsNullOrWhiteSpace(ParameterDictionary["var_ImportiertVon"].Value);
             if (parameter is null)
                 return;
             if (parameter.GetType().Equals(typeof(string)))

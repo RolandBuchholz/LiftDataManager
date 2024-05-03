@@ -1776,7 +1776,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                         "11" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
                         "12" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
                         "13" => string.Equals(value, "PFB LK 200, FA, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
-                        "14" => string.Equals(value, "FV ESG25 - Limax", StringComparison.CurrentCultureIgnoreCase),
+                        "14" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
                         "15" => string.Equals(value, "HJ200, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         "16" => string.Equals(value, "HJ200, AS 24V, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
@@ -1793,8 +1793,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                         "8" => string.Equals(value, "Gleitfuehrung 903809", StringComparison.CurrentCultureIgnoreCase),
                         "9" => string.Equals(value, "Rollenfuehrung 903800", StringComparison.CurrentCultureIgnoreCase),
                         "10" => string.Equals(value, "Rollenfuehrung 903935", StringComparison.CurrentCultureIgnoreCase),
-                        "11" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
-                        "12" => string.Equals(value, "HSM 140 gedämpft", StringComparison.CurrentCultureIgnoreCase),
+                        "11" => string.Equals(value, "HSM 140 gedämpft", StringComparison.CurrentCultureIgnoreCase),
+                        "12" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
                     },
                     _ => true
@@ -1814,7 +1814,29 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarDoorMountingDimensions(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        // Doortyp
-        //Einbau A,B,C,D
+        //var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+
+        //if (name.StartsWith("var_Tuerbezeichnung"))
+        //{
+        //    if (string.IsNullOrWhiteSpace(value))
+        //    {
+
+        //    }
+        //}
+
+
+        //if (fabriknummerBestand != fabriknummer)
+        //{
+        //    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Umbauten muß die Fabriknummer der alten Anlage beibehalten werden", SetSeverity(severity))
+        //    { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
+        //}
+        //else
+        //{
+        //    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_FabrikNummer", "var_InformationAufzug", "var_FabriknummerBestand"] });
+        //}
+
+
+
+
     }
 }
