@@ -83,7 +83,7 @@ public partial class App : Application
             // ViewModels
             services.AddTransient<AboutSettingViewModel>();
             services.AddTransient<GeneralSettingViewModel>();
-            services.AddTransient<MaintenanceViewModel>();
+            services.AddTransient<MaintenanceSettingViewModel>();
             services.AddTransient<ThemeSettingViewModel>();
             services.AddTransient<SchachtDetailViewModel>();
             services.AddTransient<BausatzDetailViewModel>();
@@ -112,6 +112,7 @@ public partial class App : Application
             services.AddTransient<DatenansichtViewModel>();
             services.AddTransient<ListenansichtViewModel>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<BreadCrumbBarViewModel>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 

@@ -2,11 +2,310 @@
     x:Class="LiftDataManager.Views.GeneralSettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Style x:Name="ContentDialogButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{ThemeResource AccentButtonForeground}" />
+            <Setter Property="Background" Value="{ThemeResource AccentButtonBackground}" />
+            <Setter Property="BackgroundSizing" Value="OuterBorderEdge" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AccentButtonBorderBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter
+                            x:Name="ContentPresenter"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Background="{TemplateBinding Background}"
+                            BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBackgroundPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonForegroundPointerOver}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBackgroundPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonForegroundPressed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemChromeGrayColor}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushDisabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonForegroundDisabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid x:Name="ContentArea">
-        <TextBlock FontSize="36" Text="GeneralSettingPage" />
+        <ScrollViewer>
+            <StackPanel Margin="0,0,15,0">
+                <controls:SettingsCard Description="Automatisches speichern der Autotransfer.xml" Header="Auto Save">
+                    <controls:SettingsCard.HeaderIcon>
+                        <SymbolIcon Symbol="SaveLocal" />
+                    </controls:SettingsCard.HeaderIcon>
+                    <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                        <ComboBox
+                            Margin="0,0,20,-3"
+                            VerticalAlignment="Center"
+                            ItemsSource="{x:Bind ViewModel.SavePeriods, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.AutoSavePeriod, Mode=TwoWay}"
+                            Visibility="{x:Bind ViewModel.AutoSave, Mode=OneWay}" />
+                        <ToggleSwitch
+                            x:Name="SwitchAutoSave"
+                            HorizontalAlignment="Center"
+                            IsOn="{x:Bind ViewModel.AutoSave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            OffContent="AutoSave Off"
+                            OnContent="AutoSave On" />
+                    </StackPanel>
+                </controls:SettingsCard>
+                <controls:SettingsCard
+                    Description="Adminmode für mehr Berechtigungen"
+                    Header="Adminmode"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/adminMode.png}">
+                    <ToggleSwitch
+                        x:Name="SwitchAdminmode"
+                        Margin="0,0,20,0"
+                        IsOn="{x:Bind ViewModel.Adminmode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OffContent="Adminmode deactivated"
+                        OnContent="Adminmode activated">
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Toggled">
+                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </ToggleSwitch>
+                </controls:SettingsCard>
+                <controls:SettingsCard Description="Infocenter automatisch öffen beim Laden eines Auftrages" Header="Infocentersettings">
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE8A0;" />
+                    </controls:SettingsCard.HeaderIcon>
+                    <ToggleSwitch
+                        x:Name="SwitchAutoOpenInfocenter"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Center"
+                        IsOn="{x:Bind ViewModel.AutoOpenInfoCenter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OffContent="Auto Open Infocenter deactivated"
+                        OnContent="Auto Open Infocenter activated" />
+                </controls:SettingsCard>
+                <controls:SettingsExpander Description="Benutzerdefinierte Ploteigenschaften" Header="Plotstyles">
+                    <controls:SettingsExpander.HeaderIcon>
+                        <SymbolIcon Symbol="Print" />
+                    </controls:SettingsExpander.HeaderIcon>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard
+                            Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen"
+                            Header="Toner SaveMode"
+                            ToolTipService.Placement="Bottom">
+                            <controls:SettingsCard.HeaderIcon>
+                                <SymbolIcon Symbol="Street" />
+                            </controls:SettingsCard.HeaderIcon>
+                            <ToggleSwitch
+                                x:Name="SwitchTonerSaveMode"
+                                HorizontalAlignment="Center"
+                                IsOn="{x:Bind ViewModel.TonerSaveMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="Toner SaveMode Off"
+                                OnContent="Toner SaveMode On" />
+                            <ToolTipService.ToolTip>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="150" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Text="Toner SaveMode Off" />
+                                    <Image
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Source="/Images/TonerSaveOFF.png" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        Text="Toner SaveMode On" />
+                                    <Image
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        Source="/Images/TonerSaveON.png" />
+                                </Grid>
+                            </ToolTipService.ToolTip>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard
+                            Description="Benutzerdefinierte Einstellungen für die Parameterhervorhebung"
+                            Header="Highlight Settings"
+                            ToolTipService.Placement="Bottom">
+                            <controls:SettingsCard.HeaderIcon>
+                                <SymbolIcon Symbol="Highlight" />
+                            </controls:SettingsCard.HeaderIcon>
+                            <ToggleSwitch
+                                x:Name="HighlightSettings"
+                                HorizontalAlignment="Center"
+                                IsOn="{x:Bind ViewModel.LowHighlightMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="Background Color"
+                                OnContent="Bold Font" />
+                            <ToolTipService.ToolTip>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="150" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Text="Background Color" />
+                                    <Image
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Source="/Images/HighlightColor.png" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        Text="Bold Font" />
+                                    <Image
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        Source="/Images/HighlightBold.png" />
+                                </Grid>
+                            </ToolTipService.ToolTip>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+                <ContentDialog
+                    x:Name="AdminModePasswortDialog"
+                    Title="Admin Mode aktivieren"
+                    MaxWidth="{Binding ActualWidth, ElementName=pageRoot}"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource SystemChromeLowColor}"
+                    IsPrimaryButtonEnabled="{x:Bind ViewModel.CanSwitchToAdminmode, Mode=OneWay}"
+                    PrimaryButtonStyle="{StaticResource ContentDialogButtonStyle}"
+                    PrimaryButtonText="OK"
+                    SecondaryButtonStyle="{StaticResource ContentDialogButtonStyle}"
+                    SecondaryButtonText="Cancel">
+                    <StackPanel>
+                        <StackPanel Margin="40,10,10,10" Orientation="Horizontal">
+                            <FontIcon
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                FontSize="30"
+                                Glyph="&#xE72E;" />
+                            <PasswordBox
+                                Width="120"
+                                Margin="10"
+                                Padding="20,5,20,5"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                CornerRadius="10"
+                                IsPasswordRevealButtonEnabled="True"
+                                MaxLength="4"
+                                Password="{x:Bind ViewModel.PasswortInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PasswordRevealMode="Peek"
+                                PlaceholderText="****" />
+                        </StackPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="Red"
+                            Text="{x:Bind ViewModel.PasswortInfoText, Mode=OneWay}" />
+                        <StackPanel Margin="10" Orientation="Horizontal">
+                            <SymbolIcon
+                                Margin="0,10,0,10"
+                                HorizontalAlignment="Left"
+                                Symbol="ReportHacked" />
+                            <TextBlock
+                                Margin="10"
+                                FontSize="12"
+                                TextWrapping="Wrap">
+                                Achtung im Adminmode können nicht validierte Parameter gespeichet werden.<LineBreak />
+                                Die Parameter werden nicht auf Plausibilität geprüft.</TextBlock>
+                        </StackPanel>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" IsChecked="{x:Bind ViewModel.AdminmodeWarningAccepted, Mode=TwoWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                Text="Ich verfüge über die Erfahrung Pamameter ohne Plausibilitätsprüfung zu ändern." />
+                        </Grid>
+                    </StackPanel>
+                </ContentDialog>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

@@ -269,6 +269,55 @@
           "HideItem": true
         }
       ]
+    },
+    {
+      "UniqueId": "LiftDataManagerSettingPages",
+      "Title": "LiftDataManager Setting Pages",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "HideGroup": true,
+      "ShowItemsWithoutGroup": true,
+      "IsExpanded": false,
+      "Order": false,
+      "Items": [
+        {
+          "UniqueId": "LiftDataManager.Views.AboutSettingPage",
+          "Title": "About Settings",
+          "Description": "About and Updateinformationen",
+          "Subtitle": "About",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.GeneralSettingPage",
+          "Title": "General Settings",
+          "Description": "General Settings",
+          "Subtitle": "General Appsettings",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.MaintenanceSettingPage",
+          "Title": "Maintenance Settings",
+          "Description": "Maintenance",
+          "Subtitle": "Maintenance",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.ThemeSettingPage",
+          "Title": "Theme Settings",
+          "Description": "Personalization",
+          "Subtitle": "Personalization der App",
+          "ImagePath": "ms-appx:///Assets/WindowIcon.png",
+          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
+          "HideItem": true
+        }
+      ]
     }
   ]
 }

@@ -51,8 +51,12 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = JsonNavigationViewService.CanGoBack;
+        if (e.SourcePageType == typeof(SettingsPage))
+        {
+            Header = "Einstellungen";
+            ShowGlobalSearch = false;
+        }
         var viewPage = JsonNavigationViewService.DataSource.GetItem(e.SourcePageType.FullName);
-        
         if (viewPage != null)
         {
             Header = viewPage.Description;
