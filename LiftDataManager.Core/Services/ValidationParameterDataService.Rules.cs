@@ -1814,6 +1814,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarDoorMountingDimensions(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
+        if (string.Equals(ParameterDictionary["var_Fahrkorbtyp"].Value, "Fremdkabine",StringComparison.CurrentCultureIgnoreCase))
+        {
+            return;
+        }
         var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
         string doorTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}");
 
