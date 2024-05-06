@@ -1105,8 +1105,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
         string profilDescription = string.Empty;
+        double area = 0;
         double momentOfInertiaX = 0;
         double momentOfInertiaY = 0;
+        double radiusOfInertiaX = 0;
+        double radiusOfInertiaY = 0;
+        double centerOfGravityAxisX = 0;
+        double centerOfGravityAxisY = 0;
+
         switch (parameterName)
         {
             case "var_PufferCalculationData_FK":
@@ -1138,8 +1144,13 @@ public partial class CalculationsModuleService : ICalculationsModule
             var profilData = _parametercontext.Set<BufferPropProfile>().FirstOrDefault(x => x.Name.Contains(profilDescription));
             if(profilData != null)
             {
+                area = profilData.AreaOfProfile;
                 momentOfInertiaX = profilData.MomentOfInertiaX;
                 momentOfInertiaY = profilData.MomentOfInertiaY;
+                radiusOfInertiaX = profilData.RadiusOfInertiaX;
+                radiusOfInertiaY = profilData.RadiusOfInertiaY;
+                centerOfGravityAxisX = profilData.CenterOfGravityAxisX;
+                centerOfGravityAxisY = profilData.CenterOfGravityAxisY;
             }
         }
 
@@ -1150,8 +1161,13 @@ public partial class CalculationsModuleService : ICalculationsModule
             EulerCase = eulerCase,
             BucklingLength = GetBucklingLength(bufferPillarLength, eulerCase),
             ProfilDescription = profilDescription,
+            Area = area,
             MomentOfInertiaX = momentOfInertiaX,
             MomentOfInertiaY = momentOfInertiaY,
+            RadiusOfInertiaX = radiusOfInertiaX,
+            RadiusOfInertiaY = radiusOfInertiaY,
+            CenterOfGravityAxisX = centerOfGravityAxisX,
+            CenterOfGravityAxisY = centerOfGravityAxisY,
             ProfilMaterial = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Pufferstuetzenmaterial"),
             ReducedSafetyRoomBufferUnderCounterweight = bufferUnderCounterweight,
         };

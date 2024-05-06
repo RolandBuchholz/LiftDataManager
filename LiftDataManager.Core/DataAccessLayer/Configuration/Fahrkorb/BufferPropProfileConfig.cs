@@ -15,5 +15,7 @@ public class BufferPropProfileConfig : BaseModelBuilder<BufferPropProfile>
         builder.Property(x => x.MomentOfInertiaY).IsRequired();
         builder.Property(x => x.RadiusOfInertiaX).IsRequired();
         builder.Property(x => x.RadiusOfInertiaY).IsRequired();
+        builder.Property(x => x.CenterOfGravityAxisX).IsRequired();
+        builder.Property(x => x.CenterOfGravityAxisY).IsRequired();
     }
 }

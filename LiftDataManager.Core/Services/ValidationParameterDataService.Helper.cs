@@ -35,6 +35,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         double tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TB");
         double tuerHoehe = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_TH");
         double tuerGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Tuergewicht");
+        string kaempferBreiteKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_KabTuerKaempferBreiteA");
+        string kaempferHoeheKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_KabTuerKaempferHoeheA");
 
         ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = tuerTyp;
         ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = tuerBezeichnung;
@@ -43,6 +45,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = Convert.ToString(tuerGewicht);
         ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = schwellenprofilSchachttuer;
         ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = schwellenprofilKabinentuer;
+        ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue = kaempferBreiteKabinentuer;
+        ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue = kaempferHoeheKabinentuer;
     }
 
     private void RemoveCarDoorData(string zugang)
@@ -73,10 +77,20 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value != "0")
                 ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = string.Empty;
         }
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbauB"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbau{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_TuerEinbau{zugang}"].Value != "0")
                 ParameterDictionary[$"var_TuerEinbau{zugang}"].Value = string.Empty;
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value))
+        {
+            if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value != "0")
+                ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value = string.Empty;
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbau{zugang}"].Value))
+        {
+            if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value != "0")
+                ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value = string.Empty;
         }
     }
 

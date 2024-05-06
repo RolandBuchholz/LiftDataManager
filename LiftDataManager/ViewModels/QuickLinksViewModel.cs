@@ -260,7 +260,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            startargs = driveSystem.IsCFPControlled ? $"{auftragsnummer} {driveSystem.CFPStartIndex} {shortSymbolDirveSystem}" : string.Empty;
+            startargs = $"{auftragsnummer} {driveSystem.CFPStartIndex} {shortSymbolDirveSystem}";
         }
 
         if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
