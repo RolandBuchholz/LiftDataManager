@@ -259,7 +259,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         if (driveSystem is not null)
         {
             shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            startargs = driveSystem.IsCFPControlled ? $"{auftragsnummer} {driveSystem.CFPStartIndex} {shortSymbolDirveSystem}" : string.Empty;
+            startargs = $"{auftragsnummer} {driveSystem.CFPStartIndex} {shortSymbolDirveSystem}";
         }
 
         if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
@@ -590,7 +590,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         var zaliftHtml = GetZaliftHtml();
         var zliDataDictionary = GetZliDataDictionary(zaliftHtml);
 
-        if (ParameterDictionary is not null && zliDataDictionary.Any())
+        if (ParameterDictionary is not null && zliDataDictionary.Count != 0)
         {
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
 
@@ -729,6 +729,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             ParameterDictionary["var_ZA_IMP_RopeSafety"].AutoUpdateParameterValue(ropeSafety);
 
+            var exactRatedCurrent = string.Empty;
+            var exactCapacityCurrent = string.Empty;
             var ratedCurrent = string.Empty;
             var maxCurrent = string.Empty;
             var ratedCapacity = string.Empty;
@@ -739,11 +741,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
                 if (!string.IsNullOrWhiteSpace(exactCurrentString))
                 {
-                    var exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
+                    exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
                     ratedCurrent = Math.Ceiling(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) + 10).ToString() + ",0";
                     maxCurrent = Math.Round(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) * 1.8 + 10, 2).ToString();
 
-                    var exactCapacityCurrent = exactCurrentString[(exactCurrentString.IndexOf('V') + 2)..exactCurrentString.IndexOf("kW")].Trim();
+                    exactCapacityCurrent = exactCurrentString[(exactCurrentString.IndexOf('V') + 2)..exactCurrentString.IndexOf("kW")].Trim();
                     ratedCapacity = (Math.Ceiling(Convert.ToDouble(exactCapacityCurrent, CultureInfo.CurrentCulture)) + 2).ToString() + ",0";
 
                     nominalVoltage = exactCurrentString[(exactCurrentString.IndexOf('A') + 2)..exactCurrentString.IndexOf('V')].Trim();
@@ -753,8 +755,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             {
                 _logger.LogWarning(61094, "ratedCurrent, ratedCapacity or nominalVoltage not found");
             }
-            ParameterDictionary["var_ZA_IMP_Nennstrom"].AutoUpdateParameterValue(ratedCurrent);
-            ParameterDictionary["var_ZA_IMP_Leistung"].AutoUpdateParameterValue(ratedCapacity);
+            ParameterDictionary["var_ZA_IMP_Nennstrom"].AutoUpdateParameterValue(exactRatedCurrent);
+            ParameterDictionary["var_ZA_IMP_Leistung"].AutoUpdateParameterValue(exactCapacityCurrent);
+            ParameterDictionary["var_ZA_IMP_Nennstrom_AZ"].AutoUpdateParameterValue(ratedCurrent);
+            ParameterDictionary["var_ZA_IMP_Leistung_AZ"].AutoUpdateParameterValue(ratedCapacity);
             ParameterDictionary["var_ZA_IMP_Stromart"].AutoUpdateParameterValue(nominalVoltage);
             ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].AutoUpdateParameterValue(maxCurrent);
 
@@ -771,7 +775,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             {
                 _logger.LogWarning(61094, "maxEngineCurrent not found");
             }
-            ParameterDictionary["var_ZA_IMP_Motor_FE_"].AutoUpdateParameterValue(maxEngineCurrent);
+            ParameterDictionary["var_ZA_IMP_Motor_Strom_Maximalmoment"].AutoUpdateParameterValue(maxEngineCurrent);
             var powerDissipation = string.Empty;
             try
             {

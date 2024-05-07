@@ -179,7 +179,8 @@
                                         Grid.ColumnSpan="2"
                                         Margin="5,10,5,5"
                                         Foreground="IndianRed"
-                                        TextWrapping="WrapWholeWords">
+                                        TextWrapping="WrapWholeWords"
+                                        Visibility="{x:Bind ViewModel.ShowAutoCeilingWarning, Mode=OneTime}">
                                         <Run
                                             FontSize="16"
                                             FontWeight="Bold"

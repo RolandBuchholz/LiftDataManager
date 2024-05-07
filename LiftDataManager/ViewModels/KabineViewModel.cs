@@ -20,6 +20,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     private readonly string[] carEquipment = [ "var_SpiegelA", "var_SpiegelB", "var_SpiegelC", "var_SpiegelD",
                                                "var_HandlaufA", "var_HandlaufB", "var_HandlaufC", "var_HandlaufD",
                                                "var_SockelleisteA", "var_SockelleisteB", "var_SockelleisteC", "var_SockelleisteD",
+                                               "var_TeilungsleisteA", "var_TeilungsleisteB", "var_TeilungsleisteC", "var_TeilungsleisteD",
                                                "var_RammschutzA", "var_RammschutzB", "var_RammschutzC", "var_RammschutzD",
                                                "var_PaneelPosA", "var_PaneelPosB", "var_PaneelPosC", "var_PaneelPosD",
                                                "var_Schutzgelaender_A", "var_Schutzgelaender_B", "var_Schutzgelaender_C", "var_Schutzgelaender_D"];
@@ -59,7 +60,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             var liftparameter = message.Sender as Parameter;
             if (liftparameter is not null && liftparameter.Name is not null)
             {
-                string[] zugang = { $"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}" };
+                string[] zugang = [$"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}"];
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
             }
         }
@@ -67,7 +68,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         if (message.PropertyName == "var_Rueckwand")
         {
             var liftparameter = message.Sender as Parameter;
-            string[] zugang = { "var_ZUGANSSTELLEN_C" };
+            string[] zugang = ["var_ZUGANSSTELLEN_C"];
             if (liftparameter is not null)
                 _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
         }
@@ -99,15 +100,48 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             SetDistanceBetweenDoors();
         }
 
-        if (message.PropertyName == "var_Sockelleiste")
+        if (message.PropertyName == "var_Sockelleiste" ||
+            message.PropertyName == "var_SockelleisteHoeheBenutzerdefiniert")
         {
             SetSkirtingBoardHeight(true);
+        }
+
+        if (message.PropertyName == "var_Rammschutz" ||
+            message.PropertyName == "var_AnzahlReihenRammschutz")
+        {
+            SetRammingProtectionSelection();
         }
 
         if (message.PropertyName == "var_Fahrkorbtyp")
         {
             if (ParameterDictionary is not null)
+            {
                 CheckIsDefaultCarTyp();
+            }     
+        }
+
+        if (message.PropertyName == "var_Handlauf")
+        {
+            if (ParameterDictionary is not null)
+            {
+                SetHandRailHeight();
+            } 
+        }
+
+        if (message.PropertyName == "var_VentilatorLuftmenge")
+        {
+            if (ParameterDictionary is not null && message.NewValue == "False")
+            {
+                ParameterDictionary["var_VentilatorAnzahl"].Value = string.Empty;
+            }    
+        }
+
+        if (message.PropertyName == "var_Teilungsleiste")
+        {
+            if (ParameterDictionary is not null)
+            {
+                SetDivisionBarHeight();
+            }
         }
 
         SetInfoSidebarPanelText(message);
@@ -180,6 +214,24 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     [ObservableProperty]
     private bool showGlassPanelsColor;
 
+    [ObservableProperty]
+    private bool showCustomSkirtingBoards;
+
+    [ObservableProperty]
+    private bool showCustomRammingProtections;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowsCount;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight1;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight2;
+
+    [ObservableProperty]
+    private bool showRammingProtectionsRowHeight3;
+
     private double _floorHeight;
 
     private void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
@@ -235,7 +287,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
     private void CanShowMirrorDimensions()
     {
-        List<string> mirrors = new();
+        List<string> mirrors = [];
 
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
@@ -280,21 +332,45 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
     private void SetSkirtingBoardHeight(bool modify)
     {
-        if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_Sockelleiste"].Value))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Sockelleiste"].Value))
         {
-            ParameterDictionary!["var_SockelleisteOKFF"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteOKFF"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"].Value = string.Empty;
+            ShowCustomSkirtingBoards = false;
         }
         else
         {
-            if (string.IsNullOrWhiteSpace(ParameterDictionary!["var_SockelleisteOKFF"].Value) || modify)
+            if (string.IsNullOrWhiteSpace(ParameterDictionary["var_SockelleisteOKFF"].Value) || modify)
             {
-
-                var skirtingHeight = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == ParameterDictionary!["var_Sockelleiste"].Value)?.Height;
+                var skirtingHeight = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == ParameterDictionary["var_Sockelleiste"].Value)?.Height;
                 if (skirtingHeight is not null)
                 {
-                    ParameterDictionary!["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
+                    if (skirtingHeight != 0)
+                    {
+                        ParameterDictionary["var_SockelleisteOKFF"].Value = (skirtingHeight + 10d).ToString();
+                        ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value = string.Empty;
+                        ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"].Value = string.Empty;
+                        ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"].Value = string.Empty;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value))
+                        {
+                            if (double.TryParse(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"].Value, out double customSkirtingHeight))
+                            {
+                                ParameterDictionary["var_SockelleisteOKFF"].Value = (customSkirtingHeight + 10d).ToString();
+                            }
+                        }
+                        else
+                        {
+                            ParameterDictionary["var_SockelleisteOKFF"].Value = string.Empty;
+                        }
+                    }
                 }
             }
+            ShowCustomSkirtingBoards = ParameterDictionary["var_Sockelleiste"].Value == "gemäß Beschreibung";
         }
     }
 
@@ -328,6 +404,100 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     {
         IsCarCeilingReadOnly = LiftParameterHelper.IsDefaultCarTyp(ParameterDictionary!["var_Fahrkorbtyp"].Value);
         CarCeilingReadOnlyInfo = IsCarCeilingReadOnly ? "Parameter wird automatisch gesetzt" : "Parameter können von händisch eingegeben werden";
+    }
+
+    private void SetHandRailHeight()
+    {
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheHandlauf"].Value))
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
+        {
+            return;
+        }
+        ParameterDictionary["var_HoeheHandlauf"].Value = "900";
+    }
+
+    private void SetDivisionBarHeight()
+    {
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_TeilungsleisteOKFF"].Value))
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Teilungsleiste"].Value))
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
+        {
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = "900";
+        }
+        else
+        {
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = !ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ? 
+                                                                  ParameterDictionary["var_HoeheHandlauf"].Value :
+                                                                  (LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_HoeheHandlauf") - 52d).ToString();
+        } 
+    }
+
+    private void SetRammingProtectionSelection()
+    {
+        var rammingProtectionTyp = ParameterDictionary["var_Rammschutz"].Value;
+
+        if (string.IsNullOrWhiteSpace(rammingProtectionTyp))
+        {
+            ParameterDictionary["var_AnzahlReihenRammschutz"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzHoeheBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzBreiteBenutzerdefiniert"].Value = string.Empty;
+            ParameterDictionary["var_RammschutzGewichtBenutzerdefiniert"].Value = string.Empty;
+            ShowCustomRammingProtections = false;
+            ShowRammingProtectionsRowsCount = false;
+            ShowRammingProtectionsRowHeight1 = false;
+            ShowRammingProtectionsRowHeight2 = false;
+            ShowRammingProtectionsRowHeight3 = false;
+        }
+        else
+        {
+            ShowCustomRammingProtections = rammingProtectionTyp == "Rammschutz siehe Beschreibung";
+
+            var rammingRowsDB = _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary, rammingProtectionTyp);
+            if (rammingRowsDB != -1)
+            {
+                ShowRammingProtectionsRowsCount = rammingRowsDB == 0;
+
+                int rammingRows;
+
+                if (rammingRowsDB == 0)
+                {
+                   if (int.TryParse(ParameterDictionary["var_AnzahlReihenRammschutz"].Value, out int result))
+                   {
+                        rammingRows = result;
+                   }
+                   else
+                   {
+                        rammingRows = 1;
+                        ParameterDictionary["var_AnzahlReihenRammschutz"].Value = rammingRows.ToString();
+                   }
+                }
+                else
+                {
+                    rammingRows = rammingRowsDB;
+                    ParameterDictionary["var_AnzahlReihenRammschutz"].Value = rammingRowsDB.ToString();
+                }
+                ShowRammingProtectionsRowHeight1 = rammingRows >= 1;
+                ShowRammingProtectionsRowHeight2 = rammingRows >= 2;
+                ShowRammingProtectionsRowHeight3 = rammingRows >= 3;
+            }
+        }
+    }
+
+    private void AktivateAutoMirrorCalculation() 
+    {
+       if (string.IsNullOrWhiteSpace(ParameterDictionary["var_BreiteSpiegel"].Value) && string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheSpiegel"].Value))
+       {
+            ParameterDictionary["var_AutoDimensionsMirror"].AutoUpdateParameterValue("True");
+       }
     }
 
     [RelayCommand]
@@ -371,10 +541,14 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             CanShowMirrorDimensions();
             SetSkirtingBoardHeight(false);
             CheckCarCeilingIsOverwritten();
-            CanShowGlassPanels(ParameterDictionary!["var_Paneelmaterial"].Value);
-            CanShowGlassPanelsColor(ParameterDictionary!["var_PaneelmaterialGlas"].Value);
+            CanShowGlassPanels(ParameterDictionary["var_Paneelmaterial"].Value);
+            CanShowGlassPanelsColor(ParameterDictionary["var_PaneelmaterialGlas"].Value);
             SetDistanceBetweenDoors();
             CheckIsDefaultCarTyp();
+            SetHandRailHeight();
+            SetRammingProtectionSelection();
+            AktivateAutoMirrorCalculation();
+            SetDivisionBarHeight();
         }
     }
 

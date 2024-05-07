@@ -15,7 +15,7 @@ public partial class Parameter : ParameterBase
     public Parameter(string value, int parameterTypeCodeId, int parameterTypId, string comment, IValidationParameterDataService validationParameterDataService)
     {
         _validationParameterDataService = validationParameterDataService;
-        DropDownList ??= new();
+        DropDownList ??= [];
         DataImport = true;
         TypeCode = (TypeCodeValue)parameterTypeCodeId;
         ParameterTyp = (ParameterTypValue)parameterTypId;

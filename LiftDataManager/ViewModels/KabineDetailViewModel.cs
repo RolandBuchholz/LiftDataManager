@@ -42,6 +42,9 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
+    private bool showAutoCeilingWarning;
+
+    [ObservableProperty]
     private string? mirrorDimensionsWidth1;
 
     [ObservableProperty]
@@ -234,7 +237,16 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    private void CheckAutoCeilingWarning()
+    {
+        var ruleActivationDate = new DateTime(2024, 01, 11);
+        var creationDate = DateTime.MinValue;
 
+        if (DateTime.TryParse(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_ErstelltAm"), out DateTime parsedDate))
+            creationDate = parsedDate;
+
+        ShowAutoCeilingWarning = !string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value) && ruleActivationDate.CompareTo(creationDate) > 0; 
+    }
 
     public void OnNavigatedTo(object parameter)
     {
@@ -252,6 +264,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
         OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
         CheckIsOpeningDirectionSelected();
         CanShowMirrorDimensions();
+        CheckAutoCeilingWarning();
     }
 
     public void OnNavigatedFrom()

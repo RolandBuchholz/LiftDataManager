@@ -228,6 +228,8 @@
                 <Grid Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Rectangle
@@ -247,9 +249,21 @@
                         FontWeight="Bold"
                         Foreground="White"
                         Text="Basis Aufzugsinformationen:" />
-                    <TextBox
+                    <TextBlock
                         Grid.Column="1"
-                        Margin="10,5,10,5"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Text="Beinhaltet Importdaten von"
+                        Visibility="{x:Bind ViewModel.ImportInfo, Mode=OneWay}" />
+                    <TextBox
+                        Grid.Column="2"
+                        Margin="5"
+                        IsReadOnly="True"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_ImportiertVon'].Value, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.ImportInfo, Mode=OneWay}" />
+                    <TextBox
+                        Grid.Column="3"
+                        Margin="5,5,10,5"
                         FontWeight="Bold"
                         IsReadOnly="True"
                         PlaceholderText="Index"

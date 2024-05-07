@@ -595,29 +595,47 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteD"], true, "Seite D");
                 });
-                table.Cell().Row(11).Column(3).ColumnSpan(2).Row(row =>
+                var showCustomSkirtingBoards = string.Equals(ParameterDictionary["var_Sockelleiste"].Value,"gemäß Beschreibung");
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(showCustomSkirtingBoards).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "mm", false, false, "benutzerdef. Gewicht");
+                });
+                table.Cell().Row(12).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_Rammschutz"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz"], "/", false, true, "Höhen");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz2"], "/", false, true, "");
                     row.RelativeItem(1.5f).BorderColor(Colors.BlueGrey.Darken3).BorderRight(0.1f).ParameterStringCell(ParameterDictionary["var_HoeheRammschutz3"], "mm", false, true, "");
                 });
-                table.Cell().Row(11).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(12).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_RammschutzD"], true, "Seite D");
                 });
-                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
-                table.Cell().Row(12).Column(5).ColumnSpan(2).Row(row =>
+
+                var showCustomRammingProtections = string.Equals(ParameterDictionary["var_Rammschutz"].Value, "Rammschutz siehe Beschreibung");
+                var showRammingProtectionsRowsCount = showCustomRammingProtections || 
+                                                      _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary,ParameterDictionary["var_Rammschutz"].Value) == 0;
+                table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(1).ShowIf(showRammingProtectionsRowsCount).ParameterStringCell(ParameterDictionary["var_AnzahlReihenRammschutz"], null, false, false, "Reihen");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
+                    row.RelativeItem(2).ShowIf(showCustomRammingProtections).ParameterStringCell(ParameterDictionary["var_RammschutzGewichtBenutzerdefiniert"], "kg/m", false, false, "Gewicht");
+                });
+                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Aussenverkleidung_ZT"]);
+                table.Cell().Row(14).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_AussenverkleidungD"], true, "Seite D");
                 });
-                table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
@@ -625,18 +643,31 @@ public class SpezifikationDocument : PdfBaseDocument
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelGlasRAL"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelGlasRAL"], null, false, false, "Farbton(RAL)");
                 });
-                table.Cell().Row(13).Column(5).ColumnSpan(2).Row(row =>
+                table.Cell().Row(15).Column(5).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosA"], true, "Seite A");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosB"], true, "Seite B");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_PaneelPosD"], true, "Seite D");
                 });
-                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(14).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
-                table.Cell().Row(14).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(15).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
+                table.Cell().Row(16).Column(3).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Teilungsleiste"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TeilungsleisteMaterial"]);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TeilungsleisteOKFF"], "mm");
+                });
+                table.Cell().Row(16).Column(5).ColumnSpan(2).Row(row =>
+                {
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteA"], true, "Seite A");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteB"], true, "Seite B");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteC"], true, "Seite C");
+                    row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteD"], true, "Seite D");
+                });
+                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
+                table.Cell().Row(17).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(18).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }
@@ -2013,38 +2044,38 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(24).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_RopeSafety"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(25).Column(1).ColumnSpan(3).PaddingTop(3).Text("Belastungen / Kräfte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
             table.Cell().Row(26).Column(1).Text("Belastung unter FK Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(26).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(26).Column(2).AlignRight().Text($"({ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement"].Value}) {ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(26).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(27).Column(1).Text("Belastung unter GGW Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(27).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement_GGW"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(27).Column(2).AlignRight().Text($"({ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement_GGW"].Value}) {ParameterDictionary["var_Belastung_pro_Schiene_auf_Grundelement_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(27).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(28).Column(1).Text("Belastung unter FK Puffer:").FontSize(fontSizeXXS);
-            table.Cell().Row(28).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(28).Column(2).AlignRight().Text($"({ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement"].Value}) {ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(28).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(29).Column(1).Text("Belastung unter GGW Puffer:").FontSize(fontSizeXXS);
-            table.Cell().Row(29).Column(2).AlignRight().Text(ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_GGW"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(29).Column(2).AlignRight().Text($"({ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_GGW"].Value}) {ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(29).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(30).Column(1).Text("Kraft Fx auf FK-Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(30).Column(2).AlignRight().Text(ParameterDictionary["var_FxF"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(30).Column(2).AlignRight().Text($"({ParameterDictionary["var_FxF"].Value}) {ParameterDictionary["var_FxF_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(30).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(31).Column(1).Text("Kraft Fy auf FK-Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(31).Column(2).AlignRight().Text(ParameterDictionary["var_FyF"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(31).Column(2).AlignRight().Text($"({ParameterDictionary["var_FyF"].Value}) {ParameterDictionary["var_FyF_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(31).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(1).Text("Kraft Fx auf GGW-Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(32).Column(2).AlignRight().Text(ParameterDictionary["var_FxFA_GGW"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(32).Column(2).AlignRight().Text($"({ParameterDictionary["var_FxFA_GGW"].Value}) {ParameterDictionary["var_FxFA_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(33).Column(1).Text("Kraft Fy auf GGW-Schiene:").FontSize(fontSizeXXS);
-            table.Cell().Row(33).Column(2).AlignRight().Text(ParameterDictionary["var_FyFA_GGW"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(33).Column(2).AlignRight().Text($"({ParameterDictionary["var_FyFA_GGW"].Value}) {ParameterDictionary["var_FyFA_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(33).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(1).ColumnSpan(3).PaddingTop(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-            table.Cell().Row(35).Column(1).Text("Nennstrom Netz (aufgerundet + 10A):").FontSize(fontSizeXXS);
-            table.Cell().Row(35).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(35).Column(1).Text($"Nennstrom Netz ({ParameterDictionary["var_ZA_IMP_Nennstrom"].Value}A aufgerundet + 10A):").FontSize(fontSizeXXS);
+            table.Cell().Row(35).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Nennstrom_AZ"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
-            table.Cell().Row(36).Column(1).Text("Max. Netzstromaufnahme (Netzstrom x1,8+10A):").FontSize(fontSizeXXS);
+            table.Cell().Row(36).Column(1).Text($"Max. Netzstromaufnahme ({ParameterDictionary["var_ZA_IMP_Nennstrom"].Value}A x 1,8 + 10A):").FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_AnlaufstromMax"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(36).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
-            table.Cell().Row(37).Column(1).Text("Leistung Netz (aufgerundet + 2kW):").FontSize(fontSizeXXS);
-            table.Cell().Row(37).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Leistung"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(37).Column(1).Text($"Leistung Netz ({ParameterDictionary["var_ZA_IMP_Leistung"].Value}kW aufgerundet + 2kW):").FontSize(fontSizeXXS);
+            table.Cell().Row(37).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Leistung_AZ"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(37).Column(3).AlignLeft().PaddingLeft(2).Text("KW").FontSize(fontSizeXXS);
             table.Cell().Row(38).Column(1).Text("Spannung Netz:").FontSize(fontSizeXXS);
             table.Cell().Row(38).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Stromart"].Value).FontSize(fontSizeXXS);
@@ -2059,7 +2090,7 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(41).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(41).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
             table.Cell().Row(42).Column(1).Text("Motorstrom bei Maximalmoment:").FontSize(fontSizeXXS);
-            table.Cell().Row(42).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Motor_FE_"].Value).FontSize(fontSizeXXS);
+            table.Cell().Row(42).Column(2).AlignRight().Text(ParameterDictionary["var_ZA_IMP_Motor_Strom_Maximalmoment"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(42).Column(3).AlignLeft().PaddingLeft(2).Text("A").FontSize(fontSizeXXS);
             table.Cell().Row(43).Column(1).Text("Verlustleistung:").FontSize(fontSizeXXS);
             table.Cell().Row(43).Column(2).ColumnSpan(2).AlignRight().PaddingRight(2).Text(ParameterDictionary["var_ZA_IMP_VerlustLeistung"].Value).FontSize(fontSizeXXS);

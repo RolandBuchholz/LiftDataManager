@@ -14,5 +14,7 @@ public class MaterialSurfaceConfig : BaseModelBuilder<MaterialSurface>
         builder.Property(x => x.LiftDoorMaterial);
         builder.Property(x => x.ControlCabinetMaterial);
         builder.Property(x => x.SkirtingBoardMaterial);
+        builder.Property(x => x.BufferPropMaterial);
+        builder.Property(x => x.DivisionBarMaterial);
     }
 }

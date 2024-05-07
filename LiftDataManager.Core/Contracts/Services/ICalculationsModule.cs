@@ -16,7 +16,7 @@ public interface ICalculationsModule
 
     bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem);
 
-    double GetCarFrameWeight(ObservableDictionary<string, Parameter>? parameterDictionary);
+    double GetCarFrameWeight(ObservableDictionary<string, Parameter> parameterDictionary);
 
     int GetMaxFuse(string? inverter);
 
@@ -28,25 +28,31 @@ public interface ICalculationsModule
 
     string GetDrivePosition(string? drivePos);
 
-    string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter>? parameterDictionary, string orientation);
+    string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter> parameterDictionary, string orientation);
 
-    int GetNumberOfCardoors(ObservableDictionary<string, Parameter>? parameterDictionary);
+    int GetNumberOfCardoors(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter>? parameterDictionary);
+    int GetRammingProtectionRows(ObservableDictionary<string, Parameter> parameterDictionary, string? rammingProtectionTyp);
 
-    CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+    CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+    CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+    PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter>? parameterDictionary);
+    CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter>? parameterDictionary);
+    SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter>? parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight);
+    List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary);
+
+    BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight);
 
     string GetBufferDetails(string buffertyp, double liftSpeed);
+
+    (double, double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index);
+
+    (double, double) GetMirrorHeight(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index);
 
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 }

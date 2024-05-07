@@ -33,6 +33,7 @@
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:StringToBoolInvertConverter x:Key="StringToBoolInvertConverter" />
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -1339,14 +1340,40 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth1, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight1, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_InfoSpiegel'], Mode=TwoWay}"
@@ -1362,14 +1389,40 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth2, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel2'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight2, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel2'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     Grid.Row="3"
@@ -1381,76 +1434,125 @@
                                         Grid.Column="0"
                                         Header="{x:Bind ViewModel.MirrorDimensionsWidth3, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BreiteSpiegel3'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Header="{x:Bind ViewModel.MirrorDimensionsHeight3, Mode=OneWay}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheSpiegel3'], Mode=TwoWay}"
+                                        ReadOnly="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Unit="mm" />
+                                        Unit="mm">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Visibility="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'].Value, Converter={StaticResource StringToVisibilityConverter}, Mode=TwoWay}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="automatische Spiegelberechnung ist aktiv" />
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterNumberTextBox>
                                 </Grid>
                                 <Grid
                                     Grid.Row="4"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*,*">
-                                    <SpeziControls:ParameterCheckBox
-                                        Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Spiegelpaneel" />
-                                                <Image
-                                                    Width="350"
-                                                    Height="350"
-                                                    Source="/Images/CarDetails/MirrorPanel.png" />
-                                                <TextBlock
-                                                    Margin="5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="12"
-                                                    FontWeight="Bold"
-                                                    Text="VSG-Spiegel (3/0,76/3) direkt verklebt" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterCheckBox>
-                                    <SpeziControls:ParameterCheckBox
-                                        Grid.Column="1"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True">
-                                        <ToolTipService.ToolTip>
-                                            <StackPanel>
-                                                <TextBlock
-                                                    Margin="5,5,5,10"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"
-                                                    Text="Spiegelleiste" />
-                                                <Image
-                                                    Width="350"
-                                                    Height="350"
-                                                    Source="/Images/CarDetails/MirrorRail.png" />
-                                                <TextBlock
-                                                    Margin="5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="12"
-                                                    FontWeight="Bold"
-                                                    Text="VSG-Spiegel (3/0,76/3) in Leisten gehalten" />
-                                            </StackPanel>
-                                        </ToolTipService.ToolTip>
-                                    </SpeziControls:ParameterCheckBox>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="3" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
+                                    ColumnDefinitions="2*,*,*">
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpiegelPaneel'], Mode=TwoWay}"
+                                            RadioButtonGroupName="MirrorTyp"
+                                            ShowDefaultRadioButtonContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelpaneel" />
+                                                    <Image
+                                                        Width="350"
+                                                        Height="350"
+                                                        Source="/Images/CarDetails/MirrorPanel.png" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Text="VSG-Spiegel (3/0,76/3) direkt verklebt" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterRadioButton>
+                                        <SpeziControls:ParameterRadioButton
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelleiste'], Mode=TwoWay}"
+                                            RadioButtonGroupName="MirrorTyp"
+                                            ShowDefaultRadioButtonContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelleiste" />
+                                                    <Image
+                                                        Width="350"
+                                                        Height="350"
+                                                        Source="/Images/CarDetails/MirrorRail.png" />
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Text="VSG-Spiegel (3/0,76/3) in Leisten gehalten" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterRadioButton>
+                                        <SpeziControls:ParameterCheckBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AutoDimensionsMirror'], Mode=TwoWay}" ShowDefaultCheckBoxContent="True">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                        Text="Spiegelgrößenberechnung" />
+                                                    <TextBlock Margin="5" FontSize="12">
+                                                        <Span>Spiegelgrößen werden automatisch ermittelt</Span><LineBreak />
+                                                        <Span>Korrekturmaße können in den Detaileingaben</Span><LineBreak />
+                                                        <Span>Kabine gesetzt werden</Span>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+
+
+                                    </StackPanel>
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1458,14 +1560,14 @@
                             x:Name="Ausstattung"
                             Grid.Row="2"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="6"
+                                    Grid.RowSpan="9"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="4"
+                                    Grid.RowSpan="8"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -1710,8 +1812,34 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
-                                    x:Name="Ausstattung8"
+                                    x:Name="SockelleisteBenutzerDefiniert"
                                     Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="auto,auto,auto,*"
+                                    Visibility="{x:Bind ViewModel.ShowCustomSkirtingBoards, Mode=OneWay}">
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="0"
+                                        Header="benutzerdef. Höhe"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteHoeheBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="1"
+                                        Header="benutzerdef. Breite"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteBreiteBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        Header="benutzerdef. Gewicht"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteGewichtBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="kg/m" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Ausstattung8"
+                                    Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
@@ -1722,24 +1850,25 @@
                                             ShowDefaultHeader="True" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="1"
-                                            Margin="0,0,-35,0"
                                             Header="Höhe 1"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="/" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight1, Mode=OneWay}" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="2"
-                                            Margin="0,0,-35,0"
                                             Header="Höhe 2"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz2'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="/" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight2, Mode=OneWay}" />
                                         <SpeziControls:ParameterNumberTextBox
                                             Grid.Column="3"
                                             Header="Höhe 3"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HoeheRammschutz3'], Mode=TwoWay}"
                                             ShowDefaultHeader="False"
-                                            Unit="mm" />
+                                            Unit="mm"
+                                            Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowHeight3, Mode=OneWay}" />
                                     </Grid>
                                     <Grid
                                         Grid.Column="1"
@@ -1836,8 +1965,42 @@
                                     </Grid>
                                 </Grid>
                                 <Grid
+                                    x:Name="RammschutzBenutzerDefiniert"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="auto,auto,auto,auto,*">
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="0"
+                                        Header="Anz. Reihen"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlReihenRammschutz'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Visibility="{x:Bind ViewModel.ShowRammingProtectionsRowsCount, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="1"
+                                        Header="benutzerdef. Höhe"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzHoeheBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        Header="benutzerdef. Breite"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzBreiteBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="mm"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="3"
+                                        Header="benutzerdef. Gewicht"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RammschutzGewichtBenutzerdefiniert'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Unit="kg/m"
+                                        Visibility="{x:Bind ViewModel.ShowCustomRammingProtections, Mode=OneWay}" />
+                                </Grid>
+                                <Grid
                                     x:Name="Ausstattung9"
-                                    Grid.Row="3"
+                                    Grid.Row="5"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
@@ -1937,7 +2100,7 @@
                                 </Grid>
                                 <Grid
                                     x:Name="Ausstattung10"
-                                    Grid.Row="4"
+                                    Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
@@ -2086,6 +2249,119 @@
                                         </SpeziControls:ParameterCheckBox>
                                     </Grid>
                                 </Grid>
+                                <Grid
+                                    x:Name="AusstattungTeilungsleiste"
+                                    Grid.Row="7"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="0.4*,0.3*,0.3*,*">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Teilungsleiste'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteMaterial'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterNumberTextBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteOKFF'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <Grid
+                                        Grid.Column="3"
+                                        Margin="5,10,5,0"
+                                        ColumnDefinitions="*,*,*,*">
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="0"
+                                            CheckBoxContent="Seite A"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteA'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="1"
+                                            CheckBoxContent="Seite B"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteB'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="2"
+                                            CheckBoxContent="Seite C"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteC'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="3"
+                                            CheckBoxContent="Seite D"
+                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeilungsleisteD'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="False">
+                                            <ToolTipService.ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Margin="5,5,5,10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Text="Position Zugänge" />
+                                                    <Image
+                                                        Width="325"
+                                                        Height="350"
+                                                        Source="/Images/carAccesses.png" />
+                                                </StackPanel>
+                                            </ToolTipService.ToolTip>
+                                        </SpeziControls:ParameterCheckBox>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid
@@ -2118,13 +2394,14 @@
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
                                         Margin="0,5,0,0"
+                                        IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorAnzahl'], Mode=TwoWay}"
                                         ShowDefaultHeader="False" />
                                     <TextBlock
                                         Grid.Column="2"
-                                        Margin="15,5,0,0"
+                                        Margin="5,0,0,7"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
+                                        VerticalAlignment="Bottom"
                                         FontSize="14"
                                         Text="Anzahl Ventilatoren" />
                                 </Grid>

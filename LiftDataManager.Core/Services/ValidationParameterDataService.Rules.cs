@@ -177,16 +177,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
     }
 
-    private void ValidateRammingProtections(string name, string displayname, string? value, string? severity, string? optional = null)
-    {
-        if (value is null)
-            return;
-        if (value == "Rammschutz siehe Beschreibung")
-        {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Bei Rammschutz |{value}| muss das Gewicht über das Kabinenkorrekturgewicht mitgegeben werden!", SetSeverity(severity)));
-        }
-    }
-
     private void ValidateTravel(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
@@ -1062,13 +1052,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Rammschutz{zugang}");
         bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_PaneelPos{zugang}");
         bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
+        bool hasTeilungsleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Teilungsleiste{zugang}");
         bool hasRueckwand = false;
         if (zugang == 'C')
         {
             hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
 
-        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
+        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
             if (hasSpiegel)
@@ -1077,6 +1068,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 errorMessage += " Handlauf,";
             if (hasSockelleiste)
                 errorMessage += " Sockelleiste,";
+            if (hasTeilungsleiste)
+                errorMessage += " Teilungsleiste,";
             if (hasRammschutz)
                 errorMessage += " Rammschutz,";
             if (hasPaneel)
@@ -1257,8 +1250,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateMirrorDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        List<string> mirrors = [];
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutoDimensionsMirror"))
+            return;
 
+        List<string> mirrors = [];
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
             mirrors.Add("A");
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
@@ -1268,38 +1263,83 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
             mirrors.Add("D");
 
-        if (mirrors.Count == 0)
-        {
-            ParameterDictionary["var_BreiteSpiegel"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
-        }
+        var mirrorWidth = string.Empty;
+        var mirrorHeight = string.Empty;
+        var mirrorWidth2 = string.Empty;
+        var mirrorHeight2 = string.Empty;
+        var mirrorWidth3 = string.Empty;
+        var mirrorHeight3 = string.Empty;
+        var mirrorDistanceLeft = string.Empty;
+        var mirrorDistanceLeft2 = string.Empty;
+        var mirrorDistanceLeft3 = string.Empty;
+        var mirrorDistanceCeiling = string.Empty;
+        var mirrorDistanceCeiling2 = string.Empty;
+        var mirrorDistanceCeiling3 = string.Empty;
+
         if (mirrors.Count == 1)
         {
-            ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
+
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
         }
-        if (mirrors.Count == 2)
+        else if (mirrors.Count == 2)
         {
-            ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(string.Empty);
-            ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(string.Empty);
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
+            var mirrorWidthSet2 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[1], 2);
+            var mirrorHeightSet2 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[1], 2);
+
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
+
+            mirrorWidth2 = mirrorWidthSet2.Item1.ToString();
+            mirrorHeight2 = mirrorHeightSet2.Item1.ToString();
+            mirrorDistanceLeft2 = mirrorWidthSet2.Item2.ToString();
+            mirrorDistanceCeiling2 = mirrorHeightSet2.Item2.ToString();
+        }
+        else if (mirrors.Count == 3)
+        {
+            var mirrorWidthSet = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[0], 1);
+            var mirrorHeightSet = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[0], 1);
+            var mirrorWidthSet2 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[1], 2);
+            var mirrorHeightSet2 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[1], 2);
+            var mirrorWidthSet3 = _calculationsModuleService.GetMirrorWidth(ParameterDictionary, mirrors[2], 3);
+            var mirrorHeightSet3 = _calculationsModuleService.GetMirrorHeight(ParameterDictionary, mirrors[2], 3);
+
+            mirrorWidth = mirrorWidthSet.Item1.ToString();
+            mirrorHeight = mirrorHeightSet.Item1.ToString();
+            mirrorDistanceLeft = mirrorWidthSet.Item2.ToString();
+            mirrorDistanceCeiling = mirrorHeightSet.Item2.ToString();
+
+            mirrorWidth2 = mirrorWidthSet2.Item1.ToString();
+            mirrorHeight2 = mirrorHeightSet2.Item1.ToString();
+            mirrorDistanceLeft2 = mirrorWidthSet2.Item2.ToString();
+            mirrorDistanceCeiling2 = mirrorHeightSet2.Item2.ToString();
+
+            mirrorWidth3 = mirrorWidthSet3.Item1.ToString();
+            mirrorHeight3 = mirrorHeightSet3.Item1.ToString();
+            mirrorDistanceLeft3 = mirrorWidthSet3.Item2.ToString();
+            mirrorDistanceCeiling3 = mirrorHeightSet3.Item2.ToString();
         }
 
-        //TODO ChangeDimensionsBY
-        //use CalculationsModuleService by Korrekturmaßen (Spiegelbreite, Spiegelhöhe, SpiegelAbstand Decke, Versatz Kabinenmitte)
-        //Kabinentiefe
-        //Kabinenbreite
-        //Kabinenhöhe
-        //Sockelleistenhöhe
-        //Handlaufhöhe
-        //Handlaufausführung
-        //Paneelematerial ??
-        //Paneelematerial Wände ??
+        ParameterDictionary["var_BreiteSpiegel"].AutoUpdateParameterValue(mirrorWidth);
+        ParameterDictionary["var_HoeheSpiegel"].AutoUpdateParameterValue(mirrorHeight);
+        ParameterDictionary["var_BreiteSpiegel2"].AutoUpdateParameterValue(mirrorWidth2);
+        ParameterDictionary["var_HoeheSpiegel2"].AutoUpdateParameterValue(mirrorHeight2);
+        ParameterDictionary["var_BreiteSpiegel3"].AutoUpdateParameterValue(mirrorWidth3);
+        ParameterDictionary["var_HoeheSpiegel3"].AutoUpdateParameterValue(mirrorHeight3);
+        ParameterDictionary["var_AbstandSpiegelvonLinks"].AutoUpdateParameterValue(mirrorDistanceLeft);
+        ParameterDictionary["var_AbstandSpiegelvonLinks2"].AutoUpdateParameterValue(mirrorDistanceLeft2);
+        ParameterDictionary["var_AbstandSpiegelvonLinks3"].AutoUpdateParameterValue(mirrorDistanceLeft3);
+        ParameterDictionary["var_AbstandSpiegelDecke"].AutoUpdateParameterValue(mirrorDistanceCeiling);
+        ParameterDictionary["var_AbstandSpiegelDecke2"].AutoUpdateParameterValue(mirrorDistanceCeiling2);
+        ParameterDictionary["var_AbstandSpiegelDecke3"].AutoUpdateParameterValue(mirrorDistanceCeiling3);
     }
 
     private void ValidateDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1591,7 +1631,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 case "C":
                     ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("False");
                     ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
-                    ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("True");
+                    ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("True");
                     break;
                 case "D":
                     ParameterDictionary["var_RahmenPosL"].AutoUpdateParameterValue("True");
@@ -1603,6 +1643,226 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     ParameterDictionary["var_RahmenPosR"].AutoUpdateParameterValue("False");
                     ParameterDictionary["var_RahmenPosH"].AutoUpdateParameterValue("False");
                     break;
+            }
+        }
+    }
+
+    private void ValidateLayOutDrawingLoads(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        // Rule only invoked by var_CFPdefiniert
+        if (value == "False")
+        {
+            return;
+        }
+
+        string[] loadNames = ["var_Belastung_pro_Schiene_auf_Grundelement",
+                          "var_Belastung_pro_Schiene_auf_Grundelement_GGW",
+                          "var_Belastung_Pufferstuetze_auf_Grundelement",
+                          "var_Belastung_Pufferstuetze_auf_Grundelement_GGW",
+                          "var_FxF",
+                          "var_FyF",
+                          "var_FxFA_GGW",
+                          "var_FyFA_GGW"];
+
+        foreach (var loadName in loadNames)
+        {
+            double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, loadName);
+            ParameterDictionary[$"{loadName}_AZ"].Value = LiftParameterHelper.GetLayoutDrawingLoad(load).ToString();
+        }
+    }
+
+    private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+            return;
+
+        var cFPPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
+        if (!File.Exists(cFPPath))
+            return;
+        var lastWriteTime = File.GetLastWriteTime(cFPPath);
+        if (lastWriteTime != CFPCreationTime)
+        {
+            string cFPDataFile = string.Empty;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding win1252 = Encoding.GetEncoding(1252);
+            using (var sr = new StreamReader(cFPPath, win1252, true))
+            {
+                cFPDataFile = sr.ReadToEnd();
+            }
+
+            var cFPDataFileLines = cFPDataFile.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
+
+            if (cFPDataFileLines.Length > 0 )
+            {
+                CFPDataDictionary.Clear();
+                foreach (var line in cFPDataFileLines)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        break;
+                    }
+
+                    var keyCFPParameter = line[1..line.IndexOf(']')];
+                    string valueCFPParameter;
+                    if (line.Contains('¦'))
+                    {
+                        valueCFPParameter = line[(line.IndexOf(']') + 2)..line.IndexOf('¦')];
+                    }
+                    else
+                    {
+                        valueCFPParameter = line[(line.IndexOf(']') + 2)..];
+                    }
+                    CFPDataDictionary.TryAdd(keyCFPParameter, valueCFPParameter);
+                }
+            }
+            CFPCreationTime = lastWriteTime;
+        }
+
+        var searchString = name switch
+        {
+            "var_Q" => "Nutzmasse",
+            "var_F" => "Kabinenmasse",
+            "var_FH" => "Foerderhoehe",
+            "var_SG" => "Schachtgrube",
+            "var_SK" => "Schachtkopf",
+            "var_SB" => "Schachtbreite_innen",
+            "var_ST" => "Schachttiefe_innen",
+            "var_KBI" => "Kabinenbreite_innen",
+            "var_KTI" => "Kabinentiefe_innen",
+            "var_KHLicht" => "Kabinenhoehe_innen",
+            "var_KHA" => "Kabinenhoehe_aussen",
+            "var_v" => "Sollgeschwindigkeit abw",
+            "var_TypFV" => "Fangvorrichtung",
+            "var_FuehrungsschieneFahrkorb" => "Schienentyp",
+            "var_FuehrungsschieneGegengewicht" => "Hilfsschienentyp",
+            "var_Geschwindigkeitsbegrenzer" => "GB_ID",
+            "var_TypFuehrung" => "Fuehrungsart",
+            _ => string.Empty,
+        };
+
+        if (CFPDataDictionary.TryGetValue(searchString, out string? cFPValue))
+        {
+            if (cFPValue is not null)
+            {
+                var isValid = name switch
+                {
+                    "var_Q" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(cFPValue)) <= 10,
+                    "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(cFPValue) * 1000) <= 20,
+                    "var_SG" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_SK" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_SB" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_ST" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KBI" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KTI" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KHLicht" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_KHA" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
+                    "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
+                    "var_TypFV" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_FuehrungsschieneFahrkorb" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_Geschwindigkeitsbegrenzer" => cFPValue switch
+                    {
+                        "1" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
+                        "2" => string.Equals(value, "GB durch Kunde", StringComparison.CurrentCultureIgnoreCase),
+                        "3" => string.Equals(value, "Jungblut HJ 200", StringComparison.CurrentCultureIgnoreCase),
+                        "4" => string.Equals(value, "Bode Typ 5 mit FA 12V", StringComparison.CurrentCultureIgnoreCase),
+                        "5" => string.Equals(value, "Jungblut HJ200 mit FA 24V", StringComparison.CurrentCultureIgnoreCase),
+                        "6" => string.Equals(value, "Jungblut HJ200 mit FA 230V", StringComparison.CurrentCultureIgnoreCase),
+                        "7" => string.Equals(value, "Jungblut HJ200 mit AS 12V", StringComparison.CurrentCultureIgnoreCase),
+                        "8" => string.Equals(value, "Jungblut HJ200 mit AS 24V", StringComparison.CurrentCultureIgnoreCase),
+                        "9" => string.Equals(value, "Jungblut HJ200 mit ASV 12V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
+                        "10" => string.Equals(value, "Jungblut HJ200 mit ASV 12V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
+                        "11" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
+                        "12" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
+                        "13" => string.Equals(value, "PFB LK 200, FA, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        "14" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
+                        "15" => string.Equals(value, "HJ200, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        "16" => string.Equals(value, "HJ200, AS 24V, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        _ => true
+                    },
+                    "var_TypFuehrung" => cFPValue switch
+                    {
+                        "1" => string.Equals(value, "HSM 140", StringComparison.CurrentCultureIgnoreCase),
+                        "2" => string.Equals(value, "HSML 180", StringComparison.CurrentCultureIgnoreCase),
+                        "3" => string.Equals(value, "HSMEL 300", StringComparison.CurrentCultureIgnoreCase),
+                        "4" => string.Equals(value, "Gleitfuehrung", StringComparison.CurrentCultureIgnoreCase),
+                        "5" => string.Equals(value, "Rollenfuehrung BR", StringComparison.CurrentCultureIgnoreCase),
+                        "6" => string.Equals(value, "RF FK 3", StringComparison.CurrentCultureIgnoreCase),
+                        "7" => string.Equals(value, "Gleitfuehrung 903940", StringComparison.CurrentCultureIgnoreCase),
+                        "8" => string.Equals(value, "Gleitfuehrung 903809", StringComparison.CurrentCultureIgnoreCase),
+                        "9" => string.Equals(value, "Rollenfuehrung 903800", StringComparison.CurrentCultureIgnoreCase),
+                        "10" => string.Equals(value, "Rollenfuehrung 903935", StringComparison.CurrentCultureIgnoreCase),
+                        "11" => string.Equals(value, "HSM 140 gedämpft", StringComparison.CurrentCultureIgnoreCase),
+                        "12" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
+                        _ => true
+                    },
+                    _ => true
+                };
+                
+                if (!isValid)
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Unterschiedliche Werte für >{displayname}<  Wert Spezifikation: {value} | Wert CarFrameProgram: {cFPValue}", SetSeverity(severity)));
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+                }
+            }
+        }
+    }
+
+    private void ValidateCarDoorMountingDimensions(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.Equals(ParameterDictionary["var_Fahrkorbtyp"].Value, "Fremdkabine",StringComparison.CurrentCultureIgnoreCase))
+        {
+            return;
+        }
+        var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+        string doorTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}");
+
+        if (string.IsNullOrWhiteSpace(doorTyp))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
+        else
+        {
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == doorTyp);
+            if (liftDoorGroup == null || liftDoorGroup.CarDoor == null)
+            {
+                return;
+            }
+            double minMountingSpace = liftDoorGroup.CarDoor.MinimalMountingSpace;
+            double minMountingSpaceReduced = 0d;
+            if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value == "97")
+            {
+                 minMountingSpaceReduced = liftDoorGroup.CarDoor.ReducedMinimalMountingSpace;
+            }
+            string doorMounting = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}");
+
+            if (double.TryParse(doorMounting, out double selectedMountingSpace))
+            {
+                if (selectedMountingSpace <= 0)
+                {
+                    return ;
+                }
+
+                string[] dependentParameter = name switch
+                {
+                    var n when n.StartsWith("var_Tuerbezeichnung") => [zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}", $"var_KabTuerKaempferBreite{zugang}"],
+                    var n when n.StartsWith("var_TuerEinbau") => [zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}", $"var_KabTuerKaempferBreite{zugang}"],
+                    var n when n.StartsWith("var_KabTuerKaempferBreite") => [zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}", zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"],
+                    _ => []
+                };
+
+                if (minMountingSpace != selectedMountingSpace && minMountingSpaceReduced != selectedMountingSpace)
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Türanbau: {selectedMountingSpace} mm enspricht nicht unserem standard Türanbau: {minMountingSpace} mm bzw. reduziertem Türanbau: {minMountingSpaceReduced} mm.", SetSeverity(severity)) { DependentParameter = dependentParameter });
+                }
+                else
+                {
+                    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = dependentParameter });
+                }
             }
         }
     }

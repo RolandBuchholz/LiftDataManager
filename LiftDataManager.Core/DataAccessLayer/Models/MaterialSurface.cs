@@ -9,4 +9,5 @@ public class MaterialSurface : BaseEntity
     public bool LiftDoorMaterial { get; set; }
     public bool SkirtingBoardMaterial { get; set; }
     public bool BufferPropMaterial { get; set; }
+    public bool DivisionBarMaterial { get; set; }
 }

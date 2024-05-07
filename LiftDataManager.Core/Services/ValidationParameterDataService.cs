@@ -13,7 +13,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     public string? FullPathXml { get; set; }
     private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     private DateTime ZaHtmlCreationTime { get; set; }
+    private DateTime CFPCreationTime { get; set; }
     private Dictionary<string, string> ZliDataDictionary { get; set; }
+    private Dictionary<string, string> CFPDataDictionary { get; set; }
     private Dictionary<string, List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>> ValidationDictionary { get; set; } = [];
     private List<ParameterStateInfo> ValidationResult { get; set; }
     private readonly ParameterContext _parametercontext;
@@ -24,6 +26,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         IsActive = true;
         ParameterDictionary ??= [];
         ZliDataDictionary ??= [];
+        CFPDataDictionary ??= [];
         ValidationResult ??= [];
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -118,10 +121,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateCounterweightMass, "None", null),
             new(ValidateCarArea, "Error", null),
             new(ValidateSafetyRange, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateZAliftData, "Warning", null) ]);
 
         ValidationDictionary.Add("var_F",
             [new(ValidateZAliftData, "Warning", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateSafetyRange, "Error", null),
             new(ValidateCarweightWithoutFrame, "None", null),
             new(ValidateCounterweightMass, "None", null) ]);
@@ -171,27 +176,33 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateCarEquipmentPosition, "Error", null)]);
 
         ValidationDictionary.Add("var_TuerEinbau",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_A"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),]);
 
         ValidationDictionary.Add("var_TuerEinbauB",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_B"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_TuerEinbauC",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_C"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_TuerEinbauD",
-            [new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateEntryDimensions, "None", null),
+            new(NotEmptyWhenAnotherTrue, "Warning", "var_ZUGANSSTELLEN_D"),
+            new(ValidateCarDoorMountingDimensions, "Warning", null)]);
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
-            [new(ValidateJungblutOSG, "Informational", null)]);
+            [new(ValidateJungblutOSG, "Informational", null),
+            new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_FH",
             [new(NotEmptyOr0, "Error", null),
             new(ValidateTravel, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateZAliftData, "Warning", null)]);
 
         ValidationDictionary.Add("var_Etagenhoehe0",
@@ -242,6 +253,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_KHLicht",
             [new(ValidateCarHeight, "None", null),
+             new(ValidateCarFrameProgramData, "Warning", null),
              new(ValidateCarHeightExcludingSuspendedCeiling, "None", null) ]);
 
         ValidationDictionary.Add("var_KD",
@@ -249,10 +261,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_KBI",
             [new(ValidateCarEntranceRightSide, "None", null),
-             new(ValidateCarCeilingDetails, "None", null) ]);
+             new(ValidateCarCeilingDetails, "None", null),
+             new(ValidateCarFrameProgramData, "Warning", null),
+             new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_KTI",
-            [new(ValidateCarEntranceRightSide, "None", null)]);
+            [new(ValidateCarEntranceRightSide, "None", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
+            new(ValidateMirrorDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_L1",
             [new(ValidateCarEntranceRightSide, "None", null)]);
@@ -303,6 +319,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateVariableCarDoors, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_Tuergewicht",
@@ -316,7 +333,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateSafetyRange, "Error", null)]);
 
         ValidationDictionary.Add("var_FuehrungsschieneFahrkorb",
-            [new(ValidateSafetyRange, "Error", null)]);
+            [new(ValidateSafetyRange, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_FuehrungsschieneGegengewicht",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_Fuehrungsart_GGW",
             [new(ValidateGuideModel, "None", null)]);
@@ -326,6 +347,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_TypFV",
             [new(ValidateSafetyRange, "None", null),
+            new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateReducedProtectionSpaces, "Warning", "var_Ersatzmassnahmen")]);
 
         ValidationDictionary.Add("var_Aggregat",
@@ -371,9 +393,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_Schacht",
             [new(ValidateShaftWalls, "Informational", null)]);
 
-        ValidationDictionary.Add("var_Rammschutz",
-            [new(ValidateRammingProtections, "Informational", null)]);
-
         ValidationDictionary.Add("var_Schachtgrubenleiter",
             [new(ValidatePitLadder, "None", null)]);
 
@@ -393,18 +412,21 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
             [new(ValidateDoorData, "None", null),
             new(ValidateDoorSill, "None", null),
             new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
             new(ValidateEntryDimensions, "None", null) ]);
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
@@ -478,16 +500,20 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             [new(NotTrueWhenTheOtherIsTrue, "Error", "var_KTflRollen")]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteA",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteB",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteC",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferBreiteD",
-            [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
+            [new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
 
         ValidationDictionary.Add("var_KabTuerKaempferHoeheA",
             [new(ValidateReducedCarDoorHeaderHeight, "Error", null)]);
@@ -530,6 +556,93 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Bausatzlage",
             [new(ValidateCarFramePosition, "None", null)]);
+
+        ValidationDictionary.Add("var_AutoDimensionsMirror",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_SpiegelPaneel",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosA",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosB",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosC",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_PaneelPosD",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_KHRoh",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheHandlauf",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_SockelleisteOKFF",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufA",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufB",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufC",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HandlaufD",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur2",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_HoeheSpiegelKorrektur3",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur2",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_BreiteSpiegelKorrektur3",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_Spiegelausfuehrung",
+            [new(ValidateMirrorDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_TypFuehrung",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_TypFuehrung_GGW",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SG",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SK",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_SB",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_ST",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_KHA",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_v",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_CFPdefiniert",
+            [new(ValidateLayOutDrawingLoads, "None", null)]);
 
         AddDropDownListValidation();
     }

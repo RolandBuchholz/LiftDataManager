@@ -30,9 +30,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     public void CreatePdf()
     {
         if (ParameterDictionary is not null)
-        {
             _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParameterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
-        }
     }
 
     [ObservableProperty]

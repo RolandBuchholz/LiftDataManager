@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20240424051247_Add_RammingProtection_NumberOfRows")]
+    partial class Add_RammingProtection_NumberOfRows
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
@@ -628,12 +631,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("AreaOfProfile")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("CenterOfGravityAxisX")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("CenterOfGravityAxisY")
-                        .HasColumnType("REAL");
-
                     b.Property<double>("MomentOfInertiaX")
                         .HasColumnType("REAL");
 
@@ -644,12 +641,6 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
-
-                    b.Property<double>("RadiusOfInertiaX")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("RadiusOfInertiaY")
-                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1241,31 +1232,6 @@ namespace LiftDataManager.Core.Migrations
                     b.ToTable("CarLightings", (string)null);
                 });
 
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Kabine.DivisionBar", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("Thickness")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("WeightPerMeter")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DivisionBars", (string)null);
-                });
-
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Kabine.Handrail", b =>
                 {
                     b.Property<int>("Id")
@@ -1400,7 +1366,8 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("NumberOfRows")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("WeightPerMeter")
+                    b.Property<double?>("WeightPerMeter")
+                        .IsRequired()
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
@@ -1414,7 +1381,8 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Height")
+                    b.Property<double?>("Height")
+                        .IsRequired()
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")
@@ -1422,7 +1390,8 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("WeightPerMeter")
+                    b.Property<double?>("WeightPerMeter")
+                        .IsRequired()
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
@@ -1524,9 +1493,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("ControlCabinetMaterial")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("DivisionBarMaterial")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LiftDoorMaterial")
@@ -2089,9 +2055,6 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
-
-                    b.Property<double>("ReducedMinimalMountingSpace")
-                        .HasColumnType("REAL");
 
                     b.Property<double>("SillWidth")
                         .HasColumnType("REAL");

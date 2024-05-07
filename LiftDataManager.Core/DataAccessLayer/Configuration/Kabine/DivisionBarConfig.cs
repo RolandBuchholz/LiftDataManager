@@ -2,9 +2,9 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration.Kabine;
 
-public class RammingProtectionConfig : BaseModelBuilder<RammingProtection>
+public class DivisionBarConfig : BaseModelBuilder<DivisionBar>
 {
-    public override void Configure(EntityTypeBuilder<RammingProtection> builder)
+    public override void Configure(EntityTypeBuilder<DivisionBar> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
@@ -12,7 +12,9 @@ public class RammingProtectionConfig : BaseModelBuilder<RammingProtection>
                .IsRequired();
         builder.Property(x => x.WeightPerMeter)
                .IsRequired();
-        builder.Property(x => x.NumberOfRows)
+        builder.Property(x => x.Height)
+               .IsRequired();
+        builder.Property(x => x.Thickness)
                .IsRequired();
     }
 }

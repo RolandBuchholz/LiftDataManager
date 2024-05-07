@@ -2,5 +2,6 @@
 
 public class RammingProtection : BaseEntity
 {
-    public double? WeightPerMeter { get; set; }
+    public double WeightPerMeter { get; set; }
+    public int NumberOfRows { get; set; }
 }
