@@ -47,7 +47,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = 
+    public static readonly DependencyProperty LiftParameterProperty =
         DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
@@ -158,16 +158,11 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
 
     private void NavigateToHighlightParameters_Click(object sender, RoutedEventArgs e)
     {
-        var nav = App.GetService<INavigationService>();
-        nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
+        LiftParameterNavigationHelper.NavigateToHighlightParameters();
     }
 
     private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
     {
-        if (LiftParameter?.Name is not null)
-        {
-            var nav = App.GetService<INavigationService>();
-            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
-        }
+        LiftParameterNavigationHelper.NavigateToParameterDetails(LiftParameter?.Name);
     }
 }

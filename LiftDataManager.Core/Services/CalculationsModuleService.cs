@@ -1142,7 +1142,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (!string.IsNullOrWhiteSpace(profilDescription))
         {
             var profilData = _parametercontext.Set<BufferPropProfile>().FirstOrDefault(x => x.Name.Contains(profilDescription));
-            if(profilData != null)
+            if (profilData != null)
             {
                 area = profilData.AreaOfProfile;
                 momentOfInertiaX = profilData.MomentOfInertiaX;
@@ -1154,7 +1154,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             }
         }
 
-        return new BufferCalculationData() 
+        return new BufferCalculationData()
         {
             NumberOfBuffer = numberOfBuffer,
             BufferPillarLength = bufferPillarLength,
@@ -1173,12 +1173,12 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    private static int GetBucklingLength(int length, int eulerCase )
+    private static int GetBucklingLength(int length, int eulerCase)
     {
         int bucklingLength = 0;
 
         switch (eulerCase)
-            {
+        {
             case 1:
                 bucklingLength = length * 2;
                 break;

@@ -2,9 +2,9 @@
 
 public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventArgs>
 {
-    private readonly INavigationService _navigationService;
+    private readonly IJsonNavigationViewService _navigationService;
 
-    public DefaultActivationHandler(INavigationService navigationService)
+    public DefaultActivationHandler(IJsonNavigationViewService navigationService)
     {
         _navigationService = navigationService;
     }
@@ -17,8 +17,7 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
 
     protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
-        _navigationService.NavigateTo(typeof(HomeViewModel).FullName!, args.Arguments);
-
+        _navigationService.NavigateTo(typeof(HomePage));
         await Task.CompletedTask;
     }
 }

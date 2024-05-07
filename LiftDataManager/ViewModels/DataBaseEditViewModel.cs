@@ -3,22 +3,22 @@ using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
+public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAwareEx
 {
     private readonly ISettingService _settingService;
     private readonly IVaultDataService _vaultDataService;
     private ParameterContext? _editableparametercontext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
-    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                  ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger) :
-                                 base(parameterDataService, dialogService, navigationService, infoCenterService)
+                                 base(parameterDataService, dialogService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _logger = logger;
-        parameterDtos ??= new();
-        filteredParameterDtos ??= new();
+        parameterDtos ??= [];
+        filteredParameterDtos ??= [];
     }
 
     [ObservableProperty]

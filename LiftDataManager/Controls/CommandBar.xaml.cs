@@ -239,8 +239,8 @@ public sealed partial class CommandBar : UserControl
     }
     private static Func<Parameter, bool> FilterViewSearchValue(string searchValue)
     {
-        return string.IsNullOrWhiteSpace(searchValue) ? 
-            p => true : 
+        return string.IsNullOrWhiteSpace(searchValue) ?
+            p => true :
             p => (p.Name != null && p.Name.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))
             || (p.DisplayName != null && p.DisplayName.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))
             || (p.Value != null && p.Value.Contains(searchValue, StringComparison.CurrentCultureIgnoreCase))

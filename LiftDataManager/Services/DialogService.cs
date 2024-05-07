@@ -1,6 +1,5 @@
 ﻿using Humanizer;
 using Microsoft.UI.Text;
-using WinUICommunity;
 
 namespace LiftDataManager.Services;
 

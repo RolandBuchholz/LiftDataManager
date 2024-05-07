@@ -27,10 +27,10 @@ public sealed partial class DatenansichtDetailPage : Page
         base.OnNavigatingFrom(e);
         if (e.NavigationMode == NavigationMode.Back)
         {
-            var navigationService = App.GetService<INavigationService>();
+            var navigationService = App.GetService<IJsonNavigationViewService>();
             if (ViewModel.Item is not null)
             {
-                navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
+                navigationService.Frame?.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
             }
         }
     }

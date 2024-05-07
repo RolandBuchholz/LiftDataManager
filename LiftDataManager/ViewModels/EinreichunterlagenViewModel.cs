@@ -4,15 +4,15 @@ using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;
 
-    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                        ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

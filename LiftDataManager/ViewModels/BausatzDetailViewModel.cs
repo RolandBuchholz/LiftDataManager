@@ -4,15 +4,15 @@ using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>
+public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
-    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -149,7 +149,10 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private string bufferDataReducedSafetyRoomPit = "Keine Pufferdaten vorhanden";
 
     [RelayCommand]
-    private void GoToBausatzViewModel() => _navigationService.NavigateTo("LiftDataManager.ViewModels.BausatzViewModel");
+    private static void GoToBausatzViewModel()
+    {
+        LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzPage));
+    }
 
     private void CheckCFPState()
     {
@@ -162,7 +165,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         if (carFrameType is null)
             return;
         IsRopedrive = carFrameType.DriveTypeId == 1;
-        IsCantilever = carFrameType.CarFrameBaseTypeId == 1;   
+        IsCantilever = carFrameType.CarFrameBaseTypeId == 1;
         CarFrameDescription = $"{carFrameType.DriveType?.Name} - {carFrameType.CarFrameBaseType?.Name}";
         IsCFPFrame = carFrameType.IsCFPControlled;
         CWTDGBName = IsRopedrive ? "Stichmaß GGW" : "Stichmaß Joch";
@@ -193,7 +196,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         return bufferCalculation;
     }
 
-    private void RestorePufferCalculationData() 
+    private void RestorePufferCalculationData()
     {
         string[] pufferCalculationDataValues = ["var_PufferCalculationData_FK", "var_PufferCalculationData_GGW", "var_PufferCalculationData_EM_SK", "var_PufferCalculationData_EM_SG"];
         foreach (var item in pufferCalculationDataValues)
@@ -221,14 +224,14 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                         default:
                             break;
                     }
-                }     
+                }
             }
         }
     }
 
     private void GetPufferDetailData()
     {
-        Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"), 
+        Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"),
                                            new("var_Puffertyp_GGW", "BufferDataCounterWeight"),
                                            new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomHead"),
                                            new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomPit")];
@@ -236,7 +239,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         double liftSpeed = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_v");
 
         if (liftSpeed == 0.0)
-        return;
+            return;
 
         foreach (var puffer in puffers)
         {

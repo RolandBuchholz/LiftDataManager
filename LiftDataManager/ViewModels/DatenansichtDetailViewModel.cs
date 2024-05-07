@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
@@ -26,8 +26,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         }
     }
 
-    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
         ErrorsList ??= new();
     }

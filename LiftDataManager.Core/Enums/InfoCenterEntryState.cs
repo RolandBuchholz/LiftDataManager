@@ -30,7 +30,7 @@ public sealed class InfoCenterEntryState : SmartEnum<InfoCenterEntryState>
     //    /// <summary>
     //    /// State Parameter saved
     //    /// </summary>
-    public static readonly InfoCenterEntryState InfoCenterSaveParameter = new ("Parameterwert gespeichert", 5);
+    public static readonly InfoCenterEntryState InfoCenterSaveParameter = new("Parameterwert gespeichert", 5);
     //    /// <summary>
     //    /// State Parameter LDM auto update
     //    /// </summary>

@@ -4,14 +4,14 @@ using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;
 
-    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                            ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-                           base(parameterDataService, dialogService, navigationService, infoCenterService)
+                           base(parameterDataService, dialogService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -501,7 +501,10 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAware, IRec
     }
 
     [RelayCommand]
-    private void GoToKabineDetail() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.KabineDetailViewModel");
+    private static void GoToKabineDetail()
+    {
+        LiftParameterNavigationHelper.NavigateToPage(typeof(KabineDetailPage));
+    }
 
     private async Task SetCalculatedValuesAsync()
     {

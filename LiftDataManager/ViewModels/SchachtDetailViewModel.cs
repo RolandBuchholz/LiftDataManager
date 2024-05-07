@@ -4,14 +4,14 @@ using SkiaSharp.Views.Windows;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-     base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+     base(parameterDataService, dialogService, infoCenterService)
     {
     }
 
-    private readonly string[] shaftDesignParameter = { "var_ZUGANSSTELLEN_A", "var_ZUGANSSTELLEN_B",
+    private readonly string[] shaftDesignParameter = [ "var_ZUGANSSTELLEN_A", "var_ZUGANSSTELLEN_B",
                                                        "var_ZUGANSSTELLEN_C", "var_ZUGANSSTELLEN_D",
                                                        "var_MauerOeffnungBreiteA", "var_MauerOeffnungAbstandA",
                                                        "var_MauerOeffnungBreiteB", "var_MauerOeffnungAbstandB",
@@ -22,7 +22,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                        "var_L1","var_L2","var_L3","var_L4",
                                                        "var_TB","var_TB_B","var_TB_C","var_TB_D",
                                                        "var_TuerEinbau","var_TuerEinbauB","var_TuerEinbauC","var_TuerEinbauD",
-                                                       "var_Tueroeffnung","var_Tueroeffnung_B","var_Tueroeffnung_C","var_Tueroeffnung_D" };
+                                                       "var_Tueroeffnung","var_Tueroeffnung_B","var_Tueroeffnung_C","var_Tueroeffnung_D" ];
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -368,7 +368,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [RelayCommand]
-    private void GoToSchachtViewModel() => _navigationService!.NavigateTo("LiftDataManager.ViewModels.SchachtViewModel");
+    private static void GoToSchachtViewModel()
+    {
+        LiftParameterNavigationHelper.NavigateToPage(typeof(SchachtPage));
+    }
 
     public void OnNavigatedTo(object parameter)
     {

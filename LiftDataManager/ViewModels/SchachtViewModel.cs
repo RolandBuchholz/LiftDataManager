@@ -2,14 +2,18 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class SchachtViewModel : DataViewModelBase, INavigationAware, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class SchachtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public SchachtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+    public SchachtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+         base(parameterDataService, dialogService, infoCenterService)
     {
     }
     [RelayCommand]
-    private void GoToSchachtDetail() => _navigationService.NavigateTo("LiftDataManager.ViewModels.SchachtDetailViewModel");
+    private static void GoToSchachtDetail()
+    {
+        LiftParameterNavigationHelper.NavigateToPage(typeof(SchachtDetailPage));
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();

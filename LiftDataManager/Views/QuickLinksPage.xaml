@@ -5,9 +5,7 @@
     xmlns:behaviors="using:LiftDataManager.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    behaviors:NavigationViewHeaderBehavior.HeaderContext="Quick Links"
     mc:Ignorable="d">
-
     <Grid x:Name="ContentArea">
         <GridView>
             <Button Command="{x:Bind ViewModel.OpenSpeziPdfCommand}" Style="{StaticResource LinkButton}">

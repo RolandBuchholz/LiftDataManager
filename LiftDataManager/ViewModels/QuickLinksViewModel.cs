@@ -2,11 +2,10 @@
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using System.Xml;
-using WinUICommunity;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, IRecipient<QuicklinkControlMessage>
+public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<QuicklinkControlMessage>
 {
     private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
@@ -18,10 +17,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
     private readonly ILogger<QuickLinksViewModel> _logger;
     private readonly IValidationParameterDataService _validationParameterDataService;
 
-    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, INavigationService navigationService, IInfoCenterService infoCenterService,
+    public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
         IValidationParameterDataService validationParameterDataService, ISettingService settingsSelectorService, ParameterContext parametercontext,
         IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
-         base(parameterDataService, dialogService, navigationService, infoCenterService)
+         base(parameterDataService, dialogService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _parametercontext = parametercontext;
@@ -128,7 +127,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
         CanOpenCalculations = CanOpenVault;
         CanOpenCFP = File.Exists(_settingService.PathCFP);
-        
+
         if (ParameterDictionary.Count == 0 || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
         {
             CanOpenLilo = File.Exists(_settingService.PathLilo);
@@ -962,7 +961,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAware, 
         {
             if ((bool)checkOutResult)
             {
-                _navigationService!.NavigateTo("LiftDataManager.ViewModels.HomeViewModel", "CheckOut");
+                LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage), "CheckOut");
                 return true;
             }
             else

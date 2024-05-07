@@ -1,6 +1,4 @@
-﻿using LiftDataManager.Controls;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class BausatzDetailPage : Page
 {

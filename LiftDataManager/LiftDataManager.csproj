@@ -60,6 +60,16 @@
     <Content Remove="Assets\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Fluent\adminMode.png" />
+    <None Remove="Assets\Fluent\appDescription.png" />
+    <None Remove="Assets\Fluent\controler.png" />
+    <None Remove="Assets\Fluent\home.png" />
+    <None Remove="Assets\Fluent\liftcar.png" />
+    <None Remove="Assets\Fluent\liftdoors.png" />
+    <None Remove="Assets\Fluent\shaft.png" />
+    <None Remove="Assets\Fluent\text.png" />
+    <None Remove="Assets\Fluent\themeColor.png" />
+    <None Remove="Assets\NavViewMenu\NavigationViewControlData.json" />
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\CarEquipmentControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
@@ -69,7 +79,8 @@
     <None Remove="Controls\ParameterCustomCheckBox.xaml" />
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
     <None Remove="Controls\ParameterRadioButton.xaml" />
-    <None Remove="Controls\ParameterTextBox.xaml" />    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
+    <None Remove="Controls\ParameterTextBox.xaml" />    
+    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
@@ -118,6 +129,10 @@
     <None Remove="Views\KabinengewichtPage.xaml" />
     <None Remove="Views\KabinenLüftungPage.xaml" />
     <None Remove="Views\NutzlastberechnungPage.xaml" />
+    <None Remove="Views\Settings\AboutSettingPage.xaml" />
+    <None Remove="Views\Settings\GeneralSettingPage.xaml" />
+    <None Remove="Views\Settings\MaintenanceSettingPage.xaml" />
+    <None Remove="Views\Settings\ThemeSettingPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\Berechnungen.png" />
@@ -290,6 +305,21 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Settings\ThemeSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\MaintenanceSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\AboutSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\GeneralSettingPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <None Update="Styles\Border.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -364,5 +394,15 @@
   <ItemGroup>
     <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
+    <Folder Include="ViewModels\GeneralData\" />
+    <Folder Include="ViewModels\DetailData\" />
+    <Folder Include="Views\GeneralData\" />
+    <Folder Include="Views\DetailData\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

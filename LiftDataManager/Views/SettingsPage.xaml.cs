@@ -1,4 +1,5 @@
-﻿namespace LiftDataManager.Views;
+﻿
+namespace LiftDataManager.Views;
 
 public sealed partial class SettingsPage : Page
 {

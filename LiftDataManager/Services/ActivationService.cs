@@ -4,19 +4,19 @@ public class ActivationService : IActivationService
 {
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly ISettingService _settingService;
+    private readonly IThemeService _themeService;
     private UIElement? _shell = null;
 
     public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
         IEnumerable<IActivationHandler> activationHandlers,
-        IThemeSelectorService themeSelectorService,
+        IThemeService themeService,
         ISettingService settingService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
-        _themeSelectorService = themeSelectorService;
         _settingService = settingService;
+        _themeService = themeService;
     }
 
     public async Task ActivateAsync(object activationArgs)
@@ -31,7 +31,7 @@ public class ActivationService : IActivationService
             App.MainWindow.Content = _shell ?? new Frame();
             App.MainRoot = App.MainWindow.Content as FrameworkElement;
         }
-
+        await SetAccentColorAsync();
         // Handle activation via ActivationHandlers.
         await HandleActivationAsync(activationArgs);
 
@@ -59,14 +59,39 @@ public class ActivationService : IActivationService
 
     private async Task InitializeAsync()
     {
-        await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
         await _settingService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;
     }
 
     private async Task StartupAsync()
     {
-        await _themeSelectorService.SetRequestedThemeAsync();
+        _themeService.Initialize(App.MainWindow);
+        _themeService.ConfigBackdrop();
+        _themeService.ConfigElementTheme();
+        await Task.CompletedTask;
+    }
+
+    private async Task SetAccentColorAsync()
+    {
+        var defaultAccentColor = Convert.ToBoolean(_settingService.CustomAccentColor);
+        if (!defaultAccentColor)
+        {
+            var systemAccentColor = Color.FromArgb(255, 0, 85, 173);
+            var systemAccentColorLight1 = Color.FromArgb(255, 0, 100, 190);
+            var systemAccentColorLight2 = Color.FromArgb(255, 72, 178, 234);
+            var systemAccentColorLight3 = Color.FromArgb(255, 29, 133, 215);
+            var systemAccentColorDark1 = Color.FromArgb(255, 0, 69, 157);
+            var systemAccentColorDark2 = Color.FromArgb(255, 0, 54, 140);
+            var systemAccentColorDark3 = Color.FromArgb(255, 0, 39, 123);
+
+            App.Current.Resources["SystemAccentColor"] = systemAccentColor;
+            App.Current.Resources["SystemAccentColorLight1"] = systemAccentColorLight1;
+            App.Current.Resources["SystemAccentColorLight2"] = systemAccentColorLight2;
+            App.Current.Resources["SystemAccentColorLight3"] = systemAccentColorLight3;
+            App.Current.Resources["SystemAccentColorDark1"] = systemAccentColorDark1;
+            App.Current.Resources["SystemAccentColorDark2"] = systemAccentColorDark2;
+            App.Current.Resources["SystemAccentColorDark3"] = systemAccentColorDark3;
+        }
         await Task.CompletedTask;
     }
 }

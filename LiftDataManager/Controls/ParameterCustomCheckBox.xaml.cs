@@ -68,16 +68,11 @@ public sealed partial class ParameterCustomCheckBox : UserControl
 
     private void NavigateToHighlightParameters_Click(object sender, RoutedEventArgs e)
     {
-        var nav = App.GetService<INavigationService>();
-        nav.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel", "ShowHighlightParameter");
+        LiftParameterNavigationHelper.NavigateToHighlightParameters();
     }
 
     private void NavigateToParameterDetails_Click(object sender, RoutedEventArgs e)
     {
-        if (LiftParameter?.Name is not null)
-        {
-            var nav = App.GetService<INavigationService>();
-            nav.NavigateTo("LiftDataManager.ViewModels.DatenansichtDetailViewModel", LiftParameter.Name);
-        }
+        LiftParameterNavigationHelper.NavigateToParameterDetails(LiftParameter?.Name);
     }
 }

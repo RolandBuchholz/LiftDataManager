@@ -5,26 +5,25 @@ namespace LiftDataManager.ViewModels;
 public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPropertiesChangedMessage>, IRecipient<SpeziPropertiesRequestMessage>
 {
     private CurrentSpeziProperties CurrentSpeziProperties = new();
-    public INavigationService NavigationService { get; }
-    public INavigationViewService NavigationViewService { get; }
+
+    public IJsonNavigationViewService JsonNavigationViewService { get; }
 
     [ObservableProperty]
     private bool isBackEnabled;
 
     [ObservableProperty]
-    private bool showGlobalSearch;
+    private bool showGlobalSearch = true;
 
     [ObservableProperty]
     private string? globalSearchInput;
 
     [ObservableProperty]
-    private object? selected;
+    private string? header;
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
+    public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
     {
-        NavigationService = navigationService;
-        NavigationService.Navigated += OnNavigated;
-        NavigationViewService = navigationViewService;
+        JsonNavigationViewService = jsonNavigationViewService;
+        JsonNavigationViewService.Navigated += OnNavigated;
         IsActive = true;
     }
 
@@ -39,29 +38,29 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     }
 
     [RelayCommand]
-    private void StartGlobalSearch() 
+    private void StartGlobalSearch()
     {
         var searchInput = GlobalSearchInput;
         GlobalSearchInput = string.Empty;
-        NavigationService.NavigateTo("LiftDataManager.ViewModels.ListenansichtViewModel",searchInput);
+        JsonNavigationViewService.NavigateTo(typeof(ListenansichtPage), searchInput);
     }
 
     [RelayCommand]
-    private void GoToHelpViewModel() => NavigationService.NavigateTo("LiftDataManager.ViewModels.HelpViewModel");
+    private void GoToHelpViewModel() => JsonNavigationViewService.NavigateTo(typeof(HelpPage));
+
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
-        IsBackEnabled = NavigationService.CanGoBack;
+        IsBackEnabled = JsonNavigationViewService.CanGoBack;
         if (e.SourcePageType == typeof(SettingsPage))
         {
-            Selected = NavigationViewService.SettingsItem;
-            return;
+            Header = "Einstellungen";
+            ShowGlobalSearch = false;
         }
-
-        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
+        var viewPage = JsonNavigationViewService.DataSource.GetItem(e.SourcePageType.FullName);
+        if (viewPage != null)
         {
-            Selected = selectedItem;
-            ShowGlobalSearch = selectedItem.Tag is null;
+            Header = viewPage.Description;
+            ShowGlobalSearch = !viewPage.HideItem;
         }
     }
 }

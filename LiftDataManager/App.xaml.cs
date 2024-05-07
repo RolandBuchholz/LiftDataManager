@@ -11,7 +11,6 @@ using Serilog.Formatting.Compact;
 using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using WinUICommunity;
 
 namespace LiftDataManager;
 
@@ -21,7 +20,7 @@ public partial class App : Application
     public static WindowEx MainWindow { get; } = new MainWindow();
     public new static App Current => (App)Application.Current;
     public string AppVersion { get; set; } = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
-    public string AppName { get;} = AssemblyInfoHelper.GetAppName();
+    public string AppName { get; } = AssemblyInfoHelper.GetAppName();
     private bool IgnoreSaveWarning { get; set; }
     public static FrameworkElement? MainRoot { get; set; }
     public static T GetService<T>()
@@ -57,11 +56,15 @@ public partial class App : Application
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
+            services.AddSingleton<IThemeService, ThemeService>();
+            services.AddSingleton<IJsonNavigationViewService>(factory =>
+            {
+                var json = new JsonNavigationViewService();
+                json.ConfigDefaultPage(typeof(HomePage));
+                json.ConfigSettingsPage(typeof(SettingsPage));
+                return json;
+            });
             services.AddSingleton<IActivationService, ActivationService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<IPdfService, PdfService>();
@@ -77,61 +80,39 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
 
-            // Views and ViewModels
+            // ViewModels
+            services.AddTransient<AboutSettingViewModel>();
+            services.AddTransient<GeneralSettingViewModel>();
+            services.AddTransient<MaintenanceSettingViewModel>();
+            services.AddTransient<ThemeSettingViewModel>();
             services.AddTransient<SchachtDetailViewModel>();
-            services.AddTransient<SchachtDetailPage>();
             services.AddTransient<BausatzDetailViewModel>();
-            services.AddTransient<BausatzDetailPage>();
             services.AddTransient<HelpViewModel>();
-            services.AddTransient<HelpPage>();
             services.AddTransient<LiftHistoryViewModel>();
-            services.AddTransient<LiftHistoryPage>();
             services.AddTransient<DataBaseEditViewModel>();
-            services.AddTransient<DataBaseEditPage>();
             services.AddTransient<ErrorViewModel>();
-            services.AddTransient<ErrorPage>();
             services.AddTransient<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
             services.AddTransient<WartungMontageTüvViewModel>();
-            services.AddTransient<WartungMontageTüvPage>();
             services.AddTransient<TürenViewModel>();
-            services.AddTransient<TürenPage>();
             services.AddTransient<EinreichunterlagenViewModel>();
-            services.AddTransient<EinreichunterlagenPage>();
             services.AddTransient<SonstigesViewModel>();
-            services.AddTransient<SonstigesPage>();
             services.AddTransient<SignalisationViewModel>();
-            services.AddTransient<SignalisationPage>();
             services.AddTransient<SchachtViewModel>();
-            services.AddTransient<SchachtPage>();
             services.AddSingleton<QuickLinksViewModel>();
-            services.AddTransient<QuickLinksPage>();
             services.AddTransient<KabineViewModel>();
-            services.AddTransient<KabinePage>();
             services.AddTransient<KabineDetailViewModel>();
-            services.AddTransient<KabineDetailPage>();
             services.AddTransient<BausatzViewModel>();
-            services.AddTransient<BausatzPage>();
             services.AddTransient<KabinengewichtViewModel>();
-            services.AddTransient<KabinengewichtPage>();
             services.AddTransient<NutzlastberechnungViewModel>();
-            services.AddTransient<NutzlastberechnungPage>();
             services.AddTransient<KabinenLüftungViewModel>();
-            services.AddTransient<KabinenLüftungPage>();
             services.AddTransient<AntriebSteuerungNotrufViewModel>();
-            services.AddTransient<AntriebSteuerungNotrufPage>();
             services.AddTransient<AllgemeineDatenViewModel>();
-            services.AddTransient<AllgemeineDatenPage>();
             services.AddTransient<TabellenansichtViewModel>();
-            services.AddTransient<TabellenansichtPage>();
             services.AddTransient<DatenansichtDetailViewModel>();
-            services.AddTransient<DatenansichtDetailPage>();
             services.AddTransient<DatenansichtViewModel>();
-            services.AddTransient<DatenansichtPage>();
             services.AddTransient<ListenansichtViewModel>();
-            services.AddTransient<ListenansichtPage>();
             services.AddTransient<HomeViewModel>();
-            services.AddTransient<HomePage>();
+            services.AddTransient<BreadCrumbBarViewModel>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
@@ -264,7 +245,7 @@ public partial class App : Application
     private static void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
         MainWindow.Activate();
-        var _navigationService = GetService<INavigationService>();
-        _navigationService?.NavigateTo("LiftDataManager.ViewModels.ErrorViewModel", new ErrorPageInfo(membername, sender, e), true);
+        var navigationService = GetService<IJsonNavigationViewService>();
+        navigationService?.NavigateTo(typeof(ErrorPage), new ErrorPageInfo(membername, sender, e), true);
     }
 }
