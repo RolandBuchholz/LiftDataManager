@@ -2,27 +2,19 @@
     x:Class="LiftDataManager.Views.MaintenanceSettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:CommunityToolkit.WinUI.Media"
-    xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
-    xmlns:sys="using:System"
-    xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:wuc="using:WinUICommunity"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <StackPanel Margin="0,0,15,0">
-                <controls:SettingsCard Description="Es wird überprüft ob die aktuellste LiftDataManager Version installiert ist." Header="Update Check">
-                    <controls:SettingsCard.HeaderIcon>
-                        <FontIcon Glyph="&#xE117;" />
-                    </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard
+                    Description="Es wird überprüft ob die aktuellste LiftDataManager Version installiert ist."
+                    Header="Update Check"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}">
                     <Button
                         Width="125"
                         Margin="25,0,25,0"
@@ -42,15 +34,12 @@
                     IsOpen="{x:Bind ViewModel.InfoBarVersionsUpdateIsOpen, Mode=OneWay}"
                     Message="{x:Bind ViewModel.InfoBarVersionsUpdateText, Mode=OneWay}"
                     Severity="{x:Bind ViewModel.InfoBarVersionsUpdateSeverity, Mode=OneWay}" />
-                <controls:SettingsExpander Description="System und AppInformationen" Header="Diagnostics">
-                    <controls:SettingsExpander.HeaderIcon>
-                        <SymbolIcon Symbol="MapDrive" />
-                    </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander
+                    Description="System und AppInformationen"
+                    Header="Diagnostics"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/chart.png}">
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Benutzer/System Informationen">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Contact" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Benutzer/System Informationen" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/systemInfo.png}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                     <Run Text="Benutzername :" />
@@ -72,10 +61,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="Autodesk Vault Informationen">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Bullets" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Autodesk Vault Informationen" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/vault.png}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Margin="0,0,10,0" HorizontalTextAlignment="Right">
                                     <Run Text="Vault 2023 :" />
@@ -97,29 +83,23 @@
                                 </TextBlock>
                             </StackPanel>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="Logfiles">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Library" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Logfiles" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/logEntries.png}">
                             <Button Command="{x:Bind ViewModel.OpenLogFolderCommand}" Content="OpenLogfolder" />
                         </controls:SettingsCard>
-                        <controls:SettingsCard Description="Standard Loglevel Information" Header="Change Loglevel">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Switch" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard
+                            Description="Standard Loglevel Information"
+                            Header="Change Loglevel"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/levelSlider.png}">
                             <ComboBox ItemsSource="{x:Bind ViewModel.LogLevel}" SelectedValue="{x:Bind ViewModel.SelectedLogLevel, Mode=TwoWay}" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
-                <controls:SettingsExpander Description="Einstellungen der Datenbank" Header="Database">
-                    <controls:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xEE94;" />
-                    </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander
+                    Description="Einstellungen der Datenbank"
+                    Header="Database"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/dataBase.png}">
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Database Path">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="GoToToday" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Database Path" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/sqlite.png}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathDataBase, Mode=TwoWay}" />
                                 <Button
@@ -133,15 +113,12 @@
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
-                <controls:SettingsExpander Description="Pfade der externen Programme" Header="externe Programme">
-                    <controls:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xE118;" />
-                    </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander
+                    Description="Pfade der externen Programme"
+                    Header="externe Programme"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/programs.png}">
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Berchtenbreiter CFP">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="ImportAll" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Berchtenbreiter CFP" HeaderIcon="{wuc:BitmapIcon Source=Images/CFPTransparent.png}">
                             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathCFP, Mode=TwoWay}" />
                                 <Button
@@ -153,10 +130,7 @@
                                 </Button>
                             </StackPanel>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="Ziehl Abegg Zetalift">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Calculator" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Ziehl Abegg Zetalift" HeaderIcon="{wuc:BitmapIcon Source=Images/ZiehlAbeggTransparent.png}">
                             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathZALift, Mode=TwoWay}" />
                                 <Button
@@ -168,10 +142,7 @@
                                 </Button>
                             </StackPanel>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="BucherHydraulics Lilo">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="MapDrive" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="BucherHydraulics Lilo" HeaderIcon="{wuc:BitmapIcon Source=Images/BucherTransparent.png}">
                             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathLilo, Mode=TwoWay}" />
                                 <Button Margin="5,0,0,0" VerticalAlignment="Bottom">
@@ -182,10 +153,7 @@
                                 </Button>
                             </StackPanel>
                         </controls:SettingsCard>
-                        <controls:SettingsCard Header="Microsoft Excel">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="GoToStart" />
-                            </controls:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Header="Microsoft Excel" HeaderIcon="{wuc:BitmapIcon Source=Images/ExcelTransparent.png}">
                             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathExcel, Mode=TwoWay}" />
                                 <Button

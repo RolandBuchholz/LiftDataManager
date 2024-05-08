@@ -92,10 +92,10 @@
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <StackPanel Margin="0,0,15,0">
-                <controls:SettingsCard Description="Automatisches speichern der Autotransfer.xml" Header="Auto Save">
-                    <controls:SettingsCard.HeaderIcon>
-                        <SymbolIcon Symbol="SaveLocal" />
-                    </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard
+                    Description="Automatisches speichern der Autotransfer.xml"
+                    Header="Auto Save"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/autoSaveMode.png}">
                     <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
                         <ComboBox
                             Margin="0,0,20,-3"
@@ -128,10 +128,10 @@
                         </Interactivity:Interaction.Behaviors>
                     </ToggleSwitch>
                 </controls:SettingsCard>
-                <controls:SettingsCard Description="Infocenter automatisch öffen beim Laden eines Auftrages" Header="Infocentersettings">
-                    <controls:SettingsCard.HeaderIcon>
-                        <FontIcon Glyph="&#xE8A0;" />
-                    </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard
+                    Description="Infocenter automatisch öffen beim Laden eines Auftrages"
+                    Header="Infocentersettings"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/infoCenterOpen.png}">
                     <ToggleSwitch
                         x:Name="SwitchAutoOpenInfocenter"
                         Margin="0,0,20,0"
@@ -140,18 +140,16 @@
                         OffContent="Auto Open Infocenter deactivated"
                         OnContent="Auto Open Infocenter activated" />
                 </controls:SettingsCard>
-                <controls:SettingsExpander Description="Benutzerdefinierte Ploteigenschaften" Header="Plotstyles">
-                    <controls:SettingsExpander.HeaderIcon>
-                        <SymbolIcon Symbol="Print" />
-                    </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander
+                    Description="Benutzerdefinierte Ploteigenschaften"
+                    Header="Plotstyles"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/style.png}">
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard
                             Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen"
                             Header="Toner SaveMode"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/tonerSaveMode.png}"
                             ToolTipService.Placement="Bottom">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Street" />
-                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch
                                 x:Name="SwitchTonerSaveMode"
                                 HorizontalAlignment="Center"
@@ -194,10 +192,8 @@
                         <controls:SettingsCard
                             Description="Benutzerdefinierte Einstellungen für die Parameterhervorhebung"
                             Header="Highlight Settings"
+                            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/label.png}"
                             ToolTipService.Placement="Bottom">
-                            <controls:SettingsCard.HeaderIcon>
-                                <SymbolIcon Symbol="Highlight" />
-                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch
                                 x:Name="HighlightSettings"
                                 HorizontalAlignment="Center"

@@ -661,7 +661,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Rahmengewicht");
         string? fangrahmenTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatz");
 
-        if (carFrameWeight == 0 && !string.IsNullOrWhiteSpace(fangrahmenTyp))
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Rahmengewicht"].Value) && !string.IsNullOrWhiteSpace(fangrahmenTyp))
         {
             var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
             if (carFrameType is not null)
@@ -670,7 +670,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             }
         }
 
-        if (carFrameWeight > 0)
+        if (carFrameWeight >= 0)
         {
             int carWeight = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_F");
             if (carWeight > 0)

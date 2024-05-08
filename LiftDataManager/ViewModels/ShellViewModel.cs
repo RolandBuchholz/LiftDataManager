@@ -50,6 +50,9 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
+        //workaround navigationview dispose
+        GC.Collect();
+
         IsBackEnabled = JsonNavigationViewService.CanGoBack;
         if (e.SourcePageType == typeof(SettingsPage))
         {
