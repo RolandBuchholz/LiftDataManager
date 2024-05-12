@@ -66,6 +66,8 @@
     <None Remove="Assets\Fluent\autoSaveMode.png" />
     <None Remove="Assets\Fluent\building.png" />
     <None Remove="Assets\Fluent\calculator.png" />
+    <None Remove="Assets\Fluent\carFrame.png" />
+    <None Remove="Assets\Fluent\carFrameDetail.png" />
     <None Remove="Assets\Fluent\carVentilation.png" />
     <None Remove="Assets\Fluent\chart.png" />
     <None Remove="Assets\Fluent\controler.png" />
@@ -79,6 +81,7 @@
     <None Remove="Assets\Fluent\lcd.png" />
     <None Remove="Assets\Fluent\levelSlider.png" />
     <None Remove="Assets\Fluent\liftcar.png" />
+    <None Remove="Assets\Fluent\liftCarDetail.png" />
     <None Remove="Assets\Fluent\liftdoors.png" />
     <None Remove="Assets\Fluent\liftHistory.png" />
     <None Remove="Assets\Fluent\listView.png" />
@@ -153,10 +156,10 @@
     <None Remove="MainWindow.xaml" />
     <None Remove="Styles\Divider.xaml" />
     <None Remove="Styles\ItemContainer.xaml" />
-    <None Remove="Views\EinreichunterlagenPage.xaml" />
-    <None Remove="Views\KabinengewichtPage.xaml" />
-    <None Remove="Views\KabinenLüftungPage.xaml" />
-    <None Remove="Views\NutzlastberechnungPage.xaml" />
+    <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
+    <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
+    <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
+    <None Remove="Views\GeneralData\NutzlastberechnungPage.xaml" />
     <None Remove="Views\Settings\AboutSettingPage.xaml" />
     <None Remove="Views\Settings\GeneralSettingPage.xaml" />
     <None Remove="Views\Settings\MaintenanceSettingPage.xaml" />
@@ -208,7 +211,8 @@
     <None Remove="Controls\CommandBar.xaml" />
     <None Remove="Controls\EntranceControl.xaml" />
     <None Remove="Controls\FooterControl.xaml" />
-    <None Remove="Controls\HeaderControl.xaml" />    <None Remove="Controls\SidebarPanel.xaml" />
+    <None Remove="Controls\HeaderControl.xaml" />    
+    <None Remove="Controls\SidebarPanel.xaml" />
     <None Remove="Styles\ControlDataTemplates.xaml" />
   </ItemGroup>
 
@@ -321,15 +325,15 @@
     <Page Update="Controls\CommandBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\KabinenLüftungPage.xaml">
+    <Page Update="Views\GeneralData\KabinenLüftungPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\NutzlastberechnungPage.xaml">
+    <Page Update="Views\GeneralData\NutzlastberechnungPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\KabinengewichtPage.xaml">
+    <Page Update="Views\GeneralData\KabinengewichtPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -418,16 +422,12 @@
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
-    <Folder Include="ViewModels\GeneralData\" />
-    <Folder Include="ViewModels\DetailData\" />
     <Folder Include="Views\GeneralData\" />
     <Folder Include="Views\DetailData\" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

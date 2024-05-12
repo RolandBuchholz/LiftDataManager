@@ -50,8 +50,8 @@
           "Title": "Bausatz",
           "Description": "Bausatz",
           "Subtitle": "Bauastz Ansicht",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftcar.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftcar.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/carFrame.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrame.png",
           "HideItem": false
         },
         {
@@ -173,8 +173,8 @@
           "Title": "Kabine Detaileingabe",
           "Description": "Kabine Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false
         },
         {
@@ -182,8 +182,8 @@
           "Title": "Bausatz Detaileingabe",
           "Description": "Bausatz Detaileingabe",
           "Subtitle": "Bausatz Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
+          "ImagePath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
           "HideItem": false
         }
       ]

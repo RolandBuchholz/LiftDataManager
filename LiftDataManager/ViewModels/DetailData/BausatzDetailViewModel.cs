@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Core.Services;
+using Microsoft.Extensions.Logging;
+using Serilog.Core;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -9,13 +12,15 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
+    private readonly ILogger<BausatzDetailViewModel> _logger;
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
-    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
          base(parameterDataService, dialogService, infoCenterService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
+        _logger = logger;
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -202,28 +207,35 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         foreach (var item in pufferCalculationDataValues)
         {
             if (!string.IsNullOrWhiteSpace(ParameterDictionary[item].Value))
-            {
-                var restoredBufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[item].Value!);
-                if (restoredBufferCalculation is not null)
+            { 
+                try
                 {
-                    switch (item)
+                    var restoredBufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[item].Value!);
+                    if (restoredBufferCalculation is not null)
                     {
-                        case "var_PufferCalculationData_FK":
-                            selectedEulerCaseCarFrame = restoredBufferCalculation.EulerCase;
-                            break;
-                        case "var_PufferCalculationData_GGW":
-                            selectedEulerCaseCounterWeight = restoredBufferCalculation.EulerCase;
-                            break;
-                        case "var_PufferCalculationData_EM_SK":
-                            selectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
-                            bufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
-                            break;
-                        case "var_PufferCalculationData_EM_SG":
-                            selectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
-                            break;
-                        default:
-                            break;
+                        switch (item)
+                        {
+                            case "var_PufferCalculationData_FK":
+                                selectedEulerCaseCarFrame = restoredBufferCalculation.EulerCase;
+                                break;
+                            case "var_PufferCalculationData_GGW":
+                                selectedEulerCaseCounterWeight = restoredBufferCalculation.EulerCase;
+                                break;
+                            case "var_PufferCalculationData_EM_SK":
+                                selectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
+                                bufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
+                                break;
+                            case "var_PufferCalculationData_EM_SG":
+                                selectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(60202, "Restore buffercalculationdata failed");
                 }
             }
         }
