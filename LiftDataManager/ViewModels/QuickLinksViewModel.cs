@@ -769,7 +769,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var maxEngineCurrent = string.Empty;
             try
             {
-                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment"))?.ChildNodes[2].InnerText;
+                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment"))?.ChildNodes[2].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -779,7 +779,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var powerDissipation = string.Empty;
             try
             {
-                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung"))?.ChildNodes[1].InnerText;
+                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung"))?.ChildNodes[1].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -793,7 +793,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var numberofFKPulley = "0";
             try
             {
-                var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText;
+                var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText.Trim();
                 if (!string.IsNullOrWhiteSpace(pulleyDiameterString))
                 {
                     pulleyDiameter = pulleyDiameterString[(pulleyDiameterString.IndexOf('=') + 1)..pulleyDiameterString.IndexOf("mm")].Trim();

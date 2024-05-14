@@ -1763,7 +1763,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
                     "var_Geschwindigkeitsbegrenzer" => cFPValue switch
                     {
-                        "1" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
+                        "1" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase) || string.Equals(value, "Schlaffseilauslösung", StringComparison.CurrentCultureIgnoreCase),
                         "2" => string.Equals(value, "GB durch Kunde", StringComparison.CurrentCultureIgnoreCase),
                         "3" => string.Equals(value, "Jungblut HJ 200", StringComparison.CurrentCultureIgnoreCase),
                         "4" => string.Equals(value, "Bode Typ 5 mit FA 12V", StringComparison.CurrentCultureIgnoreCase),

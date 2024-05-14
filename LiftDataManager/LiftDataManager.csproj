@@ -156,6 +156,7 @@
     <None Remove="MainWindow.xaml" />
     <None Remove="Styles\Divider.xaml" />
     <None Remove="Styles\ItemContainer.xaml" />
+    <None Remove="Views\DetailData\BausatzDetailRailBracketPage.xaml" />
     <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
     <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
     <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
@@ -264,6 +265,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\DetailData\BausatzDetailRailBracketPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\Divider.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
@@ -426,7 +430,6 @@
     <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
     <Folder Include="Views\GeneralData\" />
-    <Folder Include="Views\DetailData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">

@@ -87,6 +87,7 @@ public partial class App : Application
             services.AddTransient<ThemeSettingViewModel>();
             services.AddTransient<SchachtDetailViewModel>();
             services.AddTransient<BausatzDetailViewModel>();
+            services.AddTransient<BausatzDetailRailBracketViewModel>();
             services.AddTransient<HelpViewModel>();
             services.AddTransient<LiftHistoryViewModel>();
             services.AddTransient<DataBaseEditViewModel>();

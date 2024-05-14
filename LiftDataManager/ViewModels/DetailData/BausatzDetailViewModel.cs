@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using LiftDataManager.Core.Services;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -58,11 +56,66 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
             BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", SelectedEulerCaseReducedSafetyRoomPit, false);
         };
 
+        if (message.PropertyName == "var_Tragseiltyp" ||
+            message.PropertyName == "var_NumberOfRopes" ||
+            message.PropertyName == "var_Mindestbruchlast" ||
+            message.PropertyName == "var_RopeLength")
+        {
+            UpdateRopeCalculationData();
+        };
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
 
     public string CarFrameTyp => string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value) ? "Kein Bausatz gewählt" : ParameterDictionary["var_Bausatz"].Value!;
+
+    [ObservableProperty]
+    private double ropeDiameter = 0d;
+    partial void OnRopeDiameterChanged(double value)
+    {
+        if (RopeCalculationData != null)
+        {
+            RopeCalculationData.RopeDiameter = value;
+            UpdateRopeCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private int wireStrength = 0;
+    partial void OnWireStrengthChanged(int value)
+    {
+        if (RopeCalculationData != null)
+        {
+            RopeCalculationData.WireStrength = value;
+            UpdateRopeCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private string ropeWeight = "0";
+    partial void OnRopeWeightChanged(string value)
+    {
+        if (RopeCalculationData != null)
+        {
+            if (double.TryParse(value, out double result))
+            {
+                RopeCalculationData.RopeWeight = result;
+                UpdateRopeCalculationData();
+            }
+        }
+    }
+
+    [ObservableProperty]
+    private int maximumNumberOfRopes = 0;
+    partial void OnMaximumNumberOfRopesChanged(int value)
+    {
+        if (RopeCalculationData != null)
+        {
+            RopeCalculationData.MaximumNumberOfRopes = value;
+            UpdateRopeCalculationData();
+        }
+    }
 
     [ObservableProperty]
     private bool showCounterWeightBuffer;
@@ -72,6 +125,9 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     private bool showReducedSafetyRoomPitBuffer;
+
+    [ObservableProperty]
+    private RopeCalculationData? ropeCalculationData;
 
     [ObservableProperty]
     private BufferCalculationData? bufferCalculationDataCarFrame;
@@ -159,6 +215,21 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzPage));
     }
 
+    [ObservableProperty]
+    private PivotItem? selectedPivotItem;
+    partial void OnSelectedPivotItemChanged(PivotItem? value)
+    {
+        if (value?.Tag != null)
+        {
+            var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
+            if (pageType != null)
+            {
+
+                LiftParameterNavigationHelper.NavigateToPage(pageType);
+            }
+        }   
+    }
+
     private void CheckCFPState()
     {
         var fangrahmenTyp = ParameterDictionary!["var_Bausatz"].Value;
@@ -241,6 +312,45 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private void RestoreRopeCalculationData()
+    {
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_RopeCalculationData"].Value))
+        {
+            try
+            {
+              var  tempRopeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
+                if (tempRopeCalculationData != null)
+                {
+                    ropeDiameter = tempRopeCalculationData.RopeDiameter;
+                    wireStrength = tempRopeCalculationData.WireStrength;
+                    maximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
+                    ropeWeight = tempRopeCalculationData.RopeWeight.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(60202, "Restore ropecalculationdata failed");
+            }
+        }
+        
+        string ropeDescription = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tragseiltyp");
+        int numberOfRopes = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_NumberOfRopes");
+        int minimumBreakingStrength = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Mindestbruchlast");
+        double ropeLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_RopeLength");
+        RopeCalculationData = new RopeCalculationData()
+        {
+            RopeDescription = ropeDescription,
+            RopeDiameter = RopeDiameter,
+            WireStrength = WireStrength,
+            MaximumNumberOfRopes = MaximumNumberOfRopes,
+            RopeWeight = string.IsNullOrWhiteSpace(RopeWeight) ? 0d : Convert.ToDouble(RopeWeight, CultureInfo.CurrentCulture) ,
+            NumberOfRopes = numberOfRopes,
+            MinimumBreakingStrength = minimumBreakingStrength,
+            RopeLength = ropeLength
+        };
+        UpdateRopeCalculationData();
+    }
+
     private void GetPufferDetailData()
     {
         Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"),
@@ -284,6 +394,38 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                     break;
             }
         }
+        if (ShowCounterWeightBuffer)
+        {
+            BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", SelectedEulerCaseCounterWeight, false);
+        }
+        else
+        {
+            ParameterDictionary["var_PufferCalculationData_GGW"].AutoUpdateParameterValue(string.Empty);
+        }
+        if (ShowReducedSafetyRoomHeadBuffer)
+        {
+            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
+        }
+        else
+        {
+            ParameterDictionary["var_PufferCalculationData_EM_SK"].AutoUpdateParameterValue(string.Empty);
+        }
+        if (ShowReducedSafetyRoomPitBuffer)
+        {
+            BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", SelectedEulerCaseReducedSafetyRoomPit, false);
+        }
+        else
+        {
+            ParameterDictionary["var_PufferCalculationData_EM_SG"].AutoUpdateParameterValue(string.Empty);
+        }
+    }
+
+    private void UpdateRopeCalculationData()
+    {
+        if (RopeCalculationData != null)
+        {
+            ParameterDictionary["var_RopeCalculationData"].AutoUpdateParameterValue(JsonSerializer.Serialize(RopeCalculationData, _options).Replace("\r\n", "\n"));
+        }  
     }
 
     public void OnNavigatedTo(object parameter)
@@ -291,15 +433,14 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         NavigatedToBaseActions();
         CheckCFPState();
         if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Pufferstuetzenmaterial"].Value))
+        {
             ParameterDictionary["var_Pufferstuetzenmaterial"].AutoUpdateParameterValue("1.0038-ST37-2-S235");
-
-        SetBufferVisibility();
+        }
         RestorePufferCalculationData();
-        GetPufferDetailData();
+        RestoreRopeCalculationData();
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
-        BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", SelectedEulerCaseCounterWeight, false);
-        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
-        BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", SelectedEulerCaseReducedSafetyRoomPit, false);
+        SetBufferVisibility();
+        GetPufferDetailData();
     }
 
     public void OnNavigatedFrom()

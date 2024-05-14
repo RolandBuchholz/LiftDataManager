@@ -180,11 +180,21 @@
         {
           "UniqueId": "LiftDataManager.Views.BausatzDetailPage",
           "Title": "Bausatz Detaileingabe",
-          "Description": "Bausatz Detaileingabe",
+          "Description": "Allgemeine Bausatz Detaileingabe",
           "Subtitle": "Bausatz Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
           "HideItem": false
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.BausatzDetailRailBracketPage",
+          "Title": "Bausatz Detaileingabe",
+          "Description": "Schienen/Schienenbügel Detaileingabe",
+          "Subtitle": "Bausatz Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
+          "HideItem": true,
+          "HideNavigationViewItem": true
         }
       ]
     },
