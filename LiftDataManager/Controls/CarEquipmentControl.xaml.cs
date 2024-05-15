@@ -20,15 +20,15 @@ public sealed partial class CarEquipmentControl : UserControl
         ViewBoxHeight = CarHeightRaw;
     }
 
+    public double CarWidth { get; set; }
+    public double CarDepth { get; set; }
+    public double CarHeightRaw { get; set; }
+
     public double ViewBoxWidth
     {
         get { return (double)GetValue(ViewBoxWidthProperty); }
         set { SetValue(ViewBoxWidthProperty, value); }
     }
-
-    public double CarWidth { get; set; }
-    public double CarDepth { get; set; }
-    public double CarHeightRaw { get; set; }
 
     public static readonly DependencyProperty ViewBoxWidthProperty =
         DependencyProperty.Register(nameof(ViewBoxWidth), typeof(double), typeof(CarEquipmentControl), new PropertyMetadata(0.0));
@@ -60,15 +60,14 @@ public sealed partial class CarEquipmentControl : UserControl
     public static readonly DependencyProperty ItemSourceProperty =
         DependencyProperty.Register(nameof(ItemSource), typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
 
-    //public int MyProperty
-    //{
-    //    get { return (int)GetValue(MyPropertyProperty); }
-    //    set { SetValue(MyPropertyProperty, value); }
-    //}
+    public Dictionary<string, float> CarEquipmentDataBaseData
+    {
+        get { return (Dictionary<string, float>)GetValue(MyPropertyProperty); }
+        set { SetValue(MyPropertyProperty, value); }
+    }
 
-    //public static readonly DependencyProperty MyPropertyProperty =
-    //    DependencyProperty.Register("MyProperty", typeof(int), typeof(ownerclass), new PropertyMetadata(0));
-
+    public static readonly DependencyProperty MyPropertyProperty =
+        DependencyProperty.Register(nameof(CarEquipmentDataBaseData), typeof(Dictionary<string, float>), typeof(EntranceControl), new PropertyMetadata(null));
 
     private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {

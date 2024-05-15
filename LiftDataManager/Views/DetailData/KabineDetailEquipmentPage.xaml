@@ -90,24 +90,28 @@
                             x:Name="CarEquipmentControlA"
                             Grid.Row="0"
                             Grid.Column="0"
+                            CarEquipmentDataBaseData="{x:Bind ViewModel.CarEquipmentDataBaseData, Mode=OneWay}"
                             ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Side="A" />
                         <SpeziControls:CarEquipmentControl
                             x:Name="CarEquipmentControlB"
                             Grid.Row="1"
                             Grid.Column="0"
+                            CarEquipmentDataBaseData="{x:Bind ViewModel.CarEquipmentDataBaseData, Mode=OneWay}"
                             ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Side="B" />
                         <SpeziControls:CarEquipmentControl
                             x:Name="CarEquipmentControlC"
                             Grid.Row="2"
                             Grid.Column="0"
+                            CarEquipmentDataBaseData="{x:Bind ViewModel.CarEquipmentDataBaseData, Mode=OneWay}"
                             ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Side="C" />
                         <SpeziControls:CarEquipmentControl
                             x:Name="CarEquipmentControlD"
                             Grid.Row="3"
                             Grid.Column="0"
+                            CarEquipmentDataBaseData="{x:Bind ViewModel.CarEquipmentDataBaseData, Mode=OneWay}"
                             ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Side="D" />
                         <Grid

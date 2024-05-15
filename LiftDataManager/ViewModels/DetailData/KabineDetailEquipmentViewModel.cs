@@ -6,9 +6,17 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
 {
     public event Action? CarViewChanged;
 
+    public Dictionary<string, float> CarEquipmentDataBaseData { get; set; }
+
     public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
      base(parameterDataService, dialogService, infoCenterService)
     {
+        CarEquipmentDataBaseData ??= new() 
+        {
+            {"SkirtingBoardHeight", 0f },
+            {"HandrailHeight", 0f },
+            {"RammingProtection",0f }
+        } ;
     }
 
     private readonly string[] carEquipment = [ "var_BreiteSpiegel", "var_BreiteSpiegel2", "var_BreiteSpiegel3",
@@ -117,10 +125,16 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
         }
     }
 
+    private void GetCarEquipmentDataBaseData()
+    {
+    
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         CanShowMirrorDimensions();
+        GetCarEquipmentDataBaseData();
     }
 
     public void OnNavigatedFrom()
