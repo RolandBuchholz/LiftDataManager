@@ -35,7 +35,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             if (pageType != null)
             {
 
-                LiftParameterNavigationHelper.NavigateToPage(pageType);
+                LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
     }

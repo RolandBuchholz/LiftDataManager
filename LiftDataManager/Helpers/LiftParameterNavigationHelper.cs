@@ -1,4 +1,7 @@
-﻿namespace LiftDataManager.Helpers;
+﻿using Microsoft.UI.Xaml.Media.Animation;
+using static WinUICommunity.LanguageDictionary;
+
+namespace LiftDataManager.Helpers;
 public class LiftParameterNavigationHelper
 {
     public static void NavigateToHighlightParameters()
@@ -27,5 +30,17 @@ public class LiftParameterNavigationHelper
     {
         var navigationService = App.GetService<IJsonNavigationViewService>();
         navigationService.NavigateTo(page, parameter);
+    }
+
+    public static void NavigatePivotItem(Type page)
+    {
+        var navigationService = App.GetService<IJsonNavigationViewService>();
+        navigationService.NavigateTo(page, null, false, new DrillInNavigationTransitionInfo());
+    }
+
+    public static void NavigatePivotItem(Type page, object parameter)
+    {
+        var navigationService = App.GetService<IJsonNavigationViewService>();
+        navigationService.NavigateTo(page, parameter, false, new DrillInNavigationTransitionInfo());
     }
 }

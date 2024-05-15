@@ -225,7 +225,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
             if (pageType != null)
             {
 
-                LiftParameterNavigationHelper.NavigateToPage(pageType);
+                LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }   
     }

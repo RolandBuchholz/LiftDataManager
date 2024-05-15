@@ -102,6 +102,11 @@ public partial class App : Application
             services.AddSingleton<QuickLinksViewModel>();
             services.AddTransient<KabineViewModel>();
             services.AddTransient<KabineDetailViewModel>();
+            services.AddTransient<KabineDetailEquipmentViewModel>();
+            services.AddTransient<KabineDetailFloorViewModel>();
+            services.AddTransient<KabineDetailLayoutViewModel>();
+            services.AddTransient<KabineDetailCeilingViewModel>();
+            services.AddTransient<KabineDetailControlPanelViewModel>();
             services.AddTransient<BausatzViewModel>();
             services.AddTransient<KabinengewichtViewModel>();
             services.AddTransient<NutzlastberechnungViewModel>();

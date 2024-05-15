@@ -157,6 +157,11 @@
     <None Remove="Styles\Divider.xaml" />
     <None Remove="Styles\ItemContainer.xaml" />
     <None Remove="Views\DetailData\BausatzDetailRailBracketPage.xaml" />
+    <None Remove="Views\DetailData\KabineDetailCeilingPage.xaml" />
+    <None Remove="Views\DetailData\KabineDetailControlPanelPage.xaml" />
+    <None Remove="Views\DetailData\KabineDetailEquipmentPage.xaml" />
+    <None Remove="Views\DetailData\KabineDetailFloorPage.xaml" />
+    <None Remove="Views\DetailData\KabineDetailLayoutPage.xaml" />
     <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
     <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
     <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
@@ -265,6 +270,21 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\DetailData\KabineDetailControlPanelPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DetailData\KabineDetailCeilingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DetailData\KabineDetailLayoutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DetailData\KabineDetailFloorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DetailData\KabineDetailEquipmentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\DetailData\BausatzDetailRailBracketPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

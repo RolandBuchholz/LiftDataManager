@@ -2,26 +2,11 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineDetailCeilingViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-
-    public KabineDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+    public KabineDetailCeilingViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
      base(parameterDataService, dialogService, infoCenterService)
     {
-    }
-
-    [ObservableProperty]
-    private bool showAutoCeilingWarning;
-
-    private void CheckAutoCeilingWarning()
-    {
-        var ruleActivationDate = new DateTime(2024, 01, 11);
-        var creationDate = DateTime.MinValue;
-
-        if (DateTime.TryParse(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_ErstelltAm"), out DateTime parsedDate))
-            creationDate = parsedDate;
-
-        ShowAutoCeilingWarning = !string.IsNullOrWhiteSpace(ParameterDictionary["var_KD"].Value) && ruleActivationDate.CompareTo(creationDate) > 0;
     }
 
     [RelayCommand]
@@ -48,7 +33,6 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        CheckAutoCeilingWarning();
     }
 
     public void OnNavigatedFrom()

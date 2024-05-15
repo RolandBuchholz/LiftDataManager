@@ -170,12 +170,62 @@
         },
         {
           "UniqueId": "LiftDataManager.Views.KabineDetailPage",
-          "Title": "Kabine Detaileingabe",
-          "Description": "Kabine Detaileingabe",
+          "Title": "Allgemeine Kabinen Detaileingabe",
+          "Description": "Allgemeine Kabinen Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailEquipmentPage",
+          "Title": "Kabinenausstattung Detaileingabe",
+          "Description": "Kabinenausstattung Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailFloorPage",
+          "Title": "Kabineboden Detaileingabe",
+          "Description": "Kabineboden Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailLayoutPage",
+          "Title": "Schottengrundriss Detaileingabe",
+          "Description": "Schottengrundriss Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailCeilingPage",
+          "Title": "Kabinendecke Detaileingabe",
+          "Description": "Kabinendecke Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.KabineDetailControlPanelPage",
+          "Title": "Kabinentableau Detaileingabe",
+          "Description": "Kabinentableau Detaileingabe",
+          "Subtitle": "Kabine Detaileingabe",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
         },
         {
           "UniqueId": "LiftDataManager.Views.BausatzDetailPage",

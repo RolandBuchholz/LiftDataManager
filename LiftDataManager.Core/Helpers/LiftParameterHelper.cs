@@ -103,13 +103,6 @@ public class LiftParameterHelper
     public static double GetLayoutDrawingLoad(double load)
     {
         var loadWithSafetyLoading = load * 1.03;
-        //return loadWithSafetyLoading switch
-        //{
-        //    < 99 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
-        //    < 999 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
-        //    < 9999 => Math.Ceiling(loadWithSafetyLoading / 100) * 100,
-        //    _ => Math.Ceiling(loadWithSafetyLoading / 1000) * 1000,
-        //}; ;
         return loadWithSafetyLoading switch
         {
             < 99 => Math.Ceiling(loadWithSafetyLoading / 10) * 10,
