@@ -26,6 +26,10 @@ public sealed partial class CarEquipmentControl : UserControl
         set { SetValue(ViewBoxWidthProperty, value); }
     }
 
+    public double CarWidth { get; set; }
+    public double CarDepth { get; set; }
+    public double CarHeightRaw { get; set; }
+
     public static readonly DependencyProperty ViewBoxWidthProperty =
         DependencyProperty.Register(nameof(ViewBoxWidth), typeof(double), typeof(CarEquipmentControl), new PropertyMetadata(0.0));
 
@@ -38,24 +42,6 @@ public sealed partial class CarEquipmentControl : UserControl
     public static readonly DependencyProperty ViewBoxHeightProperty =
         DependencyProperty.Register(nameof(ViewBoxHeight), typeof(double), typeof(CarEquipmentControl), new PropertyMetadata(0.0));
 
-    public double CarWidth { get; set; }
-    public double CarDepth { get; set; }
-    public double CarHeightRaw { get; set; }
-
-    private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
-    {
-        //SKImageInfo info = e.Info;
-        SKSurface surface = e.Surface;
-        SKCanvas canvas = surface.Canvas;
-
-        canvas.Clear();
-        DrawWall(canvas);
-        DrawSkirtingBoard(canvas);
-        DrawMirror(canvas);
-        DrawHandrail(canvas);
-        DrawRammingProtection(canvas);
-        DrawCarDoor(canvas);
-    }
     public CarSide Side
     {
         get => (CarSide)GetValue(SideProperty);
@@ -73,6 +59,31 @@ public sealed partial class CarEquipmentControl : UserControl
 
     public static readonly DependencyProperty ItemSourceProperty =
         DependencyProperty.Register(nameof(ItemSource), typeof(ObservableDictionary<string, Parameter>), typeof(EntranceControl), new PropertyMetadata(null));
+
+    //public int MyProperty
+    //{
+    //    get { return (int)GetValue(MyPropertyProperty); }
+    //    set { SetValue(MyPropertyProperty, value); }
+    //}
+
+    //public static readonly DependencyProperty MyPropertyProperty =
+    //    DependencyProperty.Register("MyProperty", typeof(int), typeof(ownerclass), new PropertyMetadata(0));
+
+
+    private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+    {
+        //SKImageInfo info = e.Info;
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
+
+        canvas.Clear();
+        DrawWall(canvas);
+        DrawSkirtingBoard(canvas);
+        DrawMirror(canvas);
+        DrawHandrail(canvas);
+        DrawRammingProtection(canvas);
+        DrawCarDoor(canvas);
+    }
 
     public void RefreshView()
     {

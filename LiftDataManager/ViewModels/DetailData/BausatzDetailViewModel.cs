@@ -93,16 +93,13 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private string ropeWeight = "0";
-    partial void OnRopeWeightChanged(string value)
+    private double ropeWeight = 0;
+    partial void OnRopeWeightChanged(double value)
     {
         if (RopeCalculationData != null)
         {
-            if (double.TryParse(value, out double result))
-            {
-                RopeCalculationData.RopeWeight = result;
-                UpdateRopeCalculationData();
-            }
+            RopeCalculationData.RopeWeight = value;
+            UpdateRopeCalculationData();
         }
     }
 
@@ -324,7 +321,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                     ropeDiameter = tempRopeCalculationData.RopeDiameter;
                     wireStrength = tempRopeCalculationData.WireStrength;
                     maximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
-                    ropeWeight = tempRopeCalculationData.RopeWeight.ToString();
+                    ropeWeight = tempRopeCalculationData.RopeWeight;
                 }
             }
             catch (Exception)
@@ -343,7 +340,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
             RopeDiameter = RopeDiameter,
             WireStrength = WireStrength,
             MaximumNumberOfRopes = MaximumNumberOfRopes,
-            RopeWeight = string.IsNullOrWhiteSpace(RopeWeight) ? 0d : Convert.ToDouble(RopeWeight, CultureInfo.CurrentCulture) ,
+            RopeWeight = RopeWeight,
             NumberOfRopes = numberOfRopes,
             MinimumBreakingStrength = minimumBreakingStrength,
             RopeLength = ropeLength

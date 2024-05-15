@@ -83,7 +83,7 @@
             IsClosable="False"
             IsIconVisible="True"
             IsOpen="{x:Bind ReadOnlyMode, Mode=OneWay}"
-            Message="Daten können nicht gespeichert werden um Daten. Beim Auschecken werden alle Daten überschieben!"
+            Message="Daten können nicht gespeichert werden um Daten. Beim Auschecken werden alle Daten überschrieben!"
             Severity="Error" />
     </Grid>
 </UserControl>

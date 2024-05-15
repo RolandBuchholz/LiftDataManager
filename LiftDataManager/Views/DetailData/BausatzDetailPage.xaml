@@ -17,6 +17,7 @@
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+        <helpers:IntegerToStringConverter x:Key="IntegerToStringConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.Resources>
@@ -332,7 +333,7 @@
                                     Grid.Column="1"
                                     Margin="5,0,5,0"
                                     Header="Maximale Anzahl Tragseile"
-                                    Text="{x:Bind ViewModel.MaximumNumberOfRopes, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.MaximumNumberOfRopes, Mode=TwoWay,Converter={StaticResource IntegerToStringConverter}}"
                                     TextAlignment="Right">
                                     <TextBox.HeaderTemplate>
                                         <DataTemplate>
@@ -350,7 +351,7 @@
                                     Grid.Column="3"
                                     Margin="5,0,5,0"
                                     Header="Seildurchmesser"
-                                    Text="{x:Bind ViewModel.RopeDiameter, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.RopeDiameter, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="4"
@@ -382,7 +383,7 @@
                                     Grid.Column="1"
                                     Margin="5,0,5,0"
                                     Header="Seilgewicht"
-                                    Text="{x:Bind ViewModel.RopeWeight, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.RopeWeight, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"
                                     TextAlignment="Right">
                                     <TextBox.HeaderTemplate>
                                         <DataTemplate>
@@ -405,7 +406,7 @@
                                     Grid.Column="4"
                                     Margin="5,0,5,0"
                                     Header="Nennfestigkeit"
-                                    Text="{x:Bind ViewModel.WireStrength, Mode=TwoWay}"
+                                    Text="{x:Bind ViewModel.WireStrength, Mode=TwoWay, Converter={StaticResource IntegerToStringConverter}}"
                                     TextAlignment="Right">
                                     <TextBox.HeaderTemplate>
                                         <DataTemplate>

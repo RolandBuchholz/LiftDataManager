@@ -4,9 +4,33 @@ namespace LiftDataManager.ViewModels;
 
 public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
+    public event Action? CarViewChanged;
+
     public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
      base(parameterDataService, dialogService, infoCenterService)
     {
+    }
+
+    private readonly string[] carEquipment = [ "var_BreiteSpiegel", "var_BreiteSpiegel2", "var_BreiteSpiegel3",
+                                               "var_HoeheSpiegel", "var_HoeheSpiegel2", "var_HoeheSpiegel3",
+                                               "var_BreiteSpiegelKorrektur", "var_BreiteSpiegelKorrektur2", "var_BreiteSpiegelKorrektur3",
+                                               "var_HoeheSpiegelKorrektur", "var_HoeheSpiegelKorrektur2", "var_HoeheSpiegelKorrektur3",
+                                               "var_AbstandSpiegelDecke", "var_AbstandSpiegelDecke2", "var_AbstandSpiegelDecke3",
+                                               "var_AbstandSpiegelvonLinks", "var_AbstandSpiegelvonLinks2", "var_AbstandSpiegelvonLinks3"];
+
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is null)
+            return;
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+            return;
+        if (carEquipment.Contains(message.PropertyName))
+        {
+            RefreshView();
+        }
+
+        SetInfoSidebarPanelText(message);
+        _ = SetModelStateAsync();
     }
 
     [ObservableProperty]
@@ -68,6 +92,11 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
         }
     }
 
+    public void RefreshView()
+    {
+        CarViewChanged?.Invoke();
+    }
+
     [RelayCommand]
     private static void GoToKabine()
     {
@@ -83,7 +112,6 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
             var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
             if (pageType != null)
             {
-
                 LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
