@@ -426,7 +426,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         bool sockelleisteD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteD");
 
         //Database
-        double sockelleisteHoehe = GetHoeheSockelleiste(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
+        double sockelleisteHoehe = GetSkirtingBoardHeightByName(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
         double tableauGewicht = GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
         double tableauBreite = GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
         double belagAufDerDeckeGewichtproQm = GetGewichtSonderblech(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
@@ -1312,7 +1312,48 @@ public partial class CalculationsModuleService : ICalculationsModule
         return (height, mirrorDistanceCeiling);
     }
 
-    //Database
+    //Database public
+
+    public double GetSkirtingBoardHeightByName(string skirtingBoardName)
+    {
+        if (!string.IsNullOrWhiteSpace(skirtingBoardName))
+        {
+            var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == skirtingBoardName);
+            if (skirtingBoard != null)
+            {
+                return skirtingBoard.Height;
+            }
+        }
+        return 0;
+    }
+
+    public double GetRammingProtectionHeightByName(string rammingProtectionName)
+    {
+        if (!string.IsNullOrWhiteSpace(rammingProtectionName))
+        {
+            var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammingProtectionName);
+            if (rammingProtection != null)
+            {
+                return rammingProtection.Height;
+            }
+        }
+        return 0;
+    }
+
+    public double GetHandrailDiameterByName(string handrailName)
+    {
+        if (!string.IsNullOrWhiteSpace(handrailName))
+        {
+            var handrail = _parametercontext.Set<Handrail>().FirstOrDefault(x => x.Name == handrailName);
+            if (handrail != null)
+            {
+                return handrail.Diameter;
+            }
+        }
+        return 0;
+    }
+
+    //Database pivate
 
     private double? GetGewichtSonderblech(string bodenblech)
     {
@@ -1377,16 +1418,6 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (skirtingBoard is null)
             return 0;
         return skirtingBoard.WeightPerMeter;
-    }
-
-    private double GetHoeheSockelleiste(string sockelleiste)
-    {
-        if (string.IsNullOrWhiteSpace(sockelleiste))
-            return 0;
-        var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == sockelleiste);
-        if (skirtingBoard is null)
-            return 0;
-        return skirtingBoard.Height;
     }
 
     private double? GetGewichtTableau(string tableau)

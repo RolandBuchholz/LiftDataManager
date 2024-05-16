@@ -23,8 +23,8 @@
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
-    <PackageCertificateKeyFile>LiftDataManager_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PlatformTarget>x64</PlatformTarget>
+    <PackageCertificateThumbprint>2BE4759304E56D677972B80FDFF39F28C765EC4C</PackageCertificateThumbprint>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

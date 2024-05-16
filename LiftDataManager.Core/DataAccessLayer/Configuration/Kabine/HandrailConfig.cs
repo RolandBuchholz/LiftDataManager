@@ -12,5 +12,7 @@ public class HandrailConfig : BaseModelBuilder<Handrail>
                .IsRequired();
         builder.Property(x => x.WeightPerMeter)
                .IsRequired();
+        builder.Property(x => x.Diameter)
+               .IsRequired();
     }
 }

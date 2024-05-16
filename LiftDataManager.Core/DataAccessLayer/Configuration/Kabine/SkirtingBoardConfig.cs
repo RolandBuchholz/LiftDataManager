@@ -14,5 +14,7 @@ public class SkirtingBoardConfig : BaseModelBuilder<SkirtingBoard>
                .IsRequired();
         builder.Property(x => x.Height)
                .IsRequired();
+        builder.Property(x => x.Width)
+               .IsRequired();
     }
 }

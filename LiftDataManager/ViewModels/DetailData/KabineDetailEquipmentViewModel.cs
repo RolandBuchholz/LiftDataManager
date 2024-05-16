@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.ViewModels;
 
@@ -6,11 +7,14 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
 {
     public event Action? CarViewChanged;
 
+    private readonly ICalculationsModule _calculationsModuleService;
+
     public Dictionary<string, float> CarEquipmentDataBaseData { get; set; }
 
-    public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+    public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ICalculationsModule calculationsModuleService) :
      base(parameterDataService, dialogService, infoCenterService)
     {
+        _calculationsModuleService = calculationsModuleService;
         CarEquipmentDataBaseData ??= new() 
         {
             {"SkirtingBoardHeight", 0f },
@@ -127,7 +131,18 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
 
     private void GetCarEquipmentDataBaseData()
     {
-    
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Sockelleiste"].Value))
+        {
+            
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
+        {
+
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Rammschutz"].Value))
+        {
+
+        }
     }
 
     public void OnNavigatedTo(object parameter)
