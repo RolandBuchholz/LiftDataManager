@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Services;
 
 namespace LiftDataManager.ViewModels;
 
@@ -19,7 +18,7 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
         {
             {"SkirtingBoardHeight", 0f },
             {"HandrailHeight", 0f },
-            {"RammingProtection",0f }
+            {"RammingProtectionHeight",0f }
         } ;
     }
 
@@ -133,15 +132,15 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
     {
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Sockelleiste"].Value))
         {
-            
+            CarEquipmentDataBaseData["SkirtingBoardHeight"] = (float)_calculationsModuleService.GetSkirtingBoardHeightByName(ParameterDictionary);
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Handlauf"].Value))
         {
-
+            CarEquipmentDataBaseData["HandrailHeight"] = (float)_calculationsModuleService.GetHandrailDiameterByName(ParameterDictionary["var_Handlauf"].Value!);
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Rammschutz"].Value))
         {
-
+            CarEquipmentDataBaseData["RammingProtectionHeight"] = (float)_calculationsModuleService.GetRammingProtectionHeightByName(ParameterDictionary);
         }
     }
 

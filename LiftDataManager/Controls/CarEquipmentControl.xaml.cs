@@ -62,11 +62,11 @@ public sealed partial class CarEquipmentControl : UserControl
 
     public Dictionary<string, float> CarEquipmentDataBaseData
     {
-        get { return (Dictionary<string, float>)GetValue(MyPropertyProperty); }
-        set { SetValue(MyPropertyProperty, value); }
+        get { return (Dictionary<string, float>)GetValue(CarEquipmentDataBaseDataProperty); }
+        set { SetValue(CarEquipmentDataBaseDataProperty, value); }
     }
 
-    public static readonly DependencyProperty MyPropertyProperty =
+    public static readonly DependencyProperty CarEquipmentDataBaseDataProperty =
         DependencyProperty.Register(nameof(CarEquipmentDataBaseData), typeof(Dictionary<string, float>), typeof(EntranceControl), new PropertyMetadata(null));
 
     private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -80,6 +80,7 @@ public sealed partial class CarEquipmentControl : UserControl
         DrawSkirtingBoard(canvas);
         DrawMirror(canvas);
         DrawHandrail(canvas);
+        DrawDivisionBar(canvas);
         DrawRammingProtection(canvas);
         DrawCarDoor(canvas);
     }
@@ -245,10 +246,7 @@ public sealed partial class CarEquipmentControl : UserControl
         string skirting = LiftParameterHelper.GetLiftParameterValue<string>(ItemSource, "var_Sockelleiste");
         if (string.IsNullOrWhiteSpace(skirting))
             return;
-        var skirtingHeightString = skirting.Replace("V2A", "").Replace("V4A", "").Split("x").FirstOrDefault()?.Trim();
-        if (!float.TryParse(skirtingHeightString, out float skirtingHeight))
-            return;
-
+        float skirtingHeight = CarEquipmentDataBaseData["SkirtingBoardHeight"];
         using var paint = new SKPaint
         {
             Color = SKColors.DimGray,
@@ -326,7 +324,7 @@ public sealed partial class CarEquipmentControl : UserControl
             return;
         float handrailHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheHandlauf");
         float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
-        float handrailHeight = 40f;
+        float handrailHeight = CarEquipmentDataBaseData["HandrailHeight"];
 
         using var paint = new SKPaint
         {
@@ -348,11 +346,14 @@ public sealed partial class CarEquipmentControl : UserControl
 
     private void DrawRammingProtection(SKCanvas canvas)
     {
-        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Handlauf{Side}"))
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Rammschutz{Side}"))
             return;
-        float handrailHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheHandlauf");
+        float rammingProtectionHeightFFB1 = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheRammschutz");
+        float rammingProtectionHeightFFB2 = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheRammschutz2");
+        float rammingProtectionHeightFFB3 = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_HoeheRammschutz3");
+
         float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
-        float handrailHeight = 40f;
+        float rammingProtectionHeight = CarEquipmentDataBaseData["RammingProtectionHeight"];
 
         using var paint = new SKPaint
         {
@@ -368,7 +369,46 @@ public sealed partial class CarEquipmentControl : UserControl
             StrokeWidth = 10,
             Style = SKPaintStyle.Stroke
         };
-        canvas.DrawRect(10f, (float)CarHeightRaw - handrailHeightFFB, width - 20f, handrailHeight, paint);
-        canvas.DrawRect(10f, (float)CarHeightRaw - handrailHeightFFB, width - 20f, handrailHeight, paintStrokeSmall);
+        if (rammingProtectionHeightFFB1 > 0)
+        {
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB1, width - 20f, rammingProtectionHeight, paint);
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB1, width - 20f, rammingProtectionHeight, paintStrokeSmall);
+        }
+        if (rammingProtectionHeightFFB2 > 0)
+        {
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB2, width - 20f, rammingProtectionHeight, paint);
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB2, width - 20f, rammingProtectionHeight, paintStrokeSmall);
+        }
+        if (rammingProtectionHeightFFB3 > 0)
+        {
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB3, width - 20f, rammingProtectionHeight, paint);
+            canvas.DrawRect(10f, (float)CarHeightRaw - rammingProtectionHeightFFB3, width - 20f, rammingProtectionHeight, paintStrokeSmall);
+        }
+    }
+
+    private void DrawDivisionBar(SKCanvas canvas)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ItemSource, $"var_Teilungsleiste{Side}"))
+            return;
+        float divisionBarHeightFFB = LiftParameterHelper.GetLiftParameterValue<float>(ItemSource, "var_TeilungsleisteOKFF");
+        float width = Side == CarSide.A || Side == CarSide.C ? (float)CarWidth : (float)CarDepth;
+        float divisionBarHeight = 40f;
+
+        using var paint = new SKPaint
+        {
+            Color = SKColors.DarkGray,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+        };
+        using var paintStrokeSmall = new SKPaint
+        {
+            Color = SKColors.Black,
+            IsAntialias = true,
+            IsStroke = true,
+            StrokeWidth = 10,
+            Style = SKPaintStyle.Stroke
+        };
+        canvas.DrawRect(5f, (float)CarHeightRaw - divisionBarHeightFFB, width - 10f, divisionBarHeight, paint);
+        canvas.DrawRect(5f, (float)CarHeightRaw - divisionBarHeightFFB, width - 10f, divisionBarHeight, paintStrokeSmall);
     }
 }

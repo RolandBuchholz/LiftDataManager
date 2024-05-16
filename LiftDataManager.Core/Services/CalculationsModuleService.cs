@@ -426,7 +426,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         bool sockelleisteD = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SockelleisteD");
 
         //Database
-        double sockelleisteHoehe = GetSkirtingBoardHeightByName(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste"));
+        double sockelleisteHoehe = GetSkirtingBoardHeightByName(parameterDictionary);
         double tableauGewicht = GetGewichtTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
         double tableauBreite = GetBreiteTableau(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
         double belagAufDerDeckeGewichtproQm = GetGewichtSonderblech(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
@@ -1314,27 +1314,44 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     //Database public
 
-    public double GetSkirtingBoardHeightByName(string skirtingBoardName)
+    public double GetSkirtingBoardHeightByName(ObservableDictionary<string, Parameter> parameterDictionary)
     {
+        string skirtingBoardName = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste");
         if (!string.IsNullOrWhiteSpace(skirtingBoardName))
         {
-            var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == skirtingBoardName);
-            if (skirtingBoard != null)
+            if (string.Equals(skirtingBoardName, "gemäß Beschreibung"))
             {
-                return skirtingBoard.Height;
+                return LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_SockelleisteHoeheBenutzerdefiniert");
+            }
+            else
+            {
+                var skirtingBoard = _parametercontext.Set<SkirtingBoard>().FirstOrDefault(x => x.Name == skirtingBoardName);
+                if (skirtingBoard != null)
+                {
+                    return skirtingBoard.Height;
+                }
             }
         }
         return 0;
     }
 
-    public double GetRammingProtectionHeightByName(string rammingProtectionName)
+    public double GetRammingProtectionHeightByName(ObservableDictionary<string, Parameter> parameterDictionary)
     {
+        string rammingProtectionName = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz");
+
         if (!string.IsNullOrWhiteSpace(rammingProtectionName))
         {
-            var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammingProtectionName);
-            if (rammingProtection != null)
+            if (string.Equals(rammingProtectionName, "Rammschutz siehe Beschreibung"))
             {
-                return rammingProtection.Height;
+                return LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_RammschutzHoeheBenutzerdefiniert");
+            }
+            else
+            {
+                var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammingProtectionName);
+                if (rammingProtection != null)
+                {
+                    return rammingProtection.Height;
+                }
             }
         }
         return 0;

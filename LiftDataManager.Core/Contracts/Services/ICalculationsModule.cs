@@ -54,9 +54,9 @@ public interface ICalculationsModule
 
     (double, double) GetMirrorHeight(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index);
 
-    double GetSkirtingBoardHeightByName(string skirtingBoardName);
+    double GetSkirtingBoardHeightByName(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    double GetRammingProtectionHeightByName(string rammingProtectionName);
+    double GetRammingProtectionHeightByName(ObservableDictionary<string, Parameter> parameterDictionary);
 
     double GetHandrailDiameterByName(string handrailName);
 
