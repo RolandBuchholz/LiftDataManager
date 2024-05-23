@@ -907,7 +907,8 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     public CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-        return _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary["var_Bausatz"].Value);
+        return _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
+                                                    .FirstOrDefault(x => x.Name == parameterDictionary["var_Bausatz"].Value);
     }
 
     public void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt)

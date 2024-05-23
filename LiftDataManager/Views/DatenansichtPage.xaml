@@ -56,6 +56,7 @@
                         FontSize="40"
                         Glyph="{x:Bind Symbol}" />
                     <TextBlock
+                        Width="160"
                         Margin="{StaticResource XXSmallTopMargin}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
