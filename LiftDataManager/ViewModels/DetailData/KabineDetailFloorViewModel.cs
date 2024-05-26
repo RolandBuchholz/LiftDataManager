@@ -43,7 +43,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    public string? openingDirectionA;
+    private string? openingDirectionA;
     partial void OnOpeningDirectionAChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -54,7 +54,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    public string? openingDirectionB;
+    private string? openingDirectionB;
     partial void OnOpeningDirectionBChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -65,7 +65,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    public string? openingDirectionC;
+    private string? openingDirectionC;
     partial void OnOpeningDirectionCChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -76,7 +76,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    public string? openingDirectionD;
+    private string? openingDirectionD;
     partial void OnOpeningDirectionDChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -87,7 +87,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    public bool openingDirectionNotSelected;
+    private bool openingDirectionNotSelected;
     private void SetupCarFloorSillParameter()
     {
         CarFloorSillParameter.Clear();

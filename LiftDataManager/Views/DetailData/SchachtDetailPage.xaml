@@ -5,6 +5,7 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -47,29 +48,214 @@
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="4*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Viewbox Grid.Row="0" Grid.Column="0">
-                        <skiasharp:SKXamlCanvas
-                            x:Name="xamlCanvas"
-                            Width="{x:Bind ViewModel.ViewBoxWidth, Mode=OneWay}"
-                            Height="{x:Bind ViewModel.ViewBoxHeight, Mode=OneWay}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            IgnorePixelScaling="True">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="PaintSurface">
-                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.PaintSurfaceCommand}" />
-                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadedSKXamlCanvasCommand}" CommandParameter="{Binding ElementName=xamlCanvas}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </skiasharp:SKXamlCanvas>
-                    </Viewbox>
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1" Grid.Column="1">
+                            <skiasharp:SKXamlCanvas
+                                x:Name="xamlCanvas"
+                                Width="{x:Bind ViewModel.ViewBoxWidth, Mode=OneWay}"
+                                Height="{x:Bind ViewModel.ViewBoxHeight, Mode=OneWay}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                IgnorePixelScaling="True">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="PaintSurface">
+                                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.PaintSurfaceCommand}" />
+                                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadedSKXamlCanvasCommand}" CommandParameter="{Binding ElementName=xamlCanvas}" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </skiasharp:SKXamlCanvas>
+                        </Viewbox>
+                        <!--  InfoText Wall A  -->
+                        <StackPanel
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="100,5,100,0">
+                            <Border
+                                Margin="0,0,0,2"
+                                Padding="5"
+                                Background="Gray"
+                                CornerRadius="4"
+                                Visibility="{x:Bind helpers:XamlFunctions.DoubleNot0ToVisible(ViewModel.OffsetWallOpeningShaftDoorA), Mode=OneWay}">
+                                <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                    <Span>Versatz Maueröffungsmitte zur Schachttürmitte |</Span>
+                                    <Run Text="{x:Bind ViewModel.OffsetWallOpeningShaftDoorA, Mode=OneWay}" />
+                                    <Span>mm</Span>
+                                </TextBlock>
+                            </Border>
+                            <Grid
+                                Padding="5"
+                                Background="Gray"
+                                CornerRadius="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Stretch"
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    TextAlignment="Center">
+                                    <Run Text="{x:Bind ViewModel.CarDistanceWallD, Mode=OneWay}" />
+                                    <Run Text=" mm |" />
+                                </TextBlock>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="5,0,5,0"
+                                    HorizontalAlignment="Stretch"
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    TextAlignment="Center"
+                                    TextLineBounds="Full">
+                                    <Run Text="Kabinenbreite = " />
+                                    <Run Text="{x:Bind ViewModel.ParameterDictionary['var_KBI'].Value, Mode=OneWay}" />
+                                    <Run Text=" mm" />
+                                </TextBlock>
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Stretch"
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    TextAlignment="Center">
+                                    <Run Text="| " />
+                                    <Run Text="{x:Bind ViewModel.CarDistanceWallB, Mode=OneWay}" />
+                                    <Run Text=" mm" />
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                        <!--  InfoText Wall B  -->
+                        <controls:LayoutTransformControl
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5,100,0,100">
+                            <controls:LayoutTransformControl.Transform>
+                                <RotateTransform Angle="270" />
+                            </controls:LayoutTransformControl.Transform>
+                            <StackPanel>
+                                <Border
+                                    Margin="0,0,0,2"
+                                    Padding="5"
+                                    Background="Gray"
+                                    CornerRadius="4"
+                                    Visibility="{x:Bind helpers:XamlFunctions.DoubleNot0ToVisible(ViewModel.OffsetWallOpeningShaftDoorB), Mode=OneWay}">
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                        <Span>Versatz Maueröffungsmitte zur Schachttürmitte |</Span>
+                                        <Run Text="{x:Bind ViewModel.OffsetWallOpeningShaftDoorB, Mode=OneWay}" />
+                                        <Span>mm</Span>
+                                    </TextBlock>
+                                </Border>
+                                <Grid
+                                    Padding="5"
+                                    Background="Gray"
+                                    CornerRadius="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        TextAlignment="Center">
+                                        <Run Text="{x:Bind ViewModel.CarDistanceWallA, Mode=OneWay}" />
+                                        <Run Text=" mm |" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        TextAlignment="Center"
+                                        TextLineBounds="Full">
+                                        <Run Text="Kabinentiefe = " />
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_KTI'].Value, Mode=OneWay}" />
+                                        <Run Text=" mm" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        TextAlignment="Center">
+                                        <Run Text="| " />
+                                        <Run Text="{x:Bind ViewModel.CarDistanceWallC, Mode=OneWay}" />
+                                        <Run Text=" mm" />
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </controls:LayoutTransformControl>
+                        <!--  InfoText Wall C  -->
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="100,5,100,0">
+                            <Border
+                                Margin="0,0,0,2"
+                                Padding="5"
+                                Background="Gray"
+                                CornerRadius="4"
+                                Visibility="{x:Bind helpers:XamlFunctions.DoubleNot0ToVisible(ViewModel.OffsetWallOpeningShaftDoorC), Mode=OneWay}">
+                                <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                    <Span>Versatz Maueröffungsmitte zur Schachttürmitte |</Span>
+                                    <Run Text="{x:Bind ViewModel.OffsetWallOpeningShaftDoorC, Mode=OneWay}" />
+                                    <Span>mm</Span>
+                                </TextBlock>
+                            </Border>
+                            <Border
+                                Margin="0,0,0,2"
+                                Padding="5"
+                                Background="Gray"
+                                CornerRadius="4">
+                                <TextBlock
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    Text="Versatz FK-STM zu Kabinenmitte | 23 mm"
+                                    TextAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                        <!--  InfoText Wall D  -->
+                        <controls:LayoutTransformControl
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="5,100,0,100">
+                            <controls:LayoutTransformControl.Transform>
+                                <RotateTransform Angle="270" />
+                            </controls:LayoutTransformControl.Transform>
+                            <StackPanel>
+                                <Border
+                                    Margin="0,0,0,2"
+                                    Padding="5"
+                                    Background="Gray"
+                                    CornerRadius="4"
+                                    Visibility="{x:Bind helpers:XamlFunctions.DoubleNot0ToVisible(ViewModel.OffsetWallOpeningShaftDoorD), Mode=OneWay}">
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                        <Span>Versatz Maueröffungsmitte zur Schachttürmitte |</Span>
+                                        <Run Text="{x:Bind ViewModel.OffsetWallOpeningShaftDoorD, Mode=OneWay}" />
+                                        <Span>mm</Span>
+                                    </TextBlock>
+                                </Border>
+                                <Border
+                                    Margin="0,0,0,2"
+                                    Padding="5"
+                                    Background="Gray"
+                                    CornerRadius="4">
+                                    <TextBlock
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="Versatz FK-STM zu Kabinenmitte | 23 mm"
+                                        TextAlignment="Center" />
+                                </Border>
+                            </StackPanel>
+                        </controls:LayoutTransformControl>
+                    </Grid>
                     <ScrollViewer
                         Grid.Row="0"
-                        Grid.RowSpan="2"
                         Grid.Column="1"
                         Padding="0,0,10,0">
                         <StackPanel VerticalAlignment="Top" Orientation="Vertical">
@@ -660,127 +846,6 @@
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
-                    <Grid
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="0,10,10,0"
-                        Padding="5,0,5,0"
-                        Style="{ThemeResource GridCardPanel}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                Margin="5,5,0,5"
-                                VerticalAlignment="Top"
-                                FontSize="18"
-                                FontWeight="Bold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Berechnente Werte" />
-                            <ScrollViewer Grid.Row="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Abstand Kabine Wand D (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Kabinenbreite (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="2"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Abstand Kabine Wand B (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.CarDistanceWallD, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_KBI'].Value, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="1"
-                                        Grid.Column="2"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.CarDistanceWallB, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Abstand Kabine Wand A (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Kabinentiefe (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="2"
-                                        Grid.Column="2"
-                                        Margin="2"
-                                        IsEnabled="False"
-                                        Text="Abstand Kabine Wand C (mm)"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.CarDistanceWallA, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.ParameterDictionary['var_KTI'].Value, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                    <TextBox
-                                        Grid.Row="3"
-                                        Grid.Column="2"
-                                        Margin="2"
-                                        IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.CarDistanceWallC, Mode=OneWay}"
-                                        TextAlignment="Center" />
-                                </Grid>
-                            </ScrollViewer>
-                        </Grid>
-                    </Grid>
                 </Grid>
             </Expander>
             <StackPanel

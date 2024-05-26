@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -51,6 +50,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
         if (shaftDesignParameter.Contains(message.PropertyName))
         {
+            SetWallOpeningOffsets();
             RefreshView();
         };
         SetInfoSidebarPanelText(message);
@@ -89,11 +89,24 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                     ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C")).StartsWith("einseitig");
     public bool CanEditOpeningDirectionEntranceD => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D") &&
                                                     ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
-    [ObservableProperty]
-    public bool openingDirectionNotSelected;
 
     [ObservableProperty]
-    public string? openingDirectionA;
+    private double offsetWallOpeningShaftDoorA;
+
+    [ObservableProperty]
+    private double offsetWallOpeningShaftDoorB;
+
+    [ObservableProperty]
+    private double offsetWallOpeningShaftDoorC;
+
+    [ObservableProperty]
+    private double offsetWallOpeningShaftDoorD;
+
+    [ObservableProperty]
+    private bool openingDirectionNotSelected;
+
+    [ObservableProperty]
+    private string? openingDirectionA;
     partial void OnOpeningDirectionAChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -104,7 +117,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    public string? openingDirectionB;
+    private string? openingDirectionB;
     partial void OnOpeningDirectionBChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -115,7 +128,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    public string? openingDirectionC;
+    private string? openingDirectionC;
     partial void OnOpeningDirectionCChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -126,7 +139,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    public string? openingDirectionD;
+    private string? openingDirectionD;
     partial void OnOpeningDirectionDChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -509,6 +522,47 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private void SetWallOpeningOffsets()
+    {
+        OffsetWallOpeningShaftDoorA = CalculateWallOpeningOffsets("A");
+        OffsetWallOpeningShaftDoorB = CalculateWallOpeningOffsets("B");
+        OffsetWallOpeningShaftDoorC = CalculateWallOpeningOffsets("C");
+        OffsetWallOpeningShaftDoorD = CalculateWallOpeningOffsets("D");
+    }
+
+    private double CalculateWallOpeningOffsets(string entrance)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{entrance}"))
+        {
+            return 0;
+        }
+
+        double wallOpeningdistanceLeftSide = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_MauerOeffnungAbstand{entrance}");
+        double wallOpeningWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_MauerOeffnungBreite{entrance}");
+        double doorWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, entrance == "A" ? "var_TB" : $"var_TB_{entrance}");
+        double entranceLeftSide;
+
+        switch (entrance)
+        {
+            case "A" or "C":
+                double carWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KBI");
+                double carDistanceWallD = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_AbstandKabineD");
+                entranceLeftSide = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, entrance == "A" ? "var_L1" : "var_L2");
+
+                return entrance == "A" ? (wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallD - carWidth / 2 + entranceLeftSide + doorWidth / 2) :
+                                         (ShaftWidth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallD + carWidth / 2 - entranceLeftSide - doorWidth / 2);
+            case "B" or "D":
+                double carDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KTI");
+                double carDistanceWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_AbstandKabineA");
+                entranceLeftSide = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, entrance == "B" ? "var_L3" : "var_L4");
+
+                return entrance == "B" ? (wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallA - carDepth / 2 + entranceLeftSide + doorWidth / 2) :
+                                         (ShaftDepth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallA + carDepth / 2 - entranceLeftSide - doorWidth / 2);
+            default:
+                return 0;
+        }
+    }
+
     [RelayCommand]
     private static void GoToSchachtViewModel()
     {
@@ -528,6 +582,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C");
             OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
             CheckIsOpeningDirectionSelected();
+            SetWallOpeningOffsets();
         }
     }
 
