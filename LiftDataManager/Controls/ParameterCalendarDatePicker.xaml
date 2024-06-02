@@ -30,8 +30,8 @@
             Language="de"
             PlaceholderText="Datum selektieren">
             <CalendarDatePicker.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                <DataTemplate x:DataType="x:String">
+                    <ContentControl Content="{x:Bind }" />
                 </DataTemplate>
             </CalendarDatePicker.HeaderTemplate>
             <CalendarDatePicker.ContextFlyout>

@@ -197,9 +197,19 @@ public sealed partial class ParameterTextBox : UserControl
     private void SetBorderHeight()
     {
         var controlHeight = cdp_Liftparameter.ActualHeight;
-        if (controlHeight > 24d)
+        if (string.IsNullOrEmpty(Header))
         {
-            BorderHeight = controlHeight - 24d;
+            if (controlHeight > 8d)
+            {
+                BorderHeight = controlHeight - 8d;
+            }
+        }
+        else
+        {
+            if (controlHeight > 24d)
+            {
+                BorderHeight = controlHeight - 24d;
+            }
         }
     }
 

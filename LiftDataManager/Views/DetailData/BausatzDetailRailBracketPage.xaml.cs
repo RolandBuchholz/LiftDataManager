@@ -12,4 +12,12 @@ public sealed partial class BausatzDetailRailBracketPage : Page
         ViewModel = App.GetService<BausatzDetailRailBracketViewModel>();
         InitializeComponent();
     }
+
+    private void ListView_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+       if (ViewModel.CanAddCustomRailBracketDistance)
+       {
+            ViewModel.AddCustomRailBracketDistanceCommand.Execute(null);
+       }  
+    }
 }

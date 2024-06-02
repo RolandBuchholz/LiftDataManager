@@ -28,8 +28,8 @@
             PlaceholderText="{x:Bind PlaceholderText}"
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}">
             <TextBox.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                <DataTemplate x:DataType="x:String">
+                    <ContentControl Content="{x:Bind}" />
                 </DataTemplate>
             </TextBox.HeaderTemplate>
             <Interactivity:Interaction.Behaviors>

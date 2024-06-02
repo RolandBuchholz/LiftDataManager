@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Windows;
 using SkiaSharp;
 using System.Text.Json;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
@@ -14,6 +15,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
     private readonly ILogger<BausatzDetailViewModel> _logger;
 
+    public ObservableCollection<Parameter> ListOfCustomRailBracketDistances { get; set; } = [];
+    public ObservableCollection<Parameter> ActiveCustomRailBracketDistances { get; set; } = [];
+
     public BausatzDetailRailBracketViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
          base(parameterDataService, dialogService, infoCenterService)
     {
@@ -22,18 +26,14 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         _logger = logger;
     }
 
-    private readonly string[] shaftDesignParameter = [ "var_ZUGANSSTELLEN_A", "var_ZUGANSSTELLEN_B",
-                                                       "var_ZUGANSSTELLEN_C", "var_ZUGANSSTELLEN_D",
-                                                       "var_MauerOeffnungBreiteA", "var_MauerOeffnungAbstandA",
-                                                       "var_MauerOeffnungBreiteB", "var_MauerOeffnungAbstandB",
-                                                       "var_MauerOeffnungBreiteC", "var_MauerOeffnungAbstandC",
-                                                       "var_MauerOeffnungBreiteD", "var_MauerOeffnungAbstandD",
-                                                       "var_KBI", "var_KTI",
-                                                       "var_AbstandKabineA", "var_AbstandKabineD",
-                                                       "var_L1","var_L2","var_L3","var_L4",
-                                                       "var_TB","var_TB_B","var_TB_C","var_TB_D",
-                                                       "var_TuerEinbau","var_TuerEinbauB","var_TuerEinbauC","var_TuerEinbauD",
-                                                       "var_Tueroeffnung","var_Tueroeffnung_B","var_Tueroeffnung_C","var_Tueroeffnung_D" ];
+    private readonly string[] shaftDesignParameter = [ "var_Schienenlaenge", "var_Hilfsschienenlaenge",
+
+                                                     ];
+
+    private readonly string[] railBracketDistancesParameter = [ "var_B2_1", "var_B2_2", "var_B2_3" ,"var_B2_4","var_B2_5",
+                                                                "var_B2_6", "var_B2_7", "var_B2_8" ,"var_B2_9","var_B2_10",
+                                                                "var_B2_11", "var_B2_12", "var_B2_13" ,"var_B2_14","var_B2_15",
+                                                                "var_B2_16", "var_B2_17", "var_B2_18" ,"var_B2_19" ];
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
@@ -48,11 +48,22 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if (shaftDesignParameter.Contains(message.PropertyName))
         {
+            CalculateDimensions();
             RefreshView();
         };
+
+        if (railBracketDistancesParameter.Contains(message.PropertyName))
+        {
+            OrderListOfRailBrackets();
+            CalculateDimensions();
+            RefreshView();
+        };
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    public CarFrameType? CarFrameTyp { get; set; }
 
     [ObservableProperty]
     private double viewBoxWidth;
@@ -68,12 +79,39 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     [ObservableProperty]
     private double shaftTravel;
+    partial void OnShaftTravelChanged(double value)
+    {
+        ParameterDictionary["var_FH"].Value = (value / 1000).ToString();
+    }
 
     [ObservableProperty]
     private double shaftHeadroom;
 
     [ObservableProperty]
     private double shaftHeight;
+
+    [ObservableProperty]
+    private string cWTRailName = "Führungsschienen Gegengewicht";
+
+    [ObservableProperty]
+    private string cWTRailNameShaftCeilling = "Führungsschienen Gegengewicht";
+
+    [ObservableProperty]
+    private double distanceCarRailShaftCeiling;
+
+    [ObservableProperty]
+    private double distanceCWTRailShaftCeiling;
+
+    [ObservableProperty]
+    private bool customRailBracketSpacing;
+    
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RemoveCustomRailBracketDistanceCommand))]
+    private bool canRemoveCustomRailBracketDistance;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddCustomRailBracketDistanceCommand))]
+    private bool canAddCustomRailBracketDistance;
 
     private float _stokeWith;
 
@@ -354,17 +392,108 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         _xamlCanvas?.Invalidate();
     }
 
+    private void CalculateDimensions()
+    {
+        double carRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Schienenlaenge");
+        double cwtRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Hilfsschienenlaenge");
+        DistanceCarRailShaftCeiling = ShaftHeight - carRailLength;
+        DistanceCWTRailShaftCeiling = ShaftHeight - cwtRailLength;
+    }
+
     private void SetViewBoxDimensions()
     {
         ShaftPit = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SG");
-        ShaftTravel = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_FH");
+        ShaftTravel = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_FH") * 1000;
         ShaftHeadroom = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SK");
-        ShaftHeight = ShaftPit + ShaftTravel * 1000 + ShaftHeadroom;
+        ShaftHeight = ShaftPit + ShaftTravel + ShaftHeadroom;
         ShaftDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_ST");
         if (ShaftHeight > 0 && ShaftDepth > 0)
         {
             ViewBoxWidth = shaftDepth + 800;
             ViewBoxHeight = ShaftHeight + 800;
+        }
+        CalculateDimensions();
+    }
+
+    private void GetCarFrameTyp()
+    {
+        CarFrameTyp = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
+        if (CarFrameTyp is not null)
+        {
+            CWTRailName = CarFrameTyp.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen Gegengewicht";
+            CWTRailNameShaftCeilling = CarFrameTyp.DriveTypeId == 2 ? "Jochschiene Schachtdecke" : "Gegengewichtsschiene Schachtdecke";
+        }
+    }
+
+    private void FillListOfRailBrackets()
+    {
+        foreach (string railBracket in railBracketDistancesParameter)
+        {
+            ListOfCustomRailBracketDistances.Add(ParameterDictionary[railBracket]);
+        }
+        OrderListOfRailBrackets();
+    }
+
+    private void OrderListOfRailBrackets()
+    {
+        ActiveCustomRailBracketDistances.Clear();
+        var tempRailBracketDistances = new List<string?>();
+        foreach (string railBracket in railBracketDistancesParameter)
+        {
+            var railBracketDistance = ParameterDictionary[railBracket].Value;
+            if (!string.IsNullOrWhiteSpace(railBracketDistance) && !string.Equals(railBracketDistance,"0"))
+            {
+                tempRailBracketDistances.Add(ParameterDictionary[railBracket].Value);
+            }
+        }
+
+        for (int i = 0; i < ListOfCustomRailBracketDistances.Count; i++)
+        {
+            if (tempRailBracketDistances.Count > i)
+            {
+                ListOfCustomRailBracketDistances[i].Value = tempRailBracketDistances[i];
+                ActiveCustomRailBracketDistances.Add(ListOfCustomRailBracketDistances[i]);
+            }
+            else
+            {
+                ListOfCustomRailBracketDistances[i].AutoUpdateParameterValue("0");
+            }
+        }
+        CanRemoveCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count > 0;
+        CanAddCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count < 19;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanAddCustomRailBracketDistance))]
+    private void AddCustomRailBracketDistance()
+    {
+        var parameter = ActiveCustomRailBracketDistances.LastOrDefault();
+        if (parameter is not null)
+        {
+            var tempDistance = parameter.Value;
+            var index = ActiveCustomRailBracketDistances.IndexOf(parameter);
+            ListOfCustomRailBracketDistances[index + 1].Value = tempDistance;
+        }
+        else
+        {
+            var firstDistance = ParameterDictionary["var_B2"].Value;
+            if (!string.IsNullOrWhiteSpace(firstDistance) && !string.Equals(firstDistance,"0"))
+            {
+                ListOfCustomRailBracketDistances[0].Value = firstDistance;
+            }
+            else
+            {
+                ListOfCustomRailBracketDistances[0].Value = "1650";
+            }
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanRemoveCustomRailBracketDistance))]
+    private void RemoveCustomRailBracketDistance()
+    {
+        var parameter = ActiveCustomRailBracketDistances.LastOrDefault();
+        if (parameter is not null)
+        {
+            parameter.Value = "0";
         }
     }
 
@@ -396,7 +525,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
+            GetCarFrameTyp();
             SetViewBoxDimensions();
+            FillListOfRailBrackets();
         }   
     }
 

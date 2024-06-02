@@ -6,10 +6,37 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:skiasharp="using:SkiaSharp.Views.Windows"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BoolToObjectConverter
+            x:Key="InvertBoolToObjectConverter"
+            FalseValue="Visible"
+            TrueValue="Collapsed" />
+        <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="125" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{x:Bind DisplayName}" />
+                <TextBox
+                    Grid.Column="1"
+                    ui:TextBoxExtensions.ValidationMode="Dynamic"
+                    ui:TextBoxExtensions.ValidationType="Decimal"
+                    Style="{StaticResource RailRailBracketTextboxStyle}"
+                    Text="{x:Bind Value, Mode=TwoWay}" />
+                <TextBlock Grid.Column="2" Text="mm" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.Resources>
@@ -92,6 +119,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
                                     Grid.Row="0"
@@ -109,13 +137,27 @@
                                     PlaceholderText="Schachtgrube"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <Grid
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FH'], Mode=TwoWay}"
-                                    PlaceholderText="Förderhöhe"
-                                    ShowDefaultHeader="True"
-                                    Unit="m" />
+                                    Margin="5,0,5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Stretch"
+                                        Header="Förderhöhe"
+                                        PlaceholderText="Förderhöhe"
+                                        Text="{x:Bind ViewModel.ShaftTravel, Mode=OneWay}"
+                                        TextAlignment="Right" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="5,0,0,3"
+                                        VerticalAlignment="Bottom"
+                                        Text="mm" />
+                                </Grid>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
                                     Grid.Column="0"
@@ -140,16 +182,33 @@
                                         TextAlignment="Right" />
                                     <TextBlock
                                         Grid.Column="1"
-                                        Margin="5,0,0,0"
+                                        Margin="5,0,0,3"
                                         VerticalAlignment="Bottom"
                                         Text="mm" />
                                 </Grid>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_maxSchienenLaenge'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
                             </Grid>
                             <Grid
                                 Margin="0,0,0,5"
                                 Padding="5"
                                 Style="{ThemeResource GridCardPanel}">
-                                <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.ColumnSpan="2"
@@ -159,12 +218,52 @@
                                         FontWeight="Bold"
                                         Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                         Text="Berechnete Werte" />
-                                    <TextBlock Margin="5,0,5,0">Hallo</TextBlock>
-                                    <TextBlock Margin="5,0,5,0">Hallo1</TextBlock>
-                                    <TextBlock Margin="5,0,5,0">Hallo2</TextBlock>
-                                    <TextBlock Margin="5,0,5,0">Hallo3</TextBlock>
-                                </StackPanel>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="Fahrkobschiene Schachtdecke" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.DistanceCarRailShaftCeiling, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="{x:Bind ViewModel.CWTRailNameShaftCeilling, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.DistanceCWTRailShaftCeiling, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
+                                </Grid>
                             </Grid>
+                            <InfoBar
+                                Title="Fehler Startschiene"
+                                IsIconVisible="True"
+                                IsOpen="True"
+                                Message="Startschiene länger als maximale zulässige Schienenlänge"
+                                Severity="Error" />
+                            <InfoBar
+                                Title="Schienenbügelabstand"
+                                IsIconVisible="True"
+                                IsOpen="True"
+                                Message="Achtung Schienenbügelabstand zum Schienenstoß kleiner 200 mm"
+                                Severity="Warning" />
                         </StackPanel>
                     </ScrollViewer>
                     <ScrollViewer
@@ -220,19 +319,24 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Endschiene'], Mode=TwoWay}"
+                                    ReadOnly="True"
                                     ShowDefaultHeader="True"
+                                    ToolTipService.ToolTip="automatische Berechnung"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="3"
                                     Grid.Column="0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SK'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Header="Schienenteilung"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchienenteilungFK'], Mode=TwoWay}"
+                                    ShowDefaultHeader="False" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="3"
                                     Grid.Column="1"
+                                    Header="Anzahl 5m"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_5m_Schienen'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="False"
+                                    ToolTipService.ToolTip="automatische Berechnung"
                                     Unit="Stk" />
                             </Grid>
                             <Grid
@@ -257,7 +361,7 @@
                                     FontSize="18"
                                     FontWeight="Bold"
                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                    Text="Führungsschienen Gegengewicht" />
+                                    Text="{x:Bind ViewModel.CWTRailName, Mode=OneWay}" />
                                 <SpeziControls:ParameterComboBox
                                     Grid.Row="1"
                                     Grid.Column="0"
@@ -275,27 +379,125 @@
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
                                     Grid.Column="0"
+                                    Header="Startschiene"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HilfsschienenlaengeStartstueck'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
+                                    ShowDefaultHeader="False"
                                     Unit="mm" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
                                     Grid.Column="1"
+                                    Header="Endschiene"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HilfsschienenlaengeEndstueck'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="False"
+                                    ToolTipService.ToolTip="automatische Berechnung"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Row="3"
                                     Grid.Column="0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SK'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Header="Schienenteilung"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchienenteilungGGW'], Mode=TwoWay}"
+                                    ShowDefaultHeader="False" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="3"
                                     Grid.Column="1"
+                                    Header="Anzahl 5m"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AnzahlHilfsschienenlaengeStueck'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="False"
+                                    ToolTipService.ToolTip="automatische Berechnung"
                                     Unit="Stk" />
+                            </Grid>
+                            <Grid
+                                Margin="0,0,0,5"
+                                Padding="5"
+                                Style="{ThemeResource GridCardPanel}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Top"
+                                    FontSize="18"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schienenbügelabstände" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="5,0,5,3"
+                                    VerticalAlignment="Bottom"
+                                    Text="Schienenbügelabstand SG" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_B1'], Mode=TwoWay}"
+                                    ShowDefaultHeader="False"
+                                    Unit="mm" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="5,0,5,3"
+                                    VerticalAlignment="Bottom"
+                                    Text="Schienenbügelraster"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_B2'], Mode=TwoWay}"
+                                    ShowDefaultHeader="False"
+                                    Unit="mm"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
+                                <CheckBox
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Margin="5,0,5,0"
+                                    Content="Benutzerdefinierte Schienenbügelabstände"
+                                    IsChecked="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=TwoWay}" />
+                                <ListView
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    KeyDown="ListView_KeyDown"
+                                    ItemTemplate="{StaticResource ItemTemplate}"
+                                    ItemsSource="{x:Bind ViewModel.ActiveCustomRailBracketDistances, Mode=OneWay}"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=OneWay}" />
+                                <Button
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Margin="5"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{x:Bind ViewModel.AddCustomRailBracketDistanceCommand}"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=OneWay}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon Margin="0,0,5,0" Symbol="Add" />
+                                        <TextBlock Text="Add" />
+                                    </StackPanel>
+                                </Button>
+                                <Button
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="5"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{x:Bind ViewModel.RemoveCustomRailBracketDistanceCommand}"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=OneWay}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon Margin="0,0,5,0" Symbol="Delete" />
+                                        <TextBlock Text="Remove last" />
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

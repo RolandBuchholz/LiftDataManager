@@ -333,7 +333,7 @@
                                     Grid.Column="1"
                                     Margin="5,0,5,0"
                                     Header="Maximale Anzahl Tragseile"
-                                    Text="{x:Bind ViewModel.MaximumNumberOfRopes, Mode=TwoWay,Converter={StaticResource IntegerToStringConverter}}"
+                                    Text="{x:Bind ViewModel.MaximumNumberOfRopes, Mode=TwoWay, Converter={StaticResource IntegerToStringConverter}}"
                                     TextAlignment="Right">
                                     <TextBox.HeaderTemplate>
                                         <DataTemplate>
@@ -343,7 +343,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
-                                    Margin="0,0,0,2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="Stk." />
@@ -355,7 +355,7 @@
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="4"
-                                    Margin="0,0,0,2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="mm" />
@@ -393,7 +393,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
-                                    Margin="0,0,0,2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="kg/m" />
@@ -416,7 +416,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="5"
-                                    Margin="0,0,0,2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="N/mm²" />
@@ -523,6 +523,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -543,6 +544,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="4"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -613,6 +615,7 @@
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="7"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="mm" />
@@ -716,6 +719,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -736,6 +740,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="4"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -806,6 +811,7 @@
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="7"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="mm" />
@@ -910,6 +916,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -930,6 +937,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="4"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -1006,6 +1014,7 @@
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="8"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="mm" />
@@ -1109,6 +1118,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="2"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -1129,6 +1139,7 @@
                                 </TextBox>
                                 <TextBlock
                                     Grid.Column="4"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom">
                                     <Run>mm</Run>
@@ -1199,6 +1210,7 @@
                                     TextAlignment="Right" />
                                 <TextBlock
                                     Grid.Column="7"
+                                    Margin="0,0,0,3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Text="mm" />

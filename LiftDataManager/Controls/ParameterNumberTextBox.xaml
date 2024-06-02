@@ -6,6 +6,7 @@
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:local="using:LiftDataManager.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
@@ -33,8 +34,8 @@
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}"
             TextAlignment="Right">
             <TextBox.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                <DataTemplate x:DataType="x:String">
+                    <ContentControl Content="{x:Bind}" />
                 </DataTemplate>
             </TextBox.HeaderTemplate>
             <Interactivity:Interaction.Behaviors>
@@ -94,6 +95,7 @@
             </ToolTipService.ToolTip>
         </FontIcon>
         <TextBlock
+            x:Name="txb_Unit"
             Grid.Column="2"
             MinWidth="35"
             Margin="0,0,5,6"

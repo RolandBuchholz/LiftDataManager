@@ -173,9 +173,19 @@ public sealed partial class ParameterComboBox : UserControl
     private void SetBorderHeight()
     {
         var controlHeight = cmb_Liftparameter.ActualHeight;
-        if (controlHeight > 24d)
+        if (string.IsNullOrEmpty(Header))
         {
-            BorderHeight = controlHeight - 24d;
+            if (controlHeight > 8d)
+            {
+                BorderHeight = controlHeight - 8d;
+            }
+        }
+        else
+        {
+            if (controlHeight > 24d)
+            {
+                BorderHeight = controlHeight - 24d;
+            }
         }
     }
 

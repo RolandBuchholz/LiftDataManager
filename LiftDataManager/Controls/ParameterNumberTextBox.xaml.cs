@@ -208,9 +208,27 @@ public sealed partial class ParameterNumberTextBox : UserControl
     private void SetBorderHeight()
     {
         var controlHeight = cdp_NumberLiftparameter.ActualHeight;
-        if (controlHeight > 24d)
+        if (string.IsNullOrEmpty(Header))
         {
-            BorderHeight = controlHeight - 24d;
+            if (controlHeight > 8d)
+            {
+                BorderHeight = controlHeight - 8d;
+            }
+            if (controlHeight == 32)
+            {
+                txb_Unit.Margin = new Thickness(0, 0, 5, 3);
+            }
+        }
+        else
+        {
+            if (controlHeight > 24d)
+            {
+                BorderHeight = controlHeight - 24d;
+            }
+            if (controlHeight == 51)
+            {
+                txb_Unit.Margin = new Thickness(0, 0, 5, 3);
+            }
         }
     }
 
