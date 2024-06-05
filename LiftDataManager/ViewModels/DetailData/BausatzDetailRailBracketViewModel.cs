@@ -5,6 +5,7 @@ using SkiaSharp;
 using System.Text.Json;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Input;
 
 namespace LiftDataManager.ViewModels;
 
@@ -17,6 +18,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     public ObservableCollection<Parameter> ListOfCustomRailBracketDistances { get; set; } = [];
     public ObservableCollection<Parameter> ActiveCustomRailBracketDistances { get; set; } = [];
+    public List<double> RailBracketDistances { get; set; } = [];
 
     public BausatzDetailRailBracketViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
          base(parameterDataService, dialogService, infoCenterService)
@@ -26,9 +28,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         _logger = logger;
     }
 
-    private readonly string[] shaftDesignParameter = [ "var_Schienenlaenge", "var_Hilfsschienenlaenge",
-
-                                                     ];
+    private readonly string[] shaftDesignParameter = [ "var_Schienenlaenge", "var_Hilfsschienenlaenge", "var_SchienenteilungFK", "var_SchienenteilungGGW",
+                                                       "var_Startschiene", "var_HilfsschienenlaengeStartstueck", "var_maxSchienenLaenge",
+                                                       "var_B1", "var_B2" ];
 
     private readonly string[] railBracketDistancesParameter = [ "var_B2_1", "var_B2_2", "var_B2_3" ,"var_B2_4","var_B2_5",
                                                                 "var_B2_6", "var_B2_7", "var_B2_8" ,"var_B2_9","var_B2_10",
@@ -54,7 +56,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if (railBracketDistancesParameter.Contains(message.PropertyName))
         {
-            OrderListOfRailBrackets();
+            OrderListOfRailBrackets(message.NewValue, message.PropertyName);
             CalculateDimensions();
             RefreshView();
         };
@@ -62,6 +64,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    private float _stokeWith;
+
+    private SKXamlCanvas? _xamlCanvas;
 
     public CarFrameType? CarFrameTyp { get; set; }
 
@@ -97,14 +103,37 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private string cWTRailNameShaftCeilling = "Führungsschienen Gegengewicht";
 
     [ObservableProperty]
+    private bool errorStartRail;
+
+    [ObservableProperty]
+    private bool errorDistanceGuideRailBracket;
+
+    [ObservableProperty]
     private double distanceCarRailShaftCeiling;
 
     [ObservableProperty]
     private double distanceCWTRailShaftCeiling;
 
     [ObservableProperty]
+    private double maxRailBracketSpacing;
+
+    [ObservableProperty]
     private bool customRailBracketSpacing;
-    
+    partial void OnCustomRailBracketSpacingChanged(bool oldValue, bool newValue)
+    {
+        if (oldValue && !newValue)
+        {
+            foreach (string railBracket in railBracketDistancesParameter)
+            {
+                  ParameterDictionary[railBracket].Value = "0";
+            }
+        }
+        if (newValue)
+        {
+            CanAddCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count < 19;
+        }
+    }
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveCustomRailBracketDistanceCommand))]
     private bool canRemoveCustomRailBracketDistance;
@@ -112,30 +141,6 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCustomRailBracketDistanceCommand))]
     private bool canAddCustomRailBracketDistance;
-
-    private float _stokeWith;
-
-    private SKXamlCanvas? _xamlCanvas;
-
-    [RelayCommand]
-    private void OnPaintSurface(SKPaintSurfaceEventArgs e)
-    {
-        SKImageInfo info = e.Info;
-        SKSurface surface = e.Surface;
-        SKCanvas canvas = surface.Canvas;
-        canvas.Clear();
-        canvas.Translate(info.Width / 2, info.Height / 2);
-        _stokeWith = ((float)shaftHeight + (float)shaftDepth) / 600f;
-        DrawShaftWall(canvas);
-        DrawEntranceWall(canvas);
-        DrawLiftCar(canvas);
-    }
-
-    [RelayCommand]
-    private void OnLoadedSKXamlCanvas(SKXamlCanvas xamlCanvas)
-    {
-        _xamlCanvas = xamlCanvas;
-    }
 
     private void DrawShaftWall(SKCanvas canvas)
     {
@@ -396,8 +401,87 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     {
         double carRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Schienenlaenge");
         double cwtRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Hilfsschienenlaenge");
+        double startCarRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Startschiene");
+        double startCwtRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_HilfsschienenlaengeStartstueck");
+        double maxRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_maxSchienenLaenge");
+
+        //DataBase
+
+        double carRailSplit = 5000;
+        var carGuideRailLength = _parametercontext.Set<GuideRailLength>().FirstOrDefault(x => x.Name == ParameterDictionary["var_SchienenteilungFK"].Value);
+        if (carGuideRailLength is not null)
+        {
+            carRailSplit = carGuideRailLength.RailLength;
+        }
+
+        double cwtRailSplit = 5000;
+        var cwtGuideRailLength = _parametercontext.Set<GuideRailLength>().FirstOrDefault(x => x.Name == ParameterDictionary["var_SchienenteilungGGW"].Value);
+        if (cwtGuideRailLength is not null)
+        {
+            cwtRailSplit = cwtGuideRailLength.RailLength;
+        }
+
+        //calculations
         DistanceCarRailShaftCeiling = ShaftHeight - carRailLength;
         DistanceCWTRailShaftCeiling = ShaftHeight - cwtRailLength;
+
+        var carRailData = CalculateRailData(carRailLength, startCarRailLength, carRailSplit, maxRailLength);
+        var cwtRailData = CalculateRailData(cwtRailLength, startCwtRailLength, cwtRailSplit, maxRailLength);
+
+        ParameterDictionary["var_Anzahl_5m_Schienen"].AutoUpdateParameterValue(carRailData.Item1.ToString());
+        ParameterDictionary["var_Endschiene"].AutoUpdateParameterValue(carRailData.Item2.ToString());
+        ParameterDictionary["var_AnzahlHilfsschienenlaengeStueck"].AutoUpdateParameterValue(cwtRailData.Item1.ToString());
+        ParameterDictionary["var_HilfsschienenlaengeEndstueck"].AutoUpdateParameterValue(cwtRailData.Item2.ToString());
+
+        RailBracketDistances.Clear();
+        foreach (var parameter in ActiveCustomRailBracketDistances)
+        {
+            if (double.TryParse(parameter.Value, out double distance))
+            {
+                RailBracketDistances.Add(distance);
+            }
+        }
+
+        MaxRailBracketSpacing = CustomRailBracketSpacing
+                                                        ? RailBracketDistances.Count > 0 ? RailBracketDistances.Max() : 0
+                                                        : LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B2");
+
+        //errors
+        ErrorStartRail = startCarRailLength > maxRailLength || startCwtRailLength > maxRailLength;
+        ErrorDistanceGuideRailBracket = true;
+    }
+
+    private (double, double) CalculateRailData(double railLength, double startRailLength, double railSplit, double maxRailLength)
+    {
+        double railCount = 0;
+        double endRailLength = 0;
+
+        if (railSplit == 0 || railLength == 0 || startRailLength == 0)
+        {
+            return (railCount, endRailLength);
+        }
+
+        railCount = Math.Floor((railLength - startRailLength) / railSplit);
+
+        if ((railLength - startRailLength) % railSplit == 0)
+        {
+            railCount --;
+        }
+
+        if ((railLength - startRailLength) % railSplit == 0)
+        {
+            railCount --;
+        }
+
+        endRailLength = railLength - railCount * railSplit - startRailLength;
+
+        if (maxRailLength >= endRailLength + railSplit)
+        {
+            railCount --;
+            endRailLength = railLength - railCount * railSplit - startRailLength;
+        }
+
+        return (railCount, endRailLength);
     }
 
     private void SetViewBoxDimensions()
@@ -431,36 +515,76 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             ListOfCustomRailBracketDistances.Add(ParameterDictionary[railBracket]);
         }
-        OrderListOfRailBrackets();
+        if (CustomRailBracketSpacing)
+        {
+            OrderListOfRailBrackets("0", null);
+        }
     }
 
-    private void OrderListOfRailBrackets()
+    private void OrderListOfRailBrackets(string value, string? name)
     {
-        ActiveCustomRailBracketDistances.Clear();
-        var tempRailBracketDistances = new List<string?>();
-        foreach (string railBracket in railBracketDistancesParameter)
+        if (value == "0" || name is null || string.IsNullOrWhiteSpace(value))
         {
-            var railBracketDistance = ParameterDictionary[railBracket].Value;
-            if (!string.IsNullOrWhiteSpace(railBracketDistance) && !string.Equals(railBracketDistance,"0"))
+            ActiveCustomRailBracketDistances.Clear();
+            RailBracketDistances.Clear();
+            var tempRailBracketDistances = new List<string?>();
+            foreach (string railBracket in railBracketDistancesParameter)
             {
-                tempRailBracketDistances.Add(ParameterDictionary[railBracket].Value);
+                var railBracketDistance = ParameterDictionary[railBracket].Value;
+                if (!string.IsNullOrWhiteSpace(railBracketDistance) && !string.Equals(railBracketDistance, "0"))
+                {
+                    tempRailBracketDistances.Add(railBracketDistance);
+                }
             }
+
+            for (int i = 0; i < ListOfCustomRailBracketDistances.Count; i++)
+            {
+                if (tempRailBracketDistances.Count > i)
+                {
+                    ListOfCustomRailBracketDistances[i].Value = tempRailBracketDistances[i];
+                    ActiveCustomRailBracketDistances.Add(ListOfCustomRailBracketDistances[i]);
+                }
+                else
+                {
+                    ListOfCustomRailBracketDistances[i].AutoUpdateParameterValue("0");
+                }
+            }
+        }
+        else
+        {
+           if (!ActiveCustomRailBracketDistances.Any(p => p.Name == name))
+           {
+                var railBracket = ListOfCustomRailBracketDistances.FirstOrDefault(p => p.Name == name);
+                if (railBracket is not null && !string.IsNullOrWhiteSpace(value))
+                {
+                    railBracket.Value = value;
+                    ActiveCustomRailBracketDistances.Add(railBracket);
+                }
+           }
         }
 
-        for (int i = 0; i < ListOfCustomRailBracketDistances.Count; i++)
-        {
-            if (tempRailBracketDistances.Count > i)
-            {
-                ListOfCustomRailBracketDistances[i].Value = tempRailBracketDistances[i];
-                ActiveCustomRailBracketDistances.Add(ListOfCustomRailBracketDistances[i]);
-            }
-            else
-            {
-                ListOfCustomRailBracketDistances[i].AutoUpdateParameterValue("0");
-            }
-        }
         CanRemoveCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count > 0;
         CanAddCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count < 19;
+    }
+
+    [RelayCommand]
+    private void OnPaintSurface(SKPaintSurfaceEventArgs e)
+    {
+        SKImageInfo info = e.Info;
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
+        canvas.Clear();
+        canvas.Translate(info.Width / 2, info.Height / 2);
+        _stokeWith = ((float)shaftHeight + (float)shaftDepth) / 600f;
+        DrawShaftWall(canvas);
+        //DrawEntranceWall(canvas);
+        //DrawLiftCar(canvas);
+    }
+
+    [RelayCommand]
+    private void OnLoadedSKXamlCanvas(SKXamlCanvas xamlCanvas)
+    {
+        _xamlCanvas = xamlCanvas;
     }
 
     [RelayCommand(CanExecute = nameof(CanAddCustomRailBracketDistance))]
@@ -498,6 +622,23 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     }
 
     [RelayCommand]
+    private void KeyDownAddNewRailBracketDistance(object sender)
+    {
+        var listView = sender as ListView;
+        if (listView is not null)
+        {
+            if (CanAddCustomRailBracketDistance && listView.SelectedIndex + 1 == ActiveCustomRailBracketDistances.Count)
+            {
+                AddCustomRailBracketDistanceCommand.Execute(null);
+            }
+
+            FindNextElementOptions fneo = new() { SearchRoot = listView.XamlRoot.Content };
+            _ = FocusManager.TryMoveFocus(FocusNavigationDirection.Next, fneo);
+            _ = FocusManager.TryMoveFocus(FocusNavigationDirection.Next, fneo);
+        }
+    }
+
+    [RelayCommand]
     private static void GoToBausatzViewModel()
     {
         LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzPage));
@@ -527,6 +668,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             GetCarFrameTyp();
             SetViewBoxDimensions();
+            CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) && 
+                                       !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
             FillListOfRailBrackets();
         }   
     }

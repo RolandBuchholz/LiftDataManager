@@ -622,6 +622,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
         if (safetygearResult is not null)
         {
+            if (safetygearResult.PipeRuptureValve)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+                return;
+            }
+
             if (!safetygearResult.RailHeadAllowed)
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählter Schienenkopf ist für diese Fangvorrichtung nicht zulässig.", SetSeverity(severity)));
@@ -1758,7 +1764,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     "var_KHLicht" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
                     "var_KHA" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue) * 1000,
                     "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
-                    "var_TypFV" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_TypFV" => value switch
+                    {
+                        "Bucher RSG55" => true,
+                        "Bucher RSG70" => true,
+                        "Bucher RSG90" => true,
+                        _ => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    },
                     "var_FuehrungsschieneFahrkorb" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
                     "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
                     "var_Geschwindigkeitsbegrenzer" => cFPValue switch

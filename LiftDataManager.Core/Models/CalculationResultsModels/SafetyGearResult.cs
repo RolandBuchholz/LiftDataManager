@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Core.Models.CalculationResultsModels;
+﻿using System.Text.RegularExpressions;
+
+namespace LiftDataManager.Core.Models.CalculationResultsModels;
 
 public class SafetyGearResult
 {
@@ -8,4 +10,5 @@ public class SafetyGearResult
     public bool RailHeadAllowed { get; set; }
     public int MinLoad { get; set; }
     public int MaxLoad { get; set; }
+    public bool PipeRuptureValve { get; set; }
 }

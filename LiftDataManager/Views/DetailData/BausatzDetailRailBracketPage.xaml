@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:skiasharp="using:SkiaSharp.Views.Windows"
+    xmlns:toolkitbehaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
@@ -19,23 +20,6 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
-        <DataTemplate x:Key="ItemTemplate" x:DataType="models:Parameter">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{x:Bind DisplayName}" />
-                <TextBox
-                    Grid.Column="1"
-                    ui:TextBoxExtensions.ValidationMode="Dynamic"
-                    ui:TextBoxExtensions.ValidationType="Decimal"
-                    Style="{StaticResource RailRailBracketTextboxStyle}"
-                    Text="{x:Bind Value, Mode=TwoWay}" />
-                <TextBlock Grid.Column="2" Text="mm" />
-            </Grid>
-        </DataTemplate>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -150,7 +134,7 @@
                                         HorizontalAlignment="Stretch"
                                         Header="Förderhöhe"
                                         PlaceholderText="Förderhöhe"
-                                        Text="{x:Bind ViewModel.ShaftTravel, Mode=OneWay}"
+                                        Text="{x:Bind ViewModel.ShaftTravel, Mode=TwoWay}"
                                         TextAlignment="Right" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -177,9 +161,11 @@
                                         Grid.Column="0"
                                         HorizontalAlignment="Stretch"
                                         Header="Schachthöhe"
+                                        IsReadOnly="True"
                                         PlaceholderText="Schachthöhe"
                                         Text="{x:Bind ViewModel.ShaftHeight, Mode=OneWay}"
-                                        TextAlignment="Right" />
+                                        TextAlignment="Right"
+                                        ToolTipService.ToolTip="automatische Berechnung" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="5,0,0,3"
@@ -205,6 +191,7 @@
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -250,18 +237,34 @@
                                         Grid.Column="2"
                                         HorizontalAlignment="Center"
                                         Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="maximaler Schienenbügelabstand" />
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.MaxRailBracketSpacing, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
                                 </Grid>
                             </Grid>
                             <InfoBar
                                 Title="Fehler Startschiene"
                                 IsIconVisible="True"
-                                IsOpen="True"
+                                IsOpen="{x:Bind ViewModel.ErrorStartRail, Mode=OneWay}"
                                 Message="Startschiene länger als maximale zulässige Schienenlänge"
                                 Severity="Error" />
                             <InfoBar
                                 Title="Schienenbügelabstand"
                                 IsIconVisible="True"
-                                IsOpen="True"
+                                IsOpen="{x:Bind ViewModel.ErrorDistanceGuideRailBracket, Mode=OneWay}"
                                 Message="Achtung Schienenbügelabstand zum Schienenstoß kleiner 200 mm"
                                 Severity="Warning" />
                         </StackPanel>
@@ -467,13 +470,39 @@
                                     Content="Benutzerdefinierte Schienenbügelabstände"
                                     IsChecked="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=TwoWay}" />
                                 <ListView
+                                    x:Name="ListView_CustomRailBracketDistances"
                                     Grid.Row="4"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
-                                    KeyDown="ListView_KeyDown"
-                                    ItemTemplate="{StaticResource ItemTemplate}"
                                     ItemsSource="{x:Bind ViewModel.ActiveCustomRailBracketDistances, Mode=OneWay}"
-                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=OneWay}" />
+                                    TabFocusNavigation="Cycle"
+                                    TabNavigation="Cycle"
+                                    Visibility="{x:Bind ViewModel.CustomRailBracketSpacing, Mode=OneWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Parameter">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="125" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{x:Bind DisplayName}" />
+                                                <TextBox
+                                                    Grid.Column="1"
+                                                    ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                                    ui:TextBoxExtensions.ValidationType="Decimal"
+                                                    Style="{StaticResource RailRailBracketTextboxStyle}"
+                                                    Text="{x:Bind Value, Mode=TwoWay}" />
+                                                <TextBlock Grid.Column="2" Text="mm" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <Interactivity:Interaction.Behaviors>
+                                        <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
+                                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.KeyDownAddNewRailBracketDistanceCommand}" CommandParameter="{x:Bind ListView_CustomRailBracketDistances}" />
+                                        </toolkitbehaviors:KeyDownTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+                                </ListView>
                                 <Button
                                     Grid.Row="5"
                                     Grid.Column="0"

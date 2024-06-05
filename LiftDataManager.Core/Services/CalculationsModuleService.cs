@@ -636,10 +636,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         var railHead = 0.0;
         var minLoad = 0;
         var maxLoad = 0;
+        var pipeRuptureValve = false;
 
-        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_Fuehrungsart"].Value))
+        if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Fuehrungsart"].Value))
         {
-            lubrication = parameterDictionary!["var_Fuehrungsart"].Value switch
+            lubrication = parameterDictionary["var_Fuehrungsart"].Value switch
             {
                 "Gleitführung" => "geölt",
                 "Rollenführung" => "trocken",
@@ -647,9 +648,9 @@ public partial class CalculationsModuleService : ICalculationsModule
             };
         }
 
-        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_FuehrungsschieneFahrkorb"].Value))
+        if (!string.IsNullOrWhiteSpace(parameterDictionary["var_FuehrungsschieneFahrkorb"].Value))
         {
-            var carRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(parameterDictionary!["var_FuehrungsschieneFahrkorb"].Value!));
+            var carRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(parameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
             if (carRail is not null)
             {
                 carRailSurface = carRail.Machined ? "bearbeitet" : "gezogen";
@@ -657,11 +658,13 @@ public partial class CalculationsModuleService : ICalculationsModule
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(parameterDictionary!["var_TypFV"].Value))
+        if (!string.IsNullOrWhiteSpace(parameterDictionary["var_TypFV"].Value))
         {
+            pipeRuptureValve = parameterDictionary["var_TypFV"].Value!.StartsWith("Bucher");
+
             if (carRailSurface != string.Empty && lubrication != string.Empty)
             {
-                var currentSafetyGear = _parametercontext.Set<SafetyGearModelType>().FirstOrDefault(x => x.Name.Contains(parameterDictionary!["var_TypFV"].Value!));
+                var currentSafetyGear = _parametercontext.Set<SafetyGearModelType>().FirstOrDefault(x => x.Name.Contains(parameterDictionary["var_TypFV"].Value!));
                 if (currentSafetyGear is not null)
                 {
                     var listOfRailHeads = GetAllowedRailHeads(currentSafetyGear.AllowableWidth);
@@ -701,7 +704,8 @@ public partial class CalculationsModuleService : ICalculationsModule
             AllowedRailHeads = allowedRailHeads,
             RailHeadAllowed = railHeadAllowed,
             MinLoad = minLoad,
-            MaxLoad = maxLoad
+            MaxLoad = maxLoad,
+            PipeRuptureValve = pipeRuptureValve,
         };
     }
 
