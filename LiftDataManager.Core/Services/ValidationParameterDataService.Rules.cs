@@ -791,15 +791,24 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     private void ValidateZAliftData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+        {
             return;
-
+        }
+ 
         var zaHtmlPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
         if (!File.Exists(zaHtmlPath))
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Aggregat"].Value))
         {
             ParameterDictionary["var_Aggregat"].AutoUpdateParameterValue("Ziehl-Abegg");
+        }
+
+        if (!string.Equals(ParameterDictionary["var_Aggregat"].Value, "Ziehl-Abegg"))
+        {
+            return;
         }
 
         var lastWriteTime = File.GetLastWriteTime(zaHtmlPath);
@@ -811,7 +820,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
                                                                             .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             if (zliData is null)
+            {
                 return;
+            }
 
             ZliDataDictionary.Clear();
 
@@ -883,7 +894,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ZliDataDictionary.TryGetValue(searchString, out zaLiftValue);
 
         if (string.IsNullOrWhiteSpace(zaLiftValue))
+        {
             return;
+        }
 
         if (name == "var_Handlueftung")
         {

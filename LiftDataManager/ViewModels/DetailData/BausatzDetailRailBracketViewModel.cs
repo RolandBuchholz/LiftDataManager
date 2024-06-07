@@ -490,10 +490,14 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         ShaftTravel = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_FH") * 1000;
         ShaftHeadroom = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SK");
         ShaftHeight = ShaftPit + ShaftTravel + ShaftHeadroom;
-        ShaftDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_ST");
+        double realShaftDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_ST");
+        double realShaftWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SB");
+        string framePosition = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatzlage");
+        ShaftDepth = framePosition == "A" || framePosition == "C" ? realShaftWidth : realShaftDepth;
+
         if (ShaftHeight > 0 && ShaftDepth > 0)
         {
-            ViewBoxWidth = shaftDepth + 800;
+            ViewBoxWidth = ShaftDepth + 800;
             ViewBoxHeight = ShaftHeight + 800;
         }
         CalculateDimensions();

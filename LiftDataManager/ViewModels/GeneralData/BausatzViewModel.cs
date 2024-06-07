@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using Windows.UI.Popups;
 
 namespace LiftDataManager.ViewModels;
 
@@ -26,7 +27,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             ParameterDictionary!["var_Rahmengewicht"].Value = "";
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
-            CheckCFPState();
+            CheckCFPState(message.NewValue, message.OldValue);
         };
         if (message.PropertyName == "var_TypFV" ||
             message.PropertyName == "var_FuehrungsschieneFahrkorb" ||
@@ -104,25 +105,33 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         return carFrameType.CarFrameWeight;
     }
 
-    private void CheckCFPState()
+    private void CheckCFPState(string? newCarFrame, string? oldCarFrame)
     {
-        var fangrahmenTyp = ParameterDictionary!["var_Bausatz"].Value;
-        if (string.IsNullOrWhiteSpace(fangrahmenTyp))
+        if (string.IsNullOrWhiteSpace(newCarFrame))
+        {
             return;
-        var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
+        }
+
+        var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == newCarFrame);
         if (carFrameType is null)
+        {
             return;
+        }
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         CFPFrameInfoToolTip = ShowCFPFrameInfo ? "Empfehlung: Bausatzkonfiguration im CFP konfigurieren" : "Bausatz wurde im CFP konfiguriert";
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))
+            {
                 return;
+            }
 
             var basePath = Path.GetDirectoryName(FullPathXml);
             if (string.IsNullOrWhiteSpace(basePath))
+            {
                 return;
+            }
 
             var calculationsPath = Path.Combine(basePath, "Berechnungen");
 
@@ -131,6 +140,22 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
                 var calculations = Directory.EnumerateFiles(calculationsPath);
                 IsCFPDataBaseOverwritten = calculations.Any(x => x.Contains("DB-Anpassungen"));
             }
+        }
+        if (string.IsNullOrWhiteSpace(oldCarFrame))
+        {
+            return;
+        }
+        var oldCarFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == oldCarFrame);
+        if (oldCarFrameType is null)
+        {
+            return;
+        }
+        if (oldCarFrameType.DriveTypeId != carFrameType.DriveTypeId)
+        {
+            _dialogService.MessageDialogAsync(
+                            "Antriebssystemwechsel",
+                            "Achtung nicht benötigte Berechnungen auf den Staus veraltet setzen!\n\n" +
+                            "Ab Vault 2025 wird dieser Statuswechsel automatisch ausgeführt.");
         }
     }
 
@@ -148,9 +173,15 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        SetSafetygearData();
-        SetCarWeight();
-        CheckCFPState();
+
+        if (CurrentSpeziProperties is not null &&
+            CurrentSpeziProperties.ParameterDictionary is not null &&
+            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        {
+            SetSafetygearData();
+            SetCarWeight();
+            CheckCFPState(ParameterDictionary["var_Bausatz"].Value, null);
+        }
     }
 
     public void OnNavigatedFrom()

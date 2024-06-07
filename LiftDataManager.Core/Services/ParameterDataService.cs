@@ -159,7 +159,7 @@ public partial class ParameterDataService : IParameterDataService
         if (Capabilities.Build.IsCoreBuild)
             GlobalFontSettings.FontResolver ??= new FailsafeFontResolver();
 
-        using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.ReadOnly))
+        using (var pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.Import))
         {
             var cfPOptions = new CarFrameProgramOptions();
             PdfAcroForm pdfDocumentAcroForm;
