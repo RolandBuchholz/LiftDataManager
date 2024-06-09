@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -29,7 +30,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                        "var_MauerOeffnungBreiteB", "var_MauerOeffnungAbstandB",
                                                        "var_MauerOeffnungBreiteC", "var_MauerOeffnungAbstandC",
                                                        "var_MauerOeffnungBreiteD", "var_MauerOeffnungAbstandD",
-                                                       "var_Bausatzlage", "var_MassD",
+                                                       "var_Bausatzlage", "var_MassD","var_Versatz_Y",
                                                        "var_KBI", "var_KTI",
                                                        "var_AbstandKabineA", "var_AbstandKabineD",
                                                        "var_L1","var_L2","var_L3","var_L4",
@@ -46,16 +47,19 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         if (message.PropertyName == "var_SB" || message.PropertyName == "var_ST")
         {
             SetViewBoxDimensions();
+            SetWallOpeningOffsets();
         };
 
         if (shaftDesignParameter.Contains(message.PropertyName))
         {
             SetWallOpeningOffsets();
+            SetCarFrameOffset(message.PropertyName);
             RefreshView();
         };
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+    public CarFrameType? CarFrameTyp { get; set; }
 
     [ObservableProperty]
     private double viewBoxWidth;
@@ -70,16 +74,16 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     private double shaftDepth;
 
     [ObservableProperty]
-    private float carDistanceWallA;
+    private double carDistanceWallA;
 
     [ObservableProperty]
-    private float carDistanceWallB;
+    private double carDistanceWallB;
 
     [ObservableProperty]
-    private float carDistanceWallC;
+    private double carDistanceWallC;
 
     [ObservableProperty]
-    private float carDistanceWallD;
+    private double carDistanceWallD;
 
     public bool CanEditOpeningDirectionEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") &&
                                                     ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
@@ -104,6 +108,15 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     private bool openingDirectionNotSelected;
+
+    [ObservableProperty]
+    private bool showCarFrameOffsetInfoVertikal;
+
+    [ObservableProperty]
+    private bool showCarFrameOffsetInfoHorizontal;
+
+    [ObservableProperty]
+    private bool isCarFrameOffsetXEnabled;
 
     [ObservableProperty]
     private string? openingDirectionA;
@@ -247,7 +260,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void DrawEntranceWall(SKCanvas canvas)
     {
-        string[] entrances = new[] { "A", "B", "C", "D" };
+        string[] entrances = ["A", "B", "C", "D"];
 
         foreach (var entrance in entrances)
         {
@@ -331,10 +344,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void DrawLiftCar(SKCanvas canvas)
     {
-        float carWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KBI");
-        float carDepth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KTI");
-        float carWallA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineA");
-        float carWallD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineD");
+        double carWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_KBI");
+        double carDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_KTI");
+        double carWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_AbstandKabineA");
+        double carWallD = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, $"var_AbstandKabineD");
 
         float carR1 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R1");
         float carR2 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R2");
@@ -353,29 +366,29 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
         if (carWidth == 0 || carDepth == 0)
             return;
-        CarDistanceWallA = carWallA - carDepth / 2;
-        CarDistanceWallD = carWallD - carWidth / 2;
-        CarDistanceWallB = (float)shaftWidth - (CarDistanceWallD + carWidth);
-        CarDistanceWallC = (float)shaftDepth - (CarDistanceWallA + carDepth);
+        CarDistanceWallA = Math.Round(carWallA - carDepth / 2, 2);
+        CarDistanceWallD = Math.Round(carWallD - carWidth / 2, 2);
+        CarDistanceWallB = Math.Round((float)shaftWidth - (CarDistanceWallD + carWidth), 2);
+        CarDistanceWallC = Math.Round((float)shaftDepth - (CarDistanceWallA + carDepth), 2);
 
         SKPath midLineCarHorizontal = new();
-        midLineCarHorizontal.MoveTo(-(float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
-        midLineCarHorizontal.LineTo((float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
+        midLineCarHorizontal.MoveTo(-(float)viewBoxWidth / 2, (float)shaftDepth / 2 - (float)carWallA);
+        midLineCarHorizontal.LineTo((float)viewBoxWidth / 2, (float)shaftDepth / 2 - (float)carWallA);
 
         SKPath midLineCarVertical = new();
-        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + carWallD, (float)viewBoxHeight / 2);
-        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + carWallD, -(float)viewBoxHeight / 2);
+        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + (float)carWallD, (float)viewBoxHeight / 2);
+        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + (float)carWallD, -(float)viewBoxHeight / 2);
 
         SKPath liftCar = new();
-        liftCar.MoveTo(-carWidth / 2, carDepth / 2);
+        liftCar.MoveTo(-(float)carWidth / 2, (float)carDepth / 2);
         if (carDoorMountingD != 0 && carDoorWidthD != 0)
         {
-            liftCar.LineTo(-carWidth / 2, carDepth / 2 - carR4);
+            liftCar.LineTo(-(float)carWidth / 2, (float)carDepth / 2 - (float)carR4);
             liftCar.RLineTo(-carDoorMountingD, 0);
             liftCar.RLineTo(0, -carDoorWidthD);
             liftCar.RLineTo(carDoorMountingD, 0);
         }
-        liftCar.LineTo(-carWidth / 2, -carDepth / 2);
+        liftCar.LineTo(-(float)carWidth / 2, -(float)carDepth / 2);
         if (carDoorMountingC != 0 && carDoorWidthC != 0)
         {
             liftCar.RLineTo(carR2, 0);
@@ -383,7 +396,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             liftCar.RLineTo(carDoorWidthC, 0);
             liftCar.RLineTo(0, carDoorMountingC);
         }
-        liftCar.LineTo(carWidth / 2, -carDepth / 2);
+        liftCar.LineTo((float)carWidth / 2, -(float)carDepth / 2);
         if (carDoorMountingB != 0 && carDoorWidthB != 0)
         {
             liftCar.RLineTo(0, carR3);
@@ -391,7 +404,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             liftCar.RLineTo(0, carDoorWidthB);
             liftCar.RLineTo(-carDoorMountingB, 0);
         }
-        liftCar.LineTo(carWidth / 2, carDepth / 2);
+        liftCar.LineTo((float)carWidth / 2, (float)carDepth / 2);
         if (carDoorMountingA != 0 && carDoorWidthA != 0)
         {
             liftCar.RLineTo(-carR1, 0);
@@ -549,17 +562,70 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 double carDistanceWallD = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_AbstandKabineD");
                 entranceLeftSide = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, entrance == "A" ? "var_L1" : "var_L2");
 
-                return entrance == "A" ? (wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallD - carWidth / 2 + entranceLeftSide + doorWidth / 2) :
-                                         (ShaftWidth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallD + carWidth / 2 - entranceLeftSide - doorWidth / 2);
+                return entrance == "A" ? Math.Round((wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallD - carWidth / 2 + entranceLeftSide + doorWidth / 2), 2) :
+                                         Math.Round((ShaftWidth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallD + carWidth / 2 - entranceLeftSide - doorWidth / 2), 2);
             case "B" or "D":
                 double carDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_KTI");
                 double carDistanceWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_AbstandKabineA");
                 entranceLeftSide = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, entrance == "B" ? "var_L3" : "var_L4");
 
-                return entrance == "B" ? (wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallA - carDepth / 2 + entranceLeftSide + doorWidth / 2) :
-                                         (ShaftDepth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallA + carDepth / 2 - entranceLeftSide - doorWidth / 2);
+                return entrance == "B" ? Math.Round((wallOpeningdistanceLeftSide + wallOpeningWidth / 2) - (carDistanceWallA - carDepth / 2 + entranceLeftSide + doorWidth / 2), 2) :
+                                         Math.Round((ShaftDepth - (wallOpeningdistanceLeftSide + wallOpeningWidth / 2)) - (carDistanceWallA + carDepth / 2 - entranceLeftSide - doorWidth / 2), 2);
             default:
                 return 0;
+        }
+    }
+
+    private void SetCarFrameOffset(string? parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(parameterName))
+        {
+            return;
+        }
+        
+        if (string.Equals(parameterName, "setup") || string.Equals(parameterName, "var_Versatz_Y") || string.Equals(parameterName, "var_MassD") ||
+            string.Equals(parameterName, "var_Bausatzlage") || string.Equals(parameterName, "var_AbstandKabineA"))
+        {
+            CarFrameTyp = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
+            if (CarFrameTyp is null)
+                return;
+
+            double carFrameOffsetY = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Versatz_Y");
+
+            if (CarFrameTyp.CarFrameBaseTypeId == 1)
+            {
+                string carFramePosition = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatzlage");
+                switch (carFramePosition)
+                {
+                    case "A" or "C":
+                        ShowCarFrameOffsetInfoVertikal = false;
+                        ShowCarFrameOffsetInfoHorizontal = carFrameOffsetY != 0;
+                        break;
+                    case "B" or "D":
+                        ShowCarFrameOffsetInfoHorizontal = false;
+                        ShowCarFrameOffsetInfoVertikal = carFrameOffsetY != 0;
+                        break;
+                    default:
+                        break;
+                }
+                IsCarFrameOffsetXEnabled = false;
+            }
+            else
+            {
+                double carOffsetWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_AbstandKabineA");
+                if (string.Equals(parameterName, "var_MassD"))
+                {
+                    double carFrameOffsetWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_MassD");
+                    ParameterDictionary["var_Versatz_Y"].AutoUpdateParameterValue((carFrameOffsetWallA - carOffsetWallA).ToString());
+                }
+                else
+                {
+                    ParameterDictionary["var_MassD"].AutoUpdateParameterValue(carFrameOffsetY == 0 ? carOffsetWallA.ToString() : (carOffsetWallA + carFrameOffsetY).ToString());
+                }
+                ShowCarFrameOffsetInfoHorizontal = false;
+                ShowCarFrameOffsetInfoVertikal = carFrameOffsetY != 0;
+                IsCarFrameOffsetXEnabled = true;
+            }
         }
     }
 
@@ -583,6 +649,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
             CheckIsOpeningDirectionSelected();
             SetWallOpeningOffsets();
+            SetCarFrameOffset("setup");
         }
     }
 

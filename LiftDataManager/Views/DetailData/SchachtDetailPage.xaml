@@ -213,11 +213,13 @@
                                 Margin="0,0,0,2"
                                 Padding="5"
                                 Background="Gray"
-                                CornerRadius="4">
-                                <TextBlock
-                                    Style="{StaticResource BodyStrongTextBlockStyle}"
-                                    Text="Versatz FK-STM zu Kabinenmitte | 23 mm"
-                                    TextAlignment="Center" />
+                                CornerRadius="4"
+                                Visibility="{x:Bind ViewModel.ShowCarFrameOffsetInfoHorizontal, Mode=OneWay}">
+                                <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                    <Span>Versatz FK-STM zu Kabinenmitte |</Span>
+                                    <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'].Value, Mode=OneWay}" />
+                                    <Span>mm</Span>
+                                </TextBlock>
                             </Border>
                         </StackPanel>
                         <!--  InfoText Wall D  -->
@@ -245,11 +247,13 @@
                                     Margin="0,0,0,2"
                                     Padding="5"
                                     Background="Gray"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        Style="{StaticResource BodyStrongTextBlockStyle}"
-                                        Text="Versatz FK-STM zu Kabinenmitte | 23 mm"
-                                        TextAlignment="Center" />
+                                    CornerRadius="4"
+                                    Visibility="{x:Bind ViewModel.ShowCarFrameOffsetInfoVertikal, Mode=OneWay}">
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" TextAlignment="Center">
+                                        <Span>Versatz FK-STM zu Kabinenmitte |</Span>
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'].Value, Mode=OneWay}" />
+                                        <Span>mm</Span>
+                                    </TextBlock>
                                 </Border>
                             </StackPanel>
                         </controls:LayoutTransformControl>
@@ -482,6 +486,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
                                     Grid.Row="0"
@@ -495,13 +500,11 @@
                                 <SpeziControls:ParameterComboBox
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Margin="0,5,5,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatzlage'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    Margin="0,5,5,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassD'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     ToolTipService.Placement="Bottom"
@@ -527,6 +530,19 @@
                                         </StackPanel>
                                     </ToolTipService.ToolTip>
                                 </SpeziControls:ParameterNumberTextBox>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    IsEnabled="{x:Bind ViewModel.IsCarFrameOffsetXEnabled, Mode=OneWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_X'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
                             </Grid>
                             <Grid
                                 Margin="0,0,0,5"
