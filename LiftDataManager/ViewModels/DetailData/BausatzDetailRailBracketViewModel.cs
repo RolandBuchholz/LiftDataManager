@@ -65,6 +65,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         _ = SetModelStateAsync();
     }
 
+    private float _scale;
     private float _stokeWith;
 
     private SKXamlCanvas? _xamlCanvas;
@@ -106,7 +107,16 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private bool errorStartRail;
 
     [ObservableProperty]
+    private bool errorStandardRail;
+
+    [ObservableProperty]
+    private bool errorTotalRailLength;
+
+    [ObservableProperty]
     private bool errorDistanceGuideRailBracket;
+
+    [ObservableProperty]
+    private bool errorTotalDistanceGuideRailBrackets;
 
     [ObservableProperty]
     private double distanceCarRailShaftCeiling;
@@ -115,7 +125,22 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private double distanceCWTRailShaftCeiling;
 
     [ObservableProperty]
+    private double carRailBracketDistanceLeft;
+
+    [ObservableProperty]
+    private double cwtRailBracketDistanceLeft;
+
+    [ObservableProperty]
+    private int railBracketLevelCount;
+
+    [ObservableProperty]
     private double maxRailBracketSpacing;
+
+    [ObservableProperty]
+    private double distanceCarRailjoint;
+
+    [ObservableProperty]
+    private double distanceCwtRailjoint;
 
     [ObservableProperty]
     private bool customRailBracketSpacing;
@@ -163,7 +188,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         SKRect shaftWallInSide = new()
         {
-            Size = new SKSize((float)ShaftDepth, (float)ShaftHeight),
+            Size = new SKSize((float)ShaftDepth , (float)ShaftHeight),
             Location = new SKPoint(-(float)(ShaftDepth / 2), -(float)(ShaftHeight / 2))
         };
 
@@ -184,7 +209,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             Color = SKColors.DarkRed,
             IsAntialias = true,
-            StrokeWidth = _stokeWith * 2,
+            StrokeWidth = 2 * _stokeWith,
             Style = SKPaintStyle.Stroke
         };
         using var paintShaft = new SKPaint
@@ -399,6 +424,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     private void CalculateDimensions()
     {
+        double firstRailBracket = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B1");
+        double equallyBracketSpacing = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B2");
         double carRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Schienenlaenge");
         double cwtRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Hilfsschienenlaenge");
         double startCarRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Startschiene");
@@ -442,16 +469,46 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             }
         }
 
-        MaxRailBracketSpacing = CustomRailBracketSpacing
-                                                        ? RailBracketDistances.Count > 0 ? RailBracketDistances.Max() : 0
-                                                        : LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B2");
+        MaxRailBracketSpacing = CustomRailBracketSpacing ? RailBracketDistances.Count > 0 ? RailBracketDistances.Max() : 0
+                                                         : LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B2");
+
+        if (CustomRailBracketSpacing)
+        {
+            RailBracketLevelCount = RailBracketDistances.Count + 1;
+            double customrailbracketdistance = 0;
+            foreach (var railbracket in RailBracketDistances)
+            {
+                customrailbracketdistance += railbracket;
+            }
+            CarRailBracketDistanceLeft = carRailLength - firstRailBracket - customrailbracketdistance;
+            CwtRailBracketDistanceLeft = cwtRailLength - firstRailBracket - customrailbracketdistance;
+        }
+        else
+        {
+            if (carRailLength < 0)
+            {
+                RailBracketLevelCount = carRailLength >= cwtRailLength ? (int)Math.Floor((carRailLength - firstRailBracket) / equallyBracketSpacing)
+                                                       : (int)Math.Floor((cwtRailLength - firstRailBracket) / equallyBracketSpacing);
+                CarRailBracketDistanceLeft = carRailLength - firstRailBracket - RailBracketLevelCount * equallyBracketSpacing;
+                CwtRailBracketDistanceLeft = cwtRailLength - firstRailBracket - RailBracketLevelCount * equallyBracketSpacing;
+            }
+            else
+            {
+                RailBracketLevelCount = 0;
+                CarRailBracketDistanceLeft = 0;
+                CwtRailBracketDistanceLeft = 0;
+            }
+        }
 
         //errors
         ErrorStartRail = startCarRailLength > maxRailLength || startCwtRailLength > maxRailLength;
-        ErrorDistanceGuideRailBracket = true;
+        ErrorStandardRail = carRailSplit > maxRailLength || cwtRailSplit > maxRailLength;
+        ErrorTotalRailLength = DistanceCarRailShaftCeiling < 0 || DistanceCWTRailShaftCeiling < 0;
+        ErrorDistanceGuideRailBracket = DistanceCarRailjoint < 200 || DistanceCwtRailjoint < 200;
+        ErrorTotalDistanceGuideRailBrackets = CarRailBracketDistanceLeft < 0 && CwtRailBracketDistanceLeft < 0;
     }
 
-    private (double, double) CalculateRailData(double railLength, double startRailLength, double railSplit, double maxRailLength)
+    private static (double, double) CalculateRailData(double railLength, double startRailLength, double railSplit, double maxRailLength)
     {
         double railCount = 0;
         double endRailLength = 0;
@@ -495,10 +552,13 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         string framePosition = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatzlage");
         ShaftDepth = framePosition == "A" || framePosition == "C" ? realShaftWidth : realShaftDepth;
 
+        _scale = (float)(1000 / ShaftHeight);
+        _stokeWith = 1 / _scale;
+
         if (ShaftHeight > 0 && ShaftDepth > 0)
         {
-            ViewBoxWidth = ShaftDepth + 800;
-            ViewBoxHeight = ShaftHeight + 800;
+            ViewBoxWidth = (ShaftDepth + 800) * _scale;
+            ViewBoxHeight = (ShaftHeight + 800) * _scale;
         }
         CalculateDimensions();
     }
@@ -579,7 +639,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SKCanvas canvas = surface.Canvas;
         canvas.Clear();
         canvas.Translate(info.Width / 2, info.Height / 2);
-        _stokeWith = ((float)shaftHeight + (float)shaftDepth) / 600f;
+        canvas.Scale(_scale);
         DrawShaftWall(canvas);
         //DrawEntranceWall(canvas);
         //DrawLiftCar(canvas);

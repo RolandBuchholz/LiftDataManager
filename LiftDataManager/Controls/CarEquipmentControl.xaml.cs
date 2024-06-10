@@ -16,10 +16,12 @@ public sealed partial class CarEquipmentControl : UserControl
         CarDepth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KTI");
         CarWidth = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KBI");
         CarHeightRaw = LiftParameterHelper.GetLiftParameterValue<double>(ItemSource, "var_KHRoh");
-        ViewBoxWidth = Side == CarSide.A || Side == CarSide.C ? CarWidth : CarDepth;
-        ViewBoxHeight = CarHeightRaw;
+        _scale = 0.25f;
+        ViewBoxWidth = Side == CarSide.A || Side == CarSide.C ? CarWidth * _scale : CarDepth * _scale;
+        ViewBoxHeight = CarHeightRaw * _scale;
     }
 
+    float _scale;
     public double CarWidth { get; set; }
     public double CarDepth { get; set; }
     public double CarHeightRaw { get; set; }
@@ -76,6 +78,7 @@ public sealed partial class CarEquipmentControl : UserControl
         SKCanvas canvas = surface.Canvas;
 
         canvas.Clear();
+        canvas.Scale(_scale);
         DrawWall(canvas);
         DrawSkirtingBoard(canvas);
         DrawMirror(canvas);

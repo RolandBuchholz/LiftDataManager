@@ -195,6 +195,11 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <TextBlock
                                         Grid.Row="0"
@@ -253,6 +258,86 @@
                                         Grid.Column="2"
                                         HorizontalAlignment="Center"
                                         Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="Anzahl Schienenbügelebenen" />
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.RailBracketLevelCount, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="Stk" />
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="Fahrkorbschienenüberstand" />
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.CarRailBracketDistanceLeft, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="Gegengewichtsschienenüberstand" />
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.CwtRailBracketDistanceLeft, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="kleinster Abstand FK-Schienenstoß" />
+                                    <TextBlock
+                                        Grid.Row="7"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.DistanceCarRailjoint, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="7"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
+                                    <TextBlock
+                                        Grid.Row="8"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Text="kleinster Abstand GGW-Schienenstoß" />
+                                    <TextBlock
+                                        Grid.Row="8"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{x:Bind ViewModel.DistanceCwtRailjoint, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Row="8"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        Text="mm" />
                                 </Grid>
                             </Grid>
                             <InfoBar
@@ -262,11 +347,29 @@
                                 Message="Startschiene länger als maximale zulässige Schienenlänge"
                                 Severity="Error" />
                             <InfoBar
+                                Title="Fehler Schienenlänge"
+                                IsIconVisible="True"
+                                IsOpen="{x:Bind ViewModel.ErrorTotalRailLength, Mode=OneWay}"
+                                Message="Schienenlänge ist größer als Schachthöhe"
+                                Severity="Error" />
+                            <InfoBar
+                                Title="Fehler Schienenlänge"
+                                IsIconVisible="True"
+                                IsOpen="{x:Bind ViewModel.ErrorStandardRail, Mode=OneWay}"
+                                Message="Standardschienenlängen sind länger als maximale zulässige Schienenlänge"
+                                Severity="Error" />
+                            <InfoBar
                                 Title="Schienenbügelabstand"
                                 IsIconVisible="True"
                                 IsOpen="{x:Bind ViewModel.ErrorDistanceGuideRailBracket, Mode=OneWay}"
                                 Message="Achtung Schienenbügelabstand zum Schienenstoß kleiner 200 mm"
                                 Severity="Warning" />
+                            <InfoBar
+                                Title="Schienenbügelabstände"
+                                IsIconVisible="True"
+                                IsOpen="{x:Bind ViewModel.ErrorTotalDistanceGuideRailBrackets, Mode=OneWay}"
+                                Message="Schienenbügelabstände sind größer als Schachthöhe"
+                                Severity="Error" />
                         </StackPanel>
                     </ScrollViewer>
                     <ScrollViewer

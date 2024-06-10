@@ -59,6 +59,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
+
+    private float _scale;
+    private float _stokeWith;
+
     public CarFrameType? CarFrameTyp { get; set; }
 
     [ObservableProperty]
@@ -170,8 +174,6 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                       (!string.IsNullOrWhiteSpace(openingDirectionD) && string.Equals(openingDirectionD, "einseitig öffnend"));
     }
 
-    private float _stokeWith;
-
     private SKXamlCanvas? _xamlCanvas;
 
     [RelayCommand]
@@ -182,7 +184,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         SKCanvas canvas = surface.Canvas;
         canvas.Clear();
         canvas.Translate(info.Width / 2, info.Height / 2);
-        _stokeWith = ((float)shaftWidth + (float)shaftDepth) / 600f;
+        canvas.Scale(_scale);
         DrawShaftWall(canvas);
         DrawEntranceWall(canvas);
         DrawLiftCar(canvas);
@@ -198,7 +200,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     private void DrawShaftWall(SKCanvas canvas)
     {
         SKPathEffect diagLinesPath = SKPathEffect.Create2DLine(_stokeWith,
-        SkiaSharpHelpers.Multiply(SKMatrix.CreateScale(100f, 100f), SKMatrix.CreateRotationDegrees(45f)));
+        SkiaSharpHelpers.Multiply(SKMatrix.CreateScale(50f, 50f), SKMatrix.CreateRotationDegrees(45f)));
 
         SKRect shaftWallOutSide = new()
         {
@@ -212,7 +214,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             Location = shaftWallOutSide.Location
         };
 
-        shaftWallHatch.Inflate(100f, 100f);
+        shaftWallHatch.Inflate(50f, 50f);
 
         SKRect shaftWallInSide = new()
         {
@@ -372,12 +374,12 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         CarDistanceWallC = Math.Round((float)shaftDepth - (CarDistanceWallA + carDepth), 2);
 
         SKPath midLineCarHorizontal = new();
-        midLineCarHorizontal.MoveTo(-(float)viewBoxWidth / 2, (float)shaftDepth / 2 - (float)carWallA);
-        midLineCarHorizontal.LineTo((float)viewBoxWidth / 2, (float)shaftDepth / 2 - (float)carWallA);
+        midLineCarHorizontal.MoveTo(-(float)(shaftWidth + 600) / 2, (float)shaftDepth / 2 - (float)carWallA);
+        midLineCarHorizontal.LineTo((float)(shaftWidth + 600) / 2, (float)shaftDepth / 2 - (float)carWallA);
 
         SKPath midLineCarVertical = new();
-        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + (float)carWallD, (float)viewBoxHeight / 2);
-        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + (float)carWallD, -(float)viewBoxHeight / 2);
+        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + (float)carWallD, (float)(shaftDepth + 600) / 2);
+        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + (float)carWallD, -(float)(shaftDepth + 600) / 2);
 
         SKPath liftCar = new();
         liftCar.MoveTo(-(float)carWidth / 2, (float)carDepth / 2);
@@ -474,42 +476,42 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             switch (carFramePosition)
             {
                 case "A":
-                    startPoint.X = -(float)viewBoxWidth / 2;
+                    startPoint.X = -(float)(shaftWidth + 600) / 2;
                     startPoint.Y = (float)shaftDepth / 2 - carDimensionD;
-                    endPoint.X = (float)viewBoxWidth / 2;
+                    endPoint.X = (float)(shaftWidth + 600) / 2;
                     endPoint.Y = (float)shaftDepth / 2 - carDimensionD;
                     break;
                 case "B":
                     startPoint.X = (float)shaftWidth / 2 - carDimensionD;
-                    startPoint.Y = (float)viewBoxHeight / 2;
+                    startPoint.Y = (float)(shaftDepth + 600) / 2;
                     endPoint.X = (float)shaftWidth / 2 - carDimensionD;
-                    endPoint.Y = -(float)viewBoxHeight / 2;
+                    endPoint.Y = -(float)(shaftDepth + 600) / 2;
                     break;
                 case "C":
-                    startPoint.X = -(float)viewBoxWidth / 2;
+                    startPoint.X = -(float)(shaftWidth + 600) / 2;
                     startPoint.Y = -(float)shaftDepth / 2 + carDimensionD;
-                    endPoint.X = (float)viewBoxWidth / 2;
+                    endPoint.X = (float)(shaftWidth + 600) / 2;
                     endPoint.Y = -(float)shaftDepth / 2 + carDimensionD;
                     break;
                 case "D":
                     startPoint.X = -(float)shaftWidth / 2 + carDimensionD;
-                    startPoint.Y = (float)viewBoxHeight / 2;
+                    startPoint.Y = (float)(shaftDepth + 600) / 2;
                     endPoint.X = -(float)shaftWidth / 2 + carDimensionD;
-                    endPoint.Y = -(float)viewBoxHeight / 2;
+                    endPoint.Y = -(float)(shaftDepth + 600) / 2;
                     break;
                 default:
                     startPoint.X = -(float)shaftWidth / 2 + carDimensionD;
-                    startPoint.Y = (float)viewBoxHeight / 2;
+                    startPoint.Y = (float)(shaftDepth + 600) / 2;
                     endPoint.X = -(float)shaftWidth / 2 + carDimensionD;
-                    endPoint.Y = -(float)viewBoxHeight / 2;
+                    endPoint.Y = -(float)(shaftDepth + 600) / 2;
                     break;
             }
         }
         else
         {
-            startPoint.X = -(float)viewBoxWidth / 2;
+            startPoint.X = -(float)(shaftWidth + 600) / 2;
             startPoint.Y = (float)shaftDepth / 2 - carDimensionD;
-            endPoint.X = (float)viewBoxWidth / 2;
+            endPoint.X = (float)(shaftWidth + 600) / 2;
             endPoint.Y = (float)shaftDepth / 2 - carDimensionD;
         }
         SKPath midLineCarFrame = new();
@@ -528,10 +530,13 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     {
         ShaftWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SB");
         ShaftDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_ST");
+
+        _scale = (float)(1200 / (ShaftWidth + ShaftDepth));
+        _stokeWith = 1 / _scale;
         if (ShaftWidth > 0 && ShaftDepth > 0)
         {
-            ViewBoxWidth = ShaftWidth + 800;
-            ViewBoxHeight = ShaftDepth + 800;
+            ViewBoxWidth = (ShaftWidth + 800) * _scale;
+            ViewBoxHeight = (ShaftDepth + 800) * _scale;
         }
     }
 

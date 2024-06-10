@@ -84,7 +84,6 @@
                             <RowDefinition Height="250" />
                             <RowDefinition Height="250" />
                             <RowDefinition Height="250" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <SpeziControls:CarEquipmentControl
                             x:Name="CarEquipmentControlA"
