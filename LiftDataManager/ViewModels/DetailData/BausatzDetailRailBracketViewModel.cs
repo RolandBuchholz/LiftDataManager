@@ -67,6 +67,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     private float _scale;
     private float _stokeWith;
+    private readonly float _shaftPitOffset = 400f;
 
     private SKXamlCanvas? _xamlCanvas;
 
@@ -175,7 +176,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SKRect shaftWallOutSide = new()
         {
             Size = new SKSize((float)(ShaftDepth + 500), (float)(ShaftHeight + 500)),
-            Location = new SKPoint(-(float)((ShaftDepth + 500) / 2), -(float)((ShaftHeight + 500) / 2))
+            Location = new SKPoint(-(float)((ShaftDepth + 500) / 2), -(float)((ShaftHeight + _shaftPitOffset + 250f)))
         };
 
         SKRect shaftWallHatch = new()
@@ -189,7 +190,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SKRect shaftWallInSide = new()
         {
             Size = new SKSize((float)ShaftDepth , (float)ShaftHeight),
-            Location = new SKPoint(-(float)(ShaftDepth / 2), -(float)(ShaftHeight / 2))
+            Location = new SKPoint(-(float)(ShaftDepth / 2), -(float)(ShaftHeight + _shaftPitOffset))
         };
 
         using var paintWallSolid = new SKPaint
@@ -229,88 +230,130 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         canvas.DrawRect(shaftWallInSide, paintHatchOutline);
     }
 
-    private void DrawEntranceWall(SKCanvas canvas)
+    private void DrawGuideRails(SKCanvas canvas)
     {
-        //string[] entrances = new[] { "A", "B", "C", "D" };
+        if (CarFrameTyp == null)
+        {
+            return;
+        }
 
-        //foreach (var entrance in entrances)
-        //{
-        //    if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{entrance}"))
-        //        continue;
-        //    float wallOpeningWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_MauerOeffnungBreite{entrance}");
-        //    if (wallOpeningWidth == 0)
-        //        continue;
-        //    float wallOpeningLeft = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_MauerOeffnungAbstand{entrance}");
+        float carRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Schienenlaenge");
+        float cwtRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Hilfsschienenlaenge");
 
-        //    using var paintShaftEntrace = new SKPaint
-        //    {
-        //        Color = SKColors.LightSlateGray,
-        //        IsAntialias = true,
-        //        Style = SKPaintStyle.Fill
-        //    };
-        //    using var paintOutline = new SKPaint
-        //    {
-        //        Color = SKColors.DarkRed,
-        //        IsAntialias = true,
-        //        StrokeWidth = _stokeWith * 2,
-        //        Style = SKPaintStyle.Stroke
-        //    };
-        //    using var paintText = new SKPaint
-        //    {
-        //        Color = SKColors.DarkRed,
-        //        IsAntialias = true,
-        //        TextAlign = SKTextAlign.Center,
-        //        TextSize = 200,
-        //    };
+        if (carRailLength == 0 && cwtRailLength == 0)
+        {
+            return;
+        }
 
-        //    float width = 0f;
-        //    float height = 0f;
-        //    float posX = 0f;
-        //    float posY = 0f;
+        float carRailWidth = 80f;
+        float cwtRailWidth = 50f;
+        float posY = -_shaftPitOffset;
+        float carRailLeftPosX = 0f;
+        float carRailRightPosX = 0f;
+        float cwtRailLeftPosX = 0f;
+        float cwtRailLRightPosX = 0f;
 
-        //    switch (entrance)
-        //    {
-        //        case "A":
-        //            width = wallOpeningWidth;
-        //            height = 250f;
-        //            posX = -(float)shaftWidth / 2 + wallOpeningLeft;
-        //            posY = (float)shaftDepth / 2;
-        //            break;
-        //        case "B":
-        //            width = 250f;
-        //            height = wallOpeningWidth;
-        //            posX = (float)shaftWidth / 2;
-        //            posY = (float)shaftDepth / 2 - wallOpeningWidth - wallOpeningLeft;
-        //            break;
-        //        case "C":
-        //            width = wallOpeningWidth;
-        //            height = -250f;
-        //            posX = (float)shaftWidth / 2 - wallOpeningWidth - wallOpeningLeft;
-        //            posY = -(float)shaftDepth / 2;
-        //            break;
-        //        case "D":
-        //            width = -250;
-        //            height = wallOpeningWidth;
-        //            posX = -(float)shaftWidth / 2;
-        //            posY = -(float)shaftDepth / 2 + wallOpeningLeft;
-        //            break;
-        //        default:
-        //            continue;
-        //    }
+        float cwtDgb = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Stichmass_GGW");
+        
+        if (CarFrameTyp.CarFrameBaseTypeId == 1)
+        {
+            carRailLeftPosX = -500f;
+            carRailRightPosX = 500f;
+            cwtRailLeftPosX = -350f;
+            cwtRailLRightPosX = 350f;
 
-        //    SKRect entranceRect = new()
-        //    {
-        //        Size = new SKSize(width, height),
-        //        Location = new SKPoint(posX, posY)
-        //    };
+            float carDgb = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Stichmass");
 
-        //    SKRect textRect = new();
-        //    paintText.MeasureText(entrance, ref textRect);
+            if (carDgb != 0)
+            {
+                carRailLeftPosX = -carDgb / 2;
+                carRailRightPosX = carDgb / 2;
+            }
 
-        //    canvas.DrawRect(entranceRect, paintShaftEntrace);
-        //    canvas.DrawRect(entranceRect, paintOutline);
-        //    canvas.DrawText(entrance, entranceRect.MidX, entranceRect.MidY - textRect.MidY, paintText);
-        //}
+            if (cwtDgb != 0)
+            {
+                cwtRailLeftPosX = -cwtDgb / 2;
+                cwtRailLRightPosX = cwtDgb / 2;
+            }
+        }
+        else
+        {
+            float carDistanceWall = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_MassD");
+            carRailLeftPosX = 235f + carRailWidth / 2;
+            carRailRightPosX = 235f - carRailWidth / 2;
+            cwtRailLRightPosX = 235f + 145f;
+            cwtRailLeftPosX = cwtRailLRightPosX - 760f;
+
+            if (cwtDgb != 0)
+            {
+                cwtRailLeftPosX = cwtRailLRightPosX - cwtDgb;
+            }
+        }
+
+        using var paintCarRail = new SKPaint
+        {
+            Color = SKColors.MediumVioletRed,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill
+        };
+
+        using var paintCwtRail = new SKPaint
+        {
+            Color = SKColors.BlueViolet,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill
+        };
+
+        using var paintCarRailJointLine = new SKPaint
+        {
+            Color = SKColors.MediumVioletRed,
+            PathEffect = SKPathEffect.CreateDash([250, 50, 20, 50], 1),
+            IsAntialias = true,
+            StrokeWidth = _stokeWith * 2f,
+            Style = SKPaintStyle.Stroke
+        };
+
+        SKRect carRailLeftRect = new()
+        {
+            Size = new SKSize(carRailWidth, -carRailLength),
+            Location = new SKPoint(carRailLeftPosX - carRailWidth, posY)
+        };
+        canvas.DrawRect(carRailLeftRect, paintCarRail);
+
+        SKRect carRailRightRect = new()
+        {
+            Size = new SKSize(carRailWidth, -carRailLength),
+            Location = new SKPoint(carRailRightPosX, posY)
+        };
+        canvas.DrawRect(carRailRightRect, paintCarRail);
+
+        SKRect cwtRailLeftRect = new()
+        {
+            Size = new SKSize(cwtRailWidth, -cwtRailLength),
+            Location = new SKPoint(cwtRailLeftPosX - cwtRailWidth, posY)
+        };
+        canvas.DrawRect(cwtRailLeftRect, paintCwtRail);
+
+        SKRect cwtRailRightRect = new()
+        {
+            Size = new SKSize(cwtRailWidth, -cwtRailLength),
+            Location = new SKPoint(cwtRailLRightPosX, posY)
+        };
+        canvas.DrawRect(cwtRailRightRect, paintCwtRail);
+
+        SKPoint startPoint = new();
+        SKPoint endPoint = new();
+
+        startPoint.X = -2000;
+        startPoint.Y = -1000;
+        endPoint.X = 2000;
+        endPoint.Y = -1000;
+
+        SKPath carRailJointLine = new();
+        carRailJointLine.MoveTo(startPoint);
+        carRailJointLine.LineTo(endPoint);
+
+        canvas.DrawPath(carRailJointLine, paintCarRailJointLine);
     }
 
     private void DrawLiftCar(SKCanvas canvas)
@@ -638,10 +681,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SKSurface surface = e.Surface;
         SKCanvas canvas = surface.Canvas;
         canvas.Clear();
-        canvas.Translate(info.Width / 2, info.Height / 2);
+        canvas.Translate(info.Width / 2, info.Height);
         canvas.Scale(_scale);
         DrawShaftWall(canvas);
-        //DrawEntranceWall(canvas);
+        DrawGuideRails(canvas);
         //DrawLiftCar(canvas);
     }
 
@@ -735,6 +778,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) && 
                                        !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
             FillListOfRailBrackets();
+            CalculateDimensions();
         }   
     }
 

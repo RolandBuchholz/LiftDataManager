@@ -368,7 +368,7 @@
                                 Title="Schienenbügelabstände"
                                 IsIconVisible="True"
                                 IsOpen="{x:Bind ViewModel.ErrorTotalDistanceGuideRailBrackets, Mode=OneWay}"
-                                Message="Schienenbügelabstände sind größer als Schachthöhe"
+                                Message="Schienenbügelabstände sind größer als Schienenlänge"
                                 Severity="Error" />
                         </StackPanel>
                     </ScrollViewer>
@@ -414,7 +414,7 @@
                                     Header="Gesamtlänge"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Schienenlaenge'], Mode=TwoWay}"
                                     ShowDefaultHeader="False"
-                                    Unit="m" />
+                                    Unit="mm" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
                                     Grid.Column="0"
@@ -481,7 +481,7 @@
                                     Header="Gesamtlänge"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Hilfsschienenlaenge'], Mode=TwoWay}"
                                     ShowDefaultHeader="False"
-                                    Unit="m" />
+                                    Unit="mm" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
                                     Grid.Column="0"
