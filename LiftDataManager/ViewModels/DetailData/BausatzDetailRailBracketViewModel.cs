@@ -68,6 +68,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private float _scale;
     private float _stokeWith;
     private readonly float _shaftPitOffset = 400f;
+    private double _carRailSplit = 5000;
+    private double _cwtRailSplit = 5000;
 
     private SKXamlCanvas? _xamlCanvas;
 
@@ -313,6 +315,15 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             Style = SKPaintStyle.Stroke
         };
 
+        using var paintCwtRailJointLine = new SKPaint
+        {
+            Color = SKColors.BlueViolet,
+            PathEffect = SKPathEffect.CreateDash([250, 50, 20, 50], 1),
+            IsAntialias = true,
+            StrokeWidth = _stokeWith * 2f,
+            Style = SKPaintStyle.Stroke
+        };
+
         SKRect carRailLeftRect = new()
         {
             Size = new SKSize(carRailWidth, -carRailLength),
@@ -341,123 +352,75 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         };
         canvas.DrawRect(cwtRailRightRect, paintCwtRail);
 
-        SKPoint startPoint = new();
-        SKPoint endPoint = new();
+        float startCarRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Startschiene");
+        float startCwtRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_HilfsschienenlaengeStartstueck");
+        int carRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Anzahl_5m_Schienen");
+        int cwtRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AnzahlHilfsschienenlaengeStueck");
+        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 600), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(shaftDepth / 2 + 600), -_shaftPitOffset);
 
-        startPoint.X = -2000;
-        startPoint.Y = -1000;
-        endPoint.X = 2000;
-        endPoint.Y = -1000;
+        SKPath cwtRailJointLine = new();
+        cwtRailJointLine.MoveTo(startPoint);
+        cwtRailJointLine.LineTo(endPoint);
 
         SKPath carRailJointLine = new();
         carRailJointLine.MoveTo(startPoint);
         carRailJointLine.LineTo(endPoint);
 
+        cwtRailJointLine.Offset(0, -startCwtRailLength);
+        canvas.DrawPath(cwtRailJointLine, paintCwtRailJointLine);
+        carRailJointLine.Offset(0, -startCarRailLength);
         canvas.DrawPath(carRailJointLine, paintCarRailJointLine);
+
+        if (cwtRailCount > 0)
+        {
+            for (int i = 0; i < cwtRailCount; i++)
+            {
+                cwtRailJointLine.Offset(0, -(float)_cwtRailSplit);
+                canvas.DrawPath(cwtRailJointLine, paintCwtRailJointLine);
+            }
+        }
+
+        if (carRailCount > 0)
+        {
+            for (int i = 0; i < carRailCount; i++)
+            {
+                carRailJointLine.Offset(0, -(float)_carRailSplit);
+                canvas.DrawPath(carRailJointLine, paintCarRailJointLine);
+            }
+        }
     }
 
-    private void DrawLiftCar(SKCanvas canvas)
+    private void DrawRailBrackets(SKCanvas canvas)
     {
-        //float carWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KBI");
-        //float carDepth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KTI");
-        //float carWallA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineA");
-        //float carWallD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_AbstandKabineD");
+        using var paintRailBracketLine = new SKPaint
+        {
+            Color = SKColors.LimeGreen,
+            PathEffect = SKPathEffect.CreateDash([250, 50, 20, 50], 1),
+            IsAntialias = true,
+            StrokeWidth = _stokeWith * 2f,
+            Style = SKPaintStyle.Stroke
+        };
+        float shaftPitBracket = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_B1");
 
-        //float carR1 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R1");
-        //float carR2 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R2");
-        //float carR3 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R3");
-        //float carR4 = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_R4");
+        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 600), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(shaftDepth / 2 + 600), -_shaftPitOffset);
 
-        //float carDoorMountingA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbau");
-        //float carDoorMountingB = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauB");
-        //float carDoorMountingC = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauC");
-        //float carDoorMountingD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TuerEinbauD");
+        SKPath railBracketLine = new();
+        railBracketLine.MoveTo(startPoint);
+        railBracketLine.LineTo(endPoint);
 
-        //float carDoorWidthA = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB");
-        //float carDoorWidthB = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_B");
-        //float carDoorWidthC = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_C");
-        //float carDoorWidthD = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_TB_D");
+        railBracketLine.Offset(0, -shaftPitBracket);
+        canvas.DrawPath(railBracketLine, paintRailBracketLine);
 
-        //if (carWidth == 0 || carDepth == 0)
-        //    return;
-        //CarDistanceWallA = carWallA - carDepth / 2;
-        //CarDistanceWallD = carWallD - carWidth / 2;
-        //CarDistanceWallB = (float)shaftWidth - (CarDistanceWallD + carWidth);
-        //CarDistanceWallC = (float)shaftDepth - (CarDistanceWallA + carDepth);
-
-        //SKPath midLineCarHorizontal = new();
-        //midLineCarHorizontal.MoveTo(-(float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
-        //midLineCarHorizontal.LineTo((float)viewBoxWidth / 2, (float)shaftDepth / 2 - carWallA);
-
-        //SKPath midLineCarVertical = new();
-        //midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + carWallD, (float)viewBoxHeight / 2);
-        //midLineCarVertical.LineTo(-(float)shaftWidth / 2 + carWallD, -(float)viewBoxHeight / 2);
-
-        //SKPath liftCar = new();
-        //liftCar.MoveTo(-carWidth / 2, carDepth / 2);
-        //if (carDoorMountingD != 0 && carDoorWidthD != 0)
+        //if (cwtRailCount > 0)
         //{
-        //    liftCar.LineTo(-carWidth / 2, carDepth / 2 - carR4);
-        //    liftCar.RLineTo(-carDoorMountingD, 0);
-        //    liftCar.RLineTo(0, -carDoorWidthD);
-        //    liftCar.RLineTo(carDoorMountingD, 0);
+        //    for (int i = 0; i < cwtRailCount; i++)
+        //    {
+        //        railBracketLine.Offset(0, -(float)_cwtRailSplit);
+        //        canvas.DrawPath(railBracketLine, paintRailBracketLine);
+        //    }
         //}
-        //liftCar.LineTo(-carWidth / 2, -carDepth / 2);
-        //if (carDoorMountingC != 0 && carDoorWidthC != 0)
-        //{
-        //    liftCar.RLineTo(carR2, 0);
-        //    liftCar.RLineTo(0, -carDoorMountingC);
-        //    liftCar.RLineTo(carDoorWidthC, 0);
-        //    liftCar.RLineTo(0, carDoorMountingC);
-        //}
-        //liftCar.LineTo(carWidth / 2, -carDepth / 2);
-        //if (carDoorMountingB != 0 && carDoorWidthB != 0)
-        //{
-        //    liftCar.RLineTo(0, carR3);
-        //    liftCar.RLineTo(carDoorMountingB, 0);
-        //    liftCar.RLineTo(0, carDoorWidthB);
-        //    liftCar.RLineTo(-carDoorMountingB, 0);
-        //}
-        //liftCar.LineTo(carWidth / 2, carDepth / 2);
-        //if (carDoorMountingA != 0 && carDoorWidthA != 0)
-        //{
-        //    liftCar.RLineTo(-carR1, 0);
-        //    liftCar.RLineTo(0, carDoorMountingA);
-        //    liftCar.RLineTo(-carDoorWidthA, 0);
-        //    liftCar.RLineTo(0, -carDoorMountingA);
-        //}
-        //liftCar.Close();
-
-        //liftCar.Transform(SKMatrix.CreateTranslation(midLineCarVertical.LastPoint.X, midLineCarHorizontal.LastPoint.Y));
-
-        //using var paintCar = new SKPaint
-        //{
-        //    Color = SKColors.MediumPurple,
-        //    IsAntialias = true,
-        //    Style = SKPaintStyle.Fill,
-        //};
-
-        //using var paintCarStoke = new SKPaint
-        //{
-        //    Color = SKColors.Black,
-        //    IsAntialias = true,
-        //    StrokeWidth = _stokeWith * 1.5f,
-        //    Style = SKPaintStyle.Stroke
-        //};
-        //canvas.DrawPath(liftCar, paintCar);
-        //canvas.DrawPath(liftCar, paintCarStoke);
-
-        //using var paintCarMidLine = new SKPaint
-        //{
-        //    Color = SKColors.DarkGreen,
-        //    PathEffect = SKPathEffect.CreateDash(new float[] { 250, 50, 20, 50 }, 1),
-        //    IsAntialias = true,
-        //    StrokeWidth = _stokeWith * 1.5f,
-        //    Style = SKPaintStyle.Stroke
-
-        //};
-        //canvas.DrawPath(midLineCarHorizontal, paintCarMidLine);
-        //canvas.DrawPath(midLineCarVertical, paintCarMidLine);
     }
 
     public void RefreshView()
@@ -477,26 +440,24 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         //DataBase
 
-        double carRailSplit = 5000;
         var carGuideRailLength = _parametercontext.Set<GuideRailLength>().FirstOrDefault(x => x.Name == ParameterDictionary["var_SchienenteilungFK"].Value);
         if (carGuideRailLength is not null)
         {
-            carRailSplit = carGuideRailLength.RailLength;
+            _carRailSplit = carGuideRailLength.RailLength;
         }
 
-        double cwtRailSplit = 5000;
         var cwtGuideRailLength = _parametercontext.Set<GuideRailLength>().FirstOrDefault(x => x.Name == ParameterDictionary["var_SchienenteilungGGW"].Value);
         if (cwtGuideRailLength is not null)
         {
-            cwtRailSplit = cwtGuideRailLength.RailLength;
+            _cwtRailSplit = cwtGuideRailLength.RailLength;
         }
 
         //calculations
         DistanceCarRailShaftCeiling = ShaftHeight - carRailLength;
         DistanceCWTRailShaftCeiling = ShaftHeight - cwtRailLength;
 
-        var carRailData = CalculateRailData(carRailLength, startCarRailLength, carRailSplit, maxRailLength);
-        var cwtRailData = CalculateRailData(cwtRailLength, startCwtRailLength, cwtRailSplit, maxRailLength);
+        var carRailData = CalculateRailData(carRailLength, startCarRailLength, _carRailSplit, maxRailLength);
+        var cwtRailData = CalculateRailData(cwtRailLength, startCwtRailLength, _cwtRailSplit, maxRailLength);
 
         ParameterDictionary["var_Anzahl_5m_Schienen"].AutoUpdateParameterValue(carRailData.Item1.ToString());
         ParameterDictionary["var_Endschiene"].AutoUpdateParameterValue(carRailData.Item2.ToString());
@@ -545,7 +506,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         //errors
         ErrorStartRail = startCarRailLength > maxRailLength || startCwtRailLength > maxRailLength;
-        ErrorStandardRail = carRailSplit > maxRailLength || cwtRailSplit > maxRailLength;
+        ErrorStandardRail = _carRailSplit > maxRailLength || _cwtRailSplit > maxRailLength;
         ErrorTotalRailLength = DistanceCarRailShaftCeiling < 0 || DistanceCWTRailShaftCeiling < 0;
         ErrorDistanceGuideRailBracket = DistanceCarRailjoint < 200 || DistanceCwtRailjoint < 200;
         ErrorTotalDistanceGuideRailBrackets = CarRailBracketDistanceLeft < 0 && CwtRailBracketDistanceLeft < 0;
@@ -685,7 +646,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         canvas.Scale(_scale);
         DrawShaftWall(canvas);
         DrawGuideRails(canvas);
-        //DrawLiftCar(canvas);
+        DrawRailBrackets(canvas);
     }
 
     [RelayCommand]
