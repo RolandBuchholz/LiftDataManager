@@ -14,29 +14,49 @@ public class LiftParameterHelper
             value = ParameterDictionary[parametername].Value;
         }
 
-        if (typeof(T) == typeof(int))
+        switch (typeof(T))
         {
-            return string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToInt32(Math.Round(Convert.ToDouble(value, CultureInfo.CurrentCulture)), CultureInfo.CurrentCulture);
-        }
-        else if (typeof(T) == typeof(string))
-        {
-            return string.IsNullOrWhiteSpace(value) ? string.Empty : value;
-        }
-        else if (typeof(T) == typeof(double))
-        {
-            return string.IsNullOrWhiteSpace(value) ? 0d : Convert.ToDouble(value, CultureInfo.CurrentCulture);
-        }
-        else if (typeof(T) == typeof(bool))
-        {
-            return !string.IsNullOrWhiteSpace(value) && Convert.ToBoolean(value, CultureInfo.CurrentCulture);
-        }
-        else if (typeof(T) == typeof(float))
-        {
-            return string.IsNullOrWhiteSpace(value) ? 0f : float.Parse(value, CultureInfo.CurrentCulture);
-        }
-        else
-        {
-            return string.Empty;
+            case var par when par == typeof(double):
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return 0d;
+                }
+                if (double.TryParse(value, out double doubleValue))
+                {
+                    return doubleValue;
+                }
+                return 0d;
+
+            case var par when par == typeof(int):
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return 0;
+                }
+                if (int.TryParse(value, out int intValue))
+                {
+                    return intValue;
+                }
+                return 0;
+
+            case var par when par == typeof(float):
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return 0f;
+                }
+                if (float.TryParse(value, out float floatValue))
+                {
+                    return floatValue;
+                }
+                return 0f;
+
+            case var par when par == typeof(bool):
+                return !string.IsNullOrWhiteSpace(value) && Convert.ToBoolean(value, CultureInfo.CurrentCulture);
+
+            case var par when par == typeof(string):
+                return string.IsNullOrWhiteSpace(value) ? string.Empty : value;
+
+            default:
+                return string.Empty;
         }
     }
 

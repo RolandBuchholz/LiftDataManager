@@ -10,4 +10,7 @@ public class CarFrameType : BaseEntity
     public int CarFrameBaseTypeId { get; set; }
     public CarFrameBaseType? CarFrameBaseType { get; set; }
     public int CFPStartIndex { get; set; }
+    public int CarFrameDGB { get; set; }
+    public int CounterweightDGB { get; set; }
+    public int CarFrameDGBOffset { get; set; }
 }
