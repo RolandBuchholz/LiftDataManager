@@ -3,17 +3,16 @@ using System.ComponentModel;
 
 namespace LiftDataManager.Controls;
 
-public sealed partial class ParameterTextBox : UserControl
+public sealed partial class ParameterNumberBox : UserControl
 {
-    public ParameterTextBox()
+    public ParameterNumberBox()
     {
         InitializeComponent();
-        Loaded += OnLoadParameterTextBox;
-        Unloaded += OnUnLoadParameterTextBox;
-
+        Loaded += OnLoadParameterNumberTextBox;
+        Unloaded += OnUnLoadParameterNumberTextBox;
     }
 
-    private void OnLoadParameterTextBox(object sender, RoutedEventArgs e)
+    private void OnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -22,7 +21,7 @@ public sealed partial class ParameterTextBox : UserControl
         SetBorderHeight();
     }
 
-    private void OnUnLoadParameterTextBox(object sender, RoutedEventArgs e)
+    private void OnUnLoadParameterNumberTextBox(object sender, RoutedEventArgs e)
     {
         if (LiftParameter is not null)
         {
@@ -38,6 +37,8 @@ public sealed partial class ParameterTextBox : UserControl
         }
     }
 
+    public bool ShowUnit => !string.IsNullOrWhiteSpace(Unit);
+
     public Parameter? LiftParameter
     {
         get
@@ -49,7 +50,8 @@ public sealed partial class ParameterTextBox : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty =
+        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterNumberBox), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -120,7 +122,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty ReadOnlyProperty =
-        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterTextBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterNumberBox), new PropertyMetadata(false));
 
     public bool ShowDefaultHeader
     {
@@ -129,7 +131,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultHeaderProperty =
-        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterTextBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterNumberBox), new PropertyMetadata(false));
 
     public string Header
     {
@@ -138,7 +140,16 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterTextBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
+
+    public string Unit
+    {
+        get => (string)GetValue(UnitProperty);
+        set => SetValue(UnitProperty, value);
+    }
+
+    public static readonly DependencyProperty UnitProperty =
+        DependencyProperty.Register(nameof(Unit), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -147,7 +158,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty PlaceholderTextProperty =
-        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterTextBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -156,7 +167,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterTextBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -165,7 +176,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterTextBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
 
     public double BorderHeight
     {
@@ -174,7 +185,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterTextBox), new PropertyMetadata(default));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterNumberBox), new PropertyMetadata(default));
 
     public string HighlightAction
     {
@@ -183,7 +194,7 @@ public sealed partial class ParameterTextBox : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterTextBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterNumberBox), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {
@@ -196,12 +207,16 @@ public sealed partial class ParameterTextBox : UserControl
 
     private void SetBorderHeight()
     {
-        var controlHeight = cdp_Liftparameter.ActualHeight;
+        var controlHeight = cdp_NumberLiftparameter.ActualHeight;
         if (string.IsNullOrEmpty(Header))
         {
             if (controlHeight > 8d)
             {
                 BorderHeight = controlHeight - 8d;
+            }
+            if (controlHeight == 32)
+            {
+                txb_Unit.Margin = new Thickness(0, 0, 5, 3);
             }
         }
         else
@@ -209,6 +224,10 @@ public sealed partial class ParameterTextBox : UserControl
             if (controlHeight > 24d)
             {
                 BorderHeight = controlHeight - 24d;
+            }
+            if (controlHeight == 51)
+            {
+                txb_Unit.Margin = new Thickness(0, 0, 5, 3);
             }
         }
     }
@@ -227,10 +246,10 @@ public sealed partial class ParameterTextBox : UserControl
 
     public void MoveFocus(Object sender, KeyRoutedEventArgs e)
     {
-        var ptx = sender as ParameterTextBox;
-        if (ptx is not null)
+        var pnx = sender as ParameterNumberTextBox;
+        if (pnx is not null)
         {
-            FindNextElementOptions fneo = new() { SearchRoot = ptx.XamlRoot.Content };
+            FindNextElementOptions fneo = new() { SearchRoot = pnx.XamlRoot.Content };
             _ = FocusManager.TryMoveFocus(FocusNavigationDirection.Next, fneo);
         }
     }

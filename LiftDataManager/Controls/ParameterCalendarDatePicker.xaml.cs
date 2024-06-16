@@ -48,7 +48,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty LiftParameterProperty =
-        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(LiftParameter), typeof(Parameter), typeof(ParameterCalendarDatePicker), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -89,7 +89,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultHeaderProperty =
-        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultHeader), typeof(bool), typeof(ParameterCalendarDatePicker), new PropertyMetadata(false));
 
     public string Header
     {
@@ -98,7 +98,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Header), typeof(string), typeof(ParameterCalendarDatePicker), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -107,7 +107,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterCalendarDatePicker), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -116,7 +116,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterCalendarDatePicker), new PropertyMetadata(string.Empty));
 
     public double BorderHeight
     {
@@ -125,7 +125,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty BorderHeightProperty =
-        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterComboBox), new PropertyMetadata(default));
+        DependencyProperty.Register(nameof(BorderHeight), typeof(double), typeof(ParameterCalendarDatePicker), new PropertyMetadata(default));
 
     public string HighlightAction
     {
@@ -134,7 +134,7 @@ public sealed partial class ParameterCalendarDatePicker : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterCalendarDatePicker), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {

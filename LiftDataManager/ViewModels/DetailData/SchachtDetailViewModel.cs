@@ -581,13 +581,33 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private void SetDefaultCarPosition()
+    {
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_AbstandKabineA"].Value))
+        {
+            ParameterDictionary["var_AbstandKabineA"].AutoUpdateParameterValue((ShaftDepth / 2).ToString());
+        }
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_AbstandKabineD"].Value))
+        {
+            ParameterDictionary["var_AbstandKabineD"].AutoUpdateParameterValue((ShaftWidth / 2).ToString());
+        }
+    }
+
+    private void GetDefaultCarData()
+    {
+
+    }
+
     private void SetCarFrameOffset(string? parameterName)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
         {
             return;
         }
-        
+
+        double carFrameOffsetY = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Versatz_Stichmass_Y");
+        double carOffsetY = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Versatz_Y");
+
         if (string.Equals(parameterName, "setup") || string.Equals(parameterName, "var_Versatz_Y") || string.Equals(parameterName, "var_MassD") ||
             string.Equals(parameterName, "var_Bausatzlage") || string.Equals(parameterName, "var_AbstandKabineA"))
         {
@@ -595,11 +615,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             if (CarFrameTyp is null)
                 return;
 
-            double carFrameOffsetY = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Versatz_Y");
-
             if (CarFrameTyp.CarFrameBaseTypeId == 1)
             {
                 string carFramePosition = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatzlage");
+                ParameterDictionary["var_Versatz_Stichmass_Y"].AutoUpdateParameterValue("0");
                 switch (carFramePosition)
                 {
                     case "A" or "C":
@@ -621,14 +640,15 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 if (string.Equals(parameterName, "var_MassD"))
                 {
                     double carFrameOffsetWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_MassD");
-                    ParameterDictionary["var_Versatz_Y"].AutoUpdateParameterValue((carFrameOffsetWallA - carOffsetWallA).ToString());
+                    ParameterDictionary["var_Versatz_Y"].AutoUpdateParameterValue((carFrameOffsetWallA - carOffsetWallA - carFrameOffsetY).ToString());
                 }
                 else
                 {
-                    ParameterDictionary["var_MassD"].AutoUpdateParameterValue(carFrameOffsetY == 0 ? carOffsetWallA.ToString() : (carOffsetWallA + carFrameOffsetY).ToString());
+                    ParameterDictionary["var_MassD"].AutoUpdateParameterValue(carOffsetY == 0 ? (carOffsetWallA + carFrameOffsetY).ToString() 
+                                                                                              : (carOffsetWallA + carFrameOffsetY + carOffsetY).ToString());
                 }
                 ShowCarFrameOffsetInfoHorizontal = false;
-                ShowCarFrameOffsetInfoVertikal = carFrameOffsetY != 0;
+                ShowCarFrameOffsetInfoVertikal = carOffsetY != 0;
                 IsCarFrameOffsetXEnabled = true;
             }
         }
@@ -654,6 +674,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
             CheckIsOpeningDirectionSelected();
             SetWallOpeningOffsets();
+            SetDefaultCarPosition();
+            GetDefaultCarData();
             SetCarFrameOffset("setup");
         }
     }

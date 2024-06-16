@@ -359,8 +359,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         float startCwtRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_HilfsschienenlaengeStartstueck");
         int carRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Anzahl_5m_Schienen");
         int cwtRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AnzahlHilfsschienenlaengeStueck");
-        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 600), -_shaftPitOffset);
-        SKPoint endPoint = new((float)(shaftDepth / 2 + 600), -_shaftPitOffset);
+        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(shaftDepth / 2 + 400), -_shaftPitOffset);
 
         SKPath cwtRailJointLine = new();
         cwtRailJointLine.MoveTo(startPoint);
@@ -501,12 +501,12 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             Color = SKColors.WhiteSmoke,
             IsAntialias = true,
             TextAlign = SKTextAlign.Center,
-            TextSize = 250,
+            TextSize = 25 * _stokeWith,
         };
 
-        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 600), -_shaftPitOffset);
-        SKPoint endPoint = new((float)(shaftDepth / 2 + 600), -_shaftPitOffset);
-        SKPoint centerBracketDescription = new(-(float)(shaftDepth / 2 + 250), -(_shaftPitOffset + 170));
+        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(shaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint centerBracketDescription = new(-(float)((shaftDepth / 2 + 300) - 15 * _stokeWith), -(_shaftPitOffset + 17 * _stokeWith));
         SKPath railBracketLine = new();
         railBracketLine.MoveTo(startPoint);
         railBracketLine.LineTo(endPoint);
@@ -519,7 +519,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 railBracketLine.Offset(0, -railBracket.Item1);
                 centerBracketDescription.Offset(0, -railBracket.Item1);
                 canvas.DrawPath(railBracketLine, railBracket.Item2 < 200 ? paintRailBracketLineWarning : paintRailBracketLine);
-                canvas.DrawCircle(centerBracketDescription, 150f, railBracket.Item2 < 200 ? paintRailBracketDescriptionWarning : paintRailBracketDescription);
+                canvas.DrawCircle(centerBracketDescription, 15f * _stokeWith, railBracket.Item2 < 200 ? paintRailBracketDescriptionWarning : paintRailBracketDescription);
                 SKRect textRect = new();
                 i ++;
                 string bracketDescriptionText = i.ToString();

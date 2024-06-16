@@ -6,7 +6,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 {
     public List<SpezifikationTyp>? SpezifikationTyps { get; set; }
     public int[] Years { get; set; } = Enumerable.Range(10, 20).ToArray();
-    public string[] Months { get; } = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+    public string[] Months { get; } = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 
     public SpezifikationsNumberControl()
     {

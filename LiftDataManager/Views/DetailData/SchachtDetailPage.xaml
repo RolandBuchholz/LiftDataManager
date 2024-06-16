@@ -510,8 +510,21 @@
                                     ReadOnly="True"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
+                                <SpeziControls:ParameterNumberBox
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="2"
+                                    Grid.Column="1"
+                                    IsEnabled="{x:Bind ViewModel.IsCarFrameOffsetXEnabled, Mode=OneWay}"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_X'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Row="3"
                                     Grid.Column="0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassD'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
@@ -539,22 +552,9 @@
                                     </ToolTipService.ToolTip>
                                 </SpeziControls:ParameterNumberTextBox>
                                 <SpeziControls:ParameterNumberTextBox
-                                    Grid.Row="2"
+                                    Grid.Row="3"
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassF'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
-                                    Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
-                                    Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    IsEnabled="{x:Bind ViewModel.IsCarFrameOffsetXEnabled, Mode=OneWay}"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_X'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
                             </Grid>

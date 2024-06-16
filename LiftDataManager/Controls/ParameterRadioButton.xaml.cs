@@ -47,7 +47,7 @@ public sealed partial class ParameterRadioButton : UserControl
         set => SetValue(LiftParameterProperty, value);
     }
 
-    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterComboBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty LiftParameterProperty = DependencyProperty.Register("LiftParameter", typeof(Parameter), typeof(ParameterRadioButton), new PropertyMetadata(null));
 
     private void SetParameterState(Parameter? liftParameter)
     {
@@ -88,7 +88,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty ReadOnlyProperty =
-        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ReadOnly), typeof(bool), typeof(ParameterRadioButton), new PropertyMetadata(false));
 
     public bool ShowDefaultRadioButtonContent
     {
@@ -97,7 +97,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty ShowDefaultRadioButtonContentProperty =
-        DependencyProperty.Register(nameof(ShowDefaultRadioButtonContent), typeof(bool), typeof(ParameterComboBox), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(ShowDefaultRadioButtonContent), typeof(bool), typeof(ParameterRadioButton), new PropertyMetadata(false));
 
     public string RadioButtonContent
     {
@@ -106,7 +106,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty RadioButtonContentProperty =
-        DependencyProperty.Register(nameof(RadioButtonContent), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(RadioButtonContent), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     public string PlaceholderText
     {
@@ -115,7 +115,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty PlaceholderTextProperty =
-        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(PlaceholderText), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     public string RadioButtonGroupName
     {
@@ -124,7 +124,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty RadioButtonGroupNameProperty =
-        DependencyProperty.Register(nameof(RadioButtonGroupName), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(RadioButtonGroupName), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     public string ErrorGlyph
     {
@@ -133,7 +133,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty ErrorGlyphProperty =
-        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorGlyph), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     public string ErrorType
     {
@@ -142,7 +142,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty ErrorTypeProperty =
-        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(ErrorType), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     public string HighlightAction
     {
@@ -151,7 +151,7 @@ public sealed partial class ParameterRadioButton : UserControl
     }
 
     public static readonly DependencyProperty HighlightActionProperty =
-        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterComboBox), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(HighlightAction), typeof(string), typeof(ParameterRadioButton), new PropertyMetadata(string.Empty));
 
     private void HighlightParameter_Click(object sender, RoutedEventArgs e)
     {
