@@ -3,6 +3,7 @@ using System;
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations
 {
     [DbContext(typeof(ParameterContext))]
-    partial class ParameterContextModelSnapshot : ModelSnapshot
+    [Migration("20240617052219_Add_GuideRailData")]
+    partial class Add_GuideRailData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
@@ -712,9 +715,6 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("CounterweightDGB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CounterweightDGBOffset")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("DriveTypeId")
                         .HasColumnType("INTEGER");
 
@@ -807,7 +807,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("ForgedClips")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("ForgedClipsForce")
@@ -818,10 +817,6 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<bool>("Machined")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<double>("ModulusOfResistanceX")
                         .HasColumnType("REAL");
@@ -850,7 +845,6 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("SlidingClips")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("SlidingClipsForce")

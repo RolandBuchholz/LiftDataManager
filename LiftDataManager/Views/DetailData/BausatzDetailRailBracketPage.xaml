@@ -3,11 +3,13 @@
     x:Class="LiftDataManager.Views.BausatzDetailRailBracketPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:AK="using:AK.Toolkit.WinUI3"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:format="using:Windows.Globalization.NumberFormatting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:skiasharp="using:SkiaSharp.Views.Windows"
@@ -20,6 +22,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <format:DecimalFormatter x:Key="DecimalFormatter" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -132,6 +135,8 @@
                                     <TextBox
                                         Grid.Column="0"
                                         HorizontalAlignment="Stretch"
+                                        ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                        ui:TextBoxExtensions.ValidationType="Decimal"
                                         Header="Förderhöhe"
                                         PlaceholderText="Förderhöhe"
                                         Text="{x:Bind ViewModel.ShaftTravel, Mode=TwoWay}"
@@ -180,6 +185,316 @@
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
                             </Grid>
+                            <Expander
+                                Margin="0,0,0,5"
+                                Padding="2"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Header="Detaileingaben für Schienenberechnung"
+                                Visibility="Visible">
+                                <Grid
+                                    Margin="0,0,0,5"
+                                    Padding="5"
+                                    Style="{ThemeResource GridCardPanel}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Führungsabstand FK"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.DistanceGuideShoesCarframe, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Führungsabstand GGW"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.DistanceGuideShoesCounterweight, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Schwerpunkt Kabine in X"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Text="{x:Bind ViewModel.CarCenterOfMassX, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Schwerpunkt Kabine in Y"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Text="{x:Bind ViewModel.CarCenterOfMassY, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Zusatzlast FK-Schiene"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Text="{x:Bind ViewModel.AdditionalRailForceCarframe, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="kg" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                            ui:TextBoxExtensions.ValidationType="Decimal"
+                                            Header="Zusatzlast GGW-Schiene"
+                                            Text="{x:Bind ViewModel.AdditionalRailForceCounterweight, Mode=TwoWay}"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="kg" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                            ui:TextBoxExtensions.ValidationType="Decimal"
+                                            Header="Gegengewichtstiefe"
+                                            Text="{x:Bind ViewModel.CounterweightDepth, Mode=TwoWay}"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                            ui:TextBoxExtensions.ValidationType="Decimal"
+                                            Header="Gegengewichtsbreite"
+                                            Text="{x:Bind ViewModel.CounterweightWidth, Mode=TwoWay}"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                            ui:TextBoxExtensions.ValidationType="Decimal"
+                                            Header="Durchbiegung Gebäude X"
+                                            Text="{x:Bind ViewModel.BuildingDeflectionX, Mode=TwoWay}"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                            ui:TextBoxExtensions.ValidationType="Decimal"
+                                            Header="Durchbiegung Gebäude Y"
+                                            Text="{x:Bind ViewModel.BuildingDeflectionY, Mode=TwoWay}"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="GGW-Aufhängungsversatz"
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.OffsetCounterweightSuspensionCenter, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="mm" />
+                                    </Grid>
+                                    <CheckBox
+                                        Grid.Row="6"
+                                        Grid.Column="0"
+                                        Margin="5,5,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Gleitklemmen"
+                                        IsChecked="{x:Bind ViewModel.HasSlidingClips, Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Anzahl Schienenklem. FK"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.CarframeBracketClipCount, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="Stk" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="7"
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <AK:NumberBoxEx
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            Header="Anzahl Schienenklem. GGW"
+                                            NumberHorizontalAlignment="Right"
+                                            Text="{x:Bind ViewModel.CounterweightBracketClipCount, Mode=TwoWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="5,0,0,3"
+                                            VerticalAlignment="Bottom"
+                                            Text="Stk" />
+                                    </Grid>
+                                </Grid>
+                            </Expander>
                             <Grid
                                 Margin="0,0,0,5"
                                 Padding="5"

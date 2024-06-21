@@ -2,6 +2,7 @@
     x:Class="LiftDataManager.Controls.ParameterNumberBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:AK="using:AK.Toolkit.WinUI3"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,12 +23,13 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <NumberBox
+        <AK:NumberBoxEx
             x:Name="cdp_NumberLiftparameter"
             Grid.Column="0"
             Margin="5,0,5,0"
             AcceptsExpression="True"
             Header="{x:Bind Header, Mode=OneWay}"
+            NumberHorizontalAlignment="Right"
             PlaceholderText="{x:Bind PlaceholderText}"
             SpinButtonPlacementMode="Compact"
             Text="{x:Bind LiftParameter.Value, Mode=TwoWay}"
@@ -45,7 +47,7 @@
             <NumberBox.ContextFlyout>
                 <TextCommandBarFlyout Opening="TextCommandBarFlyout_Opening" Placement="Bottom" />
             </NumberBox.ContextFlyout>
-        </NumberBox>
+        </AK:NumberBoxEx>
         <Border
             Grid.Column="0"
             Height="{x:Bind BorderHeight, Mode=OneWay}"

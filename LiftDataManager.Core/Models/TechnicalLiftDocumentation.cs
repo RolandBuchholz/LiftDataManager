@@ -10,7 +10,7 @@ namespace LiftDataManager.Models
 
         public TechnicalLiftDocumentation()
         {
-            Years = new List<int> { 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030 };
+            Years = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
             Months = Enum.GetValues(typeof(MonthGerman)).Cast<MonthGerman>().ToList();
             ProtectedSpacePits = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().ToList();
             ProtectedSpaceHeads = Enum.GetValues(typeof(ProtectedSpaceTyp)).Cast<ProtectedSpaceTyp>().Take(2).ToList();
@@ -250,5 +250,3 @@ namespace LiftDataManager.Models
         public string PropertyName { get; set; }
     }
 }
-
-

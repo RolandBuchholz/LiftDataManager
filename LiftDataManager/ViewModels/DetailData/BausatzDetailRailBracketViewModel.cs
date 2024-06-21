@@ -78,6 +78,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     public CarFrameType? CarFrameTyp { get; set; }
 
     [ObservableProperty]
+    private FrameCalculationData? frameCalculationData;
+
+    [ObservableProperty]
     private double viewBoxWidth;
 
     [ObservableProperty]
@@ -172,6 +175,161 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCustomRailBracketDistanceCommand))]
     private bool canAddCustomRailBracketDistance;
+
+    [ObservableProperty]
+    private double distanceGuideShoesCarframe;
+    partial void OnDistanceGuideShoesCarframeChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.DistanceGuideShoesCarframe = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double distanceGuideShoesCounterweight;
+    partial void OnDistanceGuideShoesCounterweightChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.DistanceGuideShoesCounterweight = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double carCenterOfMassX;
+    partial void OnCarCenterOfMassXChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CarCenterOfMassX = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double carCenterOfMassY;
+    partial void OnCarCenterOfMassYChanged(double value)
+
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CarCenterOfMassY = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double additionalRailForceCarframe;
+    partial void OnAdditionalRailForceCarframeChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.AdditionalRailForceCarframe = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double additionalRailForceCounterweight;
+    partial void OnAdditionalRailForceCounterweightChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.AdditionalRailForceCounterweight = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double counterweightDepth;
+    partial void OnCounterweightDepthChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CounterweightDepth = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double counterweightWidth;
+    partial void OnCounterweightWidthChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CounterweightWidth = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double offsetCounterweightSuspensionCenter;
+    partial void OnOffsetCounterweightSuspensionCenterChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.OffsetCounterweightSuspensionCenter = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private int carframeBracketClipCount = 2;
+    partial void OnCarframeBracketClipCountChanged(int value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CarframeBracketClipCount = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private int counterweightBracketClipCount = 2;
+    partial void OnCounterweightBracketClipCountChanged(int value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.CounterweightBracketClipCount = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private bool hasSlidingClips;
+    partial void OnHasSlidingClipsChanged(bool value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.HasSlidingClips = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double buildingDeflectionX;
+    partial void OnBuildingDeflectionXChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.BuildingDeflectionX = value;
+            UpdateFrameCalculationData();
+        }
+    }
+
+    [ObservableProperty]
+    private double buildingDeflectionY;
+    partial void OnBuildingDeflectionYChanged(double value)
+    {
+        if (FrameCalculationData is not null)
+        {
+            FrameCalculationData.BuildingDeflectionY = value;
+            UpdateFrameCalculationData();
+        }
+    }
 
     private void DrawShaftWall(SKCanvas canvas)
     {
@@ -341,19 +499,22 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         };
         canvas.DrawRect(carRailRightRect, paintCarRail);
 
-        SKRect cwtRailLeftRect = new()
+        if (cwtRailLength > 0)
         {
-            Size = new SKSize(cwtRailWidth, -cwtRailLength),
-            Location = new SKPoint(cwtRailLeftPosX - cwtRailWidth, posY)
-        };
-        canvas.DrawRect(cwtRailLeftRect, paintCwtRail);
+            SKRect cwtRailLeftRect = new()
+            {
+                Size = new SKSize(cwtRailWidth, -cwtRailLength),
+                Location = new SKPoint(cwtRailLeftPosX - cwtRailWidth, posY)
+            };
+            canvas.DrawRect(cwtRailLeftRect, paintCwtRail);
 
-        SKRect cwtRailRightRect = new()
-        {
-            Size = new SKSize(cwtRailWidth, -cwtRailLength),
-            Location = new SKPoint(cwtRailLRightPosX, posY)
-        };
-        canvas.DrawRect(cwtRailRightRect, paintCwtRail);
+            SKRect cwtRailRightRect = new()
+            {
+                Size = new SKSize(cwtRailWidth, -cwtRailLength),
+                Location = new SKPoint(cwtRailLRightPosX, posY)
+            };
+            canvas.DrawRect(cwtRailRightRect, paintCwtRail);
+        }
 
         float startCarRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Startschiene");
         float startCwtRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_HilfsschienenlaengeStartstueck");
@@ -365,13 +526,15 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         SKPath cwtRailJointLine = new();
         cwtRailJointLine.MoveTo(startPoint);
         cwtRailJointLine.LineTo(endPoint);
+        if (cwtRailLength > 0)
+        {
+            cwtRailJointLine.Offset(0, -startCwtRailLength);
+            canvas.DrawPath(cwtRailJointLine, paintCwtRailJointLine);
+        }
 
         SKPath carRailJointLine = new();
         carRailJointLine.MoveTo(startPoint);
         carRailJointLine.LineTo(endPoint);
-
-        cwtRailJointLine.Offset(0, -startCwtRailLength);
-        canvas.DrawPath(cwtRailJointLine, paintCwtRailJointLine);
         carRailJointLine.Offset(0, -startCarRailLength);
         canvas.DrawPath(carRailJointLine, paintCarRailJointLine);
 
@@ -404,13 +567,14 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         float shaftPitBracket = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_B1");
         int carRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Anzahl_5m_Schienen");
         int cwtRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AnzahlHilfsschienenlaengeStueck");
+        double cwtRailLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Hilfsschienenlaenge");
 
         DistanceCarRailjoint = Math.Abs(_startCarRailLength - shaftPitBracket);
-        DistanceCwtRailjoint = Math.Abs(_startCwtRailLength - shaftPitBracket);
+        DistanceCwtRailjoint = cwtRailLength > 0 ? Math.Abs(_startCwtRailLength - shaftPitBracket) : 0;
 
         var railBracketsDesignList = new List<(float, double)>
         {
-            (shaftPitBracket, Math.Min(DistanceCarRailjoint, DistanceCwtRailjoint))
+            (shaftPitBracket, cwtRailLength > 0 ? Math.Min(DistanceCarRailjoint, DistanceCwtRailjoint) : DistanceCarRailjoint)
         };
         var railBracketLevel = shaftPitBracket;
 
@@ -462,7 +626,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             }
         }
 
-        ErrorDistanceGuideRailBracket = DistanceCarRailjoint < 200 || DistanceCwtRailjoint < 200;
+        ErrorDistanceGuideRailBracket = cwtRailLength > 0 ? DistanceCarRailjoint < 200 || DistanceCwtRailjoint < 200 : DistanceCarRailjoint < 200;
 
         using var paintRailBracketLine = new SKPaint
         {
@@ -560,7 +724,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         //calculations
         DistanceCarRailShaftCeiling = ShaftHeight - carRailLength;
-        DistanceCWTRailShaftCeiling = ShaftHeight - cwtRailLength;
+        DistanceCWTRailShaftCeiling = cwtRailLength > 0 ? ShaftHeight - cwtRailLength : 0;
 
         var carRailData = CalculateRailData(carRailLength, _startCarRailLength, _carRailSplit, maxRailLength);
         var cwtRailData = CalculateRailData(cwtRailLength, _startCwtRailLength, _cwtRailSplit, maxRailLength);
@@ -591,7 +755,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 customrailbracketdistance += railbracket;
             }
             CarRailBracketDistanceLeft = carRailLength - firstRailBracket - customrailbracketdistance;
-            CwtRailBracketDistanceLeft = cwtRailLength - firstRailBracket - customrailbracketdistance;
+            CwtRailBracketDistanceLeft = cwtRailLength > 0 ? cwtRailLength - firstRailBracket - customrailbracketdistance : 0;
         }
         else
         {
@@ -602,7 +766,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                     RailBracketLevelCount = carRailLength >= cwtRailLength ? (int)Math.Floor(((carRailLength - firstRailBracket) / equallyBracketSpacing) + 1)
                                        : (int)Math.Floor(((cwtRailLength - firstRailBracket) / equallyBracketSpacing) + 1);
                     CarRailBracketDistanceLeft = carRailLength - firstRailBracket - (RailBracketLevelCount - 1) * equallyBracketSpacing;
-                    CwtRailBracketDistanceLeft = cwtRailLength - firstRailBracket - (RailBracketLevelCount - 1) * equallyBracketSpacing;
+                    CwtRailBracketDistanceLeft = cwtRailLength > 0 ? cwtRailLength - firstRailBracket - (RailBracketLevelCount - 1) * equallyBracketSpacing : 0;
                 }
                 else
                 {
@@ -637,11 +801,6 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         }
 
         railCount = Math.Floor((railLength - startRailLength) / railSplit);
-
-        if ((railLength - startRailLength) % railSplit == 0)
-        {
-            railCount --;
-        }
 
         if ((railLength - startRailLength) % railSplit == 0)
         {
@@ -779,6 +938,52 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         CanAddCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count < 19;
     }
 
+    private void UpdateFrameCalculationData()
+    {
+        FrameCalculationData ??= new FrameCalculationData();
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value))
+        {
+            FrameCalculationData.CarframeRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value))
+        {
+            FrameCalculationData.CarframeRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
+        }
+
+        if (FrameCalculationData != null)
+        {
+            ParameterDictionary["var_FrameCalculationData"].AutoUpdateParameterValue(JsonSerializer.Serialize(FrameCalculationData, _options).Replace("\r\n", "\n"));
+        }
+    }
+
+    private void RestoreFrameCalculationData()
+    {
+        var frameCalculation = ParameterDictionary["var_FrameCalculationData"].Value;
+        if (!string.IsNullOrWhiteSpace(frameCalculation))
+        {
+            var calculationData = JsonSerializer.Deserialize<FrameCalculationData>(frameCalculation);
+            if (calculationData is not null)
+            {
+                FrameCalculationData = calculationData;
+                distanceGuideShoesCarframe = FrameCalculationData.DistanceGuideShoesCarframe;
+                distanceGuideShoesCounterweight = FrameCalculationData.DistanceGuideShoesCounterweight;
+                carCenterOfMassX = FrameCalculationData.CarCenterOfMassX;
+                carCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
+                additionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
+                additionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
+                counterweightDepth = FrameCalculationData.CounterweightDepth;
+                counterweightWidth = FrameCalculationData.CounterweightWidth;
+                offsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
+                carframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
+                counterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
+                hasSlidingClips = FrameCalculationData.HasSlidingClips;
+                buildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
+                buildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
+            }
+        }
+        UpdateFrameCalculationData();
+    }
+
     [RelayCommand]
     private void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -879,11 +1084,13 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             GetCarFrameTyp();
+            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
             SetViewBoxDimensions();
             CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) && 
                                        !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
             FillListOfRailBrackets();
             CalculateDimensions();
+            RestoreFrameCalculationData();
         }   
     }
 

@@ -1146,6 +1146,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (availableFloorColors is not null)
         {
+            if (!availableFloorColors.Any())
+            {
+                ParameterDictionary["var_BodenbelagsTyp"].AutoUpdateParameterValue(string.Empty);
+            }
             UpdateDropDownList("var_BodenbelagsTyp", availableFloorColors);
             CheckListContainsValue(ParameterDictionary["var_BodenbelagsTyp"]);
         }

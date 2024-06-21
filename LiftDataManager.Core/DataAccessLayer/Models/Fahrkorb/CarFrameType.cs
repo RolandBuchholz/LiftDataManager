@@ -13,4 +13,5 @@ public class CarFrameType : BaseEntity
     public int CarFrameDGB { get; set; }
     public int CounterweightDGB { get; set; }
     public int CarFrameDGBOffset { get; set; }
+    public int CounterweightDGBOffset { get; set; }
 }

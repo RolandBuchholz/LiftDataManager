@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using Cogs.Collections;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
@@ -593,11 +594,6 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
-    private void GetDefaultCarData()
-    {
-
-    }
-
     private void SetCarFrameOffset(string? parameterName)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
@@ -675,8 +671,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             CheckIsOpeningDirectionSelected();
             SetWallOpeningOffsets();
             SetDefaultCarPosition();
-            GetDefaultCarData();
             SetCarFrameOffset("setup");
+            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
         }
     }
 
