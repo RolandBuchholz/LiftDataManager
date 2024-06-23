@@ -1237,19 +1237,31 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         string drivesystem = GetDriveSystem(lift);
 
         double cwtLoad;
+        double cwtFillingLoad;
+        double cwtFillingHeight;
 
         if (string.IsNullOrWhiteSpace(drivesystem) || string.Equals(drivesystem, "Hydraulik"))
         {
             cwtLoad = 0;
+            cwtFillingLoad = 0;
+            cwtFillingHeight = 0;
         }
         else
         {
             double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
             double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_F");
             double balance = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich");
+            double cwtWidth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Gegengewicht_Einlagenbreite");
+            double cwtDepth = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Gegengewicht_Einlagentiefe");
+            double cwtFrameWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGW_Rahmen_Gewicht");
             cwtLoad = Math.Round(load * balance + carWeight);
+            cwtFillingLoad = cwtLoad - cwtFrameWeight;
+            double fillingDensity = (cwtWidth * cwtDepth * 7.85d * 0.000001);
+            cwtFillingHeight = fillingDensity > 0 ? Math.Round(cwtFillingLoad / fillingDensity) : 0;
         }
         ParameterDictionary["var_Gegengewichtsmasse"].AutoUpdateParameterValue(Convert.ToString(cwtLoad));
+        ParameterDictionary["var_GGW_Fuellgewicht"].AutoUpdateParameterValue(Convert.ToString(cwtFillingLoad));
+        ParameterDictionary["var_GGW_Fuellhoehe"].AutoUpdateParameterValue(Convert.ToString(cwtFillingHeight));
     }
 
     private void ValidateProtectiveRailingSwitch(string name, string displayname, string? value, string? severity, string? optional = null)

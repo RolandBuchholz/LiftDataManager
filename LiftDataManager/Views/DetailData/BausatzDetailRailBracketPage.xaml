@@ -224,7 +224,13 @@
                                             Header="Führungsabstand FK"
                                             NumberFormatter="{StaticResource DecimalFormatter}"
                                             NumberHorizontalAlignment="Right"
-                                            Value="{x:Bind ViewModel.DistanceGuideShoesCarframe, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.DistanceGuideShoesCarframe, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -245,7 +251,13 @@
                                             Header="Führungsabstand GGW"
                                             NumberFormatter="{StaticResource DecimalFormatter}"
                                             NumberHorizontalAlignment="Right"
-                                            Value="{x:Bind ViewModel.DistanceGuideShoesCounterweight, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.DistanceGuideShoesCounterweight, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -266,7 +278,13 @@
                                             Header="Schwerpunkt Kabine in X"
                                             NumberFormatter="{StaticResource DecimalFormatter}"
                                             NumberHorizontalAlignment="Right"
-                                            Text="{x:Bind ViewModel.CarCenterOfMassX, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.CarCenterOfMassX, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -287,7 +305,13 @@
                                             Header="Schwerpunkt Kabine in Y"
                                             NumberFormatter="{StaticResource DecimalFormatter}"
                                             NumberHorizontalAlignment="Right"
-                                            Text="{x:Bind ViewModel.CarCenterOfMassY, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.CarCenterOfMassY, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -308,7 +332,13 @@
                                             Header="Zusatzlast FK-Schiene"
                                             NumberFormatter="{StaticResource DecimalFormatter}"
                                             NumberHorizontalAlignment="Right"
-                                            Text="{x:Bind ViewModel.AdditionalRailForceCarframe, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.AdditionalRailForceCarframe, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -323,64 +353,37 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="40" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBox
+                                        <AK:NumberBoxEx
                                             Grid.Column="0"
                                             HorizontalAlignment="Stretch"
-                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                            ui:TextBoxExtensions.ValidationType="Decimal"
                                             Header="Zusatzlast GGW-Schiene"
-                                            Text="{x:Bind ViewModel.AdditionalRailForceCounterweight, Mode=TwoWay}"
-                                            TextAlignment="Right" />
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.AdditionalRailForceCounterweight, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
                                             VerticalAlignment="Bottom"
                                             Text="kg" />
                                     </Grid>
-                                    <Grid
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Row="3"
                                         Grid.Column="0"
-                                        Margin="5,0,5,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="40" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Stretch"
-                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                            ui:TextBoxExtensions.ValidationType="Decimal"
-                                            Header="Gegengewichtstiefe"
-                                            Text="{x:Bind ViewModel.CounterweightDepth, Mode=TwoWay}"
-                                            TextAlignment="Right" />
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            Margin="5,0,0,3"
-                                            VerticalAlignment="Bottom"
-                                            Text="mm" />
-                                    </Grid>
-                                    <Grid
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagenbreite'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
+                                    <SpeziControls:ParameterNumberTextBox
                                         Grid.Row="3"
                                         Grid.Column="1"
-                                        Margin="5,0,5,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="40" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Stretch"
-                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                            ui:TextBoxExtensions.ValidationType="Decimal"
-                                            Header="Gegengewichtsbreite"
-                                            Text="{x:Bind ViewModel.CounterweightWidth, Mode=TwoWay}"
-                                            TextAlignment="Right" />
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            Margin="5,0,0,3"
-                                            VerticalAlignment="Bottom"
-                                            Text="mm" />
-                                    </Grid>
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagentiefe'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True"
+                                        Unit="mm" />
                                     <Grid
                                         Grid.Row="4"
                                         Grid.Column="0"
@@ -389,14 +392,19 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="40" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBox
+                                        <AK:NumberBoxEx
                                             Grid.Column="0"
                                             HorizontalAlignment="Stretch"
-                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                            ui:TextBoxExtensions.ValidationType="Decimal"
                                             Header="Durchbiegung Gebäude X"
-                                            Text="{x:Bind ViewModel.BuildingDeflectionX, Mode=TwoWay}"
-                                            TextAlignment="Right" />
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.BuildingDeflectionX, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -411,14 +419,19 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="40" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBox
+                                        <AK:NumberBoxEx
                                             Grid.Column="0"
                                             HorizontalAlignment="Stretch"
-                                            ui:TextBoxExtensions.ValidationMode="Dynamic"
-                                            ui:TextBoxExtensions.ValidationType="Decimal"
                                             Header="Durchbiegung Gebäude Y"
-                                            Text="{x:Bind ViewModel.BuildingDeflectionY, Mode=TwoWay}"
-                                            TextAlignment="Right" />
+                                            NumberFormatter="{StaticResource DecimalFormatter}"
+                                            NumberHorizontalAlignment="Right"
+                                            Value="{x:Bind ViewModel.BuildingDeflectionY, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -446,15 +459,8 @@
                                             VerticalAlignment="Bottom"
                                             Text="mm" />
                                     </Grid>
-                                    <CheckBox
-                                        Grid.Row="6"
-                                        Grid.Column="0"
-                                        Margin="5,5,5,0"
-                                        VerticalAlignment="Bottom"
-                                        Content="Gleitklemmen"
-                                        IsChecked="{x:Bind ViewModel.HasSlidingClips, Mode=TwoWay}" />
                                     <Grid
-                                        Grid.Row="7"
+                                        Grid.Row="6"
                                         Grid.Column="0"
                                         Margin="5,0,5,0">
                                         <Grid.ColumnDefinitions>
@@ -466,7 +472,13 @@
                                             HorizontalAlignment="Stretch"
                                             Header="Anzahl Schienenklem. FK"
                                             NumberHorizontalAlignment="Right"
-                                            Value="{x:Bind ViewModel.CarframeBracketClipCount, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.CarframeBracketClipCount, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
@@ -474,7 +486,7 @@
                                             Text="Stk" />
                                     </Grid>
                                     <Grid
-                                        Grid.Row="7"
+                                        Grid.Row="6"
                                         Grid.Column="1"
                                         Margin="5,0,5,0">
                                         <Grid.ColumnDefinitions>
@@ -486,13 +498,27 @@
                                             HorizontalAlignment="Stretch"
                                             Header="Anzahl Schienenklem. GGW"
                                             NumberHorizontalAlignment="Right"
-                                            Text="{x:Bind ViewModel.CounterweightBracketClipCount, Mode=TwoWay}" />
+                                            Value="{x:Bind ViewModel.CounterweightBracketClipCount, Mode=TwoWay}">
+                                            <NumberBox.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </NumberBox.HeaderTemplate>
+                                        </AK:NumberBoxEx>
                                         <TextBlock
                                             Grid.Column="1"
                                             Margin="5,0,0,3"
                                             VerticalAlignment="Bottom"
                                             Text="Stk" />
                                     </Grid>
+                                    <CheckBox
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Margin="5,5,5,0"
+                                        VerticalAlignment="Bottom"
+                                        Content="Gleitklemmen"
+                                        IsChecked="{x:Bind ViewModel.HasSlidingClips, Mode=TwoWay}" />
                                 </Grid>
                             </Expander>
                             <Grid

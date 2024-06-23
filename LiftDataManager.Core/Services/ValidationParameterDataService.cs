@@ -644,6 +644,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ValidationDictionary.Add("var_CFPdefiniert",
             [new(ValidateLayOutDrawingLoads, "None", null)]);
 
+        ValidationDictionary.Add("var_GGW_Rahmen_Gewicht",
+            [new(ValidateCounterweightMass, "None", null)]);
+
+        ValidationDictionary.Add("var_Gegengewicht_Einlagenbreite",
+            [new(ValidateCounterweightMass, "None", null)]);
+
+        ValidationDictionary.Add("var_Gegengewicht_Einlagentiefe",
+            [new(ValidateCounterweightMass, "None", null)]);
+
         AddDropDownListValidation();
     }
 

@@ -7,8 +7,8 @@ public class ParameterStateInfo
     public bool IsValid { get; set; }
     public string? ErrorMessage { get; set; }
     public ErrorLevel Severity { get; set; }
-    public bool HasDependentParameters => DependentParameter.Any();
-    public string[] DependentParameter { get; set; } = Array.Empty<string>();
+    public bool HasDependentParameters => DependentParameter.Length != 0;
+    public string[] DependentParameter { get; set; } = [];
 
     public ParameterStateInfo(string name, string displayname, bool isvalid)
     {

@@ -175,10 +175,11 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
-                                Grid.RowSpan="3"
+                                Grid.RowSpan="4"
                                 Grid.Column="0"
                                 Margin="10,0,0,0"
                                 VerticalAlignment="Center"
@@ -279,6 +280,8 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <SpeziControls:ParameterComboBox
                                     Grid.Column="0"
@@ -289,6 +292,52 @@
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuetzenmaterial'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="2"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGWNutzlastausgleich'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="3"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'], Mode=TwoWay}"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="True"
+                                    Unit="kg" />
+                            </Grid>
+                            <Grid Grid.Row="3" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagenbreite'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagentiefe'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="2"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="kg" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="3"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellgewicht'], Mode=TwoWay}"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="True"
+                                    Unit="kg" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="4"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellhoehe'], Mode=TwoWay}"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
                             </Grid>
                         </Grid>
                         <!--  Carframe RopeData  -->

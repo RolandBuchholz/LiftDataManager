@@ -48,6 +48,25 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             SetViewBoxDimensions();
         };
 
+        if (message.PropertyName == "var_Gegengewicht_Einlagenbreite" || message.PropertyName == "var_Gegengewicht_Einlagentiefe")
+        {
+            if (FrameCalculationData is not null)
+            {
+               if (double.TryParse(message.NewValue, out double cwtDimension))
+               {
+                    if (message.PropertyName == "var_Gegengewicht_Einlagenbreite")
+                    {
+                        FrameCalculationData.CounterweightWidth = cwtDimension;
+                    }
+                    else
+                    {
+                        FrameCalculationData.CounterweightDepth = cwtDimension;
+                    }
+                    UpdateFrameCalculationData();
+               }
+            }
+        };
+
         if (shaftDesignParameter.Contains(message.PropertyName))
         {
             CalculateDimensions();
@@ -239,28 +258,6 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         if (FrameCalculationData is not null)
         {
             FrameCalculationData.AdditionalRailForceCounterweight = value;
-            UpdateFrameCalculationData();
-        }
-    }
-
-    [ObservableProperty]
-    private double counterweightDepth;
-    partial void OnCounterweightDepthChanged(double value)
-    {
-        if (FrameCalculationData is not null)
-        {
-            FrameCalculationData.CounterweightDepth = value;
-            UpdateFrameCalculationData();
-        }
-    }
-
-    [ObservableProperty]
-    private double counterweightWidth;
-    partial void OnCounterweightWidthChanged(double value)
-    {
-        if (FrameCalculationData is not null)
-        {
-            FrameCalculationData.CounterweightWidth = value;
             UpdateFrameCalculationData();
         }
     }
@@ -940,14 +937,17 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     private void UpdateFrameCalculationData()
     {
-        FrameCalculationData ??= new FrameCalculationData();
+        if (FrameCalculationData is null)
+        {
+            return;
+        }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value))
         {
             FrameCalculationData.CarframeRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value))
         {
-            FrameCalculationData.CarframeRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
+            FrameCalculationData.CounterweightRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value!));
         }
 
         if (FrameCalculationData != null)
@@ -971,8 +971,6 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 carCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
                 additionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
                 additionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
-                counterweightDepth = FrameCalculationData.CounterweightDepth;
-                counterweightWidth = FrameCalculationData.CounterweightWidth;
                 offsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
                 carframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
                 counterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
@@ -980,6 +978,16 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 buildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
                 buildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
             }
+        }
+        FrameCalculationData ??= new FrameCalculationData();
+
+        if (double.TryParse(ParameterDictionary["var_Gegengewicht_Einlagenbreite"].Value, out double cwtWidth))
+        {
+            FrameCalculationData.CounterweightWidth = cwtWidth; 
+        }
+        if (double.TryParse(ParameterDictionary["var_Gegengewicht_Einlagentiefe"].Value, out double cwtDepth))
+        {
+            FrameCalculationData.CounterweightDepth = cwtDepth;
         }
         UpdateFrameCalculationData();
     }
