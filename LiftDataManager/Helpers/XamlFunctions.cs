@@ -8,6 +8,13 @@ public static class XamlFunctions
             : Visibility.Collapsed;
     }
 
+    public static Visibility FalseToVisible(bool value)
+    {
+        return value is false
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
     public static Visibility NotEmptyStringToVisible(string value)
     {
         return string.IsNullOrEmpty(value) is not true

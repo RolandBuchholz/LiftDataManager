@@ -472,7 +472,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         SKPoint startPoint = new();
         SKPoint endPoint = new();
 
-        if (carFrameTyp.CarFrameBaseType != null && carFrameTyp.CarFrameBaseType.Name == "Rucksack")
+        if (carFrameTyp.CarFrameBaseType != null && (carFrameTyp.CarFrameBaseTypeId == 1 || carFrameTyp.CarFrameBaseTypeId == 4))
         {
             switch (carFramePosition)
             {
@@ -611,7 +611,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             if (CarFrameTyp is null)
                 return;
 
-            if (CarFrameTyp.CarFrameBaseTypeId == 1)
+            if (CarFrameTyp.CarFrameBaseTypeId == 1 || CarFrameTyp.CarFrameBaseTypeId == 4)
             {
                 string carFramePosition = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bausatzlage");
                 ParameterDictionary["var_Versatz_Stichmass_Y"].AutoUpdateParameterValue("0");

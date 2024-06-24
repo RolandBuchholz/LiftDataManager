@@ -10,6 +10,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:format="using:Windows.Globalization.NumberFormatting"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:skiasharp="using:SkiaSharp.Views.Windows"
@@ -22,7 +23,7 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
-        <format:DecimalFormatter x:Key="DecimalFormatter" />
+        <format:DecimalFormatter x:Key="DecimalFormatter" FractionDigits="0" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -191,7 +192,7 @@
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 Header="Detaileingaben für Schienenberechnung"
-                                Visibility="Visible">
+                                Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(ViewModel.IsCFPControlled), Mode=OneWay}">
                                 <Grid
                                     Margin="0,0,0,5"
                                     Padding="5"

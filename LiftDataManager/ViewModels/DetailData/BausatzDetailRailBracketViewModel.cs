@@ -125,6 +125,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     private double shaftHeight;
 
     [ObservableProperty]
+    private bool isCFPControlled;
+
+    [ObservableProperty]
     private string cWTRailName = "Führungsschienen Gegengewicht";
 
     [ObservableProperty]
@@ -874,6 +877,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             CWTRailName = CarFrameTyp.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen Gegengewicht";
             CWTRailNameShaftCeilling = CarFrameTyp.DriveTypeId == 2 ? "Jochschiene Schachtdecke" : "Gegengewichtsschiene Schachtdecke";
+            IsCFPControlled = CarFrameTyp.IsCFPControlled;
         }
     }
 

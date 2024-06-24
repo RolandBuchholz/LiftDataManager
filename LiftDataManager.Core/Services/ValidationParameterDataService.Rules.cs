@@ -1632,7 +1632,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                                                                     .FirstOrDefault(x => x.Name == fangrahmenTyp);
             if (carFrameType is not null)
             {
-                centralLift = carFrameType.CarFrameBaseTypeId != 1;
+                centralLift = carFrameType.CarFrameBaseTypeId != 1 && carFrameType.CarFrameBaseTypeId != 4;
             }
         }
 

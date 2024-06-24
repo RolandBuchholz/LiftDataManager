@@ -295,15 +295,20 @@
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="2"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGWNutzlastausgleich'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                    ShowDefaultHeader="True"
+                                    Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="3"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'], Mode=TwoWay}"
                                     ReadOnly="True"
                                     ShowDefaultHeader="True"
-                                    Unit="kg" />
+                                    Unit="kg"
+                                    Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                             </Grid>
-                            <Grid Grid.Row="3" Grid.Column="1">
+                            <Grid
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
@@ -345,7 +350,8 @@
                             Grid.Row="2"
                             Margin="0,0,0,5"
                             Padding="5"
-                            Style="{ThemeResource GridCardPanel}">
+                            Style="{ThemeResource GridCardPanel}"
+                            Visibility="{x:Bind ViewModel.HasRopes, Mode=OneWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition />

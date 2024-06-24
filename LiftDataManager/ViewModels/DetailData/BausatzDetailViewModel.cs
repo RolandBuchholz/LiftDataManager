@@ -160,6 +160,9 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private bool isCantilever;
 
     [ObservableProperty]
+    private bool hasRopes;
+
+    [ObservableProperty]
     private int selectedEulerCaseCarFrame = 1;
     partial void OnSelectedEulerCaseCarFrameChanged(int value)
     {
@@ -238,7 +241,8 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         if (carFrameType is null)
             return;
         IsRopedrive = carFrameType.DriveTypeId == 1;
-        IsCantilever = carFrameType.CarFrameBaseTypeId == 1;
+        IsCantilever = carFrameType.CarFrameBaseTypeId == 1 || carFrameType.CarFrameBaseTypeId == 4;
+        HasRopes = carFrameType.DriveTypeId == 1 || carFrameType.CarFrameBaseTypeId == 4 || carFrameType.CarFrameBaseTypeId == 6;
         CarFrameDescription = $"{carFrameType.DriveType?.Name} - {carFrameType.CarFrameBaseType?.Name}";
         IsCFPFrame = carFrameType.IsCFPControlled;
         CWTDGBName = IsRopedrive ? "Stichmaß GGW" : "Stichmaß Joch";
@@ -311,41 +315,44 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void RestoreRopeCalculationData()
     {
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_RopeCalculationData"].Value))
+        if (HasRopes)
         {
-            try
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_RopeCalculationData"].Value))
             {
-              var  tempRopeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
-                if (tempRopeCalculationData != null)
+                try
                 {
-                    ropeDiameter = tempRopeCalculationData.RopeDiameter;
-                    wireStrength = tempRopeCalculationData.WireStrength;
-                    maximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
-                    ropeWeight = tempRopeCalculationData.RopeWeight;
+                    var tempRopeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
+                    if (tempRopeCalculationData != null)
+                    {
+                        ropeDiameter = tempRopeCalculationData.RopeDiameter;
+                        wireStrength = tempRopeCalculationData.WireStrength;
+                        maximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
+                        ropeWeight = tempRopeCalculationData.RopeWeight;
+                    }
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(60202, "Restore ropecalculationdata failed");
                 }
             }
-            catch (Exception)
+
+            string ropeDescription = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tragseiltyp");
+            int numberOfRopes = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_NumberOfRopes");
+            int minimumBreakingStrength = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Mindestbruchlast");
+            double ropeLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_RopeLength");
+            RopeCalculationData = new RopeCalculationData()
             {
-                _logger.LogWarning(60202, "Restore ropecalculationdata failed");
-            }
+                RopeDescription = ropeDescription,
+                RopeDiameter = RopeDiameter,
+                WireStrength = WireStrength,
+                MaximumNumberOfRopes = MaximumNumberOfRopes,
+                RopeWeight = RopeWeight,
+                NumberOfRopes = numberOfRopes,
+                MinimumBreakingStrength = minimumBreakingStrength,
+                RopeLength = ropeLength
+            };
+            UpdateRopeCalculationData();
         }
-        
-        string ropeDescription = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tragseiltyp");
-        int numberOfRopes = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_NumberOfRopes");
-        int minimumBreakingStrength = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Mindestbruchlast");
-        double ropeLength = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_RopeLength");
-        RopeCalculationData = new RopeCalculationData()
-        {
-            RopeDescription = ropeDescription,
-            RopeDiameter = RopeDiameter,
-            WireStrength = WireStrength,
-            MaximumNumberOfRopes = MaximumNumberOfRopes,
-            RopeWeight = RopeWeight,
-            NumberOfRopes = numberOfRopes,
-            MinimumBreakingStrength = minimumBreakingStrength,
-            RopeLength = ropeLength
-        };
-        UpdateRopeCalculationData();
     }
 
     private void GetPufferDetailData()
@@ -370,7 +377,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
-    private void SetBufferVisibility()
+    private void SetDetailDataVisibility()
     {
         ShowCounterWeightBuffer = IsRopedrive;
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Ersatzmassnahmen"].Value))
@@ -415,6 +422,8 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         {
             ParameterDictionary["var_PufferCalculationData_EM_SG"].AutoUpdateParameterValue(string.Empty);
         }
+
+
     }
 
     private void UpdateRopeCalculationData()
@@ -436,7 +445,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         RestorePufferCalculationData();
         RestoreRopeCalculationData();
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
-        SetBufferVisibility();
+        SetDetailDataVisibility();
         GetPufferDetailData();
     }
 
