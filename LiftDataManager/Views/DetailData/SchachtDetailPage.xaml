@@ -498,11 +498,20 @@
                                     FontWeight="Bold"
                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                     Text="Bausatzdaten" />
-                                <SpeziControls:ParameterComboBox
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatzlage'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                <Grid Grid.Row="1" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bausatzlage'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Spiegelbildlich'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                </Grid>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"
@@ -516,14 +525,14 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Y'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterNumberBox
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     IsEnabled="{x:Bind ViewModel.IsCarFrameOffsetXEnabled, Mode=OneWay}"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_X'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterNumberBox
                                     Grid.Row="3"
                                     Grid.Column="0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassD'], Mode=TwoWay}"
@@ -550,10 +559,11 @@
                                             <Image Margin="5" Source="/Images/CarFrameDetails/CentralLift_MassD.png" />
                                         </StackPanel>
                                     </ToolTipService.ToolTip>
-                                </SpeziControls:ParameterNumberTextBox>
-                                <SpeziControls:ParameterNumberTextBox
+                                </SpeziControls:ParameterNumberBox>
+                                <SpeziControls:ParameterNumberBox
                                     Grid.Row="3"
                                     Grid.Column="1"
+                                    IsEnabled="{x:Bind ViewModel.IsFrameToCarOffsetEnabled, Mode=OneTime}"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_MassF'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
@@ -595,14 +605,14 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KTI'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterNumberBox
                                     Grid.Row="2"
                                     Grid.Column="0"
                                     Margin="0,5,5,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AbstandKabineA'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
-                                <SpeziControls:ParameterNumberTextBox
+                                <SpeziControls:ParameterNumberBox
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,5,5,0"

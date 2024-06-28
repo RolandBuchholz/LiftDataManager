@@ -169,5 +169,12 @@ public class LiftParameterHelper
                 parameterDictionary["var_Versatz_Gegengewicht_Stichmass"].AutoUpdateParameterValue(carFrameTyp.CounterweightDGBOffset.ToString());
             }
         }
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].Value))
+        {
+            if (carFrameTyp.CarFrametoCWTDGBOffset != 0)
+            {
+                parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].AutoUpdateParameterValue(carFrameTyp.CarFrametoCWTDGBOffset.ToString());
+            }
+        }
     }
 }

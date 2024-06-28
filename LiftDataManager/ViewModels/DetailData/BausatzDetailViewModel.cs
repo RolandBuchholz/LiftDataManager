@@ -68,7 +68,10 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         _ = SetModelStateAsync();
     }
 
-    public string CarFrameTyp => string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value) ? "Kein Bausatz gewählt" : ParameterDictionary["var_Bausatz"].Value!;
+    public CarFrameType? CarFrameTyp { get; set; }
+
+    [ObservableProperty]
+    private string carFrameTypName = "Kein Bausatz gewählt";
 
     [ObservableProperty]
     private double ropeDiameter = 0d;
@@ -232,32 +235,39 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void CheckCFPState()
     {
-        var fangrahmenTyp = ParameterDictionary!["var_Bausatz"].Value;
-        if (string.IsNullOrWhiteSpace(fangrahmenTyp))
+        var carframe = ParameterDictionary!["var_Bausatz"].Value;
+        if (!string.IsNullOrWhiteSpace(carframe))
+        {
+            CarFrameTyp = _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
+                                                        .Include(i => i.DriveType)
+                                                        .FirstOrDefault(x => x.Name == carframe);
+        }
+
+        if (CarFrameTyp is null)
+        {
             return;
-        var carFrameType = _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
-                                                                .Include(i => i.DriveType)
-                                                                .FirstOrDefault(x => x.Name == fangrahmenTyp);
-        if (carFrameType is null)
-            return;
-        IsRopedrive = carFrameType.DriveTypeId == 1;
-        IsCantilever = carFrameType.CarFrameBaseTypeId == 1 || carFrameType.CarFrameBaseTypeId == 4;
-        HasRopes = carFrameType.DriveTypeId == 1 || carFrameType.CarFrameBaseTypeId == 4 || carFrameType.CarFrameBaseTypeId == 6;
-        CarFrameDescription = $"{carFrameType.DriveType?.Name} - {carFrameType.CarFrameBaseType?.Name}";
-        IsCFPFrame = carFrameType.IsCFPControlled;
+        }
+
+        CarFrameTypName = CarFrameTyp.Name;
+        IsRopedrive = CarFrameTyp.DriveTypeId == 1;
+        IsCantilever = CarFrameTyp.CarFrameBaseTypeId == 1 || CarFrameTyp.CarFrameBaseTypeId == 4;
+        HasRopes = CarFrameTyp.DriveTypeId == 1 || CarFrameTyp.CarFrameBaseTypeId == 4 || CarFrameTyp.CarFrameBaseTypeId == 6;
+        CarFrameDescription = $"{CarFrameTyp.DriveType?.Name} - {CarFrameTyp.CarFrameBaseType?.Name}";
+        IsCFPFrame = CarFrameTyp.IsCFPControlled;
         CWTDGBName = IsRopedrive ? "Stichmaß GGW" : "Stichmaß Joch";
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))
+            {
                 return;
-
+            }
             var basePath = Path.GetDirectoryName(FullPathXml);
             if (string.IsNullOrWhiteSpace(basePath))
+            {
                 return;
-
+            }
             var calculationsPath = Path.Combine(basePath, "Berechnungen");
-
             if (Directory.Exists(calculationsPath))
             {
                 var calculations = Directory.EnumerateFiles(calculationsPath);
@@ -447,6 +457,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
         SetDetailDataVisibility();
         GetPufferDetailData();
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
     }
 
     public void OnNavigatedFrom()
