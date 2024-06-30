@@ -1,9 +1,12 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
@@ -435,7 +438,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             Style = SKPaintStyle.Fill,
         };
 
-        using var paintCarStoke = new SKPaint
+        using var paintOutline = new SKPaint
         {
             Color = SKColors.Black,
             IsAntialias = true,
@@ -443,7 +446,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             Style = SKPaintStyle.Stroke
         };
         canvas.DrawPath(liftCar, paintCar);
-        canvas.DrawPath(liftCar, paintCarStoke);
+        canvas.DrawPath(liftCar, paintOutline);
 
         using var paintCarMidLine = new SKPaint
         {
@@ -456,6 +459,89 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         };
         canvas.DrawPath(midLineCarHorizontal, paintCarMidLine);
         canvas.DrawPath(midLineCarVertical, paintCarMidLine);
+
+        //LiftDoors
+        string[] entrances = ["A", "B", "C", "D"];
+
+        foreach (var entrance in entrances)
+        {
+            if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{entrance}"))
+            {
+                continue;
+            }
+            string liftDoorGroupName = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, entrance == "A" ? "var_Tuerbezeichnung"
+                                                                                                                              : $"var_Tuerbezeichnung_{entrance}");
+            float carDoorWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, entrance == "A" ? "var_TB"
+                                                                                                                       : $"var_TB_{entrance}");
+            string doorOpening = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, entrance == "A" ? "var_Tueroeffnung"
+                                                                                                                        : $"var_Tueroeffnung_{entrance}");
+            if (string.IsNullOrWhiteSpace(liftDoorGroupName) || string.IsNullOrWhiteSpace(doorOpening) || carDoorWidth <= 0)
+            {
+                continue;
+            }
+
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoorGroupName);
+            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null)
+            {
+                continue;
+            }
+            var openingDirection = string.Empty;
+
+            if (liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 3)
+            {
+                openingDirection = "zentral";
+            }
+            else if (liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 2)
+            {
+                openingDirection = doorOpening switch
+                {
+                    "einseitig öffnend (rechts)" => "rechts",
+                    "einseitig öffnend (links)" => "links",
+                    _ => string.Empty
+                };
+            }
+
+            if (string.IsNullOrWhiteSpace(openingDirection))
+            {
+                continue;
+            }
+
+            float doorPositionX = 0;
+            float doorPositionY = 0;
+
+            switch (entrance)
+            {
+                case "A":
+                    doorPositionX = midLineCarVertical.Bounds.MidX + (float)carWidth * 0.5f - carR1 - carDoorWidthA * 0.5f;
+                    doorPositionY = midLineCarHorizontal.Bounds.MidY + (float)carDepth * 0.5f + carDoorMountingA;
+                    break;
+                case "B":
+                    doorPositionX = midLineCarVertical.Bounds.MidX + (float)carWidth * 0.5f + carDoorMountingB;
+                    doorPositionY = midLineCarHorizontal.Bounds.MidY - (float)carDepth * 0.5f + carR3 + carDoorWidthB * 0.5f;
+                    break;
+                case "C":
+                    doorPositionX = midLineCarVertical.Bounds.MidX - (float)carWidth * 0.5f + carR2 + carDoorWidthC * 0.5f;
+                    doorPositionY = midLineCarHorizontal.Bounds.MidY - (float)carDepth * 0.5f - carDoorMountingC;
+                    break;
+                case "D":
+                    doorPositionX = midLineCarVertical.Bounds.MidX - (float)carWidth * 0.5f - carDoorMountingD;
+                    doorPositionY = midLineCarHorizontal.Bounds.MidY + (float)carDepth * 0.5f - carR4 - carDoorWidthD * 0.5f;
+                    break;
+                default:
+                    return;
+            }
+
+            var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, liftDoorGroup.CarDoor, entrance, carDoorWidth, openingDirection);
+
+            using var paintCarDoor = new SKPaint
+            {
+                Color = SKColors.DarkOrchid,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill
+            };
+            canvas.DrawPath(carDoorPath.Item1, paintCarDoor);
+            canvas.DrawPath(carDoorPath.Item1, paintOutline);
+        }
     }
 
     private void DrawCarFrame(SKCanvas canvas)
