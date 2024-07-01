@@ -475,6 +475,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                                                                                        : $"var_TB_{entrance}");
             string doorOpening = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, entrance == "A" ? "var_Tueroeffnung"
                                                                                                                         : $"var_Tueroeffnung_{entrance}");
+            float crossbarDepth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KabTuerKaempferBreite{entrance}");
+
             if (string.IsNullOrWhiteSpace(liftDoorGroupName) || string.IsNullOrWhiteSpace(doorOpening) || carDoorWidth <= 0)
             {
                 continue;
@@ -531,11 +533,11 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     return;
             }
 
-            var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, liftDoorGroup.CarDoor, entrance, carDoorWidth, openingDirection);
+            var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, liftDoorGroup.CarDoor, entrance, carDoorWidth, openingDirection, crossbarDepth);
 
             using var paintCarDoor = new SKPaint
             {
-                Color = SKColors.DarkOrchid,
+                Color = SKColors.DarkSlateBlue,
                 IsAntialias = true,
                 Style = SKPaintStyle.Fill
             };
@@ -787,7 +789,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 {
                     SKRect counterWeightFilling = new()
                     {
-                        Size = carFramePosition == "B" || carFramePosition == "D" ? new SKSize(counterWeightWidth, counterWeightDepth) 
+                        Size = carFramePosition == "A" || carFramePosition == "C" ? new SKSize(counterWeightWidth, counterWeightDepth) 
                                                                                   : new SKSize(counterWeightDepth, counterWeightWidth) 
                     };
                     counterWeightFilling.Offset(-counterWeightFilling.MidX, -counterWeightFilling.MidY);

@@ -50,24 +50,27 @@ public static class SkiaSharpHelpers
         return rail;
     }
 
-    public static (SKPath, SKPath) CreateCarDoor(float x, float y, CarDoor carDoor, string entrance, float doorWidth, string openingDirection)
+    public static (SKPath, SKPath) CreateCarDoor(float x, float y, CarDoor carDoor, string entrance, float doorWidth, string openingDirection, float crossbarDepth)
     {
         var carDoorPath = new SKPath();
         var carDoorPanels = new SKPath();
+        float crossbarWithClosingSide = 50f;
+        float crossbarWithOpeningSide = 35f;
+
         if (openingDirection == "zentral")
         {
-            carDoorPath.RMoveTo(doorWidth * 0.5f, 0);
-            carDoorPath.RLineTo(0, -(float)carDoor.SillWidth);
-            carDoorPath.RLineTo(-doorWidth * 1.5f, 0);
-            carDoorPath.RLineTo(0, (float)carDoor.SillWidth);
+            carDoorPath.RMoveTo(doorWidth + crossbarWithOpeningSide, 0);
+            carDoorPath.RLineTo(0, -(float)crossbarDepth);
+            carDoorPath.RLineTo(-(doorWidth + crossbarWithOpeningSide) * 2f, 0);
+            carDoorPath.RLineTo(0, (float)crossbarDepth);
             carDoorPath.Close();
         }
         else
         {
-            carDoorPath.RMoveTo(doorWidth * 0.5f, 0);
-            carDoorPath.RLineTo(0, -(float)carDoor.SillWidth);
-            carDoorPath.RLineTo(-doorWidth * 1.5f, 0);
-            carDoorPath.RLineTo(0, (float)carDoor.SillWidth);
+            carDoorPath.RMoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
+            carDoorPath.RLineTo(0, - crossbarDepth);
+            carDoorPath.RLineTo(-doorWidth * 1.5f + crossbarWithClosingSide + crossbarWithOpeningSide, 0);
+            carDoorPath.RLineTo(0, crossbarDepth);
             carDoorPath.Close();
             if (openingDirection == "rechts")
             {
