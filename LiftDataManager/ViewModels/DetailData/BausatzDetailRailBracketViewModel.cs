@@ -75,6 +75,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if (railBracketDistancesParameter.Contains(message.PropertyName))
         {
+            Thread.Sleep(50);
             OrderListOfRailBrackets(message.NewValue, message.PropertyName);
             CalculateDimensions();
             RefreshView();
@@ -924,15 +925,15 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         }
         else
         {
-           if (!ActiveCustomRailBracketDistances.Any(p => p.Name == name))
-           {
+            if (!ActiveCustomRailBracketDistances.Any(p => p.Name == name))
+            {
                 var railBracket = ListOfCustomRailBracketDistances.FirstOrDefault(p => p.Name == name);
                 if (railBracket is not null && !string.IsNullOrWhiteSpace(value))
                 {
                     railBracket.Value = value;
                     ActiveCustomRailBracketDistances.Add(railBracket);
                 }
-           }
+            }
         }
 
         CanRemoveCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count > 0;

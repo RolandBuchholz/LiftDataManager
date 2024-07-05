@@ -56,25 +56,79 @@ public static class SkiaSharpHelpers
         var carDoorPanels = new SKPath();
         float crossbarWithClosingSide = 50f;
         float crossbarWithOpeningSide = 35f;
+        float doorDimensionWidth;
+        float doorDimensionDepth;
 
         if (openingDirection == "zentral")
         {
-            carDoorPath.RMoveTo(doorWidth + crossbarWithOpeningSide, 0);
-            carDoorPath.RLineTo(0, -(float)crossbarDepth);
-            carDoorPath.RLineTo(-(doorWidth + crossbarWithOpeningSide) * 2f, 0);
-            carDoorPath.RLineTo(0, (float)crossbarDepth);
+            doorDimensionWidth = carDoor.DoorPanelCount switch
+            {
+                6 => doorWidth * 1.33f + crossbarWithOpeningSide * 2f,
+                4 => doorWidth * 1.5f + crossbarWithOpeningSide * 2f,
+                2 => (doorWidth + crossbarWithOpeningSide) * 2f,
+                _ => 0f
+            };
+
+            doorDimensionDepth = (float)crossbarDepth;
+            carDoorPath.MoveTo(doorDimensionWidth * 0.5f, 0);
+            carDoorPath.RLineTo(0, - doorDimensionDepth);
+            carDoorPath.RLineTo(- doorDimensionWidth, 0);
+            carDoorPath.RLineTo(0, doorDimensionDepth);
             carDoorPath.Close();
+
+            carDoorPanels.MoveTo(doorDimensionWidth * 0.5f, 0f);
+            carDoorPanels.RLineTo(0f, - (doorDimensionDepth + 3f));
+            carDoorPanels.RLineTo(- 41f, 0f);
+            carDoorPanels.RLineTo(0f, 3f);
+            carDoorPanels.RLineTo(38f, 0f);
+            carDoorPanels.RLineTo(0f, doorDimensionDepth + 3f);
+            carDoorPanels.Close();
+            carDoorPanels.MoveTo(-doorDimensionWidth * 0.5f, 0f);
+            carDoorPanels.RLineTo(0f, -(doorDimensionDepth + 3f));
+            carDoorPanels.RLineTo(41f, 0f);
+            carDoorPanels.RLineTo(0f, 3f);
+            carDoorPanels.RLineTo(-38f, 0f);
+            carDoorPanels.RLineTo(0f, doorDimensionDepth + 3f);
+            carDoorPanels.Close();
+
+            //carDoorPanels.AddRect();
         }
         else
         {
-            carDoorPath.RMoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
-            carDoorPath.RLineTo(0, - crossbarDepth);
-            carDoorPath.RLineTo(-doorWidth * 1.5f + crossbarWithClosingSide + crossbarWithOpeningSide, 0);
-            carDoorPath.RLineTo(0, crossbarDepth);
+            doorDimensionWidth = carDoor.DoorPanelCount switch
+            {
+                3 => doorWidth * 1.33f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                2 => doorWidth * 1.5f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                1 => doorWidth * 2f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                _ => 0f
+            };
+
+            doorDimensionDepth = (float)crossbarDepth;
+            carDoorPath.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
+            carDoorPath.RLineTo(0, - doorDimensionDepth);
+            carDoorPath.RLineTo(- doorDimensionWidth, 0);
+            carDoorPath.RLineTo(0, doorDimensionDepth);
             carDoorPath.Close();
+
+            carDoorPanels.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0f);
+            carDoorPanels.RLineTo(0f, -(doorDimensionDepth + 3f));
+            carDoorPanels.RLineTo(-41f, 0f);
+            carDoorPanels.RLineTo(0f, 3f);
+            carDoorPanels.RLineTo(38f, 0f);
+            carDoorPanels.RLineTo(0f, doorDimensionDepth + 3f);
+            carDoorPanels.Close();
+            carDoorPanels.RMoveTo(- doorDimensionWidth, 0f);
+            carDoorPanels.RLineTo(0f, -(doorDimensionDepth + 3f));
+            carDoorPanels.RLineTo(41f, 0f);
+            carDoorPanels.RLineTo(0f, 3f);
+            carDoorPanels.RLineTo(-38f, 0f);
+            carDoorPanels.RLineTo(0f, doorDimensionDepth + 3f);
+            carDoorPanels.Close();
+
             if (openingDirection == "rechts")
             {
                 carDoorPath.Transform(SKMatrix.CreateScale(-1f,1f));
+                carDoorPanels.Transform(SKMatrix.CreateScale(-1f, 1f));
             }
         }
 
@@ -90,6 +144,7 @@ public static class SkiaSharpHelpers
         carDoorPanels.Transform(SKMatrix.CreateRotationDegrees(degree));
 
         carDoorPath.Transform(SKMatrix.CreateTranslation(x, y));
+        carDoorPanels.Transform(SKMatrix.CreateTranslation(x, y));
         return (carDoorPath, carDoorPanels);
     }
 }

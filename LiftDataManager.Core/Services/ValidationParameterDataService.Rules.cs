@@ -1624,28 +1624,35 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
         ParameterDictionary["var_Durchladung"].AutoUpdateParameterValue(zugangA && zugangC || zugangB && zugangD ? "True" : "False");
 
-        var fangrahmenTyp = ParameterDictionary["var_Bausatz"].Value;
-        bool centralLift = false;
-        if (!string.IsNullOrWhiteSpace(fangrahmenTyp))
-        {
-            var carFrameType = _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
-                                                                    .FirstOrDefault(x => x.Name == fangrahmenTyp);
-            if (carFrameType is not null)
-            {
-                centralLift = carFrameType.CarFrameBaseTypeId != 1 && carFrameType.CarFrameBaseTypeId != 4;
-            }
-        }
-
         var availableCarFramePositions = new List<string>();
         if (!zugangA)
+        {
             availableCarFramePositions.Add("A");
+        }    
         if (!zugangB)
+        {
             availableCarFramePositions.Add("B");
-        if (!zugangC && !centralLift)
-            availableCarFramePositions.Add("C");
+        }  
+        if (!zugangC)
+        {
+            var carFrame = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
+            if (carFrame != null)
+            {
+                if (carFrame.CarFrameBaseTypeId == 1 || carFrame.CarFrameBaseTypeId == 4 || carFrame.CarFrameBaseTypeId == 2)
+                {
+                    availableCarFramePositions.Add("C");
+                }
+            }
+            else
+            {
+                availableCarFramePositions.Add("C");
+            }
+        }
         if (!zugangD)
+        {
             availableCarFramePositions.Add("D");
-
+        }
+            
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 
         var carFramePosition = ParameterDictionary["var_Bausatzlage"].Value;
