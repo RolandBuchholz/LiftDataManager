@@ -457,6 +457,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         canvas.DrawPath(midLineCarVertical, paintCarMidLine);
 
         //LiftDoors
+        string liftDoortyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
         string[] entrances = ["A", "B", "C", "D"];
 
         foreach (var entrance in entrances)
@@ -478,7 +479,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 continue;
             }
 
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoorGroupName);
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>()
+                                                                      .Include(i => i.CarDoor)
+                                                                      .Include(i => i.ShaftDoor)
+                                                                      .FirstOrDefault(x => x.Name == liftDoorGroupName);
             if (liftDoorGroup is null || liftDoorGroup.CarDoor is null)
             {
                 continue;
@@ -530,24 +534,28 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             }
 
             var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, liftDoorGroup.CarDoor, entrance, carDoorWidth, openingDirection, crossbarDepth);
-
-            using var paintCarDoor = new SKPaint
+            var shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, liftDoorGroup.ShaftDoor, entrance, carDoorWidth, openingDirection, liftDoortyp);
+            using var paintDoor = new SKPaint
             {
                 Color = SKColors.MediumSlateBlue,
                 IsAntialias = true,
                 Style = SKPaintStyle.Fill
             };
-            canvas.DrawPath(carDoorPath.Item1, paintCarDoor);
+            canvas.DrawPath(carDoorPath.Item1, paintDoor);
             canvas.DrawPath(carDoorPath.Item1, paintOutline);
+            canvas.DrawPath(shaftDoorPath.Item1, paintDoor);
+            canvas.DrawPath(shaftDoorPath.Item1, paintOutline);
 
-            using var paintCarDoorPanels = new SKPaint
+            using var paintDoorPanels = new SKPaint
             {
-                Color = SKColors.Black,
+                Color = SKColors.BlueViolet,
                 IsAntialias = true,
                 Style = SKPaintStyle.Fill
             };
-            canvas.DrawPath(carDoorPath.Item2, paintCarDoorPanels);
+            canvas.DrawPath(carDoorPath.Item2, paintDoorPanels);
             canvas.DrawPath(carDoorPath.Item2, paintOutline);
+            canvas.DrawPath(shaftDoorPath.Item2, paintDoorPanels);
+            canvas.DrawPath(shaftDoorPath.Item2, paintOutline);
         }
     }
 

@@ -75,7 +75,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if (railBracketDistancesParameter.Contains(message.PropertyName))
         {
+            //Workaround for ActiveCustomRailBracketDistances.Clear();
             Thread.Sleep(50);
+            //Workaround for ActiveCustomRailBracketDistances.Clear();
             OrderListOfRailBrackets(message.NewValue, message.PropertyName);
             CalculateDimensions();
             RefreshView();
