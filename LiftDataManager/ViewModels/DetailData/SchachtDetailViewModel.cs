@@ -701,10 +701,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
                     break;
                 case "C":
-                    startPointDGB.X = -(float)(shaftWidth + 600) / 2;
-                    startPointDGB.Y = -(float)shaftDepth / 2 + carDimensionD - carFrameOffsetY;
-                    endPointDGB.X = (float)(shaftWidth + 600) / 2;
-                    endPointDGB.Y = -(float)shaftDepth / 2 + carDimensionD - carFrameOffsetY;
+                    startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
+                    endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
                     startPointMidDGB.Y = startPointDGB.Y - 100f;
                     endPointMidDGB.Y = endPointDGB.Y + 100f;
                     startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;

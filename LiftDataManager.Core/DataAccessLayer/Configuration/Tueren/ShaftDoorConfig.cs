@@ -14,6 +14,11 @@ public class ShaftDoorConfig : BaseModelBuilder<ShaftDoor>
                .HasMaxLength(30)
                .IsRequired();
         builder.Property(x => x.DoorPanelCount);
+        builder.Property(x => x.SillWidth);
+        builder.Property(x => x.DoorPanelWidth);
+        builder.Property(x => x.DoorPanelSpace);
+        builder.Property(x => x.DefaultFrameWidth);
+        builder.Property(x => x.DefaultFrameDepth);
         builder.Property(x => x.LiftDoorOpeningDirectionId);
         builder.Property(x => x.TypeExaminationCertificateId);
         builder.HasMany(t => t.LiftDoorGroups)

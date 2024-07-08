@@ -1,6 +1,8 @@
-﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+﻿using CommunityToolkit.WinUI.Controls;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using SkiaSharp;
+using System.Drawing;
 
 namespace LiftDataManager.Helpers;
 public static class SkiaSharpHelpers
@@ -177,83 +179,86 @@ public static class SkiaSharpHelpers
             };
             
             shaftDoorPath.MoveTo(doorDimensionWidth * 0.5f, 0);
-            //shaftDoorPath.RLineTo(0, (float)shaftDoor.SillWidth);
-            shaftDoorPath.RLineTo(0, 93f);
+            shaftDoorPath.RLineTo(0, (float)shaftDoor.SillWidth + 4f);
             shaftDoorPath.RLineTo(-doorDimensionWidth, 0);
-            //shaftDoorPath.RLineTo(0, -(float)shaftDoor.SillWidth);
-            shaftDoorPath.RLineTo(0, -93f);
+            shaftDoorPath.RLineTo(0, -((float)shaftDoor.SillWidth + 4f));
             shaftDoorPath.Close();
-            //shaftDoorPath.AddPath(DrawCentralDoorPanelPath(doorWidth, (float)shaftDoor.DoorPanelWidth, (float)shaftDoor.DoorPanelSpace, shaftDoor.DoorPanelCount, true));
-            shaftDoorPanels.AddPath(DrawCentralDoorPanelPath(doorWidth, 36f, 2f, shaftDoor.DoorPanelCount, true));
-
-            switch (installationType)
-            {
-                case"":
-                default:
-                    break;
-            }
+            shaftDoorPanels.AddPath(DrawCentralDoorPanelPath(doorWidth, (float)shaftDoor.DoorPanelWidth, (float)shaftDoor.DoorPanelSpace, shaftDoor.DoorPanelCount, true));
         }
         else
         {
-            //    doorDimensionWidth = carDoor.DoorPanelCount switch
-            //    {
-            //        3 => doorWidth * 1.33f + crossbarWithClosingSide + crossbarWithOpeningSide,
-            //        2 => doorWidth * 1.5f + crossbarWithClosingSide + crossbarWithOpeningSide,
-            //        1 => doorWidth * 2f + crossbarWithClosingSide + crossbarWithOpeningSide,
-            //        _ => 0f
-            //    };
-
-
-            //    carDoorPath.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
-            //    carDoorPath.RLineTo(0, -(float)carDoor.SillWidth);
-            //    carDoorPath.RLineTo(-doorDimensionWidth, 0);
-            //    carDoorPath.RLineTo(0, (float)carDoor.SillWidth);
-            //    carDoorPath.Close();
-
-            //    if (crossbarDepth > 0)
-            //    {
-            //        carDoorPanels.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0f);
-            //        carDoorPanels.RLineTo(0f, -(crossbarDepth + 3f));
-            //        carDoorPanels.RLineTo(-41f, 0f);
-            //        carDoorPanels.RLineTo(0f, 3f);
-            //        carDoorPanels.RLineTo(38f, 0f);
-            //        carDoorPanels.RLineTo(0f, crossbarDepth);
-            //        carDoorPanels.Close();
-            //        carDoorPanels.RMoveTo(-doorDimensionWidth, 0f);
-            //        carDoorPanels.RLineTo(0f, -(crossbarDepth + 3f));
-            //        carDoorPanels.RLineTo(41f, 0f);
-            //        carDoorPanels.RLineTo(0f, 3f);
-            //        carDoorPanels.RLineTo(-38f, 0f);
-            //        carDoorPanels.RLineTo(0f, crossbarDepth);
-            //        carDoorPanels.Close();
-            //        carDoorPanels.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide - 41f, -crossbarDepth);
-            //        carDoorPanels.RLineTo(-doorDimensionWidth + 41f, 0f);
-            //    }
-
-            //    float doorPanelWidth = doorWidth / carDoor.DoorPanelCount + 20f;
-            //    SKRect doorPanel = new()
-            //    {
-            //        Size = new SKSize(-doorPanelWidth, (float)carDoor.DoorPanelWidth),
-            //        Location = new SKPoint(doorWidth * 0.5f - 20f, -(float)carDoor.DoorPanelWidth)
-            //    };
-            //    carDoorPanels.AddRect(doorPanel);
-
-            //    for (int i = 1; i < carDoor.DoorPanelCount; i++)
-            //    {
-            //        doorPanel.Offset(-(doorPanelWidth - 20f), -(float)(carDoor.DoorPanelWidth + carDoor.DoorPanelSpace));
-            //        carDoorPanels.AddRect(doorPanel);
-            //    }
-            //    carDoorPanelsMirrorImage.AddPath(carDoorPanels);
-
-            if (openingDirection == "rechts")
+            doorDimensionWidth = shaftDoor.DoorPanelCount switch
             {
-                shaftDoorPath.Transform(SKMatrix.CreateScale(-1f, 1f));
-                shaftDoorPanels.Transform(SKMatrix.CreateScale(-1f, 1f));
-            }
+                3 => doorWidth * 1.33f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                2 => doorWidth * 1.5f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                1 => doorWidth * 2f + crossbarWithClosingSide + crossbarWithOpeningSide,
+                _ => 0f
+            };
+
+
+            shaftDoorPath.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
+            shaftDoorPath.RLineTo(0, (float)shaftDoor.SillWidth + 4f);
+            shaftDoorPath.RLineTo(-doorDimensionWidth, 0);
+            shaftDoorPath.RLineTo(0, -((float)shaftDoor.SillWidth + 4f));
+            shaftDoorPath.Close();
+            shaftDoorPanels.AddPath(DrawSideOpeningDoorPanelPath(doorWidth, (float)shaftDoor.DoorPanelWidth, (float)shaftDoor.DoorPanelSpace, shaftDoor.DoorPanelCount, true));
         }
+
+        float frameWidthRight = 0f;
+        float frameWidthLeft = 0f;
+        float frameDepth = 0f;
+
+        switch (installationType)
+        {
+            case "Meiller Typ EvoN -" or "Wittur Typ -" or "Riedl Typ -":
+                frameWidthRight = (float)shaftDoor.DefaultFrameWidth ;
+                frameWidthLeft = (float)shaftDoor.DefaultFrameWidth;
+                frameDepth = (float)shaftDoor.DefaultFrameDepth;
+                break;
+            case "Meiller Typ EvoS -":
+                frameWidthRight = openingDirection == "zentral" ? 200f : (float)shaftDoor.DefaultFrameWidth;
+                frameWidthLeft = 200f;
+                frameDepth = 23f;
+                break;
+            case "Meiller Typ EvoM -":
+                frameWidthRight = 0;
+                frameWidthLeft = 0;
+                frameDepth = 0;
+                break;
+            case "Meiller Typ DT -":
+                break;
+            default:
+                break;
+        }
+
+        SKRect doorFrame = new()
+        {
+            Location = new SKPoint(-(frameWidthLeft + doorWidth * 0.5f), (float)shaftDoor.SillWidth + 4f),
+            Size = new SKSize(frameWidthRight + frameWidthLeft + doorWidth, frameDepth) 
+        };
+        SKRect doorFrameRight = new()
+        {
+            Location = new SKPoint(doorFrame.Right - frameWidthRight, (float)shaftDoor.SillWidth + 4f),
+            Size = new SKSize(frameWidthRight, frameDepth)
+        };
+        SKRect doorFrameLeft = new()
+        {
+            Location = new SKPoint(doorFrame.Left, (float)shaftDoor.SillWidth + 4f),
+            Size = new SKSize(frameWidthLeft , frameDepth)
+        };
+
+        shaftDoorPath.AddRect(doorFrame);
+        shaftDoorPath.AddRect(doorFrameRight);
+        shaftDoorPath.AddRect(doorFrameLeft);
 
         shaftDoorPath.Offset(0f, sillgap);
         shaftDoorPanels.Offset(0f, sillgap);
+
+        if (openingDirection == "rechts")
+        {
+            shaftDoorPath.Transform(SKMatrix.CreateScale(-1f, 1f));
+            shaftDoorPanels.Transform(SKMatrix.CreateScale(-1f, 1f));
+        }
 
         var degree = entrance switch
         {
