@@ -23,10 +23,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -39,10 +56,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -55,10 +89,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -91,10 +142,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -107,10 +175,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -123,10 +208,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -139,10 +241,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -210,13 +329,30 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("CargoTypeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("DriveTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -233,10 +369,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -249,10 +402,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -290,10 +460,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -306,10 +493,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -322,10 +526,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -338,10 +559,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -354,6 +592,11 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DriveControlTyp")
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
@@ -361,10 +604,22 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("DriveSystemTypeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -379,10 +634,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -395,10 +667,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -411,10 +700,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -427,10 +733,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -443,10 +766,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -479,10 +819,27 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Speeddetector")
                         .HasColumnType("REAL");
@@ -520,10 +877,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -596,10 +970,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -634,6 +1025,17 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("CenterOfGravityAxisY")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("MomentOfInertiaX")
                         .HasColumnType("REAL");
 
@@ -645,11 +1047,17 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("RadiusOfInertiaX")
                         .HasColumnType("REAL");
 
                     b.Property<double>("RadiusOfInertiaY")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -662,10 +1070,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -678,10 +1103,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(1)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -718,6 +1160,11 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("CounterweightDGBOffset")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("DriveTypeId")
                         .HasColumnType("INTEGER");
 
@@ -727,10 +1174,22 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<bool>("IsCFPControlled")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -747,10 +1206,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -763,13 +1239,30 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("GuideTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -784,13 +1277,30 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("RailLength")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -806,6 +1316,11 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("FlangeC")
                         .HasColumnType("REAL");
 
@@ -818,6 +1333,12 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<double>("Height")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Machined")
                         .HasColumnType("INTEGER");
@@ -843,6 +1364,9 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("RadiusOfInertiaX")
                         .HasColumnType("REAL");
 
@@ -851,6 +1375,9 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<double>("RailHead")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SlidingClips")
                         .IsRequired()
@@ -885,10 +1412,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -901,10 +1445,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -917,10 +1478,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -936,7 +1514,18 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("Diameter")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Height")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Manufacturer")
@@ -985,6 +1574,12 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("TypeExaminationCertificateId")
                         .HasColumnType("INTEGER");
 
@@ -1001,10 +1596,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TypeExaminationCertificateId")
                         .HasColumnType("INTEGER");
@@ -1022,10 +1634,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1038,10 +1667,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TypeExaminationCertificateId")
                         .HasColumnType("INTEGER");
@@ -1059,10 +1705,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1077,6 +1740,17 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<string>("AllowableWidth")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("MaxLoadDryColddrawn")
                         .HasColumnType("INTEGER");
@@ -1107,7 +1781,13 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("SafetyGearTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TypeExaminationCertificateId")
@@ -1128,10 +1808,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1144,10 +1841,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1160,10 +1874,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1176,10 +1907,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double?>("WeightPerSquareMeter")
                         .IsRequired()
@@ -1199,13 +1947,30 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("CarFloorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1220,14 +1985,31 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<double?>("Height")
                         .IsRequired()
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double?>("WeightPerMeter")
                         .IsRequired()
@@ -1244,10 +2026,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1260,10 +2059,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1276,10 +2092,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1292,10 +2125,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("SpecialSheet")
                         .HasColumnType("INTEGER");
@@ -1319,10 +2169,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1335,13 +2202,30 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("Height")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Thickness")
                         .HasColumnType("REAL");
@@ -1363,10 +2247,27 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("Diameter")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double?>("WeightPerMeter")
                         .IsRequired()
@@ -1383,10 +2284,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1399,10 +2317,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1415,10 +2350,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1431,10 +2383,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double?>("WeightPerSquareMeter")
                         .IsRequired()
@@ -1451,10 +2420,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1467,10 +2453,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1483,8 +2486,19 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("Height")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1492,6 +2506,12 @@ namespace LiftDataManager.Core.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("NumberOfRows")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("WeightPerMeter")
@@ -1511,13 +2531,30 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<double>("Height")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("WeightPerMeter")
                         .HasColumnType("REAL");
@@ -1626,7 +2663,18 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<bool>("ControlCabinetMaterial")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("DivisionBarMaterial")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LiftDoorMaterial")
@@ -1636,6 +2684,12 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("SkirtingBoardMaterial")
                         .HasColumnType("INTEGER");
@@ -1815,10 +2869,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1831,10 +2902,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1847,10 +2935,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1863,10 +2968,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1879,10 +3001,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1895,10 +3034,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1911,10 +3067,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1927,10 +3100,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1943,10 +3133,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1959,10 +3166,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1975,10 +3199,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1991,10 +3232,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2007,10 +3265,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Weight")
                         .HasColumnType("REAL");
@@ -2029,10 +3304,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2045,10 +3337,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2061,10 +3370,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2077,10 +3403,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2093,10 +3436,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2109,10 +3469,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2125,10 +3502,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2141,10 +3535,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2165,6 +3576,11 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("DoorPanelCount")
                         .HasColumnType("INTEGER");
 
@@ -2173,6 +3589,12 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<double>("DoorPanelWidth")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("LiftDoorOpeningDirectionId")
                         .HasColumnType("INTEGER");
@@ -2190,8 +3612,14 @@ namespace LiftDataManager.Core.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("ReducedMinimalMountingSpace")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("SillWidth")
                         .HasColumnType("REAL");
@@ -2214,10 +3642,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2233,14 +3678,31 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("CarDoorId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DoorManufacturer")
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("ShaftDoorId")
                         .HasColumnType("INTEGER");
@@ -2260,10 +3722,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2276,10 +3755,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2292,10 +3788,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2306,6 +3819,17 @@ namespace LiftDataManager.Core.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsVandalResistant")
@@ -2319,6 +3843,12 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SillFilterTyp")
                         .HasMaxLength(50)
@@ -2338,10 +3868,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2354,10 +3901,27 @@ namespace LiftDataManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2376,6 +3940,11 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("DefaultFrameWidth")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("DoorPanelCount")
                         .HasColumnType("INTEGER");
 
@@ -2384,6 +3953,12 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<double>("DoorPanelWidth")
                         .HasColumnType("REAL");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsObsolete")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("LiftDoorOpeningDirectionId")
                         .HasColumnType("INTEGER");
@@ -2397,6 +3972,12 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderSelection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SchindlerCertified")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("SillWidth")
                         .HasColumnType("REAL");

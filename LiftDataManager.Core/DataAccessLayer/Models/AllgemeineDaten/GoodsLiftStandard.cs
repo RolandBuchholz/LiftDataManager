@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 
-public class GoodsLiftStandard : BaseEntity
+public class GoodsLiftStandard : SelectionEntity
 {
 }

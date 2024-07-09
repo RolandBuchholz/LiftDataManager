@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
-public class StylusPlateMaterial : BaseEntity
+public class StylusPlateMaterial : SelectionEntity
 {
 }

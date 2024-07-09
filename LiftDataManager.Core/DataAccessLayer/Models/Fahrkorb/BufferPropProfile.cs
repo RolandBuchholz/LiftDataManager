@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class BufferPropProfile : BaseEntity
+public class BufferPropProfile : SelectionEntity
 {
     public double AreaOfProfile { get; set; }
     public double MomentOfInertiaX { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class SafetyGearModelType : BaseEntity
+public class SafetyGearModelType : SelectionEntity
 {
     public int SafetyGearTypeId { get; set; }
     public SafetyGearType? SafetyGearType { get; set; }

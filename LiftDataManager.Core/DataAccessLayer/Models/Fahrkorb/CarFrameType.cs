@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class CarFrameType : BaseEntity
+public class CarFrameType : SelectionEntity
 {
     public int CarFrameWeight { get; set; }
     public bool IsCFPControlled { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 
-public class LiftControlManufacturer : BaseEntity
+public class LiftControlManufacturer : SelectionEntity
 {
     public int DetectionDistance { get; set; }
     public int DetectionDistanceSIL3 { get; set; }

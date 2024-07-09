@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 
-public class InstallationInfo : BaseEntity
+public class InstallationInfo : SelectionEntity
 {
 }

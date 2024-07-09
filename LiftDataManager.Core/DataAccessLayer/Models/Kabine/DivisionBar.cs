@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
-public class DivisionBar : BaseEntity
+public class DivisionBar : SelectionEntity
 {
     public double WeightPerMeter { get; set; }
     public double Height { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class LiftBuffer : BaseEntity
+public class LiftBuffer : SelectionEntity
 {
     public int TypeExaminationCertificateId { get; set; }
     public TypeExaminationCertificate? TypeExaminationCertificate { get; set; }

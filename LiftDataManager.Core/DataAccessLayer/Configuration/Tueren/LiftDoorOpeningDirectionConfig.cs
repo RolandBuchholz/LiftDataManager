@@ -8,8 +8,15 @@ public class LiftDoorOpeningDirectionConfig : BaseModelBuilder<LiftDoorOpeningDi
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
-                    .HasMaxLength(50)
-                    .IsRequired();
+               .HasMaxLength(50)
+               .IsRequired();
+        builder.Property(x => x.DisplayName)
+               .HasMaxLength(50)
+               .IsRequired();
+        builder.Property(x => x.IsFavorite);
+        builder.Property(x => x.IsObsolete);
+        builder.Property(x => x.SchindlerCertified);
+        builder.Property(x => x.OrderSelection);
         builder.HasMany(t => t.ShaftDoors)
                .WithOne(g => g.LiftDoorOpeningDirection)
                .HasForeignKey(t => t.LiftDoorOpeningDirectionId);

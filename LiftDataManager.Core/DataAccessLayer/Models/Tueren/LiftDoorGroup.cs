@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 
-public class LiftDoorGroup : BaseEntity
+public class LiftDoorGroup : SelectionEntity
 {
     public int CarDoorId { get; set; }
     public CarDoor? CarDoor { get; set; }

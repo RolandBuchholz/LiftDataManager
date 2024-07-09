@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class GuideRailsStatus : BaseEntity
+public class GuideRailsStatus : SelectionEntity
 {
 }

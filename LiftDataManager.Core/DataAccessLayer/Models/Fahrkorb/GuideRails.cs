@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class GuideRails : BaseEntity
+public class GuideRails : SelectionEntity
 {
     public bool UsageAsCarRail { get; set; }
     public bool UsageAsCwtRail { get; set; }

@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Schacht;
 
-public class FireClosureBy : BaseEntity
+public class FireClosureBy : SelectionEntity
 {
 }

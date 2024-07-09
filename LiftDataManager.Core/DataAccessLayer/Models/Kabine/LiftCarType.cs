@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
-public class LiftCarType : BaseEntity
+public class LiftCarType : SelectionEntity
 {
 }

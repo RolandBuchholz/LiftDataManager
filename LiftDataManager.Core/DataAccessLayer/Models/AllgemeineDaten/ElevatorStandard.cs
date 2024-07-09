@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 
-public class ElevatorStandard : BaseEntity
+public class ElevatorStandard : SelectionEntity
 {
 }

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 
-public class ShaftDoor : BaseEntity
+public class ShaftDoor : SelectionEntity
 {
     public string? Manufacturer { get; set; }
     public int DoorPanelCount { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 
-public class CarDoor : BaseEntity
+public class CarDoor : SelectionEntity
 {
     public string? Manufacturer { get; set; }
     public double SillWidth { get; set; }

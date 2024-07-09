@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
-public class CarFlooring : BaseEntity
+public class CarFlooring : SelectionEntity
 {
     public double? Thickness { get; set; }
     public double? WeightPerSquareMeter { get; set; }

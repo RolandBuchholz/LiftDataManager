@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
-public class CarPanelFitting : BaseEntity
+public class CarPanelFitting : SelectionEntity
 {
 }

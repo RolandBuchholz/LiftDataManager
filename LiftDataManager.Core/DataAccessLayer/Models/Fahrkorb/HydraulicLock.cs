@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class HydraulicLock : BaseEntity
+public class HydraulicLock : SelectionEntity
 {
 }

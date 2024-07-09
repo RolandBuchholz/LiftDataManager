@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 
-public class ControlCabinetSize : BaseEntity
+public class ControlCabinetSize : SelectionEntity
 {
 }

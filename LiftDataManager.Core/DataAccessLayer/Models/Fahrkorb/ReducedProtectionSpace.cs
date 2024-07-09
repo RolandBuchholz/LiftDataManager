@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class ReducedProtectionSpace : BaseEntity
+public class ReducedProtectionSpace : SelectionEntity
 {
 }

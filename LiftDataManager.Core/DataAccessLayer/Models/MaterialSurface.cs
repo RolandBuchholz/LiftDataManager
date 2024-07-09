@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models;
 
-public class MaterialSurface : BaseEntity
+public class MaterialSurface : SelectionEntity
 {
     public bool CarMaterialFrontBackWalls { get; set; }
     public bool CarMaterialSideWalls { get; set; }

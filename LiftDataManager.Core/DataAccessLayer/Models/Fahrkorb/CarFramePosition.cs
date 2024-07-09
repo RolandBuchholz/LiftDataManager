@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class CarFramePosition : BaseEntity
+public class CarFramePosition : SelectionEntity
 {
 }

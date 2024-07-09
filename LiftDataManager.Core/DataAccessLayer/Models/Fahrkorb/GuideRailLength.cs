@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class GuideRailLength : BaseEntity
+public class GuideRailLength : SelectionEntity
 {
     public double RailLength { get; set; }
 }

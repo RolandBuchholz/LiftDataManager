@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Schacht;
 
-public class RailBracketFixing : BaseEntity
+public class RailBracketFixing : SelectionEntity
 {
 }

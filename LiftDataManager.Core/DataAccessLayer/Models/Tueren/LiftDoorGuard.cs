@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 
-public class LiftDoorGuard : BaseEntity
+public class LiftDoorGuard : SelectionEntity
 {
 }

@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 
-public class LightFieldSize : BaseEntity
+public class LightFieldSize : SelectionEntity
 {
 }

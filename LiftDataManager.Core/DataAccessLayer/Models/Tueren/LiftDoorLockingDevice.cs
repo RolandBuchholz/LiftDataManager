@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 
-public class LiftDoorLockingDevice : BaseEntity
+public class LiftDoorLockingDevice : SelectionEntity
 {
 }

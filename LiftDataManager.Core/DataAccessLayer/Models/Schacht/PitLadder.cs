@@ -1,5 +1,5 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Schacht;
 
-public class PitLadder : BaseEntity
+public class PitLadder : SelectionEntity
 {
 }
