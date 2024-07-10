@@ -1410,14 +1410,27 @@ public partial class CalculationsModuleService : ICalculationsModule
     private (double, int) GetGewichtRammschutz(ObservableDictionary<string, Parameter> parameterDictionary, string rammschutz)
     {
         if (string.IsNullOrEmpty(rammschutz))
+        {
             return (0, 0);
+        }
         if (string.Equals(rammschutz, "Rammschutz siehe Beschreibung"))
+        {
             return (LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_RammschutzGewichtBenutzerdefiniert"),
-                   LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlReihenRammschutz"));
+                    LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlReihenRammschutz"));
+        }
         var rammingProtection = _parametercontext.Set<RammingProtection>().FirstOrDefault(x => x.Name == rammschutz);
         if (rammingProtection is null)
+        {
             return (0, 0);
-        return (rammingProtection.WeightPerMeter, rammingProtection.NumberOfRows);
+        }
+        if (rammingProtection.NumberOfRows == 0)
+        {
+            return (rammingProtection.WeightPerMeter, LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_AnzahlReihenRammschutz"));
+        }
+        else
+        {
+            return (rammingProtection.WeightPerMeter, rammingProtection.NumberOfRows);
+        }
     }
 
     private double? GetGewichtHandlauf(string handlauf)

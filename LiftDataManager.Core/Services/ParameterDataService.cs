@@ -89,7 +89,7 @@ public partial class ParameterDataService : IParameterDataService
 
     public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
     {
-        List<Parameter> parameterList = new();
+        List<Parameter> parameterList = [];
 
         var parameterDtos = _parametercontext.ParameterDtos!
                                              .AsNoTracking()
@@ -116,7 +116,7 @@ public partial class ParameterDataService : IParameterDataService
 
                 if (par.DropdownList is not null)
                 {
-                    var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key, par.DropdownList));
+                    var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key, par.DropdownList))?.OrderBy(o => o.OrderSelection);
 
                     if (dropdownList is not null)
                     {
