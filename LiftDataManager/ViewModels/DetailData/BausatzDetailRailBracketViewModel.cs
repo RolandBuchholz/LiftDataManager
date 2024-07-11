@@ -968,24 +968,32 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         var frameCalculation = ParameterDictionary["var_FrameCalculationData"].Value;
         if (!string.IsNullOrWhiteSpace(frameCalculation))
         {
-            var calculationData = JsonSerializer.Deserialize<FrameCalculationData>(frameCalculation);
-            if (calculationData is not null)
+            try
             {
-                FrameCalculationData = calculationData;
-                distanceGuideShoesCarframe = FrameCalculationData.DistanceGuideShoesCarframe;
-                distanceGuideShoesCounterweight = FrameCalculationData.DistanceGuideShoesCounterweight;
-                carCenterOfMassX = FrameCalculationData.CarCenterOfMassX;
-                carCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
-                additionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
-                additionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
-                offsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
-                carframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
-                counterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
-                hasSlidingClips = FrameCalculationData.HasSlidingClips;
-                buildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
-                buildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
+                var calculationData = JsonSerializer.Deserialize<FrameCalculationData>(frameCalculation);
+                if (calculationData is not null)
+                {
+                    FrameCalculationData = calculationData;
+                    distanceGuideShoesCarframe = FrameCalculationData.DistanceGuideShoesCarframe;
+                    distanceGuideShoesCounterweight = FrameCalculationData.DistanceGuideShoesCounterweight;
+                    carCenterOfMassX = FrameCalculationData.CarCenterOfMassX;
+                    carCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
+                    additionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
+                    additionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
+                    offsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
+                    carframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
+                    counterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
+                    hasSlidingClips = FrameCalculationData.HasSlidingClips;
+                    buildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
+                    buildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
+                }
+            }
+            catch (Exception)
+            {
+                //TODO LogError
             }
         }
+
         FrameCalculationData ??= new FrameCalculationData();
 
         if (double.TryParse(ParameterDictionary["var_Gegengewicht_Einlagenbreite"].Value, out double cwtWidth))

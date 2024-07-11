@@ -12,7 +12,7 @@
   <Identity
     Name="BD956274-5B08-468A-AE87-B6190C6A8210"
     Publisher="CN=Buchholz"
-    Version="1.2.21.0" />
+    Version="1.2.22.0" />
 
   <Properties>
     <DisplayName>LiftDataManager</DisplayName>
