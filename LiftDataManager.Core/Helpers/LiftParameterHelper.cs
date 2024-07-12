@@ -1,5 +1,6 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using MvvmHelpers;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Helpers;
@@ -59,6 +60,23 @@ public class LiftParameterHelper
             default:
                 return string.Empty;
         }
+    }
+
+    public static SelectionValue? GetDropDownListValue(ObservableRangeCollection<SelectionValue> dropDownList, string? newValue) 
+    {
+        if (string.IsNullOrWhiteSpace(newValue))
+        {
+            return null;
+        }
+        var newSelectionValue = dropDownList.FirstOrDefault(x => x.Name == newValue);
+        return newSelectionValue is not null ? newSelectionValue
+                                             : new SelectionValue(-1, newValue, newValue) ;
+    }
+
+    public static void UpdateParameterDropDownListValue(Parameter parameter, string? newValue)
+    {
+        parameter.DropDownListValue = !string.IsNullOrWhiteSpace(newValue) ? parameter.DropDownList.FirstOrDefault(x => x.Name == newValue) 
+                                                                           : null;
     }
 
     public static string FirstCharToUpperAsSpan(string input)

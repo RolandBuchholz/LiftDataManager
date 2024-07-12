@@ -357,7 +357,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
-                    updatedParameter.DropDownListValue = updatedParameter.Value;
+                    updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
                 }
                 if (updatedParameter.HasErrors)
                 {
@@ -782,7 +782,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 updatedParameter.IsKey = item.IsKey;
                 if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
                 {
-                    updatedParameter.DropDownListValue = updatedParameter.Value;
+                    updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
                 }
                 if (updatedParameter.HasErrors)
                 {

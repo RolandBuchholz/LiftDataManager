@@ -117,16 +117,22 @@ public partial class ParameterDataService : IParameterDataService
                 if (par.DropdownList is not null)
                 {
                     var dropdownList = dropdownValues.FirstOrDefault(x => string.Equals(x.Key, par.DropdownList))?.OrderBy(o => o.OrderSelection);
-
                     if (dropdownList is not null)
                     {
-                        var dropdownListValues = dropdownList.Select(x => x.Name);
-                        newParameter.DropDownList.Add("(keine Auswahl)");
-                        if (dropdownListValues is not null)
-                            foreach (var item in dropdownListValues)
+                        newParameter.DropDownList.Add(new SelectionValue());
+                        foreach (var item in dropdownList)
+                        {
+                            newParameter.DropDownList.Add(new SelectionValue(item.Id, item.Name, item.DisplayName)
                             {
-                                newParameter.DropDownList.Add(item!);
-                            }
+                                IsFavorite = item.IsFavorite,
+                                OrderSelection = item.OrderSelection,
+                                SchindlerCertified = item.SchindlerCertified,
+                            });
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(par.Value))
+                    {
+                        newParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(newParameter.DropDownList, par.Value);
                     }
                 }
                 parameterList.Add(newParameter);
@@ -210,7 +216,7 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false)
     {
         var historyEntrys = new List<LiftHistoryEntry>();
-        Dictionary<string, int> parameterCategory = new();
+        Dictionary<string, int> parameterCategory = [];
 
         if (!ValidatePath(path, true))
             return historyEntrys;
@@ -276,7 +282,7 @@ public partial class ParameterDataService : IParameterDataService
            where para.Element("name")!.Value == parameter.Name
            select para).SingleOrDefault();
 
-        List<LiftHistoryEntry> historyEntrys = new();
+        List<LiftHistoryEntry> historyEntrys = [];
 
         if (xmlparameter is not null)
         {
@@ -305,7 +311,7 @@ public partial class ParameterDataService : IParameterDataService
         XElement doc = XElement.Load(path);
         var unsavedParameter = ParameterDictionary.Values.Where(p => p.IsDirty);
 
-        List<LiftHistoryEntry> historyEntrys = new();
+        List<LiftHistoryEntry> historyEntrys = [];
 
         foreach (var parameter in unsavedParameter)
         {
@@ -424,8 +430,8 @@ public partial class ParameterDataService : IParameterDataService
 
     public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary)
     {
-        List<string> syncedParameter = new();
-        List<LiftHistoryEntry> syncedLiftHistoryEntries = new();
+        List<string> syncedParameter = [];
+        List<LiftHistoryEntry> syncedLiftHistoryEntries = [];
         var updatedAutodeskTransfer = await LoadParameterAsync(path);
 
         foreach (var param in updatedAutodeskTransfer)
@@ -436,20 +442,21 @@ public partial class ParameterDataService : IParameterDataService
                 {
                     if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
                         continue;
-                    if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterTypValue.Boolean)
+                    if (ParameterDictionary[dictionary.Name].ParameterTyp == ParameterTypValue.Boolean)
                     {
-                        ParameterDictionary[dictionary.Name!].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
+                        ParameterDictionary[dictionary.Name].Value = string.Equals(param.Value, "True", StringComparison.CurrentCultureIgnoreCase) ? "True" : "False";
                     }
                     else if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterTypValue.DropDownList)
                     {
-                        ParameterDictionary[dictionary.Name!].Value = param.Value;
-                        ParameterDictionary[dictionary.Name!].DropDownListValue = param.Value;
+                        ParameterDictionary[dictionary.Name].Value = param.Value;
+                        //ParameterDictionary[dictionary.Name].DropDownListValue = param.Value;
+                        //DropDownListValue = DropDownList.FirstOrDefault(x => x.Name == newParamterValue);
                     }
                     else
                     {
-                        ParameterDictionary[dictionary.Name!].Value = param.Value;
+                        ParameterDictionary[dictionary.Name].Value = param.Value;
                     }
-                    ParameterDictionary[dictionary.Name!].IsDirty = false;
+                    ParameterDictionary[dictionary.Name].IsDirty = false;
                     syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(ParameterDictionary[dictionary.Name!]));
                     syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
                 }

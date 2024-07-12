@@ -30,12 +30,6 @@ public partial class Parameter : ParameterBase
             ParameterTypValue.DropDownList => value,
             _ => value,
         };
-
-        if (Value is not null && ParameterTyp == ParameterTypValue.DropDownList)
-        {
-            DropDownListValue = Value;
-        }
-
         DataImport = false;
     }
 
@@ -43,7 +37,7 @@ public partial class Parameter : ParameterBase
     public required string DisplayName { get; set; }
 
     [ObservableProperty]
-    public ObservableRangeCollection<string> dropDownList;
+    public ObservableRangeCollection<SelectionValue> dropDownList;
 
     [ObservableProperty]
     private bool isDirty;
@@ -91,16 +85,17 @@ public partial class Parameter : ParameterBase
     }
 
     [ObservableProperty]
-    private string? dropDownListValue;
+    private SelectionValue? dropDownListValue;
 
-    partial void OnDropDownListValueChanged(string? value)
+    partial void OnDropDownListValueChanged(SelectionValue? value)
     {
-        dropDownListValue = (value != "(keine Auswahl)") ? value : null;
+        dropDownListValue = (value is null || value.Id != 0) ? value : null;
+
         if (value is null && Value is not null)
         {
-            dropDownListValue = Value;
+            dropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, Value);
         }
-        Value = dropDownListValue;
+        Value = dropDownListValue?.Name;
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
@@ -129,7 +124,7 @@ public partial class Parameter : ParameterBase
         _autoUpdatedRunning = true;
         if (ParameterTyp == ParameterTypValue.DropDownList)
         {
-            DropDownListValue = newParamterValue;
+             DropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, newParamterValue);
         }
         else
         {

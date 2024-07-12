@@ -12,22 +12,32 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     private static void CheckListContainsValue(Parameter? parameter)
     {
         if (parameter is null)
+        {
             return;
-
-        if (string.IsNullOrWhiteSpace(parameter.Value) || parameter.DropDownList.Contains(parameter.Value))
+        }
+        if (string.IsNullOrWhiteSpace(parameter.Value))
         {
             parameter.RemoveError("Value", $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.");
         }
-        else
+
+        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(parameter.dropDownList, parameter.Value);
+        if (dropDownListValue == null || dropDownListValue.Id == -1)
         {
             parameter.AddError("Value", new ParameterStateInfo(parameter.Name!, parameter.DisplayName!, $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.", ErrorLevel.Error, false));
+        }
+        else
+        {
+            parameter.RemoveError("Value", $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.");
         }
     }
 
     private void SetCarDoorData(string zugang)
     {
         if (string.IsNullOrWhiteSpace(zugang))
+        {
             return;
+        }
+
         string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
         string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuerbezeichnung");
         string schwellenprofilSchachttuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Schwellenprofil");
@@ -38,59 +48,85 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         string kaempferBreiteKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_KabTuerKaempferBreiteA");
         string kaempferHoeheKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_KabTuerKaempferHoeheA");
 
-        ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = tuerTyp;
-        ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = tuerBezeichnung;
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_Tuertyp_{zugang}"], tuerTyp);
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"], tuerBezeichnung);
         ParameterDictionary[$"var_TB_{zugang}"].Value = Convert.ToString(tuerBreite);
         ParameterDictionary[$"var_TH_{zugang}"].Value = Convert.ToString(tuerHoehe);
         ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = Convert.ToString(tuerGewicht);
-        ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = schwellenprofilSchachttuer;
-        ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = schwellenprofilKabinentuer;
-        ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue = kaempferBreiteKabinentuer;
-        ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue = kaempferHoeheKabinentuer;
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_Schwellenprofil{zugang}"], schwellenprofilSchachttuer);
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"], schwellenprofilKabinentuer);
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"], kaempferBreiteKabinentuer);
+        LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"], kaempferHoeheKabinentuer);
     }
 
     private void RemoveCarDoorData(string zugang)
     {
         if (string.IsNullOrWhiteSpace(zugang))
+        {
             return;
+        }
+        if (ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue is not null || 
+            ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue is not null  || 
+            ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue is not null || 
+            ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue is not null || 
+            ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = new SelectionValue();
+        }
 
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue))
-            ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue))
-            ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue))
-            ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = string.Empty;
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue))
-            ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = string.Empty;
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TB_{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_TB_{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_TB_{zugang}"].Value = string.Empty;
+            }
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TH_{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_TH_{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_TH_{zugang}"].Value = string.Empty;
+            }
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_Tuergewicht_{zugang}"].Value = string.Empty;
+            }
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbau{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_TuerEinbau{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_TuerEinbau{zugang}"].Value = string.Empty;
+            }
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value = string.Empty;
+            }
         }
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbau{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value != "0")
+            {
                 ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value = string.Empty;
+            }
         }
     }
 
@@ -258,7 +294,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         return sills.Select(s => s.Name);
     }
 
-    private void UpdateDropDownList(string? parameterName, IEnumerable<string> newList, bool defaultSelection = true)
+    private void UpdateDropDownList(string? parameterName, IEnumerable<SelectionValue> newList, bool defaultSelection = true)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
             return;
@@ -267,11 +303,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             ParameterDictionary[parameterName].DropDownList.Clear();
             return;
         }
-
-        var updateList = defaultSelection ? newList.Prepend("(keine Auswahl)") : newList;
+        var updateList = defaultSelection ? newList.Prepend(new SelectionValue()) : newList;
 
         if (ParameterDictionary[parameterName].DropDownList.SequenceEqual(updateList))
+        {
             return;
+        }
 
         ParameterDictionary[parameterName].DropDownList.Clear();
         ParameterDictionary[parameterName].DropDownList.AddRange(updateList, NotifyCollectionChangedAction.Reset);

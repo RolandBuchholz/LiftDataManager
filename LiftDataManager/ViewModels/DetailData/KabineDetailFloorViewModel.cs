@@ -48,7 +48,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     {
         if (ParameterDictionary is not null)
         {
-            ParameterDictionary!["var_Tueroeffnung"].DropDownListValue = value;
+            LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary["var_Tueroeffnung"], value);
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -59,7 +59,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     {
         if (ParameterDictionary is not null)
         {
-            ParameterDictionary!["var_Tueroeffnung_B"].DropDownListValue = value;
+            LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary["var_Tueroeffnung_B"], value);
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -70,7 +70,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     {
         if (ParameterDictionary is not null)
         {
-            ParameterDictionary!["var_Tueroeffnung_C"].DropDownListValue = value;
+            LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary["var_Tueroeffnung_C"], value);
             CheckIsOpeningDirectionSelected();
         }
     }
@@ -81,7 +81,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     {
         if (ParameterDictionary is not null)
         {
-            ParameterDictionary!["var_Tueroeffnung_D"].DropDownListValue = value;
+            LiftParameterHelper.UpdateParameterDropDownListValue(ParameterDictionary["var_Tueroeffnung_D"], value);
             CheckIsOpeningDirectionSelected();
         }
     }

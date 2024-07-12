@@ -103,8 +103,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     private void ListContainsValue(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return;
-        if (!ParameterDictionary[name].dropDownList.Contains(value))
+        }
+        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(ParameterDictionary[name].dropDownList, value);
+        if (dropDownListValue == null || dropDownListValue.Id == -1)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: ungültiger Wert | {value} | ist nicht in der Auswahlliste vorhanden.", SetSeverity(severity)));
         }
@@ -312,8 +315,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             ParameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 50 x 5");
             if (name == "var_BoPr")
             {
-                ParameterDictionary["var_BoPr"].DropDownList.Add("Refresh");
-                ParameterDictionary["var_BoPr"].DropDownList.Remove("Refresh");
+                ParameterDictionary["var_BoPr"].DropDownList.Add(new SelectionValue(-1, "Refresh", "Refresh"));
+                ParameterDictionary["var_BoPr"].DropDownList.Remove(new SelectionValue(-1, "Refresh", "Refresh"));
             }
         }
     }
@@ -503,7 +506,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         var carframes = _parametercontext.Set<CarFrameType>().ToList();
 
-        var availableCarframes = carframes.Where(x => x.DriveTypeId == driveTypeId).Select(s => s.Name);
+        var availableCarframes = carframes.Where(x => x.DriveTypeId == driveTypeId).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified});
 
         if (availableCarframes is not null)
         {
@@ -566,14 +569,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             if (availablEReducedProtectionSpaces is not null)
             {
-                UpdateDropDownList("var_Ersatzmassnahmen", availablEReducedProtectionSpaces);
+                //TODO UpdateDropDownList
+                //UpdateDropDownList("var_Ersatzmassnahmen", availablEReducedProtectionSpaces);
             }
         }
 
         if (!string.IsNullOrWhiteSpace(selectedSafetyGear) &&
             !string.IsNullOrWhiteSpace(selectedReducedProtectionSpace))
         {
-            if (!ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
+            var selectedReducedProtectionSpaceValue = LiftParameterHelper.GetDropDownListValue(ParameterDictionary["var_Ersatzmassnahmen"].DropDownList, selectedReducedProtectionSpace);
+            if (selectedReducedProtectionSpaceValue == null || selectedReducedProtectionSpaceValue.Id == -1)
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
                 { DependentParameter = [optional!] });
@@ -582,6 +587,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
             }
+
+            //if (!ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
+            //{
+            //    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
+            //    { DependentParameter = [optional!] });
+            //}
+            //else
+            //{
+            //    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
+            //}
         }
     }
 
@@ -599,7 +614,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         };
         if (availablseafetyGears is not null)
         {
-            UpdateDropDownList("var_TypFV", availablseafetyGears);
+            //TODO UpdateDropDownList
+            //UpdateDropDownList("var_TypFV", availablseafetyGears);
 
             if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Contains(selectedSafetyGear))
             {
@@ -983,7 +999,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         if (availableguideModels is not null)
         {
-            UpdateDropDownList(guideTyp, availableguideModels);
+            //TODO UpdateDropDownList
+            //UpdateDropDownList(guideTyp, availableguideModels);
             CheckListContainsValue(ParameterDictionary[guideTyp]);
         }
     }
@@ -1017,7 +1034,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(x => x.DoorManufacturer!.StartsWith(selectedDoorSytem)).Select(s => s.Name);
             if (availableLiftDoorGroups is not null)
             {
-                UpdateDropDownList(liftDoorGroups, availableLiftDoorGroups);
+                //TODO UpdateDropDownList
+                //UpdateDropDownList(liftDoorGroups, availableLiftDoorGroups);
                 CheckListContainsValue(ParameterDictionary[liftDoorGroups]);
             }
         }
@@ -1150,7 +1168,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 ParameterDictionary["var_BodenbelagsTyp"].AutoUpdateParameterValue(string.Empty);
             }
-            UpdateDropDownList("var_BodenbelagsTyp", availableFloorColors);
+            //TODO UpdateDropDownList
+            //UpdateDropDownList("var_BodenbelagsTyp", availableFloorColors);
             CheckListContainsValue(ParameterDictionary["var_BodenbelagsTyp"]);
         }
     }
@@ -1406,9 +1425,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             availableDoorSills = GetAvailableDoorSills(doorTyp, value);
         }
 
-        UpdateDropDownList(shaftSillParameterName, availableDoorSills);
+        //TODO UpdateDropDownList
+        //UpdateDropDownList(shaftSillParameterName, availableDoorSills);
         CheckListContainsValue(ParameterDictionary[shaftSillParameterName]);
-        UpdateDropDownList(carSillParameterName, availableDoorSills);
+
+        //TODO UpdateDropDownList
+        //UpdateDropDownList(carSillParameterName, availableDoorSills);
+
         CheckListContainsValue(ParameterDictionary[carSillParameterName]);
     }
 
@@ -1432,10 +1455,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             if (carDoorHeaderDepths is not null)
             {
-                UpdateDropDownList($"var_KabTuerKaempferBreite{zugang}", carDoorHeaderDepths.ConvertAll(x => x.ToString()), false);
+                //TODO UpdateDropDownList
+                //UpdateDropDownList($"var_KabTuerKaempferBreite{zugang}", carDoorHeaderDepths.ConvertAll(x => x.ToString()), false);
                 if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Count == 1)
                 {
-                    ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList[0]);
+                    //ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList[0]);
                 }
                 else
                 {
@@ -1445,11 +1469,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             if (carDoorHeaderHeights is not null)
             {
-                UpdateDropDownList($"var_KabTuerKaempferHoehe{zugang}", carDoorHeaderHeights.ConvertAll(x => x.ToString()), false);
+                //TODO UpdateDropDownList
+                //UpdateDropDownList($"var_KabTuerKaempferHoehe{zugang}", carDoorHeaderHeights.ConvertAll(x => x.ToString()), false);
 
                 if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Count == 1)
                 {
-                    ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList[0]);
+                    //ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList[0]);
                 }
                 else
                 {
@@ -1652,8 +1677,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             availableCarFramePositions.Add("D");
         }
-            
-        UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
+
+        //TODO UpdateDropDownList
+        //UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 
         var carFramePosition = ParameterDictionary["var_Bausatzlage"].Value;
         if (!string.IsNullOrWhiteSpace(carFramePosition))
