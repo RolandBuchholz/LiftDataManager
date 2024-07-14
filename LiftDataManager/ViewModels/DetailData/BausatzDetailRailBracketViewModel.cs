@@ -990,7 +990,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             }
             catch (Exception)
             {
-                //TODO LogError
+                _logger.LogWarning(60202, "Restore FrameCalculationData failed");
             }
         }
 

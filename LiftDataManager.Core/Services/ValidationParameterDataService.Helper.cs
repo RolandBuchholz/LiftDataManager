@@ -18,6 +18,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (string.IsNullOrWhiteSpace(parameter.Value))
         {
             parameter.RemoveError("Value", $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.");
+            return;
         }
 
         var dropDownListValue = LiftParameterHelper.GetDropDownListValue(parameter.dropDownList, parameter.Value);
@@ -251,7 +252,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = $"{supportPlateExtensionLeft};{supportPlateExtensionRight};{distanceMudHolesFloorEdge};{quantityRowMudHoles};{distanceMudHole};{distanceSillBracketHoles};{quantityRowHolesSillBracket};{distanceSillMounting};{sillExtensionLeft};{sillExtensionRight};{sillBracketExtensionLeft};{sillBracketExtensionRight};{supportPlateWidth};{offsetOKAprontoOKFF};{distanceBetweenSillBracketholes};{triangularLockingDistance};{carFloorSill.SillMountTyp}";
     }
 
-    private IEnumerable<string> GetAvailableDoorSills(string? doorTyp, string? doorDescription)
+    private IEnumerable<SelectionValue> GetAvailableDoorSills(string? doorTyp, string? doorDescription)
     {
         var sills = _parametercontext.Set<LiftDoorSill>();
 
@@ -259,11 +260,11 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             if (doorTyp.StartsWith("Wittur"))
             {
-                return sills.Where(x => x.Manufacturer == "Wittur").Select(s => s.Name);
+                return sills.Where(x => x.Manufacturer == "Wittur").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
             }
             if (doorTyp.StartsWith("Riedl"))
             {
-                return sills.Where(x => x.Manufacturer == "Riedl").Select(s => s.Name);
+                return sills.Where(x => x.Manufacturer == "Riedl").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
             }
             //Meiller Filter Optionen
             var cat = ParameterDictionary["var_EN8171Cat012"].Value;
@@ -271,13 +272,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
                 {
-                    return sills.Where(x => x.Manufacturer == "Meiller").Select(s => s.Name);
+                    return sills.Where(x => x.Manufacturer == "Meiller").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
                 }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(s => s.Name);
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
             }
             else if (doorDescription.StartsWith("DT"))
             {
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(s => s.Name);
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
             }
             else
             {
@@ -285,13 +286,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
                 if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
                 {
-                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(s => s.Name);
+                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
                 }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(s => s.Name);
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
             }
         }
 
-        return sills.Select(s => s.Name);
+        return sills.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
     }
 
     private void UpdateDropDownList(string? parameterName, IEnumerable<SelectionValue> newList, bool defaultSelection = true)

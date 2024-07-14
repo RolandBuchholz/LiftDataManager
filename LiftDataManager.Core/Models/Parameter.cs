@@ -87,15 +87,14 @@ public partial class Parameter : ParameterBase
     [ObservableProperty]
     private SelectionValue? dropDownListValue;
 
-    partial void OnDropDownListValueChanged(SelectionValue? value)
+    partial void OnDropDownListValueChanged(SelectionValue? oldValue, SelectionValue? newValue)
     {
-        dropDownListValue = (value is null || value.Id != 0) ? value : null;
-
-        if (value is null && Value is not null)
+        if (newValue is null && oldValue is not null)
         {
-            dropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, Value);
+            dropDownListValue = oldValue;
         }
-        Value = dropDownListValue?.Name;
+        dropDownListValue = (newValue is null || newValue.Id != 0) ? newValue : null;
+        Value = dropDownListValue is not null ? dropDownListValue?.Name : string.Empty;
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
