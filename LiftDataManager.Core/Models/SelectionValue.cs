@@ -1,4 +1,5 @@
-﻿namespace LiftDataManager.Core.Models;
+﻿
+namespace LiftDataManager.Core.Models;
 public class SelectionValue
 {
     public SelectionValue()
@@ -21,4 +22,7 @@ public class SelectionValue
     public bool IsFavorite { get; set; }
     public bool SchindlerCertified { get; set; }
     public int OrderSelection { get; set; }
+
+    public override bool Equals(object? obj) => obj is SelectionValue value && Id == value.Id && Name == value.Name && DisplayName == value.DisplayName;
+    public override int GetHashCode() => HashCode.Combine(Id, Name, DisplayName);
 }

@@ -86,14 +86,13 @@ public partial class Parameter : ParameterBase
 
     [ObservableProperty]
     private SelectionValue? dropDownListValue;
-
     partial void OnDropDownListValueChanged(SelectionValue? oldValue, SelectionValue? newValue)
     {
+        dropDownListValue = (newValue is null || newValue.Id != 0) ? newValue : null;
         if (newValue is null && oldValue is not null)
         {
             dropDownListValue = oldValue;
         }
-        dropDownListValue = (newValue is null || newValue.Id != 0) ? newValue : null;
         Value = dropDownListValue is not null ? dropDownListValue?.Name : string.Empty;
     }
 

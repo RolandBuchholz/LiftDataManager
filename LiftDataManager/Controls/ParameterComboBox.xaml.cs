@@ -20,6 +20,14 @@ public sealed partial class ParameterComboBox : UserControl
         {
             LiftParameter.ErrorsChanged += OnErrorsChanged;
             LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
+            if (LiftParameter.DropDownListValue is not null && LiftParameter.DropDownListValue.Id == -1)
+            {
+                cmb_Liftparameter.SelectedItem = LiftParameterHelper.GetDropDownListValue(LiftParameter.DropDownList, LiftParameter.Value);
+            }
+            else
+            {
+                cmb_Liftparameter.SelectedItem = LiftParameter.DropDownListValue;
+            }
         }
         SetBorderHeight();
     }
@@ -43,13 +51,25 @@ public sealed partial class ParameterComboBox : UserControl
 
     private void DropDownList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        if (sender is ObservableCollection<string> dropDownList)
+        if (sender is ObservableCollection<SelectionValue> dropDownList)
         {
             if (dropDownList.Count == 0)
+            {
                 return;
-            if (LiftParameter is null || string.IsNullOrEmpty(LiftParameter.Value) || !dropDownList.Contains(LiftParameter.Value))
+            }
+            if (LiftParameter is null || string.IsNullOrEmpty(LiftParameter.Value))
+            {
                 return;
-            cmb_Liftparameter.SelectedValue = LiftParameter.Value;
+            }
+            var selectedDropDownListValue = LiftParameterHelper.GetDropDownListValue(LiftParameter.DropDownList, LiftParameter.Value);
+            if (selectedDropDownListValue is null)
+            {
+                return;
+            }
+            if (dropDownList.Contains(selectedDropDownListValue))
+            {
+                cmb_Liftparameter.SelectedItem = LiftParameterHelper.GetDropDownListValue(LiftParameter.DropDownList, LiftParameter.Value);
+            }
         }
     }
 

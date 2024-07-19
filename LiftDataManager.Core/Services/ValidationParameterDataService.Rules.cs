@@ -9,6 +9,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -1027,8 +1028,29 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
         else
         {
-            var selectedDoorSytem = ParameterDictionary[name].Value![..1];
-            var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(x => x.DoorManufacturer!.StartsWith(selectedDoorSytem)).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+            var selectedDoorSytem = value[..1];
+            Expression<Func<LiftDoorGroup, bool>> filterDoorSystems;
+            if (selectedDoorSytem == "M")
+            {
+                if (ParameterDictionary[name].DropDownListValue is not null && ParameterDictionary[name].DropDownListValue!.Id == 4)
+                {
+                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && x.Name.Contains("DT");
+                }
+                else
+                {
+                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && !x.Name.Contains("DT");
+                }
+            }
+            else
+            {
+                filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem);
+            }
+
+            var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(filterDoorSystems)
+                                                                                .Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
+                                                                                { 
+                                                                                    IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified
+                                                                                });
             if (availableLiftDoorGroups is not null)
             {
                 UpdateDropDownList(liftDoorGroups, availableLiftDoorGroups);
@@ -1659,33 +1681,29 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
         ParameterDictionary["var_Durchladung"].AutoUpdateParameterValue(zugangA && zugangC || zugangB && zugangD ? "True" : "False");
 
-        var availableCarFramePositions = new List<SelectionValue>();
-        if (!zugangA)
+        var availableCarFramePositions = _parametercontext.Set<CarFramePosition>().Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }).ToList();
+        if (zugangA)
         {
-            availableCarFramePositions.Add(new SelectionValue(1, "A", "A") { IsFavorite = false, SchindlerCertified = false });
+            availableCarFramePositions.RemoveAt(0);
         }
-        if (!zugangB)
+        if (zugangB)
         {
-            availableCarFramePositions.Add(new SelectionValue(2, "B", "B") { IsFavorite = false, SchindlerCertified = false });
+            availableCarFramePositions.RemoveAt(1);
         }
-        if (!zugangC)
+        if (zugangC)
         {
             var carFrame = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
             if (carFrame != null)
             {
-                if (carFrame.CarFrameBaseTypeId == 1 || carFrame.CarFrameBaseTypeId == 4 || carFrame.CarFrameBaseTypeId == 2)
+                if (carFrame.CarFrameBaseTypeId == 3 || carFrame.CarFrameBaseTypeId == 5 || carFrame.CarFrameBaseTypeId == 6)
                 {
-                    availableCarFramePositions.Add(new SelectionValue(3, "C", "C") { IsFavorite = false, SchindlerCertified = false });
+                    availableCarFramePositions.RemoveAt(2);
                 }
             }
-            else
-            {
-                availableCarFramePositions.Add(new SelectionValue(3, "C", "C") { IsFavorite = false, SchindlerCertified = false });
-            }
         }
-        if (!zugangD)
+        if (zugangD)
         {
-            availableCarFramePositions.Add(new SelectionValue(4, "D", "D") { IsFavorite = false, SchindlerCertified = false });
+            availableCarFramePositions.RemoveAt(3);
         }
 
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
