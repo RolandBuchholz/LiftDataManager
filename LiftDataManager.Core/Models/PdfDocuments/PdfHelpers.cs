@@ -105,18 +105,22 @@ public static class PdfHelpers
         .BorderColor(LowColor ? borderColorLow : borderColor)
         .PaddingLeft(5).PaddingTop(0)
         .PaddingBottom(-10).Text(text =>
-    {
-        if (!hideHeader)
-            text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
-        if (parameter.IsKey && LowHighlightColor)
         {
-            text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}").Bold().Italic();
-        }
-        else
-        {
-            text.Line(unit is null ? parameter.Value : $"{parameter.Value} {unit}");
-        }
-    });
+            if (!hideHeader)
+            {
+                text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
+            }
+            var parameterTextContent = parameter.ParameterTyp == ParameterTypValue.DropDownList ? parameter.DropDownListValue?.DisplayName 
+                                                                                                : parameter.Value;
+            if (parameter.IsKey && LowHighlightColor)
+            {
+                text.Line(unit is null ? parameterTextContent : $"{parameterTextContent} {unit}").Bold().Italic();
+            }
+            else
+            {
+                text.Line(unit is null ? parameterTextContent : $"{parameterTextContent} {unit}");
+            }
+        });
 
     public static void ParameterDateCell(this IContainer container, Parameter parameter, bool hideHeader = false, bool hideBorder = false, string? optinaleDescription = null) => container
         .Background(parameter.IsKey ? LowHighlightColor ? highlightColorLow : highlightColor : Colors.Transparent)
@@ -126,18 +130,18 @@ public static class PdfHelpers
         .PaddingTop(0)
         .PaddingBottom(-10)
         .Text(text =>
-    {
-        if (!hideHeader)
-            text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
-        if (parameter.IsKey && LowHighlightColor)
         {
-            text.Line(parameter.Value).Bold().Italic();
-        }
-        else
-        {
-            text.Line(parameter.Value);
-        }
-    });
+            if (!hideHeader)
+                text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
+            if (parameter.IsKey && LowHighlightColor)
+            {
+                text.Line(parameter.Value).Bold().Italic();
+            }
+            else
+            {
+                text.Line(parameter.Value);
+            }
+        });
 
     public static void ParameterBoolCell(this IContainer container, Parameter parameter, bool hideBorder = false, string? optinaleDescription = null) => container
         .Background(parameter.IsKey ? LowHighlightColor ? highlightColorLow : highlightColor : Colors.Transparent)

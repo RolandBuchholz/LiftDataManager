@@ -4,6 +4,7 @@ using LiftDataManager.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;

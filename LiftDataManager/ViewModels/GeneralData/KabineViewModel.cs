@@ -48,6 +48,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             message.PropertyName == "var_Bodenbelagsdicke")
         {
             SetCanEditFlooringProperties(message.PropertyName, message.NewValue, message.OldValue);
+            SetFlooringColorAndSurface();
         }
 
         if (message.PropertyName == "var_BodenbelagsTyp")
@@ -203,6 +204,9 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     private bool showFlooringColors;
 
     [ObservableProperty]
+    private bool showFlooringSurface;
+
+    [ObservableProperty]
     private bool canEditFlooringProperties;
 
     [ObservableProperty]
@@ -236,9 +240,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
     private void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
     {
-        CanEditFlooringProperties = ParameterDictionary!["var_Bodenbelag"].Value == "Nach Beschreibung" || ParameterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
-        CanEditFloorWeightAndHeight = ParameterDictionary!["var_Bodentyp"].Value == "sonder" || ParameterDictionary["var_Bodentyp"].Value == "extern";
-        ShowFlooringColors = ParameterDictionary!["var_BodenbelagsTyp"].DropDownList.Any();
+        CanEditFlooringProperties = ParameterDictionary["var_Bodenbelag"].Value == "Nach Beschreibung" || ParameterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
+        CanEditFloorWeightAndHeight = ParameterDictionary["var_Bodentyp"].Value == "sonder" || ParameterDictionary["var_Bodentyp"].Value == "extern";
 
         if (!CanEditFloorWeightAndHeight)
         {
@@ -265,6 +268,21 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             default:
                 break;
         };
+    }
+
+    private void SetFlooringColorAndSurface()
+    {
+        ShowFlooringColors = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Bodenbelag"].Value) &&
+                             ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Any();
+        ShowFlooringSurface = ParameterDictionary["var_Bodenbelag"].DropDownListValue?.Id == 7;
+        if (ShowFlooringSurface && string.IsNullOrWhiteSpace(ParameterDictionary["var_BodenbelagOberflaeche"].Value))
+        {
+            ParameterDictionary["var_BodenbelagOberflaeche"].AutoUpdateParameterValue("poliert R9");
+        }
+        if (!ShowFlooringSurface && !string.IsNullOrWhiteSpace(ParameterDictionary["var_BodenbelagOberflaeche"].Value))
+        {
+            ParameterDictionary["var_BodenbelagOberflaeche"].AutoUpdateParameterValue(string.Empty);
+        }
     }
 
     private void SetFloorImagePath()
@@ -537,6 +555,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);
+            SetFlooringColorAndSurface();
             SetFloorImagePath();
             CanShowMirrorDimensions();
             SetSkirtingBoardHeight(false);

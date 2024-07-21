@@ -87,7 +87,38 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" />
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{StaticResource AccentFillColorTertiaryBrush}"
+                                            Text="Id:" />
+                                        <TextBlock
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Text="{Binding Id}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{StaticResource AccentFillColorTertiaryBrush}"
+                                            Text="InternalName:" />
+                                        <TextBlock
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                         <FontIcon
                             Grid.Column="1"
                             Margin="5,0,2,0"
@@ -175,7 +206,38 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" />
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}">
+                            <ToolTipService.ToolTip>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{StaticResource AccentFillColorTertiaryBrush}"
+                                            Text="Id:" />
+                                        <TextBlock
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Text="{Binding Id}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{StaticResource AccentFillColorTertiaryBrush}"
+                                            Text="InternalName:" />
+                                        <TextBlock
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                         <FontIcon
                             Grid.Column="1"
                             Margin="5,0,2,0"

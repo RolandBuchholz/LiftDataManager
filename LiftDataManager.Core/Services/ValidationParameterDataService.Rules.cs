@@ -1048,8 +1048,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
             var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(filterDoorSystems)
                                                                                 .Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
-                                                                                { 
-                                                                                    IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified
+                                                                                {
+                                                                                    IsFavorite = x.IsFavorite,
+                                                                                    SchindlerCertified = x.SchindlerCertified
                                                                                 });
             if (availableLiftDoorGroups is not null)
             {
@@ -1176,9 +1177,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         }
 
-        var floorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).ToList();
+        //var floorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).ToList();
 
-        IEnumerable<SelectionValue> availableFloorColors = floorColors.Where(x => x.CarFlooring?.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+        //IEnumerable<SelectionValue> availableFloorColors = floorColors.Where(x => x.CarFlooring?.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+
+        IEnumerable<SelectionValue> availableFloorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).Where(x => x.CarFlooring!.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+
 
         if (availableFloorColors is not null)
         {
@@ -1965,6 +1969,20 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                     ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = dependentParameter });
                 }
             }
+        }
+    }
+
+    private void ValidateSchindlerCertifiedComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (!string.Equals(name, "var_Schachtinformationssystem"))
+        {
+            return;
+        }
+        var msz9eSchindlerCertified = ParameterDictionary[name].DropDownListValue?.Id == 2;
+        var msz9e = ParameterDictionary["var_Steuerungstyp"].DropDownList.FirstOrDefault(x => x.Id == 6);
+        if (msz9e is not null)
+        {
+            msz9e.SchindlerCertified = msz9eSchindlerCertified;
         }
     }
 }

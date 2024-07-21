@@ -20,14 +20,6 @@ public sealed partial class ParameterComboBox : UserControl
         {
             LiftParameter.ErrorsChanged += OnErrorsChanged;
             LiftParameter.DropDownList.CollectionChanged += DropDownList_CollectionChanged;
-            if (LiftParameter.DropDownListValue is not null && LiftParameter.DropDownListValue.Id == -1)
-            {
-                cmb_Liftparameter.SelectedItem = LiftParameterHelper.GetDropDownListValue(LiftParameter.DropDownList, LiftParameter.Value);
-            }
-            else
-            {
-                cmb_Liftparameter.SelectedItem = LiftParameter.DropDownListValue;
-            }
         }
         SetBorderHeight();
     }

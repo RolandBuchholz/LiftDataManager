@@ -312,6 +312,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
         ParameterDictionary[parameterName].DropDownList.Clear();
         ParameterDictionary[parameterName].DropDownList.AddRange(updateList, NotifyCollectionChangedAction.Reset);
+        ParameterDictionary[parameterName].RefreshDropDownListValue();
     }
 
     private double GetDefaultCeiling()

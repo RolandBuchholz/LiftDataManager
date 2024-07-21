@@ -1044,6 +1044,11 @@
                                         Orientation="Horizontal"
                                         Visibility="{x:Bind ViewModel.ShowFlooringColors, Mode=OneWay}">
                                         <SpeziControls:ParameterComboBox LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BodenbelagsTyp'], Mode=TwoWay}" ShowDefaultHeader="True" />
+                                        <SpeziControls:ParameterComboBox
+                                            Header="Oberfläche"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BodenbelagOberflaeche'], Mode=TwoWay}"
+                                            ShowDefaultHeader="False"
+                                            Visibility="{x:Bind ViewModel.ShowFlooringSurface, Mode=OneWay}" />
                                         <Border
                                             Width="50"
                                             Height="50"

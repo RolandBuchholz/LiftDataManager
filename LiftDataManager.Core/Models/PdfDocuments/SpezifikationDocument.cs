@@ -444,10 +444,17 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
                 table.Cell().Row(21).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
-                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BodenbelagsTyp"]);
-                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
-                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
+                    row.RelativeItem(6).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
+                    if (ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Any())
+                    {
+                        row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_BodenbelagsTyp"]);
+                    }
+                    if (ParameterDictionary["var_Bodenbelag"].DropDownListValue?.Id == 7)
+                    {
+                        row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_BodenbelagOberflaeche"]);
+                    }
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
+                    row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
                 });
                 table.Cell().Row(22).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_BodenbelagBeschreibung"], null, false, true);
             });
@@ -1111,25 +1118,26 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(9).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_ErsatzmassnahmenSK"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_11"]);
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_ElektrBremsenansteuerung"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_15"]);
                 });
                 table.Cell().Row(10).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_ErsatzmassnahmenSG"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_14"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_11"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_18"]);
                 });
                 table.Cell().Row(11).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SchutzgelaenderKontakt"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_17"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_14"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_21"]);
                 });
                 table.Cell().Row(12).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"], false, "WECO Notstromgerät");
-                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_17"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
 
                 });
                 table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(borderColor).Bold();

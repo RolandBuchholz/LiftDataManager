@@ -14,8 +14,8 @@
     <Page.Resources>
         <media:AttachedCardShadow
             x:Key="CommonShadow"
-            InnerContentClipMode="CompositionMaskBrush"
             CornerRadius="4"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="4" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
@@ -267,7 +267,20 @@
                                                 Wird automtisch in der Bausatzauswahl gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_11'], Mode=TwoWay}" />
+                                    <Grid
+                                        Grid.Column="1"
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ElektrBremsenansteuerung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch in der Aufzugstürenauswahl gesetzt</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_15'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
@@ -288,7 +301,7 @@
                                                 Wird automtisch in der Bausatzauswahl  gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_14'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_11'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_18'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
@@ -309,7 +322,7 @@
                                                 Wird automtisch in der Schutzgeländerauswahl  gesetzt</TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_17'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_14'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_21'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
@@ -332,10 +345,8 @@
                                             </TextBlock>
                                         </ToolTipService.ToolTip>
                                     </Grid>
-                                    <SpeziControls:ParameterCustomCheckBox
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_20'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_17'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_20'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
 using MvvmHelpers;
+using System.Diagnostics;
 
 namespace LiftDataManager.Core.Models;
 
@@ -72,12 +73,26 @@ public partial class Parameter : ParameterBase
         {
             IsDirty = true;
             IsAutoUpdated = _autoUpdatedRunning;
-            var result = ValidateParameterAsync().Result;
-            foreach (var item in result.ToList())
+            var result = ValidateParameterAsync();
+            if (!result.IsFaulted)
             {
-                if (item.HasDependentParameters)
+                foreach (var item in result.Result)
                 {
-                    _ = AfterValidateRangeParameterAsync(item.DependentParameter);
+                    if (item.HasDependentParameters)
+                    {
+                        _ = AfterValidateRangeParameterAsync(item.DependentParameter);
+                    }
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"{Name}:Validation Failed");
+                if (result.Exception is not null)
+                {
+                    foreach (var ex in result.Exception.InnerExceptions)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
                 }
             }
             Broadcast(oldValue, newValue, Name);
@@ -129,5 +144,11 @@ public partial class Parameter : ParameterBase
             Value = newParamterValue;
         }
         _autoUpdatedRunning = false;
+    }
+
+    public void RefreshDropDownListValue()
+    {
+        dropDownListValue = null;
+        DropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, Value);
     }
 }

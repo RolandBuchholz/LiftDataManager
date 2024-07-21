@@ -370,7 +370,8 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Schachtinformationssystem",
             [new(ValidateUCMValues, "None", null),
-            new(ValidateLiftPositionSystems, "Warning", "var_Steuerungstyp")]);
+            new(ValidateLiftPositionSystems, "Warning", "var_Steuerungstyp"),
+            new(ValidateSchindlerCertifiedComponents, "None", null)]);
 
         ValidationDictionary.Add("var_Treibscheibegehaertet",
             [new(ValidateZAliftData, "Warning", null)]);
