@@ -21,4 +21,10 @@ public interface IDialogService
     Task<string?> InputDialogAsync(string title, string message, string textBoxName);
 
     Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
+
+    Task<string?> LiftPlannerDBDialogAsync(string liftPlanner);
+
+    Task<bool> PasswordDialogAsync(string? title, string? condition, string? description);
+
+    Task<bool> ZALiftDialogAsync();
 }

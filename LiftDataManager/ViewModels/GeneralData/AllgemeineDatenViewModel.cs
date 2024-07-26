@@ -252,36 +252,37 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     [RelayCommand]
     private async Task AddLiftPlannerDialogAsync(ContentDialog addLiftPlannerDialog)
     {
-        if (!string.IsNullOrWhiteSpace(SelectedLiftPlanner))
-        {
-            if (_editableparametercontext is null)
-            {
-                DbContextOptionsBuilder editableOptions = new();
-                editableOptions.UseSqlite(App.GetConnectionString(false));
-                _editableparametercontext = new ParameterContext(editableOptions.Options);
-            }
+        await _dialogService.LiftPlannerDBDialogAsync("Hallo");
+        //if (!string.IsNullOrWhiteSpace(SelectedLiftPlanner))
+        //{
+        //    if (_editableparametercontext is null)
+        //    {
+        //        DbContextOptionsBuilder editableOptions = new();
+        //        editableOptions.UseSqlite(App.GetConnectionString(false));
+        //        _editableparametercontext = new ParameterContext(editableOptions.Options);
+        //    }
 
-            var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
-            var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
-                                                                          .ThenInclude(t => t.Country)
-                                                                          .FirstOrDefault(x => x.Id == liftPlanner.Key);
-            if (liftPlannerDatabase is not null)
-            {
-                Company = liftPlannerDatabase.Company;
-                FirstName = liftPlannerDatabase.FirstName;
-                Name = liftPlannerDatabase.Name;
-                Street = liftPlannerDatabase.Street;
-                StreetNumber = liftPlannerDatabase.StreetNumber;
-                SelectedCountry = liftPlannerDatabase.ZipCode.Country;
-                ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
-                Town = liftPlannerDatabase.ZipCode.Name;
-                PhoneNumber = liftPlannerDatabase.PhoneNumber;
-                MobileNumber = liftPlannerDatabase.MobileNumber;
-                Mailadress = liftPlannerDatabase.EmailAddress;
-                ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
-            }
-        }
-        await addLiftPlannerDialog.ShowAsyncQueueDraggable();
+        //    var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
+        //    var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+        //                                                                  .ThenInclude(t => t.Country)
+        //                                                                  .FirstOrDefault(x => x.Id == liftPlanner.Key);
+        //    if (liftPlannerDatabase is not null)
+        //    {
+        //        Company = liftPlannerDatabase.Company;
+        //        FirstName = liftPlannerDatabase.FirstName;
+        //        Name = liftPlannerDatabase.Name;
+        //        Street = liftPlannerDatabase.Street;
+        //        StreetNumber = liftPlannerDatabase.StreetNumber;
+        //        SelectedCountry = liftPlannerDatabase.ZipCode.Country;
+        //        ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
+        //        Town = liftPlannerDatabase.ZipCode.Name;
+        //        PhoneNumber = liftPlannerDatabase.PhoneNumber;
+        //        MobileNumber = liftPlannerDatabase.MobileNumber;
+        //        Mailadress = liftPlannerDatabase.EmailAddress;
+        //        ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
+        //    }
+        //}
+        //await addLiftPlannerDialog.ShowAsyncQueueDraggable();
     }
 
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]

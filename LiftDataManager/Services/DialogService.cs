@@ -12,7 +12,7 @@ public class DialogService : IDialogService
     /// </summary>
     /// <param name="title">The title.</param>
     /// <param name="message">The message.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task MessageDialogAsync(string title, string message)
     {
 
@@ -33,7 +33,7 @@ public class DialogService : IDialogService
     /// <param name="title">The title.</param>
     /// <param name="message">The message.</param>
     /// <param name="buttonText">The button text.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task MessageDialogAsync(string title, string message, string buttonText)
     {
         var dialog = new ContentDialog
@@ -53,7 +53,7 @@ public class DialogService : IDialogService
     /// <param name="title">The title.</param>
     /// <param name="message">The message.</param>
     /// <param name="buttonText">The button text.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task<bool?> MessageConfirmationDialogAsync(string title, string message, string buttonText)
     {
         var dialog = new ContentDialog
@@ -78,7 +78,7 @@ public class DialogService : IDialogService
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="title">The title.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task<bool?> ConfirmationDialogAsync(string title)
     {
         return await ConfirmationDialogAsync(title, "OK", string.Empty, "Cancel");
@@ -90,7 +90,7 @@ public class DialogService : IDialogService
     /// <param name="title">The title.</param>
     /// <param name="yesButtonText">The yesbutton text.</param>
     /// <param name="noButtonText">The nobutton text.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText)
     {
         return (await ConfirmationDialogAsync(title, yesButtonText, noButtonText, string.Empty)).Value;
@@ -103,7 +103,7 @@ public class DialogService : IDialogService
     /// <param name="yesButtonText">The yesbutton text.</param>
     /// <param name="noButtonText">The nobutton text.</param>
     /// <param name="cancelButtonText">The cancelbutton text.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText, string cancelButtonText)
     {
         var dialog = new ContentDialog
@@ -133,7 +133,7 @@ public class DialogService : IDialogService
     /// <param name="yesButtonText">The yesbutton text.</param>
     /// <param name="noButtonText">The nobutton text.</param>
     /// <param name="cancelButtonText">The cancelbutton text.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task<bool?> ConfirmationDialogAsync(string title, string message, string yesButtonText, string noButtonText, string cancelButtonText)
     {
         var dialog = new ContentDialog
@@ -192,7 +192,7 @@ public class DialogService : IDialogService
     /// <param name="title">The title.</param>
     /// <param name="message">The message.</param>
     /// <param name="textBoxName">Header.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
 
     public async Task<string?> InputDialogAsync(string title, string message, string textBoxName)
     {
@@ -240,7 +240,7 @@ public class DialogService : IDialogService
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="downloadResult">The title.</param>
-    /// <returns>Task.</returns>
+    /// <returns>Task</returns>
     public async Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult)
     {
         var title = "LiftDataManager InfoDialog";
@@ -321,5 +321,75 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         await dialog.ShowAsyncQueueDraggable();
+    }
+
+    /// <summary>
+    /// Opens a modal message LiftPlannerDB.
+    /// </summary>
+    /// <param name="liftPlanner">The title.</param>
+    /// <returns>Task</returns>
+
+    public async Task<string?> LiftPlannerDBDialogAsync(string liftPlanner)
+    {
+        var dialog = new LiftPlannerDBDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return null;
+        }
+
+        return "Hallo";
+    }
+
+    /// <summary>
+    /// Opens a modal passwordDialog.
+    /// </summary>
+    /// <param name="title">title</param>
+    /// <param name="condition">condition</param>
+    /// <param name="description">description</param>
+    /// <returns>Task</returns>
+
+    public async Task<bool> PasswordDialogAsync(string? title, string? condition, string? description)
+    {
+        var dialog = new PasswortDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+            Title = title,
+            Condition = condition,
+            Description = description
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Opens a modal ZiehlAbeggProcessingDialog.
+    /// </summary>
+
+    /// <returns>Task</returns>
+
+    public async Task<bool> ZALiftDialogAsync()
+    {
+        var dialog = new ZALiftDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return false;
+        }
+        return true;
     }
 }

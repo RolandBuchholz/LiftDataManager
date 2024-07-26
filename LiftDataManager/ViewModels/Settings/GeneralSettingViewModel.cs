@@ -1,14 +1,17 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using Microsoft.UI.Xaml.Documents;
+
+namespace LiftDataManager.ViewModels;
 
 public partial class GeneralSettingViewModel : ObservableRecipient ,INavigationAwareEx
 {
-    private const string adminpasswort = "2342";
     private readonly ISettingService _settingService;
+    public readonly IDialogService _dialogService;
     private CurrentSpeziProperties _currentSpeziProperties;
-    public GeneralSettingViewModel(ISettingService settingService)
+    public GeneralSettingViewModel(ISettingService settingService, IDialogService dialogService)
     {
         _currentSpeziProperties ??= new();
         _settingService = settingService;
+        _dialogService = dialogService;
     }
 
     [ObservableProperty]
@@ -55,19 +58,6 @@ public partial class GeneralSettingViewModel : ObservableRecipient ,INavigationA
     public string[] SavePeriods = ["2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min"];
 
     [ObservableProperty]
-    private bool canSwitchToAdminmode;
-
-    [ObservableProperty]
-    private string? passwortInfoText = "Kein PIN eingegeben";
-
-    [ObservableProperty]
-    private string? passwortInput;
-    partial void OnPasswortInputChanged(string? value)
-    {
-        CheckpasswortInput();
-    }
-
-    [ObservableProperty]
     private bool adminmode;
     partial void OnAdminmodeChanged(bool value)
     {
@@ -79,40 +69,18 @@ public partial class GeneralSettingViewModel : ObservableRecipient ,INavigationA
         }
     }
 
-    [ObservableProperty]
-    private bool adminmodeWarningAccepted;
-    partial void OnAdminmodeWarningAcceptedChanged(bool value)
-    {
-        CanSwitchToAdminmode = (AdminmodeWarningAccepted == true
-                        && PasswortInfoText == "Adminmode Pin korrekt Zugriff gewährt");
-    }
-
     [RelayCommand]
-    private async Task PinDialogAsync(ContentDialog pwdDialog)
+    private async Task PinDialogAsync()
     {
         if (!Adminmode)
         {
-            var result = await pwdDialog.ShowAsyncQueueDraggable();
-            Adminmode = result == ContentDialogResult.Primary;
-        }
-    }
-
-    private void CheckpasswortInput()
-    {
-        switch (PasswortInput)
-        {
-            case "":
-                PasswortInfoText = "Kein PIN eingegeben";
-                CanSwitchToAdminmode = false;
-                break;
-            case adminpasswort:
-                PasswortInfoText = "Adminmode Pin korrekt Zugriff gewährt";
-                CanSwitchToAdminmode = AdminmodeWarningAccepted;
-                break;
-            default:
-                PasswortInfoText = "Incorrecter Adminmode Pin";
-                CanSwitchToAdminmode = false;
-                break;
+            var title = "Admin Mode";
+            var condition = "Ich verfüge über die Erfahrung Pamameter ohne Plausibilitätsprüfung zu ändern.";
+            var description = """
+                              Achtung im Adminmode können nicht validierte Parameter gespeichet werden.
+                              Die Parameter werden nicht auf Plausibilität geprüft.
+                              """;
+            Adminmode = await _dialogService.PasswordDialogAsync(title, condition, description);
         }
     }
 

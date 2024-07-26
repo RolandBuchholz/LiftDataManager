@@ -443,7 +443,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         ExWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
         ZAliftHtmlUpdated = false;
         ZAliftAusUpdated = false;
-
+        //var result2 = await _dialogService.ZALiftDialogAsync();
         var dialog = zaliftEditDialog.ShowAsyncQueueDraggable();
 
         if (!File.Exists(pathSynchronizeZAlift))

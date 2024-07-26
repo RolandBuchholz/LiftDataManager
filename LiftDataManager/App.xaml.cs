@@ -123,6 +123,11 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
+            // DialogViewModels
+            services.AddTransient<LiftPlannerDBDialogViewModel>();
+            services.AddTransient<PasswortDialogViewModel>();
+            services.AddTransient<ZALiftDialogViewModel>();
+
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
