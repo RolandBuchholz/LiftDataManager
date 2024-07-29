@@ -469,7 +469,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 RemoveCarDoorData("D");
             return;
         }
-
         if (zugangB)
         {
             SetCarDoorData("B");
@@ -478,7 +477,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             RemoveCarDoorData("B");
         }
-
         if (zugangC)
         {
             SetCarDoorData("C");
@@ -487,7 +485,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             RemoveCarDoorData("C");
         }
-
         if (zugangD)
         {
             SetCarDoorData("D");
@@ -1104,7 +1101,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var zugang = name.Last();
         bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Spiegel{zugang}");
         bool hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Handlauf{zugang}");
-        bool hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Sockelleiste{zugang}");
         bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Rammschutz{zugang}");
         bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_PaneelPos{zugang}");
         bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
@@ -1115,15 +1111,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
 
-        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
+        if (hasSpiegel || hasHandlauf || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
             if (hasSpiegel)
                 errorMessage += " Spiegel,";
             if (hasHandlauf)
                 errorMessage += " Handlauf,";
-            if (hasSockelleiste)
-                errorMessage += " Sockelleiste,";
             if (hasTeilungsleiste)
                 errorMessage += " Teilungsleiste,";
             if (hasRammschutz)

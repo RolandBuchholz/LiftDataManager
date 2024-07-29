@@ -86,6 +86,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = new SelectionValue();
         }
+        if (ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue is not null ||
+            ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue is not null ||
+            ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue?.Id != 0)
+        {
+            ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue = new SelectionValue();
+        }
 
         if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TB_{zugang}"].Value))
         {
@@ -122,7 +132,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 ParameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value = string.Empty;
             }
         }
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_TuerEinbau{zugang}"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value))
         {
             if (ParameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value != "0")
             {
