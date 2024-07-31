@@ -53,7 +53,7 @@
                         </ComboBox>
                     </controls:SettingsCard>
                     <controls:SettingsCard
-                        Description="Nuzten Sie die Windows-Akzentfarbe oder die App-Standardfarbe."
+                        Description="Nutzen Sie die Windows-Akzentfarbe oder die App-Standardfarbe."
                         Header="App Akzentfarbe"
                         HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/themeColor.png}">
                         <ToggleSwitch
