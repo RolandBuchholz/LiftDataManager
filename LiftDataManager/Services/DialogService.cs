@@ -375,15 +375,16 @@ public class DialogService : IDialogService
     /// <summary>
     /// Opens a modal ZiehlAbeggProcessingDialog.
     /// </summary>
-
+    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
     /// <returns>Task</returns>
 
-    public async Task<bool> ZALiftDialogAsync()
+    public async Task<bool> ZALiftDialogAsync(string? fullPathXml)
     {
         var dialog = new ZALiftDialog()
         {
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme,
+            FullPathXml = fullPathXml
         };
         var result = await dialog.ShowAsyncQueueDraggable();
         if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)

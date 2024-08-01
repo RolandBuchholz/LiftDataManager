@@ -91,10 +91,7 @@
                         Text="CFP" />
                 </StackPanel>
             </Button>
-            <Button
-                Command="{x:Bind ViewModel.OpenZiehlAbeggCommand}"
-                CommandParameter="{x:Bind ZAliftBearbeitungDialog}"
-                Style="{StaticResource LinkButton}">
+            <Button Command="{x:Bind ViewModel.OpenZiehlAbeggCommand}" Style="{StaticResource LinkButton}">
                 <StackPanel>
                     <Image
                         Width="100"
@@ -183,48 +180,6 @@
             </Button>
         </GridView>
         <ContentDialog
-            x:Name="ZAliftBearbeitungDialog"
-            Title="Ziehl Abegg Auslegungsprogramm aktiv"
-            CloseButtonCommand="{x:Bind ViewModel.OpenZiehlAbeggCancelCommand}"
-            CloseButtonText="Abbrechen"
-            IsPrimaryButtonEnabled="{x:Bind ViewModel.ZAliftDataReadyForImport, Mode=OneWay}"
-            PrimaryButtonCommand="{x:Bind ViewModel.ImportZAliftDataCommand}"
-            PrimaryButtonText="Daten übernehmen">
-            <ContentDialog.PrimaryButtonCommandParameter>
-                <x:Boolean>false</x:Boolean>
-            </ContentDialog.PrimaryButtonCommandParameter>
-            <StackPanel>
-                <Image
-                    Width="200"
-                    Height="200"
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="/Images/ZiehlAbeggTransparent.png" />
-                <ProgressBar Margin="0,10,0,10" IsIndeterminate="True" />
-                <CheckBox
-                    Content="Daten in ZALift Registry geschieben"
-                    IsChecked="{x:Bind ViewModel.ZAliftRegEditSuccessful, Mode=OneWay}"
-                    IsEnabled="False" />
-                <CheckBox
-                    Content="ZiehlAbegg HTML geschieben"
-                    IsChecked="{x:Bind ViewModel.ZAliftHtmlUpdated, Mode=OneWay}"
-                    IsEnabled="False" />
-                <CheckBox
-                    Content="ZiehlAbegg Aus geschieben"
-                    IsChecked="{x:Bind ViewModel.ZAliftAusUpdated, Mode=OneWay}"
-                    IsEnabled="False" />
-                <TextBlock
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
-                    Text="{x:Bind ViewModel.ExWorkStatus, Mode=OneWay}" />
-            </StackPanel>
-        </ContentDialog>
-        <ContentDialog
             x:Name="CFPBearbeitungDialog"
             Title="Car Frame Program Auslegungsprogramm aktiv"
             CloseButtonCommand="{x:Bind ViewModel.OpenCFPCancelCommand}"
@@ -243,14 +198,14 @@
                     Content="Car Frame Program Daten geschrieben"
                     IsChecked="{x:Bind ViewModel.CFPDataReadyForImport, Mode=OneWay}"
                     IsEnabled="False" />
-                <TextBlock
+                <!--<TextBlock
                     Margin="0,10,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="16"
                     FontWeight="SemiBold"
                     Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
-                    Text="{x:Bind ViewModel.ExWorkStatus, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.ExWorkStatus, Mode=OneWay}" />-->
             </StackPanel>
         </ContentDialog>
     </Grid>

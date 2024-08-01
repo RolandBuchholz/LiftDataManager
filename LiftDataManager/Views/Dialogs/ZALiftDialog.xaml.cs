@@ -6,10 +6,10 @@ public sealed partial class ZALiftDialog : ContentDialog
     {
         get;
     }
-
+    public string? FullPathXml { get; set; }
     public ZALiftDialog()
     {
         ViewModel = App.GetService<ZALiftDialogViewModel>();
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

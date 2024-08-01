@@ -26,5 +26,5 @@ public interface IDialogService
 
     Task<bool> PasswordDialogAsync(string? title, string? condition, string? description);
 
-    Task<bool> ZALiftDialogAsync();
+    Task<bool> ZALiftDialogAsync(string? fullPathXml);
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
 using MvvmHelpers;
+using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace LiftDataManager.Core.Models;
@@ -76,7 +77,7 @@ public partial class Parameter : ParameterBase
             var result = ValidateParameterAsync();
             if (!result.IsFaulted)
             {
-                foreach (var item in result.Result)
+                foreach (var item in result.Result.ToImmutableArray())
                 {
                     if (item.HasDependentParameters)
                     {
