@@ -312,7 +312,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen");
         }
 
-        var data = await _parameterDataService!.LoadParameterAsync(FullPathXml);
+        var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
 
         foreach (var item in data)
         {
@@ -406,7 +406,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 }
             }
             if (isXmlOutdated && doc is not null)
+            {
                 doc.Save(FullPathXml);
+            }
         }
 
         if (CurrentSpeziProperties is not null)
@@ -462,8 +464,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private async Task ClearDataAsync()
     {
         if (FullPathXml is null)
+        {
             return;
-
+        }
         bool? delete;
         if (CanSaveAllSpeziParameters || CheckOut)
         {

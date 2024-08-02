@@ -66,7 +66,7 @@ public class LiftParameterHelper
     {
         if (string.IsNullOrWhiteSpace(newValue))
         {
-            return null;
+            return new SelectionValue();
         }
         var newSelectionValue = dropDownList.FirstOrDefault(x => x.Name == newValue);
         return newSelectionValue is not null ? newSelectionValue
