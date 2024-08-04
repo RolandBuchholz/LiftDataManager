@@ -393,4 +393,28 @@ public class DialogService : IDialogService
         }
         return true;
     }
+
+    /// <summary>
+    /// Opens a modal CarFrameProcessingDialog.
+    /// </summary>
+    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
+    /// <param name="carFrameTyp">carFrameTyp</param>
+    /// <returns>Task</returns>
+
+    public async Task<bool> CFPEditDialogAsync(string? fullPathXml, string? carFrameTyp)
+    {
+        var dialog = new CFPEditDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+            FullPathXml = fullPathXml,
+            CarFrameTyp = carFrameTyp
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return false;
+        }
+        return true;
+    }
 }

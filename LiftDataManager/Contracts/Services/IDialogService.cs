@@ -27,4 +27,6 @@ public interface IDialogService
     Task<bool> PasswordDialogAsync(string? title, string? condition, string? description);
 
     Task<bool> ZALiftDialogAsync(string? fullPathXml);
+
+    Task<bool> CFPEditDialogAsync(string? fullPathXml, string? carFrameTyp);
 }
