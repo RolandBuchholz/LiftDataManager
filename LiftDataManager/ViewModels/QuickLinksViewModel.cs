@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using System.Xml;
 
@@ -51,30 +50,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     }
 
     [ObservableProperty]
-    private bool zAliftHtmlUpdated;
-    partial void OnZAliftHtmlUpdatedChanged(bool value)
-    {
-        ZAliftDataReadyForImport = value & ZAliftAusUpdated;
-    }
-
-    [ObservableProperty]
-    private bool zAliftAusUpdated;
-    partial void OnZAliftAusUpdatedChanged(bool value)
-    {
-        ZAliftDataReadyForImport = value & ZAliftHtmlUpdated;
-    }
-
-    [ObservableProperty]
     private bool showCFPDataBaseOverriddenWarning;
-
-    [ObservableProperty]
-    private bool zAliftRegEditSuccessful;
-
-    [ObservableProperty]
-    private bool zAliftDataReadyForImport;
-
-    [ObservableProperty]
-    private bool cFPDataReadyForImport;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
@@ -110,9 +86,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
     private bool canOpenLilo;
-
-    [ObservableProperty]
-    private string? exWorkStatus;
 
     [ObservableProperty]
     private string updatedParameter = string.Empty;
@@ -169,7 +142,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
         if (File.Exists(filename))
         {
-            StartProgram(filename, startargs);
+            ProcessHelpers.StartProgram(filename, startargs);
         }
     }
 
@@ -185,7 +158,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var startargs = @"C:\Temp\VaultLink.acr";
             if (File.Exists(FullPathXml))
             {
-                StartProgram(filename, startargs);
+                ProcessHelpers.StartProgram(filename, startargs);
             }
         }
     }
@@ -201,7 +174,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         {
             if (auftragsnummer != null)
             {
-                StartProgram(filename, auftragsnummer);
+                ProcessHelpers.StartProgram(filename, auftragsnummer);
             }
         }
     }
@@ -217,7 +190,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
             if (Directory.Exists(pathXml))
             {
-                StartProgram(filename, pathXml);
+                ProcessHelpers.StartProgram(filename, pathXml);
             }
         }
     }
@@ -233,117 +206,47 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var startargs = @"C:\Temp\VaultLink.acr";
             if (File.Exists(FullPathXml))
             {
-                StartProgram(filename, startargs);
+                ProcessHelpers.StartProgram(filename, startargs);
             }
         }
     }
 
-    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenCFP))]
-    private async Task OpenCFP(ContentDialog cFPEditDialog, CancellationToken token)
+    [RelayCommand(CanExecute = nameof(CanOpenCFP))]
+    private async Task OpenCFP()
     {
         SynchronizeViewModelParameter();
-        _ = SetModelStateAsync();
-        _fromCFPwritten = false;
-        CFPDataReadyForImport = false;
-        var startargs = string.Empty;
-        var pathCFP = _settingService.PathCFP;
-        if (!File.Exists(pathCFP))
-            return;
-        var auftragsnummer = ParameterDictionary?["var_AuftragsNummer"].Value;
-        var bausatztyp = ParameterDictionary?["var_Bausatz"].Value;
-        var shortSymbolDirveSystem = string.Empty;
-
-        var driveSystem = _parametercontext.Set<CarFrameType>().Include(i => i.DriveType)
-                                                               .ToList()
-                                                               .FirstOrDefault(x => x.Name == bausatztyp);
-        if (driveSystem is not null)
+        await SetModelStateAsync();
+        if (CanSaveAllSpeziParameters)
         {
-            shortSymbolDirveSystem = driveSystem.DriveType!.Name == "Seil" ? "S" : "H";
-            startargs = $"{auftragsnummer} {driveSystem.CFPStartIndex} {shortSymbolDirveSystem}";
+            await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml!, Adminmode);
         }
-
-        if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
-        {
-            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
-        }
-
         if (!CheckOut)
         {
             var checkOutResult = await CheckOutDialogAsync();
             if (checkOutResult is null)
+            {
                 return;
+            }
             if ((bool)checkOutResult)
+            {
                 return;
-            if (File.Exists(pathCFP))
-            {
-                StartProgram(pathCFP, startargs);
             }
+            var pathCFP = _settingService.PathCFP;
+            //TODO NewCheckOutDialog
+            //if (File.Exists(pathCFP))
+            //{
+            //    ProcessHelpers.StartProgram(pathCFP, startargs);
+            //}
             return;
         }
+        var dialog = await _dialogService.CFPEditDialogAsync(FullPathXml, ParameterDictionary["var_Bausatz"].Value);
 
-        if (CanSaveAllSpeziParameters)
+        if (dialog)
         {
-            _ = _parameterDataService!.SaveAllParameterAsync(ParameterDictionary!, FullPathXml!, Adminmode);
-        }
-
-        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-AutoDeskTransfer.xml"));
-        ExWorkStatus = "CFP Auslegung wird bearbeitet";
-        CanImportCFPData = false;
-
-        var dialog = cFPEditDialog.ShowAsyncQueueDraggable();
-
-        using FileSystemWatcher watcher = new(Path.GetDirectoryName(FullPathXml)!);
-        watcher.IncludeSubdirectories = false;
-        watcher.EnableRaisingEvents = true;
-        watcher.Changed += OnChangedCFP;
-
-        if (!File.Exists(pathCFP))
-        {
-            watcher.Changed -= OnChangedCFP;
-            return;
-        }
-
-        using Process carFrameProgram = new();
-        carFrameProgram.StartInfo.UseShellExecute = true;
-        carFrameProgram.StartInfo.FileName = pathCFP;
-        carFrameProgram.StartInfo.Arguments = startargs;
-        carFrameProgram.Start();
-
-        bool exit = false;
-
-        while (!exit)
-        {
-            exit = _fromCFPwritten;
-            if (token.IsCancellationRequested)
-            {
-                exit = true;
-                watcher.Changed -= OnChangedCFP;
-                carFrameProgram.Kill(true);
-            }
-            await Task.Delay(50);
-        }
-
-        watcher.Changed -= OnChangedCFP;
-
-        var fromCFP = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "fromCFP.txt");
-        if (File.Exists(fromCFP))
-            File.Delete(fromCFP);
-
-        CFPDataReadyForImport = _fromCFPwritten;
-        if (CFPDataReadyForImport)
-            ExWorkStatus = "Daten zur Übernahme bereit";
-
-        var result = await dialog;
-        if (result == ContentDialogResult.Primary)
-        {
-            var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
-            if (File.Exists(backupFileXml))
-                File.Delete(backupFileXml);
-
             var updatedResult = await _parameterDataService!.SyncFromAutodeskTransferAsync(FullPathXml!, ParameterDictionary!);
             if (updatedResult is not null)
             {
-                if (updatedResult.Any())
+                if (updatedResult.Count != 0)
                 {
                     await _dialogService!.MessageDialogAsync("Aktualisierte Parameter", string.Join("\n", updatedResult.Select(x => x.ToString())));
                 }
@@ -356,171 +259,62 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 "Achtung:\n" +
                 "Daten aus dem CarFrameProgram werden verworfen!\n" +
                 "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
-            try
-            {
-                var restoreFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-AutoDeskTransfer.xml");
-                FileInfo restoreFileXmlInfo = new(restoreFileXml);
-                if (restoreFileXmlInfo.IsReadOnly)
-                    return;
-                var backupFileXml = Path.Combine(Path.GetDirectoryName(FullPathXml)!, auftragsnummer + "-LDM_Backup.xml");
-
-                if (File.Exists(backupFileXml))
-                {
-                    File.Move(backupFileXml, restoreFileXml, true);
-                    _logger.LogInformation(60192, "{restoreFileXml} restored from backupfile", restoreFileXml);
-                }
-                else
-                {
-                    _logger.LogError(61092, "no backupfile found, restoring Autodesktransfer.xml failed");
-                }
-            }
-            catch (Exception)
-            {
-
-                _logger.LogError(61092, "restoring Autodesktransfer.xml failed");
-            }
-
         }
-
-
     }
 
-    private bool _fromCFPwritten;
-
-    private void OnChangedCFP(object sender, FileSystemEventArgs e)
-    {
-        if (e.ChangeType != WatcherChangeTypes.Changed)
-            return;
-        if (e.Name == "fromCFP.txt")
-            _fromCFPwritten = true;
-
-        Debug.WriteLine($"Changed: {e.FullPath}");
-    }
-
-    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanOpenZALift))]
-    private async Task OpenZiehlAbeggAsync(ContentDialog zaliftEditDialog, CancellationToken token)
+    [RelayCommand(CanExecute = nameof(CanOpenZALift))]
+    private async Task OpenZiehlAbeggAsync()
     {
         SynchronizeViewModelParameter();
-        _ = SetModelStateAsync();
-        ZAliftRegEditSuccessful = false;
-        var startargs = "StartLAST";
-        var pathZALift = _settingService.PathZALift;
-        if (!File.Exists(pathZALift))
-            return;
+        await SetModelStateAsync();
+        CanImportZAliftData = false;
         bool noEditMode = false;
-        ZAliftAusUpdated = false;
-        _zAliftAusUpdated = false;
-        ZAliftHtmlUpdated = false;
-        _zAliftHtmlUpdated = false;
-        zAliftRegEditSuccessful = false;
-        var auftragsnummer = ParameterDictionary?["var_AuftragsNummer"].Value;
+        var auftragsnummer = ParameterDictionary["var_AuftragsNummer"].Value;
 
         if (!CheckOut)
         {
             var checkOutResult = await CheckOutDialogAsync();
             if (checkOutResult is null)
+            {
                 return;
-            if ((bool)checkOutResult)
-                return;
+            }
 
+            if ((bool)checkOutResult)
+            {
+                return;
+            }
             noEditMode = true;
         }
-
-        if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen")))
-        {
-            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
-        }
-
-        if (CanSaveAllSpeziParameters)
-        {
-            _ = _parameterDataService!.SaveAllParameterAsync(ParameterDictionary!, FullPathXml!, Adminmode);
-        }
-
-        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".html"));
-        MakeBackupFile(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", auftragsnummer + ".aus"));
-
-        CanImportZAliftData = false;
-        ExWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
-        ZAliftHtmlUpdated = false;
-        ZAliftAusUpdated = false;
-
-        var dialog = zaliftEditDialog.ShowAsyncQueueDraggable();
-
-        if (!File.Exists(pathSynchronizeZAlift))
-        {
-            var downloadResult = await _vaultDataService.GetFileAsync("SynchronizeZAlift.ps1", true, true);
-            _logger.LogInformation(60191, "downloadResult SynchronizeZAlift.ps1: ErrorState {downloadResult.ErrorState}", downloadResult.ErrorState);
-        }
-
-        if (File.Exists(pathSynchronizeZAlift))
-        {
-            var args = $"{pathSynchronizeZAlift} set '{FullPathXml}'";
-            var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
-            _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
-
-            if (exitCode == 0)
-            {
-                ZAliftRegEditSuccessful = true;
-            }
-        }
-
+        var startargs = "StartLAST";
+        var pathZALift = _settingService.PathZALift;
         if (noEditMode)
         {
-            zaliftEditDialog.Hide();
-            StartProgram(pathZALift, startargs);
+            if (!File.Exists(pathZALift))
+            {
+                return;
+            }
+            ProcessHelpers.StartProgram(pathZALift, startargs);
             await Task.Delay(1000);
             if (File.Exists(pathSynchronizeZAlift))
             {
                 var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
-                var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
+                var exitCode = await ProcessHelpers.StartProgramWithExitCodeAsync("PowerShell.exe", args);
                 _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
 
             }
             return;
         }
 
-        using FileSystemWatcher watcher = new(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen"));
-        watcher.IncludeSubdirectories = false;
-        watcher.EnableRaisingEvents = true;
-        watcher.Changed += OnChanged;
-
-        if (!File.Exists(pathZALift))
+        if (CanSaveAllSpeziParameters)
         {
-            watcher.Changed -= OnChanged;
-            return;
+            await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml!, Adminmode);
         }
+        var dialog = await _dialogService.ZALiftDialogAsync(FullPathXml);
 
-        using Process zaLift = new();
-        zaLift.StartInfo.UseShellExecute = true;
-        zaLift.StartInfo.FileName = pathZALift;
-        zaLift.StartInfo.Arguments = startargs;
-        zaLift.Start();
-
-        bool exit = false;
-
-        while (!exit)
+        if (dialog)
         {
-            exit = _zAliftAusUpdated && _zAliftHtmlUpdated;
-            if (token.IsCancellationRequested)
-            {
-                exit = true;
-                zaLift.Kill(true);
-            }
-            await Task.Delay(50);
-        }
-
-        ZAliftAusUpdated = _zAliftAusUpdated;
-        ZAliftHtmlUpdated = _zAliftHtmlUpdated;
-        if (ZAliftAusUpdated && ZAliftAusUpdated)
-            ExWorkStatus = "Daten zur Übernahme bereit";
-
-        watcher.Changed -= OnChanged;
-
-        var result = await dialog;
-
-        if (result == ContentDialogResult.Primary)
-        {
-            zaLift.Kill(true);
+            CanImportZAliftData = true;
+            await ImportZAliftDataAsync(false);
         }
         else
         {
@@ -554,34 +348,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         if (File.Exists(pathSynchronizeZAlift))
         {
             var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
-            var exitCode = await StartProgramWithExitCodeAsync("PowerShell.exe", args);
+            var exitCode = await ProcessHelpers.StartProgramWithExitCodeAsync("PowerShell.exe", args);
             _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
         }
-    }
-
-    private bool _zAliftAusUpdated;
-    private bool _zAliftHtmlUpdated;
-
-    private void OnChanged(object sender, FileSystemEventArgs e)
-    {
-        if (e.ChangeType != WatcherChangeTypes.Changed)
-        {
-            return;
-        }
-        var auftragsnummer = Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "");
-
-        if (!string.IsNullOrWhiteSpace(auftragsnummer))
-        {
-            if (e.Name == auftragsnummer + ".aus")
-            {
-                _zAliftAusUpdated = true;
-            }
-            else if (e.Name == auftragsnummer + ".html")
-            {
-                _zAliftHtmlUpdated = true;
-            }
-        }
-        Debug.WriteLine($"Changed: {e.FullPath}");
     }
 
     [RelayCommand(CanExecute = nameof(CanImportZAliftData))]
@@ -828,40 +597,42 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             await SetModelStateAsync();
         }
 
-        if (zAliftDataReadyForImport || onlyDiveData)
-        {
-            await Task.CompletedTask;
-        }
-        else
-        {
-            await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
-        }
+        //if (zAliftDataReadyForImport || onlyDiveData)
+        //{
+        //    await Task.CompletedTask;
+        //}
+        //else
+        //{
+        //    await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
+        //}
     }
-
     private HtmlDocument GetZaliftHtml()
     {
         var filePath = string.Empty;
         var zaliftHtml = new HtmlDocument();
-
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        {
             filePath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
-
+        }
         if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+        {
             zaliftHtml.Load(filePath);
+        }
         return zaliftHtml;
     }
-
     private Dictionary<string, string> GetZliDataDictionary(HtmlDocument zaliftHtml)
     {
         var zliDataDictionary = new Dictionary<string, string>();
         if (zaliftHtml.Text is null)
+        {
             return zliDataDictionary;
-
+        }
         var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
                                                                         .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
         if (zliData is null)
+        {
             return zliDataDictionary;
-
+        }
         foreach (var zlipar in zliData)
         {
 
@@ -895,7 +666,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
         if (File.Exists(filename))
         {
-            StartProgram(filename, startargs);
+            ProcessHelpers.StartProgram(filename, startargs);
         }
     }
 
@@ -912,38 +683,20 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         {
             var pathLiloCalculation = Path.Combine(pathXml, "Berechnungen", $"{auftragsnummer}.LILO");
             if (File.Exists(pathLiloCalculation))
+            {
                 startargs = pathLiloCalculation;
+            }
         }
         if (File.Exists(pathLilo))
-            StartProgram(pathLilo, startargs);
+        {
+            ProcessHelpers.StartProgram(pathLilo, startargs);
+        }
     }
 
     [RelayCommand]
     private void RefreshQuickLinks()
     {
         CheckCanOpenFiles();
-    }
-
-    private static void StartProgram(string filename, string startargs)
-    {
-        using Process p = new();
-        p.StartInfo.UseShellExecute = true;
-        p.StartInfo.FileName = filename;
-        p.StartInfo.Arguments = startargs;
-        p.Start();
-    }
-
-    private async Task<int> StartProgramWithExitCodeAsync(string filename, string startargs)
-    {
-        using Process p = new();
-        p.StartInfo.UseShellExecute = true;
-        p.StartInfo.FileName = filename;
-        p.StartInfo.Arguments = startargs;
-        p.StartInfo.CreateNoWindow = true;
-        p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        p.Start();
-        await p.WaitForExitAsync();
-        return p.ExitCode;
     }
 
     private async Task<bool?> CheckOutDialogAsync()
@@ -1022,27 +775,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         finally
         {
             oXmlWriter?.Close();
-        }
-    }
-
-    private void MakeBackupFile(string fullPath)
-    {
-        if (!File.Exists(fullPath))
-            return;
-
-        var newName = Path.Combine(Path.GetDirectoryName(fullPath)!, SpezifikationsNumber + "-LDM_Backup" + Path.GetExtension(fullPath));
-
-        if (newName is not null && Path.IsPathFullyQualified(newName))
-        {
-            if (File.Exists(newName))
-            {
-                FileInfo backupFileInfo = new(newName);
-                if (backupFileInfo.IsReadOnly)
-                {
-                    backupFileInfo.IsReadOnly = false;
-                }
-            }
-            File.Copy(fullPath, newName, true);
         }
     }
 

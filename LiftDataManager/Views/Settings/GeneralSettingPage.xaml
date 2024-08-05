@@ -123,7 +123,7 @@
                         OnContent="Adminmode activated">
                         <Interactivity:Interaction.Behaviors>
                             <Core:EventTriggerBehavior EventName="Toggled">
-                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" CommandParameter="{x:Bind AdminModePasswortDialog}" />
+                                <Core:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogCommand}" />
                             </Core:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                     </ToggleSwitch>
@@ -235,72 +235,6 @@
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
-                <ContentDialog
-                    x:Name="AdminModePasswortDialog"
-                    Title="Admin Mode aktivieren"
-                    MaxWidth="{Binding ActualWidth, ElementName=pageRoot}"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource SystemChromeLowColor}"
-                    IsPrimaryButtonEnabled="{x:Bind ViewModel.CanSwitchToAdminmode, Mode=OneWay}"
-                    PrimaryButtonStyle="{StaticResource ContentDialogButtonStyle}"
-                    PrimaryButtonText="OK"
-                    SecondaryButtonStyle="{StaticResource ContentDialogButtonStyle}"
-                    SecondaryButtonText="Cancel">
-                    <StackPanel>
-                        <StackPanel Margin="40,10,10,10" Orientation="Horizontal">
-                            <FontIcon
-                                Margin="10"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                FontSize="30"
-                                Glyph="&#xE72E;" />
-                            <PasswordBox
-                                Width="120"
-                                Margin="10"
-                                Padding="20,5,20,5"
-                                VerticalAlignment="Center"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                CornerRadius="10"
-                                IsPasswordRevealButtonEnabled="True"
-                                MaxLength="4"
-                                Password="{x:Bind ViewModel.PasswortInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                PasswordRevealMode="Peek"
-                                PlaceholderText="****" />
-                        </StackPanel>
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="Red"
-                            Text="{x:Bind ViewModel.PasswortInfoText, Mode=OneWay}" />
-                        <StackPanel Margin="10" Orientation="Horizontal">
-                            <SymbolIcon
-                                Margin="0,10,0,10"
-                                HorizontalAlignment="Left"
-                                Symbol="ReportHacked" />
-                            <TextBlock
-                                Margin="10"
-                                FontSize="12"
-                                TextWrapping="Wrap">
-                                Achtung im Adminmode können nicht validierte Parameter gespeichet werden.<LineBreak />
-                                Die Parameter werden nicht auf Plausibilität geprüft.</TextBlock>
-                        </StackPanel>
-                        <Grid Margin="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" IsChecked="{x:Bind ViewModel.AdminmodeWarningAccepted, Mode=TwoWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                Text="Ich verfüge über die Erfahrung Pamameter ohne Plausibilitätsprüfung zu ändern." />
-                        </Grid>
-                    </StackPanel>
-                </ContentDialog>
             </StackPanel>
         </ScrollViewer>
     </Grid>

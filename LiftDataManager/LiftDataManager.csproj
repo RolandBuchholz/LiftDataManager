@@ -162,6 +162,9 @@
     <None Remove="Views\DetailData\KabineDetailEquipmentPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailFloorPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailLayoutPage.xaml" />
+    <None Remove="Views\Dialogs\CFPEditDialog.xaml" />
+    <None Remove="Views\Dialogs\PasswortDialog.xaml" />
+    <None Remove="Views\Dialogs\ZALiftDialog.xaml" />
     <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
     <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
     <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
@@ -354,6 +357,17 @@
     </Page>
     <Page Update="Controls\CommandBar.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Dialogs\CFPEditDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Dialogs\ZALiftDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Dialogs\PasswortDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\GeneralData\KabinenLüftungPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

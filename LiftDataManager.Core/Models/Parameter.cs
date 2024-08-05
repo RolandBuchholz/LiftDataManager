@@ -77,7 +77,8 @@ public partial class Parameter : ParameterBase
             var result = ValidateParameterAsync();
             if (!result.IsFaulted)
             {
-                foreach (var item in result.Result.ToImmutableList())
+                foreach (var item in result.Result.ToImmutableArray())
+
                 {
                     if (item.HasDependentParameters)
                     {
