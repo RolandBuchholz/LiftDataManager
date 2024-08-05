@@ -129,7 +129,7 @@
                     </ToggleSwitch>
                 </controls:SettingsCard>
                 <controls:SettingsCard
-                    Description="Infocenter automatisch öffen beim Laden eines Auftrages"
+                    Description="Infocenter automatisch öffnen beim Laden eines Auftrages"
                     Header="Infocentersettings"
                     HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/infoCenterOpen.png}">
                     <ToggleSwitch
@@ -146,7 +146,7 @@
                     HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/style.png}">
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard
-                            Description="Reduzierte Plotfarben um Toner beim Ausdruck zu sparen"
+                            Description="Reduzierte Farben um Toner beim Ausdruck zu sparen"
                             Header="Toner SaveMode"
                             HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/tonerSaveMode.png}"
                             ToolTipService.Placement="Bottom">

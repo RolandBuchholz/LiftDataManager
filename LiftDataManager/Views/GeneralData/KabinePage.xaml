@@ -1729,7 +1729,6 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="0"
                                             CheckBoxContent="Seite A"
-                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_A'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteA'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1751,7 +1750,6 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="1"
                                             CheckBoxContent="Seite B"
-                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_B'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteB'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1773,7 +1771,6 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="2"
                                             CheckBoxContent="Seite C"
-                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_C'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteC'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>
@@ -1795,7 +1792,6 @@
                                         <SpeziControls:ParameterCheckBox
                                             Grid.Column="3"
                                             CheckBoxContent="Seite D"
-                                            IsControlActive="{x:Bind ViewModel.ParameterDictionary['var_ZUGANSSTELLEN_D'].Value, Mode=OneWay, Converter={StaticResource StringToBoolInvertConverter}}"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SockelleisteD'], Mode=TwoWay}"
                                             ShowDefaultCheckBoxContent="False">
                                             <ToolTipService.ToolTip>

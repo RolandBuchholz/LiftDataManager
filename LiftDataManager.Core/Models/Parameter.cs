@@ -78,6 +78,7 @@ public partial class Parameter : ParameterBase
             if (!result.IsFaulted)
             {
                 foreach (var item in result.Result.ToImmutableArray())
+
                 {
                     if (item.HasDependentParameters)
                     {

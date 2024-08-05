@@ -10,6 +10,7 @@ using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -469,7 +470,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 RemoveCarDoorData("D");
             return;
         }
-
         if (zugangB)
         {
             SetCarDoorData("B");
@@ -478,7 +478,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             RemoveCarDoorData("B");
         }
-
         if (zugangC)
         {
             SetCarDoorData("C");
@@ -487,7 +486,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             RemoveCarDoorData("C");
         }
-
         if (zugangD)
         {
             SetCarDoorData("D");
@@ -1104,7 +1102,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         var zugang = name.Last();
         bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Spiegel{zugang}");
         bool hasHandlauf = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Handlauf{zugang}");
-        bool hasSockelleiste = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Sockelleiste{zugang}");
         bool hasRammschutz = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_Rammschutz{zugang}");
         bool hasPaneel = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_PaneelPos{zugang}");
         bool hasSchutzgelaender = !string.IsNullOrWhiteSpace(ParameterDictionary[$"var_Schutzgelaender_{zugang}"].Value);
@@ -1115,15 +1112,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             hasRueckwand = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rueckwand"].Value);
         }
 
-        if (hasSpiegel || hasHandlauf || hasSockelleiste || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
+        if (hasSpiegel || hasHandlauf || hasTeilungsleiste || hasRammschutz || hasPaneel || hasSchutzgelaender || hasRueckwand)
         {
             var errorMessage = $"Bei Zugang {zugang} wurde folgende Ausstattung gewählt:";
             if (hasSpiegel)
                 errorMessage += " Spiegel,";
             if (hasHandlauf)
                 errorMessage += " Handlauf,";
-            if (hasSockelleiste)
-                errorMessage += " Sockelleiste,";
             if (hasTeilungsleiste)
                 errorMessage += " Teilungsleiste,";
             if (hasRammschutz)
@@ -1679,37 +1674,44 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarFramePosition(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        bool zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A");
-        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
-        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
-        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
-        ParameterDictionary["var_Durchladung"].AutoUpdateParameterValue(zugangA && zugangC || zugangB && zugangD ? "True" : "False");
-
+        Dictionary<string, bool> entrances = new () 
+        {
+            {"A", false },
+            {"B", false },
+            {"C", false },
+            {"D", false },
+        };
         var availableCarFramePositions = _parametercontext.Set<CarFramePosition>().Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }).ToList();
-        if (zugangA)
+        foreach (var entrance in entrances)
         {
-            availableCarFramePositions.RemoveAt(0);
+            entrances[entrance.Key] = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, $"var_ZUGANSSTELLEN_{entrance.Key}");
+            if (entrances[entrance.Key])
+            {
+                var selectedEntrance = availableCarFramePositions.FirstOrDefault(x => x.Name == entrance.Key);
+                if (selectedEntrance != null)
+                {
+                    availableCarFramePositions.Remove(selectedEntrance);
+                }
+            }
         }
-        if (zugangB)
-        {
-            availableCarFramePositions.RemoveAt(1);
-        }
-        if (zugangC)
+        ParameterDictionary["var_Durchladung"].AutoUpdateParameterValue(entrances["A"] && entrances["C"] || entrances["B"] && entrances["D"] ? "True" : "False");
+
+        if (!entrances["C"])
         {
             var carFrame = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
             if (carFrame != null)
             {
                 if (carFrame.CarFrameBaseTypeId == 3 || carFrame.CarFrameBaseTypeId == 5 || carFrame.CarFrameBaseTypeId == 6)
                 {
-                    availableCarFramePositions.RemoveAt(2);
+                    var selectedEntrance = availableCarFramePositions.FirstOrDefault(x => x.Name == "C");
+                    if (selectedEntrance != null)
+                    {
+                        availableCarFramePositions.Remove(selectedEntrance);
+                    }
                 }
             }
         }
-        if (zugangD)
-        {
-            availableCarFramePositions.RemoveAt(3);
-        }
-
+        
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 
         var carFramePosition = ParameterDictionary["var_Bausatzlage"].Value;
