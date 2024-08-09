@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     VerticalAlignment="Stretch"
     IsPrimaryButtonEnabled="{x:Bind ViewModel.CanSwitchToAdminmode, Mode=OneWay}"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
     PrimaryButtonText="OK"
     SecondaryButtonText="Abbrechen"
     mc:Ignorable="d">
@@ -53,7 +54,7 @@
                     Margin="10"
                     FontSize="12"
                     Text="{x:Bind Description}"
-                    TextWrapping="Wrap"/>
+                    TextWrapping="Wrap" />
             </StackPanel>
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>

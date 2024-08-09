@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="/Styles/ItemContainer.xaml" />
                 <ResourceDictionary Source="/Styles/ControlDataTemplates.xaml" />
                 <ResourceDictionary Source="/Styles/Divider.xaml" />
+                <ResourceDictionary Source="/Styles/ContentDialog.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.DataGrid/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -154,6 +154,7 @@
     <None Remove="Images\VaultTransparent.png" />
     <None Remove="Images\ZiehlAbeggTransparent.png" />
     <None Remove="MainWindow.xaml" />
+    <None Remove="Styles\ContentDialog.xaml" />
     <None Remove="Styles\Divider.xaml" />
     <None Remove="Styles\ItemContainer.xaml" />
     <None Remove="Views\DetailData\BausatzDetailRailBracketPage.xaml" />
@@ -358,6 +359,11 @@
     <Page Update="Controls\CommandBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Views\Dialogs\AppClosingDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Dialogs\CFPEditDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -475,5 +481,11 @@
     <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomAdditionalCompileInputs Remove="Styles\ContentDialog.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Remove="Styles\ContentDialog.xaml" />
   </ItemGroup>
 </Project>

@@ -13,9 +13,9 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <helpers:NewLineConveter x:Key="NewLineConveter" />
         <converters:BoolToObjectConverter
@@ -48,7 +48,7 @@
                     Margin="0,0,0,10"
                     Header="Sonstiges"
                     IsExpanded="True"
-                    Style="{StaticResource ExpanderContentStyle}">
+                    Style="{StaticResource ExpanderOnlyOpenContentStyle}">
                     <Grid>
                         <Grid x:Name="SonstigesBausatz" Grid.Row="11">
                             <Grid ColumnDefinitions="*" RowDefinitions="Auto,10">

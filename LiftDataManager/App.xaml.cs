@@ -4,7 +4,6 @@ using LiftDataManager.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
@@ -128,6 +127,7 @@ public partial class App : Application
             services.AddTransient<PasswortDialogViewModel>();
             services.AddTransient<ZALiftDialogViewModel>();
             services.AddTransient<CFPEditDialogViewModel>();
+            services.AddTransient<AppClosingDialogViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -141,48 +141,55 @@ public partial class App : Application
 
     private async void MainWindow_Closed(object sender, WindowEventArgs args)
     {
-
-        var tempHomeViewModel = GetService<HomeViewModel>();
-        var currentSpeziProperties = tempHomeViewModel.GetCurrentSpeziProperties();
-
-        if (currentSpeziProperties != null && currentSpeziProperties.CheckOut && !IgnoreSaveWarning)
+        var _dialogService = GetService<IDialogService>();
+        if (_dialogService is null)
         {
-            args.Handled = true;
-
-            var dirty = currentSpeziProperties.ParameterDictionary!.Values.Any(p => p.IsDirty);
-
-            var title = dirty ? "Warnung nicht gepeicherte Parameter gefunden" : "Warnung Autodesktranfer noch nicht hochgeladen";
-            var message = dirty ? "Es sind nicht gespeicherte Parameter vorhanden.\n" +
-                                  "Wollen Sie diese speichern?"
-                                : "Der Auftrag wurde noch nicht ins Vault hochgeladen.\n" +
-                                  "Wollen Sie den Auftrag ins Vault hochladen?";
-            var yesButtonText = dirty ? "Parameter speichern" : "Hochladen und Schließen";
-            var noButtonText = dirty ? "Ohne Speichern schließen" : "Ohne Hochladen Schließen";
-
-            var dialogResult = await tempHomeViewModel._dialogService!.WarningDialogAsync(title, message, yesButtonText, noButtonText);
-
-            if (dialogResult is not null && (bool)dialogResult)
-            {
-                if (dirty)
+            IgnoreSaveWarning = true;
+        }
+        if (IgnoreSaveWarning)
+        {
+            args.Handled = false;
+            Current.Exit();
+            return;
+        }
+        args.Handled = !IgnoreSaveWarning;
+        CheckOut:
+        var dialogResult = await _dialogService!.AppClosingDialogAsync(IgnoreSaveWarning);
+        switch (dialogResult.Item1)
+        {
+            case ContentDialogResult.None:
+                if (dialogResult.Item2)
                 {
-                    await tempHomeViewModel._parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
-                }
-                else
-                {
-                    var spezifikationName = Path.GetFileName(currentSpeziProperties.FullPathXml!).Replace("-AutoDeskTransfer.xml", "");
-                    await tempHomeViewModel._vaultDataService.SetFileAsync(spezifikationName);
+                    args.Handled = false;
                     IgnoreSaveWarning = true;
                     Current.Exit();
                 }
-            }
-            else
-            {
+                else
+                {
+                    args.Handled = true;
+                }
+                break;
+            case ContentDialogResult.Primary:
+                if (dialogResult.Item2)
+                {
+                    args.Handled = false;
+                    IgnoreSaveWarning = true;
+                    Current.Exit();
+                    break;
+                }
+                else
+                {
+                    args.Handled = true;
+                    goto CheckOut;
+                }
+            case ContentDialogResult.Secondary:
                 args.Handled = false;
                 IgnoreSaveWarning = true;
                 Current.Exit();
-            }
+                break;
+            default:
+                break;
         }
-        Current.Exit();
     }
 
     private static LoggingLevelSwitch SetLogLevel()

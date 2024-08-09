@@ -13,6 +13,7 @@
     VerticalAlignment="Stretch"
     CloseButtonText="Abbrechen"
     IsPrimaryButtonEnabled="{x:Bind ViewModel.ZAliftDataReadyForImport, Mode=OneWay}"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
     PrimaryButtonText="Daten übernehmen"
     mc:Ignorable="d">
     <Interactivity:Interaction.Behaviors>
