@@ -518,4 +518,30 @@
             </StackPanel>
         </Grid>
     </DataTemplate>
+
+    <!--  TreeViewDataTemplates.xaml  -->
+    <DataTemplate x:Key="MainHelpContent" x:DataType="models:HelpContent">
+        <TreeViewItem ItemsSource="{Binding Children}">
+            <TextBlock
+                FontWeight="Bold"
+                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                Text="{Binding Name}" />
+        </TreeViewItem>
+    </DataTemplate>
+    <DataTemplate x:Key="SubHelpContent" x:DataType="models:HelpContent">
+        <TreeViewItem ItemsSource="{Binding Children}">
+            <TextBlock
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}"
+                Text="{Binding Name}" />
+        </TreeViewItem>
+    </DataTemplate>
+    <DataTemplate x:Key="Sub2HelpContent" x:DataType="models:HelpContent">
+        <TreeViewItem ItemsSource="{Binding Children}">
+            <TextBlock
+                FontWeight="Normal"
+                Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}"
+                Text="{Binding Name}" />
+        </TreeViewItem>
+    </DataTemplate>
 </ResourceDictionary>

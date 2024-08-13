@@ -6,7 +6,9 @@
         {
             var args = (AutoSuggestBoxSuggestionChosenEventArgs)value;
             if (string.IsNullOrWhiteSpace((string)args.SelectedItem))
+            {
                 return string.Empty;
+            }
             return (string)args.SelectedItem;
         }
 

@@ -1,0 +1,1 @@
+# Detailinformationen zur Funktionsweise

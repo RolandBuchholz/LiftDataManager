@@ -1,0 +1,1 @@
+# Liftdaten im LiftDataManager bearbeiten
