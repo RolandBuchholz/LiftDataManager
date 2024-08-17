@@ -59,14 +59,14 @@
                     x:Name="HelpTreeView"
                     Grid.Row="1"
                     ItemTemplateSelector="{StaticResource HelpContentTemplateSelector}"
-                    ItemsSource="{x:Bind ViewModel.HelpTreeDataSource}" />
+                    ItemsSource="{x:Bind ViewModel.HelpTreeDataSource}"
+                    SelectedItem="{x:Bind ViewModel.SelectedHelpContent, Mode=TwoWay}" />
             </Grid>
             <controls:ContentSizer Grid.Column="1" TargetControl="{x:Bind HelpTreeView}" />
             <ScrollViewer Grid.Column="2">
-                <TextBlock
-                    FontSize="48"
-                    Foreground="red"
-                    Text="Coming soon" />
+                <Grid Padding="24,12,24,12" Style="{ThemeResource GridCardPanel}">
+                    <RichTextBlockOverflow />
+                </Grid>
             </ScrollViewer>
         </Grid>
     </Grid>

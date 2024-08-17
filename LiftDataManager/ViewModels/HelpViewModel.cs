@@ -7,6 +7,13 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     public HelpViewModel()
     {
     }
+    [ObservableProperty]
+    private HelpContent? selectedHelpContent;
+    partial void OnSelectedHelpContentChanged(HelpContent? value) 
+    {
+    
+    }
+
     private ObservableCollection<HelpContent> GetData()
     {
         var helpfilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Docs","de");
@@ -21,24 +28,20 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         }
         foreach (var file in Directory.GetDirectories(helpfilesPath))
         {
-            var name = Path.GetFileName(file)[3..];
-            var newHelpContentEntry = new HelpContent(name) 
+            var newHelpContentEntry = new HelpContent(TreeViewEntryName(file)) 
             { 
                 Level = HelpContentLevel.Main,
             };
-
             foreach (var subfile in Directory.GetDirectories(file))
             {
-                var subname = Path.GetFileName(subfile)[3..];
-                var newChildren = new HelpContent(subname) 
+                var newChildren = new HelpContent(TreeViewEntryName(subfile)) 
                 {
                     Level = HelpContentLevel.Sub,
                 };
 
                 foreach (var sub2file in Directory.GetDirectories(subfile))
                 {
-                    var sub2name = Path.GetFileName(sub2file)[3..];
-                    var newChildren2 = new HelpContent(sub2name) 
+                    var newChildren2 = new HelpContent(TreeViewEntryName(sub2file)) 
                     {
                         Level = HelpContentLevel.Sub2,
                     };
@@ -51,9 +54,22 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         return helpTreeDatalist;
     }
 
+    private static string TreeViewEntryName(string? folderNamePath)
+    {
+        if (string.IsNullOrWhiteSpace(folderNamePath))
+        {
+            return string.Empty;
+        }
+        return Path.GetFileName(folderNamePath)[3..];
+    }
+
     public void OnNavigatedTo(object parameter) 
     {
         HelpTreeDataSource = GetData();
+        if (parameter is DataItem)
+        {
+            SelectedHelpContent = HelpTreeDataSource[0];
+        }
     }
     public void OnNavigatedFrom()
     {
