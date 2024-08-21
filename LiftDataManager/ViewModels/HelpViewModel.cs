@@ -1,47 +1,96 @@
-﻿using System.Collections.ObjectModel;
+﻿using LiftDataManager.Controls;
+using Microsoft.UI.Dispatching;
+using System.Collections.ObjectModel;
+using Windows.Storage;
+
 namespace LiftDataManager.ViewModels;
 
 public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
 {
-    public ObservableCollection<HelpContent>? HelpTreeDataSource;
-    public HelpViewModel()
+    public ObservableCollection<HelpContent>? HelpTreeDataSource { get; set; }
+    public ObservableCollection<MarkdownTextBlockControl> MarkdownTextBlockList { get; set; }
+
+    private readonly DispatcherQueue _dispatcherQueue;
+    private readonly IStorageService _storageService;
+    public HelpViewModel(IStorageService storageService)
     {
-    }
-    [ObservableProperty]
-    private HelpContent? selectedHelpContent;
-    partial void OnSelectedHelpContentChanged(HelpContent? value) 
-    {
-    
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        _storageService = storageService;
+        MarkdownTextBlockList ??= [];
     }
 
-    private ObservableCollection<HelpContent> GetData()
+    [ObservableProperty]
+    private HelpContent? selectedHelpContent;
+    partial void OnSelectedHelpContentChanged(HelpContent? value)
     {
-        var helpfilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Docs","de");
-        var helpTreeDatalist = new ObservableCollection<HelpContent>();
+        Task.Run(async () => await LoadMarkDownTextAsync(value?.FolderPath));
+    }
+    private async Task LoadMarkDownTextAsync(string? folderPath)
+    {
+        if (string.IsNullOrWhiteSpace(folderPath))
+        {
+            return;
+        }
+        var helpFilesFolder = await StorageFolder.GetFolderFromPathAsync(folderPath);
+        var helpFiles = await helpFilesFolder.GetFilesAsync();
+        _dispatcherQueue.TryEnqueue(() =>
+        {
+            for (global::System.Int32 i = 0; i < MarkdownTextBlockList.Count; i++)
+            {
+                MarkdownTextBlockList.RemoveAt(i);
+            }
+        });
+        foreach (var helpFile in helpFiles)
+        {
+            if (helpFile is null)
+            {
+                continue;
+            }
+            var text = await _storageService.ReadStorageFileAsync(helpFile);
+
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                var helpTextBlock = new MarkdownTextBlockControl
+                {
+                    MarkdownText = text
+                };
+                MarkdownTextBlockList.Add(helpTextBlock);
+            });
+        }
+        await Task.CompletedTask;
+    }
+
+    private async Task GetTreeViewEntrysAsync(object parameter)
+    {
+        var helpfilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Docs", "de");
         if (string.IsNullOrWhiteSpace(helpfilesPath))
         {
-            return helpTreeDatalist;
+            return;
         }
         if (!Directory.Exists(helpfilesPath))
         {
-            return helpTreeDatalist;
+            return;
         }
-        foreach (var file in Directory.GetDirectories(helpfilesPath))
+        var helpTreeDatalist = new ObservableCollection<HelpContent>();
+        var mainHelpFolder = await _storageService.GetFoldersAsync(helpfilesPath);
+        foreach (var mainItem in mainHelpFolder)
         {
-            var newHelpContentEntry = new HelpContent(TreeViewEntryName(file)) 
-            { 
+            var newHelpContentEntry = new HelpContent(TreeViewEntryName(mainItem.Name), mainItem.Path)
+            {
                 Level = HelpContentLevel.Main,
             };
-            foreach (var subfile in Directory.GetDirectories(file))
+
+            var subHelpFolder = await mainItem.GetFoldersAsync();
+            foreach (var subItem in subHelpFolder)
             {
-                var newChildren = new HelpContent(TreeViewEntryName(subfile)) 
+                var newChildren = new HelpContent(TreeViewEntryName(subItem.Name), subItem.Path)
                 {
                     Level = HelpContentLevel.Sub,
                 };
-
-                foreach (var sub2file in Directory.GetDirectories(subfile))
+                var sub2HelpFolder = await subItem.GetFoldersAsync();
+                foreach (var sub2Item in sub2HelpFolder)
                 {
-                    var newChildren2 = new HelpContent(TreeViewEntryName(sub2file)) 
+                    var newChildren2 = new HelpContent(TreeViewEntryName(sub2Item.Name), sub2Item.Path)
                     {
                         Level = HelpContentLevel.Sub2,
                     };
@@ -51,7 +100,19 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
             }
             helpTreeDatalist.Add(newHelpContentEntry);
         }
-        return helpTreeDatalist;
+
+        _dispatcherQueue.TryEnqueue(() =>
+        {
+            HelpTreeDataSource = helpTreeDatalist;
+            if (parameter is DataItem)
+            {
+                if (HelpTreeDataSource.Count > 0)
+                {
+                    SelectedHelpContent = HelpTreeDataSource[0];
+                }
+            }
+        });
+        await Task.CompletedTask;
     }
 
     private static string TreeViewEntryName(string? folderNamePath)
@@ -63,14 +124,11 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         return Path.GetFileName(folderNamePath)[3..];
     }
 
-    public void OnNavigatedTo(object parameter) 
+    public void OnNavigatedTo(object parameter)
     {
-        HelpTreeDataSource = GetData();
-        if (parameter is DataItem)
-        {
-            SelectedHelpContent = HelpTreeDataSource[0];
-        }
+        Task.Run(async () => await GetTreeViewEntrysAsync(parameter)).Wait();
     }
+
     public void OnNavigatedFrom()
     {
     }

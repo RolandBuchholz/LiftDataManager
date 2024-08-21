@@ -80,6 +80,7 @@ public partial class App : Application
             services.AddSingleton<IVaultDataService, VaultDataService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
+            services.AddSingleton<IStorageService, StorageService>();
 
             // ViewModels
             services.AddTransient<AboutSettingViewModel>();

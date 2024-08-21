@@ -1,14 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 namespace LiftDataManager.Core.Models;
-public class HelpContent
+public class HelpContent(string name, string folderPath)
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = name;
+    public string FolderPath { get; set; } = folderPath;
 
     public HelpContentLevel Level { get; set; }
-    public HelpContent(string name)
-    {
-        Name = name;
-    }
+
     private ObservableCollection<HelpContent>? children;
     public ObservableCollection<HelpContent> Children
     {

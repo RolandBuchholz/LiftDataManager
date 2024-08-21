@@ -104,6 +104,7 @@
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\CarEquipmentControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
+    <None Remove="Controls\MarkdownTextBlockControl.xaml" />
     <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
     <None Remove="Controls\ParameterCheckBox.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
@@ -113,7 +114,6 @@
     <None Remove="Controls\ParameterTextBox.xaml" />    
     <None Remove="Controls\SpezifikationsNumberControl.xaml" />    
     <None Remove="Docs\de\00-Willkommen\Willkommen.md" />    
-    <None Remove="Docs\de\01-Installation\01-Installationsinformationen\Installationsinformationen.md" />    
     <None Remove="Docs\de\01-Installation\Installation.md" />    
     <None Remove="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />    
     <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />    
@@ -195,6 +195,148 @@
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />    
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />    
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />    
+    <None Remove="Docs\HelpImages\image1.png" />    
+    <None Remove="Docs\HelpImages\image10.png" />    
+    <None Remove="Docs\HelpImages\image100.png" />    
+    <None Remove="Docs\HelpImages\image101.png" />    
+    <None Remove="Docs\HelpImages\image102.png" />    
+    <None Remove="Docs\HelpImages\image103.png" />    
+    <None Remove="Docs\HelpImages\image104.png" />    
+    <None Remove="Docs\HelpImages\image105.png" />    
+    <None Remove="Docs\HelpImages\image106.png" />    
+    <None Remove="Docs\HelpImages\image107.png" />    
+    <None Remove="Docs\HelpImages\image108.png" />    
+    <None Remove="Docs\HelpImages\image109.png" />    
+    <None Remove="Docs\HelpImages\image11.png" />    
+    <None Remove="Docs\HelpImages\image110.png" />    
+    <None Remove="Docs\HelpImages\image111.png" />    
+    <None Remove="Docs\HelpImages\image112.png" />    
+    <None Remove="Docs\HelpImages\image113.png" />    
+    <None Remove="Docs\HelpImages\image114.png" />    
+    <None Remove="Docs\HelpImages\image115.png" />    
+    <None Remove="Docs\HelpImages\image116.png" />    
+    <None Remove="Docs\HelpImages\image117.png" />    
+    <None Remove="Docs\HelpImages\image118.png" />    
+    <None Remove="Docs\HelpImages\image119.png" />    
+    <None Remove="Docs\HelpImages\image12.png" />    
+    <None Remove="Docs\HelpImages\image120.png" />    
+    <None Remove="Docs\HelpImages\image121.png" />    
+    <None Remove="Docs\HelpImages\image122.png" />    
+    <None Remove="Docs\HelpImages\image123.png" />    
+    <None Remove="Docs\HelpImages\image124.png" />    
+    <None Remove="Docs\HelpImages\image125.png" />    
+    <None Remove="Docs\HelpImages\image126.png" />    
+    <None Remove="Docs\HelpImages\image127.png" />    
+    <None Remove="Docs\HelpImages\image128.png" />    
+    <None Remove="Docs\HelpImages\image129.png" />    
+    <None Remove="Docs\HelpImages\image13.png" />    
+    <None Remove="Docs\HelpImages\image130.png" />    
+    <None Remove="Docs\HelpImages\image131.png" />    
+    <None Remove="Docs\HelpImages\image132.png" />    
+    <None Remove="Docs\HelpImages\image133.png" />    
+    <None Remove="Docs\HelpImages\image134.png" />    
+    <None Remove="Docs\HelpImages\image135.png" />    
+    <None Remove="Docs\HelpImages\image136.png" />    
+    <None Remove="Docs\HelpImages\image137.png" />    
+    <None Remove="Docs\HelpImages\image138.png" />    
+    <None Remove="Docs\HelpImages\image139.png" />    
+    <None Remove="Docs\HelpImages\image14.png" />    
+    <None Remove="Docs\HelpImages\image140.png" />    
+    <None Remove="Docs\HelpImages\image141.png" />    
+    <None Remove="Docs\HelpImages\image142.png" />    
+    <None Remove="Docs\HelpImages\image15.png" />    
+    <None Remove="Docs\HelpImages\image16.png" />    
+    <None Remove="Docs\HelpImages\image17.png" />    
+    <None Remove="Docs\HelpImages\image18.png" />    
+    <None Remove="Docs\HelpImages\image19.png" />    
+    <None Remove="Docs\HelpImages\image2.png" />    
+    <None Remove="Docs\HelpImages\image20.png" />    
+    <None Remove="Docs\HelpImages\image21.png" />    
+    <None Remove="Docs\HelpImages\image22.png" />    
+    <None Remove="Docs\HelpImages\image23.png" />    
+    <None Remove="Docs\HelpImages\image24.png" />    
+    <None Remove="Docs\HelpImages\image25.png" />    
+    <None Remove="Docs\HelpImages\image26.png" />    
+    <None Remove="Docs\HelpImages\image27.png" />    
+    <None Remove="Docs\HelpImages\image28.png" />    
+    <None Remove="Docs\HelpImages\image29.png" />    
+    <None Remove="Docs\HelpImages\image3.png" />    
+    <None Remove="Docs\HelpImages\image30.png" />    
+    <None Remove="Docs\HelpImages\image31.png" />    
+    <None Remove="Docs\HelpImages\image32.png" />    
+    <None Remove="Docs\HelpImages\image33.png" />    
+    <None Remove="Docs\HelpImages\image34.png" />    
+    <None Remove="Docs\HelpImages\image35.png" />    
+    <None Remove="Docs\HelpImages\image36.png" />    
+    <None Remove="Docs\HelpImages\image37.png" />    
+    <None Remove="Docs\HelpImages\image38.png" />    
+    <None Remove="Docs\HelpImages\image39.png" />    
+    <None Remove="Docs\HelpImages\image4.png" />    
+    <None Remove="Docs\HelpImages\image40.png" />    
+    <None Remove="Docs\HelpImages\image41.png" />    
+    <None Remove="Docs\HelpImages\image42.png" />    
+    <None Remove="Docs\HelpImages\image43.png" />    
+    <None Remove="Docs\HelpImages\image44.png" />    
+    <None Remove="Docs\HelpImages\image45.png" />    
+    <None Remove="Docs\HelpImages\image46.png" />    
+    <None Remove="Docs\HelpImages\image47.png" />    
+    <None Remove="Docs\HelpImages\image48.png" />    
+    <None Remove="Docs\HelpImages\image49.png" />    
+    <None Remove="Docs\HelpImages\image5.png" />    
+    <None Remove="Docs\HelpImages\image50.png" />    
+    <None Remove="Docs\HelpImages\image51.png" />    
+    <None Remove="Docs\HelpImages\image52.png" />    
+    <None Remove="Docs\HelpImages\image53.png" />    
+    <None Remove="Docs\HelpImages\image54.png" />    
+    <None Remove="Docs\HelpImages\image55.png" />    
+    <None Remove="Docs\HelpImages\image56.png" />    
+    <None Remove="Docs\HelpImages\image57.png" />    
+    <None Remove="Docs\HelpImages\image58.png" />    
+    <None Remove="Docs\HelpImages\image59.png" />    
+    <None Remove="Docs\HelpImages\image6.png" />    
+    <None Remove="Docs\HelpImages\image60.png" />    
+    <None Remove="Docs\HelpImages\image61.png" />    
+    <None Remove="Docs\HelpImages\image62.png" />    
+    <None Remove="Docs\HelpImages\image63.png" />    
+    <None Remove="Docs\HelpImages\image64.png" />    
+    <None Remove="Docs\HelpImages\image65.png" />    
+    <None Remove="Docs\HelpImages\image66.png" />    
+    <None Remove="Docs\HelpImages\image67.png" />    
+    <None Remove="Docs\HelpImages\image68.png" />    
+    <None Remove="Docs\HelpImages\image69.png" />    
+    <None Remove="Docs\HelpImages\image7.png" />    
+    <None Remove="Docs\HelpImages\image70.png" />    
+    <None Remove="Docs\HelpImages\image71.png" />    
+    <None Remove="Docs\HelpImages\image72.png" />    
+    <None Remove="Docs\HelpImages\image73.png" />    
+    <None Remove="Docs\HelpImages\image74.png" />    
+    <None Remove="Docs\HelpImages\image75.png" />    
+    <None Remove="Docs\HelpImages\image76.png" />    
+    <None Remove="Docs\HelpImages\image77.png" />    
+    <None Remove="Docs\HelpImages\image78.png" />    
+    <None Remove="Docs\HelpImages\image79.png" />    
+    <None Remove="Docs\HelpImages\image8.png" />    
+    <None Remove="Docs\HelpImages\image80.png" />    
+    <None Remove="Docs\HelpImages\image81.png" />    
+    <None Remove="Docs\HelpImages\image82.png" />    
+    <None Remove="Docs\HelpImages\image83.png" />    
+    <None Remove="Docs\HelpImages\image84.png" />    
+    <None Remove="Docs\HelpImages\image85.png" />    
+    <None Remove="Docs\HelpImages\image86.png" />    
+    <None Remove="Docs\HelpImages\image87.png" />    
+    <None Remove="Docs\HelpImages\image88.png" />    
+    <None Remove="Docs\HelpImages\image89.png" />    
+    <None Remove="Docs\HelpImages\image9.png" />    
+    <None Remove="Docs\HelpImages\image90.png" />    
+    <None Remove="Docs\HelpImages\image91.png" />    
+    <None Remove="Docs\HelpImages\image92.png" />    
+    <None Remove="Docs\HelpImages\image93.png" />    
+    <None Remove="Docs\HelpImages\image94.png" />    
+    <None Remove="Docs\HelpImages\image95.png" />    
+    <None Remove="Docs\HelpImages\image96.png" />    
+    <None Remove="Docs\HelpImages\image97.png" />    
+    <None Remove="Docs\HelpImages\image98.png" />    
+    <None Remove="Docs\HelpImages\image99.png" />    
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
@@ -256,7 +398,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Docs\de\00-Willkommen\Willkommen.md" />
-    <Content Include="Docs\de\01-Installation\01-Installationsinformationen\Installationsinformationen.md" />
     <Content Include="Docs\de\01-Installation\Installation.md" />
     <Content Include="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />
     <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />
@@ -338,6 +479,148 @@
     <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />
     <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />
     <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />
+    <Content Include="Docs\HelpImages\image1.png" />
+    <Content Include="Docs\HelpImages\image10.png" />
+    <Content Include="Docs\HelpImages\image100.png" />
+    <Content Include="Docs\HelpImages\image101.png" />
+    <Content Include="Docs\HelpImages\image102.png" />
+    <Content Include="Docs\HelpImages\image103.png" />
+    <Content Include="Docs\HelpImages\image104.png" />
+    <Content Include="Docs\HelpImages\image105.png" />
+    <Content Include="Docs\HelpImages\image106.png" />
+    <Content Include="Docs\HelpImages\image107.png" />
+    <Content Include="Docs\HelpImages\image108.png" />
+    <Content Include="Docs\HelpImages\image109.png" />
+    <Content Include="Docs\HelpImages\image11.png" />
+    <Content Include="Docs\HelpImages\image110.png" />
+    <Content Include="Docs\HelpImages\image111.png" />
+    <Content Include="Docs\HelpImages\image112.png" />
+    <Content Include="Docs\HelpImages\image113.png" />
+    <Content Include="Docs\HelpImages\image114.png" />
+    <Content Include="Docs\HelpImages\image115.png" />
+    <Content Include="Docs\HelpImages\image116.png" />
+    <Content Include="Docs\HelpImages\image117.png" />
+    <Content Include="Docs\HelpImages\image118.png" />
+    <Content Include="Docs\HelpImages\image119.png" />
+    <Content Include="Docs\HelpImages\image12.png" />
+    <Content Include="Docs\HelpImages\image120.png" />
+    <Content Include="Docs\HelpImages\image121.png" />
+    <Content Include="Docs\HelpImages\image122.png" />
+    <Content Include="Docs\HelpImages\image123.png" />
+    <Content Include="Docs\HelpImages\image124.png" />
+    <Content Include="Docs\HelpImages\image125.png" />
+    <Content Include="Docs\HelpImages\image126.png" />
+    <Content Include="Docs\HelpImages\image127.png" />
+    <Content Include="Docs\HelpImages\image128.png" />
+    <Content Include="Docs\HelpImages\image129.png" />
+    <Content Include="Docs\HelpImages\image13.png" />
+    <Content Include="Docs\HelpImages\image130.png" />
+    <Content Include="Docs\HelpImages\image131.png" />
+    <Content Include="Docs\HelpImages\image132.png" />
+    <Content Include="Docs\HelpImages\image133.png" />
+    <Content Include="Docs\HelpImages\image134.png" />
+    <Content Include="Docs\HelpImages\image135.png" />
+    <Content Include="Docs\HelpImages\image136.png" />
+    <Content Include="Docs\HelpImages\image137.png" />
+    <Content Include="Docs\HelpImages\image138.png" />
+    <Content Include="Docs\HelpImages\image139.png" />
+    <Content Include="Docs\HelpImages\image14.png" />
+    <Content Include="Docs\HelpImages\image140.png" />
+    <Content Include="Docs\HelpImages\image141.png" />
+    <Content Include="Docs\HelpImages\image142.png" />
+    <Content Include="Docs\HelpImages\image15.png" />
+    <Content Include="Docs\HelpImages\image16.png" />
+    <Content Include="Docs\HelpImages\image17.png" />
+    <Content Include="Docs\HelpImages\image18.png" />
+    <Content Include="Docs\HelpImages\image19.png" />
+    <Content Include="Docs\HelpImages\image2.png" />
+    <Content Include="Docs\HelpImages\image20.png" />
+    <Content Include="Docs\HelpImages\image21.png" />
+    <Content Include="Docs\HelpImages\image22.png" />
+    <Content Include="Docs\HelpImages\image23.png" />
+    <Content Include="Docs\HelpImages\image24.png" />
+    <Content Include="Docs\HelpImages\image25.png" />
+    <Content Include="Docs\HelpImages\image26.png" />
+    <Content Include="Docs\HelpImages\image27.png" />
+    <Content Include="Docs\HelpImages\image28.png" />
+    <Content Include="Docs\HelpImages\image29.png" />
+    <Content Include="Docs\HelpImages\image3.png" />
+    <Content Include="Docs\HelpImages\image30.png" />
+    <Content Include="Docs\HelpImages\image31.png" />
+    <Content Include="Docs\HelpImages\image32.png" />
+    <Content Include="Docs\HelpImages\image33.png" />
+    <Content Include="Docs\HelpImages\image34.png" />
+    <Content Include="Docs\HelpImages\image35.png" />
+    <Content Include="Docs\HelpImages\image36.png" />
+    <Content Include="Docs\HelpImages\image37.png" />
+    <Content Include="Docs\HelpImages\image38.png" />
+    <Content Include="Docs\HelpImages\image39.png" />
+    <Content Include="Docs\HelpImages\image4.png" />
+    <Content Include="Docs\HelpImages\image40.png" />
+    <Content Include="Docs\HelpImages\image41.png" />
+    <Content Include="Docs\HelpImages\image42.png" />
+    <Content Include="Docs\HelpImages\image43.png" />
+    <Content Include="Docs\HelpImages\image44.png" />
+    <Content Include="Docs\HelpImages\image45.png" />
+    <Content Include="Docs\HelpImages\image46.png" />
+    <Content Include="Docs\HelpImages\image47.png" />
+    <Content Include="Docs\HelpImages\image48.png" />
+    <Content Include="Docs\HelpImages\image49.png" />
+    <Content Include="Docs\HelpImages\image5.png" />
+    <Content Include="Docs\HelpImages\image50.png" />
+    <Content Include="Docs\HelpImages\image51.png" />
+    <Content Include="Docs\HelpImages\image52.png" />
+    <Content Include="Docs\HelpImages\image53.png" />
+    <Content Include="Docs\HelpImages\image54.png" />
+    <Content Include="Docs\HelpImages\image55.png" />
+    <Content Include="Docs\HelpImages\image56.png" />
+    <Content Include="Docs\HelpImages\image57.png" />
+    <Content Include="Docs\HelpImages\image58.png" />
+    <Content Include="Docs\HelpImages\image59.png" />
+    <Content Include="Docs\HelpImages\image6.png" />
+    <Content Include="Docs\HelpImages\image60.png" />
+    <Content Include="Docs\HelpImages\image61.png" />
+    <Content Include="Docs\HelpImages\image62.png" />
+    <Content Include="Docs\HelpImages\image63.png" />
+    <Content Include="Docs\HelpImages\image64.png" />
+    <Content Include="Docs\HelpImages\image65.png" />
+    <Content Include="Docs\HelpImages\image66.png" />
+    <Content Include="Docs\HelpImages\image67.png" />
+    <Content Include="Docs\HelpImages\image68.png" />
+    <Content Include="Docs\HelpImages\image69.png" />
+    <Content Include="Docs\HelpImages\image7.png" />
+    <Content Include="Docs\HelpImages\image70.png" />
+    <Content Include="Docs\HelpImages\image71.png" />
+    <Content Include="Docs\HelpImages\image72.png" />
+    <Content Include="Docs\HelpImages\image73.png" />
+    <Content Include="Docs\HelpImages\image74.png" />
+    <Content Include="Docs\HelpImages\image75.png" />
+    <Content Include="Docs\HelpImages\image76.png" />
+    <Content Include="Docs\HelpImages\image77.png" />
+    <Content Include="Docs\HelpImages\image78.png" />
+    <Content Include="Docs\HelpImages\image79.png" />
+    <Content Include="Docs\HelpImages\image8.png" />
+    <Content Include="Docs\HelpImages\image80.png" />
+    <Content Include="Docs\HelpImages\image81.png" />
+    <Content Include="Docs\HelpImages\image82.png" />
+    <Content Include="Docs\HelpImages\image83.png" />
+    <Content Include="Docs\HelpImages\image84.png" />
+    <Content Include="Docs\HelpImages\image85.png" />
+    <Content Include="Docs\HelpImages\image86.png" />
+    <Content Include="Docs\HelpImages\image87.png" />
+    <Content Include="Docs\HelpImages\image88.png" />
+    <Content Include="Docs\HelpImages\image89.png" />
+    <Content Include="Docs\HelpImages\image9.png" />
+    <Content Include="Docs\HelpImages\image90.png" />
+    <Content Include="Docs\HelpImages\image91.png" />
+    <Content Include="Docs\HelpImages\image92.png" />
+    <Content Include="Docs\HelpImages\image93.png" />
+    <Content Include="Docs\HelpImages\image94.png" />
+    <Content Include="Docs\HelpImages\image95.png" />
+    <Content Include="Docs\HelpImages\image96.png" />
+    <Content Include="Docs\HelpImages\image97.png" />
+    <Content Include="Docs\HelpImages\image98.png" />
+    <Content Include="Docs\HelpImages\image99.png" />
     <Content Include="Images\Berechnungen.png" />
     <Content Include="Images\BE_Logo.png" />
     <Content Include="Images\BucherTransparent.png" />
@@ -412,7 +695,8 @@
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.62" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.63" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Humanizer.Core.de" Version="2.14.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -437,6 +721,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\MarkdownTextBlockControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\ParameterNumberBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -585,11 +872,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NoWarn>1701;1702;MVVMTK0034</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
-  </PropertyGroup>
-
+  
   <ItemGroup>
     <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
   </ItemGroup>
@@ -619,7 +902,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
     <Folder Include="Views\GeneralData\" />
   </ItemGroup>
