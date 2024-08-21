@@ -7,7 +7,7 @@ Hier finden Sie alle wichtigen Informationen rund um die grundlegende Arbeitswei
 ---
 | Auftrag im Vault anlegen | Parameteränderungen nachverfolgen | Schachtgrundriss erstellen |
 |:--:|:--:|:--:|
-| ![image](/Docs/HelpImages/image1.png)|![image](/Docs/HelpImages/image2.png)|![image](/Docs/HelpImages/image3.png)|  
+| ![image](./Docs/HelpImages/image1.png)|![image](../Docs/HelpImages/image2.png)|![image](/LiftDataManager/Docs/HelpImages/image3.png)|  
 ---
 
 ## Beliebte Verknüpfungen
