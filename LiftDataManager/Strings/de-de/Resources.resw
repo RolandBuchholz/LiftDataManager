@@ -225,4 +225,13 @@
   <data name="Shell_SchachtDetail.Content" xml:space="preserve">
     <value>Detaileingabe Schacht</value>
   </data>
+  <data name="Shell_LiftHistory.Content" xml:space="preserve">
+    <value>Lifthistory</value>
+  </data>
+  <data name="Shell_DataBaseEdit.Content" xml:space="preserve">
+    <value>Datenbank bearbeiten</value>
+  </data>
+  <data name="Shell_Error.Content" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
 </root>

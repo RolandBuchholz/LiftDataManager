@@ -3,6 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
+    <DefaultLanguage>de</DefaultLanguage>
     <RootNamespace>LiftDataManager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x64</Platforms>
@@ -118,7 +119,8 @@
     <None Remove="Docs\de\01-Installation\Installation.md" />    
     <None Remove="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />    
     <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen ohne Bestehendes Angebot.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md" />    
     <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md" />    
     <None Remove="Docs\de\02-Erste Schritte\Erste Schritte.md" />    
     <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md" />    
@@ -170,12 +172,14 @@
     <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md" />    
     <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md" />    
     <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md" />    
     <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md" />    
     <None Remove="Docs\de\06-Einstellungen\03-Wartung\01-Wartung Installationsinformationen\Wartung Installationsinformationen.md" />    
     <None Remove="Docs\de\06-Einstellungen\03-Wartung\02-Update Check\UpdateCheck.md" />    
     <None Remove="Docs\de\06-Einstellungen\03-Wartung\03-Diagnostics\Diagnostics.md" />    
     <None Remove="Docs\de\06-Einstellungen\03-Wartung\04-Database\Database.md" />    
     <None Remove="Docs\de\06-Einstellungen\03-Wartung\05-Externe Programme\Externe Programme.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\Wartung.md" />    
     <None Remove="Docs\de\06-Einstellungen\04-About\About.md" />    
     <None Remove="Docs\de\06-Einstellungen\Einstellungen.md" />    
     <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md" />    
@@ -398,88 +402,261 @@
     <None Remove="Views\Settings\ThemeSettingPage.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Docs\de\00-Willkommen\Willkommen.md" />
-    <Content Include="Docs\de\01-Installation\Installation.md" />
-    <Content Include="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen ohne Bestehendes Angebot.md" />
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md" />
-    <Content Include="Docs\de\02-Erste Schritte\Erste Schritte.md" />
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md" />
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md" />
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md" />
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md" />
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md" />
-    <Content Include="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md" />
-    <Content Include="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md" />
-    <Content Include="Docs\de\04-Datenimport\Datenimport.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen (work in process)\Einreichunterlagen.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md" />
-    <Content Include="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md" />
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md" />
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md" />
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md" />
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md" />
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md" />
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md" />
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md" />
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md" />
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md" />
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\01-Wartung Installationsinformationen\Wartung Installationsinformationen.md" />
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\02-Update Check\UpdateCheck.md" />
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\03-Diagnostics\Diagnostics.md" />
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\04-Database\Database.md" />
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\05-Externe Programme\Externe Programme.md" />
-    <Content Include="Docs\de\06-Einstellungen\04-About\About.md" />
-    <Content Include="Docs\de\06-Einstellungen\Einstellungen.md" />
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md" />
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md" />
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md" />
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md" />
-    <Content Include="Docs\de\07-Datenvalidierung\Datenvalidierung.md" />
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md" />
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md" />
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md" />
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md" />
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md" />
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />
+    <Content Include="Docs\de\00-Willkommen\Willkommen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\01-Installation\Installation.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\Erste Schritte.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\Datenimport.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen (work in process)\Einreichunterlagen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\01-Wartung Installationsinformationen\Wartung Installationsinformationen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\02-Update Check\UpdateCheck.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\03-Diagnostics\Diagnostics.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\04-Database\Database.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\05-Externe Programme\Externe Programme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\Wartung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\04-About\About.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\Einstellungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\Datenvalidierung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Docs\HelpImages\image1.png" />
     <Content Include="Docs\HelpImages\image10.png" />
     <Content Include="Docs\HelpImages\image100.png" />
