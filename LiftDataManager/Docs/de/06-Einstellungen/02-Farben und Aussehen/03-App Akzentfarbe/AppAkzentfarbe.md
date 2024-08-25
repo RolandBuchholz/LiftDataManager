@@ -1,6 +1,6 @@
 # App Akzentfarbe
 
-![image](HelpImages/image104.png)  
+![image](/LiftDataManager/Docs/HelpImages/image104.png)  
 
 Nutzen Sie die Windows-Akzentfarbe oder die App-Standardfarbe
 

@@ -1,11 +1,11 @@
 # Schacht
 
-![image](HelpImages/image54.png)  
+![image](/LiftDataManager/Docs/HelpImages/image54.png)  
 
 Stockwerksbezeichnungen, Etagenabstände, Schachtinformationen, Schachtabmessungen, ...
 
-![image](HelpImages/image55.png)  
-![image](HelpImages/image56.png)  
+![image](/LiftDataManager/Docs/HelpImages/image55.png)  
+![image](/LiftDataManager/Docs/HelpImages/image56.png)  
 
 Stockwerkbezeichnung/Etagenabstände
 

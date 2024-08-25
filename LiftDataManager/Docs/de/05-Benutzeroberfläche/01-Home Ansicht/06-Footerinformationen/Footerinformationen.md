@@ -1,6 +1,6 @@
 # Footerinformationen
 
-![image](HelpImages/image45.png)
+![image](/LiftDataManager/Docs/HelpImages/image45.png)
 
 Das Meldungsbanner wird nur angezeigt, wenn Meldungen vorhanden sind
 
@@ -24,7 +24,7 @@ Anzeige der Meldung mit der höchsten Priorität
 
 Button um alle aktiven Meldungen anzuzeigen
 
-![image](HelpImages/image46.png)
+![image](/LiftDataManager/Docs/HelpImages/image46.png)
 
 **Meldungen (Infobar Detailansicht):**
 

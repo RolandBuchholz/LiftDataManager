@@ -1,7 +1,7 @@
 # Titelleiste
 
-![image](HelpImages/image39.png)  
-![image](HelpImages/image40.png)  
+![image](/LiftDataManager/Docs/HelpImages/image39.png)  
+![image](/LiftDataManager/Docs/HelpImages/image40.png)  
 
 1.**Navigationsmenü Modus**
 

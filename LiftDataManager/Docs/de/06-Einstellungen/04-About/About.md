@@ -1,6 +1,6 @@
 # About
 
-![image](HelpImages/image112.png)  
+![image](/LiftDataManager/Docs/HelpImages/image112.png)  
 
 About and Updateinformationen
 

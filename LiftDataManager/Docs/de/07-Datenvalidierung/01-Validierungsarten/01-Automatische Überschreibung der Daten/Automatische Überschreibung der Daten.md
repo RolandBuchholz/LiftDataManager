@@ -5,8 +5,8 @@ sind z.B. Index oder Kabinengewicht. Eine automatische Überschreibung wir immer
 
 ***Infocenter Sidebar***
 
-![image](HelpImages/image113.png)  
+![image](/LiftDataManager/Docs/HelpImages/image113.png)  
 
-![image](HelpImages/image114.png)  
+![image](/LiftDataManager/Docs/HelpImages/image114.png)  
 
 ***Lifthistory***

@@ -1,6 +1,6 @@
 # Infocenter
 
-![image](HelpImages/image47.png)
+![image](/LiftDataManager/Docs/HelpImages/image47.png)
 
 Im Infocenter werden alle Parameter- und Statusänderungen aufgezeichnet
 

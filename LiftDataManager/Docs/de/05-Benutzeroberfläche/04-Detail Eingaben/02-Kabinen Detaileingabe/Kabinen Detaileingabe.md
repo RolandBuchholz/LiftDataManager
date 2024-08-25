@@ -1,7 +1,7 @@
 # Kabinen Detaileingabe
 
-![image](HelpImages/image76.png)  
-![image](HelpImages/image77.png)  
+![image](/LiftDataManager/Docs/HelpImages/image76.png)  
+![image](/LiftDataManager/Docs/HelpImages/image77.png)  
 
 Detaillierte Kabineneingabe, Ausführung Boden und Becke, Lage und Größe Kabineneinbauten, …
 
@@ -17,7 +17,7 @@ Dynamische maßstäbliche Innenansicht der Kabinenwände
 
 Ausstattung Detaileingabe über Lage und Größe mögliche Eingaben werden dynamisch ein und ausgeblendet
 
-![image](HelpImages/image78.png)  
+![image](/LiftDataManager/Docs/HelpImages/image78.png)  
 
 1.**Türanbauparameter**
 

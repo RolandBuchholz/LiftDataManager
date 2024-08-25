@@ -2,7 +2,7 @@
 
 Aus Inventor kann direkt auf die AutoDesktransfer.xml zugegriffen werden und die benötigten Daten importiert werden.
 
-![image](HelpImages/image133.png)  
+![image](/LiftDataManager/Docs/HelpImages/image133.png)  
 
 Detaillierte Information zu der Inventor Schnittstelle können aus diesen Dokumenten entnommen werden.
 

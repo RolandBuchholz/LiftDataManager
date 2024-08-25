@@ -1,3 +1,3 @@
 # Kabinengewicht
 
-![image](HelpImages/image71.png)
+![image](/LiftDataManager/Docs/HelpImages/image71.png)

@@ -1,9 +1,9 @@
 # Erstellen von Angeboten / Vorplanungen
 
-![image](HelpImages/image6.png)
+![image](/LiftDataManager/Docs/HelpImages/image6.png)
 Im Autodesk Vault Professional® den Ordner des entsprechenden Kalenderjahres im Ordner „AUFTRÄGE NEU/Angebote“ auswählen und mit der rechten Maustaste das Kontextmenü öffnen und dort „Neues Angebot“ bzw. „Neue Vorplanung“ wählen.
 
-![image](HelpImages/image7.png)
+![image](/LiftDataManager/Docs/HelpImages/image7.png)
 
 Die Maske mit den entsprechenden Daten füllen die „roten Felder“ sind Pflichteingaben und „OK“ klicken.  
 Es wird ein neues Angebot erstellt.

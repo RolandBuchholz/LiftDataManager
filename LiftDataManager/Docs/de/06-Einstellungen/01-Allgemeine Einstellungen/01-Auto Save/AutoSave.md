@@ -1,6 +1,6 @@
 # Auto Save
 
-![image](HelpImages/image94.png)  
+![image](/LiftDataManager/Docs/HelpImages/image94.png)  
 
 Automatisches speichern der Autotransfer.xml
 Nach dem Aktivieren kann der gewünschte Speicherintervall gewählt werden.

@@ -1,6 +1,6 @@
 # Infocentersettings
 
-![image](HelpImages/image97.png)  
+![image](/LiftDataManager/Docs/HelpImages/image97.png)  
 
 Infocenter automatisch öffnen beim Laden eines Auftrages
 

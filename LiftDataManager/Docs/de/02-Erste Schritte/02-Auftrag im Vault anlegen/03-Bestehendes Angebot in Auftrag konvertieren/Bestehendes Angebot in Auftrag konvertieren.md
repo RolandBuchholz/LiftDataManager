@@ -1,6 +1,6 @@
 # Bestehendes Angebot-Vorplanung in Auftrag konvertieren
 
-![image](HelpImages/image10.png)  
+![image](/LiftDataManager/Docs/HelpImages/image10.png)  
 Im Autodesk Vault Professional® den Angebotsordner „AUFTRÄGE NEU/Angebote/20XX/XX-XX-XXX“ auswählen und mit der rechten Maustaste das Kontextmenü öffnen  
 und dort „Angebot/Vorplanung 🡺 Auftrag“ wählen.
 

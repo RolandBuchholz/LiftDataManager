@@ -1,6 +1,6 @@
 # Home Ansicht
 
-![image](HelpImages/image38.png)  
+![image](/LiftDataManager/Docs/HelpImages/image38.png)  
 
 Nach dem Starten von LiftDataManager wird die Homeansicht geladen.
 

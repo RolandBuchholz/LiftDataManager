@@ -3,7 +3,7 @@
 Die meisten Parameter werden über den Status des Parameters validiert.  
 Die möglichen Parameterstatus sind:
 
-![image](HelpImages/image115.png)  
+![image](/LiftDataManager/Docs/HelpImages/image115.png)  
 
 ## Fehler
 
@@ -17,8 +17,8 @@ Warnungen weisen auf mögliche Fehler oder unstimmige Daten hin.
 
 Zusätzliche Informationen über mögliche Kosteneinsparungen oder Konstruktionsvereinfachungen.
 
-![image](HelpImages/image116.png)  
+![image](/LiftDataManager/Docs/HelpImages/image116.png)  
 
-![image](HelpImages/image117.png)  
+![image](/LiftDataManager/Docs/HelpImages/image117.png)  
 
-![image](HelpImages/image118.png)  
+![image](/LiftDataManager/Docs/HelpImages/image118.png)  

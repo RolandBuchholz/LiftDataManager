@@ -1,5 +1,5 @@
 # Signalisation
 
-![image](HelpImages/image64.png)  
+![image](/LiftDataManager/Docs/HelpImages/image64.png)  
 
 Kabinentableau, Außentableau, Weiterfahrtsanzeigen, Taster, Anzeigen, …

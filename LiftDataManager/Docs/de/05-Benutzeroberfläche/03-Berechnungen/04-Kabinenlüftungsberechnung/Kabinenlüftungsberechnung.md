@@ -1,4 +1,4 @@
 # Kabinenlüftungsberechnung
 
-![image](HelpImages/image73.png)  
+![image](/LiftDataManager/Docs/HelpImages/image73.png)  
 

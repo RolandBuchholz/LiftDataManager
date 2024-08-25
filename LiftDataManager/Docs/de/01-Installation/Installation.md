@@ -19,4 +19,4 @@ Installieren Sie LiftDataManager auf Ihrem Computer, sofern Sie es noch nicht ge
 
 Die Installation erfolgt über einen MSIX-Installer, denn entsprechenden Link inkl. Zertifikat erhalten Sie von Ihrem System Administrator.
 
-![image](HelpImages/image4.png)
+![image](/LiftDataManager/Docs/HelpImages/image4.png)

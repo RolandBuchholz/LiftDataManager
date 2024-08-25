@@ -1,7 +1,7 @@
 # Listenansicht
 
-![image](HelpImages/image84.png)  
-![image](HelpImages/image85.png)  
+![image](/LiftDataManager/Docs/HelpImages/image84.png)  
+![image](/LiftDataManager/Docs/HelpImages/image85.png)  
 
 1.**Parameterliste**
 

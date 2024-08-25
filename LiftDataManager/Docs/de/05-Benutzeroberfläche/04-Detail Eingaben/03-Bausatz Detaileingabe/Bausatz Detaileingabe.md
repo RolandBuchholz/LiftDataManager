@@ -1,6 +1,6 @@
 # Bausatz Detaileingabe
 
-![image](HelpImages/image79.png)  
+![image](/LiftDataManager/Docs/HelpImages/image79.png)  
 
 Detaillierte Bausatzeingabe, Schienenlänge, Pufferstützenlänge, Schienenbügelabstände, …
 
@@ -8,7 +8,7 @@ Detaillierte Bausatzeingabe, Schienenlänge, Pufferstützenlänge, Schienenbüge
 
 Die Detailparameter werden vom CarFrameProgram generiert, sofern der Bausatztyp im CFP vorhanden ist. Alternativ können die Bausatzdaten auch direkt eingegeben werden.
 
-![image](HelpImages/image80.png)  
+![image](/LiftDataManager/Docs/HelpImages/image80.png)  
 
 1.**Schachthöhenschnitt**
 

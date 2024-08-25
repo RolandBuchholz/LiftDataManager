@@ -1,6 +1,6 @@
 # Navigationsmenü
 
-![image](HelpImages/image41.png)  
+![image](/LiftDataManager/Docs/HelpImages/image41.png)  
 
 1.**Home**
 

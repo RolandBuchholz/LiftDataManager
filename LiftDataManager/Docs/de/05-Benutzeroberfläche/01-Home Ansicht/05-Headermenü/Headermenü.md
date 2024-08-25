@@ -1,6 +1,6 @@
 # Headermenü
 
-![image](HelpImages/image44.png)
+![image](/LiftDataManager/Docs/HelpImages/image44.png)
 
 Die Buttons werden automatisch aktiviert und deaktiviert in Abhängigkeit zu den möglichen Aktionen.
 

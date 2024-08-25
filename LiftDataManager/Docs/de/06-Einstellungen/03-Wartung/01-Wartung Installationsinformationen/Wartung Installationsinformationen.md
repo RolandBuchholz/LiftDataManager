@@ -1,3 +1,3 @@
 # Wartung Installationsinformationen und externe Programmeinstellungen
 
-![image](HelpImages/image106.png)  
+![image](/LiftDataManager/Docs/HelpImages/image106.png)  

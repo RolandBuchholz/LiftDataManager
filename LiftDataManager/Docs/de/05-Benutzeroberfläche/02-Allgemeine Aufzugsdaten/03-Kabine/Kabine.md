@@ -1,11 +1,11 @@
 # Kabine
 
-![image](HelpImages/image57.png)  
-![image](HelpImages/image58.png)  
+![image](/LiftDataManager/Docs/HelpImages/image57.png)  
+![image](/LiftDataManager/Docs/HelpImages/image58.png)  
 
 Kabinenabmessungen, Kabinenausführung, Beleuchtung, Kabinenausstattung, …
 
-![image](HelpImages/image59.png)  
+![image](/LiftDataManager/Docs/HelpImages/image59.png)  
 
 1.**Dynamisch maßstäblicher Kabinengrundriss**
 

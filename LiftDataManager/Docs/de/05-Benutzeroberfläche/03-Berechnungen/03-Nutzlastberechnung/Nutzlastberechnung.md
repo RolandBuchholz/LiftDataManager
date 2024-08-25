@@ -1,4 +1,4 @@
 # Nutzlastberechnung
 
-![image](HelpImages/image72.png)  
+![image](/LiftDataManager/Docs/HelpImages/image72.png)  
 

@@ -1,6 +1,6 @@
 # Database
 
-![image](HelpImages/image110.png)  
+![image](/LiftDataManager/Docs/HelpImages/image110.png)  
 
 Einstellungen der Datenbank
 

@@ -7,6 +7,7 @@
     xmlns:local="using:LiftDataManager.Controls"
     xmlns:markdown="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wuc="using:WinUICommunity"
     mc:Ignorable="d">
     <Grid Padding="24,12,24,12" Style="{ThemeResource GridCardPanel}">
         <Grid.RowDefinitions>
@@ -41,10 +42,22 @@
             ListMargin="-6,4,0,4"
             QuoteMargin="12,12,0,0"
             Text="{x:Bind MarkdownText, Mode=OneWay}" />
-        <Border
+        <StackPanel
             Grid.Row="1"
-            Width="100"
-            Height="60"
-            Background="Red" />
+            Orientation="Horizontal"
+            Spacing="10">
+            <wuc:Shield
+                Status="Components"
+                Subject="WinUICommunity"
+                Color="BlueViolet" />
+            <wuc:Shield
+                Status="Components"
+                Subject="WinUICommunity"
+                Color="Yellow" />
+            <wuc:Shield
+                Status="Components"
+                Subject="WinUICommunity"
+                Color="Tomato" />
+        </StackPanel>
     </Grid>
 </UserControl>

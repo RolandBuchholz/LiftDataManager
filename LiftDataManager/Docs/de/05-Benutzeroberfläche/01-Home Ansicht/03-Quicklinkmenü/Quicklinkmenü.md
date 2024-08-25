@@ -1,6 +1,6 @@
 # Quicklinkmenü
 
-![image](HelpImages/image42.png)  
+![image](/LiftDataManager/Docs/HelpImages/image42.png)  
 
 > Die Quicklinks werden automatisch aktiviert und deaktiviert je nach Bausatztyp und Antriebskonzept usw.…
 

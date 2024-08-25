@@ -1,6 +1,6 @@
 # Schacht Detaileingabe
 
-![image](HelpImages/image75.png)  
+![image](/LiftDataManager/Docs/HelpImages/image75.png)  
 
 Detaillierte Schachteingabe, Lage Kabine, Lage Bausatz, Lage und Größe Maueraussparungen, Lage Türen diese Daten werden von unseren CAD-System übernommen.
 

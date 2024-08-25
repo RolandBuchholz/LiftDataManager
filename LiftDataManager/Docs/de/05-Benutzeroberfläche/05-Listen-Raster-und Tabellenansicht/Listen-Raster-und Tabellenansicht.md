@@ -1,8 +1,8 @@
 # Listen -, Raster- und Tabellenansicht
 
-![image](HelpImages/image81.png)  
-![image](HelpImages/image82.png)  
-![image](HelpImages/image83.png)  
+![image](/LiftDataManager/Docs/HelpImages/image81.png)  
+![image](/LiftDataManager/Docs/HelpImages/image82.png)  
+![image](/LiftDataManager/Docs/HelpImages/image83.png)  
 
 In diesen Ansichten können die Parameter nach Belieben sortiert, gefiltert und gruppiert werden.  
 Die Sortier-, Filter-, Gruppier- und Suchfunktionen sind in allen drei Ansichten identisch diese unterscheiden sich nur im Ausgabeformat.

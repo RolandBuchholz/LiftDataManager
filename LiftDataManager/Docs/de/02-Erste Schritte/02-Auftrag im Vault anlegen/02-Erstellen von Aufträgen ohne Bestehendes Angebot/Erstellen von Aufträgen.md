@@ -1,6 +1,6 @@
 # Erstellen von Aufträgen ohne bestehendes Angebot
 
-![image](HelpImages/image9.png)  
+![image](/LiftDataManager/Docs/HelpImages/image9.png)  
 Im Autodesk Vault Professional® im Ordner „AUFTRÄGE NEU/Konstruktion“ den Ordner des entsprechenden Kunden auswählen und mit der rechten Maustaste das Kontextmenü öffnen und dort „Neuer Auftrag“ wählen.
 
 In der erscheinenden Eingabemaske die Daten eingeben.  

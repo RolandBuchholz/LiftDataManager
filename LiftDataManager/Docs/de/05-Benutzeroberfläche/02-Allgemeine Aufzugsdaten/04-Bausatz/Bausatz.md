@@ -2,8 +2,8 @@
 
 Bausatzauswahl, Sicherheitskomponenten, Führungen, Schienen, Ersatzmaßnahmen, …
 
-![image](HelpImages/image60.png)  
-![image](HelpImages/image61.png)  
+![image](/LiftDataManager/Docs/HelpImages/image60.png)  
+![image](/LiftDataManager/Docs/HelpImages/image61.png)  
 
 1.**Überprüfung Bausatz**
 

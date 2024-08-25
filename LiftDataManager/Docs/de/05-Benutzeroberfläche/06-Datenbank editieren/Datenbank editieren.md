@@ -1,7 +1,7 @@
 # Datenbank editieren
 
-![image](HelpImages/image88.png)  
-![image](HelpImages/image89.png)  
+![image](/LiftDataManager/Docs/HelpImages/image88.png)  
+![image](/LiftDataManager/Docs/HelpImages/image89.png)  
 
 Um die Datenbank zu bearbeiten muss der Adminmode im LiftDataManager aktiviert werden.
 
@@ -33,8 +33,8 @@ Neu erstellten Parameter in die Datenbank übergeben.
 
 Datenbank erneut laden.**  
 **
-![image](HelpImages/image90.png)  
-![image](HelpImages/image91.png)  
+![image](/LiftDataManager/Docs/HelpImages/image90.png)  
+![image](/LiftDataManager/Docs/HelpImages/image91.png)  
 
 1.**Liste Auswahlparameter**
 

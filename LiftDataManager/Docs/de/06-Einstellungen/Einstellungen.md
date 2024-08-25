@@ -1,3 +1,3 @@
 # Einstellungen
 
-![image](HelpImages/image92.png)  
+![image](/LiftDataManager/Docs/HelpImages/image92.png)  

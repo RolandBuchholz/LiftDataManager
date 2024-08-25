@@ -1,7 +1,7 @@
 # Revisionsnummernvergabe
 
-![image](HelpImages/image131.png)  
-![image](HelpImages/image132.png)  
+![image](/LiftDataManager/Docs/HelpImages/image131.png)  
+![image](/LiftDataManager/Docs/HelpImages/image132.png)  
 
 Möglichkeiten zur automatischen Revsionsnummervergabe:
 
