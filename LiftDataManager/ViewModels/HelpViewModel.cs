@@ -1,5 +1,4 @@
 ﻿using LiftDataManager.Controls;
-using LiftDataManager.Core.Models;
 using Microsoft.UI.Dispatching;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -12,9 +11,9 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     public TreeView? HelpTreeView { get; set; }
     public ObservableCollection<HelpContent>? HelpTreeDataSource { get; set; }
     public ObservableCollection<MarkdownTextBlockControl> MarkdownTextBlockList { get; set; }
-
     private readonly DispatcherQueue _dispatcherQueue;
     private readonly IStorageService _storageService;
+
     public HelpViewModel(IStorageService storageService)
     {
         _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -23,14 +22,17 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     }
 
     [RelayCommand]
-    public void TreeViewLoaded(TreeView sender)
+    public async Task TreeViewLoaded(TreeView sender)
     {
         HelpTreeView = sender;
         if (SelectedHelpContent == null)
         {
             HelpTreeView.SelectedNode = HelpTreeView.RootNodes.First();
         }
+        await Task.Delay(1500);
+        HelpTreeView?.CollapseAllLevel();
     }
+
     [RelayCommand]
     public async Task SwitchHelpContent(string? contentName)
     {
@@ -41,20 +43,14 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         var helpContent = GetHelpContentByName(contentName);
         if (helpContent is not null && HelpTreeView is not null)
         {
-            var pathSplit = helpContent.FolderPath.Split('\\');
-            switch (helpContent.Level)
+            var nodes = helpContent.RelativePath.Split(Path.DirectorySeparatorChar);
+            if (nodes.Length == 0)
             {
-                case HelpContentLevel.Main:
-                    break;
-                case HelpContentLevel.Sub:
-                    ExpandNode(pathSplit.Last());
-                    break;
-                case HelpContentLevel.Sub2:
-
-                    break;
-                default:
-                    return;
+                return;
             }
+            var pathArray = nodes.Select(x => x[3..]).ToArray();
+            HelpTreeView.ExpandNodePath(pathArray);
+            //HelpTreeView.ExpandNodeAllLevel(HelpTreeView.RootNodes.First(x => ((HelpContent)x.Content).Name == nodes[0][3..]));
             var itemContainer = HelpTreeView.ContainerFromItem(helpContent);
             HelpTreeView.SelectedNode = HelpTreeView.NodeFromContainer(itemContainer);
         }
@@ -63,21 +59,23 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
 
     [ObservableProperty]
     private HelpContent? selectedHelpContent;
+
     partial void OnSelectedHelpContentChanged(HelpContent? value)
     {
         if (value == null)
         {
             return;
         }
-        Task.Run(async () => await LoadMarkDownTextAsync(value.FolderPath));
+        Task.Run(async () => await LoadMarkDownTextAsync(value.FullPath));
     }
-    private async Task LoadMarkDownTextAsync(string? folderPath)
+
+    private async Task LoadMarkDownTextAsync(string? fullPath)
     {
-        if (string.IsNullOrWhiteSpace(folderPath))
+        if (string.IsNullOrWhiteSpace(fullPath))
         {
             return;
         }
-        var helpFilesFolder = await StorageFolder.GetFolderFromPathAsync(folderPath);
+        var helpFilesFolder = await StorageFolder.GetFolderFromPathAsync(fullPath);
         var helpFiles = await helpFilesFolder.GetFilesAsync();
         _dispatcherQueue.TryEnqueue(() =>
         {
@@ -113,6 +111,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         }
         await Task.CompletedTask;
     }
+
     private async Task GetTreeViewEntrysAsync(object parameter)
     {
         var helpfilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Docs", "de");
@@ -128,7 +127,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         var mainHelpFolder = await _storageService.GetFoldersAsync(helpfilesPath);
         foreach (var mainItem in mainHelpFolder)
         {
-            var newHelpContentEntry = new HelpContent(TreeViewEntryName(mainItem.Name), mainItem.Path)
+            var newHelpContentEntry = new HelpContent(TreeViewEntryName(mainItem.Name), mainItem.Path, mainItem.Name)
             {
                 Level = HelpContentLevel.Main,
             };
@@ -136,14 +135,14 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
             var subHelpFolder = await mainItem.GetFoldersAsync();
             foreach (var subItem in subHelpFolder)
             {
-                var newChildren = new HelpContent(TreeViewEntryName(subItem.Name), subItem.Path)
+                var newChildren = new HelpContent(TreeViewEntryName(subItem.Name), subItem.Path, Path.Combine(mainItem.Name, subItem.Name))
                 {
                     Level = HelpContentLevel.Sub,
                 };
                 var sub2HelpFolder = await subItem.GetFoldersAsync();
                 foreach (var sub2Item in sub2HelpFolder)
                 {
-                    var newChildren2 = new HelpContent(TreeViewEntryName(sub2Item.Name), sub2Item.Path)
+                    var newChildren2 = new HelpContent(TreeViewEntryName(sub2Item.Name), sub2Item.Path, Path.Combine(mainItem.Name, subItem.Name, sub2Item.Name))
                     {
                         Level = HelpContentLevel.Sub2,
                     };
@@ -160,6 +159,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         });
         await Task.CompletedTask;
     }
+
     private static string TreeViewEntryName(string? folderNamePath)
     {
         if (string.IsNullOrWhiteSpace(folderNamePath))
@@ -179,13 +179,13 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         foreach (var item in HelpTreeDataSource)
         {
             tempDataSource.Add(item);
-            tempDataSource.AddRange(ReturnChildNodes(item));
+            tempDataSource.AddRange(ReturnChildContent(item));
         }
 
         return tempDataSource.FirstOrDefault(x => x.Name == name);
     }
 
-    private static List<HelpContent> ReturnChildNodes(HelpContent node)
+    private static List<HelpContent> ReturnChildContent(HelpContent node)
     {
         List<HelpContent> childs = [];
         if (node.Children.Any())
@@ -195,25 +195,13 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
                 childs.Add(child);
                 if (child.Children.Any())
                 {
-                    childs.AddRange(ReturnChildNodes(child));
+                    childs.AddRange(ReturnChildContent(child));
                 }
             }
         }
         return childs;
     }
-    private void ExpandNode(string node)
-    {
-        if (string.IsNullOrWhiteSpace(node))
-        {
-            return;
-        }
-        var content = GetHelpContentByName(node[3..]);
-        if (content is not null && HelpTreeView is not null)
-        {
-            var itemContainer = HelpTreeView.ContainerFromItem(content);
-            HelpTreeView.NodeFromContainer(itemContainer).IsExpanded = true;
-        }
-    }
+
     public void OnNavigatedTo(object parameter)
     {
         Task.Run(async () => await GetTreeViewEntrysAsync(parameter)).Wait();
