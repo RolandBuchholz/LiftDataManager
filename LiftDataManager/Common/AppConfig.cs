@@ -9,7 +9,7 @@ public class AppConfig : JsonSettings, IVersionable
 
     public override string FileName { get; set; } = Constants.AppConfigPath;
 
-    public virtual string LastUpdateCheck { get; set; }
+    public virtual string? LastUpdateCheck { get; set; }
 
     // Docs: https://github.com/Nucs/JsonSettings
 }

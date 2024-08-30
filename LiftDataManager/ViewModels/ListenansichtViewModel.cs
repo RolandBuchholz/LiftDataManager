@@ -244,7 +244,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         HasHighlightedParameters = CheckhasHighlightedParameters();
 
         if (parameter is null and not string)
+        {
             return;
+        }
         if (!Equals(parameter, "ShowHighlightParameter"))
         {
             SearchInput = parameter as string;
@@ -252,8 +254,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         }
 
         if (!HasHighlightedParameters)
+        {
             return;
-
+        }
         SelectedFilter = new SelectorBarItem() { Text = "RequestHighlighted" };
     }
 

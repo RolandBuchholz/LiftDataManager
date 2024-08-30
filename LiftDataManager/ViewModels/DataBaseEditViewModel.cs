@@ -166,7 +166,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private List<string?>? dropdownlistTables;
+    private List<string>? dropdownlistTables;
 
     [ObservableProperty]
     private bool isdropdownlistTablesVisible;
@@ -276,7 +276,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     public void CheckParameterChanged()
     {
         if (_editableparametercontext is null)
+        {
             return;
+        }
         CanChangeParameters = _editableparametercontext.ChangeTracker.HasChanges();
     }
 
@@ -284,7 +286,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void RemoveParameterFromDataBase()
     {
         if (_editableparametercontext is null)
+        {
             return;
+        }
         var id = Convert.ToInt32(RemoveParameterId);
         var deletableParameterDto = _editableparametercontext.Find<ParameterDto>(id);
 
@@ -318,7 +322,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void RemoveRowFromDataBaseTable(object deletableRow)
     {
         if (_editableparametercontext is null)
+        {
             return;
+        }
         if (deletableRow is not null)
         {
             var type = deletableRow.GetType();
@@ -349,7 +355,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void AddParameterToDataBase()
     {
         if (_editableparametercontext is null)
+        {
             return;
+        }
         try
         {
             var newParameterDto = new ParameterDto
@@ -437,7 +445,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private void ChangeParametersData()
     {
         if (_editableparametercontext is null)
+        {
             return;
+        }
         if (_editableparametercontext.ChangeTracker.HasChanges())
         {
             try

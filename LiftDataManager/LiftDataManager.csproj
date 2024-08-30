@@ -2,12 +2,14 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
+    <DefaultLanguage>de</DefaultLanguage>
     <RootNamespace>LiftDataManager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>x64</PlatformTarget>
     <Platforms>x64</Platforms>
+    <SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
@@ -23,7 +25,6 @@
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
-    <PlatformTarget>x64</PlatformTarget>
     <PackageCertificateThumbprint>2BE4759304E56D677972B80FDFF39F28C765EC4C</PackageCertificateThumbprint>
   </PropertyGroup>
 
@@ -104,6 +105,7 @@
     <None Remove="Controls\CarDesignControl.xaml" />
     <None Remove="Controls\CarEquipmentControl.xaml" />
     <None Remove="Controls\HistorySearchBar.xaml" />
+    <None Remove="Controls\MarkdownTextBlockControl.xaml" />
     <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
     <None Remove="Controls\ParameterCheckBox.xaml" />
     <None Remove="Controls\ParameterComboBox.xaml" />
@@ -111,7 +113,234 @@
     <None Remove="Controls\ParameterNumberTextBox.xaml" />
     <None Remove="Controls\ParameterRadioButton.xaml" />
     <None Remove="Controls\ParameterTextBox.xaml" />    
-    <None Remove="Controls\SpezifikationsNumberControl.xaml" />
+    <None Remove="Controls\SpezifikationsNumberControl.xaml" />    
+    <None Remove="Docs\de\00-Willkommen\Willkommen.md" />    
+    <None Remove="Docs\de\01-Installation\Installation.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md" />    
+    <None Remove="Docs\de\02-Erste Schritte\Erste Schritte.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md" />    
+    <None Remove="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md" />    
+    <None Remove="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md" />    
+    <None Remove="Docs\de\04-Datenimport\Datenimport.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen %28work in process%29\Einreichunterlagen.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md" />    
+    <None Remove="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md" />    
+    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md" />    
+    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md" />    
+    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md" />    
+    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md" />    
+    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md" />    
+    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\01-Wartung Installationsinformationen\Wartung Installationsinformationen.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\02-Update Check\UpdateCheck.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\03-Diagnostics\Diagnostics.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\04-Database\Database.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\05-Externe Programme\Externe Programme.md" />    
+    <None Remove="Docs\de\06-Einstellungen\03-Wartung\Wartung.md" />    
+    <None Remove="Docs\de\06-Einstellungen\04-About\About.md" />    
+    <None Remove="Docs\de\06-Einstellungen\Einstellungen.md" />    
+    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md" />    
+    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md" />    
+    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md" />    
+    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md" />    
+    <None Remove="Docs\de\07-Datenvalidierung\Datenvalidierung.md" />    
+    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md" />    
+    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md" />    
+    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md" />    
+    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md" />    
+    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md" />    
+    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />    
+    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />    
+    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />    
+    <None Remove="Docs\HelpImages\image1.png" />    
+    <None Remove="Docs\HelpImages\image10.png" />    
+    <None Remove="Docs\HelpImages\image100.png" />    
+    <None Remove="Docs\HelpImages\image101.png" />    
+    <None Remove="Docs\HelpImages\image102.png" />    
+    <None Remove="Docs\HelpImages\image103.png" />    
+    <None Remove="Docs\HelpImages\image104.png" />    
+    <None Remove="Docs\HelpImages\image105.png" />    
+    <None Remove="Docs\HelpImages\image106.png" />    
+    <None Remove="Docs\HelpImages\image107.png" />    
+    <None Remove="Docs\HelpImages\image108.png" />    
+    <None Remove="Docs\HelpImages\image109.png" />    
+    <None Remove="Docs\HelpImages\image11.png" />    
+    <None Remove="Docs\HelpImages\image110.png" />    
+    <None Remove="Docs\HelpImages\image111.png" />    
+    <None Remove="Docs\HelpImages\image112.png" />    
+    <None Remove="Docs\HelpImages\image113.png" />    
+    <None Remove="Docs\HelpImages\image114.png" />    
+    <None Remove="Docs\HelpImages\image115.png" />    
+    <None Remove="Docs\HelpImages\image116.png" />    
+    <None Remove="Docs\HelpImages\image117.png" />    
+    <None Remove="Docs\HelpImages\image118.png" />    
+    <None Remove="Docs\HelpImages\image119.png" />    
+    <None Remove="Docs\HelpImages\image12.png" />    
+    <None Remove="Docs\HelpImages\image120.png" />    
+    <None Remove="Docs\HelpImages\image121.png" />    
+    <None Remove="Docs\HelpImages\image122.png" />    
+    <None Remove="Docs\HelpImages\image123.png" />    
+    <None Remove="Docs\HelpImages\image124.png" />    
+    <None Remove="Docs\HelpImages\image125.png" />    
+    <None Remove="Docs\HelpImages\image126.png" />    
+    <None Remove="Docs\HelpImages\image127.png" />    
+    <None Remove="Docs\HelpImages\image128.png" />    
+    <None Remove="Docs\HelpImages\image129.png" />    
+    <None Remove="Docs\HelpImages\image13.png" />    
+    <None Remove="Docs\HelpImages\image130.png" />    
+    <None Remove="Docs\HelpImages\image131.png" />    
+    <None Remove="Docs\HelpImages\image132.png" />    
+    <None Remove="Docs\HelpImages\image133.png" />    
+    <None Remove="Docs\HelpImages\image134.png" />    
+    <None Remove="Docs\HelpImages\image135.png" />    
+    <None Remove="Docs\HelpImages\image136.png" />    
+    <None Remove="Docs\HelpImages\image137.png" />    
+    <None Remove="Docs\HelpImages\image138.png" />    
+    <None Remove="Docs\HelpImages\image139.png" />    
+    <None Remove="Docs\HelpImages\image14.png" />    
+    <None Remove="Docs\HelpImages\image140.png" />    
+    <None Remove="Docs\HelpImages\image141.png" />    
+    <None Remove="Docs\HelpImages\image142.png" />    
+    <None Remove="Docs\HelpImages\image15.png" />    
+    <None Remove="Docs\HelpImages\image16.png" />    
+    <None Remove="Docs\HelpImages\image17.png" />    
+    <None Remove="Docs\HelpImages\image18.png" />    
+    <None Remove="Docs\HelpImages\image19.png" />    
+    <None Remove="Docs\HelpImages\image2.png" />    
+    <None Remove="Docs\HelpImages\image20.png" />    
+    <None Remove="Docs\HelpImages\image21.png" />    
+    <None Remove="Docs\HelpImages\image22.png" />    
+    <None Remove="Docs\HelpImages\image23.png" />    
+    <None Remove="Docs\HelpImages\image24.png" />    
+    <None Remove="Docs\HelpImages\image25.png" />    
+    <None Remove="Docs\HelpImages\image26.png" />    
+    <None Remove="Docs\HelpImages\image27.png" />    
+    <None Remove="Docs\HelpImages\image28.png" />    
+    <None Remove="Docs\HelpImages\image29.png" />    
+    <None Remove="Docs\HelpImages\image3.png" />    
+    <None Remove="Docs\HelpImages\image30.png" />    
+    <None Remove="Docs\HelpImages\image31.png" />    
+    <None Remove="Docs\HelpImages\image32.png" />    
+    <None Remove="Docs\HelpImages\image33.png" />    
+    <None Remove="Docs\HelpImages\image34.png" />    
+    <None Remove="Docs\HelpImages\image35.png" />    
+    <None Remove="Docs\HelpImages\image36.png" />    
+    <None Remove="Docs\HelpImages\image37.png" />    
+    <None Remove="Docs\HelpImages\image38.png" />    
+    <None Remove="Docs\HelpImages\image39.png" />    
+    <None Remove="Docs\HelpImages\image4.png" />    
+    <None Remove="Docs\HelpImages\image40.png" />    
+    <None Remove="Docs\HelpImages\image41.png" />    
+    <None Remove="Docs\HelpImages\image42.png" />    
+    <None Remove="Docs\HelpImages\image43.png" />    
+    <None Remove="Docs\HelpImages\image44.png" />    
+    <None Remove="Docs\HelpImages\image45.png" />    
+    <None Remove="Docs\HelpImages\image46.png" />    
+    <None Remove="Docs\HelpImages\image47.png" />    
+    <None Remove="Docs\HelpImages\image48.png" />    
+    <None Remove="Docs\HelpImages\image49.png" />    
+    <None Remove="Docs\HelpImages\image5.png" />    
+    <None Remove="Docs\HelpImages\image50.png" />    
+    <None Remove="Docs\HelpImages\image51.png" />    
+    <None Remove="Docs\HelpImages\image52.png" />    
+    <None Remove="Docs\HelpImages\image53.png" />    
+    <None Remove="Docs\HelpImages\image54.png" />    
+    <None Remove="Docs\HelpImages\image55.png" />    
+    <None Remove="Docs\HelpImages\image56.png" />    
+    <None Remove="Docs\HelpImages\image57.png" />    
+    <None Remove="Docs\HelpImages\image58.png" />    
+    <None Remove="Docs\HelpImages\image59.png" />    
+    <None Remove="Docs\HelpImages\image6.png" />    
+    <None Remove="Docs\HelpImages\image60.png" />    
+    <None Remove="Docs\HelpImages\image61.png" />    
+    <None Remove="Docs\HelpImages\image62.png" />    
+    <None Remove="Docs\HelpImages\image63.png" />    
+    <None Remove="Docs\HelpImages\image64.png" />    
+    <None Remove="Docs\HelpImages\image65.png" />    
+    <None Remove="Docs\HelpImages\image66.png" />    
+    <None Remove="Docs\HelpImages\image67.png" />    
+    <None Remove="Docs\HelpImages\image68.png" />    
+    <None Remove="Docs\HelpImages\image69.png" />    
+    <None Remove="Docs\HelpImages\image7.png" />    
+    <None Remove="Docs\HelpImages\image70.png" />    
+    <None Remove="Docs\HelpImages\image71.png" />    
+    <None Remove="Docs\HelpImages\image72.png" />    
+    <None Remove="Docs\HelpImages\image73.png" />    
+    <None Remove="Docs\HelpImages\image74.png" />    
+    <None Remove="Docs\HelpImages\image75.png" />    
+    <None Remove="Docs\HelpImages\image76.png" />    
+    <None Remove="Docs\HelpImages\image77.png" />    
+    <None Remove="Docs\HelpImages\image78.png" />    
+    <None Remove="Docs\HelpImages\image79.png" />    
+    <None Remove="Docs\HelpImages\image8.png" />    
+    <None Remove="Docs\HelpImages\image80.png" />    
+    <None Remove="Docs\HelpImages\image81.png" />    
+    <None Remove="Docs\HelpImages\image82.png" />    
+    <None Remove="Docs\HelpImages\image83.png" />    
+    <None Remove="Docs\HelpImages\image84.png" />    
+    <None Remove="Docs\HelpImages\image85.png" />    
+    <None Remove="Docs\HelpImages\image86.png" />    
+    <None Remove="Docs\HelpImages\image87.png" />    
+    <None Remove="Docs\HelpImages\image88.png" />    
+    <None Remove="Docs\HelpImages\image89.png" />    
+    <None Remove="Docs\HelpImages\image9.png" />    
+    <None Remove="Docs\HelpImages\image90.png" />    
+    <None Remove="Docs\HelpImages\image91.png" />    
+    <None Remove="Docs\HelpImages\image92.png" />    
+    <None Remove="Docs\HelpImages\image93.png" />    
+    <None Remove="Docs\HelpImages\image94.png" />    
+    <None Remove="Docs\HelpImages\image95.png" />    
+    <None Remove="Docs\HelpImages\image96.png" />    
+    <None Remove="Docs\HelpImages\image97.png" />    
+    <None Remove="Docs\HelpImages\image98.png" />    
+    <None Remove="Docs\HelpImages\image99.png" />    
     <None Remove="Images\Berechnungen.png" />
     <None Remove="Images\BE_Logo.png" />
     <None Remove="Images\BucherTransparent.png" />
@@ -163,9 +392,7 @@
     <None Remove="Views\DetailData\KabineDetailEquipmentPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailFloorPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailLayoutPage.xaml" />
-    <None Remove="Views\Dialogs\CFPEditDialog.xaml" />
-    <None Remove="Views\Dialogs\PasswortDialog.xaml" />
-    <None Remove="Views\Dialogs\ZALiftDialog.xaml" />
+    <None Remove="Views\Dialogs\ParameterChangedDialog.xaml" />
     <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
     <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
     <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
@@ -176,6 +403,403 @@
     <None Remove="Views\Settings\ThemeSettingPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Docs\de\00-Willkommen\Willkommen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\01-Installation\Installation.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\02-Erste Schritte\Erste Schritte.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\04-Datenimport\Datenimport.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen (work in process)\Einreichunterlagen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\01-Wartung Installationsinformationen\Wartung Installationsinformationen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\02-Update Check\UpdateCheck.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\03-Diagnostics\Diagnostics.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\04-Database\Database.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\05-Externe Programme\Externe Programme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\03-Wartung\Wartung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\04-About\About.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\06-Einstellungen\Einstellungen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\07-Datenvalidierung\Datenvalidierung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\HelpImages\image1.png" />
+    <Content Include="Docs\HelpImages\image10.png" />
+    <Content Include="Docs\HelpImages\image100.png" />
+    <Content Include="Docs\HelpImages\image101.png" />
+    <Content Include="Docs\HelpImages\image102.png" />
+    <Content Include="Docs\HelpImages\image103.png" />
+    <Content Include="Docs\HelpImages\image104.png" />
+    <Content Include="Docs\HelpImages\image105.png" />
+    <Content Include="Docs\HelpImages\image106.png" />
+    <Content Include="Docs\HelpImages\image107.png" />
+    <Content Include="Docs\HelpImages\image108.png" />
+    <Content Include="Docs\HelpImages\image109.png" />
+    <Content Include="Docs\HelpImages\image11.png" />
+    <Content Include="Docs\HelpImages\image110.png" />
+    <Content Include="Docs\HelpImages\image111.png" />
+    <Content Include="Docs\HelpImages\image112.png" />
+    <Content Include="Docs\HelpImages\image113.png" />
+    <Content Include="Docs\HelpImages\image114.png" />
+    <Content Include="Docs\HelpImages\image115.png" />
+    <Content Include="Docs\HelpImages\image116.png" />
+    <Content Include="Docs\HelpImages\image117.png" />
+    <Content Include="Docs\HelpImages\image118.png" />
+    <Content Include="Docs\HelpImages\image119.png" />
+    <Content Include="Docs\HelpImages\image12.png" />
+    <Content Include="Docs\HelpImages\image120.png" />
+    <Content Include="Docs\HelpImages\image121.png" />
+    <Content Include="Docs\HelpImages\image122.png" />
+    <Content Include="Docs\HelpImages\image123.png" />
+    <Content Include="Docs\HelpImages\image124.png" />
+    <Content Include="Docs\HelpImages\image125.png" />
+    <Content Include="Docs\HelpImages\image126.png" />
+    <Content Include="Docs\HelpImages\image127.png" />
+    <Content Include="Docs\HelpImages\image128.png" />
+    <Content Include="Docs\HelpImages\image129.png" />
+    <Content Include="Docs\HelpImages\image13.png" />
+    <Content Include="Docs\HelpImages\image130.png" />
+    <Content Include="Docs\HelpImages\image131.png" />
+    <Content Include="Docs\HelpImages\image132.png" />
+    <Content Include="Docs\HelpImages\image133.png" />
+    <Content Include="Docs\HelpImages\image134.png" />
+    <Content Include="Docs\HelpImages\image135.png" />
+    <Content Include="Docs\HelpImages\image136.png" />
+    <Content Include="Docs\HelpImages\image137.png" />
+    <Content Include="Docs\HelpImages\image138.png" />
+    <Content Include="Docs\HelpImages\image139.png" />
+    <Content Include="Docs\HelpImages\image14.png" />
+    <Content Include="Docs\HelpImages\image140.png" />
+    <Content Include="Docs\HelpImages\image141.png" />
+    <Content Include="Docs\HelpImages\image142.png" />
+    <Content Include="Docs\HelpImages\image15.png" />
+    <Content Include="Docs\HelpImages\image16.png" />
+    <Content Include="Docs\HelpImages\image17.png" />
+    <Content Include="Docs\HelpImages\image18.png" />
+    <Content Include="Docs\HelpImages\image19.png" />
+    <Content Include="Docs\HelpImages\image2.png" />
+    <Content Include="Docs\HelpImages\image20.png" />
+    <Content Include="Docs\HelpImages\image21.png" />
+    <Content Include="Docs\HelpImages\image22.png" />
+    <Content Include="Docs\HelpImages\image23.png" />
+    <Content Include="Docs\HelpImages\image24.png" />
+    <Content Include="Docs\HelpImages\image25.png" />
+    <Content Include="Docs\HelpImages\image26.png" />
+    <Content Include="Docs\HelpImages\image27.png" />
+    <Content Include="Docs\HelpImages\image28.png" />
+    <Content Include="Docs\HelpImages\image29.png" />
+    <Content Include="Docs\HelpImages\image3.png" />
+    <Content Include="Docs\HelpImages\image30.png" />
+    <Content Include="Docs\HelpImages\image31.png" />
+    <Content Include="Docs\HelpImages\image32.png" />
+    <Content Include="Docs\HelpImages\image33.png" />
+    <Content Include="Docs\HelpImages\image34.png" />
+    <Content Include="Docs\HelpImages\image35.png" />
+    <Content Include="Docs\HelpImages\image36.png" />
+    <Content Include="Docs\HelpImages\image37.png" />
+    <Content Include="Docs\HelpImages\image38.png" />
+    <Content Include="Docs\HelpImages\image39.png" />
+    <Content Include="Docs\HelpImages\image4.png" />
+    <Content Include="Docs\HelpImages\image40.png" />
+    <Content Include="Docs\HelpImages\image41.png" />
+    <Content Include="Docs\HelpImages\image42.png" />
+    <Content Include="Docs\HelpImages\image43.png" />
+    <Content Include="Docs\HelpImages\image44.png" />
+    <Content Include="Docs\HelpImages\image45.png" />
+    <Content Include="Docs\HelpImages\image46.png" />
+    <Content Include="Docs\HelpImages\image47.png" />
+    <Content Include="Docs\HelpImages\image48.png" />
+    <Content Include="Docs\HelpImages\image49.png" />
+    <Content Include="Docs\HelpImages\image5.png" />
+    <Content Include="Docs\HelpImages\image50.png" />
+    <Content Include="Docs\HelpImages\image51.png" />
+    <Content Include="Docs\HelpImages\image52.png" />
+    <Content Include="Docs\HelpImages\image53.png" />
+    <Content Include="Docs\HelpImages\image54.png" />
+    <Content Include="Docs\HelpImages\image55.png" />
+    <Content Include="Docs\HelpImages\image56.png" />
+    <Content Include="Docs\HelpImages\image57.png" />
+    <Content Include="Docs\HelpImages\image58.png" />
+    <Content Include="Docs\HelpImages\image59.png" />
+    <Content Include="Docs\HelpImages\image6.png" />
+    <Content Include="Docs\HelpImages\image60.png" />
+    <Content Include="Docs\HelpImages\image61.png" />
+    <Content Include="Docs\HelpImages\image62.png" />
+    <Content Include="Docs\HelpImages\image63.png" />
+    <Content Include="Docs\HelpImages\image64.png" />
+    <Content Include="Docs\HelpImages\image65.png" />
+    <Content Include="Docs\HelpImages\image66.png" />
+    <Content Include="Docs\HelpImages\image67.png" />
+    <Content Include="Docs\HelpImages\image68.png" />
+    <Content Include="Docs\HelpImages\image69.png" />
+    <Content Include="Docs\HelpImages\image7.png" />
+    <Content Include="Docs\HelpImages\image70.png" />
+    <Content Include="Docs\HelpImages\image71.png" />
+    <Content Include="Docs\HelpImages\image72.png" />
+    <Content Include="Docs\HelpImages\image73.png" />
+    <Content Include="Docs\HelpImages\image74.png" />
+    <Content Include="Docs\HelpImages\image75.png" />
+    <Content Include="Docs\HelpImages\image76.png" />
+    <Content Include="Docs\HelpImages\image77.png" />
+    <Content Include="Docs\HelpImages\image78.png" />
+    <Content Include="Docs\HelpImages\image79.png" />
+    <Content Include="Docs\HelpImages\image8.png" />
+    <Content Include="Docs\HelpImages\image80.png" />
+    <Content Include="Docs\HelpImages\image81.png" />
+    <Content Include="Docs\HelpImages\image82.png" />
+    <Content Include="Docs\HelpImages\image83.png" />
+    <Content Include="Docs\HelpImages\image84.png" />
+    <Content Include="Docs\HelpImages\image85.png" />
+    <Content Include="Docs\HelpImages\image86.png" />
+    <Content Include="Docs\HelpImages\image87.png" />
+    <Content Include="Docs\HelpImages\image88.png" />
+    <Content Include="Docs\HelpImages\image89.png" />
+    <Content Include="Docs\HelpImages\image9.png" />
+    <Content Include="Docs\HelpImages\image90.png" />
+    <Content Include="Docs\HelpImages\image91.png" />
+    <Content Include="Docs\HelpImages\image92.png" />
+    <Content Include="Docs\HelpImages\image93.png" />
+    <Content Include="Docs\HelpImages\image94.png" />
+    <Content Include="Docs\HelpImages\image95.png" />
+    <Content Include="Docs\HelpImages\image96.png" />
+    <Content Include="Docs\HelpImages\image97.png" />
+    <Content Include="Docs\HelpImages\image98.png" />
+    <Content Include="Docs\HelpImages\image99.png" />
     <Content Include="Images\Berechnungen.png" />
     <Content Include="Images\BE_Logo.png" />
     <Content Include="Images\BucherTransparent.png" />
@@ -250,11 +874,12 @@
     <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.62" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.64" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Humanizer.Core.de" Version="2.14.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
     <PackageReference Include="Serilog" Version="4.0.1" />
@@ -275,6 +900,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Dialogs\ParameterChangedDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\MarkdownTextBlockControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\ParameterNumberBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -439,11 +1070,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NoWarn>1701;1702;MVVMTK0034</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
-  </PropertyGroup>
-
+  
   <ItemGroup>
     <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
   </ItemGroup>
@@ -473,7 +1100,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Docs\HelpImages\" />
     <Folder Include="Strings\en-us\" />
     <Folder Include="Views\GeneralData\" />
   </ItemGroup>

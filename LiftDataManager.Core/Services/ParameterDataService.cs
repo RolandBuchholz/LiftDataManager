@@ -428,9 +428,9 @@ public partial class ParameterDataService : IParameterDataService
         return true;
     }
 
-    public async Task<List<string>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary)
+    public async Task<List<InfoCenterEntry>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary)
     {
-        List<string> syncedParameter = [];
+        List<InfoCenterEntry> syncedParameter = [];
         List<LiftHistoryEntry> syncedLiftHistoryEntries = [];
         var updatedAutodeskTransfer = await LoadParameterAsync(path);
 
@@ -438,6 +438,7 @@ public partial class ParameterDataService : IParameterDataService
         {
             if (ParameterDictionary.TryGetValue(param.Name, out var dictionary))
             {
+                var oldValue = ParameterDictionary[dictionary.Name].Value;
                 if (dictionary.Value != param.Value)
                 {
                     if (string.IsNullOrWhiteSpace(param.Value) && string.IsNullOrWhiteSpace(dictionary.Value))
@@ -449,16 +450,21 @@ public partial class ParameterDataService : IParameterDataService
                     else if (ParameterDictionary[dictionary.Name!].ParameterTyp == ParameterTypValue.DropDownList)
                     {
                         ParameterDictionary[dictionary.Name].Value = param.Value;
-                        //ParameterDictionary[dictionary.Name].DropDownListValue = param.Value;
-                        //DropDownListValue = DropDownList.FirstOrDefault(x => x.Name == newParamterValue);
+
+                        ParameterDictionary[dictionary.Name].DropDownListValue = LiftParameterHelper.GetDropDownListValue(ParameterDictionary[dictionary.Name].DropDownList, ParameterDictionary[dictionary.Name].Value);
                     }
                     else
                     {
                         ParameterDictionary[dictionary.Name].Value = param.Value;
                     }
                     ParameterDictionary[dictionary.Name].IsDirty = false;
-                    syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(ParameterDictionary[dictionary.Name!]));
-                    syncedParameter.Add($"{dictionary.Name} => | {param.Value} |");
+                    syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(ParameterDictionary[dictionary.Name]));
+                    syncedParameter.Add(new(InfoCenterEntryState.None)
+                    {
+                        ParameterName = dictionary.Name,
+                        OldValue = oldValue,
+                        NewValue = dictionary.Value,
+                    });
                 }
             }
         }

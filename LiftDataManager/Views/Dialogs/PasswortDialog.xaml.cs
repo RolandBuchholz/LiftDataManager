@@ -1,4 +1,4 @@
-namespace LiftDataManager.Views;
+namespace LiftDataManager.Views.Dialogs;
 
 public sealed partial class PasswortDialog : ContentDialog
 {

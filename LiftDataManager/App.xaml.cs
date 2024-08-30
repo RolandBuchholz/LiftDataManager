@@ -1,6 +1,7 @@
 ﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
+using LiftDataManager.ViewModels.Dialogs;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -79,6 +80,7 @@ public partial class App : Application
             services.AddSingleton<IVaultDataService, VaultDataService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<ICalculationsModule, CalculationsModuleService>();
+            services.AddSingleton<IStorageService, StorageService>();
 
             // ViewModels
             services.AddTransient<AboutSettingViewModel>();
@@ -127,6 +129,7 @@ public partial class App : Application
             services.AddTransient<PasswortDialogViewModel>();
             services.AddTransient<ZALiftDialogViewModel>();
             services.AddTransient<CFPEditDialogViewModel>();
+            services.AddTransient<ParameterChangedDialogViewModel>();
             services.AddTransient<AppClosingDialogViewModel>();
 
             // Configuration

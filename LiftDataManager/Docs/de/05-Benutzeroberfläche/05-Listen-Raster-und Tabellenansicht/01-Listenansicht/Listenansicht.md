@@ -1,0 +1,28 @@
+# Listenansicht
+
+![image](/LiftDataManager/Docs/HelpImages/image84.png)  
+![image](/LiftDataManager/Docs/HelpImages/image85.png)  
+
+1.**Parameterliste**
+
+Sortiere, gruppierte und gefilterte Parameterliste
+
+2.**Parameterdetails**
+
+    1.**Parametereigenschaften**
+
+- Parametername
+
+- Parametertyp
+
+- Parameterkategorie
+
+  1.**Parameterwert**
+
+  2.**Kommentar**
+
+  3.**History**
+
+  4.**Status**
+
+  5.**Markiert**
