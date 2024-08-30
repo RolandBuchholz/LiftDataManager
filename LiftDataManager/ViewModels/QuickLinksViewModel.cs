@@ -214,11 +214,15 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     [RelayCommand(CanExecute = nameof(CanOpenCFP))]
     private async Task OpenCFP()
     {
+        if (string.IsNullOrWhiteSpace(FullPathXml))
+        {
+            return;
+        }
         SynchronizeViewModelParameter();
         await SetModelStateAsync();
         if (CanSaveAllSpeziParameters)
         {
-            await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml!, Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
         }
         if (!CheckOut)
         {
@@ -240,22 +244,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             return;
         }
         var dialog = await _dialogService.CFPEditDialogAsync(FullPathXml, ParameterDictionary["var_Bausatz"].Value);
-
         if (dialog)
         {
-            var updatedResult = await _parameterDataService!.SyncFromAutodeskTransferAsync(FullPathXml!, ParameterDictionary!);
+            var updatedResult = await _parameterDataService.SyncFromAutodeskTransferAsync(FullPathXml, ParameterDictionary);
             if (updatedResult is not null)
             {
                 if (updatedResult.Count != 0)
                 {
-                    await _dialogService!.MessageDialogAsync("Aktualisierte Parameter", string.Join("\n", updatedResult.Select(x => x.ToString())));
+                    await _dialogService.ParameterChangedDialogAsync(updatedResult);
                 }
                 ParameterDictionary!["var_CFPdefiniert"].Value = "True";
             }
         }
         else
         {
-            await _dialogService!.MessageDialogAsync("CarFrameProgram abgebrochen",
+            await _dialogService.MessageDialogAsync("CarFrameProgram abgebrochen",
                 "Achtung:\n" +
                 "Daten aus dem CarFrameProgram werden verworfen!\n" +
                 "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");

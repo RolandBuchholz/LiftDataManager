@@ -1,6 +1,7 @@
 ﻿using LiftDataManager.Core.Services;
 using LiftDataManager.Models;
 using LiftDataManager.Services;
+using LiftDataManager.ViewModels.Dialogs;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -129,6 +130,7 @@ public partial class App : Application
             services.AddTransient<PasswortDialogViewModel>();
             services.AddTransient<ZALiftDialogViewModel>();
             services.AddTransient<CFPEditDialogViewModel>();
+            services.AddTransient<ParameterChangedDialogViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

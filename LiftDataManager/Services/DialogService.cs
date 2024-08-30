@@ -15,7 +15,6 @@ public class DialogService : IDialogService
     /// <returns>Task</returns>
     public async Task MessageDialogAsync(string title, string message)
     {
-
         var dialog = new ContentDialog
         {
             Title = title,
@@ -416,5 +415,22 @@ public class DialogService : IDialogService
             return false;
         }
         return true;
+    }
+
+    /// <summary>
+    /// Opens a modal ParameterChangeDialog.
+    /// </summary>
+    /// <param name="parameterChangedList">List with changed parameter(InfoCenterEntry)</param>
+    /// <returns>Task</returns>
+
+    public async Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList) 
+    {
+        var dialog = new ParameterChangedDialog()
+        {
+            ParameterChangedList = parameterChangedList,
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        await dialog.ShowAsyncQueueDraggable();
     }
 }

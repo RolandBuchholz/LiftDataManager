@@ -29,4 +29,6 @@ public interface IDialogService
     Task<bool> ZALiftDialogAsync(string? fullPathXml);
 
     Task<bool> CFPEditDialogAsync(string? fullPathXml, string? carFrameTyp);
+
+    Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList);
 }

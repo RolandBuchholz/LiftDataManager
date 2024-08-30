@@ -1,4 +1,4 @@
-# Willkommen im LiftDataManager Hifecenter
+# Willkommen im LiftDataManager Hilfecenter
 
 Hier finden Sie alle wichtigen Informationen rund um die grundlegende Arbeitsweisen, Dateneingabe und die Benutzeroberfläche von LiftDataManager.  
 

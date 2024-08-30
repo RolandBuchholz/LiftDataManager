@@ -24,7 +24,6 @@ public partial class CFPEditDialogViewModel : ObservableObject
     public string? PathAutodeskTransfer { get; set; }
     public string? OrderNumber { get; set; }
 
-
     [RelayCommand]
     public async Task CFPEditDialogLoadedAsync(CFPEditDialog sender)
     {
@@ -47,7 +46,7 @@ public partial class CFPEditDialogViewModel : ObservableObject
             EnableRaisingEvents = true
         };
         CFPWatcher.Changed += OnChangedCFP;
-        await StartCarFrameProgramAsync(sender.FullPathXml);
+        await StartCarFrameProgramAsync(sender.CarFrameTyp);
     }
     [RelayCommand]
     public void CFPEditDialogUnloaded()
