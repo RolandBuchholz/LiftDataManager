@@ -13,8 +13,13 @@ public partial class ParameterChangedDialogViewModel : ObservableObject
         if (selectedParameter is InfoCenterEntry)
         {
             sender.Hide();
+            var parameterName = selectedParameter.Value.UniqueName;
+            if (string.IsNullOrWhiteSpace(parameterName))
+            {
+                return;
+            }
             var navigationService = App.GetService<IJsonNavigationViewService>();
-            navigationService.NavigateTo(typeof(DatenansichtDetailPage), selectedParameter.Value.ParameterName);
+            navigationService.NavigateTo(typeof(DatenansichtDetailPage), parameterName);
         }
         await Task.CompletedTask;
     }

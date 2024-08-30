@@ -268,12 +268,12 @@ public partial class ParameterDataService : IParameterDataService
         return historyEntrys;
     }
 
-    public async Task<KeyValuePair<string, string?>> SaveParameterAsync(Parameter parameter, string path)
+    public async Task<Tuple<string, string, string?>> SaveParameterAsync(Parameter parameter, string path)
     {
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
-            return new KeyValuePair<string, string?>("Error", "AutoDeskTransferXml Pfad ist nicht gültig");
+            return new Tuple<string, string, string?>("Error", "Error", "AutoDeskTransferXml Pfad ist nicht gültig");
         }
 
         XElement doc = XElement.Load(path);
@@ -292,20 +292,20 @@ public partial class ParameterDataService : IParameterDataService
         else
         {
             _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-            return new KeyValuePair<string, string?>("Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
+            return new Tuple<string, string, string?>("Error","Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
-        return await Task.FromResult(new KeyValuePair<string, string?>(parameter.DisplayName, parameter.Value));
+        return await Task.FromResult(new Tuple<string, string, string?>(parameter.Name, parameter.DisplayName, parameter.Value));
     }
 
-    public async Task<List<KeyValuePair<string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
+    public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
     {
-        var saveResult = new List<KeyValuePair<string, string?>>();
+        var saveResult = new List<Tuple<string, string, string?>>();
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
-            saveResult.Add(new KeyValuePair<string, string?>("Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
+            saveResult.Add(new Tuple<string, string, string?>("Error","Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
             return saveResult;
         }
         XElement doc = XElement.Load(path);
@@ -329,18 +329,18 @@ public partial class ParameterDataService : IParameterDataService
                     AddParameterToXml(parameter, xmlparameter);
                     parameter.IsDirty = false;
                     historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
-                    saveResult.Add(new KeyValuePair<string, string?>(parameter.DisplayName, parameter.Value));
+                    saveResult.Add(new Tuple<string, string, string?>(parameter.Name, parameter.DisplayName, parameter.Value));
                 }
                 else
                 {
                     _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-                    saveResult.Add(new KeyValuePair<string, string?>("Warning", $"Speichern fehlgeschlagen |{parameter.Name}|"));
+                    saveResult.Add(new Tuple<string, string, string?>("Warning", "Warning", $"Speichern fehlgeschlagen |{parameter.Name}|"));
                 }
             }
             else
             {
                 _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name);
-                saveResult.Add(new KeyValuePair<string, string?>("Warning", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
+                saveResult.Add(new Tuple<string, string, string?>("Warning", "Warning", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
             }
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
@@ -461,7 +461,8 @@ public partial class ParameterDataService : IParameterDataService
                     syncedLiftHistoryEntries.Add(GenerateLiftHistoryEntry(ParameterDictionary[dictionary.Name]));
                     syncedParameter.Add(new(InfoCenterEntryState.None)
                     {
-                        ParameterName = dictionary.Name,
+                        ParameterName = dictionary.DisplayName,
+                        UniqueName = dictionary.Name,
                         OldValue = oldValue,
                         NewValue = dictionary.Value,
                     });

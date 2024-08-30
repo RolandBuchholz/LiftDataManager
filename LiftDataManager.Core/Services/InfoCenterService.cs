@@ -51,15 +51,17 @@ public class InfoCenterService : IInfoCenterService
     /// add a parameter changed info to the infoCenter
     /// </summary>
     /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="parameterName">ParameterName.</param>
+    /// <param name="uniqueName">ParameterName.</param>
+    /// <param name="parameterName">DisplayName.</param>
     /// <param name="oldValue">Old Value</param>
     /// <param name="newValue">New Value</param>
     /// <param name="autoUpdated">LDM updated</param>
     /// <returns>Task</returns>
-    public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string parameterName, string oldValue, string newValue, bool autoUpdated)
+    public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string uniqueName, string parameterName, string oldValue, string newValue, bool autoUpdated)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(autoUpdated ? InfoCenterEntryState.InfoCenterAutoUpdate : InfoCenterEntryState.InfoCenterParameterChanged)
         {
+            UniqueName = uniqueName,
             ParameterName = parameterName,
             OldValue = oldValue,
             NewValue = newValue
@@ -71,16 +73,17 @@ public class InfoCenterService : IInfoCenterService
     /// add a parameter changed info to the infoCenter
     /// </summary>
     /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="savedParameter">KeyValuePair*ParameterName-New Value*</param>
+    /// <param name="savedParameter">*Tuple*ParameterName-DisplayName-New Value</param>
     /// <returns>Task</returns>
-    public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, KeyValuePair<string, string?> savedParameter)
+    public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, Tuple<string, string, string?> savedParameter)
     {
-        var obsoleteEntrys = infoCenterEntrys.Where(x => x.ParameterName == savedParameter.Key).ToList();
+        var obsoleteEntrys = infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList();
         infoCenterEntrys.RemoveRange(obsoleteEntrys);
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
         {
-            ParameterName = savedParameter.Key,
-            NewValue = savedParameter.Value
+            UniqueName = savedParameter.Item1,
+            ParameterName = savedParameter.Item2,
+            NewValue = savedParameter.Item3
         });
         await Task.CompletedTask;
     }
@@ -89,20 +92,21 @@ public class InfoCenterService : IInfoCenterService
     /// add a parameter changed info to the infoCenter
     /// </summary>
     /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="savedParameters">IEnumerable*KeyValuePair*ParameterName-New Value*</param>
+    /// <param name="savedParameters">IEnumerable*Tuple* ParameterName-DisplayName-New Value</param>
     /// <returns>Task</returns>
-    public async Task AddInfoCenterSaveAllInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<KeyValuePair<string, string?>> savedParameters)
+    public async Task AddInfoCenterSaveAllInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<Tuple<string, string, string?>> savedParameters)
     {
-        List<InfoCenterEntry> newEntrys = new();
-        List<InfoCenterEntry> obsoleteEntrys = new();
+        List<InfoCenterEntry> newEntrys = [];
+        List<InfoCenterEntry> obsoleteEntrys = [];
 
         foreach (var savedParameter in savedParameters)
         {
-            obsoleteEntrys.AddRange(infoCenterEntrys.Where(x => x.ParameterName == savedParameter.Key).ToList());
+            obsoleteEntrys.AddRange(infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList());
             newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
             {
-                ParameterName = savedParameter.Key,
-                NewValue = savedParameter.Value
+                UniqueName = savedParameter.Item1,
+                ParameterName = savedParameter.Item2,
+                NewValue = savedParameter.Item3
             });
         }
 

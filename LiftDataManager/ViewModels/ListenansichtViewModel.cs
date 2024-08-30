@@ -115,13 +115,13 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (FullPathXml is null)
             return;
         var saveResult = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
-        if (saveResult.Key != "Error")
+        if (saveResult.Item1 != "Error")
         {
             await _infoCenterService.AddInfoCenterSaveInfoAsync(InfoCenterEntrys, saveResult);
         }
         else
         {
-            await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Value!);
+            await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Item3!);
         }
         CanSaveParameter = false;
         Selected.IsDirty = false;
@@ -131,7 +131,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         if (!HistoryEntrysDictionary.ContainsKey(Selected?.Name!))
         {
-            HistoryEntrysDictionary.Add(Selected?.Name!, new List<LiftHistoryEntry>());
+            HistoryEntrysDictionary.Add(Selected?.Name!, []);
         }
         HistoryEntrysDictionary[Selected?.Name!].Add(_parameterDataService.GenerateLiftHistoryEntry(Selected!));
 

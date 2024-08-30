@@ -132,4 +132,27 @@ public sealed partial class SidebarPanel : UserControl
             InfoCenterEntrysView.Source = InfoCenterEntrys.OrderByDescending(x => x.TimeStamp).Where(y => y.State == infoCenterTyp).Take(_maxEntryCount);
         }
     }
+
+    private void ListView_DoubleTapped(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+    {
+        if (sender is ListView view)
+        {
+            var selectedItem = view.SelectedItem;
+            if (selectedItem is InfoCenterEntry entry)
+            {
+                if (entry.State == InfoCenterEntryState.InfoCenterParameterChanged || 
+                    entry.State == InfoCenterEntryState.InfoCenterAutoUpdate || 
+                    entry.State == InfoCenterEntryState.InfoCenterSaveParameter)
+                {
+                    var parameterName = entry.UniqueName;
+                    if (string.IsNullOrWhiteSpace(parameterName))
+                    {
+                        return;
+                    }
+                    var navigationService = App.GetService<IJsonNavigationViewService>();
+                    navigationService.NavigateTo(typeof(DatenansichtDetailPage), parameterName);
+                }
+            }
+        }
+    }
 }

@@ -127,11 +127,15 @@ public partial class DataViewModelBase : ObservableRecipient
     public async Task SaveAllParameterAsync()
     {
         if (ParameterDictionary is null)
+        {
             return;
+        }
         if (FullPathXml is null)
+        {
             return;
-        var saveResult = await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
-        if (saveResult.Any())
+        }
+        var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
+        if (saveResult.Count != 0)
         {
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
         }
@@ -236,7 +240,12 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, ((Parameter)message.Sender).DisplayName, message.OldValue, message.NewValue, ((Parameter)message.Sender).IsAutoUpdated);
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, 
+            ((Parameter)message.Sender).Name, 
+            ((Parameter)message.Sender).DisplayName, 
+            message.OldValue, 
+            message.NewValue, 
+            ((Parameter)message.Sender).IsAutoUpdated);
     }
 
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)

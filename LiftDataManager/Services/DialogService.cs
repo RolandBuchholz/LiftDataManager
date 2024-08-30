@@ -421,7 +421,7 @@ public class DialogService : IDialogService
     /// <param name="parameterChangedList">List with changed parameter(InfoCenterEntry)</param>
     /// <returns>Task</returns>
 
-    public async Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList) 
+    public async Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList)
     {
         var dialog = new ParameterChangedDialog()
         {
@@ -430,12 +430,12 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         await dialog.ShowAsyncQueueDraggable();
+    }
 
     /// <summary>
     /// Opens a modal AppClosingDialog.
     /// </summary>
     /// <returns>Task</returns>
-
     public async Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning)
     {
         var dialog = new AppClosingDialog()

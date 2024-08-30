@@ -277,7 +277,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         ShowFlooringSurface = ParameterDictionary["var_Bodenbelag"].DropDownListValue?.Id == 7;
         if (ShowFlooringSurface && string.IsNullOrWhiteSpace(ParameterDictionary["var_BodenbelagOberflaeche"].Value))
         {
-            ParameterDictionary["var_BodenbelagOberflaeche"].AutoUpdateParameterValue("poliert R9");
+            ParameterDictionary["var_BodenbelagOberflaeche"].AutoUpdateParameterValue("poliert R9 (matt)");
         }
         if (!ShowFlooringSurface && !string.IsNullOrWhiteSpace(ParameterDictionary["var_BodenbelagOberflaeche"].Value))
         {

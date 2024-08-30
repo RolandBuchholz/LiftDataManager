@@ -411,6 +411,8 @@
                 <ListView
                     Grid.Row="1"
                     Margin="-10,0,-10,0"
+                    IsDoubleTapEnabled="True"
+                    DoubleTapped="ListView_DoubleTapped"
                     ItemContainerStyle="{StaticResource ListViewInfoCenterItemContainer}"
                     ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
                     ItemsSource="{x:Bind InfoCenterEntrysView.View, Mode=OneWay}" />
