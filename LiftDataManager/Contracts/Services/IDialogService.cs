@@ -31,4 +31,6 @@ public interface IDialogService
     Task<bool> CFPEditDialogAsync(string? fullPathXml, string? carFrameTyp);
 
     Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList);
+
+    Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning);
 }

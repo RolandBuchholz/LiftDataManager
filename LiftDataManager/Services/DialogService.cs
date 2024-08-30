@@ -176,12 +176,10 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         var result = await dialog.ShowAsyncQueueDraggable();
-
         if (result == ContentDialogResult.None)
         {
             return null;
         }
-
         return result == ContentDialogResult.Primary;
     }
 
@@ -432,5 +430,22 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         await dialog.ShowAsyncQueueDraggable();
+
+    /// <summary>
+    /// Opens a modal AppClosingDialog.
+    /// </summary>
+    /// <returns>Task</returns>
+
+    public async Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning)
+    {
+        var dialog = new AppClosingDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+            IgnoreSaveWarning = ignoreSaveWarning
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        return (result, dialog.IgnoreSaveWarning);
+
     }
 }

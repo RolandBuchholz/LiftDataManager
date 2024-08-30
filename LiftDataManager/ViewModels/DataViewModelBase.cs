@@ -15,9 +15,9 @@ public partial class DataViewModelBase : ObservableRecipient
     public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     public DispatcherTimer? AutoSaveTimer { get; set; }
-    public CurrentSpeziProperties? CurrentSpeziProperties;
+    public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
-    public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; } = new();
+    public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; } = [];
     public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
 #pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.

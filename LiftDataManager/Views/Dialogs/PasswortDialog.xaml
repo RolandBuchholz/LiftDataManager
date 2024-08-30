@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     VerticalAlignment="Stretch"
     IsPrimaryButtonEnabled="{x:Bind ViewModel.CanSwitchToAdminmode, Mode=OneWay}"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
     PrimaryButtonText="OK"
     SecondaryButtonText="Abbrechen"
     mc:Ignorable="d">

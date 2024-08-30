@@ -9,7 +9,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public readonly IVaultDataService _vaultDataService;
+    private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ICalculationsModule _calculationsModuleService;
