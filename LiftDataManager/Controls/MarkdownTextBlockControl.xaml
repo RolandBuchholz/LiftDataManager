@@ -25,40 +25,49 @@
             Header1FontWeight="SemiBold"
             Header1Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
             Header1Margin="0,0,0,12"
-            Header2FontSize="22"
+            Header2FontSize="20"
             Header2FontWeight="Normal"
             Header2Foreground="{ThemeResource AccentAAFillColorSecondaryBrush}"
             Header2Margin="0,0,0,8"
-            Header3FontSize="18"
+            Header3FontSize="16"
             Header3FontWeight="Medium"
-            Header3Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}"
+            Header3Foreground="{ThemeResource TextFillColorPrimaryBrush}"
             Header3Margin="0,0,0,4"
             ImageClicked="MarkdownTextBlock_ImageClicked"
             ImageResolving="MarkdownTextBlock_ImageResolving"
             ImageStretch="Uniform"
+            InlineCodeBackground="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+            InlineCodeBorderThickness="1"
+            InlineCodeForeground="Goldenrod"
             InlineCodeMargin="0"
-            InlineCodePadding="6,0,6,0"
+            InlineCodePadding="10,5,10,5"
             LinkClicked="MarkdownTextBlock_LinkClicked"
             ListMargin="-6,4,0,4"
-            QuoteMargin="12,12,0,0"
-            Text="{x:Bind MarkdownText, Mode=OneWay}" />
-        <StackPanel
+            MarkdownRendered="MarkdownTextBlock_MarkdownRendered"
+            QuoteMargin="0,5,0,5"
+            QuotePadding="10"
+            Text="{x:Bind MarkdownText, Mode=OneWay}"
+            TextWrapping="WrapWholeWords"
+            UseSyntaxHighlighting="True"
+            WrapCodeBlock="True" />
+        <ItemsRepeater
             Grid.Row="1"
-            Margin="0,10,0,10"
-            Orientation="Horizontal"
-            Spacing="10">
-            <wuc:Shield
-                Status="Components"
-                Subject="WinUICommunity"
-                Color="BlueViolet" />
-            <wuc:Shield
-                Status="Components"
-                Subject="WinUICommunity"
-                Color="Yellow" />
-            <wuc:Shield
-                Status="Components"
-                Subject="WinUICommunity"
-                Color="Tomato" />
-        </StackPanel>
+            Margin="10,10,0,10"
+            ItemsSource="{x:Bind HashtagsList, Mode=OneWay}">
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                    <wuc:Shield
+                        Status="{Binding Item2}"
+                        Subject="{Binding Item1}"
+                        Color="{Binding Item3}" />
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+            <ItemsRepeater.Layout>
+                <markdown:WrapLayout
+                    HorizontalSpacing="5"
+                    Orientation="Horizontal"
+                    VerticalSpacing="5" />
+            </ItemsRepeater.Layout>
+        </ItemsRepeater>
     </Grid>
 </UserControl>

@@ -3,26 +3,26 @@
 ![image](/LiftDataManager/Docs/HelpImages/image84.png)  
 ![image](/LiftDataManager/Docs/HelpImages/image85.png)  
 
-1.**Parameterliste**
+## 1.Parameterliste
 
-Sortiere, gruppierte und gefilterte Parameterliste
+>Sortiere, gruppierte und gefilterte Parameterliste
 
-2.**Parameterdetails**
+## 2.Parameterdetails
 
-    1.**Parametereigenschaften**
+### a. Parametereigenschaften
 
-- Parametername
+    Parametername  
+    Parametertyp  
+    Parameterkategorie  
 
-- Parametertyp
+### b. Parameterwert
 
-- Parameterkategorie
+### c. Kommentar
 
-  1.**Parameterwert**
+### d. History
 
-  2.**Kommentar**
+### e. Status
 
-  3.**History**
+### f. Markiert
 
-  4.**Status**
-
-  5.**Markiert**
+[//]: # (Tags: Listenansicht | Parameterliste | Parameterdetails| Parametereigenschaften)  

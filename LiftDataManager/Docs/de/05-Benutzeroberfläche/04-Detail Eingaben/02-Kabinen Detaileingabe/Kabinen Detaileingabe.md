@@ -1,24 +1,26 @@
 # Kabinen Detaileingabe
 
+>Detaillierte Kabineneingabe, Ausführung Boden und Becke, Lage und Größe Kabineneinbauten, …
+
 ![image](/LiftDataManager/Docs/HelpImages/image76.png)  
 ![image](/LiftDataManager/Docs/HelpImages/image77.png)  
 
-Detaillierte Kabineneingabe, Ausführung Boden und Becke, Lage und Größe Kabineneinbauten, …
+## 1.Kabinen Grundabmessungen
 
-1.**Kabinen Grundabmessungen**
+>Die fehlenden Kabinengrundabmessungen werden berechnet und können hier auch im Bedarfsfall überschrieben werden
 
-Die fehlenden Kabinengrundabmessungen werden berechnet und können hier auch im Bedarfsfall überschrieben werden
+## 2.Ausstattungsansicht
 
-2.**Ausstattungsansicht**
+>Dynamische maßstäbliche Innenansicht der Kabinenwände
 
-Dynamische maßstäbliche Innenansicht der Kabinenwände
+## 3.Dynamische Ausstattungsdetaileingabe
 
-3.**Dynamische Ausstattungsdetaileingabe**
-
-Ausstattung Detaileingabe über Lage und Größe mögliche Eingaben werden dynamisch ein und ausgeblendet
+>Ausstattung Detaileingabe über Lage und Größe mögliche Eingaben werden dynamisch ein und ausgeblendet
 
 ![image](/LiftDataManager/Docs/HelpImages/image78.png)  
 
-1.**Türanbauparameter**
+## 1.Türanbauparameter
 
-Gemäß der ausgewählten werden aus einer Datenbank die benötigten Türparameter geladen
+>Gemäß der ausgewählten werden aus einer Datenbank die benötigten Türparameter geladen
+
+[//]: # (Tags: Kabinen Detaileingabe| Kabinengrundabmessungen | Ausstattung | Türanbauparameter)  

@@ -1,25 +1,29 @@
 # Allgemeine Daten
 
+>Bauvorhaben, Betreiber, Fachplaner, Termine, Aufzugstyp, Normen, Nutzlast, Nenngeschwindigkeit, ...  
+
 ![image](/LiftDataManager/Docs/HelpImages/image48.png)
 
-Bauvorhaben, Betreiber, Fachplaner, Termine, Aufzugstyp, Normen, Nutzlast, Nenngeschwindigkeit, ...
+## Fachplaner auswählen
 
-Fachplaner auswählen:
+|                                                        |                                                        |
+|:------------------------------------------------------:|:------------------------------------------------------:|
+| ![image](/LiftDataManager/Docs/HelpImages/image49.png) | ![image](/LiftDataManager/Docs/HelpImages/image50.png) |
 
-Fachplaner im Database Schriftfeld suchen und dann mit Fachplaner auswählen bestätigen.
+`Fachplaner im Database Schriftfeld suchen und dann mit Fachplaner auswählen bestätigen.`
 
-![image](/LiftDataManager/Docs/HelpImages/image49.png)  
-![image](/LiftDataManager/Docs/HelpImages/image50.png)  
+## neuen Fachplaner anlegen
 
-neuen Fachplaner anlegen:
+|                                                        |                                                        |
+|:------------------------------------------------------:|:------------------------------------------------------:|
+| ![image](/LiftDataManager/Docs/HelpImages/image51.png) | ![image](/LiftDataManager/Docs/HelpImages/image52.png) |
 
-„Neuen Fachplaner anlegen“=\> alle Mindestangaben ausfüllen =\> „Fachplaner erstellen und speichern“
+`„Neuen Fachplaner anlegen“ => alle Mindestangaben ausfüllen => „Fachplaner erstellen und speichern“`
 
-![image](/LiftDataManager/Docs/HelpImages/image51.png)  
-![image](/LiftDataManager/Docs/HelpImages/image52.png)  
-
-Fachplaner aus Spezifikation entfernen:
+## Fachplaner aus Spezifikation entfernen
 
 ![image](/LiftDataManager/Docs/HelpImages/image53.png)  
 
-mit „Reset Fachplaner“ Fachplaner aus der Spezifikation entfernen
+`mit „Reset Fachplaner“ Fachplaner aus der Spezifikation entfernen`
+
+[//]: # (Tags: Allgemein |Bauvorhaben | Betreiber | Fachplaner | Termine | Aufzugstyp | Normen | Nutzlast | Nenngeschwindigkeit)  

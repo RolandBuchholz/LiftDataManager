@@ -2,35 +2,38 @@
 
 ![image](/LiftDataManager/Docs/HelpImages/image45.png)
 
+---
+
 Das Meldungsbanner wird nur angezeigt, wenn Meldungen vorhanden sind
 
-1.**Aktuelle Auslegung**
+---
 
-Dateiname der aktuell geladenen AutoDeskTransfer.xml
+## 1.Aktuelle Auslegung
 
-2.**Aktueller Stand der Datei Reservierung**
+> Dateiname der aktuell geladenen AutoDeskTransfer.xml
 
-Aktueller Stand der Dateireservierung auf dem Vault-Server
+## 2.Aktueller Stand der Datei Reservierung
 
-3.**Anzahl der gefundenen Parameter**
+> Aktueller Stand der Dateireservierung auf dem Vault-Server
 
-Anzahl der gefunden Parameter in der AutoDeskTransfer.xml
+## 3.Anzahl der gefundenen Parameter
 
-4.**Meldungsbanner**
+> Anzahl der gefunden Parameter in der AutoDeskTransfer.xml
 
-Anzeige der Meldung mit der höchsten Priorität
+## 4.Meldungsbanner
 
-5.**Alle Meldungen anzeigen**
+> Anzeige der Meldung mit der höchsten Priorität
 
-Button um alle aktiven Meldungen anzuzeigen
+## 5.Alle Meldungen anzeigen
 
-![image](/LiftDataManager/Docs/HelpImages/image46.png)
+> Button um alle aktiven Meldungen anzuzeigen
 
-**Meldungen (Infobar Detailansicht):**
+ ![image](/LiftDataManager/Docs/HelpImages/image46.png)  
 
-- Anzahl der Fehler / Warnungen / Informationen
+## Meldungen (Infobar Detailansicht)
 
+- Anzahl der Fehler / Warnungen / Informationen  
 - Der fehlerhafte Parameter kann durch klicken in der Liste direkt geöffnet und bearbeitet werden
-
 - Infomeldungen können ausgeblendet werden
 
+[//]: # (Tags: Footer | Meldungsbanner | Auslegung | Reservierung)  

@@ -1,33 +1,35 @@
 # Titelleiste
 
 ![image](/LiftDataManager/Docs/HelpImages/image39.png)  
-![image](/LiftDataManager/Docs/HelpImages/image40.png)  
+![image](/LiftDataManager/Docs/HelpImages/image40.png =500x)  
 
-1.**Navigationsmenü Modus**
+## 1.Navigationsmenü Modus
 
-Navigationsmenü zwischen Kompakt- und Detailansicht wechseln
+>Navigationsmenü zwischen Kompakt- und Detailansicht wechseln
 
-2.**LiftDataManager Version**
+## 2.LiftDataManager Version
 
-Aktuell installierte LiftDataManager Version  
-Detailinformationen unter Einstellung =\> About
+>Aktuell installierte LiftDataManager Version  
+>Detailinformationen unter Einstellung => About
 
-3.**Globale Suche**
+## 3.Globale Suche
 
-Mit der globalen Suche können alle Parameter durchsucht werden
+>Mit der globalen Suche können alle Parameter durchsucht werden
 
-4.**Temporärer** **Theme wechseln**
+## 4.Temporärer Theme wechseln
 
-Hier kann der Theme temporärer geändert werden, permanent kann der Theme in den Einstellungen geändert werden.
+>Hier kann der Theme temporärer geändert werden, permanent kann der Theme in den Einstellungen geändert werden.
 
-5.**Hilfemenü**
+## 5.Hilfemenü
 
-Link zur Hilfe
+>Link zur Hilfe
 
-6.**Fenster (minimieren/maximieren/schließen)**
+## 6.Fenster (minimieren/maximieren/schließen)
 
-Standard Windows Fensteraktionen
+>Standard Windows Fensteraktionen
 
-7.**Navigation Back Button**
+## 7.Navigation Back Button
 
-Der Zurückbutton wird eingeblendet sobald eine Zurückaktion möglich ist
+>Der Zurückbutton wird eingeblendet sobald eine Zurückaktion möglich ist
+
+[//]: # (Tags: Titelleiste | Navigationsmenü | Globale Suche  | Theme | Hilfe | Back Button)  

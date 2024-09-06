@@ -1,37 +1,42 @@
 # Headermenü
 
-![image](/LiftDataManager/Docs/HelpImages/image44.png)
+![image](/LiftDataManager/Docs/HelpImages/image44.png)  
 
-Die Buttons werden automatisch aktiviert und deaktiviert in Abhängigkeit zu den möglichen Aktionen.
+---
+Die Buttons werden automatisch aktiviert und deaktiviert in Abhängigkeit zu den möglichen Aktionen.  
 
-1.**Auftragsnummer Control**
+---
 
-Aussehen und Nummern Validation passt sich automatisch dem gewählten Spezifikationstyp an.
+## 1.Auftragsnummer Control
 
-2.**Load/Upload Button**
+>Aussehen und Nummern Validation passt sich automatisch dem gewählten Spezifikationstyp an.
 
-Alle Auftragsrelevante Daten werden heruntergeladen oder hochgeladen.
+## 2.Load/Upload Button
 
-3.**Check-Out Button**
+>Alle Auftragsrelevante Daten werden heruntergeladen oder hochgeladen.
 
-Der Auftrag wir für den angemeldeten Benutzer reserviert.
+## 3.Check-Out Button
 
-4.**Clear Data Button**
+>Der Auftrag wir für den angemeldeten Benutzer reserviert.
 
-Es wird der lokale Arbeitsbereich bereinigt und die letzte gütige Version wiederhergestellt. Alle lokalen Änderungen werden verworfen
+## 4.Clear Data Button
 
-5.**Create PDF Button**
+>Es wird der lokale Arbeitsbereich bereinigt und die letzte gütige Version wiederhergestellt. Alle lokalen Änderungen werden verworfen
 
-Es wird eine Spezifikations-PDF mit den lokalen Daten erstellt
+## 5.Create PDF Button
 
-6.**Import LiftData Button**
+>Es wird eine Spezifikations-PDF mit den lokalen Daten erstellt
 
-Vorhandene Spezifikation und Auslegung PDF-Dateien können importiert werden
+## 6.Import LiftData Button
 
-7.**Validate All Parameter**
+>Vorhandene Spezifikation und Auslegung PDF-Dateien können importiert werden
 
-Alle Parameter werden neu validiert
+## 7.Validate All Parameter
 
-8.**Save All Parameter**
+>Alle Parameter werden neu validiert
 
-Alle nicht gespeicherten Parameter werden gespeichert.
+## 8.Save All Parameter
+
+>Alle nicht gespeicherten Parameter werden gespeichert.
+
+[//]: # (Tags: Headermenü | Auftragsnummer | Load  | Upload | Check-Out | Clear Data | Create PDF | Import LiftData | Validate | Save)  

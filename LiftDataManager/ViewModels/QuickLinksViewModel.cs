@@ -433,7 +433,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
                 ParameterDictionary["var_Handlueftung"].AutoUpdateParameterValue(brakerelease);
 
-                var ventilation = zliDataDictionary["Motor-Fan"] != "ohne Belüftung" ? "True" : "False";
+                var ventilation = zliDataDictionary["Motor-Fan"] == "ohne Belüftung" || zliDataDictionary["Motor-Fan"] == "ohne" ? "False" : "True";
                 ParameterDictionary["var_Fremdbelueftung"].AutoUpdateParameterValue(ventilation);
 
                 try

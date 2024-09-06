@@ -29,7 +29,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         {
             HelpTreeView.SelectedNode = HelpTreeView.RootNodes.First();
         }
-        await Task.Delay(1500);
+        await Task.Delay(2000);
         HelpTreeView?.CollapseAllLevel();
     }
 
@@ -50,7 +50,6 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
             }
             var pathArray = nodes.Select(x => x[3..]).ToArray();
             HelpTreeView.ExpandNodePath(pathArray);
-            //HelpTreeView.ExpandNodeAllLevel(HelpTreeView.RootNodes.First(x => ((HelpContent)x.Content).Name == nodes[0][3..]));
             var itemContainer = HelpTreeView.ContainerFromItem(helpContent);
             HelpTreeView.SelectedNode = HelpTreeView.NodeFromContainer(itemContainer);
         }

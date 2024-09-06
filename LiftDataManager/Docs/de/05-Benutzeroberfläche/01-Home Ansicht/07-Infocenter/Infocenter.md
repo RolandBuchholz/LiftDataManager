@@ -1,37 +1,36 @@
 # Infocenter
 
-![image](/LiftDataManager/Docs/HelpImages/image47.png)
+![image](/LiftDataManager/Docs/HelpImages/image47.png =400x)
 
-Im Infocenter werden alle Parameter- und Statusänderungen aufgezeichnet
+> Im Infocenter werden alle Parameter- und Statusänderungen aufgezeichnet
 
-1.**Anzahl der Einträge**
+## 1.Anzahl der Einträge
 
-> Anzeigeoptionen:
+### Anzeigeoptionen
 
 - 30 Einträge
-
 - 50 Einträge
-
 - Alle Einträge
 
-2.**Filtereinstellungen**
+## 2.Filtereinstellungen
 
-> Filteroptionen:
+### Filteroptionen
 
 - Kein Filter
-
 - Nachrichten
-
 - Warnungen
-
 - Fehler
-
 - Änderungen
-
 - Gespeichert
-
 - Auto Updated
 
-3.**Clear Button**
+## 3.Clear Button
 
-> Es werden alle Einträge aus dem Infocenter gelöscht.
+>Es werden alle Einträge aus dem Infocenter entfernt.
+>Die Änderungen in den Parametern bleiben erhalten.
+
+### Hinweis
+
+`Durch einen Doppelklick auf einen Infocentereintrag werden die Detailinformationen des geänderten Parameters angezeigt.`
+
+[//]: # (Tags: Infocenter | Anzeigeoptionen | Filteroptionen  | Clear Button)  

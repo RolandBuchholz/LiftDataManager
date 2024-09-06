@@ -1,5 +1,7 @@
 # Antrieb Steuerung Notruf
 
+>Steuerungsoptionen, Lage Steuerung, Antriebsauswahl, automatisch berechnete UCM-Parameter, …
+
 ![image](/LiftDataManager/Docs/HelpImages/image63.png)  
 
-Steuerungsoptionen, Lage Steuerung, Antriebsauswahl, automatisch berechnete UCM-Parameter, …
+[//]: # (Tags: Antrieb Steuerung Notruf | Steuerungsoptionen | Lage Steuerung | Antriebsauswahl | automatisch berechnete UCM-Parameter)  

@@ -1,5 +1,7 @@
 # Sonstiges
 
+>sonstige Angaben zum Auftrag
+
 ![image](/LiftDataManager/Docs/HelpImages/image66.png)  
 
-Stockwerksbezeichnungen, Etagenabstände
+[//]: # (Tags: Sonstiges| Angaben zum Auftrag)  
