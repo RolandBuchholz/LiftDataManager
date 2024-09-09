@@ -9,6 +9,7 @@ namespace LiftDataManager.ViewModels;
 public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
 {
     public TreeView? HelpTreeView { get; set; }
+    public AutoSuggestBox? AutoSuggestBox { get; set; }
     public ObservableCollection<HelpContent>? HelpTreeDataSource { get; set; }
     public ObservableCollection<MarkdownTextBlockControl> MarkdownTextBlockList { get; set; }
     private readonly DispatcherQueue _dispatcherQueue;
@@ -34,6 +35,13 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     }
 
     [RelayCommand]
+    public async Task AutoSuggestBoxLoaded(AutoSuggestBox sender)
+    {
+        AutoSuggestBox = sender;
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
     public async Task SwitchHelpContent(string? contentName)
     {
         if (string.IsNullOrWhiteSpace(contentName))
@@ -56,6 +64,29 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         await Task.CompletedTask;
     }
 
+    [RelayCommand]
+    public async Task AutoSuggestBoxTextChanged(AutoSuggestBoxTextChangedEventArgs args) 
+    {
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            if (AutoSuggestBox is null)
+            {
+                return;
+            }
+            AutoSuggestBox.ItemsSource = AllHelpContentNameContains(AutoSuggestBox.Text);
+            await Task.CompletedTask;
+        }
+    }
+
+    [RelayCommand]
+    public async Task AutoSuggestBoxSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        if (args.SelectedItem is HelpContent content)
+        {
+            await LoadMarkDownTextAsync(content.FullPath);
+        }
+    }
+
     [ObservableProperty]
     private HelpContent? selectedHelpContent;
 
@@ -64,6 +95,10 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         if (value == null)
         {
             return;
+        }
+        if (AutoSuggestBox is not null)
+        {
+            AutoSuggestBox.Text = string.Empty;
         }
         Task.Run(async () => await LoadMarkDownTextAsync(value.FullPath));
     }
@@ -182,6 +217,22 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
         }
 
         return tempDataSource.FirstOrDefault(x => x.Name == name);
+    }
+
+    private IEnumerable<HelpContent>? AllHelpContentNameContains(string search)
+    {
+        if (HelpTreeDataSource is null)
+        {
+            return null;
+        }
+        List<HelpContent> tempDataSource = [];
+        foreach (var item in HelpTreeDataSource)
+        {
+            tempDataSource.Add(item);
+            tempDataSource.AddRange(ReturnChildContent(item));
+        }
+
+        return tempDataSource.Where(x  => x.Name.Contains(search, StringComparison.CurrentCultureIgnoreCase));
     }
 
     private static List<HelpContent> ReturnChildContent(HelpContent node)

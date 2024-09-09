@@ -133,6 +133,7 @@
     <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md" />    
     <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md" />    
     <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md" />    
+    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\04-Auswahlparameter\Auswahlparameter.md" />    
     <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md" />    
     <None Remove="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md" />    
     <None Remove="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md" />    
@@ -301,6 +302,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\04-Auswahlparameter\Auswahlparameter.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md">

@@ -49,14 +49,28 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <AutoSuggestBox
+                    x:Name="AutoSuggestBox"
                     Grid.Row="0"
                     Margin="10,5,10,5"
-                    QueryIcon="Find">
+                    PlaceholderText="Suche"
+                    QueryIcon="Find"
+                    TextMemberPath="Name">
                     <AutoSuggestBox.ItemTemplate>
                         <DataTemplate x:DataType="models:HelpContent">
                             <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </AutoSuggestBox.ItemTemplate>
+                    <Interactivity:Interaction.Behaviors>
+                        <Core:EventTriggerBehavior EventName="Loaded">
+                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxLoadedCommand}" CommandParameter="{x:Bind AutoSuggestBox}" />
+                        </Core:EventTriggerBehavior>
+                        <Core:EventTriggerBehavior EventName="TextChanged">
+                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxTextChangedCommand}"/>
+                        </Core:EventTriggerBehavior>
+                        <Core:EventTriggerBehavior EventName="SuggestionChosen">
+                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxSuggestionChosenCommand}" />
+                        </Core:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
                 </AutoSuggestBox>
                 <TreeView
                     x:Name="HelpTreeView"
