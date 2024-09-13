@@ -166,10 +166,10 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
 
     private void CheckIsOpeningDirectionSelected()
     {
-        OpeningDirectionNotSelected = (!string.IsNullOrWhiteSpace(openingDirectionA) && string.Equals(openingDirectionA, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionB) && string.Equals(openingDirectionB, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionC) && string.Equals(openingDirectionC, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionD) && string.Equals(openingDirectionD, "einseitig öffnend"));
+        OpeningDirectionNotSelected = (!string.IsNullOrWhiteSpace(OpeningDirectionA) && string.Equals(OpeningDirectionA, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionB) && string.Equals(OpeningDirectionB, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionC) && string.Equals(OpeningDirectionC, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionD) && string.Equals(OpeningDirectionD, "einseitig öffnend"));
     }
 
     [RelayCommand]

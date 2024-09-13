@@ -523,8 +523,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         float startCwtRailLength = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_HilfsschienenlaengeStartstueck");
         int carRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_Anzahl_5m_Schienen");
         int cwtRailCount = LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AnzahlHilfsschienenlaengeStueck");
-        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 400), -_shaftPitOffset);
-        SKPoint endPoint = new((float)(shaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint startPoint = new(-(float)(ShaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(ShaftDepth / 2 + 400), -_shaftPitOffset);
 
         SKPath cwtRailJointLine = new();
         cwtRailJointLine.MoveTo(startPoint);
@@ -671,9 +671,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             TextSize = 25 * _stokeWith,
         };
 
-        SKPoint startPoint = new(-(float)(shaftDepth / 2 + 400), -_shaftPitOffset);
-        SKPoint endPoint = new((float)(shaftDepth / 2 + 400), -_shaftPitOffset);
-        SKPoint centerBracketDescription = new(-(float)((shaftDepth / 2 + 300) - 15 * _stokeWith), -(_shaftPitOffset + 17 * _stokeWith));
+        SKPoint startPoint = new(-(float)(ShaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint endPoint = new((float)(ShaftDepth / 2 + 400), -_shaftPitOffset);
+        SKPoint centerBracketDescription = new(-(float)((ShaftDepth / 2 + 300) - 15 * _stokeWith), -(_shaftPitOffset + 17 * _stokeWith));
         SKPath railBracketLine = new();
         railBracketLine.MoveTo(startPoint);
         railBracketLine.LineTo(endPoint);
@@ -974,18 +974,18 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 if (calculationData is not null)
                 {
                     FrameCalculationData = calculationData;
-                    distanceGuideShoesCarframe = FrameCalculationData.DistanceGuideShoesCarframe;
-                    distanceGuideShoesCounterweight = FrameCalculationData.DistanceGuideShoesCounterweight;
-                    carCenterOfMassX = FrameCalculationData.CarCenterOfMassX;
-                    carCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
-                    additionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
-                    additionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
-                    offsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
-                    carframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
-                    counterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
-                    hasSlidingClips = FrameCalculationData.HasSlidingClips;
-                    buildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
-                    buildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
+                    DistanceGuideShoesCarframe = FrameCalculationData.DistanceGuideShoesCarframe;
+                    DistanceGuideShoesCounterweight = FrameCalculationData.DistanceGuideShoesCounterweight;
+                    CarCenterOfMassX = FrameCalculationData.CarCenterOfMassX;
+                    CarCenterOfMassY = FrameCalculationData.CarCenterOfMassY;
+                    AdditionalRailForceCarframe = FrameCalculationData.AdditionalRailForceCarframe;
+                    AdditionalRailForceCounterweight = FrameCalculationData.AdditionalRailForceCounterweight;
+                    OffsetCounterweightSuspensionCenter = FrameCalculationData.OffsetCounterweightSuspensionCenter;
+                    CarframeBracketClipCount = FrameCalculationData.CarframeBracketClipCount;
+                    CounterweightBracketClipCount = FrameCalculationData.CounterweightBracketClipCount;
+                    HasSlidingClips = FrameCalculationData.HasSlidingClips;
+                    BuildingDeflectionX = FrameCalculationData.BuildingDeflectionX;
+                    BuildingDeflectionY = FrameCalculationData.BuildingDeflectionY;
                 }
             }
             catch (Exception)

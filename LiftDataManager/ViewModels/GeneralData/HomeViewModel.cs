@@ -104,7 +104,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         var payload = string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToDouble(value, CultureInfo.CurrentCulture);
 
-        if (payload < payloadTable6)
+        if (payload < PayloadTable6)
         {
             CustomPayloadInfo = "Gedrängelast muß größer/gleich Tabelle6 sein!";
             return;
@@ -664,7 +664,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         };
 
         IEnumerable<TransferData>? importParameter;
-        if (importSpezifikationTyp != SpezifikationTyp.Request)
+        if (ImportSpezifikationTyp != SpezifikationTyp.Request)
         {
             ignoreImportParameters.Add("var_ErstelltAm");
             ignoreImportParameters.Add("var_AuslieferungAm");

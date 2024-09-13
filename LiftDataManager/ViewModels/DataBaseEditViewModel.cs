@@ -502,9 +502,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             FilteredParameterDtos = FilterValue switch
             {
                 "None" => ParameterDtos,
-                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(x => x.ParameterTyp!.Name == filterValue).ToList(),
+                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(x => x.ParameterTyp!.Name == FilterValue).ToList(),
                 "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
-                                                       or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(x => x.ParameterCategory!.Name == filterValue).ToList(),
+                                                       or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(x => x.ParameterCategory!.Name == FilterValue).ToList(),
                 _ => ParameterDtos,
             };
         }
@@ -522,14 +522,14 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                                           || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                                         .Where(x => x.ParameterTyp!.Name == filterValue).ToList(),
+                                                                         .Where(x => x.ParameterTyp!.Name == FilterValue).ToList(),
                 "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
                                            or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(
                                         p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                                        .Where(x => x.ParameterCategory!.Name == filterValue).ToList(),
+                                                                        .Where(x => x.ParameterCategory!.Name == FilterValue).ToList(),
                 _ => ParameterDtos.Where(
                                         p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
                                           || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
@@ -559,13 +559,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     {
         if (_editableparametercontext is null)
             return;
-        parameterDtos.Clear();
+        ParameterDtos.Clear();
         ParameterDtos = _editableparametercontext.ParameterDtos!
                                      .Include(x => x.ParameterTyp)
                                      .Include(x => x.ParameterTypeCode)
                                      .Include(x => x.ParameterCategory)
                                      .ToList();
-        filteredParameterDtos.Clear();
+        FilteredParameterDtos.Clear();
         FilterValue = "None";
         SearchInput = string.Empty;
         if (ParameterDtos is not null)
@@ -625,7 +625,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
         if (downloadResult.ExitCode == 0 && downloadResult.CheckOutState == "CheckedOutByCurrentUser")
         {
-            var updateResult = await _parameterDataService!.UpdateAutodeskTransferAsync(downloadResult.FullFileName!, parameterDtos);
+            var updateResult = await _parameterDataService!.UpdateAutodeskTransferAsync(downloadResult.FullFileName!, ParameterDtos);
 
             if (updateResult)
             {

@@ -183,10 +183,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void CheckIsOpeningDirectionSelected()
     {
-        OpeningDirectionNotSelected = (!string.IsNullOrWhiteSpace(openingDirectionA) && string.Equals(openingDirectionA, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionB) && string.Equals(openingDirectionB, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionC) && string.Equals(openingDirectionC, "einseitig öffnend")) ||
-                                      (!string.IsNullOrWhiteSpace(openingDirectionD) && string.Equals(openingDirectionD, "einseitig öffnend"));
+        OpeningDirectionNotSelected = (!string.IsNullOrWhiteSpace(OpeningDirectionA) && string.Equals(OpeningDirectionA, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionB) && string.Equals(OpeningDirectionB, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionC) && string.Equals(OpeningDirectionC, "einseitig öffnend")) ||
+                                      (!string.IsNullOrWhiteSpace(OpeningDirectionD) && string.Equals(OpeningDirectionD, "einseitig öffnend"));
     }
 
     private SKXamlCanvas? _xamlCanvas;
@@ -319,26 +319,26 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 case "A":
                     width = wallOpeningWidth;
                     height = 250f;
-                    posX = -(float)shaftWidth / 2 + wallOpeningLeft;
-                    posY = (float)shaftDepth / 2;
+                    posX = -(float)ShaftWidth / 2 + wallOpeningLeft;
+                    posY = (float)ShaftDepth / 2;
                     break;
                 case "B":
                     width = 250f;
                     height = wallOpeningWidth;
-                    posX = (float)shaftWidth / 2;
-                    posY = (float)shaftDepth / 2 - wallOpeningWidth - wallOpeningLeft;
+                    posX = (float)ShaftWidth / 2;
+                    posY = (float)ShaftDepth / 2 - wallOpeningWidth - wallOpeningLeft;
                     break;
                 case "C":
                     width = wallOpeningWidth;
                     height = -250f;
-                    posX = (float)shaftWidth / 2 - wallOpeningWidth - wallOpeningLeft;
-                    posY = -(float)shaftDepth / 2;
+                    posX = (float)ShaftWidth / 2 - wallOpeningWidth - wallOpeningLeft;
+                    posY = -(float)ShaftDepth / 2;
                     break;
                 case "D":
                     width = -250;
                     height = wallOpeningWidth;
-                    posX = -(float)shaftWidth / 2;
-                    posY = -(float)shaftDepth / 2 + wallOpeningLeft;
+                    posX = -(float)ShaftWidth / 2;
+                    posY = -(float)ShaftDepth / 2 + wallOpeningLeft;
                     break;
                 default:
                     continue;
@@ -385,16 +385,16 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             return;
         CarDistanceWallA = Math.Round(carWallA - carDepth / 2, 2);
         CarDistanceWallD = Math.Round(carWallD - carWidth / 2, 2);
-        CarDistanceWallB = Math.Round((float)shaftWidth - (CarDistanceWallD + carWidth), 2);
-        CarDistanceWallC = Math.Round((float)shaftDepth - (CarDistanceWallA + carDepth), 2);
+        CarDistanceWallB = Math.Round((float)ShaftWidth - (CarDistanceWallD + carWidth), 2);
+        CarDistanceWallC = Math.Round((float)ShaftDepth - (CarDistanceWallA + carDepth), 2);
 
         SKPath midLineCarHorizontal = new();
-        midLineCarHorizontal.MoveTo(-(float)(shaftWidth + 600) / 2, (float)shaftDepth / 2 - (float)carWallA);
-        midLineCarHorizontal.LineTo((float)(shaftWidth + 600) / 2, (float)shaftDepth / 2 - (float)carWallA);
+        midLineCarHorizontal.MoveTo(-(float)(ShaftWidth + 600) / 2, (float)ShaftDepth / 2 - (float)carWallA);
+        midLineCarHorizontal.LineTo((float)(ShaftWidth + 600) / 2, (float)ShaftDepth / 2 - (float)carWallA);
 
         SKPath midLineCarVertical = new();
-        midLineCarVertical.MoveTo(-(float)shaftWidth / 2 + (float)carWallD, (float)(shaftDepth + 600) / 2);
-        midLineCarVertical.LineTo(-(float)shaftWidth / 2 + (float)carWallD, -(float)(shaftDepth + 600) / 2);
+        midLineCarVertical.MoveTo(-(float)ShaftWidth / 2 + (float)carWallD, (float)(ShaftDepth + 600) / 2);
+        midLineCarVertical.LineTo(-(float)ShaftWidth / 2 + (float)carWallD, -(float)(ShaftDepth + 600) / 2);
 
         SKPath liftCar = new();
         liftCar.MoveTo(-(float)carWidth / 2, (float)carDepth / 2);
@@ -611,14 +611,14 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 case "A":
                     return;
                 case "B":
-                    startPointDGB.X = (float)shaftWidth / 2 - carDimensionD;
-                    startPointDGB.Y = (float)(shaftDepth + 600) / 2;
-                    endPointDGB.X = (float)shaftWidth / 2 - carDimensionD;
-                    endPointDGB.Y = -(float)(shaftDepth + 600) / 2;
+                    startPointDGB.X = (float)ShaftWidth / 2 - carDimensionD;
+                    startPointDGB.Y = (float)(ShaftDepth + 600) / 2;
+                    endPointDGB.X = (float)ShaftWidth / 2 - carDimensionD;
+                    endPointDGB.Y = -(float)(ShaftDepth + 600) / 2;
                     startPointMidDGB.X = startPointDGB.X - 100f;
                     endPointMidDGB.X = endPointDGB.X + 100f;
-                    startPointMidDGB.Y = (float)shaftDepth / 2 - carWallA - carFrameOffsetY;
-                    endPointMidDGB.Y = (float)shaftDepth / 2 - carWallA - carFrameOffsetY;
+                    startPointMidDGB.Y = (float)ShaftDepth / 2 - carWallA - carFrameOffsetY;
+                    endPointMidDGB.Y = (float)ShaftDepth / 2 - carWallA - carFrameOffsetY;
 
                     //GuideRails
                     carFrameRailLeftRotation = 90f;
@@ -635,14 +635,14 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     cwtRailRight.Y = startPointMidDGB.Y + counterWeightDGB * 0.5f;
                     break;
                 case "C":
-                    startPointDGB.X = -(float)(shaftWidth + 600) / 2;
-                    startPointDGB.Y = -(float)shaftDepth / 2 + carDimensionD;
-                    endPointDGB.X = (float)(shaftWidth + 600) / 2;
-                    endPointDGB.Y = -(float)shaftDepth / 2 + carDimensionD;
+                    startPointDGB.X = -(float)(ShaftWidth + 600) / 2;
+                    startPointDGB.Y = -(float)ShaftDepth / 2 + carDimensionD;
+                    endPointDGB.X = (float)(ShaftWidth + 600) / 2;
+                    endPointDGB.Y = -(float)ShaftDepth / 2 + carDimensionD;
                     startPointMidDGB.Y = startPointDGB.Y - 100f;
                     endPointMidDGB.Y = endPointDGB.Y + 100f;
-                    startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetY;
-                    endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetY;
+                    startPointMidDGB.X = -(float)ShaftWidth / 2 + carWallD + carFrameOffsetY;
+                    endPointMidDGB.X = -(float)ShaftWidth / 2 + carWallD + carFrameOffsetY;
 
                     //GuideRails
                     carFrameRailLeftRotation = 0f;
@@ -659,14 +659,14 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     cwtRailRight.Y = carFrameRailLeft.Y - frameCounterWeightOffset;
                     break;
                 case "D":
-                    startPointDGB.X = -(float)shaftWidth / 2 + carDimensionD;
-                    startPointDGB.Y = (float)(shaftDepth + 600) / 2;
-                    endPointDGB.X = -(float)shaftWidth / 2 + carDimensionD;
-                    endPointDGB.Y = -(float)(shaftDepth + 600) / 2;
+                    startPointDGB.X = -(float)ShaftWidth / 2 + carDimensionD;
+                    startPointDGB.Y = (float)(ShaftDepth + 600) / 2;
+                    endPointDGB.X = -(float)ShaftWidth / 2 + carDimensionD;
+                    endPointDGB.Y = -(float)(ShaftDepth + 600) / 2;
                     startPointMidDGB.X = startPointDGB.X - 100f;
                     endPointMidDGB.X = endPointDGB.X + 100f;
-                    startPointMidDGB.Y = (float)shaftDepth / 2 - carWallA - carFrameOffsetY;
-                    endPointMidDGB.Y = (float)shaftDepth / 2 - carWallA - carFrameOffsetY;
+                    startPointMidDGB.Y = (float)ShaftDepth / 2 - carWallA - carFrameOffsetY;
+                    endPointMidDGB.Y = (float)ShaftDepth / 2 - carWallA - carFrameOffsetY;
 
                     //GuideRails
                     carFrameRailLeftRotation = 90f;
@@ -688,17 +688,17 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
         else
         {
-            startPointDGB.X = -(float)(shaftWidth + 600) / 2;
-            endPointDGB.X = (float)(shaftWidth + 600) / 2;
+            startPointDGB.X = -(float)(ShaftWidth + 600) / 2;
+            endPointDGB.X = (float)(ShaftWidth + 600) / 2;
             if (carFrameMirrorImage)
             {
                 counterWeightOffset *= -1;
                 frameOffsetY *= -1;
             }
-            startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-            endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-            startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-            endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
+            startPointDGB.Y = (float)ShaftDepth / 2 - carDimensionD;
+            endPointDGB.Y = (float)ShaftDepth / 2 - carDimensionD;
+            startPointMidDGB.X = -(float)ShaftWidth / 2 + carWallD + carFrameOffsetX;
+            endPointMidDGB.X = -(float)ShaftWidth / 2 + carWallD + carFrameOffsetX;
 
             switch (carFramePosition)
             {

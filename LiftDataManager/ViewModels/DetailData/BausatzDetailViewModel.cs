@@ -298,17 +298,17 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                         switch (item)
                         {
                             case "var_PufferCalculationData_FK":
-                                selectedEulerCaseCarFrame = restoredBufferCalculation.EulerCase;
+                                SelectedEulerCaseCarFrame = restoredBufferCalculation.EulerCase;
                                 break;
                             case "var_PufferCalculationData_GGW":
-                                selectedEulerCaseCounterWeight = restoredBufferCalculation.EulerCase;
+                                SelectedEulerCaseCounterWeight = restoredBufferCalculation.EulerCase;
                                 break;
                             case "var_PufferCalculationData_EM_SK":
-                                selectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
-                                bufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
+                                SelectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
+                                BufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
                                 break;
                             case "var_PufferCalculationData_EM_SG":
-                                selectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
+                                SelectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
                                 break;
                             default:
                                 break;
@@ -334,10 +334,10 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                     var tempRopeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
                     if (tempRopeCalculationData != null)
                     {
-                        ropeDiameter = tempRopeCalculationData.RopeDiameter;
-                        wireStrength = tempRopeCalculationData.WireStrength;
-                        maximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
-                        ropeWeight = tempRopeCalculationData.RopeWeight;
+                        RopeDiameter = tempRopeCalculationData.RopeDiameter;
+                        WireStrength = tempRopeCalculationData.WireStrength;
+                        MaximumNumberOfRopes = tempRopeCalculationData.MaximumNumberOfRopes;
+                        RopeWeight = tempRopeCalculationData.RopeWeight;
                     }
                 }
                 catch (Exception)
