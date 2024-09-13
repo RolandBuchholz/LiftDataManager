@@ -43,9 +43,15 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     public override void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null)
+        {
             return;
+        }
+
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
+        }
+
         if (message.PropertyName == "var_SB" || message.PropertyName == "var_ST")
         {
             SetViewBoxDimensions();
@@ -686,35 +692,25 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             endPointDGB.X = (float)(shaftWidth + 600) / 2;
             if (carFrameMirrorImage)
             {
+                counterWeightOffset *= -1;
                 frameOffsetY *= -1;
             }
+            startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
+            endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
+            startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
+            endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
+
             switch (carFramePosition)
             {
                 case "A":
                     return;
-                case "B":
-                    startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-                    endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-                    startPointMidDGB.Y = startPointDGB.Y - 100f - frameOffsetY;
-                    endPointMidDGB.Y = endPointDGB.Y + 100f - frameOffsetY;
-                    startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-                    endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-                    break;
-                case "C":
-                    startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-                    endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-                    startPointMidDGB.Y = startPointDGB.Y - 100f;
-                    endPointMidDGB.Y = endPointDGB.Y + 100f;
-                    startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-                    endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-                    break;
-                case "D":
-                    startPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
-                    endPointDGB.Y = (float)shaftDepth / 2 - carDimensionD;
+                case "B" or "D":
                     startPointMidDGB.Y = startPointDGB.Y - 100f + frameOffsetY;
                     endPointMidDGB.Y = endPointDGB.Y + 100f + frameOffsetY;
-                    startPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
-                    endPointMidDGB.X = -(float)shaftWidth / 2 + carWallD + carFrameOffsetX;
+                    break;
+                case "C":
+                    startPointMidDGB.Y = startPointDGB.Y - 100f;
+                    endPointMidDGB.Y = endPointDGB.Y + 100f;
                     break;
                 default:
                     return;
@@ -745,8 +741,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                         : carFrameRailRight.X + frameCounterWeightOffset;
                 cwtRailRight.X = carFramePosition == "D" ? carFrameRailLeft.X - frameCounterWeightOffset
                                                          : carFrameRailRight.X + frameCounterWeightOffset;
-                cwtRailLeft.Y = startPointDGB.Y + counterWeightOffset - counterWeightDGB * 0.5f;
-                cwtRailRight.Y = startPointDGB.Y + counterWeightOffset + counterWeightDGB * 0.5f;
+                cwtRailLeft.Y = startPointDGB.Y - counterWeightOffset - counterWeightDGB * 0.5f;
+                cwtRailRight.Y = startPointDGB.Y - counterWeightOffset + counterWeightDGB * 0.5f;
             }
         }
 
@@ -953,13 +949,11 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 if (string.Equals(parameterName, "var_MassD"))
                 {
                     double carFrameOffsetWallA = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_MassD");
-                    ParameterDictionary["var_Versatz_Y"].AutoUpdateParameterValue(carFramePosition == "B" ? (carFrameOffsetWallA - carOffsetWallA + carFrameOffsetY).ToString()
-                                                                                                          : (carFrameOffsetWallA - carOffsetWallA - carFrameOffsetY).ToString());
+                    ParameterDictionary["var_Versatz_Y"].AutoUpdateParameterValue((carFrameOffsetWallA - carOffsetWallA - carFrameOffsetY).ToString());
                 }
                 else
                 {
-                    ParameterDictionary["var_MassD"].AutoUpdateParameterValue(carFramePosition == "B" ? (carOffsetWallA - carFrameOffsetY + carOffsetY).ToString()
-                                                                                                      : (carOffsetWallA + carFrameOffsetY + carOffsetY).ToString());
+                    ParameterDictionary["var_MassD"].AutoUpdateParameterValue((carOffsetWallA + carFrameOffsetY + carOffsetY).ToString());
                 }
                 ShowCarFrameOffsetInfoHorizontal = false;
                 ShowCarFrameOffsetInfoVertikal = carOffsetY != 0;

@@ -18,15 +18,21 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     {
         SpezifikationTyps = SpezifikationTyp.List.ToList();
         if (!RequestEnabled)
+        {
             SpezifikationTyps.Remove(SpezifikationTyp.Request);
+        }
 
         cmb_SpezifikationTyp.ItemsSource = SpezifikationTyps;
 
         if (!IsOrderRelated)
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(SpezifikationName))
+        {
             return;
+        }
 
         var speziNameArray = SpezifikationName.Split("-");
         switch (SpezifikationTyp)
@@ -162,7 +168,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         {
             case var s when s.Equals(SpezifikationTyp.Order):
                 tbx_Numberbox.Visibility = Visibility.Visible;
-                tbx_Numberbox.MaxLength = 10;
+                tbx_Numberbox.MaxLength = 7;
                 tbx_Numberbox.MinWidth = 125;
                 tbx_Numberbox.PlaceholderText = "Auftragsnummer";
                 cmb_Year.Visibility = Visibility.Collapsed;
@@ -199,10 +205,14 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     private void SetSpezifikationName()
     {
         if (IsOrderRelated)
+        {
             return;
+        }
 
         if (SpezifikationTyp is null)
+        {
             return;
+        }
 
         SpezifikationName = SpezifikationTyp switch
         {
@@ -216,7 +226,9 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     private bool CheckSpezifikationNameIsValid(string value)
     {
         if (string.IsNullOrEmpty(value))
+        {
             return false;
+        }
         return (value.Length >= 6 && SpezifikationTyp.Equals(SpezifikationTyp.Order)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Offer)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Planning)) ||

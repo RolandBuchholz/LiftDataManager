@@ -42,7 +42,7 @@
             Margin="5,0,0,0"
             ui:TextBoxExtensions.ValidationMode="Dynamic"
             ui:TextBoxExtensions.ValidationType="Number"
-            MaxLength="10"
+            MaxLength="7"
             Text="{x:Bind NumberBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Interactivity:Interaction.Behaviors>
                 <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
