@@ -237,7 +237,9 @@ public partial class App : Application
         }
 
         if (dbPath is not null && dbReadOnly)
+        {
             File.Copy(dbPath, workPathDb, true);
+        }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
 

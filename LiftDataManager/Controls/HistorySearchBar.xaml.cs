@@ -224,7 +224,7 @@ public sealed partial class HistorySearchBar : UserControl
 
         if (ViewSource is not null)
         {
-            ViewSource.Source = filteredEntrys.OrderByDescending(x => x.TimeStamp).ToList();
+            ViewSource.Source = filteredEntrys.OrderByDescending(x => x.TimeStamp);
         }
     }
 
