@@ -64,7 +64,7 @@ public class PdfBaseDocument : IDocument
         CreationDate = DateTime.Now,
     };
 
-    private string GetUserName()
+    private static string GetUserName()
     {
         string? user;
         try
