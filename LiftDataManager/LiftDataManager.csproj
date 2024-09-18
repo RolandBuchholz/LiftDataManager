@@ -114,10 +114,15 @@
     <None Remove="MainWindow.xaml" />
     <None Remove="Controls\*.xaml" />
     <None Remove="Styles\*.xaml" />
-    <Resource Remove="Styles\ContentDialog.xaml" />
+    <None Remove="Views\DetailData\*.xaml" />
+    <None Remove="Views\Dialogs\*.xaml" />
+    <None Remove="Views\GeneralData\*.xaml" />
+    <None Remove="Views\Settings\*.xaml" />
+    <None Remove="Docs\de\**\*.md" />
+    <!--<Resource Remove="Styles\ContentDialog.xaml" />
     <Resource Remove="Controls\CarDesignControl.xaml" />
     <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
-    <CustomAdditionalCompileInputs Remove="Styles\ContentDialog.xaml" />
+    <CustomAdditionalCompileInputs Remove="Styles\ContentDialog.xaml" />-->
   </ItemGroup>
 
   <!--Include-->
@@ -125,13 +130,44 @@
     <None Include="Docs\HelpImages\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Images\*" />
+    <Content Include="Docs\de\**\*.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <!--Update-->
   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Styles\*.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>    
     <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Page Update="Themes\Generic.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Styles\*.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\**\*.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\*.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   
   <ItemGroup>
@@ -153,535 +189,5 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  
-  <ItemGroup>  
-    <None Remove="Docs\de\00-Willkommen\Willkommen.md" />    
-    <None Remove="Docs\de\01-Installation\Installation.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md" />    
-    <None Remove="Docs\de\02-Erste Schritte\Erste Schritte.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\04-Auswahlparameter\Auswahlparameter.md" />    
-    <None Remove="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md" />    
-    <None Remove="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md" />    
-    <None Remove="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md" />    
-    <None Remove="Docs\de\04-Datenimport\Datenimport.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen %28work in process%29\Einreichunterlagen.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md" />    
-    <None Remove="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md" />    
-    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md" />    
-    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md" />    
-    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md" />    
-    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md" />    
-    <None Remove="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md" />    
-    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md" />    
-    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md" />    
-    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md" />    
-    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md" />    
-    <None Remove="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md" />
-    <None Remove="Docs\de\06-Einstellungen\03-Wartung\01-Update Check\UpdateCheck.md" />    
-    <None Remove="Docs\de\06-Einstellungen\03-Wartung\02-Diagnostics\Diagnostics.md" />    
-    <None Remove="Docs\de\06-Einstellungen\03-Wartung\03-Database\Database.md" />    
-    <None Remove="Docs\de\06-Einstellungen\03-Wartung\04-Externe Programme\Externe Programme.md" />    
-    <None Remove="Docs\de\06-Einstellungen\03-Wartung\Wartung.md" />    
-    <None Remove="Docs\de\06-Einstellungen\04-About\About.md" />    
-    <None Remove="Docs\de\06-Einstellungen\Einstellungen.md" />    
-    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md" />    
-    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md" />    
-    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md" />    
-    <None Remove="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md" />    
-    <None Remove="Docs\de\07-Datenvalidierung\Datenvalidierung.md" />    
-    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md" />    
-    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md" />    
-    <None Remove="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md" />    
-    <None Remove="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md" />    
-    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md" />    
-    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />    
-    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />    
-    <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />      
-    <None Remove="Views\DetailData\BausatzDetailRailBracketPage.xaml" />
-    <None Remove="Views\DetailData\KabineDetailCeilingPage.xaml" />
-    <None Remove="Views\DetailData\KabineDetailControlPanelPage.xaml" />
-    <None Remove="Views\DetailData\KabineDetailEquipmentPage.xaml" />
-    <None Remove="Views\DetailData\KabineDetailFloorPage.xaml" />
-    <None Remove="Views\DetailData\KabineDetailLayoutPage.xaml" />
-    <None Remove="Views\Dialogs\ParameterChangedDialog.xaml" />
-    <None Remove="Views\GeneralData\EinreichunterlagenPage.xaml" />
-    <None Remove="Views\GeneralData\KabinengewichtPage.xaml" />
-    <None Remove="Views\GeneralData\KabinenLüftungPage.xaml" />
-    <None Remove="Views\GeneralData\NutzlastberechnungPage.xaml" />
-    <None Remove="Views\Settings\AboutSettingPage.xaml" />
-    <None Remove="Views\Settings\GeneralSettingPage.xaml" />
-    <None Remove="Views\Settings\MaintenanceSettingPage.xaml" />
-    <None Remove="Views\Settings\ThemeSettingPage.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Docs\de\00-Willkommen\Willkommen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\01-Installation\Installation.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\01-Erstellen von Angeboten-Vorplanungen\Erstellen von Angeboten-Vorplanungen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\02-Erstellen von Aufträgen ohne Bestehendes Angebot\Erstellen von Aufträgen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\03-Bestehendes Angebot in Auftrag konvertieren\Bestehendes Angebot in Auftrag konvertieren.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\02-Auftrag im Vault anlegen\Auftrag im Vault anlegen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\02-Erste Schritte\Erste Schritte.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\01-Liftdaten im LiftDataManager öffnen\Liftdaten im LiftDataManager öffnen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\02-Liftdaten im LiftDataManager bearbeiten\Liftdaten im LiftDataManager bearbeiten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\01-Detailinformation zum Datei-Upload\Detailinformation zum Datei-Upload.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\03-Liftdaten hochladen\Liftdaten hochladen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\04-Auswahlparameter\Auswahlparameter.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\03-Grundlegende Arbeitsweisen\Grundlegende Arbeitsweisen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\04-Datenimport\01-Spezifikations Import\Spezifikations Import.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\04-Datenimport\02-PDF-Auslegungen Import\PDFImport.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\04-Datenimport\Datenimport.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\01-Titelleiste\Titelleiste.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\02-Navigationsmenü\Navigationsmenü.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\03-Quicklinkmenü\Quicklinkmenü.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\04-Header\Header.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\05-Headermenü\Headermenü.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\06-Footerinformationen\Footerinformationen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\07-Infocenter\Infocenter.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\01-Home Ansicht\Home Ansicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\01-Allgemeine Daten\Allgemeine Daten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\02-Schacht\Schacht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\03-Kabine\Kabine.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\04-Bausatz\Bausatz.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\05-Türen\Türen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\06-Antrieb Steuerung Notruf\AntriebSteuerungNotruf.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\07-Signalisation\Signalisation.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\08-Wartung Montage TÜV\WartungMontageTÜV.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\09-Sonstiges\Sonstiges.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\02-Allgemeine Aufzugsdaten\Allgemeine Aufzugsdaten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\01-Einreichunterlagen (work in process)\Einreichunterlagen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\02-Kabinengewicht\Kabinengewicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\03-Nutzlastberechnung\Nutzlastberechnung.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\04-Kabinenlüftungsberechnung\Kabinenlüftungsberechnung.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\03-Berechnungen\Berechnungen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\01-Schacht Detaileingabe\Schacht Detaileingabe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\02-Kabinen Detaileingabe\Kabinen Detaileingabe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\03-Bausatz Detaileingabe\Bausatz Detaileingabe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\04-Detail Eingaben\Detail Eingaben.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\01-Listenansicht\Listenansicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\02-Rasteransicht\Rasteransicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\03-Tabellenansicht\Tabellenansicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\05-Listen-Raster-und Tabellenansicht\Listen-Raster-und Tabellenansicht.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\06-Datenbank editieren\Datenbank editieren.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\05-Benutzeroberfläche\Benutzeroberfläche.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\01-Auto Save\AutoSave.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\02-Adminmode\Adminmode.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\03-Infocentersettings\Infocentersettings.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\04-Plotstyles\Plotstyles.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\01-Allgemeine Einstellungen\Allgemeine Einstellungen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\01-App Theme\AppTheme.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\02-App Material\AppMaterial.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\03-App Akzentfarbe\AppAkzentfarbe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\04-System Akzentfarbe\SystemAkzentfarbe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\02-Farben und Aussehen\Farben und Aussehen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\01-Update Check\UpdateCheck.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\02-Diagnostics\Diagnostics.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\03-Database\Database.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\04-Externe Programme\Externe Programme.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\03-Wartung\Wartung.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\04-About\About.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\06-Einstellungen\Einstellungen.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\01-Automatische Überschreibung der Daten\Automatische Überschreibung der Daten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\02-Fehlerstatus des Parameters ändern\Fehlerstatus des Parameters ändern.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\03-Anpassen der Auswahllisten\Anpassen der Auswahllisten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\07-Datenvalidierung\01-Validierungsarten\Validierungsarten.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\07-Datenvalidierung\Datenvalidierung.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\01-Parameterhistory\Parameterhistory.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\02-Revisionsnummernvergabe\Revisionsnummernvergabe.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\08-History&amp;Revsionsverwaltung\HistoryRevsionsverwaltung.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\01-Inventor\Inventor.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\02-Vault\Vault.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\03-CarFrameProgram\CarFrameProgram.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\04-ZA-Lift\ZA-Lift.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\05-Lilo\Lilo.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\09-Schnittstellen für den Datenaustausch\Schnittstellen für den Datenaustausch.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\01-Software Architektur\Software Architektur.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Page Update="Views\Dialogs\ParameterChangedDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\MarkdownTextBlockControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\ParameterNumberBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\KabineDetailControlPanelPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\KabineDetailCeilingPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\KabineDetailLayoutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\KabineDetailFloorPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\KabineDetailEquipmentPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\DetailData\BausatzDetailRailBracketPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Styles\Divider.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Styles\ItemContainer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\CarEquipmentControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\SpezifikationsNumberControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\HistorySearchBar.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Controls\ParameterCustomCheckBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Controls\ParameterRadioButton.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\ParameterNumberTextBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\ParameterCheckBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\ParameterTextBox.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\ParameterCalendarDatePicker.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Controls\ParameterComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\SidebarPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\ParameterDetailControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\HeaderControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\FooterControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\EntranceControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\CommandBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\Dialogs\AppClosingDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\Dialogs\CFPEditDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Dialogs\ZALiftDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Dialogs\PasswortDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\Dialogs\ParameterChangedDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\Dialogs\LiftPlannerDBDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\GeneralData\KabinenLüftungPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\GeneralData\NutzlastberechnungPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\GeneralData\KabinengewichtPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Settings\ThemeSettingPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Settings\MaintenanceSettingPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Settings\AboutSettingPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Settings\GeneralSettingPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <None Update="Styles\Border.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\ColorStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\ComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\ControlDataTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\DataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Expander.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\TextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 </Project>
