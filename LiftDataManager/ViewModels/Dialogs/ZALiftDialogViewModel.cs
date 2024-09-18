@@ -12,6 +12,7 @@ public partial class ZALiftDialogViewModel : ObservableObject
     private readonly IVaultDataService _vaultDataService;
     public Process? ZaLift {  get; set; }
     public FileSystemWatcher? Watcher { get; set; }
+
     public ZALiftDialogViewModel(ISettingService settingsSelectorService, ILogger<ZALiftDialogViewModel> logger, IVaultDataService vaultDataService)
     {
         dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -42,16 +43,18 @@ public partial class ZALiftDialogViewModel : ObservableObject
             EnableRaisingEvents = true
         };
         Watcher.Changed += OnChanged;
+        sender.Closed += ZALiftDialogClosed;
         await StartZetaLiftProgrammAsync();
     }
-    [RelayCommand]
-    public void ZALiftDialogUnloaded()
+
+    private void ZALiftDialogClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
     {
         if (Watcher is not null)
         {
             Watcher.Changed -= OnChanged;
             Watcher.Dispose();
         }
+        sender.Closed -= ZALiftDialogClosed;
     }
 
     [RelayCommand]

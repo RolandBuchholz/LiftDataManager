@@ -1,6 +1,7 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.PdfDocuments;
+using QuestPDF;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -22,6 +23,7 @@ public class SpezifikationDocument : PdfBaseDocument
         LowPrintColor = lowPrintColor;
         LowHighlightColor = lowHighlightColor;
         SetPdfStyle(LowPrintColor, LowHighlightColor);
+        Settings.CheckIfAllTextGlyphsAreAvailable = false;    
     }
 
     protected override void Content(IContainer container)

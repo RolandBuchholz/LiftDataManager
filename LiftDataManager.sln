@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiftDataManager.Core", "Lif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiftDataManager.Tests.MSTest", "LiftDataManager.Tests.MSTest\LiftDataManager.Tests.MSTest.csproj", "{618D6BAD-D5F7-489A-8D79-0D7C47DA89AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AD644303-C5AB-4CEF-9099-D5C1B1098D8A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

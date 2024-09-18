@@ -36,81 +36,126 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <PropertyGroup Label="Globals">
+    <WebView2EnableCsWinRTProjection>True</WebView2EnableCsWinRTProjection>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2739.15" />
+    <PackageReference Include="AK.Toolkit.WinUI3.NumberBoxEx" Version="1.0.1" />
+    <PackageReference Include="Cogs.Collections" Version="1.12.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
+    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.65" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="Humanizer.Core.de" Version="2.14.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="Serilog" Version="4.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="WinUICommunity.Components" Version="6.9.0" />
+    <PackageReference Include="WinUICommunity.Core" Version="6.9.0" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.8" />
+    <PackageReference Include="WinUIEx" Version="2.4.0" />
+  </ItemGroup>
   
   <ItemGroup>
-    <None Remove="Docs\HelpImages\*" />
-    <None Include="Docs\HelpImages\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Assets\BadgeLogo.scale-100.png" />
-    <Content Remove="Assets\BadgeLogo.scale-125.png" />
-    <Content Remove="Assets\BadgeLogo.scale-150.png" />
-    <Content Remove="Assets\BadgeLogo.scale-200.png" />
-    <Content Remove="Assets\BadgeLogo.scale-400.png" />
-    <Content Remove="Assets\Fluent\maintrance.png" />
-    <Content Remove="Assets\StoreLogo.scale-100.png" />
-    <Content Remove="Assets\StoreLogo.scale-125.png" />
-    <Content Remove="Assets\StoreLogo.scale-150.png" />
-    <Content Remove="Assets\StoreLogo.scale-200.png" />
-    <Content Remove="Assets\StoreLogo.scale-400.png" />
-    <Content Remove="Assets\WindowIcon.ico" />
+    <ProjectReference Include="..\LiftDataManager.Core\LiftDataManager.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Remove="Assets\Fluent\adminMode.png" />
-    <None Remove="Assets\Fluent\appDescription.png" />
-    <None Remove="Assets\Fluent\autoSaveMode.png" />
-    <None Remove="Assets\Fluent\building.png" />
-    <None Remove="Assets\Fluent\calculator.png" />
-    <None Remove="Assets\Fluent\carFrame.png" />
-    <None Remove="Assets\Fluent\carFrameDetail.png" />
-    <None Remove="Assets\Fluent\carVentilation.png" />
-    <None Remove="Assets\Fluent\chart.png" />
-    <None Remove="Assets\Fluent\controler.png" />
-    <None Remove="Assets\Fluent\dataBase.png" />
-    <None Remove="Assets\Fluent\dataBaseEdit.png" />
-    <None Remove="Assets\Fluent\gridView.png" />
-    <None Remove="Assets\Fluent\help.png" />
-    <None Remove="Assets\Fluent\home.png" />
-    <None Remove="Assets\Fluent\infoCenterOpen.png" />
-    <None Remove="Assets\Fluent\label.png" />
-    <None Remove="Assets\Fluent\lcd.png" />
-    <None Remove="Assets\Fluent\levelSlider.png" />
-    <None Remove="Assets\Fluent\liftcar.png" />
-    <None Remove="Assets\Fluent\liftCarDetail.png" />
-    <None Remove="Assets\Fluent\liftdoors.png" />
-    <None Remove="Assets\Fluent\liftHistory.png" />
-    <None Remove="Assets\Fluent\listView.png" />
-    <None Remove="Assets\Fluent\logEntries.png" />
-    <None Remove="Assets\Fluent\montage.png" />
-    <None Remove="Assets\Fluent\programs.png" />
-    <None Remove="Assets\Fluent\quickLinks.png" />
-    <None Remove="Assets\Fluent\shaft.png" />
-    <None Remove="Assets\Fluent\shaftDetail.png" />
-    <None Remove="Assets\Fluent\sqlite.png" />
-    <None Remove="Assets\Fluent\style.png" />
-    <None Remove="Assets\Fluent\systemInfo.png" />
-    <None Remove="Assets\Fluent\tableView.png" />
-    <None Remove="Assets\Fluent\text.png" />
-    <None Remove="Assets\Fluent\themeColor.png" />
-    <None Remove="Assets\Fluent\tonerSaveMode.png" />
-    <None Remove="Assets\Fluent\vault.png" />
-    <None Remove="Assets\Fluent\weight.png" />
-    <None Remove="Assets\NavViewMenu\NavigationViewControlData.json" />
-    <None Remove="Controls\CarDesignControl.xaml" />
-    <None Remove="Controls\CarEquipmentControl.xaml" />
-    <None Remove="Controls\HistorySearchBar.xaml" />
-    <None Remove="Controls\MarkdownTextBlockControl.xaml" />
-    <None Remove="Controls\ParameterCalendarDatePicker.xaml" />
-    <None Remove="Controls\ParameterCheckBox.xaml" />
-    <None Remove="Controls\ParameterComboBox.xaml" />
-    <None Remove="Controls\ParameterCustomCheckBox.xaml" />
-    <None Remove="Controls\ParameterNumberTextBox.xaml" />
-    <None Remove="Controls\ParameterRadioButton.xaml" />
-    <None Remove="Controls\ParameterTextBox.xaml" />    
-    <None Remove="Controls\SpezifikationsNumberControl.xaml" />    
+    <Folder Include="Strings\en-us\" />
+    <Folder Include="Views\GeneralData\" />
+  </ItemGroup>
+
+  <!--Remove-->
+  <ItemGroup>
+    <None Remove="Docs\HelpImages\*" />
+    <None Remove="Assets\Fluent\*" />
+    <None Remove="Images\*" />
+    <None Remove="MainWindow.xaml" />
+    <None Remove="Controls\*.xaml" />
+    <None Remove="Styles\*.xaml" />
+    <Resource Remove="Styles\ContentDialog.xaml" />
+    <Resource Remove="Controls\CarDesignControl.xaml" />
+    <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
+    <CustomAdditionalCompileInputs Remove="Styles\ContentDialog.xaml" />
+  </ItemGroup>
+
+  <!--Include-->
+  <ItemGroup>
+    <None Include="Docs\HelpImages\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Images\*" />
+  </ItemGroup>
+  <!--Update-->
+  <ItemGroup>
+    <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>8</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>2df8d04c-5bfa-101b-bde5-00aa0044de52</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Outlook">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>6</VersionMinor>
+      <VersionMajor>9</VersionMajor>
+      <Guid>00062fff-0000-0000-c000-000000000046</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  
+  <ItemGroup>  
     <None Remove="Docs\de\00-Willkommen\Willkommen.md" />    
     <None Remove="Docs\de\01-Installation\Installation.md" />    
     <None Remove="Docs\de\02-Erste Schritte\01-Funktionsprinzip\Funktionsprinzip.md" />    
@@ -196,51 +241,6 @@
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\02-Parameteraufbau\Parameteraufbau.md" />    
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\03-Datenbank\Datenbank.md" />    
     <None Remove="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md" />      
-    <None Remove="Images\Berechnungen.png" />
-    <None Remove="Images\BE_Logo.png" />
-    <None Remove="Images\BucherTransparent.png" />
-    <None Remove="Images\carAccesses.png" />
-    <None Remove="Images\CarDetails\carCeilingDetail.png" />
-    <None Remove="Images\CarDetails\carDoorInstallationDimensions.png" />
-    <None Remove="Images\CarDetails\ConnectionAngle.png" />
-    <None Remove="Images\CarDetails\MirrorPanel.png" />
-    <None Remove="Images\CarDetails\MirrorRail.png" />
-    <None Remove="Images\CarDetails\SillGravidaBasic.png" />
-    <None Remove="Images\carDimensions.png" />
-    <None Remove="Images\CarFrameDetails\BucklingCases.png" />
-    <None Remove="Images\CarFrameDetails\Cantilever_MassD.png" />
-    <None Remove="Images\CarFrameDetails\CentralLift_MassD.png" />
-    <None Remove="Images\CFPTransparent.png" />
-    <None Remove="Images\ExcelTransparent.png" />
-    <None Remove="Images\GoogleChrome.png" />
-    <None Remove="Images\Handrails\handrail_HL13.png" />
-    <None Remove="Images\Handrails\handrail_HL14.png" />
-    <None Remove="Images\HighlightBold.png" />
-    <None Remove="Images\HighlightColor.png" />
-    <None Remove="Images\Homepage.ico" />
-    <None Remove="Images\html.png" />
-    <None Remove="Images\LiftDataManagerLogo.png" />
-    <None Remove="Images\LiloTransparent.png" />
-    <None Remove="Images\NoImage.png" />
-    <None Remove="Images\Ordnerblue.png" />
-    <None Remove="Images\Ordnergreen.png" />
-    <None Remove="Images\Ordnerorange.png" />
-    <None Remove="Images\Ordnerpurple.png" />
-    <None Remove="Images\Ordnerred.png" />
-    <None Remove="Images\OrdnerTransparent.png" />
-    <None Remove="Images\Ordneryellow.png" />
-    <None Remove="Images\PdfTransparent.png" />
-    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp1.png" />
-    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp2.png" />
-    <None Remove="Images\TechnicalDocumentation\protectionRoomTyp3.png" />
-    <None Remove="Images\TonerSaveOFF.png" />
-    <None Remove="Images\TonerSaveON.png" />
-    <None Remove="Images\VaultTransparent.png" />
-    <None Remove="Images\ZiehlAbeggTransparent.png" />
-    <None Remove="MainWindow.xaml" />
-    <None Remove="Styles\ContentDialog.xaml" />
-    <None Remove="Styles\Divider.xaml" />
-    <None Remove="Styles\ItemContainer.xaml" />
     <None Remove="Views\DetailData\BausatzDetailRailBracketPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailCeilingPage.xaml" />
     <None Remove="Views\DetailData\KabineDetailControlPanelPage.xaml" />
@@ -513,103 +513,9 @@
     <Content Include="Docs\de\10-Detailinformationen zur Funktionsweise\Detailinformationen zur Funktionsweise.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Berechnungen.png" />
-    <Content Include="Images\BE_Logo.png" />
-    <Content Include="Images\BucherTransparent.png" />
-    <Content Include="Images\carAccesses.png" />
-    <Content Include="Images\CarDetails\carCeilingDetail.png" />
-    <Content Include="Images\CarDetails\carDoorInstallationDimensions.png" />
-    <Content Include="Images\CarDetails\ConnectionAngle.png" />
-    <Content Include="Images\CarDetails\MirrorPanel.png" />
-    <Content Include="Images\CarDetails\MirrorRail.png" />
-    <Content Include="Images\CarDetails\SillGravidaBasic.png" />
-    <Content Include="Images\carDimensions.png" />
-    <Content Include="Images\CarFrameDetails\BucklingCases.png" />
-    <Content Include="Images\CarFrameDetails\Cantilever_MassD.png" />
-    <Content Include="Images\CarFrameDetails\CentralLift_MassD.png" />
-    <Content Include="Images\CFPTransparent.png" />
-    <Content Include="Images\ExcelTransparent.png" />
-    <Content Include="Images\GoogleChrome.png" />
-    <Content Include="Images\Handrails\handrail_HL13.png" />
-    <Content Include="Images\Handrails\handrail_HL14.png" />
-    <Content Include="Images\HighlightBold.png" />
-    <Content Include="Images\HighlightColor.png" />
-    <Content Include="Images\Homepage.ico" />
-    <Content Include="Images\LiftDataManagerLogo.png" />
-    <Content Include="Images\LiloTransparent.png" />
-    <Content Include="Images\NoImage.png" />
-    <Content Include="Images\Ordnerblue.png" />
-    <Content Include="Images\Ordnergreen.png" />
-    <Content Include="Images\Ordnerorange.png" />
-    <Content Include="Images\Ordnerpurple.png" />
-    <Content Include="Images\Ordnerred.png" />
-    <Content Include="Images\OrdnerTransparent.png" />
-    <Content Include="Images\Ordneryellow.png" />
-    <Content Include="Images\PdfTransparent.png" />
-    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp1.png" />
-    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp2.png" />
-    <Content Include="Images\TechnicalDocumentation\protectionRoomTyp3.png" />
-    <Content Include="Images\TonerSaveOFF.png" />
-    <Content Include="Images\TonerSaveON.png" />
-    <Content Include="Images\VaultTransparent.png" />
-    <Content Include="Images\ZiehlAbeggTransparent.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Controls\CommandBar.xaml" />
-    <None Remove="Controls\EntranceControl.xaml" />
-    <None Remove="Controls\FooterControl.xaml" />
-    <None Remove="Controls\HeaderControl.xaml" />    
-    <None Remove="Controls\SidebarPanel.xaml" />
-    <None Remove="Styles\ControlDataTemplates.xaml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Manifest Include="$(ApplicationManifest)" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2730-prerelease" />
-    <PackageReference Include="AK.Toolkit.WinUI3.NumberBoxEx" Version="1.0.1" />
-    <PackageReference Include="Cogs.Collections" Version="1.12.1" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.1" />
-    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.1.240821" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.65" />
-    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
-    <PackageReference Include="Humanizer.Core.de" Version="2.14.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
-    <PackageReference Include="Serilog" Version="4.0.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
-    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-    <PackageReference Include="WinUICommunity.Components" Version="6.9.0" />
-    <PackageReference Include="WinUICommunity.Core" Version="6.9.0" />
-    <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.8" />
-    <PackageReference Include="WinUIEx" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\LiftDataManager.Core\LiftDataManager.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -777,65 +683,5 @@
     <None Update="Styles\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-    <ProjectCapability Include="Msix" />
-  </ItemGroup>
-
-  <PropertyGroup Label="Globals">
-    <WebView2EnableCsWinRTProjection>True</WebView2EnableCsWinRTProjection>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Controls\CarDesignControl.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Remove="Controls\CarDesignControl.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>8</VersionMinor>
-      <VersionMajor>2</VersionMajor>
-      <Guid>2df8d04c-5bfa-101b-bde5-00aa0044de52</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Microsoft.Office.Interop.Outlook">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>6</VersionMinor>
-      <VersionMajor>9</VersionMajor>
-      <Guid>00062fff-0000-0000-c000-000000000046</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Strings\en-us\" />
-    <Folder Include="Views\GeneralData\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="Assets\NavViewMenu\NavigationViewControlData.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Styles\ContentDialog.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Remove="Styles\ContentDialog.xaml" />
   </ItemGroup>
 </Project>

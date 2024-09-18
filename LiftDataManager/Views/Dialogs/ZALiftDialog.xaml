@@ -20,9 +20,6 @@
         <Core:EventTriggerBehavior EventName="Loaded">
             <Core:InvokeCommandAction Command="{x:Bind ViewModel.ZALiftDialogLoadedCommand}" CommandParameter="{Binding ElementName=ZiehlAbeggDialog}" />
         </Core:EventTriggerBehavior>
-        <Core:EventTriggerBehavior EventName="Unloaded">
-            <Core:InvokeCommandAction Command="{x:Bind ViewModel.ZALiftDialogUnloadedCommand}" />
-        </Core:EventTriggerBehavior>
         <Core:EventTriggerBehavior EventName="PrimaryButtonClick">
             <Core:InvokeCommandAction Command="{x:Bind ViewModel.PrimaryButtonClickedCommand}" />
         </Core:EventTriggerBehavior>

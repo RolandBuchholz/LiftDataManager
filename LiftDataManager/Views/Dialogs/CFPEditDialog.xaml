@@ -20,14 +20,8 @@
         <Core:EventTriggerBehavior EventName="Loaded">
             <Core:InvokeCommandAction Command="{x:Bind ViewModel.CFPEditDialogLoadedCommand}" CommandParameter="{Binding ElementName=CFPDialog}" />
         </Core:EventTriggerBehavior>
-        <Core:EventTriggerBehavior EventName="Unloaded">
-            <Core:InvokeCommandAction Command="{x:Bind ViewModel.CFPEditDialogUnloadedCommand}" />
-        </Core:EventTriggerBehavior>
         <Core:EventTriggerBehavior EventName="PrimaryButtonClick">
             <Core:InvokeCommandAction Command="{x:Bind ViewModel.PrimaryButtonClickedCommand}" />
-        </Core:EventTriggerBehavior>
-        <Core:EventTriggerBehavior EventName="CloseButtonClick">
-            <Core:InvokeCommandAction Command="{x:Bind ViewModel.CloseButtonClickedCommand}" />
         </Core:EventTriggerBehavior>
     </Interactivity:Interaction.Behaviors>
     <ContentDialog.Resources>

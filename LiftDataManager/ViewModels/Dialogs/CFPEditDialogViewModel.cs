@@ -46,16 +46,18 @@ public partial class CFPEditDialogViewModel : ObservableObject
             EnableRaisingEvents = true
         };
         CFPWatcher.Changed += OnChangedCFP;
+        sender.Closed += CFPEditDialogClosed;
         await StartCarFrameProgramAsync(sender.CarFrameTyp);
     }
-    [RelayCommand]
-    public void CFPEditDialogUnloaded()
+
+    private void CFPEditDialogClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
     {
         if (CFPWatcher is not null)
         {
             CFPWatcher.Changed -= OnChangedCFP;
             CFPWatcher.Dispose();
         }
+        sender.Closed -= CFPEditDialogClosed;
         if (string.IsNullOrWhiteSpace(PathAutodeskTransfer))
         {
             return;
@@ -64,6 +66,36 @@ public partial class CFPEditDialogViewModel : ObservableObject
         if (File.Exists(fromCFP))
         {
             File.Delete(fromCFP);
+        }
+        if (args.Result == ContentDialogResult.None)
+        {
+            if (string.IsNullOrWhiteSpace(PathAutodeskTransfer))
+            {
+                return;
+            }
+            try
+            {
+                var restoreFileXml = Path.Combine(PathAutodeskTransfer, OrderNumber + "-AutoDeskTransfer.xml");
+                FileInfo restoreFileXmlInfo = new(restoreFileXml);
+                if (restoreFileXmlInfo.IsReadOnly)
+                    return;
+                var backupFileXml = Path.Combine(PathAutodeskTransfer, OrderNumber + "-LDM_Backup.xml");
+
+                if (File.Exists(backupFileXml))
+                {
+                    File.Move(backupFileXml, restoreFileXml, true);
+                    _logger.LogInformation(60192, "{restoreFileXml} restored from backupfile", restoreFileXml);
+                }
+                else
+                {
+                    _logger.LogError(61092, "no backupfile found, restoring Autodesktransfer.xml failed");
+                }
+            }
+            catch (Exception)
+            {
+
+                _logger.LogError(61092, "restoring Autodesktransfer.xml failed");
+            }
         }
     }
 
@@ -78,38 +110,6 @@ public partial class CFPEditDialogViewModel : ObservableObject
         if (File.Exists(backupFileXml))
         {
             File.Delete(backupFileXml);
-        }
-    }
-
-    [RelayCommand]
-    public void CloseButtonClicked()
-    {
-        if (string.IsNullOrWhiteSpace(PathAutodeskTransfer))
-        {
-            return;
-        }
-        try
-        {
-            var restoreFileXml = Path.Combine(PathAutodeskTransfer, OrderNumber + "-AutoDeskTransfer.xml");
-            FileInfo restoreFileXmlInfo = new(restoreFileXml);
-            if (restoreFileXmlInfo.IsReadOnly)
-                return;
-            var backupFileXml = Path.Combine(PathAutodeskTransfer, OrderNumber + "-LDM_Backup.xml");
-
-            if (File.Exists(backupFileXml))
-            {
-                File.Move(backupFileXml, restoreFileXml, true);
-                _logger.LogInformation(60192, "{restoreFileXml} restored from backupfile", restoreFileXml);
-            }
-            else
-            {
-                _logger.LogError(61092, "no backupfile found, restoring Autodesktransfer.xml failed");
-            }
-        }
-        catch (Exception)
-        {
-
-            _logger.LogError(61092, "restoring Autodesktransfer.xml failed");
         }
     }
 
