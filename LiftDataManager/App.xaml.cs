@@ -74,6 +74,7 @@ public partial class App : Application
             // DataBase Services
             services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))
                                                                       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            services.AddDbContext<ParameterEditContext>(options => options.UseSqlite(GetConnectionString(false)));
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();
