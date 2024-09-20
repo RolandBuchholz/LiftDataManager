@@ -41,7 +41,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathCFP))
+        {
             _settingService.SetSettingsAsync(nameof(PathCFP), value);
+        }
     }
 
     [ObservableProperty]
@@ -50,7 +52,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathZALift))
+        {
             _settingService.SetSettingsAsync(nameof(PathZALift), value);
+        }
     }
 
     [ObservableProperty]
@@ -59,7 +63,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathLilo))
+        {
             _settingService.SetSettingsAsync(nameof(PathLilo), value);
+        }
     }
 
     [ObservableProperty]
@@ -68,7 +74,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathExcel))
+        {
             _settingService.SetSettingsAsync(nameof(PathExcel), value);
+        }
     }
 
     [ObservableProperty]
@@ -77,7 +85,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         value ??= string.Empty;
         if (!string.Equals(value, _settingService.PathDataBase))
+        {
             _settingService.SetSettingsAsync(nameof(PathDataBase), value);
+        }
     }
 
     [RelayCommand]
@@ -85,7 +95,9 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     {
         string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
         if (Directory.Exists(path))
+        {
             Process.Start("explorer.exe", path);
+        }
         await Task.CompletedTask;
     }
 
@@ -153,6 +165,7 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
     [RelayCommand]
     public void AppShutdown()
     {
+        App.Current.DisableSaveWarning();
         Application.Current.Exit();
     }
 
@@ -168,11 +181,13 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
         mailItem.Attachments.Add(LogFile, Outlook.OlAttachmentType.olByValue, Type.Missing, Type.Missing);
         mailItem.Display(false);
         mailItem.Send();
+        App.Current.DisableSaveWarning();
         Application.Current.Exit();
     }
 
     public void OnNavigatedFrom()
     {
+        App.Current.DisableSaveWarning();
         Application.Current.Exit();
     }
     public void OnNavigatedTo(object parameter)

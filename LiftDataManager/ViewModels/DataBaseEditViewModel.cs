@@ -1,4 +1,6 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
@@ -437,7 +439,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                     var newEntityValue = entity.DebugView.LongView;
 
                     SetDatabaseTableValueModification("modify", tableName, idEntity, nameEntity, newEntityValue);
-                    _logger.LogInformation(60176, "ChangeParameter: {entry.DebugView.LongView}", entity.DebugView.LongView);
+                    _logger.LogInformation(60176, "ChangeParameter: {newEntityValue}", newEntityValue);
                 }
                 _parameterEditContext.SaveChanges();
                 CanChangeParameters = false;
@@ -555,8 +557,6 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
     private void GetDropdownValues()
     {
-        if (_parameterEditContext is null)
-            return;
         ParameterTyps = _parameterEditContext.Set<ParameterTyp>().ToList();
         ParameterTypeCodes = _parameterEditContext.Set<ParameterTypeCode>().ToList();
         ParameterCategorys = _parameterEditContext.Set<ParameterCategory>().ToList();
@@ -624,5 +624,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
+        //if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
+        //{
+        //    SqliteConnection.ClearPool(conn);
+        //}
+        //_parameterEditContext.Database.CloseConnectionAsync();
+        //_parameterEditContext.Database.CloseConnection();
+        //_parameterEditContext.DisposeAsync();
+        
     }
 }
