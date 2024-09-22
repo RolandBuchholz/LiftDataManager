@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
@@ -40,7 +39,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private List<string?>? filteredAllTables;
 
     [ObservableProperty]
-    private IEnumerable<object> databaseTable = Enumerable.Empty<object>();
+    private List<object> databaseTable = [];
 
     [ObservableProperty]
     private List<DatabaseTableValueModification>? tableHistory;
@@ -64,7 +63,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 var table = _parameterEditContext.Query(entityType);
                 if (table is not null)
                 {
-                    DatabaseTable = (IEnumerable<object>)table;
+                    foreach (var row in table)
+                    {
+                        DatabaseTable.Add(row);
+                    }
                     CanAddTableValue = true;
                     ShowTable = true;
                 }
@@ -624,13 +626,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        //if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
-        //{
-        //    SqliteConnection.ClearPool(conn);
-        //}
-        //_parameterEditContext.Database.CloseConnectionAsync();
-        //_parameterEditContext.Database.CloseConnection();
-        //_parameterEditContext.DisposeAsync();
-        
+        if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
+        {
+            SqliteConnection.ClearPool(conn);
+        }
+        _parameterEditContext.Database.CloseConnection();
     }
 }

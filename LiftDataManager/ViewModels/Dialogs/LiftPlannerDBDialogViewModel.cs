@@ -1,12 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
 {
-    public LiftPlannerDBDialogViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
+    private readonly ParameterEditContext _parameterEditContext;
+    private readonly ILogger<LiftPlannerDBDialogViewModel> _logger;
+    public LiftPlannerDBDialogViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ILogger<LiftPlannerDBDialogViewModel> logger, ParameterEditContext parameterEditContext) :
      base(parameterDataService, dialogService, infoCenterService)
     {
+        _logger = logger;
+        _parameterEditContext = parameterEditContext;
     }
 
     [ObservableProperty]
@@ -20,5 +26,10 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, INavigati
     public void OnNavigatedFrom()
     {
         //NavigatedFromBaseActions();
+        if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
+        {
+            SqliteConnection.ClearPool(conn);
+        }
+        _parameterEditContext.Database.CloseConnection();
     }
 }
