@@ -22,7 +22,7 @@ public interface IDialogService
 
     Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult);
 
-    Task<string?> LiftPlannerDBDialogAsync(string liftPlanner);
+    Task<string?> LiftPlannerDBDialogAsync(string? liftPlanner);
 
     Task<bool> PasswordDialogAsync(string? title, string? condition, string? description);
 

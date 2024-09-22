@@ -326,7 +326,7 @@ public class DialogService : IDialogService
     /// <param name="liftPlanner">The title.</param>
     /// <returns>Task</returns>
 
-    public async Task<string?> LiftPlannerDBDialogAsync(string liftPlanner)
+    public async Task<string?> LiftPlannerDBDialogAsync(string? liftPlanner)
     {
         var dialog = new LiftPlannerDBDialog()
         {
