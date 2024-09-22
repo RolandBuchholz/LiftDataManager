@@ -331,6 +331,7 @@ public class DialogService : IDialogService
         var dialog = new LiftPlannerDBDialog()
         {
             XamlRoot = MainRoot.XamlRoot,
+            LiftPlanner = liftPlanner,
             RequestedTheme = MainRoot.ActualTheme
         };
         var result = await dialog.ShowAsyncQueueDraggable();

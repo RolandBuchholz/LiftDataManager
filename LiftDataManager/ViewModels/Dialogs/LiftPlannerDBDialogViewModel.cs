@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
-using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 
 namespace LiftDataManager.ViewModels;
 
@@ -13,19 +11,40 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, INavigati
     private readonly ParameterEditContext _parameterEditContext;
     private readonly ILogger<LiftPlannerDBDialogViewModel> _logger;
     public ObservableCollection<Country>? Countrys { get; set; } = [];
-    public LiftPlannerDBDialogViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ILogger<LiftPlannerDBDialogViewModel> logger, ParameterEditContext parameterEditContext) :
-     base(parameterDataService, dialogService, infoCenterService)
+    public LiftPlannerDBDialogViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
+        ILogger<LiftPlannerDBDialogViewModel> logger, ParameterEditContext parameterEditContext) :
+        base(parameterDataService, dialogService, infoCenterService)
     {
         _logger = logger;
         _parameterEditContext = parameterEditContext;
     }
 
-    //var countrys = _parametercontext.Set<Country>().ToArray();
-    //    foreach (var country in countrys)
-    //    {
-    //        Countrys?.Add(country);
-    //    }
+    public string? LiftPlanner { get; set; }
 
+    [RelayCommand]
+    public async Task LiftPlannerDialogLoadedAsync(LiftPlannerDBDialog sender)
+    {
+        LiftPlanner = sender.LiftPlanner;
+        if (string.IsNullOrWhiteSpace(LiftPlanner))
+        {
+            DataBaseAction = "Neuen Fachplaner anlegen";
+            DataBaseButtonText = "Fachplaner erstellen und speichern";
+            DataBaseActionDescription = "Neuen Fachplaner erstellen und in die Datenbank speichen";
+        }
+        else
+        {
+            DataBaseAction = "Fachplaner aktualisieren";
+            DataBaseButtonText = "Fachplaner in Datenbank aktualisieren";
+            DataBaseActionDescription = "Vorhandenen Fachplaner in der Datenbank aktualisieren";
+        }
+
+        var countrys = _parameterEditContext.Set<Country>().ToArray();
+        foreach (var country in countrys)
+        {
+            Countrys?.Add(country);
+        }
+        await Task.CompletedTask;
+    }
 
     //if (!string.IsNullOrWhiteSpace(SelectedLiftPlanner))
     //{
@@ -199,7 +218,7 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, INavigati
     }
 
     [RelayCommand(CanExecute = nameof(CanAddLiftPlannerToDatabase))]
-    private async Task AddLiftPlannerToDatabaseAsync(ContentDialog addLiftPlannerDialog)
+    private async Task AddLiftPlannerToDatabaseAsync()
     {
         //if (string.IsNullOrWhiteSpace(SelectedLiftPlanner))
         //{
@@ -319,12 +338,12 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, INavigati
 
     public void OnNavigatedTo(object parameter)
     {
-        //NavigatedToBaseActions();
+        NavigatedToBaseActions();
     }
 
     public void OnNavigatedFrom()
     {
-        //NavigatedFromBaseActions();
+        NavigatedFromBaseActions();
         if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
         {
             SqliteConnection.ClearPool(conn);
