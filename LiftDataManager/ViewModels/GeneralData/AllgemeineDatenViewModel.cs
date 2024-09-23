@@ -89,13 +89,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     }
 
     [RelayCommand(CanExecute = nameof(CanGetLiftPlannerFromDatabase))]
-    private void GetLiftPlannerFromDatabase(ParameterContext dbcontext)
+    private void GetLiftPlannerFromDatabase()
     {
-        dbcontext ??= _parametercontext;
-
         var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
 
-        var liftPlannerDatabase = dbcontext.Set<LiftPlanner>().Include(i => i.ZipCode)
+        var liftPlannerDatabase = _parametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
                                                               .ThenInclude(t => t.Country)
                                                               .FirstOrDefault(x => x.Id == liftPlanner.Key);
         ParameterDictionary["var_AnPersonZ4"].Value = SelectedLiftPlanner;
@@ -128,7 +126,14 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         {
             SqliteConnection.ClearPool(conn);
         }
-        var liftPlanners = _parametercontext.Set<LiftPlanner>().ToArray();
+        if (result > 0)
+        {
+            if (LiftPlanners.TryGetValue(result, out var liftPlanner))
+            {
+                SelectedLiftPlanner = liftPlanner;
+                GetLiftPlannerFromDatabase();
+            };
+        }
     }
 
     public void OnNavigatedTo(object parameter)

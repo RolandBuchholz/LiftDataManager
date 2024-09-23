@@ -261,17 +261,6 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
                 _logger.LogInformation(60179, "Liftplanner: {Company} successfully add to database", addedLiftpanner.DebugView.LongView);
 
                 LiftPlannerId = addedLiftpanner.Entity.Id;
-
-                if (newLiftplanner != null)
-                {
-                    SetLiftPlanner(newLiftplanner);
-                }
-
-                //if (LiftPlanners is not null)
-                //{
-                //    LiftPlanners.Add(addedLiftpanner.Entity.Id, $"{addedLiftpanner.Entity.Company} ({addedLiftpanner.Entity.FirstName} {addedLiftpanner.Entity.Name})");
-                //    SelectedLiftPlanner = LiftPlanners[addedLiftpanner.Entity.Id];
-                //}
             }
             catch
             {
@@ -318,42 +307,19 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
             {
                 _logger.LogError(61078, "Failed to update Liftplanner {Company}", Company);
             }
-            //GetLiftPlannerFromDatabase(_editableparametercontext);
-            //Company = string.Empty;
-            //FirstName = string.Empty;
-            //Name = string.Empty;
-            //Street = string.Empty;
-            //StreetNumber = string.Empty;
-            //PhoneNumber = string.Empty;
-            //MobileNumber = string.Empty;
-            //Mailadress = string.Empty;
-            //Town = string.Empty;
-            //ZipCode = null;
-            //addLiftPlannerDialog.Hide();
             finally
             {
                 sender.LiftPlannerId = LiftPlannerId;
+                await CopyDataBaseToWorkSpace();
                 sender.Hide();
             }
         }
-
-        
-
-    }
-
-    private void SetLiftPlanner(LiftPlanner liftPlanner)
-    {
-        //ParameterDictionary["var_AnPersonZ4"].Value = SelectedLiftPlanner;
-        ParameterDictionary["var_FP_Adresse"].Value = $"{liftPlanner.ZipCode.Country.ShortMark} - {liftPlanner.ZipCode.ZipCodeNumber} {liftPlanner.ZipCode.Name} {liftPlanner.Street} {liftPlanner.StreetNumber}";
-        ParameterDictionary["var_AnPersonPhone"].Value = liftPlanner.PhoneNumber;
-        ParameterDictionary["var_AnPersonMobil"].Value = liftPlanner.MobileNumber;
-        ParameterDictionary["var_AnPersonMail"].Value = liftPlanner.EmailAddress;
     }
 
     private async Task CopyDataBaseToWorkSpace()
     {
-        var connectionString = _parameterEditContext.Database.GetConnectionString();
-        var dbPath = connectionString?[13..connectionString.LastIndexOf('"')];
+        var connectionString = _parameterEditContext.Database.GetConnectionString()?.Replace("Data Source=", "");
+        var dbPath = connectionString?[..connectionString.IndexOf(';')];
 
         if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
         {
