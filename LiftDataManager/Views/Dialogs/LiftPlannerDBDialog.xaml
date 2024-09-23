@@ -282,6 +282,7 @@
             Margin="0,10,0,0"
             HorizontalAlignment="Stretch"
             Command="{x:Bind ViewModel.AddLiftPlannerToDatabaseCommand}"
+            CommandParameter="{Binding ElementName=LiftPlannerDialog}"
             FontWeight="Bold"
             Style="{StaticResource AccentButtonStyle}">
             <StackPanel Orientation="Horizontal">

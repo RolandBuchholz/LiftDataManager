@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
@@ -55,9 +56,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private void FilterLiftPlanners(object sender)
     {
         if (sender is null)
+        {
             return;
+        }
         if (sender is not AutoSuggestBox)
+        {
             return;
+        }
         var splitText = ((AutoSuggestBox)sender).Text.ToLower().Split(" ");
         FilteredLiftPlanners.Clear();
         foreach (var liftplanner in LiftPlanners)
@@ -93,11 +98,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         var liftPlannerDatabase = dbcontext.Set<LiftPlanner>().Include(i => i.ZipCode)
                                                               .ThenInclude(t => t.Country)
                                                               .FirstOrDefault(x => x.Id == liftPlanner.Key);
-        ParameterDictionary!["var_AnPersonZ4"].Value = SelectedLiftPlanner;
-        ParameterDictionary!["var_FP_Adresse"].Value = $"{liftPlannerDatabase?.ZipCode.Country.ShortMark} - {liftPlannerDatabase?.ZipCode.ZipCodeNumber} {liftPlannerDatabase?.ZipCode.Name} {liftPlannerDatabase?.Street} {liftPlannerDatabase?.StreetNumber}";
-        ParameterDictionary!["var_AnPersonPhone"].Value = liftPlannerDatabase?.PhoneNumber;
-        ParameterDictionary!["var_AnPersonMobil"].Value = liftPlannerDatabase?.MobileNumber;
-        ParameterDictionary!["var_AnPersonMail"].Value = liftPlannerDatabase?.EmailAddress;
+        ParameterDictionary["var_AnPersonZ4"].Value = SelectedLiftPlanner;
+        ParameterDictionary["var_FP_Adresse"].Value = $"{liftPlannerDatabase?.ZipCode.Country.ShortMark} - {liftPlannerDatabase?.ZipCode.ZipCodeNumber} {liftPlannerDatabase?.ZipCode.Name} {liftPlannerDatabase?.Street} {liftPlannerDatabase?.StreetNumber}";
+        ParameterDictionary["var_AnPersonPhone"].Value = liftPlannerDatabase?.PhoneNumber;
+        ParameterDictionary["var_AnPersonMobil"].Value = liftPlannerDatabase?.MobileNumber;
+        ParameterDictionary["var_AnPersonMail"].Value = liftPlannerDatabase?.EmailAddress;
         AutoSuggestBoxText = string.Empty;
         SelectedLiftPlanner = string.Empty;
     }
@@ -117,7 +122,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     [RelayCommand]
     private async Task AddLiftPlannerDialogAsync(ContentDialog addLiftPlannerDialog)
     {
-        await _dialogService.LiftPlannerDBDialogAsync(SelectedLiftPlanner);
+        var liftPlannerId = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner).Key;
+        var result = await _dialogService.LiftPlannerDBDialogAsync(liftPlannerId);
+        if (_parametercontext.Database.GetDbConnection() is SqliteConnection conn)
+        {
+            SqliteConnection.ClearPool(conn);
+        }
+        var liftPlanners = _parametercontext.Set<LiftPlanner>().ToArray();
     }
 
     public void OnNavigatedTo(object parameter)

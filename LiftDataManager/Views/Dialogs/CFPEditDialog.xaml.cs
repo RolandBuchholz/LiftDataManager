@@ -2,12 +2,14 @@ namespace LiftDataManager.Views.Dialogs;
 
 public sealed partial class CFPEditDialog : ContentDialog
 {
+    public string? FullPathXml { get; set; }
+    public string? CarFrameTyp { get; set; }
+
     public CFPEditDialogViewModel ViewModel
     {
         get;
     }
-    public string? FullPathXml { get; set; }
-    public string? CarFrameTyp { get; set; }
+
     public CFPEditDialog()
     {
         ViewModel = App.GetService<CFPEditDialogViewModel>();

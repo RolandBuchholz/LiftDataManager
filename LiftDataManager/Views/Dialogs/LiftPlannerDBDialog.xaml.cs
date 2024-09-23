@@ -2,7 +2,8 @@ namespace LiftDataManager.Views.Dialogs;
 
 public sealed partial class LiftPlannerDBDialog : ContentDialog
 {
-    public string? LiftPlanner { get; set; }
+    public int LiftPlannerId { get; set; }
+
     public LiftPlannerDBDialogViewModel ViewModel
     {
         get;
