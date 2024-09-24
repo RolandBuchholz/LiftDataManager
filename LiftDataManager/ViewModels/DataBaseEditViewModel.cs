@@ -1,5 +1,6 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
@@ -8,19 +9,44 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 {
     private readonly ISettingService _settingService;
     private readonly IVaultDataService _vaultDataService;
+    private readonly ParameterContext _parametercontext;
     private readonly ParameterEditContext _parameterEditContext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                 ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger, ParameterEditContext parameterEditContext) :
+                                 ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
                                  base(parameterDataService, dialogService, infoCenterService)
     {
         _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _logger = logger;
+        _parametercontext = parametercontext;
         _parameterEditContext = parameterEditContext;
         parameterDtos ??= [];
         filteredParameterDtos ??= [];
+    }
+
+    [RelayCommand]
+    public void DataBaseEditViewModelUnloaded()
+    {
+        if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection editConn)
+        {
+            SqliteConnection.ClearPool(editConn);
+        }
+        _parameterEditContext.Database.CloseConnection();
+        var copyResult = ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext).Result;
+        if (copyResult)
+        {
+            _logger.LogInformation(60177, "Copy database successful to lokal workspace");
+        }
+        else
+        {
+            _logger.LogWarning(61075, "Copy database failed to lokal workspace");
+        }
+        if (_parametercontext.Database.GetDbConnection() is SqliteConnection conn)
+        {
+            SqliteConnection.ClearPool(conn);
+        }
     }
 
     [ObservableProperty]
@@ -626,10 +652,5 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
-        {
-            SqliteConnection.ClearPool(conn);
-        }
-        _parameterEditContext.Database.CloseConnection();
     }
 }

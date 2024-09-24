@@ -45,7 +45,8 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
 
     private void SetLiftplanners()
     {
-        var liftPlanners = _parametercontext.Set<LiftPlanner>().ToArray();
+        LiftPlanners?.Clear();
+        var liftPlanners = _parametercontext.Set<LiftPlanner>();
         foreach (var planner in liftPlanners)
         {
             LiftPlanners?.Add(planner.Id, $"{planner.Company} ({planner.FirstName} {planner.Name})");
@@ -126,6 +127,7 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
         {
             SqliteConnection.ClearPool(conn);
         }
+        SetLiftplanners();
         if (result > 0)
         {
             if (LiftPlanners.TryGetValue(result, out var liftPlanner))

@@ -1,21 +1,17 @@
-﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class LiftPlannerDBDialogViewModel : ObservableObject
 {
-    const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
     private readonly ParameterEditContext _parameterEditContext;
     private readonly ILogger<LiftPlannerDBDialogViewModel> _logger;
     public ObservableCollection<Country>? Countrys { get; set; } = [];
 
-    public LiftPlannerDBDialogViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-        ILogger<LiftPlannerDBDialogViewModel> logger, ParameterEditContext parameterEditContext) :
-        base(parameterDataService, dialogService, infoCenterService)
+    public LiftPlannerDBDialogViewModel(ILogger<LiftPlannerDBDialogViewModel> logger, ParameterEditContext parameterEditContext)
     {
         _logger = logger;
         _parameterEditContext = parameterEditContext;
@@ -64,8 +60,6 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
         {
             Countrys?.Add(country);
         }
-
-        NavigatedToBaseActions();
         sender.Closed += LiftPlannerDBDialogClosed;
         await Task.CompletedTask;
     }
@@ -73,7 +67,6 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
     private void LiftPlannerDBDialogClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
     {
         sender.Closed -= LiftPlannerDBDialogClosed;
-        NavigatedFromBaseActions();
         if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
         {
             SqliteConnection.ClearPool(conn);
@@ -269,7 +262,15 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
             finally 
             { 
                 sender.LiftPlannerId = LiftPlannerId;
-                await CopyDataBaseToWorkSpace();
+                var copyResult =  await ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext);
+                if (copyResult)
+                {
+                    _logger.LogInformation(60177, "Copy database successful to lokal workspace");
+                }
+                else
+                {
+                    _logger.LogWarning(61075, "Copy database failed to lokal workspace");
+                }
                 sender.Hide();
             }
         }
@@ -277,31 +278,24 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
         {
             try
             {
-                //var liftPlanner = LiftPlanners.FirstOrDefault(x => x.Value == SelectedLiftPlanner);
-                //var liftPlannerDatabase = _editableparametercontext.Set<LiftPlanner>().Include(i => i.ZipCode)
-                //                                                                      .ThenInclude(t => t.Country)
-                //                                                                      .FirstOrDefault(x => x.Id == liftPlanner.Key);
-
-
-
-                //if (liftPlannerDatabase is not null)
-                //{
-                //    liftPlannerDatabase.Company = Company!;
-                //    liftPlannerDatabase.FirstName = FirstName;
-                //    liftPlannerDatabase.Name = Name!;
-                //    liftPlannerDatabase.Street = Street!;
-                //    liftPlannerDatabase.StreetNumber = StreetNumber;
-                //    liftPlannerDatabase.PhoneNumber = PhoneNumber;
-                //    liftPlannerDatabase.MobileNumber = MobileNumber;
-                //    liftPlannerDatabase.EmailAddress = Mailadress!;
-                //    liftPlannerDatabase.ZipCode.Country = SelectedCountry!;
-                //    liftPlannerDatabase.ZipCode.ZipCodeNumber = Convert.ToInt32(ZipCode);
-                //    liftPlannerDatabase.ZipCode.Name = Town!;
-                //}
-                //await _editableparametercontext.SaveChangesAsync();
-
-                //LiftPlanners[liftPlanner.Key] = $"{Company} ({FirstName} {Name})";
-                //SelectedLiftPlanner = LiftPlanners[liftPlanner.Key];
+                var liftPlannerDatabase = _parameterEditContext.Set<LiftPlanner>().Include(i => i.ZipCode)
+                                                                                      .ThenInclude(t => t.Country)
+                                                                                      .FirstOrDefault(x => x.Id == LiftPlannerId);
+                if (liftPlannerDatabase is not null)
+                {
+                    liftPlannerDatabase.Company = Company!;
+                    liftPlannerDatabase.FirstName = FirstName;
+                    liftPlannerDatabase.Name = Name!;
+                    liftPlannerDatabase.Street = Street!;
+                    liftPlannerDatabase.StreetNumber = StreetNumber;
+                    liftPlannerDatabase.PhoneNumber = PhoneNumber;
+                    liftPlannerDatabase.MobileNumber = MobileNumber;
+                    liftPlannerDatabase.EmailAddress = Mailadress!;
+                    liftPlannerDatabase.ZipCode.Country = SelectedCountry!;
+                    liftPlannerDatabase.ZipCode.ZipCodeNumber = Convert.ToInt32(ZipCode);
+                    liftPlannerDatabase.ZipCode.Name = Town!;
+                }
+                await _parameterEditContext.SaveChangesAsync();
             }
             catch
             {
@@ -309,28 +303,17 @@ public partial class LiftPlannerDBDialogViewModel : DataViewModelBase, IRecipien
             }
             finally
             {
-                sender.LiftPlannerId = LiftPlannerId;
-                await CopyDataBaseToWorkSpace();
+                var copyResult = await ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext);
+                if (copyResult)
+                {
+                    _logger.LogInformation(60177, "Copy database successful to lokal workspace");
+                }
+                else
+                {
+                    _logger.LogWarning(61075, "Copy database failed to lokal workspace");
+                }
                 sender.Hide();
             }
         }
-    }
-
-    private async Task CopyDataBaseToWorkSpace()
-    {
-        var connectionString = _parameterEditContext.Database.GetConnectionString()?.Replace("Data Source=", "");
-        var dbPath = connectionString?[..connectionString.IndexOf(';')];
-
-        if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection conn)
-        {
-            SqliteConnection.ClearPool(conn);
-        }
-        _parameterEditContext.Database.CloseConnection();
-        await Task.Delay(1500);
-        if (!string.IsNullOrWhiteSpace(dbPath))
-        {
-            File.Copy(dbPath, workPathDb, true);
-        }
-        await Task.CompletedTask;
     }
 }
