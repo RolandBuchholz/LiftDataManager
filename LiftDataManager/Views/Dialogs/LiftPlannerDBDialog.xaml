@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:controls="using:LiftDataManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LiftDataManager.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -53,35 +54,14 @@
             VerticalAlignment="Center"
             FontSize="125"
             Glyph="&#xE779;" />
-        <Grid
+        <controls:ValidationTextbox
             Grid.Row="1"
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Width="350"
-            Margin="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBox
-                x:Name="txb_Company"
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                PlaceholderText="Unternehmen"
-                Text="{x:Bind ViewModel.Company, Mode=TwoWay}" />
-            <FontIcon
-                x:Name="ico_CompanyError"
-                Grid.Column="1"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Foreground="Red"
-                Glyph="&#xE946;"
-                Visibility="Collapsed">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="Red" Text="* Pflichteingabe" />
-                </ToolTipService.ToolTip>
-            </FontIcon>
-        </Grid>
+            Margin="3"
+            HorizontalAlignment="Stretch"
+            PlaceholderText="Unternehmen"
+            Text="{x:Bind ViewModel.Company, Mode=TwoWay}" />
         <Grid
             Grid.Row="2"
             Grid.Column="1"
