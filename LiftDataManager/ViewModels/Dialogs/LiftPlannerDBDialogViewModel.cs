@@ -19,6 +19,11 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
 
     public int LiftPlannerId { get; set; }
 
+    public bool IsCompanyValid { get; set; }
+    public bool IsNameValid { get; set; }
+    public bool IsStreetValid { get; set; }
+    public bool IsMailadressValid { get; set; }
+
     [RelayCommand]
     public async Task LiftPlannerDialogLoadedAsync(LiftPlannerDBDialog sender)
     {
@@ -53,6 +58,11 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
                 Mailadress = liftPlannerDatabase.EmailAddress;
                 ZipCode = liftPlannerDatabase.ZipCode.ZipCodeNumber.ToString();
             }
+            IsCompanyValid = !string.IsNullOrWhiteSpace(Company);
+            IsNameValid = !string.IsNullOrWhiteSpace(Name);
+            IsStreetValid = !string.IsNullOrWhiteSpace(Street);
+            IsMailadressValid = Mailadress.IsEmail();
+            CheckLiftplannerIsValid();
         }
 
         var countrys = _parameterEditContext.Set<Country>().ToArray();
@@ -85,11 +95,11 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
 
     private void CheckLiftplannerIsValid()
     {
-        CanAddLiftPlannerToDatabase = !string.IsNullOrWhiteSpace(Company) &&
-                                      !string.IsNullOrWhiteSpace(Name) &&
-                                      !string.IsNullOrWhiteSpace(Street) &&
-                                      !string.IsNullOrWhiteSpace(Town) &&
-                                      !string.IsNullOrWhiteSpace(Mailadress);
+        CanAddLiftPlannerToDatabase = IsCompanyValid &&
+                                      IsNameValid &&            
+                                      IsStreetValid &&
+                                      IsMailadressValid &&
+                                      !string.IsNullOrWhiteSpace(Town);
     }
 
     [ObservableProperty]

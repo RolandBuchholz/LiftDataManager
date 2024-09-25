@@ -27,14 +27,14 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [RelayCommand]
-    public void DataBaseEditViewModelUnloaded()
+    public async Task DataBaseEditViewModelUnloaded()
     {
         if (_parameterEditContext.Database.GetDbConnection() is SqliteConnection editConn)
         {
             SqliteConnection.ClearPool(editConn);
         }
         _parameterEditContext.Database.CloseConnection();
-        var copyResult = ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext).Result;
+        var copyResult = await ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext);
         if (copyResult)
         {
             _logger.LogInformation(60177, "Copy database successful to lokal workspace");

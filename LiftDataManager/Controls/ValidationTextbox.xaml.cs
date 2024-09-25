@@ -1,7 +1,13 @@
-
 namespace LiftDataManager.Controls;
 public sealed class ValidationTextbox : TextBox
 {
+    public enum ValidationTypMode 
+    { 
+        None,
+        Email,
+        Phone
+    }
+
     public ValidationTextbox()
     {
         this.DefaultStyleKey = typeof(ValidationTextbox);
@@ -10,20 +16,57 @@ public sealed class ValidationTextbox : TextBox
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        SetValidationState();
         TextChanged += ValidationTextbox_TextChanged;
-    }
-    
-    private void ValidationTextbox_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        IsVaild = string.IsNullOrWhiteSpace(Text);
         SetValidationState();
     }
 
-    private void SetValidationState() 
+    private void ValidationTextbox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        VisualStateManager.GoToState(this, IsVaild ? "IsNotVaild" : "IsVaild", useTransitions: false);
+        SetValidationState();
     }
+
+    private void SetValidationState()
+    {
+        IsVaild = !EnableStringEmptyCheck || !string.IsNullOrWhiteSpace(Text);
+
+        if (!IsVaild)
+        {
+            ErrorInfo = "*Pflichteingabe";
+        }
+        else if (IsVaild && ValidationMode != ValidationTypMode.None)
+        {
+            switch (ValidationMode)
+            {
+                case ValidationTypMode.None:
+                    break;
+                case ValidationTypMode.Email:
+                    IsVaild = Text.IsEmail();
+                    ErrorInfo = IsVaild ? string.Empty : "ungültige Emailadresse";
+                    break;
+                case ValidationTypMode.Phone:
+                    IsVaild = Text.IsPhoneNumber();
+                    ErrorInfo = IsVaild ? string.Empty : "ungültige Telefonnummer";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        VisualStateManager.GoToState(this, IsVaild ? "IsVaild" : "IsNotVaild", useTransitions: false);
+    }
+
+    public ValidationTypMode ValidationMode
+    {
+        get { return (ValidationTypMode)GetValue(ValidationModeProperty); }
+        set { SetValue(ValidationModeProperty, value); }
+    }
+
+
+    public static readonly DependencyProperty ValidationModeProperty =
+        DependencyProperty.Register(nameof(ValidationMode), 
+            typeof(ValidationTypMode), 
+            typeof(ValidationTextbox), 
+            new PropertyMetadata(ValidationTypMode.None));
 
     public bool IsVaild
     {
@@ -33,9 +76,10 @@ public sealed class ValidationTextbox : TextBox
 
     public static readonly DependencyProperty IsVaildProperty =
         DependencyProperty.Register(nameof(IsVaild),
-            typeof(bool), 
-            typeof(ValidationTextbox), 
+            typeof(bool),
+            typeof(ValidationTextbox),
             new PropertyMetadata(default));
+
     public bool EnableStringEmptyCheck
     {
         get { return (bool)GetValue(EnableStringEmptyCheckProperty); }
@@ -43,8 +87,20 @@ public sealed class ValidationTextbox : TextBox
     }
 
     public static readonly DependencyProperty EnableStringEmptyCheckProperty =
-        DependencyProperty.Register(nameof(EnableStringEmptyCheck), 
-            typeof(bool), 
-            typeof(ValidationTextbox), 
+        DependencyProperty.Register(nameof(EnableStringEmptyCheck),
+            typeof(bool),
+            typeof(ValidationTextbox),
             new PropertyMetadata(default));
+
+    public string ErrorInfo
+    {
+        get { return (string)GetValue(ErrorInfoProperty); }
+        set { SetValue(ErrorInfoProperty, value); }
+    }
+
+    public static readonly DependencyProperty ErrorInfoProperty =
+        DependencyProperty.Register(nameof(ErrorInfo),
+            typeof(string),
+            typeof(ValidationTextbox),
+            new PropertyMetadata("*Pflichteingabe"));
 }

@@ -60,35 +60,19 @@
             Grid.ColumnSpan="2"
             Margin="3"
             HorizontalAlignment="Stretch"
+            EnableStringEmptyCheck="True"
+            IsVaild="{x:Bind ViewModel.IsCompanyValid, Mode=TwoWay}"
             PlaceholderText="Unternehmen"
             Text="{x:Bind ViewModel.Company, Mode=TwoWay}" />
-        <Grid
+        <controls:ValidationTextbox
             Grid.Row="2"
             Grid.Column="1"
-            Margin="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBox
-                x:Name="txb_Name"
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                PlaceholderText="Name"
-                Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
-            <FontIcon
-                x:Name="ico_NameError"
-                Grid.Column="1"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Foreground="Red"
-                Glyph="&#xE946;"
-                Visibility="Collapsed">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="Red" Text="* Pflichteingabe" />
-                </ToolTipService.ToolTip>
-            </FontIcon>
-        </Grid>
+            Margin="3"
+            HorizontalAlignment="Stretch"
+            EnableStringEmptyCheck="True"
+            IsVaild="{x:Bind ViewModel.IsNameValid, Mode=TwoWay}"
+            PlaceholderText="Name"
+            Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
         <TextBox
             Grid.Row="2"
             Grid.Column="2"
@@ -101,30 +85,18 @@
             Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBox
-                x:Name="txb_Street"
+            <controls:ValidationTextbox
                 Grid.Column="0"
                 Margin="3"
                 HorizontalAlignment="Stretch"
+                EnableStringEmptyCheck="True"
+                IsVaild="{x:Bind ViewModel.IsStreetValid, Mode=TwoWay}"
                 PlaceholderText="Straßenname"
                 Text="{x:Bind ViewModel.Street, Mode=TwoWay}" />
-            <FontIcon
-                x:Name="ico_StreetError"
-                Grid.Column="1"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Foreground="Red"
-                Glyph="&#xE946;"
-                Visibility="Collapsed">
-                <ToolTipService.ToolTip>
-                    <TextBlock Foreground="Red" Text="* Pflichteingabe" />
-                </ToolTipService.ToolTip>
-            </FontIcon>
             <TextBox
-                Grid.Column="2"
+                Grid.Column="1"
                 Margin="3"
                 PlaceholderText="Hausnr."
                 Text="{x:Bind ViewModel.StreetNumber, Mode=TwoWay}" />
@@ -137,8 +109,9 @@
             HorizontalAlignment="Stretch"
             DisplayMemberPath="Name"
             ItemsSource="{x:Bind ViewModel.Countrys, Mode=OneWay}"
+            Loaded="ComboBox_Loaded"
             PlaceholderText="Land"
-            SelectedValue="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
+            SelectedItem="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
         <Grid
             Grid.Row="5"
             Grid.Column="0"
@@ -166,8 +139,9 @@
                     DisplayMemberPath="ShortMark"
                     IsEnabled="False"
                     ItemsSource="{x:Bind ViewModel.Countrys, Mode=OneWay}"
+                    Loaded="ComboBox_Loaded"
                     PlaceholderText="-"
-                    SelectedValue="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
+                    SelectedItem="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay}" />
                 <TextBlock
                     Grid.Column="1"
                     HorizontalAlignment="Center"
@@ -200,7 +174,6 @@
                 HorizontalAlignment="Center"
                 Glyph="&#xE717;" />
             <TextBox
-                x:Name="tbx_PhoneNumber"
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="3"
@@ -227,33 +200,16 @@
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 Glyph="&#xE715;" />
-            <Grid
+            <controls:ValidationTextbox
                 Grid.Row="3"
                 Grid.Column="1"
-                Margin="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox
-                    x:Name="txb_Mail"
-                    Grid.Column="0"
-                    HorizontalAlignment="Stretch"
-                    PlaceholderText="E-Mail Adresse"
-                    Text="{x:Bind ViewModel.Mailadress, Mode=TwoWay}" />
-                <FontIcon
-                    x:Name="ico_MailError"
-                    Grid.Column="1"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Foreground="Red"
-                    Glyph="&#xE946;"
-                    Visibility="Collapsed">
-                    <ToolTipService.ToolTip>
-                        <TextBlock Foreground="Red" Text="* Pflichteingabe" />
-                    </ToolTipService.ToolTip>
-                </FontIcon>
-            </Grid>
+                Margin="3"
+                HorizontalAlignment="Stretch"
+                EnableStringEmptyCheck="True"
+                IsVaild="{x:Bind ViewModel.IsMailadressValid, Mode=TwoWay}"
+                PlaceholderText="E-Mail Adresse"
+                Text="{x:Bind ViewModel.Mailadress, Mode=TwoWay}"
+                ValidationMode="Email" />
         </Grid>
         <Button
             Grid.Row="6"
@@ -277,54 +233,4 @@
             Margin="0,10,0,-10"
             IsIndeterminate="{x:Bind ViewModel.AddLiftPlannerToDatabaseCommand.IsRunning, FallbackValue=false, Mode=OneWay}" />
     </Grid>
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup x:Name="CompanyState">
-            <VisualState x:Name="CompanyNotEmptyState" />
-            <VisualState x:Name="CompanyEmptyState">
-                <VisualState.StateTriggers>
-                    <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Company, Mode=OneWay}" />
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="txb_Company.BorderBrush" Value="Red" />
-                    <Setter Target="ico_CompanyError.Visibility" Value="Visible" />
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-        <VisualStateGroup x:Name="NameState">
-            <VisualState x:Name="NameNotEmptyState" />
-            <VisualState x:Name="NameEmptyState">
-                <VisualState.StateTriggers>
-                    <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Name, Mode=OneWay}" />
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="txb_Name.BorderBrush" Value="Red" />
-                    <Setter Target="ico_NameError.Visibility" Value="Visible" />
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-        <VisualStateGroup x:Name="StreetState">
-            <VisualState x:Name="StreetNotEmptyState" />
-            <VisualState x:Name="StreetEmptyState">
-                <VisualState.StateTriggers>
-                    <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Street, Mode=OneWay}" />
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="txb_Street.BorderBrush" Value="Red" />
-                    <Setter Target="ico_StreetError.Visibility" Value="Visible" />
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-        <VisualStateGroup x:Name="MailState">
-            <VisualState x:Name="MailNotEmptyState" />
-            <VisualState x:Name="MailEmptyState">
-                <VisualState.StateTriggers>
-                    <triggers:IsNullOrEmptyStateTrigger Value="{Binding Text, ElementName=txb_Mail, Mode=OneWay}" />
-                </VisualState.StateTriggers>
-                <VisualState.Setters>
-                    <Setter Target="txb_Mail.BorderBrush" Value="Red" />
-                    <Setter Target="ico_MailError.Visibility" Value="Visible" />
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-    </VisualStateManager.VisualStateGroups>
 </ContentDialog>
