@@ -73,6 +73,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <!--  Carframe  -->
@@ -365,7 +366,7 @@
                                     Unit="mm" />
                             </Grid>
                         </Grid>
-                        <!--  Carframe RopeData  -->
+                        <!--  Carframe ropeData  -->
                         <Grid
                             Grid.Row="2"
                             Margin="0,0,0,5"
@@ -501,9 +502,66 @@
                                     ShowDefaultHeader="True" />
                             </Grid>
                         </Grid>
-                        <!--  Carframe buffer  -->
+                        <!--  Carframe travels  -->
                         <Grid
                             Grid.Row="3"
+                            Margin="0,0,0,5"
+                            Padding="5"
+                            Style="{ThemeResource GridCardPanel}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Text="Fahrwege"
+                                TextWrapping="WrapWholeWords" />
+                            <Grid Grid.Row="0" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FUBP'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RHU'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FUEBP'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="1"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RHO'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm" />
+                            </Grid>
+                        </Grid>
+                        <!--  Carframe buffer  -->
+                        <Grid
+                            Grid.Row="4"
                             Margin="0,0,0,5"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}">
@@ -698,7 +756,7 @@
                         </Grid>
                         <!--  Counterweight buffer  -->
                         <Grid
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Margin="0,0,0,5"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}"
@@ -894,7 +952,7 @@
                         </Grid>
                         <!--  SafetyRoom headroom buffer  -->
                         <Grid
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Margin="0,0,0,5"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}"
@@ -1097,7 +1155,7 @@
                         </Grid>
                         <!--  SafetyRoom Pit buffer  -->
                         <Grid
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Margin="0,0,0,5"
                             Padding="5"
                             Style="{ThemeResource GridCardPanel}"
