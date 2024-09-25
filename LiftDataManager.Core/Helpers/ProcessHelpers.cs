@@ -1,8 +1,11 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Data.Sqlite;
+using System.Diagnostics;
 namespace LiftDataManager.Core.Helpers;
 
 public static class ProcessHelpers
 {
+    const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
+
     public static void StartProgram(string filename, string startargs)
     {
         using Process p = new();
@@ -56,5 +59,54 @@ public static class ProcessHelpers
             }
             File.Copy(fullPath, newName, true);
         }
+    }
+
+    public static async Task<bool> CopyDataBaseToWorkSpace(DbContext dbContext)
+    {
+        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+        }
+
+        var connectionString = dbContext.Database.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            return false;
+        }
+        var pathArray = connectionString.Split(';');
+        if (pathArray.Length == 0)
+        {
+            return false;
+        }
+
+        var dbPath = pathArray[0];
+        if (dbPath.Contains('\\'))
+        {
+            dbPath = dbPath[13..connectionString.LastIndexOf('"')];
+        }
+        else
+        {
+            dbPath = dbPath.Replace("Data Source=", "");
+        }
+        if (string.IsNullOrWhiteSpace(dbPath))
+        {
+            return false;
+        }
+        if (dbContext.Database.GetDbConnection() is SqliteConnection conn)
+        {
+            SqliteConnection.ClearPool(conn);
+        }
+        dbContext.Database.CloseConnection();
+        await Task.Delay(1500);
+        try
+        {
+            File.Copy(dbPath, workPathDb, true);
+        }
+        catch
+        {
+            return false;
+        }
+        await Task.CompletedTask;
+        return true;
     }
 }

@@ -326,21 +326,16 @@ public class DialogService : IDialogService
     /// <param name="liftPlanner">The title.</param>
     /// <returns>Task</returns>
 
-    public async Task<string?> LiftPlannerDBDialogAsync(string liftPlanner)
+    public async Task<int> LiftPlannerDBDialogAsync(int liftPlannerId)
     {
         var dialog = new LiftPlannerDBDialog()
         {
             XamlRoot = MainRoot.XamlRoot,
+            LiftPlannerId = liftPlannerId,
             RequestedTheme = MainRoot.ActualTheme
         };
-        var result = await dialog.ShowAsyncQueueDraggable();
-
-        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
-        {
-            return null;
-        }
-
-        return "Hallo";
+        await dialog.ShowAsyncQueueDraggable();
+        return dialog.LiftPlannerId;
     }
 
     /// <summary>

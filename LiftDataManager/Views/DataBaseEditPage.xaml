@@ -11,6 +11,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
+    <Interactivity:Interaction.Behaviors>
+        <Core:EventTriggerBehavior EventName="Unloaded">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.DataBaseEditViewModelUnloadedCommand}" />
+        </Core:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
     <Page.Resources>
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"

@@ -31,7 +31,7 @@
 `Die Spezifikation wird immer schreibgeschützt geöffnet und muß aktiv ausgecheckt werden, damit die Daten geändert werden können somit ist ein unbeasichtiges ändern der Daten ausgeschlossen.`
 
 **Müssen Daten die im CarFrameProgram oder im ZAlift-Auslegungsprogramm erstellt wurden nochmals im Lift Data Manager eingegeben werden?**  
-`Nein. Wenn die Programme über Lift Data Manager gestart werden werden diese automatisch übernommen und validiert.`
+`Nein. Wenn die Programme über LiftDataManager gestartet werden werden diese automatisch übernommen und validiert.`
 
 **Wie kann ich schnell alle auftragsbezogende Daten finden und öffnen?**  
 `Über die Quicklinkleiste können schnell alle auftragsbezogende Daten geöffnet werden.`  

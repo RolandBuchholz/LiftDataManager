@@ -74,6 +74,7 @@ public partial class App : Application
             // DataBase Services
             services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))
                                                                       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            services.AddDbContext<ParameterEditContext>(options => options.UseSqlite(GetConnectionString(false)));
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();
@@ -142,6 +143,8 @@ public partial class App : Application
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
     }
 
+    public void DisableSaveWarning() => IgnoreSaveWarning = true;
+
     private async void MainWindow_Closed(object sender, WindowEventArgs args)
     {
         var _dialogService = GetService<IDialogService>();
@@ -156,7 +159,7 @@ public partial class App : Application
             return;
         }
         args.Handled = !IgnoreSaveWarning;
-        CheckOut:
+    CheckOut:
         var dialogResult = await _dialogService!.AppClosingDialogAsync(IgnoreSaveWarning);
         switch (dialogResult.Item1)
         {
