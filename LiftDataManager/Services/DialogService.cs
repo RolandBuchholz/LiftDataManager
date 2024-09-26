@@ -441,6 +441,49 @@ public class DialogService : IDialogService
         };
         var result = await dialog.ShowAsyncQueueDraggable();
         return (result, dialog.IgnoreSaveWarning);
+    }
 
+    /// <summary>
+    /// Opens a modal Liftdata import dialog.
+    /// </summary>
+    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
+    /// <param name="spezifikationName">namfe of the current open spezifikation</param>
+    /// <returns>Task</returns>
+    public async Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName)
+    {
+        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName)
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Opens a modal CarFrameProcessingDialog.
+    /// </summary>
+    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
+    /// <param name="carFrameTyp">carFrameTyp</param>
+    /// <returns>Task</returns>
+    public async Task<bool> CheckOutDialogAsync(string? fullPathXml, string? carFrameTyp)
+    {
+        var dialog = new CheckOutDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+            FullPathXml = fullPathXml,
+            CarFrameTyp = carFrameTyp
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace LiftDataManager.Core.Models.CalculationResultsModels;
+﻿namespace LiftDataManager.Core.Models.CalculationResultsModels;
 
 public class SafetyGearResult
 {

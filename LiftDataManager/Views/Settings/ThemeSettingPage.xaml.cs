@@ -14,7 +14,7 @@ public sealed partial class ThemeSettingPage : Page
         Loaded += ThemeSettingPage_Loaded;
     }
 
-    private void ThemeSettingPage_Loaded(object sender, RoutedEventArgs e) 
+    private void ThemeSettingPage_Loaded(object sender, RoutedEventArgs e)
     {
         ViewModel.SetDefaultTheme(CmbTheme);
         ViewModel.SetDefaultBackdrop(CmbBackdrop);

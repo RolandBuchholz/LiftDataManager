@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Navigation;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class ShellPage : Page
 {
@@ -44,4 +42,3 @@ public sealed partial class ShellPage : Page
         }
     }
 }
-    

@@ -33,4 +33,8 @@ public interface IDialogService
     Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList);
 
     Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning);
+
+    Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName);
+
+    Task<bool> CheckOutDialogAsync(string? fullPathXml, string? carFrameTyp);
 }

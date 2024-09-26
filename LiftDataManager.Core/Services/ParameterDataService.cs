@@ -292,7 +292,7 @@ public partial class ParameterDataService : IParameterDataService
         else
         {
             _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-            return new Tuple<string, string, string?>("Error","Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
+            return new Tuple<string, string, string?>("Error", "Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
@@ -305,7 +305,7 @@ public partial class ParameterDataService : IParameterDataService
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
-            saveResult.Add(new Tuple<string, string, string?>("Error","Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
+            saveResult.Add(new Tuple<string, string, string?>("Error", "Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
             return saveResult;
         }
         XElement doc = XElement.Load(path);

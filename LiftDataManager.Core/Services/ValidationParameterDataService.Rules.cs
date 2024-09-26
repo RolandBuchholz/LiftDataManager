@@ -1673,7 +1673,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarFramePosition(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        Dictionary<string, bool> entrances = new () 
+        Dictionary<string, bool> entrances = new()
         {
             {"A", false },
             {"B", false },
@@ -1710,7 +1710,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 }
             }
         }
-        
+
         UpdateDropDownList("var_Bausatzlage", availableCarFramePositions);
 
         var carFramePosition = ParameterDictionary["var_Bausatzlage"].Value;

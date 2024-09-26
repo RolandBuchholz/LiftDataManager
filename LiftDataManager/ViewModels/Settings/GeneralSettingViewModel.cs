@@ -1,8 +1,6 @@
-﻿using Microsoft.UI.Xaml.Documents;
+﻿namespace LiftDataManager.ViewModels;
 
-namespace LiftDataManager.ViewModels;
-
-public partial class GeneralSettingViewModel : ObservableRecipient ,INavigationAwareEx
+public partial class GeneralSettingViewModel : ObservableRecipient, INavigationAwareEx
 {
     private readonly ISettingService _settingService;
     public readonly IDialogService _dialogService;

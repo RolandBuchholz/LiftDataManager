@@ -66,22 +66,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             return;
         }
-        if (ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue is not null  || 
+        if (ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = new SelectionValue();

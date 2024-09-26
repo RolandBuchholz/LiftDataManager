@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Media.Animation;
-using static WinUICommunity.LanguageDictionary;
 
 namespace LiftDataManager.Helpers;
 public class LiftParameterNavigationHelper

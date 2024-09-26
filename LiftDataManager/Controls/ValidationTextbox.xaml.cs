@@ -1,8 +1,8 @@
 namespace LiftDataManager.Controls;
 public sealed class ValidationTextbox : TextBox
 {
-    public enum ValidationTypMode 
-    { 
+    public enum ValidationTypMode
+    {
         None,
         Email,
         Phone
@@ -63,9 +63,9 @@ public sealed class ValidationTextbox : TextBox
 
 
     public static readonly DependencyProperty ValidationModeProperty =
-        DependencyProperty.Register(nameof(ValidationMode), 
-            typeof(ValidationTypMode), 
-            typeof(ValidationTextbox), 
+        DependencyProperty.Register(nameof(ValidationMode),
+            typeof(ValidationTypMode),
+            typeof(ValidationTextbox),
             new PropertyMetadata(ValidationTypMode.None));
 
     public bool IsVaild

@@ -7,9 +7,9 @@ namespace LiftDataManager.ViewModels;
 
 public partial class DataViewModelBase : ObservableRecipient
 {
-    public readonly IParameterDataService _parameterDataService;
-    public readonly IDialogService _dialogService;
-    public readonly IInfoCenterService _infoCenterService;
+    protected readonly IParameterDataService _parameterDataService;
+    protected readonly IDialogService _dialogService;
+    protected readonly IInfoCenterService _infoCenterService;
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
@@ -39,10 +39,13 @@ public partial class DataViewModelBase : ObservableRecipient
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-
+        }
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
@@ -50,9 +53,13 @@ public partial class DataViewModelBase : ObservableRecipient
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
+        }
 
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
@@ -240,11 +247,11 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, 
-            ((Parameter)message.Sender).Name, 
-            ((Parameter)message.Sender).DisplayName, 
-            message.OldValue, 
-            message.NewValue, 
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys,
+            ((Parameter)message.Sender).Name,
+            ((Parameter)message.Sender).DisplayName,
+            message.OldValue,
+            message.NewValue,
             ((Parameter)message.Sender).IsAutoUpdated);
     }
 

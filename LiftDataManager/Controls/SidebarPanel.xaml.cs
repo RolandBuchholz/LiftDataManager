@@ -140,8 +140,8 @@ public sealed partial class SidebarPanel : UserControl
             var selectedItem = view.SelectedItem;
             if (selectedItem is InfoCenterEntry entry)
             {
-                if (entry.State == InfoCenterEntryState.InfoCenterParameterChanged || 
-                    entry.State == InfoCenterEntryState.InfoCenterAutoUpdate || 
+                if (entry.State == InfoCenterEntryState.InfoCenterParameterChanged ||
+                    entry.State == InfoCenterEntryState.InfoCenterAutoUpdate ||
                     entry.State == InfoCenterEntryState.InfoCenterSaveParameter)
                 {
                     var parameterName = entry.UniqueName;

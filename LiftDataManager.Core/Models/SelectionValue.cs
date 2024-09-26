@@ -17,8 +17,8 @@ public class SelectionValue
     }
 
     public int Id { get; set; }
-    public string Name { get; set; } 
-    public string DisplayName { get; set; } 
+    public string Name { get; set; }
+    public string DisplayName { get; set; }
     public bool IsFavorite { get; set; }
     public bool SchindlerCertified { get; set; }
     public int OrderSelection { get; set; }

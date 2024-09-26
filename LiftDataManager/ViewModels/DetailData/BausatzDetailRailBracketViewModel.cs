@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
-using SkiaSharp.Views.Windows;
-using SkiaSharp;
-using System.Text.Json;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Input;
+using SkiaSharp;
+using SkiaSharp.Views.Windows;
+using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
 
@@ -52,8 +52,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             if (FrameCalculationData is not null)
             {
-               if (double.TryParse(message.NewValue, out double cwtDimension))
-               {
+                if (double.TryParse(message.NewValue, out double cwtDimension))
+                {
                     if (message.PropertyName == "var_Gegengewicht_Einlagenbreite")
                     {
                         FrameCalculationData.CounterweightWidth = cwtDimension;
@@ -63,7 +63,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                         FrameCalculationData.CounterweightDepth = cwtDimension;
                     }
                     UpdateFrameCalculationData();
-               }
+                }
             }
         };
 
@@ -183,7 +183,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             foreach (string railBracket in railBracketDistancesParameter)
             {
-                  ParameterDictionary[railBracket].Value = "0";
+                ParameterDictionary[railBracket].Value = "0";
             }
         }
         if (newValue)
@@ -355,7 +355,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         SKRect shaftWallInSide = new()
         {
-            Size = new SKSize((float)ShaftDepth , (float)ShaftHeight),
+            Size = new SKSize((float)ShaftDepth, (float)ShaftHeight),
             Location = new SKPoint(-(float)(ShaftDepth / 2), -(float)(ShaftHeight + _shaftPitOffset))
         };
 
@@ -420,7 +420,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         float cwtRailLRightPosX = 0f;
 
         float cwtDgb = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, "var_Stichmass_GGW");
-        
+
         if (CarFrameTyp.CarFrameBaseTypeId == 1)
         {
             carRailLeftPosX = -500f;
@@ -688,7 +688,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 canvas.DrawPath(railBracketLine, railBracket.Item2 < 200 ? paintRailBracketLineWarning : paintRailBracketLine);
                 canvas.DrawCircle(centerBracketDescription, 15f * _stokeWith, railBracket.Item2 < 200 ? paintRailBracketDescriptionWarning : paintRailBracketDescription);
                 SKRect textRect = new();
-                i ++;
+                i++;
                 string bracketDescriptionText = i.ToString();
                 paintText.MeasureText(bracketDescriptionText, ref textRect);
                 canvas.DrawText(bracketDescriptionText, centerBracketDescription.X, centerBracketDescription.Y - textRect.MidY, paintText);
@@ -807,14 +807,14 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if ((railLength - startRailLength) % railSplit == 0)
         {
-            railCount --;
+            railCount--;
         }
 
         endRailLength = railLength - railCount * railSplit - startRailLength;
 
         if (maxRailLength >= endRailLength + railSplit)
         {
-            railCount --;
+            railCount--;
             endRailLength = railLength - railCount * railSplit - startRailLength;
         }
 
@@ -998,7 +998,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         if (double.TryParse(ParameterDictionary["var_Gegengewicht_Einlagenbreite"].Value, out double cwtWidth))
         {
-            FrameCalculationData.CounterweightWidth = cwtWidth; 
+            FrameCalculationData.CounterweightWidth = cwtWidth;
         }
         if (double.TryParse(ParameterDictionary["var_Gegengewicht_Einlagentiefe"].Value, out double cwtDepth))
         {
@@ -1040,7 +1040,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         else
         {
             var firstDistance = ParameterDictionary["var_B2"].Value;
-            if (!string.IsNullOrWhiteSpace(firstDistance) && !string.Equals(firstDistance,"0"))
+            if (!string.IsNullOrWhiteSpace(firstDistance) && !string.Equals(firstDistance, "0"))
             {
                 ListOfCustomRailBracketDistances[0].Value = firstDistance;
             }
@@ -1109,12 +1109,12 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             GetCarFrameTyp();
             LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
             SetViewBoxDimensions();
-            CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) && 
+            CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) &&
                                        !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
             FillListOfRailBrackets();
             CalculateDimensions();
             RestoreFrameCalculationData();
-        }   
+        }
     }
 
     public void OnNavigatedFrom()

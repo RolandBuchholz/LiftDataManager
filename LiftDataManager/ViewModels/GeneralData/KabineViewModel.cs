@@ -118,7 +118,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             if (ParameterDictionary is not null)
             {
                 CheckIsDefaultCarTyp();
-            }     
+            }
         }
 
         if (message.PropertyName == "var_Handlauf")
@@ -126,7 +126,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             if (ParameterDictionary is not null)
             {
                 SetHandRailHeight();
-            } 
+            }
         }
 
         if (message.PropertyName == "var_VentilatorLuftmenge")
@@ -134,7 +134,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             if (ParameterDictionary is not null && message.NewValue == "False")
             {
                 ParameterDictionary["var_VentilatorAnzahl"].Value = string.Empty;
-            }    
+            }
         }
 
         if (message.PropertyName == "var_Teilungsleiste")
@@ -453,10 +453,10 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
         else
         {
-            ParameterDictionary["var_TeilungsleisteOKFF"].Value = !ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ? 
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = !ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ?
                                                                   ParameterDictionary["var_HoeheHandlauf"].Value :
                                                                   (LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_HoeheHandlauf") - 52d).ToString();
-        } 
+        }
     }
 
     private void SetRammingProtectionSelection()
@@ -488,15 +488,15 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
                 if (rammingRowsDB == 0)
                 {
-                   if (int.TryParse(ParameterDictionary["var_AnzahlReihenRammschutz"].Value, out int result))
-                   {
+                    if (int.TryParse(ParameterDictionary["var_AnzahlReihenRammschutz"].Value, out int result))
+                    {
                         rammingRows = result;
-                   }
-                   else
-                   {
+                    }
+                    else
+                    {
                         rammingRows = 1;
                         ParameterDictionary["var_AnzahlReihenRammschutz"].Value = rammingRows.ToString();
-                   }
+                    }
                 }
                 else
                 {
@@ -510,12 +510,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
     }
 
-    private void AktivateAutoMirrorCalculation() 
+    private void AktivateAutoMirrorCalculation()
     {
-       if (string.IsNullOrWhiteSpace(ParameterDictionary["var_BreiteSpiegel"].Value) && string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheSpiegel"].Value))
-       {
+        if (string.IsNullOrWhiteSpace(ParameterDictionary["var_BreiteSpiegel"].Value) && string.IsNullOrWhiteSpace(ParameterDictionary["var_HoeheSpiegel"].Value))
+        {
             ParameterDictionary["var_AutoDimensionsMirror"].AutoUpdateParameterValue("True");
-       }
+        }
     }
 
     [RelayCommand]

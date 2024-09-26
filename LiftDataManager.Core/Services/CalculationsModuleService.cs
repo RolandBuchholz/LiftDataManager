@@ -507,7 +507,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                     (glasLaengeWandB > 0.15 ? glasLaengeWandB - 0.15 : 0) +
                     (glasLaengeWandC > 0.15 ? glasLaengeWandC - 0.15 : 0) +
                     (glasLaengeWandD > 0.15 ? glasLaengeWandD - 0.15 : 0) -
-                    ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0))* 
+                    ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0)) *
                     (kabineundAbgehaengteDeckeHoehe > 0 ? (kabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
         var vSGGewicht = vSGQm * vSGGewichtproQm;
 
@@ -722,7 +722,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (rammingProtectionTypDB is null)
             return -1;
 
-            return rammingProtectionTypDB.NumberOfRows;
+        return rammingProtectionTypDB.NumberOfRows;
     }
 
     private double GetCarDoorArea(ObservableDictionary<string, Parameter> parameterDictionary, string zugang)
@@ -1105,7 +1105,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
+    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight)
     {
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
@@ -1237,11 +1237,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         return bufferDetails;
     }
 
-    public (double,double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
+    public (double, double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
     {
         kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
         kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
-        double mirrorCorrectionWidth = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_BreiteSpiegelKorrektur" 
+        double mirrorCorrectionWidth = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_BreiteSpiegelKorrektur"
                                                                                                                          : $"var_BreiteSpiegelKorrektur{index}");
         string mirrorDistanceLeftString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelvonLinks"
                                                                                                                          : $"var_AbstandSpiegelvonLinks{index}");
@@ -1265,7 +1265,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             "D" => hasPanelSideA ? 10d : defaultGap,
             _ => 0d
         };
-        
+
         if (!string.IsNullOrWhiteSpace(mirrorDistanceLeftString))
         {
             if (double.TryParse(mirrorDistanceLeftString, out double oldValue))
@@ -1276,7 +1276,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         var width = wallSide == "A" || wallSide == "C" ? kabinenbreite - gapB - gapD + mirrorCorrectionWidth : kabinentiefe - gapA - gapC + mirrorCorrectionWidth;
-        return (width, mirrorDistanceLeft);    
+        return (width, mirrorDistanceLeft);
     }
 
     public (double, double) GetMirrorHeight(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
@@ -1289,7 +1289,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         string mirrorDistanceCeilingString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelDecke"
                                                                                                                                : $"var_AbstandSpiegelDecke{index}");
         bool mirrorIsPanel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
-        
+
         double mirrorDistanceCeiling = mirrorIsPanel ? 3d : 20d;
         double mirrorDistanceBottom = mirrorIsPanel ? 3d : 30d;
 
@@ -1305,7 +1305,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         double handRailTypCorrectionHeight = 0d;
         if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Spiegelausfuehrung"].Value))
             handRailTypCorrectionHeight = parameterDictionary["var_Spiegelausfuehrung"].Value!.Contains("HL13") ? 52d : 0d;
-        
+
         var mirrorDistanceFloor = parameterDictionary["var_Spiegelausfuehrung"].Value switch
         {
             "halbhoher Spiegel" => handRailHeight == 0 ? 900 : handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight,

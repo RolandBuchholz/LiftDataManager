@@ -62,7 +62,7 @@ public class LiftParameterHelper
         }
     }
 
-    public static SelectionValue? GetDropDownListValue(ObservableRangeCollection<SelectionValue> dropDownList, string? newValue) 
+    public static SelectionValue? GetDropDownListValue(ObservableRangeCollection<SelectionValue> dropDownList, string? newValue)
     {
         if (string.IsNullOrWhiteSpace(newValue))
         {
@@ -70,12 +70,12 @@ public class LiftParameterHelper
         }
         var newSelectionValue = dropDownList.FirstOrDefault(x => x.Name == newValue);
         return newSelectionValue is not null ? newSelectionValue
-                                             : new SelectionValue(-1, newValue, newValue) ;
+                                             : new SelectionValue(-1, newValue, newValue);
     }
 
     public static void UpdateParameterDropDownListValue(Parameter parameter, string? newValue)
     {
-        parameter.DropDownListValue = !string.IsNullOrWhiteSpace(newValue) ? parameter.DropDownList.FirstOrDefault(x => x.Name == newValue) 
+        parameter.DropDownListValue = !string.IsNullOrWhiteSpace(newValue) ? parameter.DropDownList.FirstOrDefault(x => x.Name == newValue)
                                                                            : null;
     }
 

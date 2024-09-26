@@ -2,19 +2,19 @@ using LiftDataManager.ViewModels.Dialogs;
 
 namespace LiftDataManager.Views.Dialogs;
 
-public sealed partial class CFPEditDialog : ContentDialog
+public sealed partial class CheckOutDialog : ContentDialog
 {
     public string? FullPathXml { get; set; }
     public string? CarFrameTyp { get; set; }
 
-    public CFPEditDialogViewModel ViewModel
+    public CheckOutDialogViewModel ViewModel
     {
         get;
     }
 
-    public CFPEditDialog()
+    public CheckOutDialog()
     {
-        ViewModel = App.GetService<CFPEditDialogViewModel>();
+        ViewModel = App.GetService<CheckOutDialogViewModel>();
         InitializeComponent();
     }
 }

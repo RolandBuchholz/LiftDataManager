@@ -1,3 +1,5 @@
+using LiftDataManager.ViewModels.Dialogs;
+
 namespace LiftDataManager.Views.Dialogs;
 
 public sealed partial class ZALiftDialog : ContentDialog

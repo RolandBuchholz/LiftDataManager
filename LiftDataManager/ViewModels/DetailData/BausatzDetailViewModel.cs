@@ -230,7 +230,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
                 LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
-        }   
+        }
     }
 
     private void CheckCFPState()
@@ -289,7 +289,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         foreach (var item in pufferCalculationDataValues)
         {
             if (!string.IsNullOrWhiteSpace(ParameterDictionary[item].Value))
-            { 
+            {
                 try
                 {
                     var restoredBufferCalculation = JsonSerializer.Deserialize<BufferCalculationData>(ParameterDictionary[item].Value!);
@@ -441,7 +441,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         if (RopeCalculationData != null)
         {
             ParameterDictionary["var_RopeCalculationData"].AutoUpdateParameterValue(JsonSerializer.Serialize(RopeCalculationData, _options).Replace("\r\n", "\n"));
-        }  
+        }
     }
 
     public void OnNavigatedTo(object parameter)

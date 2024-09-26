@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace LiftDataManager.ViewModels;
+namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class AppClosingDialogViewModel : ObservableRecipient
 {
@@ -57,7 +57,7 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
                            Wollen Sie diese speichern?
                            """;
             sender.PrimaryButtonText = "Parameter speichern";
-            sender.SecondaryButtonText = "Parameter verwerfen";  
+            sender.SecondaryButtonText = "Parameter verwerfen";
         }
         else
         {
@@ -82,7 +82,7 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
         }
         if (Dirty)
         {
-           await _parameterDataService.SaveAllParameterAsync(CurrentSpeziProperties.ParameterDictionary, CurrentSpeziProperties.FullPathXml, CurrentSpeziProperties.Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(CurrentSpeziProperties.ParameterDictionary, CurrentSpeziProperties.FullPathXml, CurrentSpeziProperties.Adminmode);
         }
         else
         {

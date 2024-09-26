@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Animations;
-using Microsoft.UI.Xaml.Media.Animation;
 
 namespace LiftDataManager.ViewModels;
 

@@ -1,9 +1,9 @@
-﻿using Windows.ApplicationModel;
-using Windows.Management.Deployment;
-using Windows.Storage.Pickers;
-using Windows.Storage;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using Windows.ApplicationModel;
+using Windows.Management.Deployment;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace LiftDataManager.ViewModels;
 

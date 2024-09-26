@@ -17,7 +17,7 @@ public class StorageService : IStorageService
         return await file.OpenStreamForReadAsync();
     }
 
-    public async Task<string> ReadStorageFileAsync(StorageFile file) 
+    public async Task<string> ReadStorageFileAsync(StorageFile file)
     {
         var stream = await file.OpenAsync(FileAccessMode.Read);
         ulong size = stream.Size;
@@ -27,7 +27,7 @@ public class StorageService : IStorageService
         return dataReader.ReadString(numBytesLoaded);
     }
 
-    public async Task<IReadOnlyList<StorageFolder>> GetFoldersAsync(string folderPath) 
+    public async Task<IReadOnlyList<StorageFolder>> GetFoldersAsync(string folderPath)
     {
         var folder = await StorageFolder.GetFolderFromPathAsync(folderPath);
         return await folder.GetFoldersAsync();

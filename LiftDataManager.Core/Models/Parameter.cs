@@ -139,7 +139,7 @@ public partial class Parameter : ParameterBase
         _autoUpdatedRunning = true;
         if (ParameterTyp == ParameterTypValue.DropDownList)
         {
-             DropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, newParamterValue);
+            DropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, newParamterValue);
         }
         else
         {
