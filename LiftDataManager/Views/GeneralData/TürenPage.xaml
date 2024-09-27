@@ -13,9 +13,9 @@
 
     <Page.Resources>
         <media:AttachedCardShadow
-            InnerContentClipMode="CompositionMaskBrush"
             x:Key="CommonShadow"
             CornerRadius="5"
+            InnerContentClipMode="CompositionMaskBrush"
             Offset="5" />
         <converters:BoolToObjectConverter
             x:Key="InvertBoolToObjectConverter"
@@ -798,30 +798,89 @@
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="20"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                                 Text="Zusatzinformationen Schwellen" />
-                                            <TextBlock FontSize="12" Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2" />
-                                            <TextBlock FontSize="12" Text="sind keine verdeckten Führungen möglich." />
-                                            <TextBlock FontSize="12" Text="Bei diesen Türen kann alternativ eine Gravida Plus" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
-                                                FontSize="12"
-                                                Text="eingesetzt werden." />
-                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
-                                            <TextBlock FontSize="12" Text="Bei Gravida Plus Schwellen sind nur" />
-                                            <TextBlock
-                                                Margin="0,0,0,5"
-                                                FontSize="12"
-                                                Text="voreilende Türblätter verdeckt." />
-                                            <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
+                                                FontSize="14"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Gravida Stahl (Basic):" />
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="12"
                                                 Text="Oberfläche Edelstahl / Unterbau Stahl." />
+                                            <Image Margin="0,5,0,5" Source="/Images/CarDetails/SillGravidaBasic.png" />
                                             <TextBlock FontSize="12" Text="Pos.1+2+3 aus VA der Rest aus verzinktem Stahl." />
-                                            <Image
-                                                Width="300"
-                                                Margin="0,5,0,5"
-                                                Source="/Images/CarDetails/SillGravidaBasic.png" />
+                                            <TextBlock
+                                                FontSize="14"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Verdeckte untere Führungen:" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2 sind keine verdeckten Führungen möglich. Bei diesen Türen kann alternativ eine Gravida Plus eingesetzt werden."
+                                                TextWrapping="WrapWholeWords" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravida.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Schwellen sind keine Türblätterführungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravidaPlusHiddenGuide.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida Plus mit verdeckter Führung:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur voreilende Führungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravidaHiddenGuide.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida mit verdeckter Führung:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Schwellen mit verdeckter unterer Führung sind alle Führungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
                                         </StackPanel>
                                     </ToolTipService.ToolTip>
                                 </Grid>
@@ -1143,30 +1202,89 @@
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="20"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                                 Text="Zusatzinformationen Schwellen" />
-                                            <TextBlock FontSize="12" Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2" />
-                                            <TextBlock FontSize="12" Text="sind keine verdeckten Führungen möglich." />
-                                            <TextBlock FontSize="12" Text="Bei diesen Türen kann alternativ eine Gravida Plus" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
-                                                FontSize="12"
-                                                Text="eingesetzt werden." />
-                                            <TextBlock FontSize="16" Text="Gravida Plus:" />
-                                            <TextBlock FontSize="12" Text="Bei Gravida Plus Schwellen sind nur" />
-                                            <TextBlock
-                                                Margin="0,0,0,5"
-                                                FontSize="12"
-                                                Text="voreilende Türblätter verdeckt." />
-                                            <TextBlock FontSize="16" Text="Gravida Stahl (Basic):" />
+                                                FontSize="14"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Gravida Stahl (Basic):" />
                                             <TextBlock
                                                 Margin="0,0,0,5"
                                                 FontSize="12"
                                                 Text="Oberfläche Edelstahl / Unterbau Stahl." />
+                                            <Image Margin="0,5,0,5" Source="/Images/CarDetails/SillGravidaBasic.png" />
                                             <TextBlock FontSize="12" Text="Pos.1+2+3 aus VA der Rest aus verzinktem Stahl." />
-                                            <Image
-                                                Width="300"
-                                                Margin="0,5,0,5"
-                                                Source="/Images/CarDetails/SillGravidaBasic.png" />
+                                            <TextBlock
+                                                FontSize="14"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Verdeckte untere Führungen:" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Text="Bei TTS/TTK 31/32 oder Türen nach EN71-Cat1/Cat2 sind keine verdeckten Führungen möglich. Bei diesen Türen kann alternativ eine Gravida Plus eingesetzt werden."
+                                                TextWrapping="WrapWholeWords" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravida.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Schwellen sind keine Türblätterführungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravidaPlusHiddenGuide.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida Plus mit verdeckter Führung:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur voreilende Führungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Margin="0,5,0,5"
+                                                    Source="/Images/CarDetails/SillGravidaHiddenGuide.png" />
+                                                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                        Text="Gravida mit verdeckter Führung:"
+                                                        TextWrapping="WrapWholeWords" />
+                                                    <TextBlock
+                                                        FontSize="12"
+                                                        Text="Bei Gravida Schwellen mit verdeckter unterer Führung sind alle Führungen verdeckt."
+                                                        TextWrapping="WrapWholeWords" />
+                                                </StackPanel>
+                                            </Grid>
                                         </StackPanel>
                                     </ToolTipService.ToolTip>
                                 </Grid>
