@@ -856,7 +856,7 @@
                                                         TextWrapping="WrapWholeWords" />
                                                     <TextBlock
                                                         FontSize="12"
-                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur voreilende Führungen verdeckt."
+                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur die voreilenden Führungen verdeckt."
                                                         TextWrapping="WrapWholeWords" />
                                                 </StackPanel>
                                             </Grid>
@@ -1260,7 +1260,7 @@
                                                         TextWrapping="WrapWholeWords" />
                                                     <TextBlock
                                                         FontSize="12"
-                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur voreilende Führungen verdeckt."
+                                                        Text="Bei Gravida Plus Schwellen mit verdeckter unterer Führung sind nur die voreilenden Führungen verdeckt."
                                                         TextWrapping="WrapWholeWords" />
                                                 </StackPanel>
                                             </Grid>
