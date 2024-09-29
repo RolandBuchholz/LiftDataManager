@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Contracts.Services;
+﻿using LiftDataManager.Core.Enums;
+
+namespace LiftDataManager.Contracts.Services;
 
 public interface IDialogService
 {
@@ -34,7 +36,7 @@ public interface IDialogService
 
     Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning);
 
-    Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName);
+    Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp);
 
     Task<bool> CheckOutDialogAsync(string? fullPathXml, string? carFrameTyp);
 }

@@ -1,4 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.Enums;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Text.Json;
@@ -18,7 +19,7 @@ public class VaultDataService : IVaultDataService
         _logger = logger;
     }
 
-    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly, bool customFile)
+    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly, bool customFile = false)
     {
         starttyp = "get";
         _logger.LogInformation(60111, "start read data from vaultserver");
@@ -115,5 +116,81 @@ public class VaultDataService : IVaultDataService
             await Task.CompletedTask;
             return 4;
         }
+    }
+
+    public async Task<DownloadInfo> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true)
+    {
+        var searchPattern = liftNumber + "-AutoDeskTransfer.xml";
+        var watch = Stopwatch.StartNew();
+        var workspaceSearch = await SearchWorkspaceAsync(searchPattern, spezifikationTyp);
+        var stopTimeMs = watch.ElapsedMilliseconds;
+
+        switch (workspaceSearch.Length)
+        {
+            case 0:
+                {
+                    _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
+                    return await GetFileAsync(liftNumber, readOnly);
+                }
+            case 1:
+                {
+                    var autoDeskTransferpath = workspaceSearch[0];
+                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                    if (!AutoDeskTransferInfo.IsReadOnly)
+                    {
+                        _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
+                        return new DownloadInfo()
+                        {
+                            ExitCode = 0,
+                            CheckOutState = "CheckedOutByCurrentUser",
+                            ExitState = ExitCodeEnum.NoError,
+                            FullFileName = workspaceSearch[0],
+                            Success = true,
+                            IsCheckOut = true
+                        };
+                    }
+                    else
+                    {
+                        return await GetFileAsync(liftNumber, readOnly);
+                    }
+                }
+            default:
+                {
+                    _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
+                    return new DownloadInfo()
+                    {
+                        ExitCode = 5,
+                        FileName = searchPattern,
+                        FullFileName = searchPattern,
+                        ExitState = ExitCodeEnum.MultipleAutoDeskTransferXml
+                    };
+                }
+        }
+    }
+
+    private async Task<string[]> SearchWorkspaceAsync(string searchPattern, SpezifikationTyp spezifikationTyp)
+    {
+        _logger.LogInformation(60139, "Workspacesearch started");
+        string? path;
+
+        if (spezifikationTyp is not null &&
+            spezifikationTyp.Equals(SpezifikationTyp.Order))
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        else
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Angebote";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
+        return searchResult;
     }
 }

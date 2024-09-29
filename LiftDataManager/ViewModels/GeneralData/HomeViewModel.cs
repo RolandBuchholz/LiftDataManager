@@ -151,7 +151,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
-        var downloadInfo = await GetAutoDeskTransferAsync(SpezifikationName, OpenReadOnly);
+        if (string.IsNullOrWhiteSpace(SpezifikationName)||
+            CurrentSpezifikationTyp is null)
+        {
+            return;
+        }
+        var downloadInfo = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
         if (downloadInfo is not null)
         {
             if (downloadInfo.ExitState == ExitCodeEnum.NoError)
@@ -370,7 +375,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 UpdateQuicklinks = true
             }));
             if (_settingService.AutoSave && CheckOut)
+            {
                 StartSaveTimer();
+            }
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
     }
@@ -502,7 +509,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         _logger.LogInformation(60138, "Validate all parameter startet");
         _ = _validationParameterDataService.ValidateAllParameterAsync();
 
-        _ = await _dialogService!.MessageConfirmationDialogAsync("Validation Result",
+        _ = await _dialogService.MessageConfirmationDialogAsync("Validation Result",
                     $"Es wurden {ParameterDictionary!.Count} Parameter überprüft.\n" +
                     $"Es wurden {ParameterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
                         "Ok");
@@ -512,22 +519,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand]
     private void CreatePdf()
     {
-        _pdfService.MakeSinglePdfDocument("Spezifikation", ParameterDictionary!, null, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
+        _pdfService.MakeSinglePdfDocument("Spezifikation", ParameterDictionary, null, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
     }
 
     public async Task<bool> InitializeParametereAsync()
     {
-        if (!_parameterDataService!.CanConnectDataBase())
+        if (!_parameterDataService.CanConnectDataBase())
         {
             return false;
         }
         else
         {
-            var data = await _parameterDataService!.InitializeParametereFromDbAsync();
+            var data = await _parameterDataService.InitializeParametereFromDbAsync();
 
             foreach (var item in data)
             {
-                if (ParameterDictionary!.ContainsKey(item.Name!))
+                if (ParameterDictionary.ContainsKey(item.Name!))
                 {
                     ParameterDictionary[item.Name!] = item;
                 }
@@ -553,12 +560,84 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private async Task DataImportAsync()
     {
         if (string.IsNullOrWhiteSpace(FullPathXml) ||
-            string.IsNullOrWhiteSpace(SpezifikationName))
+            string.IsNullOrWhiteSpace(SpezifikationName) ||
+            CurrentSpezifikationTyp is null)
         {
             _logger.LogError(61039, "Liftadataimport failed fullPathXml or spezifikationName is null");
             return;
         }
-        await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName);
+        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
+        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
+        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
+        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)");
+        await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp);
+        //ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(ImportSpezifikationName);
+
+        //foreach (var item in importParameter)
+        //{
+        //    if (ignoreImportParameters.Contains(item.Name))
+        //    {
+        //        continue;
+        //    }
+        //    if (ParameterDictionary.TryGetValue(item.Name, out Parameter value))
+        //    {
+        //        var updatedParameter = value;
+        //        if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
+        //        {
+        //            updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+        //        }
+        //        else
+        //        {
+        //            updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+        //        }
+        //        if (!string.IsNullOrWhiteSpace(item.Comment))
+        //        {
+        //            updatedParameter.Comment = item.Comment;
+        //        }
+        //        updatedParameter.IsKey = item.IsKey;
+        //        if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
+        //        {
+        //            updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
+        //        }
+        //        if (updatedParameter.HasErrors)
+        //        {
+        //            updatedParameter.HasErrors = false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        LogUnsupportedParameter(item.Name);
+        //        await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Parameter {item.Name} wird nicht unterstützt\n" +
+        //                                                                              "Überprüfen Sie die AutodeskTransfer.XML Datei");
+        //    }
+        //}
+
+        //if (ParameterDictionary is null)
+        //{
+        //    return;
+        //}
+        //if (FullPathXml is null)
+        //{
+        //    return;
+        //}
+        //var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
+        //if (saveResult.Count != 0)
+        //{
+        //    await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+        //}
+
+        //await SetModelStateAsync();
+        //if (AutoSaveTimer is not null)
+        //{
+        //    var saveTimeIntervall = AutoSaveTimer.Interval;
+        //    AutoSaveTimer.Stop();
+        //    AutoSaveTimer.Interval = saveTimeIntervall;
+        //    AutoSaveTimer.Start();
+        //}
+
+
+        //InfoCenterIsOpen = true;
+        //await SetCalculatedValuesAsync();
     }
 
     protected override async Task SetModelStateAsync()
@@ -633,10 +712,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     protected override void SynchronizeViewModelParameter()
     {
         if (CurrentSpeziProperties is null)
+        {
             SetSettings();
+        }
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties is null)
+        {
             return;
+        }
 
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CanValidateAllParameter = AuftragsbezogeneXml;
@@ -672,101 +755,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
     }
 
-    private async Task<DownloadInfo?> GetAutoDeskTransferAsync(string? liftNumber, bool ReadOnly = true)
-    {
-        if (!AuftragsbezogeneXml && string.IsNullOrEmpty(liftNumber))
-        {
-            SpezifikationName = string.Empty;
-            return null;
-        }
-
-        CheckOut = false;
-        var searchPattern = liftNumber + "-AutoDeskTransfer.xml";
-        var watch = Stopwatch.StartNew();
-        var workspaceSearch = await SearchWorkspaceAsync(searchPattern);
-        var stopTimeMs = watch.ElapsedMilliseconds;
-
-        switch (workspaceSearch.Length)
-        {
-            case 0:
-                {
-                    _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
-                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)");
-                    return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
-                }
-            case 1:
-                {
-                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
-                    var autoDeskTransferpath = workspaceSearch[0];
-                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
-                    if (!AutoDeskTransferInfo.IsReadOnly)
-                    {
-                        _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
-                        return new DownloadInfo()
-                        {
-                            ExitCode = 0,
-                            CheckOutState = "CheckedOutByCurrentUser",
-                            ExitState = ExitCodeEnum.NoError,
-                            FullFileName = workspaceSearch[0],
-                            Success = true,
-                            IsCheckOut = true
-                        };
-                    }
-                    else
-                    {
-                        return await _vaultDataService.GetFileAsync(liftNumber!, ReadOnly);
-                    }
-                }
-            default:
-                {
-                    await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
-                    _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
-                    return new DownloadInfo()
-                    {
-                        ExitCode = 5,
-                        FileName = searchPattern,
-                        FullFileName = searchPattern,
-                        ExitState = ExitCodeEnum.MultipleAutoDeskTransferXml
-                    };
-                }
-        }
-    }
-
     private void SetSettings()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
         CurrentSpeziProperties.Adminmode = Adminmode;
         _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-    }
-
-    private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
-    {
-        _logger.LogInformation(60139, "Workspacesearch started");
-        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
-
-        string? path;
-
-        if (CurrentSpezifikationTyp is not null &&
-            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))
-        {
-            path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
-            if (!Directory.Exists(path))
-            {
-                return [];
-            }
-        }
-        else
-        {
-            path = @"C:\Work\AUFTRÄGE NEU\Angebote";
-            if (!Directory.Exists(path))
-            {
-                return [];
-            }
-        }
-
-        var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
-        return searchResult;
     }
 
     private async Task SetCalculatedValuesAsync()

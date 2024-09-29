@@ -447,11 +447,12 @@ public class DialogService : IDialogService
     /// Opens a modal Liftdata import dialog.
     /// </summary>
     /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
-    /// <param name="spezifikationName">namfe of the current open spezifikation</param>
+    /// <param name="spezifikationName">name of the current open spezifikation</param>
+    /// <param name="spezifikationTyp">type of the current open spezifikation</param>
     /// <returns>Task</returns>
-    public async Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName)
+    public async Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp)
     {
-        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName)
+        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName, spezifikationTyp)
         {
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme,
