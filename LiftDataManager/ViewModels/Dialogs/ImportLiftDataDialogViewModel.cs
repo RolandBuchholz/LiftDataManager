@@ -121,129 +121,129 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         DataImportStatus = InfoBarSeverity.Informational;
         DataImportStatusText = "Datenimport gestartet";
 
-        var ignoreImportParameters = new List<string>
-        {
-            "var_Index",
-            "var_FabrikNummer",
-            "var_AuftragsNummer",
-            "var_Kennwort",
-            "var_ErstelltVon",
-            "var_FabriknummerBestand",
-            "var_FreigabeErfolgtAm",
-            "var_Demontage",
-            "var_FertigstellungAm",
-            "var_GeaendertAm",
-            "var_GeaendertVon"
-        };
+        //var ignoreImportParameters = new List<string>
+        //{
+        //    "var_Index",
+        //    "var_FabrikNummer",
+        //    "var_AuftragsNummer",
+        //    "var_Kennwort",
+        //    "var_ErstelltVon",
+        //    "var_FabriknummerBestand",
+        //    "var_FreigabeErfolgtAm",
+        //    "var_Demontage",
+        //    "var_FertigstellungAm",
+        //    "var_GeaendertAm",
+        //    "var_GeaendertVon"
+        //};
 
-        IEnumerable<TransferData>? importParameter;
-        if (ImportSpezifikationTyp != SpezifikationTyp.Request)
-        {
-            ignoreImportParameters.Add("var_ErstelltAm");
-            ignoreImportParameters.Add("var_AuslieferungAm");
-            if (ImportSpezifikationTyp is null)
-            {
-                return;
-            }
-            var downloadInfo = await _vaultDataService.GetAutoDeskTransferAsync(ImportSpezifikationName, ImportSpezifikationTyp, true);
-            if (downloadInfo is null)
-            {
-                DataImportStatus = InfoBarSeverity.Error;
-                DataImportStatusText = "Datenimport fehlgeschlagen";
-                return;
-            }
-            if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
-            {
-                DataImportStatus = InfoBarSeverity.Warning;
-                DataImportStatusText = downloadInfo.ExitState.Humanize();
-                return;
-            }
-            if (downloadInfo.FullFileName is null)
-            {
-                DataImportStatus = InfoBarSeverity.Error;
-                DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
-                return;
-            }
+        //IEnumerable<TransferData>? importParameter;
+        //if (ImportSpezifikationTyp != SpezifikationTyp.Request)
+        //{
+        //    ignoreImportParameters.Add("var_ErstelltAm");
+        //    ignoreImportParameters.Add("var_AuslieferungAm");
+        //    if (ImportSpezifikationTyp is null)
+        //    {
+        //        return;
+        //    }
+        //    var downloadInfo = await _vaultDataService.GetAutoDeskTransferAsync(ImportSpezifikationName, ImportSpezifikationTyp, true);
+        //    if (downloadInfo is null)
+        //    {
+        //        DataImportStatus = InfoBarSeverity.Error;
+        //        DataImportStatusText = "Datenimport fehlgeschlagen";
+        //        return;
+        //    }
+        //    if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
+        //    {
+        //        DataImportStatus = InfoBarSeverity.Warning;
+        //        DataImportStatusText = downloadInfo.ExitState.Humanize();
+        //        return;
+        //    }
+        //    if (downloadInfo.FullFileName is null)
+        //    {
+        //        DataImportStatus = InfoBarSeverity.Error;
+        //        DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
+        //        return;
+        //    }
 
-            importParameter = await _parameterDataService.LoadParameterAsync(downloadInfo.FullFileName);
-        }
-        else
-        {
-            var importParameterPdf = await _parameterDataService.LoadPdfOfferAsync(ImportSpezifikationName);
+        //    importParameter = await _parameterDataService.LoadParameterAsync(downloadInfo.FullFileName);
+        //}
+        //else
+        //{
+        //    var importParameterPdf = await _parameterDataService.LoadPdfOfferAsync(ImportSpezifikationName);
 
-            if (!importParameterPdf.Any())
-            {
-                DataImportStatus = InfoBarSeverity.Warning;
-                DataImportStatusText = $"Die ausgewählte PDF-Datei enthält keine Daten für den Import.\n" +
-                                       $"{ImportSpezifikationName}";
-                return;
-            }
+        //    if (!importParameterPdf.Any())
+        //    {
+        //        DataImportStatus = InfoBarSeverity.Warning;
+        //        DataImportStatusText = $"Die ausgewählte PDF-Datei enthält keine Daten für den Import.\n" +
+        //                               $"{ImportSpezifikationName}";
+        //        return;
+        //    }
 
-            var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
-            ShowImportCarFrames = isMultiCarframe;
-            if (!isMultiCarframe)
-            {
-                SelectedImportCarFrame = null;
-            }
+        //    var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
+        //    ShowImportCarFrames = isMultiCarframe;
+        //    if (!isMultiCarframe)
+        //    {
+        //        SelectedImportCarFrame = null;
+        //    }
 
-            if (isMultiCarframe && SelectedImportCarFrame is null)
-            {
-                DataImportStatus = InfoBarSeverity.Warning;
-                DataImportStatusText = "Mehrere Bausatztypen für DatenImport vorhanden.\n" +
-                                       "Wählen sie den gewünschten Bausatztyp aus!";
-                return;
-            }
+        //    if (isMultiCarframe && SelectedImportCarFrame is null)
+        //    {
+        //        DataImportStatus = InfoBarSeverity.Warning;
+        //        DataImportStatusText = "Mehrere Bausatztypen für DatenImport vorhanden.\n" +
+        //                               "Wählen sie den gewünschten Bausatztyp aus!";
+        //        return;
+        //    }
 
-            var carTypPrefix = SelectedImportCarFrame switch
-            {
-                "Tiger TG2" => "_TG2",
-                "BR1 1:1" => "_BR1",
-                "BR2 2:1" => "_BR2",
-                "Jupiter BT1" => "_BT1",
-                "Jupiter BT2" => "_BT2",
-                "Seil-Rucksack BRR" => "_BRR",
-                "Seil-Zentral ZZE-S" => "_ZZE_S",
-                _ => "_EZE_SR"
-            };
+        //    var carTypPrefix = SelectedImportCarFrame switch
+        //    {
+        //        "Tiger TG2" => "_TG2",
+        //        "BR1 1:1" => "_BR1",
+        //        "BR2 2:1" => "_BR2",
+        //        "Jupiter BT1" => "_BT1",
+        //        "Jupiter BT2" => "_BT2",
+        //        "Seil-Rucksack BRR" => "_BRR",
+        //        "Seil-Zentral ZZE-S" => "_ZZE_S",
+        //        _ => "_EZE_SR"
+        //    };
 
-            var cleanImport = new List<TransferData>();
+        //    var cleanImport = new List<TransferData>();
 
-            foreach (var item in importParameterPdf)
-            {
-                if (item.Name.EndsWith(carTypPrefix) || item.Name == "var_CFPOption")
-                {
-                    item.Name = item.Name.Replace(carTypPrefix, "");
-                    cleanImport.Add(item);
-                }
-            }
+        //    foreach (var item in importParameterPdf)
+        //    {
+        //        if (item.Name.EndsWith(carTypPrefix) || item.Name == "var_CFPOption")
+        //        {
+        //            item.Name = item.Name.Replace(carTypPrefix, "");
+        //            cleanImport.Add(item);
+        //        }
+        //    }
 
-            var carTyp = carTypPrefix switch
-            {
-                "_TG2" => "TG2-15 MK2",
-                "_BR1" => "BR1-15 MK2",
-                "_BR2" => "BR2-15 MK2",
-                "_BT1" => "BT1-40",
-                "_BT2" => "BT2-40",
-                "_BRR" => "BRR-15 MK2",
-                "_ZZE_S" => "ZZE-S1600",
-                _ => "EZE-SR3200 SAO"
-            };
+        //    var carTyp = carTypPrefix switch
+        //    {
+        //        "_TG2" => "TG2-15 MK2",
+        //        "_BR1" => "BR1-15 MK2",
+        //        "_BR2" => "BR2-15 MK2",
+        //        "_BT1" => "BT1-40",
+        //        "_BT2" => "BT2-40",
+        //        "_BRR" => "BRR-15 MK2",
+        //        "_ZZE_S" => "ZZE-S1600",
+        //        _ => "EZE-SR3200 SAO"
+        //    };
 
-            cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
-            cleanImport.Add(new TransferData("var_Fahrkorbtyp", "Fremdkabine", string.Empty, false));
-            importParameter = cleanImport;
+        //    cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
+        //    cleanImport.Add(new TransferData("var_Fahrkorbtyp", "Fremdkabine", string.Empty, false));
+        //    importParameter = cleanImport;
 
-            CopyPdfOffer(ImportSpezifikationName);
-        }
+        //    CopyPdfOffer(ImportSpezifikationName);
+        //}
 
-        if (importParameter is null)
-        {
-            return;
-        }
-        DataImportStatus = InfoBarSeverity.Success;
-        DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
-                               $"Detailinformationen im Info Sidebar Panel.\n" +
-                               $"Importdialog kann geschlossen werden.";
+        //if (importParameter is null)
+        //{
+        //    return;
+        //}
+        //DataImportStatus = InfoBarSeverity.Success;
+        //DataImportStatusText = $"Daten von {ImportSpezifikationName} erfolgreich importiert.\n" +
+        //                       $"Detailinformationen im Info Sidebar Panel.\n" +
+        //                       $"Importdialog kann geschlossen werden.";
     }
 
 

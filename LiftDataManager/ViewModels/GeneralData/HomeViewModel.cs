@@ -151,14 +151,15 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
-        if (string.IsNullOrWhiteSpace(SpezifikationName)||
+        if (string.IsNullOrWhiteSpace(SpezifikationName) ||
             CurrentSpezifikationTyp is null)
         {
             return;
         }
-        var downloadInfo = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
-        if (downloadInfo is not null)
+        var downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
+        if (downloadResult.Item2 is not null)
         {
+            var downloadInfo = downloadResult.Item2;
             if (downloadInfo.ExitState == ExitCodeEnum.NoError)
             {
                 FullPathXml = downloadInfo.FullFileName;
@@ -176,7 +177,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             else if (downloadInfo.ExitState == ExitCodeEnum.CheckedOutByOtherUser || downloadInfo.ExitState == ExitCodeEnum.CheckedOutLinkedFilesByOtherUser)
             {
                 FullPathXml = downloadInfo.FullFileName;
-                await _dialogService!.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet",
+                await _dialogService.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet",
                     "Kein speichern möglich!\n" +
                     "\n" +
                     "Datei kann nur schreibgeschützt geöffnet werden.");
@@ -192,24 +193,24 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden");
 
-                var confirmed = await _dialogService!.ConfirmationDialogAsync(
+                var confirmed = await _dialogService.ConfirmationDialogAsync(
                                         $"Es wurden mehrere {downloadInfo.FileName} Dateien gefunden?",
                                             "XML aus Vault herunterladen",
                                             "Abbrechen");
                 if ((bool)confirmed)
                 {
-                    var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!, true);
+                    var vaultDownloadResult = await _vaultDataService.GetFileAsync(SpezifikationName, true);
 
-                    if (downloadResult.ExitState == ExitCodeEnum.NoError)
+                    if (vaultDownloadResult.ExitState == ExitCodeEnum.NoError)
                     {
-                        _logger.LogInformation(60139, "{FullPathXml} loaded", downloadResult.FullFileName);
-                        FullPathXml = downloadResult.FullFileName;
+                        _logger.LogInformation(60139, "{FullPathXml} loaded", vaultDownloadResult.FullFileName);
+                        FullPathXml = vaultDownloadResult.FullFileName;
                     }
                     else
                     {
-                        await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
-                        _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName!, downloadResult.ExitState);
-                        await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
+                        await _dialogService.LiftDataManagerdownloadInfoAsync(vaultDownloadResult);
+                        _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, vaultDownloadResult.ExitState);
+                        await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {vaultDownloadResult.ExitState}");
                         FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                     }
                 }
@@ -250,107 +251,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             AuftragsbezogeneXml = true;
             CanValidateAllParameter = true;
             InfoCenterEntrys.Clear();
-            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{FullPathXml.Replace(@"C:\Work\AUFTRÄGE NEU\", "")} geladen");
+            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich nach {downloadResult.Item1} ms beendet");
         }
 
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
-
-        foreach (var item in data)
-        {
-            if (ParameterDictionary!.TryGetValue(item.Name, out Parameter value))
-            {
-                var updatedParameter = value;
-                updatedParameter.DataImport = true;
-                if (updatedParameter.ParameterTyp == ParameterTypValue.Boolean)
-                {
-                    updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
-                }
-                else if (updatedParameter.ParameterTyp == ParameterTypValue.Date)
-                {
-                    if (string.IsNullOrWhiteSpace(item.Value) || item.Value == "0")
-                    {
-                        updatedParameter.Value = string.Empty;
-                    }
-                    else if (item.Value.Contains('.'))
-                    {
-                        updatedParameter.Value = item.Value;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            updatedParameter.Value = DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
-                            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{updatedParameter.Name} => Exceldatum in String konvertiert");
-                        }
-                        catch
-                        {
-                            updatedParameter.Value = string.Empty;
-                        }
-                        updatedParameter.IsDirty = true;
-                    }
-                }
-                else
-                {
-                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
-                }
-
-                updatedParameter.Comment = item.Comment;
-                updatedParameter.IsKey = item.IsKey;
-                if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
-                {
-                    updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
-                }
-                if (updatedParameter.HasErrors)
-                {
-                    updatedParameter.HasErrors = false;
-                }
-                updatedParameter.DataImport = false;
-            }
-            else
-            {
-                LogUnsupportedParameter(item.Name);
-                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Parameter {item.Name} wird nicht unterstützt\n" +
-                                                                                      "Überprüfen Sie die AutodeskTransfer.XML Datei");
-            }
-        }
-
-        FileInfo AutoDeskTransferInfo = new(FullPathXml);
-        if (!AutoDeskTransferInfo.IsReadOnly)
-        {
-            var parameterList = ParameterDictionary!.Values.ToList();
-
-            XElement? doc = null;
-            bool isXmlOutdated = false;
-            var dataParameterList = data.Select(x => x.Name).ToList();
-
-            for (int i = 0; i < parameterList.Count; i++)
-            {
-                if (!dataParameterList.Contains(parameterList[i].Name!))
-                {
-                    isXmlOutdated = true;
-                    doc ??= XElement.Load(FullPathXml);
-
-                    XElement? previousxmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
-                                                      where para.Element("name")!.Value == parameterList[i - 1].Name
-                                                      select para).SingleOrDefault();
-                    if (previousxmlparameter is not null)
-                    {
-                        var newXmlTree = new XElement("ParamWithValue",
-                                    new XElement("name", parameterList[i].Name),
-                                    new XElement("typeCode", parameterList[i].TypeCode.ToString()),
-                                    new XElement("value", parameterList[i].Value),
-                                    new XElement("comment", parameterList[i].Comment),
-                                    new XElement("isKey", parameterList[i].IsKey));
-
-                        previousxmlparameter.AddAfterSelf(new XElement(newXmlTree));
-                    }
-                }
-            }
-            if (isXmlOutdated && doc is not null)
-            {
-                doc.Save(FullPathXml);
-            }
-        }
+        var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, ParameterDictionary, true);
+        await _infoCenterService.AddListofInfoCenterEntrysAsync(InfoCenterEntrys, newInfoCenterEntrys);
 
         if (CurrentSpeziProperties is not null)
         {
@@ -359,6 +265,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {FullPathXml} geladen");
+
         LikeEditParameter = true;
         OpenReadOnly = true;
         CanCheckOut = !CheckOut && AuftragsbezogeneXml;
@@ -366,7 +273,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
             if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+            {
                 ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
+            }
             await ValidateAllParameterAsync();
             await SetCalculatedValuesAsync();
             _ = Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
@@ -566,10 +475,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             _logger.LogError(61039, "Liftadataimport failed fullPathXml or spezifikationName is null");
             return;
         }
-        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
-        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
-        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich beendet {stopTimeMs} ms");
-        //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"{searchPattern} nicht im Arbeitsbereich vorhanden. (searchtime: {stopTimeMs} ms)");
         await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp);
         //ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(ImportSpezifikationName);
 
@@ -894,8 +799,4 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         NavigatedFromBaseActions();
     }
-
-    [LoggerMessage(61035, LogLevel.Warning,
-    "Unsupported Parameter: {parameterName}")]
-    partial void LogUnsupportedParameter(string parameterName);
 }

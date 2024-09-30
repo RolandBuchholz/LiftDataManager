@@ -8,6 +8,7 @@ using PdfSharp.Fonts;
 using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Snippets.Font;
+using System.Globalization;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -29,6 +30,7 @@ public partial class ParameterDataService : IParameterDataService
         user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
     }
 
+    /// <inheritdoc/>
     public bool CanConnectDataBase()
     {
         if (!_parametercontext.Database.CanConnect())
@@ -40,44 +42,13 @@ public partial class ParameterDataService : IParameterDataService
         return false;
     }
 
+    /// <inheritdoc/>
     public string GetCurrentUser()
     {
         return user;
     }
 
-    private bool ValidatePath(string path, bool readOnlyAllowed)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            _logger.LogError(61001, "Path is null or whiteSpace");
-            return false;
-        }
-
-        if (!path.StartsWith("C:\\Work"))
-        {
-            _logger.LogError(61001, "Path is not in workspace");
-            return false;
-        }
-
-        if (!path.EndsWith("AutoDeskTransfer.xml"))
-        {
-            _logger.LogError(61001, "Path is not a AutoDeskTransfer.xml");
-            return false;
-        }
-
-        if (!readOnlyAllowed)
-        {
-            FileInfo AutoDeskTransferInfo = new(path);
-            if (AutoDeskTransferInfo.IsReadOnly)
-            {
-                _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+    /// <inheritdoc/>
     public LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter)
     {
         return new LiftHistoryEntry(parameter.Name,
@@ -87,6 +58,7 @@ public partial class ParameterDataService : IParameterDataService
             parameter.Comment is not null ? parameter.Comment : string.Empty);
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Parameter>> InitializeParametereFromDbAsync()
     {
         List<Parameter> parameterList = [];
@@ -144,6 +116,7 @@ public partial class ParameterDataService : IParameterDataService
         return parameterList;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<TransferData>> LoadParameterAsync(string path)
     {
         XElement doc = XElement.Load(path);
@@ -155,10 +128,11 @@ public partial class ParameterDataService : IParameterDataService
                                                      para.Element("isKey")!.GetAs<bool>()))
                                   .ToList();
         await Task.CompletedTask;
-        _logger.LogInformation(60101, "Parameter from {path} loaded", path);
+        _logger.LogInformation(60101, "Get TranferData form {path}", path);
         return transferDataList;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<TransferData>> LoadPdfOfferAsync(string path)
     {
         var transferDataList = new List<TransferData>();
@@ -213,17 +187,21 @@ public partial class ParameterDataService : IParameterDataService
         return transferDataList;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false)
     {
         var historyEntrys = new List<LiftHistoryEntry>();
         Dictionary<string, int> parameterCategory = [];
 
         if (!ValidatePath(path, true))
+        {
             return historyEntrys;
+        }
         var historyPath = path.Replace("AutoDeskTransfer.xml", "LiftHistory.json");
         if (!Path.Exists(historyPath))
+        {
             return historyEntrys;
-
+        }
         var entrys = File.ReadAllLines(historyPath);
 
         if (includeCategory)
@@ -253,7 +231,9 @@ public partial class ParameterDataService : IParameterDataService
                 continue;
             }
             if (lifthistoryentry is null)
+            {
                 continue;
+            }
             if (!includeCategory)
             {
                 historyEntrys.Add(lifthistoryentry);
@@ -268,6 +248,7 @@ public partial class ParameterDataService : IParameterDataService
         return historyEntrys;
     }
 
+    /// <inheritdoc/>
     public async Task<Tuple<string, string, string?>> SaveParameterAsync(Parameter parameter, string path)
     {
         if (!ValidatePath(path, false))
@@ -299,6 +280,7 @@ public partial class ParameterDataService : IParameterDataService
         return await Task.FromResult(new Tuple<string, string, string?>(parameter.Name, parameter.DisplayName, parameter.Value));
     }
 
+    /// <inheritdoc/>
     public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
     {
         var saveResult = new List<Tuple<string, string, string?>>();
@@ -349,6 +331,121 @@ public partial class ParameterDataService : IParameterDataService
         return saveResult;
     }
 
+    /// <inheritdoc/>
+    public async Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, ObservableDictionary<string, Parameter> parameterDictionary, bool updateXml = true)
+    {
+        var infoCenterEntrys = new List<InfoCenterEntry>();
+        foreach (var item in data)
+        {
+            if (parameterDictionary.TryGetValue(item.Name, out Parameter value))
+            {
+                var updatedParameter = value;
+                updatedParameter.DataImport = true;
+                if (updatedParameter.ParameterTyp == ParameterTypValue.Boolean)
+                {
+                    updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+                }
+                else if (updatedParameter.ParameterTyp == ParameterTypValue.Date)
+                {
+                    if (string.IsNullOrWhiteSpace(item.Value) || item.Value == "0")
+                    {
+                        updatedParameter.Value = string.Empty;
+                    }
+                    else if (item.Value.Contains('.'))
+                    {
+                        updatedParameter.Value = item.Value;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            updatedParameter.Value = DateTime.FromOADate(Convert.ToDouble(item.Value, CultureInfo.GetCultureInfo("de-DE").NumberFormat)).ToShortDateString();
+                            infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterMessage) { Message = $"{updatedParameter.Name} => Exceldatum in String konvertiert" });
+                        }
+                        catch
+                        {
+                            updatedParameter.Value = string.Empty;
+                        }
+                        updatedParameter.IsDirty = true;
+                    }
+                }
+                else
+                {
+                    updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                }
+
+                updatedParameter.Comment = item.Comment;
+                updatedParameter.IsKey = item.IsKey;
+                if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
+                {
+                    updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
+                }
+                if (updatedParameter.HasErrors)
+                {
+                    updatedParameter.HasErrors = false;
+                }
+                updatedParameter.DataImport = false;
+            }
+            else
+            {
+                LogUnsupportedParameter(item.Name);
+                infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterWarning)
+                {
+                    Message = $"Parameter {item.Name} wird nicht unterstützt\n" +
+                                                                                                             "Überprüfen Sie die AutodeskTransfer.XML Datei"
+                });
+            }
+        }
+        if (updateXml)
+        {
+            FileInfo AutoDeskTransferInfo = new(path);
+            if (AutoDeskTransferInfo.IsReadOnly)
+            {
+                _logger.LogInformation(60136, "Autodesktranfer.xml ist schreibgeschützt");
+            }
+            else
+            {
+                var parameterList = parameterDictionary.Values.ToList();
+
+                XElement? doc = null;
+                bool isXmlOutdated = false;
+                var dataParameterList = data.Select(x => x.Name).ToList();
+
+                for (int i = 0; i < parameterList.Count; i++)
+                {
+                    if (!dataParameterList.Contains(parameterList[i].Name!))
+                    {
+                        isXmlOutdated = true;
+                        doc ??= XElement.Load(path);
+
+                        XElement? previousxmlparameter = (from para in doc.Elements("parameters").Elements("ParamWithValue")
+                                                          where para.Element("name")!.Value == parameterList[i - 1].Name
+                                                          select para).SingleOrDefault();
+                        if (previousxmlparameter is not null)
+                        {
+                            var newXmlTree = new XElement("ParamWithValue",
+                                        new XElement("name", parameterList[i].Name),
+                                        new XElement("typeCode", parameterList[i].TypeCode.ToString()),
+                                        new XElement("value", parameterList[i].Value),
+                                        new XElement("comment", parameterList[i].Comment),
+                                        new XElement("isKey", parameterList[i].IsKey));
+
+                            previousxmlparameter.AddAfterSelf(new XElement(newXmlTree));
+                        }
+                    }
+                }
+                if (isXmlOutdated && doc is not null)
+                {
+                    doc.Save(path);
+                }
+                _logger.LogInformation(60136, "Autodesktranfer.xml gespeichert");
+            }
+        }
+        await Task.CompletedTask;
+        return infoCenterEntrys;
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory)
     {
         var historyPath = path.Replace("AutoDeskTransfer.xml", "LiftHistory.json");
@@ -376,6 +473,7 @@ public partial class ParameterDataService : IParameterDataService
         return true;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos)
     {
         try
@@ -428,6 +526,7 @@ public partial class ParameterDataService : IParameterDataService
         return true;
     }
 
+    /// <inheritdoc/>
     public async Task<List<InfoCenterEntry>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary)
     {
         List<InfoCenterEntry> syncedParameter = [];
@@ -474,6 +573,39 @@ public partial class ParameterDataService : IParameterDataService
             _ = AddParameterListToHistoryAsync(syncedLiftHistoryEntries, path, false);
         }
         return syncedParameter;
+    }
+
+    private bool ValidatePath(string path, bool readOnlyAllowed)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            _logger.LogError(61001, "Path is null or whiteSpace");
+            return false;
+        }
+
+        if (!path.StartsWith("C:\\Work"))
+        {
+            _logger.LogError(61001, "Path is not in workspace");
+            return false;
+        }
+
+        if (!path.EndsWith("AutoDeskTransfer.xml"))
+        {
+            _logger.LogError(61001, "Path is not a AutoDeskTransfer.xml");
+            return false;
+        }
+
+        if (!readOnlyAllowed)
+        {
+            FileInfo AutoDeskTransferInfo = new(path);
+            if (AutoDeskTransferInfo.IsReadOnly)
+            {
+                _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static KeyValuePair<string, string> ValidatePdfValue(PdfAcroField field)
@@ -561,4 +693,8 @@ public partial class ParameterDataService : IParameterDataService
     [LoggerMessage(60104, LogLevel.Information,
         "Parameter: {parameterName} Value: {parameterValue} gespeichert")]
     partial void LogSavedParameter(string parameterName, string parameterValue);
+
+    [LoggerMessage(61035, LogLevel.Warning,
+    "Unsupported Parameter: {parameterName}")]
+    partial void LogUnsupportedParameter(string parameterName);
 }

@@ -1,6 +1,4 @@
-﻿using LiftDataManager.Core.Enums;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IDialogService
 {
