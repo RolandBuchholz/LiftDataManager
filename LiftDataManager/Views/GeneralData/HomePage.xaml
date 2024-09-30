@@ -974,6 +974,13 @@
             Width="200"
             Height="200"
             Background="Transparent"
+            Foreground="LimeGreen"
+            IsActive="{x:Bind ViewModel.DataImportCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
+        <ProgressRing
+            Grid.Row="2"
+            Width="200"
+            Height="200"
+            Background="Transparent"
             Foreground="Orange"
             IsActive="{x:Bind ViewModel.ValidateAllParameterCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing

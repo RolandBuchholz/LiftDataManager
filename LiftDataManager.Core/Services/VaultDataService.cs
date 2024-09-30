@@ -125,7 +125,7 @@ public class VaultDataService : IVaultDataService
     }
 
     /// <inheritdoc/>
-    public async Task<(long, DownloadInfo)> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true)
+    public async Task<(long, DownloadInfo?)> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true)
     {
         var searchPattern = liftNumber + "-AutoDeskTransfer.xml";
         var watch = Stopwatch.StartNew();

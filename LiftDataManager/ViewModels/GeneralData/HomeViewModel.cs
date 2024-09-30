@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
+using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace LiftDataManager.ViewModels;
@@ -155,6 +157,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (string.IsNullOrWhiteSpace(SpezifikationName) ||
             CurrentSpezifikationTyp is null)
         {
+            SpezifikationName = string.Empty;
             downloadResult.Item1 = default;
             downloadResult.Item2 = null;
         }
@@ -488,13 +491,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(importResult.Item1);
         }
 
-        if (importResult.Item2 is not null)
+        var importedParameter = (importResult.Item2)?.ToList();
+    
+        if (importedParameter is not null)
         {
-            foreach (var item in importResult.Item2)
+            List<InfoCenterEntry> syncedParameter = [];
+            foreach (var item in importedParameter)
             {
                 if (ParameterDictionary.TryGetValue(item.Name, out Parameter value))
                 {
                     var updatedParameter = value;
+                    var oldValue = updatedParameter.Value;
+                    if(item.Value == oldValue ||
+                      (item.Value is null && string.IsNullOrWhiteSpace(oldValue)))
+                    {
+                        continue;
+                    }
                     if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
                     {
                         updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
@@ -516,7 +528,19 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                     {
                         updatedParameter.HasErrors = false;
                     }
+                    syncedParameter.Add(new(InfoCenterEntryState.None)
+                    {
+                        ParameterName = updatedParameter.DisplayName,
+                        UniqueName = updatedParameter.Name,
+                        OldValue = oldValue,
+                        NewValue = updatedParameter.Value,
+                    });
                 }
+            }
+
+            if (importedParameter.Count != 0)
+            {
+                await _dialogService.ParameterChangedDialogAsync(syncedParameter);
             }
 
             if (ParameterDictionary is null)
@@ -534,6 +558,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
 
             await SetModelStateAsync();
+  
             if (AutoSaveTimer is not null)
             {
                 var saveTimeIntervall = AutoSaveTimer.Interval;

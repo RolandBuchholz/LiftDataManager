@@ -254,8 +254,10 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
             cleanImport.Add(new TransferData("var_Fahrkorbtyp", "Fremdkabine", string.Empty, false));
             importParameter = cleanImport;
-
-            CopyPdfOffer(ImportSpezifikationName);
+            if (!string.IsNullOrWhiteSpace(FullPathXml))
+            {
+                CopyPdfOffer(FullPathXml);
+            }
         }
 
         if (importParameter is null)

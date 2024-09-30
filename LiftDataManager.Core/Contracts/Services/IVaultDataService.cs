@@ -37,5 +37,5 @@ public interface IVaultDataService
     /// <param name="spezifikationTyp">ia a customFile</param>
     /// <param name="readOnly">get file readonly</param>
     /// <returns>Task< (long, DownloadInfo)></returns>
-    Task<(long, DownloadInfo)> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true);
+    Task<(long, DownloadInfo?)> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true);
 }
