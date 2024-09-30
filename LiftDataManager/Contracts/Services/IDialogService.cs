@@ -34,7 +34,7 @@ public interface IDialogService
 
     Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning);
 
-    Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp);
+    Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp);
 
     Task<bool> CheckOutDialogAsync(string? fullPathXml, string? carFrameTyp);
 }

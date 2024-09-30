@@ -475,74 +475,70 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             _logger.LogError(61039, "Liftadataimport failed fullPathXml or spezifikationName is null");
             return;
         }
-        await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp);
-        //ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(ImportSpezifikationName);
+        var importResult = await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp);
 
-        //foreach (var item in importParameter)
-        //{
-        //    if (ignoreImportParameters.Contains(item.Name))
-        //    {
-        //        continue;
-        //    }
-        //    if (ParameterDictionary.TryGetValue(item.Name, out Parameter value))
-        //    {
-        //        var updatedParameter = value;
-        //        if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
-        //        {
-        //            updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
-        //        }
-        //        else
-        //        {
-        //            updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
-        //        }
-        //        if (!string.IsNullOrWhiteSpace(item.Comment))
-        //        {
-        //            updatedParameter.Comment = item.Comment;
-        //        }
-        //        updatedParameter.IsKey = item.IsKey;
-        //        if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
-        //        {
-        //            updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
-        //        }
-        //        if (updatedParameter.HasErrors)
-        //        {
-        //            updatedParameter.HasErrors = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        LogUnsupportedParameter(item.Name);
-        //        await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Parameter {item.Name} wird nicht unterstützt\n" +
-        //                                                                              "Überprüfen Sie die AutodeskTransfer.XML Datei");
-        //    }
-        //}
+        if (importResult.Item1 is not null)
+        {
+            ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(importResult.Item1);
+        }
 
-        //if (ParameterDictionary is null)
-        //{
-        //    return;
-        //}
-        //if (FullPathXml is null)
-        //{
-        //    return;
-        //}
-        //var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
-        //if (saveResult.Count != 0)
-        //{
-        //    await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
-        //}
+        if (importResult.Item2 is not null)
+        {
+            foreach (var item in importResult.Item2)
+            {
+                if (ParameterDictionary.TryGetValue(item.Name, out Parameter value))
+                {
+                    var updatedParameter = value;
+                    if (updatedParameter.ParameterTyp != ParameterTypValue.Boolean)
+                    {
+                        updatedParameter.Value = item.Value is not null ? item.Value : string.Empty;
+                    }
+                    else
+                    {
+                        updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Comment))
+                    {
+                        updatedParameter.Comment = item.Comment;
+                    }
+                    updatedParameter.IsKey = item.IsKey;
+                    if (updatedParameter.ParameterTyp == ParameterTypValue.DropDownList)
+                    {
+                        updatedParameter.DropDownListValue = LiftParameterHelper.GetDropDownListValue(updatedParameter.DropDownList, updatedParameter.Value);
+                    }
+                    if (updatedParameter.HasErrors)
+                    {
+                        updatedParameter.HasErrors = false;
+                    }
+                }
+            }
 
-        //await SetModelStateAsync();
-        //if (AutoSaveTimer is not null)
-        //{
-        //    var saveTimeIntervall = AutoSaveTimer.Interval;
-        //    AutoSaveTimer.Stop();
-        //    AutoSaveTimer.Interval = saveTimeIntervall;
-        //    AutoSaveTimer.Start();
-        //}
+            if (ParameterDictionary is null)
+            {
+                return;
+            }
+            if (FullPathXml is null)
+            {
+                return;
+            }
+            var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
+            if (saveResult.Count != 0)
+            {
+                await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+            }
 
+            await SetModelStateAsync();
+            if (AutoSaveTimer is not null)
+            {
+                var saveTimeIntervall = AutoSaveTimer.Interval;
+                AutoSaveTimer.Stop();
+                AutoSaveTimer.Interval = saveTimeIntervall;
+                AutoSaveTimer.Start();
+            }
 
-        //InfoCenterIsOpen = true;
-        //await SetCalculatedValuesAsync();
+            InfoCenterIsOpen = true;
+            await SetCalculatedValuesAsync();
+        }
     }
 
     protected override async Task SetModelStateAsync()

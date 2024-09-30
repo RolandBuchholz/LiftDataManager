@@ -8,6 +8,10 @@ public sealed partial class ImportLiftDataDialog : ContentDialog
     public string SpezifikationName { get; set; }
     public SpezifikationTyp CurrentSpezifikationTyp { get; set; }
 
+    public string? ImportSpezifikationName { get; set; }
+
+    public IEnumerable<TransferData>? ImportPamameter { get; set; }
+
     public ImportLiftDataDialogViewModel ViewModel
     {
         get;

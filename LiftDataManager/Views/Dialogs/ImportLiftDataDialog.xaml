@@ -12,7 +12,10 @@
     x:Name="ImportLiftData"
     Title="Import Liftdaten"
     VerticalAlignment="Stretch"
-    CloseButtonText="Importdialog schließen"
+    CloseButtonText="Datenimport abbrechen"
+    IsPrimaryButtonEnabled="{x:Bind ViewModel.LiftDataReadyForImport, Mode=OneWay}"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
+    PrimaryButtonText="Daten übernehmen"
     mc:Ignorable="d">
     <Interactivity:Interaction.Behaviors>
         <Core:EventTriggerBehavior EventName="Loaded">
@@ -136,6 +139,7 @@
             Margin="0,10,0,0"
             HorizontalAlignment="Stretch"
             Command="{x:Bind ViewModel.StartDataImportCommand}"
+            CommandParameter="{Binding ElementName=ImportLiftData}"
             FontWeight="Bold"
             Style="{StaticResource AccentButtonStyle}">
             <StackPanel Orientation="Horizontal">

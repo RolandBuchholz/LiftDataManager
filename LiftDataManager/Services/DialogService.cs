@@ -449,8 +449,8 @@ public class DialogService : IDialogService
     /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
     /// <param name="spezifikationName">name of the current open spezifikation</param>
     /// <param name="spezifikationTyp">type of the current open spezifikation</param>
-    /// <returns>Task</returns>
-    public async Task<bool> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp)
+    /// <returns>Task<(string?, IEnumerable<TransferData>?)></returns>
+    public async Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp)
     {
         var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName, spezifikationTyp)
         {
@@ -460,9 +460,9 @@ public class DialogService : IDialogService
         var result = await dialog.ShowAsyncQueueDraggable();
         if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
         {
-            return false;
+            return (null, null);
         }
-        return true;
+        return (dialog.ImportSpezifikationName, dialog.ImportPamameter);
     }
 
     /// <summary>
