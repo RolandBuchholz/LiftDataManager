@@ -151,12 +151,18 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
+        (long,DownloadInfo?) downloadResult;
         if (string.IsNullOrWhiteSpace(SpezifikationName) ||
             CurrentSpezifikationTyp is null)
         {
-            return;
+            downloadResult.Item1 = default;
+            downloadResult.Item2 = null;
         }
-        var downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
+        else
+        {
+            downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
+        }
+        
         if (downloadResult.Item2 is not null)
         {
             var downloadInfo = downloadResult.Item2;
