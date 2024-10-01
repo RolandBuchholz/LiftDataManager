@@ -246,7 +246,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             case 2:
                 supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
                 offsetOKAprontoOKFF = 29; //14
-                distanceBetweenSillBracketholes = 42; //15
+                distanceBetweenSillBracketholes = 43; //15
                 triangularLockingDistance = 100; //16
                 break;
             case 3:
@@ -254,6 +254,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
                 offsetOKAprontoOKFF = 88; //14
                 distanceBetweenSillBracketholes = 105; //15
                 triangularLockingDistance = 168; //16
+                break;
+            case 4:
+                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                offsetOKAprontoOKFF = 31; //14
+                distanceBetweenSillBracketholes = 45; //15
+                triangularLockingDistance = 100; //16
                 break;
             default:
                 ParameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;

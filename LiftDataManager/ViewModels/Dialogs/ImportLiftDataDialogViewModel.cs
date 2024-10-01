@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.Extensions.Logging;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -31,6 +32,24 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         await Task.CompletedTask;
     }
 
+    [RelayCommand]
+    public async Task DragAndDropDropedAsync(DragEventArgs e)
+    {
+        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            var items = await e.DataView.GetStorageItemsAsync();
+            if (items.Count > 0)
+            {
+                var storageFile = items[0] as StorageFile;
+                Debug.WriteLine(storageFile.DisplayName);
+                //var bitmapImage = new BitmapImage();
+                //bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
+                //// Set the image on the main page to the dropped image
+                //Image.Source = bitmapImage;
+            }
+        }
+    }
+
     [ObservableProperty]
     private string? spezifikationName;
 
@@ -57,6 +76,9 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private bool showImportCarFrames;
 
     [ObservableProperty]
+    private bool showDragAndDropPanel;
+
+    [ObservableProperty]
     private string? selectedImportCarFrame;
 
     [ObservableProperty]
@@ -75,26 +97,31 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Offer).Then(() =>
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Planning).Then(() =>
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Request).Then(() =>
             {
                 DataImportDescription = "Daten aus einem Anfrage Formular importieren.";
                 DataImportDescriptionImage = pdfImage;
+                ShowDragAndDropPanel = true;
             })
             .Default(() =>
             {
                 DataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                ShowDragAndDropPanel = false;
             });
         _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);
     }
@@ -254,9 +281,9 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             cleanImport.Add(new TransferData("var_Bausatz", carTyp, string.Empty, false));
             cleanImport.Add(new TransferData("var_Fahrkorbtyp", "Fremdkabine", string.Empty, false));
             importParameter = cleanImport;
-            if (!string.IsNullOrWhiteSpace(FullPathXml))
+            if (!string.IsNullOrWhiteSpace(ImportSpezifikationName))
             {
-                CopyPdfOffer(FullPathXml);
+                CopyPdfOffer(ImportSpezifikationName);
             }
         }
 
@@ -281,18 +308,19 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         ImportSpezifikationName = (file is not null) ? file.Path : string.Empty;
     }
 
-    private void CopyPdfOffer(string fullPath)
+    private void CopyPdfOffer(string importSpezifikationName)
     {
-        if (!File.Exists(fullPath))
+        if (string.IsNullOrWhiteSpace(FullPathXml) ||
+            !File.Exists(importSpezifikationName))
         {
             return;
         }
-
-        var currentFileName = Path.GetFileName(fullPath);
+   
+        var currentFileName = Path.GetFileName(importSpezifikationName);
         var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
-        var newFullPath = Path.Combine(Path.GetDirectoryName(fullPath)!, "SV", newFileName);
+        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "SV", newFileName);
 
-        if (string.Equals(fullPath, newFullPath, StringComparison.CurrentCultureIgnoreCase))
+        if (string.Equals(FullPathXml, newFullPath, StringComparison.CurrentCultureIgnoreCase))
         {
             return;
         }
@@ -307,7 +335,14 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                     pdfOfferFileInfo.IsReadOnly = false;
                 }
             }
-            File.Copy(fullPath, newFullPath, true);
+            try
+            {
+                File.Copy(importSpezifikationName, newFullPath, true);
+            }
+            catch 
+            {
+                _logger.LogError(60132, "Copy Pdf: {Typ} failed", importSpezifikationName);
+            }
         }
     }
 
