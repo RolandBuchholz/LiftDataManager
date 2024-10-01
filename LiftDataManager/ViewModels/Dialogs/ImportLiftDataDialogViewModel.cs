@@ -1,5 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.Extensions.Logging;
+using Microsoft.Office.Core;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System.Net.WebSockets;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
@@ -31,6 +33,35 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         CurrentSpezifikationTyp = sender.CurrentSpezifikationTyp;
         SpezifikationName = sender.SpezifikationName;
         await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    public async Task DragAndDropDragOverAsync(DragEventArgs e)
+    {
+        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            var items = await e.DataView.GetStorageItemsAsync();
+            if (items.Count > 0)
+            {
+                if (items[0] is not StorageFile storageFile)
+                {
+                    return;
+                }
+                if (storageFile.FileType.Equals(".pdf", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                    //e.DragUIOverride.Caption = "Anfrageformular";
+                    //e.DragUIOverride.SetContentFromBitmapImage(
+                    //    new BitmapImage(new Uri("ms-appx:///Images/PdfTransparent.png", UriKind.RelativeOrAbsolute)));
+                    //e.DragUIOverride.IsCaptionVisible = true;
+                    //e.DragUIOverride.IsContentVisible = true;
+                    //e.DragUIOverride.IsGlyphVisible = false;
+                }
+
+            }
+        }
+
+
     }
 
     [RelayCommand]

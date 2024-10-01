@@ -105,7 +105,7 @@
                 RequestEnabled="True"
                 SpezifikationName="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay}"
                 SpezifikationTyp="{x:Bind ViewModel.ImportSpezifikationTyp, Mode=TwoWay}" />
-            <Border
+            <Button
                 x:Name="DragAndDropBorder"
                 Grid.Row="5"
                 Grid.Column="0"
@@ -115,8 +115,6 @@
                 Padding="50,10,50,10"
                 HorizontalAlignment="Stretch"
                 AllowDrop="True"
-                DragOver="Border_DragOver"
-                Style="{ThemeResource InfoBorderPanelStyle}"
                 Visibility="{x:Bind ViewModel.ShowDragAndDropPanel, Mode=OneWay}">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <FontIcon
@@ -133,11 +131,14 @@
                         TextWrapping="WrapWholeWords" />
                 </StackPanel>
                 <Interactivity:Interaction.Behaviors>
-                    <Core:EventTriggerBehavior EventName="Drop">
+                    <Core:EventTriggerBehavior EventName="DragOver" SourceObject="{Binding ElementName=DragAndDropBorder}">
+                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.DragAndDropDragOverCommand}" />
+                    </Core:EventTriggerBehavior>
+                    <Core:EventTriggerBehavior EventName="Drop" SourceObject="{Binding ElementName=DragAndDropBorder}">
                         <Core:InvokeCommandAction Command="{x:Bind ViewModel.DragAndDropDropedCommand}" />
                     </Core:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
-            </Border>
+            </Button>
             <InfoBar
                 Title="Import Status"
                 Grid.Row="6"

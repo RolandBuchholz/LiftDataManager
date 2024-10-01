@@ -1,6 +1,7 @@
 using LiftDataManager.ViewModels.Dialogs;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 
 namespace LiftDataManager.Views.Dialogs;
 
@@ -26,16 +27,5 @@ public sealed partial class ImportLiftDataDialog : ContentDialog
         SpezifikationName = spezifikationName;
         CurrentSpezifikationTyp = spezifikationTyp;
         InitializeComponent();
-    }
-
-    private void Border_DragOver(object sender, DragEventArgs e)
-    {
-        e.AcceptedOperation = DataPackageOperation.Copy;
-        e.DragUIOverride.Caption = "Anfrageformular";
-        e.DragUIOverride.SetContentFromBitmapImage(
-            new BitmapImage(new Uri("ms-appx:///Images/PdfTransparent.png", UriKind.RelativeOrAbsolute)));
-        e.DragUIOverride.IsCaptionVisible = true;
-        e.DragUIOverride.IsContentVisible = true; 
-        e.DragUIOverride.IsGlyphVisible = false;
     }
 }
