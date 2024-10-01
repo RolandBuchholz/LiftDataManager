@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using System.Xml;
 
@@ -253,8 +254,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 {
                     await _dialogService.ParameterChangedDialogAsync(updatedResult);
                 }
-                ParameterDictionary!["var_CFPdefiniert"].Value = "True";
+                ParameterDictionary["var_CFPdefiniert"].Value = "True";
             }
+            _logger.LogInformation(60138, "Validate all parameter startet");
+            await _validationParameterDataService.ValidateAllParameterAsync();
         }
         else
         {
@@ -361,6 +364,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     {
         var zaliftHtml = GetZaliftHtml();
         var zliDataDictionary = GetZliDataDictionary(zaliftHtml);
+        List<InfoCenterEntry> syncedParameter = [];
 
         if (ParameterDictionary is not null && zliDataDictionary.Count != 0)
         {
@@ -596,18 +600,24 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
         if (!onlyDiveData)
         {
-            _ = _validationParameterDataService!.ValidateAllParameterAsync();
+            if (syncedParameter.Count != 0)
+            {
+                //syncedParameter.Add(new(InfoCenterEntryState.None)
+                //{
+                //    ParameterName = updatedParameter.DisplayName,
+                //    UniqueName = updatedParameter.Name,
+                //    OldValue = oldValue,
+                //    NewValue = updatedParameter.Value,
+                //});
+                await _dialogService.ParameterChangedDialogAsync(syncedParameter);
+            }
+            await _validationParameterDataService.ValidateAllParameterAsync();
             await SetModelStateAsync();
         }
-
-        //if (zAliftDataReadyForImport || onlyDiveData)
-        //{
-        //    await Task.CompletedTask;
-        //}
-        //else
-        //{
-        //    await _dialogService!.MessageDialogAsync("ZAlift Dataimport", "Ziehl Abegg Liftdaten erfolgreich importiert");
-        //}
+        else
+        {
+            await Task.CompletedTask;
+        }
     }
     private HtmlDocument GetZaliftHtml()
     {

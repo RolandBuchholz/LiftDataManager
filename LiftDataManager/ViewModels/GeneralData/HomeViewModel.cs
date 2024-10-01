@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace LiftDataManager.ViewModels;
 
@@ -153,7 +150,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
-        (long,DownloadInfo?) downloadResult;
+        (long, DownloadInfo?) downloadResult;
         if (string.IsNullOrWhiteSpace(SpezifikationName) ||
             CurrentSpezifikationTyp is null)
         {
@@ -165,7 +162,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
         }
-        
+
         if (downloadResult.Item2 is not null)
         {
             var downloadInfo = downloadResult.Item2;
@@ -425,11 +422,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private async Task ValidateAllParameterAsync()
     {
         _logger.LogInformation(60138, "Validate all parameter startet");
-        _ = _validationParameterDataService.ValidateAllParameterAsync();
-
-        _ = await _dialogService.MessageConfirmationDialogAsync("Validation Result",
-                    $"Es wurden {ParameterDictionary!.Count} Parameter überprüft.\n" +
-                    $"Es wurden {ParameterErrorDictionary!.Count} Fehler/Warnungen/Informationen gefunden",
+        await _validationParameterDataService.ValidateAllParameterAsync();
+        await _dialogService.MessageConfirmationDialogAsync("Validation Result",
+                    $"Es wurden {ParameterDictionary.Count} Parameter überprüft.\n" +
+                    $"Es wurden {ParameterErrorDictionary.Count} Fehler/Warnungen/Informationen gefunden",
                         "Ok");
         await SetModelStateAsync();
     }
@@ -492,7 +488,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
 
         var importedParameter = (importResult.Item2)?.ToList();
-    
+
         if (importedParameter is not null)
         {
             List<InfoCenterEntry> syncedParameter = [];
@@ -502,7 +498,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 {
                     var updatedParameter = value;
                     var oldValue = updatedParameter.Value;
-                    if(item.Value == oldValue ||
+                    if (item.Value == oldValue ||
                       (item.Value is null && string.IsNullOrWhiteSpace(oldValue)))
                     {
                         continue;
@@ -558,7 +554,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
 
             await SetModelStateAsync();
-  
+
             if (AutoSaveTimer is not null)
             {
                 var saveTimeIntervall = AutoSaveTimer.Interval;
