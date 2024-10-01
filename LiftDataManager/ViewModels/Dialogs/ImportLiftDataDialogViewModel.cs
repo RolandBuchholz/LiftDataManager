@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.Extensions.Logging;
+using System.Net.WebSockets;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -40,12 +41,18 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             var items = await e.DataView.GetStorageItemsAsync();
             if (items.Count > 0)
             {
-                var storageFile = items[0] as StorageFile;
-                Debug.WriteLine(storageFile.DisplayName);
-                //var bitmapImage = new BitmapImage();
-                //bitmapImage.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
-                //// Set the image on the main page to the dropped image
-                //Image.Source = bitmapImage;
+                if (items[0] is not StorageFile storageFile)
+                {
+                    return;
+                }
+                var fileFullPath = storageFile.Path;
+                if (string.IsNullOrWhiteSpace(fileFullPath))
+                {
+                    StorageFolder temp = ApplicationData.Current.TemporaryFolder;
+                    var tempStorageFile = await storageFile.CopyAsync(temp, storageFile.Name, NameCollisionOption.ReplaceExisting);
+                    fileFullPath = tempStorageFile.Path;
+                }
+                ImportSpezifikationName = fileFullPath;
             }
         }
     }
