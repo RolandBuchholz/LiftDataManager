@@ -1,8 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.Extensions.Logging;
-using Microsoft.Office.Core;
 using Microsoft.UI.Xaml.Media.Imaging;
-using System.Net.WebSockets;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -16,6 +14,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private readonly IParameterDataService _parameterDataService;
     private readonly IVaultDataService _vaultDataService;
     public string? FullPathXml { get; set; }
+    public string? DragAndDropFileType { get; set; }
     public SpezifikationTyp? CurrentSpezifikationTyp { get; set; }
 
     private readonly ILogger<ImportLiftDataDialogViewModel> _logger;
@@ -36,7 +35,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task DragAndDropDragOverAsync(DragEventArgs e)
+    public async Task DragAndDropDragEnterAsync(DragEventArgs e)
     {
         if (e.DataView.Contains(StandardDataFormats.StorageItems))
         {
@@ -47,21 +46,40 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 {
                     return;
                 }
-                if (storageFile.FileType.Equals(".pdf", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    e.AcceptedOperation = DataPackageOperation.Copy;
-                    //e.DragUIOverride.Caption = "Anfrageformular";
-                    //e.DragUIOverride.SetContentFromBitmapImage(
-                    //    new BitmapImage(new Uri("ms-appx:///Images/PdfTransparent.png", UriKind.RelativeOrAbsolute)));
-                    //e.DragUIOverride.IsCaptionVisible = true;
-                    //e.DragUIOverride.IsContentVisible = true;
-                    //e.DragUIOverride.IsGlyphVisible = false;
-                }
-
+                DragAndDropFileType = storageFile.FileType;
             }
         }
+    }
 
+    [RelayCommand]
+    public async Task DragAndDropDragOverAsync(DragEventArgs e)
+    {
+        if (DragAndDropFileType is null)
+        {
+            return;
+        }
 
+        if (DragAndDropFileType.Equals(".pdf", StringComparison.CurrentCultureIgnoreCase))
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+            e.DragUIOverride.Caption = "Anfrageformular";
+            e.DragUIOverride.SetContentFromBitmapImage(
+                new BitmapImage(new Uri("ms-appx:///Images/PdfTransparent.png", UriKind.RelativeOrAbsolute)));
+            e.DragUIOverride.IsCaptionVisible = true;
+            e.DragUIOverride.IsContentVisible = true;
+            e.DragUIOverride.IsGlyphVisible = false;
+        }
+        else
+        {
+            e.AcceptedOperation = DataPackageOperation.None;
+            e.DragUIOverride.Caption = "Nicht unterstütztes Dateiformat";
+            e.DragUIOverride.SetContentFromBitmapImage(
+                new BitmapImage(new Uri("ms-appx:///Assets/Fluent/cancel.png", UriKind.RelativeOrAbsolute)));
+            e.DragUIOverride.IsCaptionVisible = true;
+            e.DragUIOverride.IsContentVisible = true;
+            e.DragUIOverride.IsGlyphVisible = true;
+        }
+        await Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -353,7 +371,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         {
             return;
         }
-   
+
         var currentFileName = Path.GetFileName(importSpezifikationName);
         var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
         var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "SV", newFileName);
@@ -377,7 +395,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             {
                 File.Copy(importSpezifikationName, newFullPath, true);
             }
-            catch 
+            catch
             {
                 _logger.LogError(60132, "Copy Pdf: {Typ} failed", importSpezifikationName);
             }

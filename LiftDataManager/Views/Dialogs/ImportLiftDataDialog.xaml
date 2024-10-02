@@ -131,6 +131,9 @@
                         TextWrapping="WrapWholeWords" />
                 </StackPanel>
                 <Interactivity:Interaction.Behaviors>
+                    <Core:EventTriggerBehavior EventName="DragEnter" SourceObject="{Binding ElementName=DragAndDropBorder}">
+                        <Core:InvokeCommandAction Command="{x:Bind ViewModel.DragAndDropDragEnterCommand}" />
+                    </Core:EventTriggerBehavior>
                     <Core:EventTriggerBehavior EventName="DragOver" SourceObject="{Binding ElementName=DragAndDropBorder}">
                         <Core:InvokeCommandAction Command="{x:Bind ViewModel.DragAndDropDragOverCommand}" />
                     </Core:EventTriggerBehavior>
