@@ -161,13 +161,21 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties is null)
+        {
             return;
+        }
         if (CurrentSpeziProperties.FullPathXml is not null)
+        {
             FullPathXml = CurrentSpeziProperties.FullPathXml;
+        }
         if (CurrentSpeziProperties.ParameterDictionary is not null)
+        {
             ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
+        }
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+        {
             InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
+        }
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
@@ -182,7 +190,9 @@ public partial class DataViewModelBase : ObservableRecipient
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
             if (HasErrors)
+            {
                 SetErrorDictionary();
+            }
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
