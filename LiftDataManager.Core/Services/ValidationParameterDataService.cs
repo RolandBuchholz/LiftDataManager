@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Messenger.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -653,6 +654,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Gegengewicht_Einlagentiefe",
             [new(ValidateCounterweightMass, "None", null)]);
+
+        ValidationDictionary.Add("var_Haupthaltestelle",
+            [new(ValidateEntrancePosition, "Error", null)]);
 
         AddDropDownListValidation();
     }

@@ -169,6 +169,20 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         }
     }
 
+    private void ValidateEntrancePosition(string name, string displayname, string? value, string? severity, string? odernummerName)
+    {
+        if (string.IsNullOrWhiteSpace(value) || 
+            string.Equals(value,"NV") ||
+            value.StartsWith("ZG_A"))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{value} : Haupthaltestelle sollte immer auf der Zugangsseite A liegen. Wenn dies nicht möglich ist halten Sie Rücksprache mit der Konstruktion.", SetSeverity(severity)));
+        }
+    }
+
     private void ValidateJungblutOSG(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (value is null)
