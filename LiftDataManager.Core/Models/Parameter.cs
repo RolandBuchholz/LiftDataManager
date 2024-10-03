@@ -123,7 +123,9 @@ public partial class Parameter : ParameterBase
             foreach (var parameterState in result)
             {
                 if (!parameterState.IsValid)
+                {
                     AddError(nameof(Value), parameterState);
+                }
             }
         }
         return result;

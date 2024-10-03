@@ -3,7 +3,7 @@ using CommunityToolkit.WinUI.Animations;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly IJsonNavigationViewService _jsonNavigationViewService;
     public CollectionViewSource GroupedItems { get; set; }

@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public Dictionary<int, string> LiftPlanners { get; set; } = [];
     public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = [];

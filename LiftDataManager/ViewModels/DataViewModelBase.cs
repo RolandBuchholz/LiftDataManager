@@ -65,6 +65,17 @@ public partial class DataViewModelBase : ObservableRecipient
         _ = SetModelStateAsync();
     }
 
+    public virtual void Receive(RefreshModelStateMessage message)
+    {
+        if (message is null)
+        {
+            return;
+        }
+        CheckOut = message.Value.IsCheckOut;
+        LikeEditParameter = message.Value.LikeEditParameterEnabled;
+        _ = SetModelStateAsync();
+    }
+
     [ObservableProperty]
     private bool hasErrors;
 
@@ -235,7 +246,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public void SetErrorDictionary()
     {
-        ParameterErrorDictionary ??= new();
+        ParameterErrorDictionary ??= [];
         ParameterErrorDictionary.Clear();
         var errors = ParameterDictionary?.Values.Where(e => e.HasErrors);
         if (errors is null)

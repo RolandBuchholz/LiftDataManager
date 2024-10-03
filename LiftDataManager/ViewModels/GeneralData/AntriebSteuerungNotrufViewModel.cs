@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 namespace LiftDataManager.ViewModels;
 
-public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public AntriebSteuerungNotrufViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
          base(parameterDataService, dialogService, infoCenterService)

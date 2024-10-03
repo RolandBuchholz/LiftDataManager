@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;

@@ -40,7 +40,9 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
         else
         {
             if (parameterErrors.ContainsKey(propertyName))
+            {
                 errors.AddRange(parameterErrors[propertyName]);
+            }
             return errors;
         }
     }
@@ -51,7 +53,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     {
         if (!parameterErrors.TryGetValue(propertyName, out List<ParameterStateInfo>? value))
         {
-            value = new List<ParameterStateInfo>();
+            value = [];
             parameterErrors.Add(propertyName, value);
         }
 
@@ -66,14 +68,20 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     public void RemoveError(string propertyName, string errorMessage)
     {
         if (string.IsNullOrWhiteSpace(errorMessage))
+        {
             return;
+        }
         if (parameterErrors.TryGetValue(propertyName, out List<ParameterStateInfo>? value))
         {
             var error = value.FirstOrDefault(x => x.ErrorMessage == errorMessage);
             if (error is not null)
+            {
                 value.Remove(error);
+            }
             if (value.Count == 0)
+            {
                 parameterErrors.Remove(propertyName);
+            }
         }
         OnErrorsChanged(propertyName);
     }
@@ -88,7 +96,7 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
 
     protected void OnErrorsChanged(string propertyName)
     {
-        HasErrors = parameterErrors.Any();
+        HasErrors = parameterErrors.Count != 0;
         if (HasErrors)
         {
             SetParameterState(propertyName);
@@ -105,13 +113,19 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     private void SetParameterState(string propertyName)
     {
         if (!string.Equals(propertyName, "Value"))
+        {
             return;
+        }
         if (parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? valueErrorList))
         {
             if (valueErrorList is null)
+            {
                 return;
-            if (!valueErrorList.Any())
+            }
+            if (valueErrorList.Count == 0)
+            {
                 return;
+            }
             var state = valueErrorList.OrderByDescending(p => p.Severity).FirstOrDefault();
 
             if (state is not null)

@@ -625,6 +625,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             await _validationParameterDataService.ValidateAllParameterAsync();
             await SetModelStateAsync();
+            _ = Messenger.Send(new RefreshModelStateMessage(new ModelStateParameters()
+            {
+                IsCheckOut = CheckOut,
+                LikeEditParameterEnabled = LikeEditParameter
+            }));
         }
         else
         {
