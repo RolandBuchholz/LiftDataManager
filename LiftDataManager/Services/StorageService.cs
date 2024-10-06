@@ -1,22 +1,30 @@
 ﻿using Windows.Storage;
 
 namespace LiftDataManager.Services;
+
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IStorageService"/> <see langword="interface"/> using windows storageServices
+/// </summary>
 public class StorageService : IStorageService
 {
+    /// <inheritdoc/>
     public string InstallationPath => AppDomain.CurrentDomain.BaseDirectory;
 
+    /// <inheritdoc/>
     public async Task<Stream> OpenStreamFromInstallationPathForReadAsync(string filePath)
     {
         var file = await StorageFile.GetFileFromPathAsync(Path.Combine(InstallationPath, filePath));
         return await file.OpenStreamForReadAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<Stream> OpenStreamForReadAsync(string fullFilePath)
     {
         var file = await StorageFile.GetFileFromPathAsync(fullFilePath);
         return await file.OpenStreamForReadAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<string> ReadStorageFileAsync(StorageFile file)
     {
         var stream = await file.OpenAsync(FileAccessMode.Read);
@@ -27,6 +35,7 @@ public class StorageService : IStorageService
         return dataReader.ReadString(numBytesLoaded);
     }
 
+    /// <inheritdoc/>
     public async Task<IReadOnlyList<StorageFolder>> GetFoldersAsync(string folderPath)
     {
         var folder = await StorageFolder.GetFolderFromPathAsync(folderPath);

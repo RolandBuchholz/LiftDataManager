@@ -7,7 +7,9 @@ using QuestPDF.Infrastructure;
 using System.Diagnostics;
 
 namespace LiftDataManager.Core.Services;
-
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IPdfService"/> <see langword="interface"/> using Quest Pdf APIs.
+/// </summary>
 public class PdfService : IPdfService
 {
     private readonly ICalculationsModule _calculationsModuleService;
@@ -52,6 +54,7 @@ public class PdfService : IPdfService
         return true;
     }
 
+    /// <inheritdoc/>
     public bool MakeSinglePdfDocument(string pdfModel, ObservableDictionary<string, Parameter> ParameterDictionary, string? path, bool showPdf, bool lowPrintColor, bool lowHighlightColor)
     {
         IDocument? document = pdfModel switch
@@ -131,6 +134,7 @@ public class PdfService : IPdfService
         return true;
     }
 
+    /// <inheritdoc/>
     public bool MakeDefaultSetofPdfDocuments(ObservableDictionary<string, Parameter> ParameterDictionary, string? path)
     {
         string[] setOfPdfs = new string[]

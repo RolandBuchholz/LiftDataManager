@@ -10,7 +10,6 @@ public sealed partial class ImportLiftDataDialog : ContentDialog
     public string FullPathXml { get; set; }
     public string SpezifikationName { get; set; }
     public SpezifikationTyp CurrentSpezifikationTyp { get; set; }
-
     public string? ImportSpezifikationName { get; set; }
 
     public IEnumerable<TransferData>? ImportPamameter { get; set; }

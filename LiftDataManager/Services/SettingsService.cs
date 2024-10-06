@@ -1,5 +1,8 @@
 ﻿namespace LiftDataManager.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="ISettingService"/> <see langword="interface"/> using settingService
+/// </summary>
 public class SettingsService : ISettingService
 {
     private const string SettingsKeyFirstSetup = "AppAdminmodeFirstSetup";
@@ -39,12 +42,14 @@ public class SettingsService : ISettingService
     public bool LowHighlightMode { get; set; }
     public bool AutoOpenInfoCenter { get; set; }
 
+    /// <inheritdoc/>
     public async Task InitializeAsync()
     {
         await LoadSettingsAsync();
         await Task.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public async Task SetSettingsAsync(string key, object value)
     {
         switch (key)

@@ -14,6 +14,9 @@ using System.Xml.Linq;
 
 namespace LiftDataManager.Core.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IParameterDataService"/> <see langword="interface"/> using LiftDataManager parameter APIs.
+/// </summary>
 public partial class ParameterDataService : IParameterDataService
 {
     private readonly IValidationParameterDataService _validationParameterDataService;

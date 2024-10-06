@@ -6,6 +6,9 @@ using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Messenger.Messages;
 
 namespace LiftDataManager.Core.Services;
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IValidationParameterDataService"/> <see langword="interface"/> using LiftDataManager Validation APIs.
+/// </summary>
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -40,18 +43,18 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        if (message == null)
+        if (message == null ||
+           !message.HasReceivedResponse ||
+            message.Response is null ||
+            message.Response.ParameterDictionary is null)
+        {
             return;
-        if (!message.HasReceivedResponse)
-            return;
-        if (message.Response is null)
-            return;
-        if (message.Response.ParameterDictionary is null)
-            return;
+        }
         ParameterDictionary = message.Response.ParameterDictionary;
         FullPathXml = message.Response.FullPathXml;
     }
 
+    /// <inheritdoc/>
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
     {
         ValidationResult.Clear();
@@ -80,28 +83,30 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         return ValidationResult;
     }
 
+    /// <inheritdoc/>
     public async Task ValidateAllParameterAsync()
     {
         foreach (var par in ParameterDictionary)
         {
-            _ = par.Value.ValidateParameterAsync();
+            await par.Value.ValidateParameterAsync();
         }
-
-        await Task.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public async Task ValidateRangeOfParameterAsync(string[] range)
     {
         if (range is null || range.Length == 0)
+        {
             return;
+        }
 
         foreach (var par in ParameterDictionary)
         {
             if (range.Any(r => string.Equals(r, par.Value.Name)))
-                _ = par.Value.ValidateParameterAsync();
+            {
+                await par.Value.ValidateParameterAsync();
+            }     
         }
-
-        await Task.CompletedTask;
     }
 
     private void GetValidationDictionary()

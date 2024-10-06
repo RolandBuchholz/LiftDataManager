@@ -11,11 +11,120 @@
     x:Name="VaultCheckOutDialog"
     Title="Vault CheckOut Dialog"
     VerticalAlignment="Stretch"
+    CloseButtonStyle="{StaticResource ContentDialogButtonStyle}"
+    CloseButtonText="Schreibgeschützt bearbeiten"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
+    PrimaryButtonText="Änderung"
+    SecondaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
+    SecondaryButtonText="Kleine Änderung"
     mc:Ignorable="d">
+    <Interactivity:Interaction.Behaviors>
+        <Core:EventTriggerBehavior EventName="Loaded">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.VaultCheckOutDialogLoadedCommand}" CommandParameter="{Binding ElementName=VaultCheckOutDialog}" />
+        </Core:EventTriggerBehavior>
+        <Core:EventTriggerBehavior EventName="PrimaryButtonClick">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.PrimaryButtonClickedCommand}" />
+        </Core:EventTriggerBehavior>
+        <Core:EventTriggerBehavior EventName="SecondaryButtonClick">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.SecondaryButtonClickedCommand}" />
+        </Core:EventTriggerBehavior>
+        <Core:EventTriggerBehavior EventName="CloseButtonClick">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.CloseButtonClickedCommand}" />
+        </Core:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
     <ContentDialog.Resources>
         <Style BasedOn="{StaticResource DefaultContentDialogStyle}" TargetType="local:CheckOutDialog" />
     </ContentDialog.Resources>
     <Grid>
-        <TextBlock Text="Vault CheckOut Dialog" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Image
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="30,0,30,15"
+            Source="/Images/VaultTransparent.png" />
+        <StackPanel Grid.Row="0" Grid.Column="1">
+            <TextBlock
+                FontSize="18"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="Auftragsdaten schreibgeschützt"
+                TextWrapping="WrapWholeWords" />
+            <TextBlock
+                Margin="0,5,0,0"
+                FontSize="14"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="Auftragsdaten wurden noch nicht ausgechecked!"
+                TextWrapping="WrapWholeWords" />
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <FontIcon
+                    Margin="0,25,5,0"
+                    VerticalAlignment="Center"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="IndianRed"
+                    Glyph="&#xE7BA;"
+                    Visibility="{x:Bind ViewModel.ShowReadOnlyWarning, Mode=OneWay}" />
+                <TextBlock
+                    Width="275"
+                    VerticalAlignment="Bottom"
+                    FontSize="16"
+                    Foreground="IndianRed"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Bei schreibgeschützter Bearbeitung sind keine Änderungen möglich!"
+                    TextWrapping="WrapWholeWords"
+                    Visibility="{x:Bind ViewModel.ShowReadOnlyWarning, Mode=OneWay}" />
+            </StackPanel>
+        </StackPanel>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Bottom"
+                FontSize="18"
+                Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="Änderung:" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                VerticalAlignment="Bottom"
+                FontSize="16"
+                Style="{StaticResource BaseTextBlockStyle}"
+                Text="Änderungen mit Revisionserhöhung" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                VerticalAlignment="Bottom"
+                FontSize="18"
+                Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="Kleine Änderung:" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                VerticalAlignment="Bottom"
+                FontSize="16"
+                Style="{StaticResource BaseTextBlockStyle}"
+                Text="Änderungen ohne Revisionserhöhung" />
+        </Grid>
     </Grid>
 </ContentDialog>

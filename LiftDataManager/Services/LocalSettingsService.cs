@@ -4,6 +4,9 @@ using Windows.Storage;
 
 namespace LiftDataManager.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="ILocalSettingsService"/> <see langword="interface"/> using localSettingsService
+/// </summary>
 public class LocalSettingsService : ILocalSettingsService
 {
     private const string _defaultApplicationDataFolder = "LiftDataManager/ApplicationData";
@@ -20,6 +23,7 @@ public class LocalSettingsService : ILocalSettingsService
 
     private bool _isInitialized;
 
+    /// <inheritdoc/>
     public LocalSettingsService(IFileService fileService, IOptions<LocalSettingsOptions> options)
     {
         _fileService = fileService;
@@ -41,6 +45,7 @@ public class LocalSettingsService : ILocalSettingsService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<T?> ReadSettingAsync<T>(string key)
     {
         if (RuntimeHelper.IsMSIX)
@@ -63,6 +68,7 @@ public class LocalSettingsService : ILocalSettingsService
         return default;
     }
 
+    /// <inheritdoc/>
     public async Task SaveSettingAsync<T>(string key, T value)
     {
         if (RuntimeHelper.IsMSIX)

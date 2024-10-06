@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace LiftDataManager.Core.Services;
 
 /// <summary>
-/// A <see langword="class"/> that implements the <see cref="IFilesService"/> <see langword="interface"/> using UWP APIs.
+/// A <see langword="class"/> that implements the <see cref="IVaultDataService"/> <see langword="interface"/> using Autodesk Vault APIs.
 /// </summary>
 public class VaultDataService : IVaultDataService
 {
