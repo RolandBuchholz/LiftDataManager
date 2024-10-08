@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Navigation;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class ShellPage : Page
 {
@@ -13,27 +11,16 @@ public sealed partial class ShellPage : Page
     {
         ViewModel = viewModel;
         InitializeComponent();
-        AppTitleBar.Window = App.MainWindow;
         ViewModel.JsonNavigationViewService.Initialize(NavigationViewControl, NavigationFrame);
         ViewModel.JsonNavigationViewService.ConfigJson("Assets/NavViewMenu/NavigationViewControlData.json");
     }
 
-    private void AppTitleBar_BackButtonClick(object sender, RoutedEventArgs e)
-    {
-        if (NavigationFrame.CanGoBack)
-        {
-            NavigationFrame.GoBack();
-        }
-    }
-    private void AppTitleBar_PaneButtonClick(object sender, RoutedEventArgs e)
-    {
-        NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
-    }
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
     {
         if (App.MainWindow.Content is not FrameworkElement element)
+        {
             return;
-
+        }
         if (element.ActualTheme == ElementTheme.Light)
         {
             element.RequestedTheme = ElementTheme.Dark;
@@ -43,5 +30,17 @@ public sealed partial class ShellPage : Page
             element.RequestedTheme = ElementTheme.Light;
         }
     }
+
+    private void TitleBar_PaneToggleRequested(WinUIEx.TitleBar sender, object args)
+    {
+        NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
+    }
+
+    private void TitleBar_BackRequested(WinUIEx.TitleBar sender, object args)
+    {
+        if (NavigationFrame.CanGoBack)
+        {
+            NavigationFrame.GoBack();
+        }
+    }
 }
-    
