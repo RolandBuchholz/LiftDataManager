@@ -1,7 +1,4 @@
-﻿using Humanizer;
-using Microsoft.UI.Text;
-
-namespace LiftDataManager.Contracts.Services;
+﻿namespace LiftDataManager.Contracts.Services;
 
 public interface IDialogService
 {

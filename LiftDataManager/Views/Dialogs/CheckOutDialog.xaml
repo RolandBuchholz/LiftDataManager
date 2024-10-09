@@ -66,14 +66,13 @@
                     Margin="0,25,5,0"
                     VerticalAlignment="Center"
                     FontSize="36"
-                    FontWeight="Bold"
                     Foreground="IndianRed"
                     Glyph="&#xE7BA;"
                     Visibility="{x:Bind ViewModel.ShowReadOnlyWarning, Mode=OneWay}" />
                 <TextBlock
                     Width="275"
                     VerticalAlignment="Bottom"
-                    FontSize="16"
+                    FontSize="14"
                     Foreground="IndianRed"
                     Style="{StaticResource BodyStrongTextBlockStyle}"
                     Text="Bei schreibgeschützter Bearbeitung sind keine Änderungen möglich!"
@@ -92,39 +91,90 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                FontSize="18"
+                FontSize="16"
                 Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="Änderung:" />
+                Text="Änderung">
+                <ToolTipService.ToolTip>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="5"
+                            Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="Revision wird erhöht" />
+                        <Image Width="150" Source="/Docs/HelpImages/image189.png" />
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </TextBlock>
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="10,0,0,0"
                 VerticalAlignment="Bottom"
-                FontSize="16"
                 Style="{StaticResource BaseTextBlockStyle}"
-                Text="Änderungen mit Revisionserhöhung" />
+                Text="mit Revisionserhöhung">
+                <ToolTipService.ToolTip>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="5"
+                            Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="Revision wird erhöht" />
+                        <Image Width="150" Source="/Docs/HelpImages/image189.png" />
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </TextBlock>
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                FontSize="18"
+                FontSize="16"
                 Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="Kleine Änderung:" />
+                Text="Kleine Änderung">
+                <ToolTipService.ToolTip>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="5"
+                            Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="Revision wird nicht erhöht" />
+                        <Image Width="150" Source="/Docs/HelpImages/image189.png" />
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </TextBlock>
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="10,0,0,0"
                 VerticalAlignment="Bottom"
-                FontSize="16"
                 Style="{StaticResource BaseTextBlockStyle}"
-                Text="Änderungen ohne Revisionserhöhung" />
+                Text="ohne Revisionserhöhung">
+                <ToolTipService.ToolTip>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="5"
+                            Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="Revision wird nicht erhöht" />
+                        <Image Width="150" Source="/Docs/HelpImages/image189.png" />
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </TextBlock>
+            <ProgressBar
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,20,0,0"
+                IsIndeterminate="{x:Bind ViewModel.PrimaryButtonClickedCommand.IsRunning, Mode=OneWay}" />
         </Grid>
     </Grid>
 </ContentDialog>

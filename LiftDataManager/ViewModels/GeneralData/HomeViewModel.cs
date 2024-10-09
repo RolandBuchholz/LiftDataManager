@@ -300,19 +300,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
     private async Task CheckOutAsync()
     {
+        var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
         OpenReadOnly = false;
-        var dialogMessage = """
-                                Änderung             => Änderungen mit Revisionserhöhung
-                                Kleine Änderung  => Änderungen ohne Revisionserhöhung
-                                """;
-        var dialogResult = await _dialogService!.WarningDialogAsync(
-                            "Datei eingechecked (schreibgeschützt)", dialogMessage,
-                            "Änderung", "Kleine Änderung");
         await LoadDataAsync();
-        if (dialogResult != null)
+        if (dialogResult == CheckOutDialogResult.SuccessfulIncreaseRevision)
         {
-            if ((bool)dialogResult)
-                IncreaseRevision();
+            IncreaseRevision();
         }
         StartSaveTimer();
         SetModifyInfos();

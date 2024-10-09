@@ -1,20 +1,27 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using LiftDataManager.Core.Services;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class CheckOutDialogViewModel : ObservableObject
 {
+    private readonly IVaultDataService _vaultDataService;
     private readonly ILogger<CheckOutDialogViewModel> _logger;
+
     public CheckOutDialogResult CheckOutDialogResult { get; set; }
     public string? SpezifikationName { get; set; }
     public bool ForceCheckOut { get; set; }
-    public CheckOutDialogViewModel(ILogger<CheckOutDialogViewModel> logger)
+    public CheckOutDialogViewModel(IVaultDataService vaultDataService, ILogger<CheckOutDialogViewModel> logger)
     {
+        _vaultDataService = vaultDataService;
         _logger = logger;
     }
 
     [ObservableProperty]
     private bool showReadOnlyWarning = true;
+
+    [ObservableProperty]
+    private bool checkOutInprogress;
 
     [RelayCommand]
     public async Task VaultCheckOutDialogLoadedAsync(CheckOutDialog sender)
@@ -36,20 +43,33 @@ public partial class CheckOutDialogViewModel : ObservableObject
         await Task.CompletedTask;
     }
     [RelayCommand]
-    public async Task PrimaryButtonClickedAsync(object sender)
+    public async Task PrimaryButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
-        await Task.Delay(3000);
-        await Task.CompletedTask;
+        var deferral = args.GetDeferral();
+        await CheckOut(true);
+        deferral.Complete();
     }
     [RelayCommand]
-    public async Task SecondaryButtonClickedAsync(object sender)
+    public async Task SecondaryButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
-        await Task.CompletedTask;
+        var deferral = args.GetDeferral();
+        await CheckOut(false);
+        deferral.Complete();
     }
     [RelayCommand]
-    public async Task CloseButtonClickedAsync(object sender)
+    public async Task CloseButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
         await Task.CompletedTask;
     }
 
+    private async Task CheckOut(bool increaseRevision)
+    {
+        await Task.Delay(50);
+        var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!);
+        if (downloadResult is not null)
+        {
+            Debug.WriteLine(downloadResult.IsCheckOut);
+        }
+        await Task.Delay(1000);
+    }
 }

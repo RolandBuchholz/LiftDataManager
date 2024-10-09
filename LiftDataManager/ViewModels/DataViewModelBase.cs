@@ -196,53 +196,53 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected async virtual Task SetModelStateAsync()
     {
-        var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
-        //if (AuftragsbezogeneXml)
-        //{
-        //    HasErrors = false;
-        //    HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
-        //    if (HasErrors)
-        //    {
-        //        SetErrorDictionary();
-        //    }
-        //}
+        if (AuftragsbezogeneXml)
+        {
+            HasErrors = false;
+            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            if (HasErrors)
+            {
+                SetErrorDictionary();
+            }
+        }
 
-        //if (LikeEditParameter && AuftragsbezogeneXml)
-        //{
-        //    var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
+        if (LikeEditParameter && AuftragsbezogeneXml)
+        {
+            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
 
-        //    if (CheckOut)
-        //    {
-        //        CanSaveAllSpeziParameters = dirty;
-        //    }
-        //    else if (dirty && !CheckoutDialogIsOpen)
-        //    {
-        //        CheckoutDialogIsOpen = true;
-        //        var dialogResult = await _dialogService!.WarningDialogAsync(
-        //                            $"Datei eingechecked (schreibgeschützt)",
-        //                            $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-        //                            $"Es sind keine Änderungen möglich!\n" +
-        //                            $"\n" +
-        //                            $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
-        //                            "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-        //        if ((bool)dialogResult)
-        //        {
-        //            CheckoutDialogIsOpen = false;
-        //            LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
-        //        }
-        //        else
-        //        {
-        //            CheckoutDialogIsOpen = false;
-        //            LikeEditParameter = false;
-        //            if (CurrentSpeziProperties is not null)
-        //            {
-        //                CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-        //                _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        //            }
-        //        }
-        //    }
-        //}
-        //await Task.CompletedTask;
+            if (CheckOut)
+            {
+                CanSaveAllSpeziParameters = dirty;
+            }
+            else if (dirty && !CheckoutDialogIsOpen)
+            {
+                CheckoutDialogIsOpen = true;
+                var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
+                //var dialogResult = await _dialogService!.WarningDialogAsync(
+                //                    $"Datei eingechecked (schreibgeschützt)",
+                //                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
+                //                    $"Es sind keine Änderungen möglich!\n" +
+                //                    $"\n" +
+                //                    $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
+                //                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
+                //if ((bool)dialogResult)
+                //{
+                //    CheckoutDialogIsOpen = false;
+                //    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
+                //}
+                //else
+                //{
+                //    CheckoutDialogIsOpen = false;
+                //    LikeEditParameter = false;
+                //    if (CurrentSpeziProperties is not null)
+                //    {
+                //        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                //        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+                //    }
+                //}
+            }
+        }
+        await Task.CompletedTask;
     }
 
     public void SetErrorDictionary()
