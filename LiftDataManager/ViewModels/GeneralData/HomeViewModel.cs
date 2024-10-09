@@ -322,7 +322,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 updatedParameter.DataImport = true;
                 if (updatedParameter.ParameterTyp == ParameterTypValue.Boolean)
                 {
-                    updatedParameter.Value = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+                    var boolString = string.IsNullOrWhiteSpace(item.Value) ? "False" : LiftParameterHelper.FirstCharToUpperAsSpan(item.Value);
+                    if (boolString.Equals("False") || boolString.Equals("True"))
+                    {
+                        updatedParameter.Value = boolString;
+                    }
+                    else
+                    {
+                        updatedParameter.Value = "False";
+                        await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"{updatedParameter.Name} => Invalid in Bool-String wurde auf False gesetzt");
+                        updatedParameter.IsDirty = true;
+                    }
                 }
                 else if (updatedParameter.ParameterTyp == ParameterTypValue.Date)
                 {
