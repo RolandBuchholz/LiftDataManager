@@ -667,8 +667,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             Color = SKColors.WhiteSmoke,
             IsAntialias = true,
-            TextAlign = SKTextAlign.Center,
-            TextSize = 25 * _stokeWith,
+        };
+        using var font = new SKFont
+        {
+            Size = 25 * _stokeWith,
         };
 
         SKPoint startPoint = new(-(float)(ShaftDepth / 2 + 400), -_shaftPitOffset);
@@ -687,11 +689,11 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                 centerBracketDescription.Offset(0, -railBracket.Item1);
                 canvas.DrawPath(railBracketLine, railBracket.Item2 < 200 ? paintRailBracketLineWarning : paintRailBracketLine);
                 canvas.DrawCircle(centerBracketDescription, 15f * _stokeWith, railBracket.Item2 < 200 ? paintRailBracketDescriptionWarning : paintRailBracketDescription);
-                SKRect textRect = new();
                 i ++;
                 string bracketDescriptionText = i.ToString();
-                paintText.MeasureText(bracketDescriptionText, ref textRect);
-                canvas.DrawText(bracketDescriptionText, centerBracketDescription.X, centerBracketDescription.Y - textRect.MidY, paintText);
+                SKRect textRect = new();
+                font.MeasureText(bracketDescriptionText, out textRect);
+                canvas.DrawText(bracketDescriptionText, centerBracketDescription.X, centerBracketDescription.Y - textRect.MidY, SKTextAlign.Center, font, paintText);
             }
         }
     }

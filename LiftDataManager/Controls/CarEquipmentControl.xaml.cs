@@ -175,13 +175,15 @@ public sealed partial class CarEquipmentControl : UserControl
                     paintText.Style = SKPaintStyle.Fill;
                     paintText.IsAntialias = true;
                     paintText.Color = SKColors.IndianRed;
-                    paintText.TextAlign = SKTextAlign.Center;
-                    paintText.FakeBoldText = true;
-                    paintText.TextSize = 200;
+                    var font = new SKFont() 
+                    { 
+                        Embolden = true,
+                        Size = 200
+                    };
 
                     for (int i = 0; i < doorPanelCount; i++)
                     {
-                        canvas.DrawText("?", doorDistanceR + panelWidth / 2 + panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f, paintText);
+                        canvas.DrawText("?", doorDistanceR + panelWidth / 2 + panelWidth * i, (float)CarHeightRaw - doorHeight / 1.5f, SKTextAlign.Center, font, paintText);
                     }
                 }
                 break;
