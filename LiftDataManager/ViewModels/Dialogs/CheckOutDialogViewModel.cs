@@ -1,5 +1,4 @@
-﻿using LiftDataManager.Core.Services;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels.Dialogs;
 
@@ -46,7 +45,8 @@ public partial class CheckOutDialogViewModel : ObservableObject
     public async Task PrimaryButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
         var deferral = args.GetDeferral();
-        await CheckOut(true);
+        var result = await CheckOut(true);
+        CheckOutDialogResult = CheckOutDialogResult.SuccessfulIncreaseRevision;
         deferral.Complete();
     }
     [RelayCommand]
@@ -54,15 +54,22 @@ public partial class CheckOutDialogViewModel : ObservableObject
     {
         var deferral = args.GetDeferral();
         await CheckOut(false);
+        CheckOutDialogResult = CheckOutDialogResult.SuccessfulNoRevisionChange;
         deferral.Complete();
     }
     [RelayCommand]
     public async Task CloseButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
+        CheckOutDialogResult = CheckOutDialogResult.ReadOnly;
         await Task.CompletedTask;
     }
-
-    private async Task CheckOut(bool increaseRevision)
+    [RelayCommand]
+    public async Task DialogClosedAsync(CheckOutDialog sender)
+    {
+        sender.CheckOutDialogResult = CheckOutDialogResult;
+        await Task.CompletedTask;
+    }
+    private async Task<bool> CheckOut(bool increaseRevision)
     {
         await Task.Delay(50);
         var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!);
@@ -71,5 +78,6 @@ public partial class CheckOutDialogViewModel : ObservableObject
             Debug.WriteLine(downloadResult.IsCheckOut);
         }
         await Task.Delay(1000);
+        return true;
     }
 }

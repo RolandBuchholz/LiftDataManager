@@ -31,6 +31,9 @@
         <Core:EventTriggerBehavior EventName="CloseButtonClick">
             <Core:InvokeCommandAction Command="{x:Bind ViewModel.CloseButtonClickedCommand}" />
         </Core:EventTriggerBehavior>
+        <Core:EventTriggerBehavior EventName="Closed">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.DialogClosedCommand}" CommandParameter="{Binding ElementName=VaultCheckOutDialog}" />
+        </Core:EventTriggerBehavior>
     </Interactivity:Interaction.Behaviors>
     <ContentDialog.Resources>
         <Style BasedOn="{StaticResource DefaultContentDialogStyle}" TargetType="local:CheckOutDialog" />
