@@ -301,8 +301,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private async Task CheckOutAsync()
     {
         var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
-        OpenReadOnly = false;
-        await LoadDataAsync();
+        //OpenReadOnly = false;
+        //await LoadDataAsync();
         if (dialogResult == CheckOutDialogResult.SuccessfulIncreaseRevision)
         {
             IncreaseRevision();
