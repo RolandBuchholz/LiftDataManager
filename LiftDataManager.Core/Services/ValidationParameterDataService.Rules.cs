@@ -565,7 +565,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (string.IsNullOrWhiteSpace(selectedSafetyGear))
             {
                 availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
-                ;
             }
             else if (selectedSafetyGear.Contains("BS"))
             {
@@ -599,16 +598,6 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
             }
-
-            //if (!ParameterDictionary["var_Ersatzmassnahmen"].DropDownList.Contains(selectedReducedProtectionSpace))
-            //{
-            //    ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Ersatzmassnahmen sind mit der Fangvorrichtung {selectedSafetyGear} nicht zulässig!", SetSeverity(severity))
-            //    { DependentParameter = [optional!] });
-            //}
-            //else
-            //{
-            //    ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [optional!] });
-            //}
         }
     }
 
@@ -733,7 +722,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         if (!string.IsNullOrWhiteSpace(value) && !string.Equals(value, "0"))
         {
             if (string.Equals(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Normen"), "MRL 2006/42/EG"))
+            {
                 return;
+            }
             double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
             double reducedLoad = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q1");
             double area = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_A_Kabine");
@@ -746,9 +737,15 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             if (string.Equals(cargotyp, "Lastenaufzug") && string.Equals(drivesystem, "Hydraulik"))
             {
                 var loadTable6 = _calculationsModuleService.GetLoadFromTable(area, "Tabelle6");
-
-                if (reducedLoad < loadTable6)
+                bool skipRatedLoad = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad");
+                if (reducedLoad < loadTable6 && !skipRatedLoad)
+                {
                     ParameterDictionary["var_Q1"].AutoUpdateParameterValue(Convert.ToString(loadTable6));
+                }
+                if (reducedLoad < load && skipRatedLoad)
+                {
+                    ParameterDictionary["var_Q1"].AutoUpdateParameterValue(Convert.ToString(load));
+                }
             }
             else
             {
@@ -1185,12 +1182,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             return;
         }
 
-        //var floorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).ToList();
-
-        //IEnumerable<SelectionValue> availableFloorColors = floorColors.Where(x => x.CarFlooring?.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
-
         IEnumerable<SelectionValue> availableFloorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).Where(x => x.CarFlooring!.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
-
 
         if (availableFloorColors is not null)
         {

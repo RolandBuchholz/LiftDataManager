@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Messenger.Messages;
-using System.ComponentModel.DataAnnotations;
 
 namespace LiftDataManager.Core.Services;
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
@@ -41,14 +40,13 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        if (message == null)
+        if (message == null||
+            !message.HasReceivedResponse ||
+            message.Response is null||
+            message.Response.ParameterDictionary is null)
+        {
             return;
-        if (!message.HasReceivedResponse)
-            return;
-        if (message.Response is null)
-            return;
-        if (message.Response.ParameterDictionary is null)
-            return;
+        }
         ParameterDictionary = message.Response.ParameterDictionary;
         FullPathXml = message.Response.FullPathXml;
     }
@@ -94,14 +92,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     public async Task ValidateRangeOfParameterAsync(string[] range)
     {
         if (range is null || range.Length == 0)
+        {
             return;
-
+        }
         foreach (var par in ParameterDictionary)
         {
             if (range.Any(r => string.Equals(r, par.Value.Name)))
                 _ = par.Value.ValidateParameterAsync();
         }
-
         await Task.CompletedTask;
     }
 
@@ -356,6 +354,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateUCMValues, "None", null) ]);
 
         ValidationDictionary.Add("var_A_Kabine",
+            [new(ValidateCarArea, "Error", null)]);
+
+        ValidationDictionary.Add("var_SkipRatedLoad",
             [new(ValidateCarArea, "Error", null)]);
 
         ValidationDictionary.Add("var_F_Korr",
