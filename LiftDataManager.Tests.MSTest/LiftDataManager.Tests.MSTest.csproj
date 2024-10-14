@@ -2,7 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <RootNamespace>LiftDataManager.Tests.MSTest</RootNamespace>
-    <WindowsSdkPackageVersion>10.0.22621.41</WindowsSdkPackageVersion>
+    <!--<WindowsSdkPackageVersion>10.0.22621.41</WindowsSdkPackageVersion>-->
+    <!--<AllowUnsafeBlocks>true</AllowUnsafeBlocks>-->
     <Platforms>x64</Platforms>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <IsPackable>false</IsPackable>
