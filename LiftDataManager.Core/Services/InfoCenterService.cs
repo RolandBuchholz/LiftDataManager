@@ -3,14 +3,12 @@ using MvvmHelpers;
 
 namespace LiftDataManager.Core.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IInfoCenterService"/> <see langword="interface"/> add infos to the infoCenter.
+/// </summary>
 public class InfoCenterService : IInfoCenterService
 {
-    /// <summary>
-    /// add a message to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="message">The message</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterMessageAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string message)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterMessage)
@@ -19,12 +17,7 @@ public class InfoCenterService : IInfoCenterService
         });
     }
 
-    /// <summary>
-    /// add a warning to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="message">The warning</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterWarningAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string warning)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterWarning)
@@ -33,12 +26,7 @@ public class InfoCenterService : IInfoCenterService
         });
     }
 
-    /// <summary>
-    /// add a error to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="message">The error</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterErrorAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string error)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterError)
@@ -47,16 +35,7 @@ public class InfoCenterService : IInfoCenterService
         });
     }
 
-    /// <summary>
-    /// add a parameter changed info to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="uniqueName">ParameterName.</param>
-    /// <param name="parameterName">DisplayName.</param>
-    /// <param name="oldValue">Old Value</param>
-    /// <param name="newValue">New Value</param>
-    /// <param name="autoUpdated">LDM updated</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterParameterChangedAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, string uniqueName, string parameterName, string oldValue, string newValue, bool autoUpdated)
     {
         infoCenterEntrys.Add(new InfoCenterEntry(autoUpdated ? InfoCenterEntryState.InfoCenterAutoUpdate : InfoCenterEntryState.InfoCenterParameterChanged)
@@ -69,12 +48,7 @@ public class InfoCenterService : IInfoCenterService
         await Task.CompletedTask;
     }
 
-    /// <summary>
-    /// add a parameter changed info to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="savedParameter">*Tuple*ParameterName-DisplayName-New Value</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, Tuple<string, string, string?> savedParameter)
     {
         var obsoleteEntrys = infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList();
@@ -88,12 +62,7 @@ public class InfoCenterService : IInfoCenterService
         await Task.CompletedTask;
     }
 
-    /// <summary>
-    /// add a parameter changed info to the infoCenter
-    /// </summary>
-    /// <param name="infoCenterEntrys">ObservableCollection of infoCenterEntrys</param>
-    /// <param name="savedParameters">IEnumerable*Tuple* ParameterName-DisplayName-New Value</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task AddInfoCenterSaveAllInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<Tuple<string, string, string?>> savedParameters)
     {
         List<InfoCenterEntry> newEntrys = [];
@@ -112,6 +81,16 @@ public class InfoCenterService : IInfoCenterService
 
         infoCenterEntrys.RemoveRange(obsoleteEntrys);
         infoCenterEntrys.AddRange(newEntrys);
+        await Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public async Task AddListofInfoCenterEntrysAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, IEnumerable<InfoCenterEntry> newInfoCenterEntrys)
+    {
+        foreach (var newInfoCenterEntry in newInfoCenterEntrys)
+        {
+            infoCenterEntrys.Add(newInfoCenterEntry);
+        }
         await Task.CompletedTask;
     }
 }

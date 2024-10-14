@@ -1,5 +1,4 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
-using LiftDataManager.Core.DataAccessLayer;
 using Windows.ApplicationModel;
 
 namespace LiftDataManager.ViewModels;
@@ -15,7 +14,7 @@ public partial class AboutSettingViewModel : ObservableRecipient, INavigationAwa
     private string? versionDescription;
 
     public List<LiftDataManagerVersion> VersionsHistory => _parametercontext.Set<LiftDataManagerVersion>().OrderByDescending(x => x.VersionsNumber).ToList();
-    
+
     private static string GetVersionDescription()
     {
         var appName = "AppDisplayName".GetLocalized();

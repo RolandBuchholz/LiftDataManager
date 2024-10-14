@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 
-namespace LiftDataManager.ViewModels;
+namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class ZALiftDialogViewModel : ObservableObject
 {
@@ -10,7 +10,7 @@ public partial class ZALiftDialogViewModel : ObservableObject
     private readonly ISettingService _settingService;
     private readonly ILogger<ZALiftDialogViewModel> _logger;
     private readonly IVaultDataService _vaultDataService;
-    public Process? ZaLift {  get; set; }
+    public Process? ZaLift { get; set; }
     public FileSystemWatcher? Watcher { get; set; }
 
     public ZALiftDialogViewModel(ISettingService settingsSelectorService, ILogger<ZALiftDialogViewModel> logger, IVaultDataService vaultDataService)
@@ -108,7 +108,7 @@ public partial class ZALiftDialogViewModel : ObservableObject
         var pathAutodeskTransfer = Path.GetDirectoryName(FullPathXml);
         if (string.IsNullOrWhiteSpace(pathAutodeskTransfer))
         {
-            return ;
+            return;
         }
         if (!Directory.Exists(Path.Combine(pathAutodeskTransfer, "Berechnungen")))
         {

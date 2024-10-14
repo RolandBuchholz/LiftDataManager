@@ -1,4 +1,4 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class PasswortDialogViewModel : ObservableObject
 {
@@ -39,7 +39,7 @@ public partial class PasswortDialogViewModel : ObservableObject
             CanSwitchToAdminmode = false;
             return;
         }
-        if (!string.Equals(PasswortInput,_password))
+        if (!string.Equals(PasswortInput, _password))
         {
             PasswortInfoText = "Incorrectes Passwort";
             CanSwitchToAdminmode = false;

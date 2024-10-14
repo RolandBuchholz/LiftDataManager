@@ -1,5 +1,8 @@
 ﻿namespace LiftDataManager.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IActivationService"/> <see langword="interface"/> using ActivationService
+/// </summary>
 public class ActivationService : IActivationService
 {
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
@@ -19,6 +22,7 @@ public class ActivationService : IActivationService
         _themeService = themeService;
     }
 
+    /// <inheritdoc/>
     public async Task ActivateAsync(object activationArgs)
     {
         // Execute tasks before activation.

@@ -21,7 +21,7 @@ public static class TreeViewExtensions
         }
     }
 
-    public static void ExpandNodePath(this TreeView treeView, string [] pathArray)
+    public static void ExpandNodePath(this TreeView treeView, string[] pathArray)
     {
         if (pathArray.Length == 0)
         {

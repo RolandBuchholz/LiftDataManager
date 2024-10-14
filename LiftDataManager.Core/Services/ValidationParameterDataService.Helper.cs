@@ -66,22 +66,22 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             return;
         }
-        if (ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Tuertyp_{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue is not null  || 
+        if (ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Tuerbezeichnung_{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_Schwellenprofil{zugang}"].DropDownListValue = new SelectionValue();
         }
-        if (ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue is not null || 
+        if (ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue is not null ||
             ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue?.Id != 0)
         {
             ParameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].DropDownListValue = new SelectionValue();
@@ -246,7 +246,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             case 2:
                 supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
                 offsetOKAprontoOKFF = 29; //14
-                distanceBetweenSillBracketholes = 42; //15
+                distanceBetweenSillBracketholes = 43; //15
                 triangularLockingDistance = 100; //16
                 break;
             case 3:

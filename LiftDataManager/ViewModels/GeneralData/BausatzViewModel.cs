@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using Windows.UI.Popups;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
@@ -19,9 +18,13 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public override void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
+        }
 
         if (message.PropertyName == "var_Bausatz")
         {
@@ -94,10 +97,14 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     private double GetFangrahmengewicht(string? fangrahmenTyp)
     {
         if (string.IsNullOrEmpty(fangrahmenTyp))
+        {
             return 0;
+        }
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == fangrahmenTyp);
         if (carFrameType is null)
+        {
             return 0;
+        }
         CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
         CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
         CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";

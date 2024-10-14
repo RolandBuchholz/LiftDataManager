@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
-namespace LiftDataManager.ViewModels;
+namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class LiftPlannerDBDialogViewModel : ObservableObject
 {
@@ -96,7 +96,7 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     private void CheckLiftplannerIsValid()
     {
         CanAddLiftPlannerToDatabase = IsCompanyValid &&
-                                      IsNameValid &&            
+                                      IsNameValid &&
                                       IsStreetValid &&
                                       IsMailadressValid &&
                                       !string.IsNullOrWhiteSpace(Town);
@@ -269,10 +269,10 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
             {
                 _logger.LogError(61078, "Failed to add new Liftplanner {Company} to database", Company);
             }
-            finally 
-            { 
+            finally
+            {
                 sender.LiftPlannerId = LiftPlannerId;
-                var copyResult =  await ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext);
+                var copyResult = await ProcessHelpers.CopyDataBaseToWorkSpace(_parameterEditContext);
                 if (copyResult)
                 {
                     _logger.LogInformation(60177, "Copy database successful to lokal workspace");

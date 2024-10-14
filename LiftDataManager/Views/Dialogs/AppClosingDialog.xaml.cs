@@ -1,3 +1,5 @@
+using LiftDataManager.ViewModels.Dialogs;
+
 namespace LiftDataManager.Views;
 
 public sealed partial class AppClosingDialog : ContentDialog

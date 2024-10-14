@@ -65,7 +65,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     }
 
     [RelayCommand]
-    public async Task AutoSuggestBoxTextChanged(AutoSuggestBoxTextChangedEventArgs args) 
+    public async Task AutoSuggestBoxTextChanged(AutoSuggestBoxTextChangedEventArgs args)
     {
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
@@ -232,7 +232,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
             tempDataSource.AddRange(ReturnChildContent(item));
         }
 
-        return tempDataSource.Where(x  => x.Name.Contains(search, StringComparison.CurrentCultureIgnoreCase));
+        return tempDataSource.Where(x => x.Name.Contains(search, StringComparison.CurrentCultureIgnoreCase));
     }
 
     private static List<HelpContent> ReturnChildContent(HelpContent node)

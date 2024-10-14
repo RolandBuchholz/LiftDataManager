@@ -132,6 +132,8 @@ public partial class App : Application
             services.AddTransient<CFPEditDialogViewModel>();
             services.AddTransient<ParameterChangedDialogViewModel>();
             services.AddTransient<AppClosingDialogViewModel>();
+            services.AddTransient<ImportLiftDataDialogViewModel>();
+            services.AddTransient<CheckOutDialogViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;

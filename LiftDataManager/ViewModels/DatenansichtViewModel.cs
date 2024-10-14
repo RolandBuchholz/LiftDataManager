@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Animations;
-using Microsoft.UI.Xaml.Media.Animation;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly IJsonNavigationViewService _jsonNavigationViewService;
     public CollectionViewSource GroupedItems { get; set; }

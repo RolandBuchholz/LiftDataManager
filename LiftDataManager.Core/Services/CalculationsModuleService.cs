@@ -13,6 +13,9 @@ using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="ICalculationsModule"/> <see langword="interface"/> using LiftDataManager calculationsModuls
+/// </summary>
 public partial class CalculationsModuleService : ICalculationsModule
 {
     private readonly ParameterContext _parametercontext;
@@ -94,6 +97,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
+    /// <inheritdoc/>
     public bool ValdidateLiftLoad(double load, double area, string cargotyp, string drivesystem)
     {
         var loadTable6 = GetLoadFromTable(area, "Tabelle6");
@@ -117,6 +121,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return false;
     }
 
+    /// <inheritdoc/>
     public int GetMaxFuse(string? inverter)
     {
         int maxFuse = 0;
@@ -129,6 +134,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return maxFuse;
     }
 
+    /// <inheritdoc/>
     public string GetDriveTyp(string? driveSystem, int driveSuspension)
     {
         var driveTyp = string.Empty;
@@ -146,6 +152,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return driveTyp;
     }
 
+    /// <inheritdoc/>
     public string GetDriveControl(string? driveTyp)
     {
         var driveControl = string.Empty;
@@ -157,6 +164,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return driveControl;
     }
 
+    /// <inheritdoc/>
     public string GetLiftTyp(string? liftTyp)
     {
         if (string.IsNullOrWhiteSpace(liftTyp))
@@ -168,6 +176,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
     }
 
+    /// <inheritdoc/>
     public string GetDrivePosition(string? drivePos)
     {
         var drivePosition = string.Empty;
@@ -186,6 +195,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return drivePosition;
     }
 
+    /// <inheritdoc/>
     public string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter> parameterDictionary, string orientation)
     {
         double distanceBetweenDoors;
@@ -209,6 +219,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return $"{orientation} von Türblatt zu {walltyp}: {distanceBetweenDoors} mm";
     }
 
+    /// <inheritdoc/>
     public int GetNumberOfCardoors(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         zugangA = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ZUGANSSTELLEN_A");
@@ -218,6 +229,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return NumberOfCardoors(zugangA, zugangB, zugangC, zugangD);
     }
 
+    /// <inheritdoc/>
     public CarVentilationResult GetCarVentilationCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         const int tuerspalt = 4;
@@ -286,6 +298,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    /// <inheritdoc/>
     public PayLoadResult GetPayLoadCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         string aufzugstyp = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Aufzugstyp");
@@ -348,6 +361,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    /// <inheritdoc/>
     public CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         const double gewichtDecke = 42.6;
@@ -507,7 +521,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                     (glasLaengeWandB > 0.15 ? glasLaengeWandB - 0.15 : 0) +
                     (glasLaengeWandC > 0.15 ? glasLaengeWandC - 0.15 : 0) +
                     (glasLaengeWandD > 0.15 ? glasLaengeWandD - 0.15 : 0) -
-                    ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0))* 
+                    ((glasLaengeWandA + glasLaengeWandB + glasLaengeWandC + glasLaengeWandD) > ((tableauBreite + 150) / 1000) ? (tableauBreite + 150) / 1000 : 0)) *
                     (kabineundAbgehaengteDeckeHoehe > 0 ? (kabineundAbgehaengteDeckeHoehe - 200) / 1000 : 0);
         var vSGGewicht = vSGQm * vSGGewichtproQm;
 
@@ -627,6 +641,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    /// <inheritdoc/>
     public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         var carRailSurface = string.Empty;
@@ -709,11 +724,13 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
+    /// <inheritdoc/>
     public static int NumberOfCardoors(bool zugangA, bool zugangB, bool zugangC, bool zugangD)
     {
         return Convert.ToInt32(zugangA) + Convert.ToInt32(zugangB) + Convert.ToInt32(zugangC) + Convert.ToInt32(zugangD);
     }
 
+    /// <inheritdoc/>
     public int GetRammingProtectionRows(ObservableDictionary<string, Parameter> parameterDictionary, string? rammingProtectionTyp)
     {
         if (string.IsNullOrWhiteSpace(rammingProtectionTyp))
@@ -722,9 +739,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (rammingProtectionTypDB is null)
             return -1;
 
-            return rammingProtectionTypDB.NumberOfRows;
+        return rammingProtectionTypDB.NumberOfRows;
     }
 
+    /// <inheritdoc/>
     private double GetCarDoorArea(ObservableDictionary<string, Parameter> parameterDictionary, string zugang)
     {
         double tuerbreiteZugang;
@@ -832,6 +850,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         ;
     }
 
+    /// <inheritdoc/>
     public double GetLoadFromTable(double area, string tableName)
     {
         var table = tableName switch
@@ -868,6 +887,7 @@ public partial class CalculationsModuleService : ICalculationsModule
                 (highTableEntry.Value.SecondValue - lowTableEntry.Value.SecondValue) * (area - lowTableEntry.Value.SecondValue), 0);
     }
 
+    /// <inheritdoc/>
     public int GetPersonenCarArea(double area)
     {
         TableRow<int, double>? personenAnzahl = null;
@@ -889,6 +909,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return personenAnzahl.FirstValue;
     }
 
+    /// <inheritdoc/>
     public double GetCarFrameWeight(ObservableDictionary<string, Parameter> parameterDictionary)
     {
 
@@ -909,12 +930,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
+    /// <inheritdoc/>
     public CarFrameType? GetCarFrameTyp(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         return _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
                                                     .FirstOrDefault(x => x.Name == parameterDictionary["var_Bausatz"].Value);
     }
 
+    /// <inheritdoc/>
     public void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt)
     {
         if (parameterDictionary.TryGetValue("var_Personen", out Parameter personen))
@@ -931,6 +954,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
     }
 
+    /// <inheritdoc/>
     public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary)
     {
 
@@ -1105,7 +1129,8 @@ public partial class CalculationsModuleService : ICalculationsModule
         };
     }
 
-    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight) 
+    /// <inheritdoc/>
+    public BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight)
     {
         int numberOfBuffer = 0;
         int bufferPillarLength = 0;
@@ -1203,6 +1228,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return bucklingLength;
     }
 
+    /// <inheritdoc/>
     public string GetBufferDetails(string buffertyp, double liftSpeed)
     {
         string bufferDetails = "Keine Pufferdaten vorhanden";
@@ -1237,11 +1263,12 @@ public partial class CalculationsModuleService : ICalculationsModule
         return bufferDetails;
     }
 
-    public (double,double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
+    /// <inheritdoc/>
+    public (double, double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
     {
         kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
         kabinentiefe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KTI");
-        double mirrorCorrectionWidth = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_BreiteSpiegelKorrektur" 
+        double mirrorCorrectionWidth = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, index == 1 ? "var_BreiteSpiegelKorrektur"
                                                                                                                          : $"var_BreiteSpiegelKorrektur{index}");
         string mirrorDistanceLeftString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelvonLinks"
                                                                                                                          : $"var_AbstandSpiegelvonLinks{index}");
@@ -1265,7 +1292,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             "D" => hasPanelSideA ? 10d : defaultGap,
             _ => 0d
         };
-        
+
         if (!string.IsNullOrWhiteSpace(mirrorDistanceLeftString))
         {
             if (double.TryParse(mirrorDistanceLeftString, out double oldValue))
@@ -1276,9 +1303,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         var width = wallSide == "A" || wallSide == "C" ? kabinenbreite - gapB - gapD + mirrorCorrectionWidth : kabinentiefe - gapA - gapC + mirrorCorrectionWidth;
-        return (width, mirrorDistanceLeft);    
+        return (width, mirrorDistanceLeft);
     }
 
+    /// <inheritdoc/>
     public (double, double) GetMirrorHeight(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
     {
         kabinenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KHLicht");
@@ -1289,7 +1317,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         string mirrorDistanceCeilingString = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, index == 1 ? "var_AbstandSpiegelDecke"
                                                                                                                                : $"var_AbstandSpiegelDecke{index}");
         bool mirrorIsPanel = LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_SpiegelPaneel");
-        
+
         double mirrorDistanceCeiling = mirrorIsPanel ? 3d : 20d;
         double mirrorDistanceBottom = mirrorIsPanel ? 3d : 30d;
 
@@ -1305,7 +1333,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         double handRailTypCorrectionHeight = 0d;
         if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Spiegelausfuehrung"].Value))
             handRailTypCorrectionHeight = parameterDictionary["var_Spiegelausfuehrung"].Value!.Contains("HL13") ? 52d : 0d;
-        
+
         var mirrorDistanceFloor = parameterDictionary["var_Spiegelausfuehrung"].Value switch
         {
             "halbhoher Spiegel" => handRailHeight == 0 ? 900 : handRailHeight + mirrorDistanceBottom - handRailTypCorrectionHeight,
@@ -1319,6 +1347,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     //Database public
 
+    /// <inheritdoc/>
     public double GetSkirtingBoardHeightByName(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         string skirtingBoardName = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste");
@@ -1340,6 +1369,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return 0;
     }
 
+    /// <inheritdoc/>
     public double GetRammingProtectionHeightByName(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         string rammingProtectionName = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Rammschutz");
@@ -1362,6 +1392,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         return 0;
     }
 
+    /// <inheritdoc/>
     public double GetHandrailDiameterByName(string handrailName)
     {
         if (!string.IsNullOrWhiteSpace(handrailName))

@@ -22,6 +22,8 @@ public interface IParameterDataService
 
     Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode);
 
+    Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, ObservableDictionary<string, Parameter> parameterDictionary, bool updateXml = true);
+
     Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 
     Task<List<InfoCenterEntry>> SyncFromAutodeskTransferAsync(string path, ObservableDictionary<string, Parameter> ParameterDictionary);

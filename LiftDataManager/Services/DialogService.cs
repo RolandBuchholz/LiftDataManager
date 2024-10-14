@@ -3,16 +3,14 @@ using Microsoft.UI.Text;
 
 namespace LiftDataManager.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IDialogService"/> <see langword="interface"/> using contentDialog service
+/// </summary>
 public class DialogService : IDialogService
 {
     private static FrameworkElement MainRoot => App.MainRoot!;
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The message.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task MessageDialogAsync(string title, string message)
     {
         var dialog = new ContentDialog
@@ -26,13 +24,7 @@ public class DialogService : IDialogService
         await dialog.ShowAsyncQueueDraggable();
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="buttonText">The button text.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task MessageDialogAsync(string title, string message, string buttonText)
     {
         var dialog = new ContentDialog
@@ -46,13 +38,7 @@ public class DialogService : IDialogService
         await dialog.ShowAsyncQueueDraggable();
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="buttonText">The button text.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<bool?> MessageConfirmationDialogAsync(string title, string message, string buttonText)
     {
         var dialog = new ContentDialog
@@ -73,36 +59,19 @@ public class DialogService : IDialogService
         return result == ContentDialogResult.Primary;
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<bool?> ConfirmationDialogAsync(string title)
     {
         return await ConfirmationDialogAsync(title, "OK", string.Empty, "Cancel");
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="yesButtonText">The yesbutton text.</param>
-    /// <param name="noButtonText">The nobutton text.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText)
     {
         return (await ConfirmationDialogAsync(title, yesButtonText, noButtonText, string.Empty)).Value;
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="yesButtonText">The yesbutton text.</param>
-    /// <param name="noButtonText">The nobutton text.</param>
-    /// <param name="cancelButtonText">The cancelbutton text.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<bool?> ConfirmationDialogAsync(string title, string yesButtonText, string noButtonText, string cancelButtonText)
     {
         var dialog = new ContentDialog
@@ -124,15 +93,7 @@ public class DialogService : IDialogService
         return result == ContentDialogResult.Primary;
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The content.</param>
-    /// <param name="yesButtonText">The yesbutton text.</param>
-    /// <param name="noButtonText">The nobutton text.</param>
-    /// <param name="cancelButtonText">The cancelbutton text.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<bool?> ConfirmationDialogAsync(string title, string message, string yesButtonText, string noButtonText, string cancelButtonText)
     {
         var dialog = new ContentDialog
@@ -155,15 +116,7 @@ public class DialogService : IDialogService
         return result == ContentDialogResult.Primary;
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="yesButtonText">The yesbutton text.</param>
-    /// <param name="noButtonText">The nobutton text.</param>
-    /// <returns>Task.</returns>
-
+    /// <inheritdoc/>
     public async Task<bool?> WarningDialogAsync(string title, string message, string yesButtonText, string noButtonText)
     {
         var dialog = new ContentDialog
@@ -183,14 +136,7 @@ public class DialogService : IDialogService
         return result == ContentDialogResult.Primary;
     }
 
-    /// <summary>
-    /// Opens a modal message Inputdialog.
-    /// </summary>
-    /// <param name="title">The title.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="textBoxName">Header.</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task<string?> InputDialogAsync(string title, string message, string textBoxName)
     {
         var textresult = new TextBox
@@ -233,11 +179,7 @@ public class DialogService : IDialogService
         return textresult.Text;
     }
 
-    /// <summary>
-    /// Opens a modal message dialog.
-    /// </summary>
-    /// <param name="downloadResult">The title.</param>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task LiftDataManagerdownloadInfoAsync(DownloadInfo downloadResult)
     {
         var title = "LiftDataManager InfoDialog";
@@ -320,12 +262,7 @@ public class DialogService : IDialogService
         await dialog.ShowAsyncQueueDraggable();
     }
 
-    /// <summary>
-    /// Opens a modal message LiftPlannerDB.
-    /// </summary>
-    /// <param name="liftPlanner">The title.</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task<int> LiftPlannerDBDialogAsync(int liftPlannerId)
     {
         var dialog = new LiftPlannerDBDialog()
@@ -338,14 +275,7 @@ public class DialogService : IDialogService
         return dialog.LiftPlannerId;
     }
 
-    /// <summary>
-    /// Opens a modal passwordDialog.
-    /// </summary>
-    /// <param name="title">title</param>
-    /// <param name="condition">condition</param>
-    /// <param name="description">description</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task<bool> PasswordDialogAsync(string? title, string? condition, string? description)
     {
         var dialog = new PasswortDialog()
@@ -364,12 +294,7 @@ public class DialogService : IDialogService
         return true;
     }
 
-    /// <summary>
-    /// Opens a modal ZiehlAbeggProcessingDialog.
-    /// </summary>
-    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task<bool> ZALiftDialogAsync(string? fullPathXml)
     {
         var dialog = new ZALiftDialog()
@@ -386,13 +311,7 @@ public class DialogService : IDialogService
         return true;
     }
 
-    /// <summary>
-    /// Opens a modal CarFrameProcessingDialog.
-    /// </summary>
-    /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
-    /// <param name="carFrameTyp">carFrameTyp</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task<bool> CFPEditDialogAsync(string? fullPathXml, string? carFrameTyp)
     {
         var dialog = new CFPEditDialog()
@@ -410,12 +329,7 @@ public class DialogService : IDialogService
         return true;
     }
 
-    /// <summary>
-    /// Opens a modal ParameterChangeDialog.
-    /// </summary>
-    /// <param name="parameterChangedList">List with changed parameter(InfoCenterEntry)</param>
-    /// <returns>Task</returns>
-
+    /// <inheritdoc/>
     public async Task ParameterChangedDialogAsync(List<InfoCenterEntry> parameterChangedList)
     {
         var dialog = new ParameterChangedDialog()
@@ -427,10 +341,7 @@ public class DialogService : IDialogService
         await dialog.ShowAsyncQueueDraggable();
     }
 
-    /// <summary>
-    /// Opens a modal AppClosingDialog.
-    /// </summary>
-    /// <returns>Task</returns>
+    /// <inheritdoc/>
     public async Task<(ContentDialogResult, bool)> AppClosingDialogAsync(bool ignoreSaveWarning)
     {
         var dialog = new AppClosingDialog()
@@ -441,6 +352,39 @@ public class DialogService : IDialogService
         };
         var result = await dialog.ShowAsyncQueueDraggable();
         return (result, dialog.IgnoreSaveWarning);
+    }
 
+    /// <inheritdoc/>
+    public async Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp)
+    {
+        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName, spezifikationTyp)
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return (null, null);
+        }
+        return (dialog.ImportSpezifikationName, dialog.ImportPamameter);
+    }
+
+    /// <inheritdoc/>
+    public async Task<CheckOutDialogResult> CheckOutDialogAsync(string spezifikationName, bool forceCheckOut = false)
+    {
+        var dialog = new CheckOutDialog(spezifikationName, forceCheckOut)
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || 
+            result == ContentDialogResult.Secondary ||
+            result == ContentDialogResult.Primary)
+        {
+            return dialog.CheckOutDialogResult;
+        }
+        return CheckOutDialogResult.CheckOutFailed;
     }
 }

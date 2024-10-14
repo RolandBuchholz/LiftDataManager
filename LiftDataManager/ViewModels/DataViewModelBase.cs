@@ -7,9 +7,9 @@ namespace LiftDataManager.ViewModels;
 
 public partial class DataViewModelBase : ObservableRecipient
 {
-    public readonly IParameterDataService _parameterDataService;
-    public readonly IDialogService _dialogService;
-    public readonly IInfoCenterService _infoCenterService;
+    protected readonly IParameterDataService _parameterDataService;
+    protected readonly IDialogService _dialogService;
+    protected readonly IInfoCenterService _infoCenterService;
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
@@ -39,10 +39,13 @@ public partial class DataViewModelBase : ObservableRecipient
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-
+        }
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
@@ -50,11 +53,26 @@ public partial class DataViewModelBase : ObservableRecipient
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
+        }
 
         SetInfoSidebarPanelHighlightText(message);
+        _ = SetModelStateAsync();
+    }
+
+    public virtual void Receive(RefreshModelStateMessage message)
+    {
+        if (message is null)
+        {
+            return;
+        }
+        CheckOut = message.Value.IsCheckOut;
+        LikeEditParameter = message.Value.LikeEditParameterEnabled;
         _ = SetModelStateAsync();
     }
 
@@ -154,13 +172,21 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         if (CurrentSpeziProperties is null)
+        {
             return;
+        }
         if (CurrentSpeziProperties.FullPathXml is not null)
+        {
             FullPathXml = CurrentSpeziProperties.FullPathXml;
+        }
         if (CurrentSpeziProperties.ParameterDictionary is not null)
+        {
             ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
+        }
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+        {
             InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
+        }
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
@@ -175,7 +201,9 @@ public partial class DataViewModelBase : ObservableRecipient
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
             if (HasErrors)
+            {
                 SetErrorDictionary();
+            }
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -189,28 +217,29 @@ public partial class DataViewModelBase : ObservableRecipient
             else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService!.WarningDialogAsync(
-                                    $"Datei eingechecked (schreibgeschützt)",
-                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                                    $"Es sind keine Änderungen möglich!\n" +
-                                    $"\n" +
-                                    $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
-                                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-                if ((bool)dialogResult)
-                {
-                    CheckoutDialogIsOpen = false;
-                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
-                }
-                else
-                {
-                    CheckoutDialogIsOpen = false;
-                    LikeEditParameter = false;
-                    if (CurrentSpeziProperties is not null)
-                    {
-                        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-                        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-                    }
-                }
+                var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
+                //var dialogResult = await _dialogService!.WarningDialogAsync(
+                //                    $"Datei eingechecked (schreibgeschützt)",
+                //                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
+                //                    $"Es sind keine Änderungen möglich!\n" +
+                //                    $"\n" +
+                //                    $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
+                //                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
+                //if ((bool)dialogResult)
+                //{
+                //    CheckoutDialogIsOpen = false;
+                //    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
+                //}
+                //else
+                //{
+                //    CheckoutDialogIsOpen = false;
+                //    LikeEditParameter = false;
+                //    if (CurrentSpeziProperties is not null)
+                //    {
+                //        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
+                //        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+                //    }
+                //}
             }
         }
         await Task.CompletedTask;
@@ -218,7 +247,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public void SetErrorDictionary()
     {
-        ParameterErrorDictionary ??= new();
+        ParameterErrorDictionary ??= [];
         ParameterErrorDictionary.Clear();
         var errors = ParameterDictionary?.Values.Where(e => e.HasErrors);
         if (errors is null)
@@ -240,11 +269,11 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys, 
-            ((Parameter)message.Sender).Name, 
-            ((Parameter)message.Sender).DisplayName, 
-            message.OldValue, 
-            message.NewValue, 
+        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys,
+            ((Parameter)message.Sender).Name,
+            ((Parameter)message.Sender).DisplayName,
+            message.OldValue,
+            message.NewValue,
             ((Parameter)message.Sender).IsAutoUpdated);
     }
 

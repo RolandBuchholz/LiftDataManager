@@ -110,7 +110,7 @@ public static class PdfHelpers
             {
                 text.Line(optinaleDescription is null ? parameter.DisplayName : optinaleDescription).FontSize(fontSizeXXS).FontColor(LowColor ? borderColorLow : borderColor).Bold();
             }
-            var parameterTextContent = parameter.ParameterTyp == ParameterTypValue.DropDownList ? parameter.DropDownListValue?.DisplayName 
+            var parameterTextContent = parameter.ParameterTyp == ParameterTypValue.DropDownList ? parameter.DropDownListValue?.DisplayName
                                                                                                 : parameter.Value;
             if (parameter.IsKey && LowHighlightColor)
             {

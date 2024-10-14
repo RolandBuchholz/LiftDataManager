@@ -14,12 +14,12 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
      base(parameterDataService, dialogService, infoCenterService)
     {
         _calculationsModuleService = calculationsModuleService;
-        CarEquipmentDataBaseData ??= new() 
+        CarEquipmentDataBaseData ??= new()
         {
             {"SkirtingBoardHeight", 0f },
             {"HandrailHeight", 0f },
             {"RammingProtectionHeight",0f }
-        } ;
+        };
     }
 
     private readonly string[] carEquipment = [ "var_BreiteSpiegel", "var_BreiteSpiegel2", "var_BreiteSpiegel3",

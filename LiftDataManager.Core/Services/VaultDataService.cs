@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace LiftDataManager.Core.Services;
 
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IVaultDataService"/> <see langword="interface"/> using Autodesk Vault APIs.
+/// </summary>
 public class VaultDataService : IVaultDataService
 {
     private string starttyp = string.Empty;
@@ -18,7 +21,8 @@ public class VaultDataService : IVaultDataService
         _logger = logger;
     }
 
-    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly, bool customFile)
+    /// <inheritdoc/>
+    public async Task<DownloadInfo> GetFileAsync(string auftragsnummer, bool readOnly, bool customFile = false)
     {
         starttyp = "get";
         _logger.LogInformation(60111, "start read data from vaultserver");
@@ -30,6 +34,7 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
+    /// <inheritdoc/>
     public async Task<DownloadInfo> SetFileAsync(string auftragsnummer, bool customFile)
     {
         starttyp = "set";
@@ -42,6 +47,7 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
+    /// <inheritdoc/>
     public async Task<DownloadInfo> UndoFileAsync(string auftragsnummer, bool customFile)
     {
         starttyp = "undo";
@@ -54,6 +60,7 @@ public class VaultDataService : IVaultDataService
         return DownloadInfo;
     }
 
+    /// <inheritdoc/>
     private async Task<int> StartPowershellScriptAsync(string pathPowershellScripts, string starttyp, string auftragsnummer, bool readOnly = false, bool customFile = false)
     {
         var powershellScriptName = starttyp switch
@@ -115,5 +122,83 @@ public class VaultDataService : IVaultDataService
             await Task.CompletedTask;
             return 4;
         }
+    }
+
+    /// <inheritdoc/>
+    public async Task<(long, DownloadInfo?)> GetAutoDeskTransferAsync(string liftNumber, SpezifikationTyp spezifikationTyp, bool readOnly = true)
+    {
+        var searchPattern = liftNumber + "-AutoDeskTransfer.xml";
+        var watch = Stopwatch.StartNew();
+        var workspaceSearch = await SearchWorkspaceAsync(searchPattern, spezifikationTyp);
+        var stopTimeMs = watch.ElapsedMilliseconds;
+
+        switch (workspaceSearch.Length)
+        {
+            case 0:
+                {
+                    _logger.LogInformation(60139, "{SpezifikationName}-AutoDeskTransfer.xml not found in workspace", liftNumber);
+                    return (stopTimeMs, await GetFileAsync(liftNumber, readOnly));
+                }
+            case 1:
+                {
+                    var autoDeskTransferpath = workspaceSearch[0];
+                    FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                    if (!AutoDeskTransferInfo.IsReadOnly)
+                    {
+                        _logger.LogInformation(60139, "Data {searchPattern} from workspace loaded", searchPattern);
+                        return (stopTimeMs, new DownloadInfo()
+                        {
+                            ExitCode = 0,
+                            CheckOutState = "CheckedOutByCurrentUser",
+                            ExitState = ExitCodeEnum.NoError,
+                            FullFileName = workspaceSearch[0],
+                            Success = true,
+                            IsCheckOut = true
+                        });
+                    }
+                    else
+                    {
+                        return (stopTimeMs, await GetFileAsync(liftNumber, readOnly));
+                    }
+                }
+            default:
+                {
+                    _logger.LogError(61039, "Searchresult {searchPattern} with multimatching files", searchPattern);
+                    return (stopTimeMs, new DownloadInfo()
+                    {
+                        ExitCode = 5,
+                        FileName = searchPattern,
+                        FullFileName = searchPattern,
+                        ExitState = ExitCodeEnum.MultipleAutoDeskTransferXml
+                    });
+                }
+        }
+    }
+
+    /// <inheritdoc/>
+    private async Task<string[]> SearchWorkspaceAsync(string searchPattern, SpezifikationTyp spezifikationTyp)
+    {
+        _logger.LogInformation(60139, "Workspacesearch started");
+        string? path;
+
+        if (spezifikationTyp is not null &&
+            spezifikationTyp.Equals(SpezifikationTyp.Order))
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        else
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Angebote";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
+        return searchResult;
     }
 }

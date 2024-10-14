@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-namespace LiftDataManager.ViewModels;
+namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class CFPEditDialogViewModel : ObservableObject
 {

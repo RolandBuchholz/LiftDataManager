@@ -23,7 +23,7 @@ public class SpezifikationDocument : PdfBaseDocument
         LowPrintColor = lowPrintColor;
         LowHighlightColor = lowHighlightColor;
         SetPdfStyle(LowPrintColor, LowHighlightColor);
-        Settings.CheckIfAllTextGlyphsAreAvailable = false;    
+        Settings.CheckIfAllTextGlyphsAreAvailable = false;
     }
 
     protected override void Content(IContainer container)
@@ -604,7 +604,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_SockelleisteD"], true, "Seite D");
                 });
-                var showCustomSkirtingBoards = string.Equals(ParameterDictionary["var_Sockelleiste"].Value,"gemäß Beschreibung");
+                var showCustomSkirtingBoards = string.Equals(ParameterDictionary["var_Sockelleiste"].Value, "gemäß Beschreibung");
                 table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(showCustomSkirtingBoards).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
@@ -627,8 +627,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
                 var showCustomRammingProtections = string.Equals(ParameterDictionary["var_Rammschutz"].Value, "Rammschutz siehe Beschreibung");
-                var showRammingProtectionsRowsCount = showCustomRammingProtections || 
-                                                      _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary,ParameterDictionary["var_Rammschutz"].Value) == 0;
+                var showRammingProtectionsRowsCount = showCustomRammingProtections ||
+                                                      _calculationsModuleService.GetRammingProtectionRows(ParameterDictionary, ParameterDictionary["var_Rammschutz"].Value) == 0;
                 table.Cell().Row(13).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(1).ShowIf(showRammingProtectionsRowsCount).ParameterStringCell(ParameterDictionary["var_AnzahlReihenRammschutz"], null, false, false, "Reihen");

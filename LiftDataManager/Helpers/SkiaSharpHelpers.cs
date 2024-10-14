@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.WinUI.Controls;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using SkiaSharp;
-using System.Drawing;
 
 namespace LiftDataManager.Helpers;
 public static class SkiaSharpHelpers
@@ -73,7 +71,7 @@ public static class SkiaSharpHelpers
 
             carDoorPath.MoveTo(doorDimensionWidth * 0.5f, 0);
             carDoorPath.RLineTo(0, -(float)carDoor.SillWidth);
-            carDoorPath.RLineTo(- doorDimensionWidth, 0);
+            carDoorPath.RLineTo(-doorDimensionWidth, 0);
             carDoorPath.RLineTo(0, (float)carDoor.SillWidth);
             carDoorPath.Close();
 
@@ -86,7 +84,7 @@ public static class SkiaSharpHelpers
                 carDoorPanels.RLineTo(38f, 0f);
                 carDoorPanels.RLineTo(0f, crossbarDepth);
                 carDoorPanels.Close();
-                carDoorPanels.MoveTo(doorDimensionWidth * 0.5f -41f, - crossbarDepth);
+                carDoorPanels.MoveTo(doorDimensionWidth * 0.5f - 41f, -crossbarDepth);
                 carDoorPanels.RLineTo(-(doorDimensionWidth - 82f), 0f);
                 carDoorPanelsMirrorImage.AddPath(carDoorPanels);
                 carDoorPanelsMirrorImage.Transform(SKMatrix.CreateScale(-1f, 1f));
@@ -108,7 +106,7 @@ public static class SkiaSharpHelpers
 
             carDoorPath.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide, 0);
             carDoorPath.RLineTo(0, -(float)carDoor.SillWidth);
-            carDoorPath.RLineTo(- doorDimensionWidth, 0);
+            carDoorPath.RLineTo(-doorDimensionWidth, 0);
             carDoorPath.RLineTo(0, (float)carDoor.SillWidth);
             carDoorPath.Close();
 
@@ -128,21 +126,21 @@ public static class SkiaSharpHelpers
                 carDoorPanels.RLineTo(-38f, 0f);
                 carDoorPanels.RLineTo(0f, crossbarDepth);
                 carDoorPanels.Close();
-                carDoorPanels.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide - 41f, - crossbarDepth);
+                carDoorPanels.MoveTo(doorWidth * 0.5f + crossbarWithClosingSide - 41f, -crossbarDepth);
                 carDoorPanels.RLineTo(-doorDimensionWidth + 41f, 0f);
             }
             carDoorPanels.AddPath(DrawSideOpeningDoorPanelPath(doorWidth, (float)carDoor.DoorPanelWidth, (float)carDoor.DoorPanelSpace, carDoor.DoorPanelCount, false));
             if (openingDirection == "rechts")
             {
-                carDoorPath.Transform(SKMatrix.CreateScale(-1f,1f));
+                carDoorPath.Transform(SKMatrix.CreateScale(-1f, 1f));
                 carDoorPanels.Transform(SKMatrix.CreateScale(-1f, 1f));
             }
         }
         var degree = entrance switch
         {
-            "A"=> 0f,
-            "B"=> 270f,
-            "C"=> 180f,
+            "A" => 0f,
+            "B" => 270f,
+            "C" => 180f,
             "D" => 90f,
             _ => 0f
         };
@@ -177,7 +175,7 @@ public static class SkiaSharpHelpers
                 2 => (doorWidth + crossbarWithOpeningSide) * 2f,
                 _ => 0f
             };
-            
+
             shaftDoorPath.MoveTo(doorDimensionWidth * 0.5f, 0);
             shaftDoorPath.RLineTo(0, (float)shaftDoor.SillWidth + 4f);
             shaftDoorPath.RLineTo(-doorDimensionWidth, 0);
@@ -211,7 +209,7 @@ public static class SkiaSharpHelpers
         switch (installationType)
         {
             case "Meiller Typ EvoN -" or "Wittur Typ -" or "Riedl Typ -":
-                frameWidthRight = (float)shaftDoor.DefaultFrameWidth ;
+                frameWidthRight = (float)shaftDoor.DefaultFrameWidth;
                 frameWidthLeft = (float)shaftDoor.DefaultFrameWidth;
                 frameDepth = (float)shaftDoor.DefaultFrameDepth;
                 break;
@@ -234,7 +232,7 @@ public static class SkiaSharpHelpers
         SKRect doorFrame = new()
         {
             Location = new SKPoint(-(frameWidthLeft + doorWidth * 0.5f), (float)shaftDoor.SillWidth + 4f),
-            Size = new SKSize(frameWidthRight + frameWidthLeft + doorWidth, frameDepth) 
+            Size = new SKSize(frameWidthRight + frameWidthLeft + doorWidth, frameDepth)
         };
         SKRect doorFrameRight = new()
         {
@@ -244,7 +242,7 @@ public static class SkiaSharpHelpers
         SKRect doorFrameLeft = new()
         {
             Location = new SKPoint(doorFrame.Left, (float)shaftDoor.SillWidth + 4f),
-            Size = new SKSize(frameWidthLeft , frameDepth)
+            Size = new SKSize(frameWidthLeft, frameDepth)
         };
 
         shaftDoorPath.AddRect(doorFrame);
@@ -277,7 +275,7 @@ public static class SkiaSharpHelpers
         return (shaftDoorPath, shaftDoorPanels);
     }
 
-    private static SKPath DrawCentralDoorPanelPath(float doorWidth, float doorPanelDepth,float doorPanelSpace, int doorPanelCount, bool flipSPanels)
+    private static SKPath DrawCentralDoorPanelPath(float doorWidth, float doorPanelDepth, float doorPanelSpace, int doorPanelCount, bool flipSPanels)
     {
         SKPath doorPanels = new();
         SKPath doorPanelsMirrorImage = new();

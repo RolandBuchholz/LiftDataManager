@@ -1,4 +1,4 @@
-﻿using Cogs.Collections;
+using Cogs.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
@@ -6,6 +6,9 @@ using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Messenger.Messages;
 
 namespace LiftDataManager.Core.Services;
+/// <summary>
+/// A <see langword="class"/> that implements the <see cref="IValidationParameterDataService"/> <see langword="interface"/> using LiftDataManager Validation APIs.
+/// </summary>
 public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
 {
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
@@ -51,6 +54,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         FullPathXml = message.Response.FullPathXml;
     }
 
+    /// <inheritdoc/>
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
     {
         ValidationResult.Clear();
@@ -79,16 +83,16 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         return ValidationResult;
     }
 
+    /// <inheritdoc/>
     public async Task ValidateAllParameterAsync()
     {
         foreach (var par in ParameterDictionary)
         {
-            _ = par.Value.ValidateParameterAsync();
+            await par.Value.ValidateParameterAsync();
         }
-
-        await Task.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public async Task ValidateRangeOfParameterAsync(string[] range)
     {
         if (range is null || range.Length == 0)
