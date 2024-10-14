@@ -31,5 +31,7 @@ public class CarFrameTypeConfig : BaseModelBuilder<CarFrameType>
         builder.Property(x => x.CarFrameDGBOffset);
         builder.Property(x => x.CarFrametoCWTDGBOffset);
         builder.Property(x => x.CounterweightDGBOffset);
+        builder.Property(x => x.CounterweightFillingWidth);
+        builder.Property(x => x.CounterweightFillingDepth);
     }
 }

@@ -15,4 +15,6 @@ public class CarFrameType : SelectionEntity
     public int CarFrameDGBOffset { get; set; }
     public int CarFrametoCWTDGBOffset { get; set; }
     public int CounterweightDGBOffset { get; set; }
+    public int CounterweightFillingWidth { get; set; }
+    public int CounterweightFillingDepth { get; set; }
 }

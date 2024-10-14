@@ -1,7 +1,4 @@
 using LiftDataManager.ViewModels.Dialogs;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
 
 namespace LiftDataManager.Views.Dialogs;
 
