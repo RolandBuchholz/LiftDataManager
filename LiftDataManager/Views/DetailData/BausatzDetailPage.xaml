@@ -290,12 +290,20 @@
                                     Grid.Column="0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Gegengewicht_Stichmass_parallel'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <Image Source="/Images/CarFrameDetails/CounterWeightPosition1.png" />
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Versatz_Gegengewicht_Stichmass'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <Image Source="/Images/CarFrameDetails/CounterWeightPosition2.png" />
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
                             </Grid>
                             <Grid Grid.Row="3" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
@@ -341,12 +349,20 @@
                                     Grid.Column="0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagenbreite'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <Image Source="/Images/CarFrameDetails/CounterWeightFilling.png" />
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagentiefe'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <Image Source="/Images/CarFrameDetails/CounterWeightFilling.png" />
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="2"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"

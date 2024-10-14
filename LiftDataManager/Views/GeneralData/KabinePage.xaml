@@ -540,11 +540,21 @@
                                 <!--  carControl  -->
                                 <SpeziControls:CarDesignControl
                                     Grid.Row="0"
-                                    Grid.RowSpan="7"
+                                    Grid.RowSpan="6"
                                     Grid.Column="2"
-                                    Margin="10,5,10,0"
+                                    Margin="10,5,10,-30"
                                     ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ShowEntranceButtons="True" />
+                                <TextBlock
+                                    Grid.Row="6"
+                                    Grid.Column="2"
+                                    Margin="0,0,0,5"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
+                                    Text="Hauptzugang" />
                             </Grid>
                         </Grid>
                         <Grid

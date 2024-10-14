@@ -33,11 +33,16 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             return;
         }
-
         if (!(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
+
+        if (message.PropertyName == "var_SkipRatedLoad")
+        {
+            ValidateCustomPayload(CustomPayload);
+            _ = SetCalculatedValuesAsync();
+        };
 
         if (message.PropertyName == "var_Rahmengewicht" ||
             message.PropertyName == "var_KabinengewichtCAD" ||
@@ -54,7 +59,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
         //Task.Run(async () => await SetModelStateAsync());
-
     }
 
     [ObservableProperty]
@@ -103,18 +107,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private string? customPayload;
     partial void OnCustomPayloadChanged(string? value)
     {
-        var payload = string.IsNullOrWhiteSpace(value) ? 0 : Convert.ToDouble(value, CultureInfo.CurrentCulture);
-
-        if (payload < PayloadTable6)
+        if (value.IsDecimal() || string.IsNullOrWhiteSpace(value))
         {
-            CustomPayloadInfo = "Gedrängelast muß größer/gleich Tabelle6 sein!";
-            return;
+            ValidateCustomPayload(value);
         }
-
-        ParameterDictionary!["var_Q1"].Value = payload.ToString();
-        CustomPayload = string.Empty;
-        CustomPayloadInfo = string.Empty;
-        _logger.LogInformation(60132, "CustomPayload", value);
     }
 
     [ObservableProperty]
@@ -659,10 +655,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
 
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
+        {
             InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
+        }
 
         if (CurrentSpeziProperties.ParameterDictionary is not null)
+        {
             ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
+        }
 
         if (ParameterDictionary.Values.Count == 0)
         {
@@ -684,10 +684,69 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
     }
 
+
+    private void ValidateCustomPayload(string? customPayload)
+    {
+        var payload = string.IsNullOrWhiteSpace(customPayload) ? 0 : Convert.ToDouble(customPayload, CultureInfo.CurrentCulture);
+        bool skipRatedLoad = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad");
+        if (payload == 0 && !skipRatedLoad)
+        {
+            CustomPayloadInfo = string.Empty;
+            return;
+        }
+        if (payload < PayloadTable6 && !skipRatedLoad)
+        {
+            CustomPayloadInfo = "Gedrängelast muß größer/gleich Tabelle6 sein!";
+            return;
+        }
+        double load = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Q");
+        if (payload < load)
+        {
+            CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";
+            return;
+        }
+
+        ParameterDictionary["var_Q1"].Value = payload.ToString();
+        CustomPayload = string.Empty;
+        if (!skipRatedLoad)
+        {
+            CustomPayloadInfo = string.Empty;
+        }
+        _logger.LogInformation(60132, "Set CustomPayload: {customPayload}", customPayload);
+    }
+    private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
+    {
+        _logger.LogInformation(60139, "Workspacesearch started");
+        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
+
+        string? path;
+
+        if (CurrentSpezifikationTyp is not null &&
+            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        else
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Angebote";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+
+        var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
+        return searchResult;
+    }
+
     private async Task SetCalculatedValuesAsync()
     {
         var payLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
-        _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
+        _calculationsModuleService.SetPayLoadResult(ParameterDictionary, payLoadResult.PersonenBerechnet, payLoadResult.NutzflaecheGesamt);
 
         PayloadTable6 = payLoadResult.NennLastTabelle6;
         PayloadTable7 = payLoadResult.NennLastTabelle7;
@@ -700,9 +759,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             CarDoorWeight = carWeightResult.KabinenTuerGewicht;
             CarFrameWeight = carWeightResult.FangrahmenGewicht;
             CarWeight = carWeightResult.KabinenGewichtGesamt;
-            ShowFrameWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value);
-            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary!["var_KabinengewichtCAD"].Value);
-            ParameterDictionary!["var_F"].AutoUpdateParameterValue(Convert.ToString(carWeightResult.FahrkorbGewicht));
+            ShowFrameWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary["var_Rahmengewicht"].Value);
+            ShowCarWeightBorder = !string.IsNullOrWhiteSpace(ParameterDictionary["var_KabinengewichtCAD"].Value);
+            ParameterDictionary["var_F"].AutoUpdateParameterValue(Convert.ToString(carWeightResult.FahrkorbGewicht));
         }
 
         string? carTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Fahrkorbtyp");
@@ -780,6 +839,37 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
     }
 
+
+    private void CopyPdfOffer(string fullPath)
+    {
+        if (!File.Exists(fullPath))
+        {
+            return;
+        }
+
+        var currentFileName = Path.GetFileName(fullPath);
+        var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
+        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "SV", newFileName);
+
+        if (string.Equals(fullPath, newFullPath, StringComparison.CurrentCultureIgnoreCase))
+        {
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(newFullPath) && Path.IsPathFullyQualified(newFullPath))
+        {
+            if (File.Exists(newFullPath))
+            {
+                FileInfo pdfOfferFileInfo = new(newFullPath);
+                if (pdfOfferFileInfo.IsReadOnly)
+                {
+                    pdfOfferFileInfo.IsReadOnly = false;
+                }
+            }
+            File.Copy(fullPath, newFullPath, true);
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
@@ -791,13 +881,20 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
             ImportInfo = !string.IsNullOrWhiteSpace(ParameterDictionary["var_ImportiertVon"].Value);
+            if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
+            {
+                CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";
+            }
             if (parameter is null)
+            {
                 return;
+            }
             if (parameter.GetType().Equals(typeof(string)))
             {
                 if (string.IsNullOrWhiteSpace(parameter as string))
+                {
                     return;
-
+                }
                 switch (parameter as string)
                 {
                     case "CheckOut":

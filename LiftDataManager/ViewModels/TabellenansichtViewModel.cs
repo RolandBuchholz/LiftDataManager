@@ -18,9 +18,13 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     public override void Receive(PropertyChangedMessage<bool> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
+        }
 
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();

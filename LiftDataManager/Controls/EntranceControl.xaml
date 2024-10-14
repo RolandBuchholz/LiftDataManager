@@ -23,9 +23,9 @@
                 FalseValue="Visible"
                 TrueValue="Collapsed" />
             <media:AttachedCardShadow
-                InnerContentClipMode="CompositionMaskBrush"
                 x:Key="CommonShadow"
                 CornerRadius="5"
+                InnerContentClipMode="CompositionMaskBrush"
                 Offset="5" />
             <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
             <TextCommandBarFlyout
@@ -114,6 +114,16 @@
                 Margin="2,2,5,0"
                 Background="{ThemeResource SystemBaseLowColor}"
                 Opacity="0.5" />
+            <Border
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="11"
+                Margin="2,2,5,0"
+                Background="{ThemeResource SystemAccentColor}"
+                BorderBrush="{ThemeResource AccentAAFillColorSecondaryBrush}"
+                BorderThickness="2"
+                CornerRadius="2"
+                Opacity="0.2" />
             <Border
                 Grid.Row="4"
                 Grid.Column="1"
@@ -309,7 +319,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA0'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA0'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A1"
                 Grid.Row="1"
@@ -318,7 +332,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA1'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA1'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A2"
                 Grid.Row="1"
@@ -327,7 +345,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA2'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA2'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A3"
                 Grid.Row="1"
@@ -336,7 +358,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA3'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA3'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A4"
                 Grid.Row="1"
@@ -345,7 +371,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA4'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA4'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A5"
                 Grid.Row="1"
@@ -354,7 +384,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA5'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA5'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A6"
                 Grid.Row="1"
@@ -363,7 +397,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA6'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA6'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A7"
                 Grid.Row="1"
@@ -372,7 +410,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA7'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA7'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A8"
                 Grid.Row="1"
@@ -381,7 +423,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA8'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA8'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_A9"
                 Grid.Row="1"
@@ -390,7 +436,11 @@
                 ContextFlyout="{StaticResource EntranceControlFlyout}"
                 IsEnabled="{Binding ElementName=chkboxZugangA, Path=IsChecked}"
                 Style="{StaticResource TableTextboxStyle}"
-                Text="{x:Bind ItemSource['var_ZugangA9'].Value, Mode=TwoWay}" />
+                Text="{x:Bind ItemSource['var_ZugangA9'].Value, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Hauptzugangsseite" />
+                </ToolTipService.ToolTip>
+            </TextBox>
             <TextBox
                 x:Name="txtBox_B0"
                 Grid.Row="2"

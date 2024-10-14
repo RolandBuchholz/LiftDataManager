@@ -1,4 +1,4 @@
-﻿using Cogs.Collections;
+using Cogs.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
@@ -43,9 +43,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        if (message == null ||
-           !message.HasReceivedResponse ||
-            message.Response is null ||
+        if (message == null||
+            !message.HasReceivedResponse ||
+            message.Response is null||
             message.Response.ParameterDictionary is null)
         {
             return;
@@ -99,14 +99,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
         {
             return;
         }
-
         foreach (var par in ParameterDictionary)
         {
             if (range.Any(r => string.Equals(r, par.Value.Name)))
-            {
-                await par.Value.ValidateParameterAsync();
-            }     
+                _ = par.Value.ValidateParameterAsync();
         }
+        await Task.CompletedTask;
     }
 
     private void GetValidationDictionary()
@@ -360,6 +358,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             new(ValidateUCMValues, "None", null) ]);
 
         ValidationDictionary.Add("var_A_Kabine",
+            [new(ValidateCarArea, "Error", null)]);
+
+        ValidationDictionary.Add("var_SkipRatedLoad",
             [new(ValidateCarArea, "Error", null)]);
 
         ValidationDictionary.Add("var_F_Korr",
@@ -658,6 +659,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
         ValidationDictionary.Add("var_Gegengewicht_Einlagentiefe",
             [new(ValidateCounterweightMass, "None", null)]);
+
+        ValidationDictionary.Add("var_Haupthaltestelle",
+            [new(ValidateEntrancePosition, "Error", null)]);
 
         AddDropDownListValidation();
     }

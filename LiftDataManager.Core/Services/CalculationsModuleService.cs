@@ -331,7 +331,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         var nennlast6 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle6"), 1);
         var nennlast7 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle7"), 1);
 
-        var payloadAllowed = ValdidateLiftLoad(nennlast, nutzflaeche, cargoTyp, driveSystem);
+        bool payloadAllowed = ValdidateLiftLoad(nennlast, nutzflaeche, cargoTyp, driveSystem);
 
         var personen75kg = (int)(nennlast / 75);
         var personenFlaeche = GetPersonenCarArea(nutzflaeche);

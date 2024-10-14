@@ -604,10 +604,11 @@
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                             <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Border
-                            Grid.RowSpan="3"
+                            Grid.RowSpan="4"
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                         <Grid Grid.Row="0" Grid.Column="0">
@@ -699,7 +700,6 @@
                                     Margin="5,0,5,0"
                                     ui:TextBoxExtensions.ValidationMode="Dynamic"
                                     ui:TextBoxExtensions.ValidationType="Decimal"
-                                    Description="{x:Bind ViewModel.CustomPayloadInfo, Mode=OneWay}"
                                     Header="Eingabe benutzerdefinierte Gedrängelast"
                                     IsReadOnly="{x:Bind ViewModel.CanEditCustomPayload, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                     Text="{x:Bind ViewModel.CustomPayload, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -784,6 +784,24 @@
                                     FontSize="14"
                                     Text="kg" />
                             </Grid>
+                        </Grid>
+                        <Grid Grid.Row="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="IndianRed"
+                                Text="{x:Bind ViewModel.CustomPayloadInfo, Mode=OneWay}"
+                                TextWrapping="WrapWholeWords" />
+                            <SpeziControls:ParameterCheckBox
+                                Grid.Column="1"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SkipRatedLoad'], Mode=TwoWay}"
+                                ShowDefaultCheckBoxContent="True"
+                                Visibility="{x:Bind helpers:XamlFunctions.NotEmptyStringToVisible(ViewModel.CustomPayloadInfo), Mode=OneWay}" />
                         </Grid>
                     </Grid>
                 </Expander>

@@ -305,8 +305,11 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             {
                 Color = SKColors.DarkRed,
                 IsAntialias = true,
-                TextAlign = SKTextAlign.Center,
-                TextSize = 200,
+            };
+
+            using var font = new SKFont
+            {
+                Size = 200
             };
 
             float width = 0f;
@@ -351,11 +354,11 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             };
 
             SKRect textRect = new();
-            paintText.MeasureText(entrance, ref textRect);
+            font.MeasureText(entrance, out textRect);
 
             canvas.DrawRect(entranceRect, paintShaftEntrace);
             canvas.DrawRect(entranceRect, paintOutline);
-            canvas.DrawText(entrance, entranceRect.MidX, entranceRect.MidY - textRect.MidY, paintText);
+            canvas.DrawText(entrance, entranceRect.MidX, entranceRect.MidY - textRect.MidY, SKTextAlign.Center, font, paintText);
         }
     }
 
