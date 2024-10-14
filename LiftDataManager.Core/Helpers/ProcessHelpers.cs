@@ -73,21 +73,29 @@ public static class ProcessHelpers
         {
             return false;
         }
-        var pathArray = connectionString.Split(';');
-        if (pathArray.Length == 0)
+        string? dbPath;
+        try
+        {
+            var pathArray = connectionString.Split(';');
+            if (pathArray.Length == 0)
+            {
+                return false;
+            }
+            dbPath = pathArray[0];
+            if (dbPath.Contains('\\'))
+            {
+                dbPath = dbPath[13..connectionString.LastIndexOf('"')];
+            }
+            else
+            {
+                dbPath = dbPath.Replace("Data Source=", "");
+            }
+        }
+        catch
         {
             return false;
         }
 
-        var dbPath = pathArray[0];
-        if (dbPath.Contains('\\'))
-        {
-            dbPath = dbPath[13..connectionString.LastIndexOf('"')];
-        }
-        else
-        {
-            dbPath = dbPath.Replace("Data Source=", "");
-        }
         if (string.IsNullOrWhiteSpace(dbPath))
         {
             return false;

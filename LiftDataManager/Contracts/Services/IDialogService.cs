@@ -151,4 +151,10 @@ public interface IDialogService
     /// <param name="forceCheckOut">force CheckOut</param>
     /// <returns>Task<CheckOutDialogResult></returns>
     Task<CheckOutDialogResult> CheckOutDialogAsync(string spezifikationName, bool forceCheckOut = false);
+
+    /// <summary>
+    /// Opens a modal validation dialog.
+    /// </summary>
+    /// <returns>Task</returns>
+    Task ValidationDialogAsync();
 }

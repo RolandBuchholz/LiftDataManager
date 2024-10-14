@@ -43,9 +43,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
     {
-        if (message == null||
+        if (message == null ||
             !message.HasReceivedResponse ||
-            message.Response is null||
+            message.Response is null ||
             message.Response.ParameterDictionary is null)
         {
             return;
@@ -58,18 +58,14 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync(string? name, string? displayname, string? value)
     {
         ValidationResult.Clear();
-
-        if (name is null || displayname is null)
+        if (name is null || 
+            displayname is null ||
+            !ValidationDictionary.TryGetValue(key: name, 
+            out List<Tuple<Action<string, string, string?, string?, string?>, string?, string?>>? rules))
         {
             return ValidationResult;
         }
-
-        if (!ValidationDictionary.ContainsKey(key: name))
-        {
-            return ValidationResult;
-        }
-
-        foreach (var rule in ValidationDictionary[name])
+        foreach (var rule in rules)
         {
             rule.Item1.Invoke(name, displayname, value, rule.Item2, rule.Item3);
         }
