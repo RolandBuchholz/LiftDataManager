@@ -76,12 +76,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
         if (message.PropertyName == "var_Paneelmaterial")
         {
-            CanShowGlassPanels(message.NewValue);
+            CanShowGlassPanels(((Parameter)message.Sender).DropDownListValue?.Id);
         }
 
         if (message.PropertyName == "var_PaneelmaterialGlas")
         {
-            CanShowGlassPanelsColor(message.NewValue);
+            CanShowGlassPanelsColor(((Parameter)message.Sender).DropDownListValue?.Id);
         }
 
         if (message.PropertyName == "var_SpiegelA" ||
@@ -338,14 +338,14 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
     }
 
-    private void CanShowGlassPanels(string? paneelmaterial)
+    private void CanShowGlassPanels(int? id)
     {
-        ShowGlassPanels = !string.IsNullOrWhiteSpace(paneelmaterial) && paneelmaterial.StartsWith("ESG");
+        ShowGlassPanels = id == 1;
     }
 
-    private void CanShowGlassPanelsColor(string? paneelmaterialGlas)
+    private void CanShowGlassPanelsColor(int? id)
     {
-        ShowGlassPanelsColor = !string.IsNullOrWhiteSpace(paneelmaterialGlas) && paneelmaterialGlas.StartsWith("Euro");
+        ShowGlassPanelsColor = id == 4 || id == 5;
     }
 
     private void SetSkirtingBoardHeight(bool modify)
@@ -453,7 +453,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
         else
         {
-            ParameterDictionary["var_TeilungsleisteOKFF"].Value = !ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ? 
+            ParameterDictionary["var_TeilungsleisteOKFF"].Value = ParameterDictionary["var_Handlauf"].Value!.Contains("HL 13") ? 
                                                                   ParameterDictionary["var_HoeheHandlauf"].Value :
                                                                   (LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_HoeheHandlauf") - 52d).ToString();
         } 
@@ -543,7 +543,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         double currentFloorThinkness = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Bodenbelagsdicke");
         if (_floorHeight != currentFloorHeight)
         {
-            ParameterDictionary!["var_KU"].AutoUpdateParameterValue(Convert.ToString(currentFloorHeight + currentFloorThinkness, CultureInfo.CurrentCulture));
+            ParameterDictionary["var_KU"].AutoUpdateParameterValue(Convert.ToString(currentFloorHeight + currentFloorThinkness, CultureInfo.CurrentCulture));
         }
     }
 
@@ -560,8 +560,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             CanShowMirrorDimensions();
             SetSkirtingBoardHeight(false);
             CheckCarCeilingIsOverwritten();
-            CanShowGlassPanels(ParameterDictionary["var_Paneelmaterial"].Value);
-            CanShowGlassPanelsColor(ParameterDictionary["var_PaneelmaterialGlas"].Value);
+            CanShowGlassPanels(ParameterDictionary["var_Paneelmaterial"].DropDownListValue?.Id);
+            CanShowGlassPanelsColor(ParameterDictionary["var_PaneelmaterialGlas"].DropDownListValue?.Id);
             SetDistanceBetweenDoors();
             CheckIsDefaultCarTyp();
             SetHandRailHeight();

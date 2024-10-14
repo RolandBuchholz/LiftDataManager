@@ -89,8 +89,8 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="WinUICommunity.Components" Version="6.9.0" />
     <PackageReference Include="WinUICommunity.Core" Version="6.9.0" />
-    <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.8" />
     <PackageReference Include="WinUIEx" Version="2.4.2" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="3.0.0-preview.5.3" />
   </ItemGroup>
   
   <ItemGroup>
