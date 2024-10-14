@@ -6,7 +6,7 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
         Content = null;
-        AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+        ExtendsContentIntoTitleBar = true;
+        this.SetTitleBarBackgroundColors(Microsoft.UI.Colors.Transparent);
     }
 }
