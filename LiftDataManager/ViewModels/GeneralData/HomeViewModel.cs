@@ -369,7 +369,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
             else
             {
-                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
                 _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
                 await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
@@ -418,7 +418,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
             else
             {
-                await _dialogService!.LiftDataManagerdownloadInfoAsync(downloadResult);
+                await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
                 await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
         }
