@@ -36,9 +36,14 @@ public partial class ZALiftDialogViewModel : ObservableObject
             return;
         }
         OrderNumber = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
+        var calculationPath = Path.Combine(pathAutodeskTransfer, "Berechnungen");
+        if (!Directory.Exists(calculationPath))
+        {
+            Directory.CreateDirectory(calculationPath);
+        }
         Watcher = new()
         {
-            Path = Path.Combine(pathAutodeskTransfer, "Berechnungen"),
+            Path = calculationPath,
             IncludeSubdirectories = false,
             EnableRaisingEvents = true
         };

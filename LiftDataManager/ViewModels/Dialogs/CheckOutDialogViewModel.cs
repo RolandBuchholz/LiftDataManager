@@ -39,22 +39,35 @@ public partial class CheckOutDialogViewModel : ObservableObject
             ShowReadOnlyWarning = false;
             sender.CloseButtonText = string.Empty;
         }
+        sender.Closed += VaultCheckOutDialogClosed;
         await Task.CompletedTask;
     }
+
+    private void VaultCheckOutDialogClosed(ContentDialog sender, ContentDialogClosedEventArgs args)
+    {
+        if (sender is CheckOutDialog checkOutDialog)
+        {
+            checkOutDialog.CheckOutDialogResult = CheckOutDialogResult;
+        }
+        CheckOutInprogress = false;
+    }
+
     [RelayCommand]
     public async Task PrimaryButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
         var deferral = args.GetDeferral();
-        var result = await CheckOut(true);
-        CheckOutDialogResult = CheckOutDialogResult.SuccessfulIncreaseRevision;
+        CheckOutInprogress = true;
+        var result = await CheckOut();
+        CheckOutDialogResult = result ? CheckOutDialogResult.SuccessfulIncreaseRevision : CheckOutDialogResult.CheckOutFailed;
         deferral.Complete();
     }
     [RelayCommand]
     public async Task SecondaryButtonClickedAsync(ContentDialogButtonClickEventArgs args)
     {
         var deferral = args.GetDeferral();
-        await CheckOut(false);
-        CheckOutDialogResult = CheckOutDialogResult.SuccessfulNoRevisionChange;
+        CheckOutInprogress = true;
+        var result = await CheckOut();
+        CheckOutDialogResult = result ? CheckOutDialogResult.SuccessfulNoRevisionChange : CheckOutDialogResult.CheckOutFailed;
         deferral.Complete();
     }
     [RelayCommand]
@@ -69,15 +82,16 @@ public partial class CheckOutDialogViewModel : ObservableObject
         sender.CheckOutDialogResult = CheckOutDialogResult;
         await Task.CompletedTask;
     }
-    private async Task<bool> CheckOut(bool increaseRevision)
+    private async Task<bool> CheckOut()
     {
         await Task.Delay(50);
         var downloadResult = await _vaultDataService.GetFileAsync(SpezifikationName!);
         if (downloadResult is not null)
         {
-            Debug.WriteLine(downloadResult.IsCheckOut);
+            _logger.LogInformation(60139, "downloadResult: {downloadResult.CheckOutState}", downloadResult.CheckOutState);
+            return downloadResult.IsCheckOut;
         }
-        await Task.Delay(1000);
-        return true;
+        _logger.LogWarning(60139, "CheckOut failed");
+        return false;
     }
 }

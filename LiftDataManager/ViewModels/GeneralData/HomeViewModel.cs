@@ -29,11 +29,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
-        {
-            return;
-        }
-        if (!(message.Sender.GetType() == typeof(Parameter)))
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
@@ -297,14 +294,35 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private async Task CheckOutAsync()
     {
         var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
-        //OpenReadOnly = false;
-        //await LoadDataAsync();
-        if (dialogResult == CheckOutDialogResult.SuccessfulIncreaseRevision)
+        switch (dialogResult)
         {
-            IncreaseRevision();
+            case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                IncreaseRevision();
+                OpenReadOnly = false;
+                LikeEditParameter = true;
+                CheckOut = true;
+                break;
+            case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                OpenReadOnly = false;
+                LikeEditParameter = true;
+                CheckOut = true;
+                break;
+            case CheckOutDialogResult.CheckOutFailed:
+                goto default;
+            case CheckOutDialogResult.ReadOnly:
+                LikeEditParameter = false;
+                OpenReadOnly = true;
+                CheckOut = false;
+                break;
+            default:
+                break;
         }
-        StartSaveTimer();
-        SetModifyInfos();
+        CanCheckOut = !CheckOut;
+        if (CheckOut)
+        {
+            StartSaveTimer();
+            SetModifyInfos();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanClearData))]
@@ -684,7 +702,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
     }
 
-
     private void ValidateCustomPayload(string? customPayload)
     {
         var payload = string.IsNullOrWhiteSpace(customPayload) ? 0 : Convert.ToDouble(customPayload, CultureInfo.CurrentCulture);
@@ -714,34 +731,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
         _logger.LogInformation(60132, "Set CustomPayload: {customPayload}", customPayload);
     }
-    private async Task<string[]> SearchWorkspaceAsync(string searchPattern)
-    {
-        _logger.LogInformation(60139, "Workspacesearch started");
-        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Suche im Arbeitsbereich gestartet");
-
-        string? path;
-
-        if (CurrentSpezifikationTyp is not null &&
-            CurrentSpezifikationTyp.Equals(SpezifikationTyp.Order))
-        {
-            path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
-            if (!Directory.Exists(path))
-            {
-                return [];
-            }
-        }
-        else
-        {
-            path = @"C:\Work\AUFTRÄGE NEU\Angebote";
-            if (!Directory.Exists(path))
-            {
-                return [];
-            }
-        }
-
-        var searchResult = await Task.Run(() => Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories));
-        return searchResult;
-    }
 
     private async Task SetCalculatedValuesAsync()
     {
@@ -769,37 +758,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         await Task.CompletedTask;
     }
 
-    private void StartSaveTimer()
-    {
-        int period = 5;
-        var autoSavePeriod = _settingService.AutoSavePeriod;
-        if (!string.IsNullOrWhiteSpace(autoSavePeriod))
-        {
-            period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
-        }
-        AutoSaveTimer ??= new DispatcherTimer();
-        if (!AutoSaveTimer.IsEnabled)
-        {
-            AutoSaveTimer.Interval = TimeSpan.FromMinutes(period);
-            AutoSaveTimer.Tick += Timer_Tick;
-            AutoSaveTimer.Start();
-        }
-    }
-
-    private async void Timer_Tick(object? sender, object e)
-    {
-        if (!SaveAllParameterCommand.IsRunning)
-        {
-            _logger.LogInformation(61038, "Autosave started");
-            var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
-            if (CheckOut && dirty)
-            {
-                var currentSpeziProperties = GetCurrentSpeziProperties();
-                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
-            }
-        }
-    }
-
     private void ClearExpiredLiftData()
     {
         InfoCenterEntrys.Clear();
@@ -822,23 +780,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         PayloadTable6 = 0;
         PayloadTable7 = 0;
     }
-
-    private void SetModifyInfos()
-    {
-        ParameterDictionary["var_GeaendertVon"].AutoUpdateParameterValue(string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName);
-        ParameterDictionary["var_GeaendertAm"].AutoUpdateParameterValue(DateTime.Now.ToShortDateString());
-    }
-
-    private void IncreaseRevision()
-    {
-        if (ParameterDictionary is not null)
-        {
-            var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
-            ParameterDictionary["var_Index"].AutoUpdateParameterValue(newRevision);
-            ParameterDictionary["var_StandVom"].AutoUpdateParameterValue(DateTime.Today.ToShortDateString());
-        }
-    }
-
 
     private void CopyPdfOffer(string fullPath)
     {

@@ -28,7 +28,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
 
         if (message.PropertyName == "var_Bausatz")
         {
-            ParameterDictionary!["var_Rahmengewicht"].Value = "";
+            ParameterDictionary["var_Rahmengewicht"].Value = "";
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
             CheckCFPState(message.NewValue, message.OldValue);
         };
@@ -127,6 +127,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         CFPFrameInfoToolTip = ShowCFPFrameInfo ? "Empfehlung: Bausatzkonfiguration im CFP konfigurieren" : "Bausatz wurde im CFP konfiguriert";
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))

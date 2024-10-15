@@ -311,6 +311,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <SpeziControls:ParameterComboBox
                                     Grid.Column="0"
@@ -328,6 +329,11 @@
                                     Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="3"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Unit="kg" />
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="4"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'], Mode=TwoWay}"
                                     ReadOnly="True"
                                     ShowDefaultHeader="True"
@@ -365,21 +371,42 @@
                                 </SpeziControls:ParameterNumberTextBox>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="2"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True"
-                                    Unit="kg" />
-                                <SpeziControls:ParameterNumberTextBox
-                                    Grid.Column="3"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellgewicht'], Mode=TwoWay}"
                                     ReadOnly="True"
                                     ShowDefaultHeader="True"
                                     Unit="kg" />
                                 <SpeziControls:ParameterNumberTextBox
-                                    Grid.Column="4"
+                                    Grid.Column="3"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellhoehe'], Mode=TwoWay}"
                                     ReadOnly="True"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock>
+                                            <Run
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                            Füllhöhe wird automatisch berechnet</TextBlock>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
+                                <SpeziControls:ParameterNumberTextBox
+                                    Grid.Column="4"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_FuellhoeheMax'], Mode=TwoWay}"
+                                    ReadOnly="True"
+                                    ShowDefaultHeader="True"
+                                    Unit="mm">
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock>
+                                            <Run
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                            maximale Füllhöhe wird durch das CFP ermittelt</TextBlock>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterNumberTextBox>
                             </Grid>
                         </Grid>
                         <!--  Carframe ropeData  -->

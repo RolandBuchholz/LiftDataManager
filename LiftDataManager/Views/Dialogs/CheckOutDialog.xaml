@@ -177,7 +177,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Margin="0,20,0,0"
-                IsIndeterminate="{x:Bind ViewModel.PrimaryButtonClickedCommand.IsRunning, Mode=OneWay}" />
+                IsIndeterminate="{x:Bind ViewModel.CheckOutInprogress, Mode=OneWay}" />
         </Grid>
     </Grid>
 </ContentDialog>

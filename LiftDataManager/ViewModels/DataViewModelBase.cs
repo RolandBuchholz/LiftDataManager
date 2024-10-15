@@ -17,7 +17,7 @@ public partial class DataViewModelBase : ObservableRecipient
     public DispatcherTimer? AutoSaveTimer { get; set; }
     public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
-    public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; } = [];
+    public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; }
     public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
 #pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
@@ -38,11 +38,8 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
-        {
-            return;
-        }
-        if (!(message.Sender.GetType() == typeof(Parameter)))
+        if (message is null ||
+           !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
@@ -52,11 +49,8 @@ public partial class DataViewModelBase : ObservableRecipient
 
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
-        if (message is null)
-        {
-            return;
-        }
-        if (!(message.Sender.GetType() == typeof(Parameter)))
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
@@ -218,28 +212,28 @@ public partial class DataViewModelBase : ObservableRecipient
             {
                 CheckoutDialogIsOpen = true;
                 var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
-                //var dialogResult = await _dialogService!.WarningDialogAsync(
-                //                    $"Datei eingechecked (schreibgeschützt)",
-                //                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                //                    $"Es sind keine Änderungen möglich!\n" +
-                //                    $"\n" +
-                //                    $"Soll zur HomeAnsicht gewechselt werden um die Datei auszuchecken?",
-                //                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-                //if ((bool)dialogResult)
-                //{
-                //    CheckoutDialogIsOpen = false;
-                //    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
-                //}
-                //else
-                //{
-                //    CheckoutDialogIsOpen = false;
-                //    LikeEditParameter = false;
-                //    if (CurrentSpeziProperties is not null)
-                //    {
-                //        CurrentSpeziProperties.LikeEditParameter = LikeEditParameter;
-                //        _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-                //    }
-                //}
+                switch (dialogResult)
+                {
+                    case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                        IncreaseRevision();
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.CheckOutFailed:
+                        goto default;
+                    case CheckOutDialogResult.ReadOnly:
+                        LikeEditParameter = false;
+                        CheckOut = false;
+                        break;
+                    default:
+                        break;
+                }
+                StartSaveTimer();
+                SetModifyInfos();
             }
         }
         await Task.CompletedTask;
@@ -294,6 +288,54 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             CurrentSpeziProperties.InfoCenterEntrys = InfoCenterEntrys;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+        }
+    }
+
+    protected void StartSaveTimer()
+    {
+        int period = 1;
+        //var autoSavePeriod = _settingService.AutoSavePeriod;
+        //if (!string.IsNullOrWhiteSpace(autoSavePeriod))
+        //{
+        //    period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
+        //}
+        AutoSaveTimer ??= new DispatcherTimer();
+        if (!AutoSaveTimer.IsEnabled)
+        {
+            AutoSaveTimer.Interval = TimeSpan.FromMinutes(period);
+            AutoSaveTimer.Tick += Timer_Tick;
+            AutoSaveTimer.Start();
+        }
+    }
+
+    protected async void Timer_Tick(object? sender, object e)
+    {
+        if (!SaveAllParameterCommand.IsRunning)
+        {
+            //_logger.LogInformation(61038, "Autosave started");
+            Debug.WriteLine("Autosave started");
+            var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
+            if (CheckOut && dirty)
+            {
+                var currentSpeziProperties = GetCurrentSpeziProperties();
+                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+            }
+        }
+    }
+
+    protected void SetModifyInfos()
+    {
+        ParameterDictionary["var_GeaendertVon"].AutoUpdateParameterValue(string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName);
+        ParameterDictionary["var_GeaendertAm"].AutoUpdateParameterValue(DateTime.Now.ToShortDateString());
+    }
+
+    protected void IncreaseRevision()
+    {
+        if (ParameterDictionary is not null)
+        {
+            var newRevision = RevisionHelper.GetNextRevision(ParameterDictionary["var_Index"].Value);
+            ParameterDictionary["var_Index"].AutoUpdateParameterValue(newRevision);
+            ParameterDictionary["var_StandVom"].AutoUpdateParameterValue(DateTime.Today.ToShortDateString());
         }
     }
 

@@ -1272,7 +1272,9 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
     private void ValidateCounterweightMass(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return;
+        }
         string lift = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Aufzugstyp");
         string drivesystem = GetDriveSystem(lift);
 
@@ -1296,7 +1298,7 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
             double cwtFrameWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGW_Rahmen_Gewicht");
             cwtLoad = Math.Round(load * balance + carWeight);
             cwtFillingLoad = cwtLoad - cwtFrameWeight;
-            double fillingDensity = (cwtWidth * cwtDepth * 7.85d * 0.000001);
+            double fillingDensity = cwtWidth * cwtDepth * 7.85d * 0.000001;
             cwtFillingHeight = fillingDensity > 0 ? Math.Round(cwtFillingLoad / fillingDensity) : 0;
         }
         ParameterDictionary["var_Gegengewichtsmasse"].AutoUpdateParameterValue(Convert.ToString(cwtLoad));

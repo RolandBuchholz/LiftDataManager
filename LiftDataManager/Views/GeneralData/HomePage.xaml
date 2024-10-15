@@ -298,7 +298,11 @@
                         ShowDefaultHeader="True">
                         <ToolTipService.ToolTip>
                             <TextBlock>
-                                <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
                                 Auftragsnummer wird automatisch gesetzt</TextBlock>
                         </ToolTipService.ToolTip>
                     </SpeziControls:ParameterTextBox>
@@ -639,7 +643,11 @@
                                 Unit="kg">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
-                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        <Run
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Schreibgeschützer Parameter:" /><LineBreak />
                                         Fahrkorbgewicht wird automatisch berechnet</TextBlock>
                                 </ToolTipService.ToolTip>
                             </SpeziControls:ParameterNumberTextBox>
@@ -652,7 +660,11 @@
                                 Unit="Per.">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
-                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        <Run
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Schreibgeschützer Parameter:" /><LineBreak />
                                         Personenanzahl wird automatisch berechnet</TextBlock>
                                 </ToolTipService.ToolTip>
                             </SpeziControls:ParameterNumberTextBox>
@@ -673,7 +685,11 @@
                                 Unit="kg">
                                 <ToolTipService.ToolTip>
                                     <TextBlock>
-                                        <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                        <Run
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            Text="Schreibgeschützer Parameter:" /><LineBreak />
                                         Gedrängelast wird automatisch berechnet<LineBreak />
                                         <Run FontSize="16" Text="Info:" /><LineBreak />
                                         5.4.2.2.4 Bei hydraulisch betriebenen Lastenaufzügen<LineBreak />
@@ -711,7 +727,11 @@
                                     </TextBox.HeaderTemplate>
                                     <ToolTipService.ToolTip>
                                         <TextBlock>
-                                            <Run FontSize="16" Text="Benutzerdefinierte Gedrängelast:" /><LineBreak />
+                                            <Run
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Benutzerdefinierte Gedrängelast:" /><LineBreak />
                                             <Run
                                                 FontSize="14"
                                                 Foreground="IndianRed"
@@ -920,7 +940,11 @@
                             Unit="m²">
                             <ToolTipService.ToolTip>
                                 <TextBlock>
-                                    <Run FontSize="16" Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                    <Run
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        Text="Schreibgeschützer Parameter:" /><LineBreak />
                                     Kabinenfläche wird automatisch berechnet</TextBlock>
                             </ToolTipService.ToolTip>
                         </SpeziControls:ParameterNumberTextBox>
@@ -966,13 +990,6 @@
             Background="Transparent"
             Foreground="Crimson"
             IsActive="{x:Bind ViewModel.ClearDataCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
-        <ProgressRing
-            Grid.Row="2"
-            Width="200"
-            Height="200"
-            Background="Transparent"
-            Foreground="SpringGreen"
-            IsActive="{x:Bind ViewModel.CheckOutCommand.IsRunning, FallbackValue=False, Mode=OneWay}" />
         <ProgressRing
             Grid.Row="2"
             Width="200"

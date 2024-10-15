@@ -194,5 +194,19 @@ public class LiftParameterHelper
                 parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].AutoUpdateParameterValue(carFrameTyp.CarFrametoCWTDGBOffset.ToString());
             }
         }
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagenbreite"].Value))
+        {
+            if (carFrameTyp.CounterweightFillingWidth != 0)
+            {
+                parameterDictionary["var_Gegengewicht_Einlagenbreite"].AutoUpdateParameterValue(carFrameTyp.CounterweightFillingWidth.ToString());
+            }
+        }
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagentiefe"].Value))
+        {
+            if (carFrameTyp.CounterweightFillingDepth != 0)
+            {
+                parameterDictionary["var_Gegengewicht_Einlagentiefe"].AutoUpdateParameterValue(carFrameTyp.CounterweightFillingDepth.ToString());
+            }
+        }
     }
 }
