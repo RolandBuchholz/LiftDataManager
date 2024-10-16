@@ -17,15 +17,11 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-        {
-            return;
-        }
-
         if (message.PropertyName == "var_Bausatz")
         {
             ParameterDictionary["var_Rahmengewicht"].Value = "";
@@ -38,6 +34,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             SetSafetygearData();
         };
+
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
@@ -127,7 +124,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         CFPFrameInfoToolTip = ShowCFPFrameInfo ? "Empfehlung: Bausatzkonfiguration im CFP konfigurieren" : "Bausatz wurde im CFP konfiguriert";
-        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
+        //LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
+        ParameterDictionary["var_Gegengewicht_Einlagenbreite"].Value = "88";
+        ParameterDictionary["var_Gegengewicht_Einlagenbreite"].AutoUpdateParameterValue("185");
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))

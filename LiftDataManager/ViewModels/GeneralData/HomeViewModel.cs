@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
+using MvvmHelpers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -284,7 +285,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }));
             if (_settingService.AutoSave && CheckOut)
             {
-                StartSaveTimer();
+                _ = _parameterDataService.StartAutoSaveTimer();
             }
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
@@ -320,7 +321,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CanCheckOut = !CheckOut;
         if (CheckOut)
         {
-            StartSaveTimer();
+            _ = _parameterDataService.StartAutoSaveTimer();
             SetModifyInfos();
         }
     }
@@ -376,7 +377,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             ClearExpiredLiftData();
             await LoadDataAsync();
         }
-        AutoSaveTimer?.Stop();
+        await _parameterDataService.StopAutoSaveTimer();
     }
 
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
@@ -422,7 +423,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
         }
-        AutoSaveTimer?.Stop();
+        await _parameterDataService.StopAutoSaveTimer();
     }
 
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
@@ -559,19 +560,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
             }
-
             await SetModelStateAsync();
-
-            if (AutoSaveTimer is not null)
-            {
-                var saveTimeIntervall = AutoSaveTimer.Interval;
-                AutoSaveTimer.Stop();
-                AutoSaveTimer.Interval = saveTimeIntervall;
-                AutoSaveTimer.Start();
-            }
-
             InfoCenterIsOpen = true;
             await SetCalculatedValuesAsync();
+            _ = _parameterDataService.StartAutoSaveTimer();
         }
     }
 

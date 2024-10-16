@@ -22,7 +22,9 @@ public partial class ParameterDataService : IParameterDataService
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
+    private PeriodicTimer? _autoSaveTimer;
     private readonly string user;
+    private bool _saveAllParameterIsRunninng;
 
     public ParameterDataService(IValidationParameterDataService validationParameterDataService,
                                  ParameterContext parametercontext, ILogger<ParameterDataService> logger)
@@ -286,11 +288,13 @@ public partial class ParameterDataService : IParameterDataService
     /// <inheritdoc/>
     public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
     {
+        _saveAllParameterIsRunninng = true;
         var saveResult = new List<Tuple<string, string, string?>>();
         if (!ValidatePath(path, false))
         {
             _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
             saveResult.Add(new Tuple<string, string, string?>("Error", "Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
+            _saveAllParameterIsRunninng = false;
             return saveResult;
         }
         XElement doc = XElement.Load(path);
@@ -330,6 +334,7 @@ public partial class ParameterDataService : IParameterDataService
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
+        _saveAllParameterIsRunninng = false;
         await Task.CompletedTask;
         return saveResult;
     }
@@ -576,6 +581,40 @@ public partial class ParameterDataService : IParameterDataService
             _ = AddParameterListToHistoryAsync(syncedLiftHistoryEntries, path, false);
         }
         return syncedParameter;
+    }
+
+    /// <inheritdoc/>
+    public async Task StartAutoSaveTimer()
+    {
+        _autoSaveTimer?.Dispose();
+        int period = 3;
+        //var autoSavePeriod = _settingService.AutoSavePeriod;
+        //if (!string.IsNullOrWhiteSpace(autoSavePeriod))
+        //{
+        //    period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
+        //}
+
+        _autoSaveTimer = new PeriodicTimer(TimeSpan.FromSeconds(period));
+        while (await _autoSaveTimer.WaitForNextTickAsync())
+        {
+            if (!_saveAllParameterIsRunninng)
+            {
+                _logger.LogInformation(60100, "AutoSave started");
+                //    var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
+                //    if (CheckOut && dirty)
+                //    {
+                //        var currentSpeziProperties = GetCurrentSpeziProperties();
+                //        await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
+                //    }
+            }
+        }
+    }
+    /// <inheritdoc/>
+    public async Task StopAutoSaveTimer()
+    {
+        _autoSaveTimer?.Dispose();
+        _logger.LogInformation(60100, "AutoSave disabled");
+        await Task.CompletedTask;
     }
 
     private bool ValidatePath(string path, bool readOnlyAllowed)

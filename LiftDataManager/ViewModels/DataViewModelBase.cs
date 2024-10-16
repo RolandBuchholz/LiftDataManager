@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MvvmHelpers;
 using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
 
 namespace LiftDataManager.ViewModels;
 
@@ -14,7 +15,6 @@ public partial class DataViewModelBase : ObservableRecipient
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
-    public DispatcherTimer? AutoSaveTimer { get; set; }
     public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; }
@@ -152,14 +152,7 @@ public partial class DataViewModelBase : ObservableRecipient
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
         }
         await SetModelStateAsync();
-
-        if (AutoSaveTimer is not null)
-        {
-            var saveTimeIntervall = AutoSaveTimer.Interval;
-            AutoSaveTimer.Stop();
-            AutoSaveTimer.Interval = saveTimeIntervall;
-            AutoSaveTimer.Start();
-        }
+        _= _parameterDataService.StartAutoSaveTimer();
     }
 
     protected virtual void SynchronizeViewModelParameter()
@@ -232,7 +225,7 @@ public partial class DataViewModelBase : ObservableRecipient
                     default:
                         break;
                 }
-                StartSaveTimer();
+                _ = _parameterDataService.StartAutoSaveTimer();
                 SetModifyInfos();
             }
         }
@@ -261,7 +254,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
     }
 
-    protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
+    protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "")
     {
         _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys,
             ((Parameter)message.Sender).Name,
@@ -288,38 +281,6 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             CurrentSpeziProperties.InfoCenterEntrys = InfoCenterEntrys;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        }
-    }
-
-    protected void StartSaveTimer()
-    {
-        int period = 1;
-        //var autoSavePeriod = _settingService.AutoSavePeriod;
-        //if (!string.IsNullOrWhiteSpace(autoSavePeriod))
-        //{
-        //    period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
-        //}
-        AutoSaveTimer ??= new DispatcherTimer();
-        if (!AutoSaveTimer.IsEnabled)
-        {
-            AutoSaveTimer.Interval = TimeSpan.FromMinutes(period);
-            AutoSaveTimer.Tick += Timer_Tick;
-            AutoSaveTimer.Start();
-        }
-    }
-
-    protected async void Timer_Tick(object? sender, object e)
-    {
-        if (!SaveAllParameterCommand.IsRunning)
-        {
-            //_logger.LogInformation(61038, "Autosave started");
-            Debug.WriteLine("Autosave started");
-            var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
-            if (CheckOut && dirty)
-            {
-                var currentSpeziProperties = GetCurrentSpeziProperties();
-                await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
-            }
         }
     }
 
