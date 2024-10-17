@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
+using MvvmHelpers;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -444,20 +445,26 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    private async Task UpdateCarFrameDataAsync(int delay)
     {
-        NavigatedToBaseActions();
-        CheckCFPState();
+        await Task.Delay(delay);
         if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Pufferstuetzenmaterial"].Value))
         {
             ParameterDictionary["var_Pufferstuetzenmaterial"].AutoUpdateParameterValue("1.0038-ST37-2-S235");
         }
+        CheckCFPState();
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
         RestorePufferCalculationData();
         RestoreRopeCalculationData();
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);
         SetDetailDataVisibility();
         GetPufferDetailData();
-        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        NavigatedToBaseActions();
+        UpdateCarFrameDataAsync(500).SafeFireAndForget();
     }
 
     public void OnNavigatedFrom()

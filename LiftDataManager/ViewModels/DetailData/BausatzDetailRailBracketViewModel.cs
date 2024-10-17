@@ -2,6 +2,8 @@
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Input;
+using MvvmHelpers;
+using PdfSharp.Charting;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -875,17 +877,6 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         CalculateDimensions();
     }
 
-    private void GetCarFrameTyp()
-    {
-        CarFrameTyp = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
-        if (CarFrameTyp is not null)
-        {
-            CWTRailName = CarFrameTyp.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen Gegengewicht";
-            CWTRailNameShaftCeilling = CarFrameTyp.DriveTypeId == 2 ? "Jochschiene Schachtdecke" : "Gegengewichtsschiene Schachtdecke";
-            IsCFPControlled = CarFrameTyp.IsCFPControlled;
-        }
-    }
-
     private void FillListOfRailBrackets()
     {
         foreach (string railBracket in railBracketDistancesParameter)
@@ -1009,6 +1000,25 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         UpdateFrameCalculationData();
     }
 
+    private async Task UpdateCarFrameDataAsync(int delay)
+    {
+        await Task.Delay(delay);
+        CarFrameTyp = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
+        if (CarFrameTyp is not null)
+        {
+            CWTRailName = CarFrameTyp.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen Gegengewicht";
+            CWTRailNameShaftCeilling = CarFrameTyp.DriveTypeId == 2 ? "Jochschiene Schachtdecke" : "Gegengewichtsschiene Schachtdecke";
+            IsCFPControlled = CarFrameTyp.IsCFPControlled;
+        }
+        CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) &&
+                           !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
+        FillListOfRailBrackets();
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+        CalculateDimensions();
+        RestoreFrameCalculationData();
+        RefreshView();
+    }
+
     [RelayCommand]
     private void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -1108,14 +1118,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            GetCarFrameTyp();
-            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
             SetViewBoxDimensions();
-            CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) &&
-                                       !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
-            FillListOfRailBrackets();
-            CalculateDimensions();
-            RestoreFrameCalculationData();
+            UpdateCarFrameDataAsync(500).SafeFireAndForget();
         }
     }
 

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MvvmHelpers;
 using System.Collections.Specialized;
-using System.Runtime.CompilerServices;
 
 namespace LiftDataManager.ViewModels;
 
@@ -54,7 +53,6 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             return;
         }
-
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
     }
@@ -152,7 +150,7 @@ public partial class DataViewModelBase : ObservableRecipient
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
         }
         await SetModelStateAsync();
-        _= _parameterDataService.StartAutoSaveTimer();
+        _= _parameterDataService.StartAutoSaveTimerAsync();
     }
 
     protected virtual void SynchronizeViewModelParameter()
@@ -225,7 +223,7 @@ public partial class DataViewModelBase : ObservableRecipient
                     default:
                         break;
                 }
-                _ = _parameterDataService.StartAutoSaveTimer();
+                _ = _parameterDataService.StartAutoSaveTimerAsync();
                 SetModifyInfos();
             }
         }
@@ -254,7 +252,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
     }
 
-    protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "")
+    protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
         _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys,
             ((Parameter)message.Sender).Name,
@@ -307,7 +305,9 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties is not null &&
             CurrentSpeziProperties?.ParameterDictionary is not null &&
             CurrentSpeziProperties?.ParameterDictionary?.Values is not null)
+        {
             _ = SetModelStateAsync();
+        }
         InfoCenterEntrys.CollectionChanged += OnInfoCenterEntrys_CollectionChanged;
     }
 

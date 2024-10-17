@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
-using MvvmHelpers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -285,7 +284,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }));
             if (_settingService.AutoSave && CheckOut)
             {
-                _ = _parameterDataService.StartAutoSaveTimer();
+                _ = _parameterDataService.StartAutoSaveTimerAsync();
             }
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
@@ -321,7 +320,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CanCheckOut = !CheckOut;
         if (CheckOut)
         {
-            _ = _parameterDataService.StartAutoSaveTimer();
+            _ = _parameterDataService.StartAutoSaveTimerAsync();
             SetModifyInfos();
         }
     }
@@ -377,7 +376,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             ClearExpiredLiftData();
             await LoadDataAsync();
         }
-        await _parameterDataService.StopAutoSaveTimer();
+        await _parameterDataService.StopAutoSaveTimerAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
@@ -423,7 +422,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
             }
         }
-        await _parameterDataService.StopAutoSaveTimer();
+        await _parameterDataService.StopAutoSaveTimerAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
@@ -563,7 +562,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await SetModelStateAsync();
             InfoCenterIsOpen = true;
             await SetCalculatedValuesAsync();
-            _ = _parameterDataService.StartAutoSaveTimer();
+            _ = _parameterDataService.StartAutoSaveTimerAsync();
         }
     }
 
@@ -771,36 +770,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CarFrameWeight = 0;
         PayloadTable6 = 0;
         PayloadTable7 = 0;
-    }
-
-    private void CopyPdfOffer(string fullPath)
-    {
-        if (!File.Exists(fullPath))
-        {
-            return;
-        }
-
-        var currentFileName = Path.GetFileName(fullPath);
-        var newFileName = currentFileName.StartsWith($"{SpezifikationName}-") ? currentFileName : $"{SpezifikationName}-{currentFileName}";
-        var newFullPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "SV", newFileName);
-
-        if (string.Equals(fullPath, newFullPath, StringComparison.CurrentCultureIgnoreCase))
-        {
-            return;
-        }
-
-        if (!string.IsNullOrWhiteSpace(newFullPath) && Path.IsPathFullyQualified(newFullPath))
-        {
-            if (File.Exists(newFullPath))
-            {
-                FileInfo pdfOfferFileInfo = new(newFullPath);
-                if (pdfOfferFileInfo.IsReadOnly)
-                {
-                    pdfOfferFileInfo.IsReadOnly = false;
-                }
-            }
-            File.Copy(fullPath, newFullPath, true);
-        }
     }
 
     public void OnNavigatedTo(object parameter)

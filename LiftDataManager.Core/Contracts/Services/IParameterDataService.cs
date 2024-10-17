@@ -30,7 +30,7 @@ public interface IParameterDataService
 
     Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory);
 
-    Task StartAutoSaveTimer();
+    Task StartAutoSaveTimerAsync();
 
-    Task StopAutoSaveTimer();
+    Task StopAutoSaveTimerAsync();
 }

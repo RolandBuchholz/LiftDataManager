@@ -63,56 +63,6 @@
                 </StackPanel>
             </winuiex:TitleBar.Footer>
         </winuiex:TitleBar>
-        <!--<TitleBar
-            x:Name="AppTitleBar"
-            Title="{x:Bind local:App.Current.AppName}"
-            Height="40"
-            BackButtonClick="AppTitleBar_BackButtonClick"
-            Icon="{wuc:BitmapIcon Source=ms-appx:///Assets/WindowIcon.png}"
-            IsBackButtonVisible="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-            IsPaneButtonVisible="True"
-            PaneButtonClick="AppTitleBar_PaneButtonClick"
-            Subtitle="{x:Bind local:App.Current.AppVersion}">
-            <TitleBar.Content>
-                <AutoSuggestBox
-                    PlaceholderText="globale Suche"
-                    QueryIcon="Find"
-                    Text="{x:Bind ViewModel.GlobalSearchInput, Mode=TwoWay}"
-                    ToolTipService.ToolTip="globale Suche"
-                    Visibility="{x:Bind ViewModel.ShowGlobalSearch, Mode=OneWay}">
-                    <interactivity:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="QuerySubmitted">
-                            <core:InvokeCommandAction Command="{x:Bind ViewModel.StartGlobalSearchCommand}" />
-                        </core:EventTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
-                </AutoSuggestBox>
-            </TitleBar.Content>
-            <TitleBar.Footer>
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button
-                        x:Name="ThemeButton"
-                        Height="32"
-                        Margin="0,0,4,0"
-                        Click="ThemeButton_Click"
-                        Style="{ThemeResource SubtleButtonStyle}"
-                        ToolTipService.ToolTip="temporärer Themewechsel">
-                        <FontIcon FontSize="16" Glyph="&#xE793;" />
-                    </Button>
-                    <Button
-                        x:Name="HelpButton"
-                        Height="32"
-                        Margin="0,0,4,0"
-                        Command="{x:Bind ViewModel.GoToHelpViewModelCommand}"
-                        Style="{ThemeResource SubtleButtonStyle}"
-                        ToolTipService.ToolTip="Hilfe">
-                        <FontIcon
-                            FontSize="16"
-                            FontWeight="ExtraBold"
-                            Glyph="&#xE897;" />
-                    </Button>
-                </StackPanel>
-            </TitleBar.Footer>
-        </TitleBar>-->
         <NavigationView
             x:Name="NavigationViewControl"
             Grid.Row="1"

@@ -584,7 +584,7 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task StartAutoSaveTimer()
+    public async Task StartAutoSaveTimerAsync()
     {
         _autoSaveTimer?.Dispose();
         int period = 3;
@@ -610,7 +610,7 @@ public partial class ParameterDataService : IParameterDataService
         }
     }
     /// <inheritdoc/>
-    public async Task StopAutoSaveTimer()
+    public async Task StopAutoSaveTimerAsync()
     {
         _autoSaveTimer?.Dispose();
         _logger.LogInformation(60100, "AutoSave disabled");

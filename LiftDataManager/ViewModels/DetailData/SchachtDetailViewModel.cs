@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
+using MvvmHelpers;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -42,12 +43,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
-        {
-            return;
-        }
-
-        if (!(message.Sender.GetType() == typeof(Parameter)))
+        if (message is null||
+            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
@@ -966,6 +963,29 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
     }
 
+    private async Task UpdateShaftDataAsync(int delay)
+    {
+        await Task.Delay(delay);
+        OpeningDirectionA = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung");
+        OpeningDirectionB = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B");
+        OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C");
+        OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
+        CheckIsOpeningDirectionSelected();
+        SetWallOpeningOffsets();
+        SetDefaultCarPosition();
+        SetCarFrameOffset("setup");
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value))
+        {
+            CarframeGuideRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
+        }
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value))
+        {
+            CounterWeightGuideRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value!));
+        }
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+
+    }
+
     [RelayCommand]
     private static void GoToSchachtViewModel()
     {
@@ -980,23 +1000,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
             SetViewBoxDimensions();
-            OpeningDirectionA = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung");
-            OpeningDirectionB = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_B");
-            OpeningDirectionC = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_C");
-            OpeningDirectionD = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D");
-            CheckIsOpeningDirectionSelected();
-            SetWallOpeningOffsets();
-            SetDefaultCarPosition();
-            SetCarFrameOffset("setup");
-            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value))
-            {
-                CarframeGuideRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneFahrkorb"].Value!));
-            }
-            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value))
-            {
-                CounterWeightGuideRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value!));
-            }
-            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+            UpdateShaftDataAsync(500).SafeFireAndForget();
         }
     }
 

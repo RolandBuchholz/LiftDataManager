@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using MvvmHelpers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -26,13 +27,14 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             ParameterDictionary["var_Rahmengewicht"].Value = "";
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
-            CheckCFPState(message.NewValue, message.OldValue);
+            CheckCFPStateAsync(message.NewValue, message.OldValue).SafeFireAndForget();
+            UpdateCarFrameDataAsync(message.NewValue, 0).SafeFireAndForget();
         };
         if (message.PropertyName == "var_TypFV" ||
             message.PropertyName == "var_FuehrungsschieneFahrkorb" ||
             message.PropertyName == "var_Fuehrungsart")
         {
-            SetSafetygearData();
+            SetSafetygearDataAsync().SafeFireAndForget();
         };
 
         SetInfoSidebarPanelText(message);
@@ -75,7 +77,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         set => SetProperty(ref _FangrahmenGewicht, value);
     }
 
-    private void SetCarWeight()
+    private async Task SetCarWeightAsync()
     {
         if (!string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value))
         {
@@ -89,6 +91,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             FangrahmenGewicht = 0;
         }
+        await Task.CompletedTask;
     }
 
     private double GetFangrahmengewicht(string? fangrahmenTyp)
@@ -109,7 +112,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         return carFrameType.CarFrameWeight;
     }
 
-    private void CheckCFPState(string? newCarFrame, string? oldCarFrame)
+    private async Task CheckCFPStateAsync(string? newCarFrame, string? oldCarFrame)
     {
         if (string.IsNullOrWhiteSpace(newCarFrame))
         {
@@ -124,9 +127,6 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         IsCFPFrame = carFrameType.IsCFPControlled;
         ShowCFPFrameInfo = IsCFPFrame & !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_CFPdefiniert");
         CFPFrameInfoToolTip = ShowCFPFrameInfo ? "Empfehlung: Bausatzkonfiguration im CFP konfigurieren" : "Bausatz wurde im CFP konfiguriert";
-        //LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
-        ParameterDictionary["var_Gegengewicht_Einlagenbreite"].Value = "88";
-        ParameterDictionary["var_Gegengewicht_Einlagenbreite"].AutoUpdateParameterValue("185");
         if (IsCFPFrame)
         {
             if (string.IsNullOrWhiteSpace(FullPathXml))
@@ -159,17 +159,33 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         }
         if (oldCarFrameType.DriveTypeId != carFrameType.DriveTypeId)
         {
-            _dialogService.MessageDialogAsync(
+            await _dialogService.MessageDialogAsync(
                             "Antriebssystemwechsel",
                             "Achtung nicht benötigte Berechnungen auf den Staus veraltet setzen!\n\n" +
                             "Ab Vault 2025 wird dieser Statuswechsel automatisch ausgeführt.");
         }
     }
 
-    private void SetSafetygearData()
+    private async Task UpdateCarFrameDataAsync(string? carFrame, int delay)
+    {
+        await Task.Delay(delay);
+        if (string.IsNullOrWhiteSpace(carFrame))
+        {
+            return;
+        }
+
+        var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == carFrame);
+        if (carFrameType is not null)
+        {
+            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
+        }
+    }
+
+    private async Task SetSafetygearDataAsync()
     {
         var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
+        await Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -185,9 +201,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             CurrentSpeziProperties.ParameterDictionary is not null &&
             CurrentSpeziProperties.ParameterDictionary.Values is not null)
         {
-            SetSafetygearData();
-            SetCarWeight();
-            CheckCFPState(ParameterDictionary["var_Bausatz"].Value, null);
+            SetSafetygearDataAsync().SafeFireAndForget();
+            SetCarWeightAsync().SafeFireAndForget();
+            CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
+            UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
         }
     }
 
