@@ -6,7 +6,6 @@ namespace LiftDataManager.ViewModels;
 public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly IVaultDataService _vaultDataService;
-    private readonly ISettingService _settingService;
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ILogger<HomeViewModel> _logger;
@@ -15,11 +14,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                         ISettingService settingsSelectorService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
+                         ISettingService settingService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
-        : base(parameterDataService, dialogService, infoCenterService)
+        : base(parameterDataService, dialogService, infoCenterService, settingService)
     {
-        _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
         _calculationsModuleService = calculationsModuleService;
@@ -256,12 +254,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
         var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, ParameterDictionary, true);
         await _infoCenterService.AddListofInfoCenterEntrysAsync(InfoCenterEntrys, newInfoCenterEntrys);
-
-        if (CurrentSpeziProperties is not null)
-        {
-            CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
-            _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        }
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {FullPathXml} geladen");
 
@@ -284,7 +276,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }));
             if (_settingService.AutoSave && CheckOut)
             {
-                _ = _parameterDataService.StartAutoSaveTimerAsync();
+                
+                _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
             }
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
@@ -320,7 +313,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CanCheckOut = !CheckOut;
         if (CheckOut)
         {
-            _ = _parameterDataService.StartAutoSaveTimerAsync();
+            _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(),FullPathXml, Adminmode);
             SetModifyInfos();
         }
     }
@@ -389,7 +382,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             return;
         }
 
-        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParameterDictionary!, FullPathXml);
+        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParameterDictionary, FullPathXml);
 
         _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
 
@@ -463,11 +456,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 {
                     ParameterDictionary.Add(item.Name!, item);
                 }
-            }
-            if (CurrentSpeziProperties is not null)
-            {
-                CurrentSpeziProperties.ParameterDictionary = ParameterDictionary;
-                _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
             }
             LikeEditParameter = true;
             OpenReadOnly = true;
@@ -554,7 +542,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 return;
             }
-            var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, true);
+            var saveResult = await _parameterDataService.SaveAllParameterAsync(FullPathXml, true);
             if (saveResult.Count != 0)
             {
                 await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
@@ -562,7 +550,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await SetModelStateAsync();
             InfoCenterIsOpen = true;
             await SetCalculatedValuesAsync();
-            _ = _parameterDataService.StartAutoSaveTimerAsync();
+            _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
         }
     }
 
@@ -660,19 +648,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             FullPathXml = CurrentSpeziProperties.FullPathXml;
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
-
         CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
-
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
         {
             InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
         }
-
-        if (CurrentSpeziProperties.ParameterDictionary is not null)
-        {
-            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
-        }
-
         if (ParameterDictionary.Values.Count == 0)
         {
             var success = InitializeParametereAsync();
@@ -776,9 +756,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         NavigatedToBaseActions();
 
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();

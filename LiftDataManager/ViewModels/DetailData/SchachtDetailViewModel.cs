@@ -14,8 +14,9 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ICalculationsModule _calculationsModuleService;
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
-    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-     base(parameterDataService, dialogService, infoCenterService)
+    public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
+                                  ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+     base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -995,9 +996,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             SetViewBoxDimensions();
             UpdateShaftDataAsync(500).SafeFireAndForget();

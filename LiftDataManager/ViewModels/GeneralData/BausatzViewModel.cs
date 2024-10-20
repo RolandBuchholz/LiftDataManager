@@ -9,8 +9,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
 
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                            ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -197,9 +198,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     {
         NavigatedToBaseActions();
 
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             SetSafetygearDataAsync().SafeFireAndForget();
             SetCarWeightAsync().SafeFireAndForget();

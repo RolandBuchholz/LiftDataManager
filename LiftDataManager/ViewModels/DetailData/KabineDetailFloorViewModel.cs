@@ -9,8 +9,8 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
-    public KabineDetailFloorViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-     base(parameterDataService, dialogService, infoCenterService)
+    public KabineDetailFloorViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+     base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         CarFloorSillParameter = [];
         SetupCarFloorSillParameter();
@@ -24,11 +24,11 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
-
+        }
         if (message.PropertyName == "var_AutogenerateFloorDoorData")
         {
             if (!string.IsNullOrWhiteSpace(message.NewValue))
@@ -196,9 +196,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             CanRefreshCarFloorSill = !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AutogenerateFloorDoorData");
             FillCarFloorSillParameter();

@@ -11,8 +11,8 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new();
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
 
-    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         GroupedItems = new CollectionViewSource
         {

@@ -10,7 +10,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
-    private readonly ISettingService _settingService;
     private readonly ParameterContext _parametercontext;
     private readonly IVaultDataService _vaultDataService;
     private readonly ILogger<QuickLinksViewModel> _logger;
@@ -18,11 +17,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     public List<InfoCenterEntry>? SyncedParameter {  get; set; }
 
     public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-        IValidationParameterDataService validationParameterDataService, ISettingService settingsSelectorService, ParameterContext parametercontext,
+        IValidationParameterDataService validationParameterDataService, ISettingService settingService, ParameterContext parametercontext,
         IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService)
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
-        _settingService = settingsSelectorService;
         _parametercontext = parametercontext;
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
@@ -225,7 +223,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         await SetModelStateAsync();
         if (CanSaveAllSpeziParameters)
         {
-            await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
         }
         if (!CheckOut)
         {
@@ -315,7 +313,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
         if (CanSaveAllSpeziParameters)
         {
-            await _parameterDataService!.SaveAllParameterAsync(ParameterDictionary, FullPathXml!, Adminmode);
+            await _parameterDataService!.SaveAllParameterAsync(FullPathXml!, Adminmode);
         }
         var dialog = await _dialogService.ZALiftDialogAsync(FullPathXml);
 
@@ -621,7 +619,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             if (ParameterDictionary is not null &&
                 !string.IsNullOrWhiteSpace(FullPathXml))
             {
-                await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
+                await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
             }
             await _validationParameterDataService.ValidateAllParameterAsync();
             await SetModelStateAsync();

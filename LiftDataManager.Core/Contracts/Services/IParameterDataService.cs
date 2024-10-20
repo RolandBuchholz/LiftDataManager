@@ -4,10 +4,12 @@ namespace LiftDataManager.Core.Contracts.Services;
 
 public interface IParameterDataService
 {
+    
     bool CanConnectDataBase();
 
     string GetCurrentUser();
 
+    ObservableDictionary<string, Parameter> GetParameterDictionary();
     LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter);
 
     Task<IEnumerable<TransferData>> LoadParameterAsync(string path);
@@ -20,7 +22,7 @@ public interface IParameterDataService
 
     Task<Tuple<string, string, string?>> SaveParameterAsync(Parameter parameter, string path);
 
-    Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode);
+    Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(string path, bool adminmode);
 
     Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, ObservableDictionary<string, Parameter> parameterDictionary, bool updateXml = true);
 
@@ -30,7 +32,7 @@ public interface IParameterDataService
 
     Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory);
 
-    Task StartAutoSaveTimerAsync();
+    Task StartAutoSaveTimerAsync(int period, string fullPath, bool adminMode);
 
     Task StopAutoSaveTimerAsync();
 }

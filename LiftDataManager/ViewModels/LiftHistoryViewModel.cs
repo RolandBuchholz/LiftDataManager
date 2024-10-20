@@ -7,8 +7,8 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-                                base(parameterDataService, dialogService, infoCenterService)
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+                                base(parameterDataService, dialogService, infoCenterService,settingService)
     {
         FilteredItems = new CollectionViewSource
         {

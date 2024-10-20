@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Cogs.Collections;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels.Dialogs;
 
@@ -21,7 +22,9 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
 
     public bool Dirty { get; set; }
 
-    public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
+    private CurrentSpeziProperties? _currentSpeziProperties;
+
+    private ObservableDictionary<string, Parameter> _parameterDictionary;
 
     [ObservableProperty]
     private string? specificationStatus;
@@ -33,20 +36,21 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
     public async Task AppClosingDialogLoadedAsync(AppClosingDialog sender)
     {
         IgnoreSaveWarning = sender.IgnoreSaveWarning;
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties is null)
+        _currentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        if (_currentSpeziProperties is null)
         {
             return;
         }
-        if (!CurrentSpeziProperties.CheckOut)
+        if (!_currentSpeziProperties.CheckOut)
         {
             sender.IgnoreSaveWarning = true;
             sender.Hide();
             return;
         }
-        if (CurrentSpeziProperties.ParameterDictionary != null)
+        _parameterDictionary = _parameterDataService.GetParameterDictionary();
+        if (_parameterDictionary != null)
         {
-            Dirty = CurrentSpeziProperties.ParameterDictionary.Values.Any(p => p.IsDirty);
+            Dirty = _parameterDictionary.Values.Any(p => p.IsDirty);
         }
         if (Dirty)
         {
@@ -76,23 +80,23 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
     [RelayCommand]
     public async Task PrimaryButtonClicked(AppClosingDialog sender)
     {
-        if (CurrentSpeziProperties is null || CurrentSpeziProperties.FullPathXml is null || CurrentSpeziProperties.ParameterDictionary is null)
+        if (_currentSpeziProperties is null || _currentSpeziProperties.FullPathXml is null)
         {
             return;
         }
         if (Dirty)
         {
-            await _parameterDataService.SaveAllParameterAsync(CurrentSpeziProperties.ParameterDictionary, CurrentSpeziProperties.FullPathXml, CurrentSpeziProperties.Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(_currentSpeziProperties.FullPathXml, _currentSpeziProperties.Adminmode);
         }
         else
         {
-            var spezifikationName = Path.GetFileName(CurrentSpeziProperties.FullPathXml).Replace("-AutoDeskTransfer.xml", "");
+            var spezifikationName = Path.GetFileName(_currentSpeziProperties.FullPathXml).Replace("-AutoDeskTransfer.xml", "");
             if (string.IsNullOrWhiteSpace(spezifikationName))
             {
                 _logger.LogError(61037, "SpezifikationName are null or empty");
                 return;
             }
-            var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(CurrentSpeziProperties.ParameterDictionary, CurrentSpeziProperties.FullPathXml);
+            var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(_parameterDictionary, _currentSpeziProperties.FullPathXml);
             _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
             await _vaultDataService.SetFileAsync(spezifikationName);
             sender.IgnoreSaveWarning = true;

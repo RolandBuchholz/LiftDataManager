@@ -6,8 +6,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 {
     public CollectionViewSource GroupedItems { get; set; }
 
-    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         GroupedItems = new CollectionViewSource
         {
@@ -17,11 +17,8 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
     public override void Receive(PropertyChangedMessage<bool> message)
     {
-        if (message is null)
-        {
-            return;
-        }
-        if (!(message.Sender.GetType() == typeof(Parameter)))
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }

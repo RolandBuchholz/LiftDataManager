@@ -13,8 +13,9 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     private readonly ILogger<AllgemeineDatenViewModel> _logger;
     private readonly ParameterContext _parametercontext;
 
-    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                    ISettingService settingService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
         _logger = logger;

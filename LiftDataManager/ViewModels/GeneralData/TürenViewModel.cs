@@ -4,18 +4,19 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
 
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
+        }
 
         if (message.PropertyName == "var_SchachttuereBestand")
         {

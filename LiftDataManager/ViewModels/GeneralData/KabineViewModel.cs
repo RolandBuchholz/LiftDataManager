@@ -10,8 +10,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     private readonly ParameterContext _parametercontext;
 
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                           ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-                           base(parameterDataService, dialogService, infoCenterService)
+                           ISettingService settingService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
+                           base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -550,9 +550,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             SetCanEditFlooringProperties("OnNavigatedTo", string.Empty, string.Empty);
             SetFlooringColorAndSurface();

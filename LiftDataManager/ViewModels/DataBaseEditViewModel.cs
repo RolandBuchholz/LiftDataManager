@@ -6,17 +6,15 @@ namespace LiftDataManager.ViewModels;
 
 public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAwareEx
 {
-    private readonly ISettingService _settingService;
     private readonly IVaultDataService _vaultDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ParameterEditContext _parameterEditContext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                 ISettingService settingsSelectorService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
-                                 base(parameterDataService, dialogService, infoCenterService)
+                                 ISettingService settingService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
+                                 base(parameterDataService, dialogService, infoCenterService, settingService)
     {
-        _settingService = settingsSelectorService;
         _vaultDataService = vaultDataService;
         _logger = logger;
         _parametercontext = parametercontext;

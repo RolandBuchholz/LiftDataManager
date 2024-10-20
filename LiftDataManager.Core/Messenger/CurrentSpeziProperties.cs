@@ -5,7 +5,6 @@ namespace LiftDataManager.Core.Messenger;
 
 public class CurrentSpeziProperties
 {
-    public ObservableDictionary<string, Parameter>? ParameterDictionary { get; set; }
     public bool Adminmode { get; set; }
     public bool CustomAccentColor { get; set; }
     public bool AuftragsbezogeneXml { get; set; }

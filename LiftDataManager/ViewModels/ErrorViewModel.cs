@@ -8,10 +8,12 @@ namespace LiftDataManager.ViewModels;
 public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
 {
     private readonly ISettingService _settingService;
+    private readonly IParameterDataService _parameterDataService;
 
-    public ErrorViewModel(ISettingService settingsSelectorService)
+    public ErrorViewModel(ISettingService settingsSelectorService, IParameterDataService parameterDataService)
     {
         _settingService = settingsSelectorService;
+        _parameterDataService = parameterDataService;
     }
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }
@@ -145,7 +147,8 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
             CheckOut = CurrentSpeziProperties.CheckOut;
             LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
             HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
-            ParameterDictionaryInfo = CurrentSpeziProperties.ParameterDictionary is null ? "ParameterDictionary nicht geladen" : $"{CurrentSpeziProperties.ParameterDictionary.Count} Parameter";
+            var parameterDictionary = _parameterDataService.GetParameterDictionary();
+            ParameterDictionaryInfo = parameterDictionary is null ? "ParameterDictionary nicht geladen" : $"{parameterDictionary.Count} Parameter";
         }
 
         PathCFP = _settingService.PathCFP;

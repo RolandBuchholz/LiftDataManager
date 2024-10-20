@@ -22,14 +22,16 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         {
             SetProperty(ref _item, value);
             if (_item != null)
+            {
                 _item.PropertyChanged += OnPropertyChanged;
+            }
         }
     }
 
-    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
-        ErrorsList ??= new();
+        ErrorsList ??= [];
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
@@ -88,10 +90,10 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     private void SetParameterState(Parameter? liftParameter)
     {
         ErrorsList.Clear();
-
         if (liftParameter is null)
+        {
             return;
-
+        }
         if (!liftParameter.HasErrors)
         {
             ErrorsList.Add(new ParameterStateInfo(liftParameter.Name!, liftParameter.DisplayName!, true)
@@ -119,14 +121,18 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     private async Task GetHistoryEntrysAsync(string? path)
     {
         if (string.IsNullOrWhiteSpace(path))
+        {
             return;
+        }
         var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path);
         if (result is not null && Item is not null)
         {
             foreach (var item in result.Where(x => x.Name == Item.Name).OrderByDescending(x => x.TimeStamp))
             {
                 if (item is not null)
+                {
                     ParameterHistoryEntrys.Add(item);
+                }
             }
         }
     }
@@ -148,6 +154,8 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
     {
         NavigatedFromBaseActions();
         if (Item != null)
+        {
             Item.PropertyChanged -= OnPropertyChanged;
+        }
     }
 }

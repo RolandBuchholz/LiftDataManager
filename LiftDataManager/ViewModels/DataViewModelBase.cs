@@ -10,6 +10,7 @@ public partial class DataViewModelBase : ObservableRecipient
     protected readonly IParameterDataService _parameterDataService;
     protected readonly IDialogService _dialogService;
     protected readonly IInfoCenterService _infoCenterService;
+    protected readonly ISettingService _settingService;
 
     public bool Adminmode { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
@@ -25,12 +26,13 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 #pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
 
-    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService)
+    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService)
     {
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
         _infoCenterService = infoCenterService;
-        ParameterDictionary ??= [];
+        _settingService = settingsSelectorService;
+        ParameterDictionary = _parameterDataService.GetParameterDictionary();
         ParameterErrorDictionary ??= [];
         InfoCenterEntrys ??= [];
     }
@@ -144,13 +146,13 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             return;
         }
-        var saveResult = await _parameterDataService.SaveAllParameterAsync(ParameterDictionary, FullPathXml, Adminmode);
+        var saveResult = await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
         if (saveResult.Count != 0)
         {
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
         }
         await SetModelStateAsync();
-        _= _parameterDataService.StartAutoSaveTimerAsync();
+        _= _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
     }
 
     protected virtual void SynchronizeViewModelParameter()
@@ -163,10 +165,6 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties.FullPathXml is not null)
         {
             FullPathXml = CurrentSpeziProperties.FullPathXml;
-        }
-        if (CurrentSpeziProperties.ParameterDictionary is not null)
-        {
-            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
         }
         if (CurrentSpeziProperties.InfoCenterEntrys is not null)
         {
@@ -223,7 +221,7 @@ public partial class DataViewModelBase : ObservableRecipient
                     default:
                         break;
                 }
-                _ = _parameterDataService.StartAutoSaveTimerAsync();
+                _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
                 SetModifyInfos();
             }
         }
@@ -298,13 +296,22 @@ public partial class DataViewModelBase : ObservableRecipient
         }
     }
 
+    protected int GetSaveTimerPeriod()
+    {
+        int defaultSaveTime = 5;
+        var autoSavePeriod = _settingService.AutoSavePeriod;
+        if (!string.IsNullOrWhiteSpace(autoSavePeriod))
+        {
+            return Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
+        }
+        return defaultSaveTime;
+    }
+
     protected void NavigatedToBaseActions()
     {
         IsActive = true;
         SynchronizeViewModelParameter();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties?.ParameterDictionary is not null &&
-            CurrentSpeziProperties?.ParameterDictionary?.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             _ = SetModelStateAsync();
         }

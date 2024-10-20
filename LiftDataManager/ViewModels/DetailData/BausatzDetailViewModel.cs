@@ -14,8 +14,8 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ILogger<BausatzDetailViewModel> _logger;
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
-    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService , ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

@@ -8,8 +8,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     private readonly IJsonNavigationViewService _jsonNavigationViewService;
     public CollectionViewSource GroupedItems { get; set; }
 
-    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, IJsonNavigationViewService jsonNavigationViewService) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                 ISettingService settingService, IJsonNavigationViewService jsonNavigationViewService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _jsonNavigationViewService = jsonNavigationViewService;
         GroupedItems = new CollectionViewSource

@@ -15,19 +15,15 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public PayLoadResult PayLoadResult = new();
 
-    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
+    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService,
                                        ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, infoCenterService)
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
         _settingService = settingsSelectorService;
         _pdfService = pdfService;
-
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
-        if (CurrentSpeziProperties.ParameterDictionary is not null)
-            ParameterDictionary = CurrentSpeziProperties.ParameterDictionary;
-
+        ParameterDictionary = _parameterDataService.GetParameterDictionary();
         Tabelle6 = _calculationsModuleService.Table6;
         Tabelle7 = _calculationsModuleService.Table7;
         Tabelle8 = _calculationsModuleService.Table8;
@@ -58,9 +54,7 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
             _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);

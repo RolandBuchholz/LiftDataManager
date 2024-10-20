@@ -22,8 +22,9 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     public ObservableCollection<Parameter> ActiveCustomRailBracketDistances { get; set; } = [];
     public List<double> RailBracketDistances { get; set; } = [];
 
-    public BausatzDetailRailBracketViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService)
+    public BausatzDetailRailBracketViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                             ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -41,10 +42,11 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
+        }
         if (message.PropertyName == "var_SG" || message.PropertyName == "var_FH" || message.PropertyName == "var_SK")
         {
             SetViewBoxDimensions();
@@ -1114,9 +1116,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        if (CurrentSpeziProperties is not null &&
-            CurrentSpeziProperties.ParameterDictionary is not null &&
-            CurrentSpeziProperties.ParameterDictionary.Values is not null)
+        if (CurrentSpeziProperties is not null)
         {
             SetViewBoxDimensions();
             UpdateCarFrameDataAsync(500).SafeFireAndForget();

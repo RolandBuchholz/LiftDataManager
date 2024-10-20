@@ -22,16 +22,18 @@ public partial class ParameterDataService : IParameterDataService
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
+    private readonly ObservableDictionary<string, Parameter> _parameterDictionary;
     private PeriodicTimer? _autoSaveTimer;
     private readonly string user;
     private bool _saveAllParameterIsRunninng;
-
+    
     public ParameterDataService(IValidationParameterDataService validationParameterDataService,
                                  ParameterContext parametercontext, ILogger<ParameterDataService> logger)
     {
         _validationParameterDataService = validationParameterDataService;
         _parametercontext = parametercontext;
         _logger = logger;
+        _parameterDictionary ??= [];
         user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
     }
 
@@ -52,6 +54,9 @@ public partial class ParameterDataService : IParameterDataService
     {
         return user;
     }
+
+    /// <inheritdoc/>
+    public ObservableDictionary<string, Parameter> GetParameterDictionary() => _parameterDictionary;
 
     /// <inheritdoc/>
     public LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter)
@@ -286,7 +291,7 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(ObservableDictionary<string, Parameter> ParameterDictionary, string path, bool adminmode)
+    public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(string path, bool adminmode)
     {
         _saveAllParameterIsRunninng = true;
         var saveResult = new List<Tuple<string, string, string?>>();
@@ -298,7 +303,7 @@ public partial class ParameterDataService : IParameterDataService
             return saveResult;
         }
         XElement doc = XElement.Load(path);
-        var unsavedParameter = ParameterDictionary.Values.Where(p => p.IsDirty);
+        var unsavedParameter = _parameterDictionary.Values.Where(p => p.IsDirty);
 
         List<LiftHistoryEntry> historyEntrys = [];
 
@@ -584,28 +589,23 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task StartAutoSaveTimerAsync()
+    public async Task StartAutoSaveTimerAsync(int period, string fullPath, bool adminMode)
     {
+        if (string.IsNullOrWhiteSpace(fullPath))
+        {
+            return;
+        }
         _autoSaveTimer?.Dispose();
-        int period = 3;
-        //var autoSavePeriod = _settingService.AutoSavePeriod;
-        //if (!string.IsNullOrWhiteSpace(autoSavePeriod))
-        //{
-        //    period = Convert.ToInt32(autoSavePeriod.Replace(" min", ""));
-        //}
-
-        _autoSaveTimer = new PeriodicTimer(TimeSpan.FromSeconds(period));
+        _autoSaveTimer = new PeriodicTimer(TimeSpan.FromMinutes(period));
         while (await _autoSaveTimer.WaitForNextTickAsync())
         {
             if (!_saveAllParameterIsRunninng)
             {
                 _logger.LogInformation(60100, "AutoSave started");
-                //    var dirty = GetCurrentSpeziProperties().ParameterDictionary!.Values.Any(p => p.IsDirty);
-                //    if (CheckOut && dirty)
-                //    {
-                //        var currentSpeziProperties = GetCurrentSpeziProperties();
-                //        await _parameterDataService!.SaveAllParameterAsync(currentSpeziProperties.ParameterDictionary!, currentSpeziProperties.FullPathXml!, currentSpeziProperties.Adminmode);
-                //    }
+                if (_parameterDictionary.Values.Any(p => p.IsDirty))
+                {
+                    await SaveAllParameterAsync(fullPath, adminMode);
+                }
             }
         }
     }

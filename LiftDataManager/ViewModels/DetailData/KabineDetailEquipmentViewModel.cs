@@ -10,8 +10,9 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
 
     public Dictionary<string, float> CarEquipmentDataBaseData { get; set; }
 
-    public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ICalculationsModule calculationsModuleService) :
-     base(parameterDataService, dialogService, infoCenterService)
+    public KabineDetailEquipmentViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                          ISettingService settingService, ICalculationsModule calculationsModuleService) :
+     base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _calculationsModuleService = calculationsModuleService;
         CarEquipmentDataBaseData ??= new()
@@ -31,15 +32,15 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
+        }
         if (carEquipment.Contains(message.PropertyName))
         {
             RefreshView();
         }
-
         SetInfoSidebarPanelText(message);
         _ = SetModelStateAsync();
     }
