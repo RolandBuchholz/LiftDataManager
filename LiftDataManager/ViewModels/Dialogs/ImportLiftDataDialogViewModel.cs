@@ -11,6 +11,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
 {
     private const string defaultImage = "/Images/TonerSaveOFF.png";
     private const string pdfImage = "/Images/PdfTransparent.png";
+    private const string mailImage = "/Images/Mail.png";
     private readonly IParameterDataService _parameterDataService;
     private readonly IVaultDataService _vaultDataService;
     public string? FullPathXml { get; set; }
@@ -113,6 +114,9 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private string? dataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
 
     [ObservableProperty]
+    private string dragAndDropDescription = string.Empty;
+
+    [ObservableProperty]
     private string? dataImportDescriptionImage = defaultImage;
 
     [ObservableProperty]
@@ -153,30 +157,42 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Offer).Then(() =>
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Planning).Then(() =>
             {
                 DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
             })
             .When(SpezifikationTyp.Request).Then(() =>
             {
                 DataImportDescription = "Daten aus einem Anfrage Formular importieren.";
                 DataImportDescriptionImage = pdfImage;
+                DragAndDropDescription = "Anfrage Formular hierher ziehen oder Anfrage Formular zum hochladen auswählen.";
+                ShowDragAndDropPanel = true;
+            })
+            .When(SpezifikationTyp.MailRequest).Then(() =>
+            {
+                DataImportDescription = "Daten aus einer E-Mail Anfrage importieren.";
+                DataImportDescriptionImage = mailImage;
+                DragAndDropDescription = "Mail aus Outlook hierher ziehen oder gespeicherte Mail zum hochladen auswählen.";
                 ShowDragAndDropPanel = true;
             })
             .Default(() =>
             {
                 DataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
+                DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
             });
         _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);

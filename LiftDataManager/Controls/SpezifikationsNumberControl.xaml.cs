@@ -20,6 +20,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         if (!RequestEnabled)
         {
             SpezifikationTyps.Remove(SpezifikationTyp.Request);
+            SpezifikationTyps.Remove(SpezifikationTyp.MailRequest);
         }
 
         cmb_SpezifikationTyp.ItemsSource = SpezifikationTyps;
@@ -125,6 +126,15 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     public static readonly DependencyProperty SpezifikationNameProperty =
         DependencyProperty.Register(nameof(SpezifikationName), typeof(string), typeof(SpezifikationsNumberControl), new PropertyMetadata(string.Empty));
 
+    public string FilePickerText
+    {
+        get { return (string)GetValue(FilePickerTextProperty); }
+        set { SetValue(FilePickerTextProperty, value); }
+    }
+
+    public static readonly DependencyProperty FilePickerTextProperty =
+        DependencyProperty.Register(nameof(FilePickerText), typeof(string), typeof(SpezifikationsNumberControl), new PropertyMetadata(string.Empty));
+
     public bool IsValid
     {
         get => (bool)GetValue(IsValidProperty);
@@ -193,7 +203,9 @@ public sealed partial class SpezifikationsNumberControl : UserControl
                 cmb_Month.Visibility = Visibility.Collapsed;
                 btn_Request.Visibility = Visibility.Collapsed;
                 break;
-            case var s when s.Equals(SpezifikationTyp.Request):
+            case var s when s.Equals(SpezifikationTyp.Request) || s.Equals(SpezifikationTyp.MailRequest):
+                FilePickerText = SpezifikationTyp == SpezifikationTyp.Request ? "Anfrageformular (pdf)" : "Mailanfrage (gespeicherte e-mail)";
+                btn_Request.Width = SpezifikationTyp == SpezifikationTyp.Request ? 340 : 369;
                 tbx_Numberbox.Visibility = Visibility.Collapsed;
                 cmb_Year.Visibility = Visibility.Collapsed;
                 cmb_Month.Visibility = Visibility.Collapsed;
@@ -232,6 +244,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         return (value.Length >= 6 && SpezifikationTyp.Equals(SpezifikationTyp.Order)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Offer)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Planning)) ||
-               (!string.IsNullOrWhiteSpace(value) && SpezifikationTyp.Equals(SpezifikationTyp.Request));
+               (!string.IsNullOrWhiteSpace(value) && SpezifikationTyp.Equals(SpezifikationTyp.Request)) ||
+               (!string.IsNullOrWhiteSpace(value) && SpezifikationTyp.Equals(SpezifikationTyp.MailRequest));
     }
 }
