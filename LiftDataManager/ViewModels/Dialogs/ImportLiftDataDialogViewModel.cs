@@ -70,6 +70,16 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             e.DragUIOverride.IsContentVisible = true;
             e.DragUIOverride.IsGlyphVisible = false;
         }
+        else if (DragAndDropFileType.Equals(".msg", StringComparison.CurrentCultureIgnoreCase))
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+            e.DragUIOverride.Caption = "Mailanfrage";
+            e.DragUIOverride.SetContentFromBitmapImage(
+                new BitmapImage(new Uri("ms-appx:///Images/E-mail.png", UriKind.RelativeOrAbsolute)));
+            e.DragUIOverride.IsCaptionVisible = true;
+            e.DragUIOverride.IsContentVisible = true;
+            e.DragUIOverride.IsGlyphVisible = false;
+        }
         else
         {
             e.AcceptedOperation = DataPackageOperation.None;
@@ -247,48 +257,22 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         };
 
         List<TransferData>? importParameter = [];
-        if (ImportSpezifikationTyp != SpezifikationTyp.Request)
+        if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest)
         {
-            ignoreImportParameters.Add("var_ErstelltAm");
-            ignoreImportParameters.Add("var_AuslieferungAm");
-            if (ImportSpezifikationTyp is null)
-            {
-                return;
-            }
-            var downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(ImportSpezifikationName, ImportSpezifikationTyp, true);
-
-            var downloadInfo = downloadResult.Item2;
-
-            if (downloadInfo is null)
-            {
-                DataImportStatus = InfoBarSeverity.Error;
-                DataImportStatusText = "Datenimport fehlgeschlagen";
-                return;
-            }
-            if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
+            var importMailOffer = await _parameterDataService.LoadMailOfferAsync(ImportSpezifikationName);
+            if (!importMailOffer.Any())
             {
                 DataImportStatus = InfoBarSeverity.Warning;
-                DataImportStatusText = downloadInfo.ExitState.Humanize();
+                DataImportStatusText = $"Die ausgewählte Outlook-Datei enthält keine Daten für den Import.\n" +
+                                       $"{ImportSpezifikationName}";
                 return;
             }
-            if (downloadInfo.FullFileName is null)
+            if (!string.IsNullOrWhiteSpace(ImportSpezifikationName))
             {
-                DataImportStatus = InfoBarSeverity.Error;
-                DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
-                return;
-            }
-
-            var data = await _parameterDataService.LoadParameterAsync(downloadInfo.FullFileName);
-            foreach (var parameter in data)
-            {
-                if (ignoreImportParameters.Contains(parameter.Name))
-                {
-                    continue;
-                }
-                importParameter.Add(parameter);
+                CopyOffer(ImportSpezifikationName);
             }
         }
-        else
+        else if (ImportSpezifikationTyp == SpezifikationTyp.Request)
         {
             var importParameterPdf = await _parameterDataService.LoadPdfOfferAsync(ImportSpezifikationName);
 
@@ -355,10 +339,50 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             importParameter = cleanImport;
             if (!string.IsNullOrWhiteSpace(ImportSpezifikationName))
             {
-                CopyPdfOffer(ImportSpezifikationName);
+                CopyOffer(ImportSpezifikationName);
             }
         }
+        else
+        {
+            ignoreImportParameters.Add("var_ErstelltAm");
+            ignoreImportParameters.Add("var_AuslieferungAm");
+            if (ImportSpezifikationTyp is null)
+            {
+                return;
+            }
+            var downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(ImportSpezifikationName, ImportSpezifikationTyp, true);
 
+            var downloadInfo = downloadResult.Item2;
+
+            if (downloadInfo is null)
+            {
+                DataImportStatus = InfoBarSeverity.Error;
+                DataImportStatusText = "Datenimport fehlgeschlagen";
+                return;
+            }
+            if (downloadInfo.ExitState is not ExitCodeEnum.NoError)
+            {
+                DataImportStatus = InfoBarSeverity.Warning;
+                DataImportStatusText = downloadInfo.ExitState.Humanize();
+                return;
+            }
+            if (downloadInfo.FullFileName is null)
+            {
+                DataImportStatus = InfoBarSeverity.Error;
+                DataImportStatusText = "Datenimport fehlgeschlagen Dateipfad der Importdatei konnte nicht gefunden werden";
+                return;
+            }
+
+            var data = await _parameterDataService.LoadParameterAsync(downloadInfo.FullFileName);
+            foreach (var parameter in data)
+            {
+                if (ignoreImportParameters.Contains(parameter.Name))
+                {
+                    continue;
+                }
+                importParameter.Add(parameter);
+            }
+        }
         if (importParameter is null)
         {
             return;
@@ -375,12 +399,12 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         var filePicker = App.MainWindow.CreateOpenFilePicker();
         filePicker.ViewMode = PickerViewMode.Thumbnail;
         filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-        filePicker.FileTypeFilter.Add(".pdf");
+        filePicker.FileTypeFilter.Add(ImportSpezifikationTyp == SpezifikationTyp.Request ? ".pdf" : ".msg");
         StorageFile file = await filePicker.PickSingleFileAsync();
         ImportSpezifikationName = (file is not null) ? file.Path : string.Empty;
     }
 
-    private void CopyPdfOffer(string importSpezifikationName)
+    private void CopyOffer(string importSpezifikationName)
     {
         if (string.IsNullOrWhiteSpace(FullPathXml) ||
             !File.Exists(importSpezifikationName))
@@ -413,7 +437,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             }
             catch
             {
-                _logger.LogError(60132, "Copy Pdf: {Typ} failed", importSpezifikationName);
+                _logger.LogError(60132, "Copy Offer: {name} failed", importSpezifikationName);
             }
         }
     }
