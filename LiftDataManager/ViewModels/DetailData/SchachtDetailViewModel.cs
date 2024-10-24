@@ -984,7 +984,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             CounterWeightGuideRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Name.Contains(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value!));
         }
         LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
-
+        RefreshView();
     }
 
     [RelayCommand]

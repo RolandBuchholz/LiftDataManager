@@ -5,7 +5,6 @@ namespace LiftDataManager.ViewModels;
 public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigationAwareEx
 {
     private readonly ICalculationsModule _calculationsModuleService;
-    private readonly ISettingService _settingService;
     private readonly ParameterContext _parametercontext;
     private readonly IPdfService _pdfService;
 
@@ -21,7 +20,6 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
-        _settingService = settingsSelectorService;
         _pdfService = pdfService;
         ParameterDictionary = _parameterDataService.GetParameterDictionary();
         Tabelle6 = _calculationsModuleService.Table6;
@@ -57,7 +55,7 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
         if (CurrentSpeziProperties is not null)
         {
             PayLoadResult = _calculationsModuleService.GetPayLoadCalculation(ParameterDictionary);
-            _calculationsModuleService.SetPayLoadResult(ParameterDictionary!, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
+            _calculationsModuleService.SetPayLoadResult(ParameterDictionary, PayLoadResult.PersonenBerechnet, PayLoadResult.NutzflaecheGesamt);
         }
     }
 

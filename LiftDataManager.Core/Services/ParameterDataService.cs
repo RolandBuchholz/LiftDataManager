@@ -22,7 +22,7 @@ public partial class ParameterDataService : IParameterDataService
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
-    private readonly ObservableDictionary<string, Parameter> _parameterDictionary;
+    private ObservableDictionary<string, Parameter>? _parameterDictionary;
     private PeriodicTimer? _autoSaveTimer;
     private readonly string user;
     private bool _saveAllParameterIsRunninng;
@@ -33,15 +33,22 @@ public partial class ParameterDataService : IParameterDataService
         _validationParameterDataService = validationParameterDataService;
         _parametercontext = parametercontext;
         _logger = logger;
-        _parameterDictionary ??= [];
         user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name) ? "no user detected" : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
+    }
+    /// <inheritdoc/>
+    public async Task InitializeParameterDataServicerAsync(ObservableDictionary<string, Parameter> parameterDictionary) 
+    {
+        _parameterDictionary = parameterDictionary;
+        await Task.CompletedTask;
     }
 
     /// <inheritdoc/>
     public bool CanConnectDataBase()
     {
         if (!_parametercontext.Database.CanConnect())
+        {
             return false;
+        }
         if (_parametercontext.Database.GetConnectionString() is not null)
         {
             return _parametercontext.Database.GetConnectionString()!.Contains("LiftDataParameter");
@@ -56,7 +63,18 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public ObservableDictionary<string, Parameter> GetParameterDictionary() => _parameterDictionary;
+    public ObservableDictionary<string, Parameter> GetParameterDictionary() 
+    { 
+        if (_parameterDictionary is not null)
+        {
+            return _parameterDictionary;
+        }
+        else
+        {
+            _logger.LogCritical(60100, "Parameter Dictionary is null");
+            return [];
+        }
+    }
 
     /// <inheritdoc/>
     public LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter)
@@ -263,7 +281,7 @@ public partial class ParameterDataService : IParameterDataService
     {
         if (!ValidatePath(path, false))
         {
-            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
+            _logger.LogError(61001, "{path} Path of AutoDeskTransferXml not vaild", path);
             return new Tuple<string, string, string?>("Error", "Error", "AutoDeskTransferXml Pfad ist nicht gültig");
         }
 
@@ -282,8 +300,16 @@ public partial class ParameterDataService : IParameterDataService
         }
         else
         {
-            _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-            return new Tuple<string, string, string?>("Error", "Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
+            var updateXmlresult = AddNewParameterToXml(parameter, doc);
+            if (updateXmlresult)
+            {
+                historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
+            }
+            else
+            {
+                _logger.LogError(61101, "Saving failed {Name}", parameter.Name);
+                return new Tuple<string, string, string?>("Error", "Error", $"Speichern fehlgeschlagen |{parameter.Name}|");
+            }   
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
         doc.Save(path);
@@ -293,11 +319,17 @@ public partial class ParameterDataService : IParameterDataService
     /// <inheritdoc/>
     public async Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(string path, bool adminmode)
     {
-        _saveAllParameterIsRunninng = true;
         var saveResult = new List<Tuple<string, string, string?>>();
+        if (string.IsNullOrWhiteSpace(path) || _parameterDictionary is null)
+        {
+            saveResult.Add(new Tuple<string, string, string?>("Error", "Error", "ParameterDictionary oder Pfad ist null"));
+            _saveAllParameterIsRunninng = false;
+            return saveResult;
+        }
+        _saveAllParameterIsRunninng = true;
         if (!ValidatePath(path, false))
         {
-            _logger.LogError(61001, "{ path} Path of AutoDeskTransferXml not vaild", path);
+            _logger.LogError(61001, "{path} Path of AutoDeskTransferXml not vaild", path);
             saveResult.Add(new Tuple<string, string, string?>("Error", "Error", "AutoDeskTransferXml Pfad ist nicht gültig"));
             _saveAllParameterIsRunninng = false;
             return saveResult;
@@ -327,14 +359,24 @@ public partial class ParameterDataService : IParameterDataService
                 }
                 else
                 {
-                    _logger.LogError(61101, "Saving failed AutoDeskTransferXml");
-                    saveResult.Add(new Tuple<string, string, string?>("Warning", "Warning", $"Speichern fehlgeschlagen |{parameter.Name}|"));
+                    var updateXmlresult = AddNewParameterToXml(parameter, doc);
+                    if (updateXmlresult)
+                    {
+                        parameter.IsDirty = false;
+                        historyEntrys.Add(GenerateLiftHistoryEntry(parameter));
+                        saveResult.Add(new Tuple<string, string, string?>(parameter.Name, parameter.DisplayName, parameter.Value));
+                    }
+                    else
+                    {
+                        _logger.LogError(61101, "Saving failed {Name}", parameter.Name);
+                        saveResult.Add(new Tuple<string, string, string?>("Error", "Error", $"Speichern fehlgeschlagen |{parameter.Name}|"));
+                    }
                 }
             }
             else
             {
-                _logger.LogWarning(61001, "Saving failed { parameter.Name} >Saving is only possible in adminmode<", parameter.Name);
-                saveResult.Add(new Tuple<string, string, string?>("Warning", "Warning", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
+                _logger.LogWarning(61001, "Saving failed {Name} >Saving is only possible in adminmode<", parameter.Name);
+                saveResult.Add(new Tuple<string, string, string?>("Error", "Error", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
             }
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
@@ -345,12 +387,16 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, ObservableDictionary<string, Parameter> parameterDictionary, bool updateXml = true)
+    public async Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, bool updateXml = true)
     {
         var infoCenterEntrys = new List<InfoCenterEntry>();
+        if (_parameterDictionary is null)
+        {
+            return infoCenterEntrys;
+        }
         foreach (var item in data)
         {
-            if (parameterDictionary.TryGetValue(item.Name, out Parameter value))
+            if (_parameterDictionary.TryGetValue(item.Name, out Parameter value))
             {
                 var updatedParameter = value;
                 updatedParameter.DataImport = true;
@@ -418,7 +464,7 @@ public partial class ParameterDataService : IParameterDataService
             }
             else
             {
-                var parameterList = parameterDictionary.Values.ToList();
+                var parameterList = _parameterDictionary.Values.ToList();
 
                 XElement? doc = null;
                 bool isXmlOutdated = false;
@@ -589,9 +635,9 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task StartAutoSaveTimerAsync(int period, string fullPath, bool adminMode)
+    public async Task StartAutoSaveTimerAsync(int period, string? fullPath, bool adminMode)
     {
-        if (string.IsNullOrWhiteSpace(fullPath))
+        if (string.IsNullOrWhiteSpace(fullPath) || _parameterDictionary is null)
         {
             return;
         }
@@ -648,6 +694,32 @@ public partial class ParameterDataService : IParameterDataService
         }
 
         return true;
+    }
+
+    private bool AddNewParameterToXml(Parameter parameter, XElement doc)
+    {
+        var parameters = doc.Element("parameters");
+        if (parameters is null)
+        {
+            return false;
+        }
+        try
+        {
+            var paramWithValue =
+            new XElement("ParamWithValue",
+            new XElement("name", parameter.Name),
+            new XElement("typeCode", parameter.TypeCode),
+            new XElement("value", parameter.Value),
+            new XElement("comment", parameter.Comment),
+            new XElement("isKey", parameter.IsKey.ToString().ToLower()));
+            parameters.Add(paramWithValue);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(61100, ex, "add Parameter to xml failed");
+            return false;
+        }
     }
 
     private static KeyValuePair<string, string> ValidatePdfValue(PdfAcroField field)

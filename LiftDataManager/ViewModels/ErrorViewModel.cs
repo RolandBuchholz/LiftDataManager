@@ -1,11 +1,12 @@
-﻿using LiftDataManager.Models;
+﻿using LiftDataManager.Core.Models;
+using LiftDataManager.Models;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
+public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
 {
     private readonly ISettingService _settingService;
     private readonly IParameterDataService _parameterDataService;
@@ -15,6 +16,24 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
         _settingService = settingsSelectorService;
         _parameterDataService = parameterDataService;
     }
+
+    [ObservableProperty]
+    private string? fullPathXml;
+
+    [ObservableProperty]
+    private bool adminmode;
+
+    [ObservableProperty]
+    private bool auftragsbezogeneXml;
+
+    [ObservableProperty]
+    private bool checkOut;
+
+    [ObservableProperty]
+    private bool likeEditParameter;
+
+    [ObservableProperty]
+    private bool hideInfoErrors;
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }
     public bool CustomAccentColor { get; set; }
@@ -135,20 +154,29 @@ public partial class ErrorViewModel : DataViewModelBase, INavigationAwareEx
                 break;
         }
     }
+    [RelayCommand]
+    public async Task SaveAllParameterAsync()
+    {
+        if (FullPathXml is  not null)
+        {
+            await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
+        }
+    }
 
     private void SetErrorValues()
     {
-        CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
+        var currentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>().Response;
 
-        if (CurrentSpeziProperties != null)
+        if (currentSpeziProperties != null)
         {
-            Adminmode = CurrentSpeziProperties.Adminmode;
-            AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
-            CheckOut = CurrentSpeziProperties.CheckOut;
-            LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
-            HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
+            Adminmode = currentSpeziProperties.Adminmode;
+            AuftragsbezogeneXml = currentSpeziProperties.AuftragsbezogeneXml;
+            CheckOut = currentSpeziProperties.CheckOut;
+            LikeEditParameter = currentSpeziProperties.LikeEditParameter;
+            HideInfoErrors = currentSpeziProperties.HideInfoErrors;
+            FullPathXml = currentSpeziProperties.FullPathXml;
             var parameterDictionary = _parameterDataService.GetParameterDictionary();
-            ParameterDictionaryInfo = parameterDictionary is null ? "ParameterDictionary nicht geladen" : $"{parameterDictionary.Count} Parameter";
+            ParameterDictionaryInfo = parameterDictionary?.Count == 0 ? "ParameterDictionary nicht geladen" : $"{parameterDictionary?.Count} Parameter";
         }
 
         PathCFP = _settingService.PathCFP;

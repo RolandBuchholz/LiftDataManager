@@ -122,6 +122,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         else
         {
             await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Item3!);
+            return;
         }
         CanSaveParameter = false;
         Selected.IsDirty = false;

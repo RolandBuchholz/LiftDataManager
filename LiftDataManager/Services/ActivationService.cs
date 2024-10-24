@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Services;
+﻿using Cogs.Collections;
+
+namespace LiftDataManager.Services;
 
 /// <summary>
 /// A <see langword="class"/> that implements the <see cref="IActivationService"/> <see langword="interface"/> using ActivationService
@@ -9,17 +11,23 @@ public class ActivationService : IActivationService
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private readonly ISettingService _settingService;
     private readonly IThemeService _themeService;
+    private readonly IParameterDataService _parameterDataService;
+    private readonly IValidationParameterDataService _validationParameterDataService;
     private UIElement? _shell = null;
 
     public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
         IEnumerable<IActivationHandler> activationHandlers,
         IThemeService themeService,
-        ISettingService settingService)
+        ISettingService settingService,
+        IParameterDataService parameterDataService,
+        IValidationParameterDataService validationParameterDataService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
         _settingService = settingService;
         _themeService = themeService;
+        _parameterDataService = parameterDataService;
+        _validationParameterDataService = validationParameterDataService;
     }
 
     /// <inheritdoc/>
@@ -35,9 +43,12 @@ public class ActivationService : IActivationService
             App.MainWindow.Content = _shell ?? new Frame();
             App.MainRoot = App.MainWindow.Content as FrameworkElement;
         }
-        await SetAccentColorAsync();
+
         // Handle activation via ActivationHandlers.
+        await SetAccentColorAsync();
+        await InitializeCoreServiceAsync();
         await HandleActivationAsync(activationArgs);
+
 
         // Activate the MainWindow.
         App.MainWindow.Activate();
@@ -97,5 +108,11 @@ public class ActivationService : IActivationService
             App.Current.Resources["SystemAccentColorDark3"] = systemAccentColorDark3;
         }
         await Task.CompletedTask;
+    }
+    private async Task InitializeCoreServiceAsync() 
+    {
+        ObservableDictionary<string, Parameter> parameterDictionary = [];
+        await _parameterDataService.InitializeParameterDataServicerAsync(parameterDictionary);
+        await _validationParameterDataService.InitializeValidationParameterDataServicerAsync(parameterDictionary);
     }
 }

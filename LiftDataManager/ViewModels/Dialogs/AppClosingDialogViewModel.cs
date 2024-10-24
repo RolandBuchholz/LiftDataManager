@@ -24,7 +24,7 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
 
     private CurrentSpeziProperties? _currentSpeziProperties;
 
-    private ObservableDictionary<string, Parameter> _parameterDictionary;
+    private ObservableDictionary<string, Parameter>? _parameterDictionary;
 
     [ObservableProperty]
     private string? specificationStatus;
@@ -96,8 +96,11 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
                 _logger.LogError(61037, "SpezifikationName are null or empty");
                 return;
             }
-            var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(_parameterDictionary, _currentSpeziProperties.FullPathXml);
-            _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
+            if (_parameterDictionary != null)
+            {
+                var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(_parameterDictionary, _currentSpeziProperties.FullPathXml);
+                _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
+            }
             await _vaultDataService.SetFileAsync(spezifikationName);
             sender.IgnoreSaveWarning = true;
         }

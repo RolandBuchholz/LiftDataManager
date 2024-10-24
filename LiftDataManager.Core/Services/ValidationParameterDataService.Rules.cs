@@ -1,18 +1,15 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq.Expressions;
 
 namespace LiftDataManager.Core.Services;
-public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
+public partial class ValidationParameterDataService : IValidationParameterDataService
 {
     // Standard validationrules
 
@@ -812,12 +809,12 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateZAliftData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+        if (string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer)
         {
             return;
         }
 
-        var zaHtmlPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
+        var zaHtmlPath = Path.Combine(Path.GetDirectoryName(_fullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
         if (!File.Exists(zaHtmlPath))
         {
             return;
@@ -1781,10 +1778,10 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        if (string.IsNullOrWhiteSpace(FullPathXml) || FullPathXml == pathDefaultAutoDeskTransfer)
+        if (string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer)
             return;
 
-        var cFPPath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
+        var cFPPath = Path.Combine(Path.GetDirectoryName(_fullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
         if (!File.Exists(cFPPath))
             return;
         var lastWriteTime = File.GetLastWriteTime(cFPPath);

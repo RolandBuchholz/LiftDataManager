@@ -9,7 +9,10 @@ public interface IParameterDataService
 
     string GetCurrentUser();
 
+    Task InitializeParameterDataServicerAsync(ObservableDictionary<string, Parameter> ParameterDictionary);
+
     ObservableDictionary<string, Parameter> GetParameterDictionary();
+
     LiftHistoryEntry GenerateLiftHistoryEntry(Parameter parameter);
 
     Task<IEnumerable<TransferData>> LoadParameterAsync(string path);
@@ -24,7 +27,7 @@ public interface IParameterDataService
 
     Task<List<Tuple<string, string, string?>>> SaveAllParameterAsync(string path, bool adminmode);
 
-    Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, ObservableDictionary<string, Parameter> parameterDictionary, bool updateXml = true);
+    Task<IEnumerable<InfoCenterEntry>> UpdateParameterDictionary(string path, IEnumerable<TransferData> data, bool updateXml = true);
 
     Task<bool> UpdateAutodeskTransferAsync(string path, List<ParameterDto> parameterDtos);
 
@@ -32,7 +35,7 @@ public interface IParameterDataService
 
     Task<bool> AddParameterListToHistoryAsync(List<LiftHistoryEntry> historyEntrys, string path, bool clearHistory);
 
-    Task StartAutoSaveTimerAsync(int period, string fullPath, bool adminMode);
+    Task StartAutoSaveTimerAsync(int period, string? fullPath, bool adminMode);
 
     Task StopAutoSaveTimerAsync();
 }

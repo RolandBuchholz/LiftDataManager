@@ -20,12 +20,6 @@ public partial class DataViewModelBase : ObservableRecipient
     public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; }
     public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
-#pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
-    public DataViewModelBase()
-    {
-    }
-#pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
-
     public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService)
     {
         _parameterDataService = parameterDataService;
@@ -91,11 +85,7 @@ public partial class DataViewModelBase : ObservableRecipient
     private string? fullPathXml;
     partial void OnFullPathXmlChanged(string? value)
     {
-        if (CurrentSpeziProperties is not null && !EqualityComparer<string>.Default.Equals(CurrentSpeziProperties.FullPathXml, value))
-        {
-            CurrentSpeziProperties.FullPathXml = value;
-            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        }
+        SetFullpathAutodeskTransfer(value);
     }
 
     [ObservableProperty]
@@ -117,6 +107,17 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             CurrentSpeziProperties.CheckOut = value;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+        }
+        if (_settingService.AutoSave)
+        {
+            if (value)
+            {
+                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget();
+            }
+            else
+            {
+                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget();
+            }
         }
     }
 
@@ -152,9 +153,16 @@ public partial class DataViewModelBase : ObservableRecipient
             await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
         }
         await SetModelStateAsync();
-        _= _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
     }
 
+    protected virtual void SetFullpathAutodeskTransfer(string? value)
+    {
+        if (CurrentSpeziProperties is not null && !EqualityComparer<string>.Default.Equals(CurrentSpeziProperties.FullPathXml, value))
+        {
+            CurrentSpeziProperties.FullPathXml = value;
+            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
+        }
+    }
     protected virtual void SynchronizeViewModelParameter()
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
@@ -221,7 +229,7 @@ public partial class DataViewModelBase : ObservableRecipient
                     default:
                         break;
                 }
-                _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
+                CheckoutDialogIsOpen = false;
                 SetModifyInfos();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
+using MvvmHelpers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -252,7 +253,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
 
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
-        var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, ParameterDictionary, true);
+        var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, true);
         await _infoCenterService.AddListofInfoCenterEntrysAsync(InfoCenterEntrys, newInfoCenterEntrys);
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {FullPathXml} geladen");
@@ -274,11 +275,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 SetDriveData = true,
                 UpdateQuicklinks = true
             }));
-            if (_settingService.AutoSave && CheckOut)
-            {
-                
-                _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
-            }
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
     }
@@ -313,7 +309,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         CanCheckOut = !CheckOut;
         if (CheckOut)
         {
-            _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(),FullPathXml, Adminmode);
             SetModifyInfos();
         }
     }
@@ -369,7 +364,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             ClearExpiredLiftData();
             await LoadDataAsync();
         }
-        await _parameterDataService.StopAutoSaveTimerAsync();
     }
 
     [RelayCommand(CanExecute = nameof(CanUpLoadSpeziData))]
@@ -550,7 +544,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await SetModelStateAsync();
             InfoCenterIsOpen = true;
             await SetCalculatedValuesAsync();
-            _ = _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode);
         }
     }
 
@@ -558,8 +551,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         if (AuftragsbezogeneXml)
         {
-            HasErrors = false;
             CanClearData = AuftragsbezogeneXml;
+            HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
             if (HasErrors)
             {
@@ -570,57 +563,41 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
             var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
-
             if (CheckOut)
             {
                 CanSaveAllSpeziParameters = dirty;
                 CanUpLoadSpeziData = !dirty && AuftragsbezogeneXml;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogMessage = """
-                                     Die AutodeskTransferXml wurde noch nicht ausgechecked!
-
-                                     Änderung             => Änderungen mit Revisionserhöhung
-                                     Kleine Änderung  => Änderungen ohne Revisionserhöhung
-                                     Schreibgeschützt  => Es sind keine Änderungen möglich
-                                     """;
-                var dialogResult = await _dialogService!.ConfirmationDialogAsync(
-                                    "Datei eingechecked (schreibgeschützt)", dialogMessage,
-                                    "Änderung", "Kleine Änderung", "Schreibgeschützt");
-                if (dialogResult is not null)
+                var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
+                switch (dialogResult)
                 {
-                    IsBusy = true;
-                    OpenReadOnly = false;
-                    Parameter? storedParmeter = null;
-                    if (ParameterDictionary.Values.Where(x => x.IsDirty).Count() == 1)
-                    {
-                        storedParmeter = ParameterDictionary.Values.First(x => x.IsDirty);
-                    }
-                    await LoadDataAsync();
-                    if (storedParmeter != null)
-                    {
-                        ParameterDictionary[storedParmeter.Name!] = storedParmeter;
-                        CanSaveAllSpeziParameters = dirty;
-                    };
-                    if ((bool)dialogResult)
-                    {
+                    case CheckOutDialogResult.SuccessfulIncreaseRevision:
                         IncreaseRevision();
-                    }
-
-                    CheckoutDialogIsOpen = false;
-                    SetModifyInfos();
-                    IsBusy = false;
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.CheckOutFailed:
+                        goto default;
+                    case CheckOutDialogResult.ReadOnly:
+                        LikeEditParameter = false;
+                        CheckOut = false;
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    CheckoutDialogIsOpen = false;
-                    LikeEditParameter = false;
-                }
+                CheckoutDialogIsOpen = false;
+                SetModifyInfos();
             }
         }
         _logger.LogInformation(60139, "Set ModelStateAsync finished");
+        await Task.CompletedTask;
     }
 
     protected override void SynchronizeViewModelParameter()
@@ -663,6 +640,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 throw new Exception("Initialize LiftDataParameter.db failed");
             }
         }
+    }
+
+    protected override void SetFullpathAutodeskTransfer(string? value)
+    {
+        base.SetFullpathAutodeskTransfer(value);
+        _validationParameterDataService.SetFullPathXmlAsync(value).SafeFireAndForget();
     }
 
     private void SetSettings()

@@ -64,7 +64,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             return;
         if (FullPathXml == null)
             return;
-        var saveResult = await _parameterDataService!.SaveParameterAsync(Item, FullPathXml);
+        var saveResult = await _parameterDataService.SaveParameterAsync(Item, FullPathXml);
         if (saveResult.Item1 != "Error")
         {
             await _infoCenterService.AddInfoCenterSaveInfoAsync(InfoCenterEntrys, saveResult);
@@ -72,6 +72,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         else
         {
             await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Item3!);
+            return;
         }
         CanSaveParameter = false;
         if (Item is not null)

@@ -3,23 +3,23 @@ public static class XamlFunctions
 {
     public static Visibility TrueToVisible(bool value)
     {
-        return value is true
+        return value
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
 
     public static Visibility FalseToVisible(bool value)
     {
-        return value is false
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        return value
+            ? Visibility.Collapsed
+            : Visibility.Visible;
     }
 
     public static Visibility NotEmptyStringToVisible(string value)
     {
-        return string.IsNullOrEmpty(value) is not true
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        return string.IsNullOrWhiteSpace(value)
+            ? Visibility.Collapsed
+            : Visibility.Visible;
     }
 
     public static Visibility DoubleNot0ToVisible(double value)
@@ -28,4 +28,10 @@ public static class XamlFunctions
             ? Visibility.Visible
             : Visibility.Collapsed;
     }
+
+    public static bool NotEmptyStringToBool(string value)
+    {
+        return !string.IsNullOrWhiteSpace(value);
+    }
+
 }

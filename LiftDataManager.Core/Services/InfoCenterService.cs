@@ -51,14 +51,24 @@ public class InfoCenterService : IInfoCenterService
     /// <inheritdoc/>
     public async Task AddInfoCenterSaveInfoAsync(ObservableRangeCollection<InfoCenterEntry> infoCenterEntrys, Tuple<string, string, string?> savedParameter)
     {
-        var obsoleteEntrys = infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList();
-        infoCenterEntrys.RemoveRange(obsoleteEntrys);
-        infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
+        if (string.Equals(savedParameter.Item1, "Error", StringComparison.CurrentCultureIgnoreCase))
         {
-            UniqueName = savedParameter.Item1,
-            ParameterName = savedParameter.Item2,
-            NewValue = savedParameter.Item3
-        });
+            infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterError)
+            {
+                Message = savedParameter.Item3
+            });
+        }
+        else
+        {
+            var obsoleteEntrys = infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList();
+            infoCenterEntrys.RemoveRange(obsoleteEntrys);
+            infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
+            {
+                UniqueName = savedParameter.Item1,
+                ParameterName = savedParameter.Item2,
+                NewValue = savedParameter.Item3
+            });
+        }
         await Task.CompletedTask;
     }
 
@@ -70,15 +80,24 @@ public class InfoCenterService : IInfoCenterService
 
         foreach (var savedParameter in savedParameters)
         {
-            obsoleteEntrys.AddRange(infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList());
-            newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
+            if (string.Equals(savedParameter.Item1, "Error", StringComparison.CurrentCultureIgnoreCase))
             {
-                UniqueName = savedParameter.Item1,
-                ParameterName = savedParameter.Item2,
-                NewValue = savedParameter.Item3
-            });
+                newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterError)
+                {
+                    Message = savedParameter.Item3
+                });
+            }
+            else
+            {
+                obsoleteEntrys.AddRange(infoCenterEntrys.Where(x => x.UniqueName == savedParameter.Item1).ToList());
+                newEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterSaveParameter)
+                {
+                    UniqueName = savedParameter.Item1,
+                    ParameterName = savedParameter.Item2,
+                    NewValue = savedParameter.Item3
+                });
+            }
         }
-
         infoCenterEntrys.RemoveRange(obsoleteEntrys);
         infoCenterEntrys.AddRange(newEntrys);
         await Task.CompletedTask;

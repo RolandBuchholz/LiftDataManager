@@ -1,10 +1,26 @@
-﻿namespace LiftDataManager.Core.Contracts.Services;
+﻿using Cogs.Collections;
+
+namespace LiftDataManager.Core.Contracts.Services;
 
 /// <summary>
 /// The default <see langword="interface"/> for a service that handles Validation ParameterDataService.
 /// </summary>
 public interface IValidationParameterDataService
 {
+    /// <summary>
+    /// Set parameterDictionary
+    /// </summary>
+    /// <param name="ObservableDictionary<string, Parameter>">parameterDictionary</param>
+    /// <returns>Task<List<ParameterStateInfo>></returns>
+    Task InitializeValidationParameterDataServicerAsync(ObservableDictionary<string, Parameter> parameterDictionary);
+
+    /// <summary>
+    /// Set Path of Autodesktransferxml
+    /// </summary>
+    /// <param name="path">Autodesktransferxmlpath</param>
+    /// <returns>Task<List<ParameterStateInfo>></returns>
+    Task SetFullPathXmlAsync(string? path);
+
     /// <summary>
     /// Validate a liftparameter
     /// </summary>

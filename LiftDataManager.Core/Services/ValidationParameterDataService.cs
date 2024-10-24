@@ -1,20 +1,18 @@
 using Cogs.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.Messenger.Messages;
 
 namespace LiftDataManager.Core.Services;
 /// <summary>
 /// A <see langword="class"/> that implements the <see cref="IValidationParameterDataService"/> <see langword="interface"/> using LiftDataManager Validation APIs.
 /// </summary>
-public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
+public partial class ValidationParameterDataService : IValidationParameterDataService
 {
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
     private ObservableDictionary<string, Parameter> _parameterDictionary;
-    public string? FullPathXml { get; set; }
-    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+    private string? _fullPathXml;
+    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer ? 
+                                           Path.GetFileNameWithoutExtension(_fullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     private DateTime ZaHtmlCreationTime { get; set; }
     private DateTime CFPCreationTime { get; set; }
     private Dictionary<string, string> ZliDataDictionary { get; set; }
@@ -26,30 +24,31 @@ public partial class ValidationParameterDataService : ObservableRecipient, IVali
 
     public ValidationParameterDataService(ParameterContext parametercontext, ICalculationsModule calculationsModuleService)
     {
-        IsActive = true;
         ZliDataDictionary ??= [];
         CFPDataDictionary ??= [];
         ValidationResult ??= [];
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
-        //_parameterDictionary = _parameterDataService.GetParameterDictionary();
+        _parameterDictionary = [];
         GetValidationDictionary();
     }
 
-    ~ValidationParameterDataService()
+    /// <inheritdoc/>
+    public async Task InitializeValidationParameterDataServicerAsync(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-        IsActive = false;
+        _parameterDictionary = parameterDictionary;
+        await Task.CompletedTask;
     }
 
-    void IRecipient<SpeziPropertiesRequestMessage>.Receive(SpeziPropertiesRequestMessage message)
+    /// <inheritdoc/>
+    public async Task SetFullPathXmlAsync(string? path)
     {
-        if (message == null ||
-            !message.HasReceivedResponse ||
-            message.Response is null)
-        {
-            return;
-        }
-        FullPathXml = message.Response.FullPathXml;
+        _fullPathXml = path;
+        ZliDataDictionary.Clear();
+        CFPDataDictionary.Clear();
+        CFPCreationTime = DateTime.MinValue;
+        ZaHtmlCreationTime = DateTime.MinValue;
+        await Task.CompletedTask;
     }
 
     /// <inheritdoc/>

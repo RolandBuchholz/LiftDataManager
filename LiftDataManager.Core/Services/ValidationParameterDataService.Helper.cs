@@ -1,13 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using LiftDataManager.Core.Messenger.Messages;
 using System.Collections.Specialized;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Services;
-public partial class ValidationParameterDataService : ObservableRecipient, IValidationParameterDataService, IRecipient<SpeziPropertiesRequestMessage>
+public partial class ValidationParameterDataService : IValidationParameterDataService
 {
     private static void CheckListContainsValue(Parameter? parameter)
     {
