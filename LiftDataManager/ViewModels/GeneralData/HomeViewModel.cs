@@ -180,7 +180,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                     "\n" +
                     "Datei kann nur schreibgeschützt geöffnet werden.");
                 _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
-                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n" +
+                await _infoCenterService.AddInfoCenterMessageAsync($"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n" +
                                                                                       "Kein speichern möglich!");
                 AuftragsbezogeneXml = true;
                 CanValidateAllParameter = true;
@@ -189,7 +189,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
             else if (downloadInfo.ExitState == ExitCodeEnum.MultipleAutoDeskTransferXml)
             {
-                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, $"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden");
+                await _infoCenterService.AddInfoCenterWarningAsync($"Mehrere Dateien mit dem Namen {downloadInfo.FileName} wurden gefunden");
 
                 var confirmed = await _dialogService.ConfirmationDialogAsync(
                                         $"Es wurden mehrere {downloadInfo.FileName} Dateien gefunden?",
@@ -208,7 +208,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                     {
                         await _dialogService.LiftDataManagerdownloadInfoAsync(vaultDownloadResult);
                         _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, vaultDownloadResult.ExitState);
-                        await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {vaultDownloadResult.ExitState}");
+                        await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {vaultDownloadResult.ExitState}");
                         FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
                     }
                 }
@@ -222,7 +222,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 await _dialogService.LiftDataManagerdownloadInfoAsync(downloadInfo);
                 _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadInfo.ExitState}", SpezifikationName, downloadInfo.ExitState);
-                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadInfo.ExitState}");
+                await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {downloadInfo.ExitState}");
                 FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
             }
         }
@@ -242,21 +242,21 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             SpezifikationName = string.Empty;
             AuftragsbezogeneXml = false;
             CanValidateAllParameter = false;
-            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Standard Daten geladen");
+            await _infoCenterService.AddInfoCenterMessageAsync($"Standard Daten geladen");
         }
         else
         {
             AuftragsbezogeneXml = true;
             CanValidateAllParameter = true;
             InfoCenterEntrys.Clear();
-            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Suche im Arbeitsbereich nach {downloadResult.Item1} ms beendet");
+            await _infoCenterService.AddInfoCenterMessageAsync($"Suche im Arbeitsbereich nach {downloadResult.Item1} ms beendet");
         }
 
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
         var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, true);
-        await _infoCenterService.AddListofInfoCenterEntrysAsync(InfoCenterEntrys, newInfoCenterEntrys);
+        await _infoCenterService.AddListofInfoCenterEntrysAsync(newInfoCenterEntrys);
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
-        await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {FullPathXml} geladen");
+        await _infoCenterService.AddInfoCenterMessageAsync($"Daten aus {FullPathXml} geladen");
 
         LikeEditParameter = true;
         OpenReadOnly = true;
@@ -340,7 +340,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (delete is not null && (bool)delete)
         {
             _logger.LogInformation(60137, "Reset Data");
-            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Daten werden auf die Standardwerte zurückgesetzt");
+            await _infoCenterService.AddInfoCenterMessageAsync("Daten werden auf die Standardwerte zurückgesetzt");
 
             var downloadResult = await _vaultDataService.UndoFileAsync(Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", ""));
             if (downloadResult.ExitState == ExitCodeEnum.NoError)
@@ -359,7 +359,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
                 _logger.LogError(61037, "Data reset failed ExitState {ExitState}", downloadResult.ExitState);
-                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
+                await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {downloadResult.ExitState}");
             }
             ClearExpiredLiftData();
             await LoadDataAsync();
@@ -388,17 +388,17 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
             if (downloadResult.ExitState == ExitCodeEnum.NoError)
             {
-                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
-                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Standard Daten geladen");
+                await _infoCenterService.AddInfoCenterMessageAsync($"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
+                await _infoCenterService.AddInfoCenterMessageAsync("Standard Daten geladen");
                 _logger.LogInformation(60137, "upload successful");
                 ClearExpiredLiftData();
                 await LoadDataAsync();
             }
             else if (downloadResult.ExitState == ExitCodeEnum.UpdatePropertiesError)
             {
-                await _infoCenterService.AddInfoCenterWarningAsync(InfoCenterEntrys, "Vault-Ordner-Eigenschaften konnten nicht aktualisiert werden");
-                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
-                await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Standard Daten geladen");
+                await _infoCenterService.AddInfoCenterWarningAsync("Vault-Ordner-Eigenschaften konnten nicht aktualisiert werden");
+                await _infoCenterService.AddInfoCenterMessageAsync($"Spezifikation wurde hochgeladen ({stopTimeMs} ms)");
+                await _infoCenterService.AddInfoCenterMessageAsync("Standard Daten geladen");
                 _logger.LogInformation(60138, "upload successful / property matching failed");
                 ClearExpiredLiftData();
                 await LoadDataAsync();
@@ -406,7 +406,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             else
             {
                 await _dialogService.LiftDataManagerdownloadInfoAsync(downloadResult);
-                await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, $"Fehler: {downloadResult.ExitState}");
+                await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {downloadResult.ExitState}");
             }
         }
         await _parameterDataService.StopAutoSaveTimerAsync();
@@ -454,7 +454,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             LikeEditParameter = true;
             OpenReadOnly = true;
             CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-            await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, "Parameter erfolgreich aus Datenbank geladen");
+            await _infoCenterService.AddInfoCenterMessageAsync("Parameter erfolgreich aus Datenbank geladen");
             return true;
         }
     }
@@ -539,7 +539,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             var saveResult = await _parameterDataService.SaveAllParameterAsync(FullPathXml, true);
             if (saveResult.Count != 0)
             {
-                await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+                await _infoCenterService.AddInfoCenterSaveAllInfoAsync(saveResult);
             }
             await SetModelStateAsync();
             InfoCenterIsOpen = true;
@@ -626,10 +626,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
         CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
-        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
-        {
-            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
-        }
         if (ParameterDictionary.Values.Count == 0)
         {
             var success = InitializeParametereAsync();

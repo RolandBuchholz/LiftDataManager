@@ -1,7 +1,6 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MvvmHelpers;
-using System.Collections.Specialized;
 
 namespace LiftDataManager.ViewModels;
 
@@ -27,8 +26,8 @@ public partial class DataViewModelBase : ObservableRecipient
         _infoCenterService = infoCenterService;
         _settingService = settingsSelectorService;
         ParameterDictionary = _parameterDataService.GetParameterDictionary();
+        InfoCenterEntrys = _infoCenterService.GetInfoCenterEntrys();
         ParameterErrorDictionary ??= [];
-        InfoCenterEntrys ??= [];
     }
 
     public virtual void Receive(PropertyChangedMessage<string> message)
@@ -150,7 +149,7 @@ public partial class DataViewModelBase : ObservableRecipient
         var saveResult = await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
         if (saveResult.Count != 0)
         {
-            await _infoCenterService.AddInfoCenterSaveAllInfoAsync(InfoCenterEntrys, saveResult);
+            await _infoCenterService.AddInfoCenterSaveAllInfoAsync(saveResult);
         }
         await SetModelStateAsync();
     }
@@ -173,10 +172,6 @@ public partial class DataViewModelBase : ObservableRecipient
         if (CurrentSpeziProperties.FullPathXml is not null)
         {
             FullPathXml = CurrentSpeziProperties.FullPathXml;
-        }
-        if (CurrentSpeziProperties.InfoCenterEntrys is not null)
-        {
-            InfoCenterEntrys = CurrentSpeziProperties.InfoCenterEntrys;
         }
         Adminmode = CurrentSpeziProperties.Adminmode;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
@@ -260,7 +255,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
-        _infoCenterService.AddInfoCenterParameterChangedAsync(InfoCenterEntrys,
+        _infoCenterService.AddInfoCenterParameterChangedAsync(
             ((Parameter)message.Sender).Name,
             ((Parameter)message.Sender).DisplayName,
             message.OldValue,
@@ -271,21 +266,12 @@ public partial class DataViewModelBase : ObservableRecipient
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)
     {
         var sender = (Parameter)message.Sender;
-        _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"|{sender.DisplayName}| Markierung " + (message.NewValue ? "hinzugefügt" : "entfernt"));
+        _infoCenterService.AddInfoCenterMessageAsync($"|{sender.DisplayName}| Markierung " + (message.NewValue ? "hinzugefügt" : "entfernt"));
     }
 
     public CurrentSpeziProperties GetCurrentSpeziProperties()
     {
         return Messenger.Send<SpeziPropertiesRequestMessage>();
-    }
-
-    private void OnInfoCenterEntrys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (CurrentSpeziProperties is not null)
-        {
-            CurrentSpeziProperties.InfoCenterEntrys = InfoCenterEntrys;
-            Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
-        }
     }
 
     protected void SetModifyInfos()
@@ -323,12 +309,10 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             _ = SetModelStateAsync();
         }
-        InfoCenterEntrys.CollectionChanged += OnInfoCenterEntrys_CollectionChanged;
     }
 
     protected void NavigatedFromBaseActions()
     {
         IsActive = false;
-        InfoCenterEntrys.CollectionChanged -= OnInfoCenterEntrys_CollectionChanged;
     }
 }

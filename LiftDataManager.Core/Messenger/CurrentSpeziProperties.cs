@@ -1,7 +1,4 @@
-﻿using Cogs.Collections;
-using MvvmHelpers;
-
-namespace LiftDataManager.Core.Messenger;
+﻿namespace LiftDataManager.Core.Messenger;
 
 public class CurrentSpeziProperties
 {
@@ -14,5 +11,4 @@ public class CurrentSpeziProperties
     public SpezifikationTyp? CurrentSpezifikationTyp { get; set; }
     public string? FullPathXml { get; set; }
     public string? SearchInput { get; set; }
-    public ObservableRangeCollection<InfoCenterEntry>? InfoCenterEntrys { get; set; }
 }

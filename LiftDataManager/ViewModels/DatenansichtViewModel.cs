@@ -46,40 +46,50 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
             if (HasErrors)
+            {
                 SetErrorDictionary();
+            }
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
+            CanShowUnsavedParameters = false;
             var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
-                CanShowUnsavedParameters = dirty;
                 CanSaveAllSpeziParameters = dirty;
+                CanShowUnsavedParameters = dirty;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService!.WarningDialogAsync(
-                                    $"Datei eingechecked (schreibgeschützt)",
-                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                                    $"Es sind keine Änderungen möglich!\n" +
-                                    $"\n" +
-                                    $"Soll zur HomeAnsicht gewechselt werden um die Datei aus zu checken?",
-                                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-                if ((bool)dialogResult)
+                var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
+                switch (dialogResult)
                 {
-                    CheckoutDialogIsOpen = false;
-                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
+                    case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                        IncreaseRevision();
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.CheckOutFailed:
+                        goto default;
+                    case CheckOutDialogResult.ReadOnly:
+                        LikeEditParameter = false;
+                        CheckOut = false;
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    CheckoutDialogIsOpen = false;
-                    LikeEditParameter = false;
-                }
+                CheckoutDialogIsOpen = false;
+                SetModifyInfos();
             }
         }
+        await Task.CompletedTask;
     }
 
     private bool CheckhasHighlightedParameters()

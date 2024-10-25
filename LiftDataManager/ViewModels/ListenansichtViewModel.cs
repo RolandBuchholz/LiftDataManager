@@ -22,11 +22,11 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     public override void Receive(PropertyChangedMessage<bool> message)
     {
-        if (message is null)
+        if (message is null ||
+            !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
-
+        }
         SetInfoSidebarPanelHighlightText(message);
         _ = SetModelStateAsync();
         HasHighlightedParameters = false;
@@ -117,11 +117,11 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         var saveResult = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
         if (saveResult.Item1 != "Error")
         {
-            await _infoCenterService.AddInfoCenterSaveInfoAsync(InfoCenterEntrys, saveResult);
+            await _infoCenterService.AddInfoCenterSaveInfoAsync(saveResult);
         }
         else
         {
-            await _infoCenterService.AddInfoCenterErrorAsync(InfoCenterEntrys, saveResult.Item3!);
+            await _infoCenterService.AddInfoCenterErrorAsync(saveResult.Item3!);
             return;
         }
         CanSaveParameter = false;
@@ -168,7 +168,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             HasErrors = false;
             HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
             if (HasErrors)
+            {
                 SetErrorDictionary();
+            }
         }
 
         if (LikeEditParameter && AuftragsbezogeneXml)
@@ -178,32 +180,38 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
             if (CheckOut)
             {
-                CanShowUnsavedParameters = dirty;
                 CanSaveAllSpeziParameters = dirty;
+                CanShowUnsavedParameters = dirty;
             }
-            else if (dirty && !CheckOut && !CheckoutDialogIsOpen)
+            else if (dirty && !CheckoutDialogIsOpen)
             {
                 CheckoutDialogIsOpen = true;
-                var dialogResult = await _dialogService!.WarningDialogAsync(
-                                    $"Datei eingechecked (schreibgeschützt)",
-                                    $"Die AutodeskTransferXml wurde noch nicht ausgechecked!\n" +
-                                    $"Es sind keine Änderungen möglich!\n" +
-                                    $"\n" +
-                                    $"Soll zur HomeAnsicht gewechselt werden um die Datei aus zu checken?",
-                                    "Zur HomeAnsicht", "Schreibgeschützt bearbeiten");
-                if ((bool)dialogResult)
+                var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber);
+                switch (dialogResult)
                 {
-                    CheckoutDialogIsOpen = false;
-                    LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage));
+                    case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                        IncreaseRevision();
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                        LikeEditParameter = true;
+                        CheckOut = true;
+                        break;
+                    case CheckOutDialogResult.CheckOutFailed:
+                        goto default;
+                    case CheckOutDialogResult.ReadOnly:
+                        LikeEditParameter = false;
+                        CheckOut = false;
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    CheckoutDialogIsOpen = false;
-                    LikeEditParameter = false;
-                }
+                CheckoutDialogIsOpen = false;
+                SetModifyInfos();
             }
-
         }
+        await Task.CompletedTask;
     }
 
     private async Task GetHistoryEntrysAsync(string? path)

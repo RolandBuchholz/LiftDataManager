@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Windows.Media.AppBroadcasting;
 
 namespace LiftDataManager.ViewModels.Dialogs;
 
@@ -7,15 +6,17 @@ public partial class CheckOutDialogViewModel : ObservableObject
 {
     private readonly IVaultDataService _vaultDataService;
     private readonly IParameterDataService _parameterDataService;
+    private readonly IInfoCenterService _infoCenterService;
     private readonly ILogger<CheckOutDialogViewModel> _logger;
 
     public CheckOutDialogResult CheckOutDialogResult { get; set; }
     public string? SpezifikationName { get; set; }
     public bool ForceCheckOut { get; set; }
-    public CheckOutDialogViewModel(IVaultDataService vaultDataService, IParameterDataService parameterDataService, ILogger<CheckOutDialogViewModel> logger)
+    public CheckOutDialogViewModel(IVaultDataService vaultDataService, IParameterDataService parameterDataService, IInfoCenterService infoCenterService, ILogger<CheckOutDialogViewModel> logger)
     {
         _vaultDataService = vaultDataService;
         _parameterDataService = parameterDataService;
+        _infoCenterService = infoCenterService;
         _logger = logger;
     }
 
@@ -122,9 +123,9 @@ public partial class CheckOutDialogViewModel : ObservableObject
             {
                 var data = await _parameterDataService.LoadParameterAsync(downloadResult.FullFileName);
                 var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(downloadResult.FullFileName, data, false);
-                //await _infoCenterService.AddListofInfoCenterEntrysAsync(InfoCenterEntrys, newInfoCenterEntrys);
+                await _infoCenterService.AddListofInfoCenterEntrysAsync(newInfoCenterEntrys);
                 _logger.LogInformation(60136, "Data loaded from {FullPathXml}", downloadResult.FullFileName);
-                //await _infoCenterService.AddInfoCenterMessageAsync(InfoCenterEntrys, $"Daten aus {downloadResult.FullFileName} geladen");
+                await _infoCenterService.AddInfoCenterMessageAsync($"Daten aus {downloadResult.FullFileName} geladen");
             }
             return downloadResult.IsCheckOut;
         }
