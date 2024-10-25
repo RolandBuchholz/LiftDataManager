@@ -134,6 +134,7 @@ public partial class App : Application
             services.AddTransient<AppClosingDialogViewModel>();
             services.AddTransient<ImportLiftDataDialogViewModel>();
             services.AddTransient<CheckOutDialogViewModel>();
+            services.AddTransient<ValidationDialogViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

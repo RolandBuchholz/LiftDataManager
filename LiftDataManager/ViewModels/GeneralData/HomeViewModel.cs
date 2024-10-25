@@ -323,7 +323,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         bool? delete;
         if (CanSaveAllSpeziParameters || CheckOut)
         {
-            delete = await _dialogService!.WarningDialogAsync(
+            delete = await _dialogService.WarningDialogAsync(
                         $"Warnung es droht Datenverlust",
                         $"Es sind nichtgespeicherte Parameter vorhanden!\n" +
                         $"Die Datei wurde noch nicht ins Vault hochgeladen!\n" +
@@ -417,10 +417,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         _logger.LogInformation(60138, "Validate all parameter startet");
         await _validationParameterDataService.ValidateAllParameterAsync();
-        await _dialogService.MessageConfirmationDialogAsync("Validation Result",
-                    $"Es wurden {ParameterDictionary.Count} Parameter überprüft.\n" +
-                    $"Es wurden {ParameterErrorDictionary.Count} Fehler/Warnungen/Informationen gefunden",
-                        "Ok");
+        await _dialogService.ValidationDialogAsync();
         await SetModelStateAsync();
     }
 

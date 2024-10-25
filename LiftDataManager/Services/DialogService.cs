@@ -391,19 +391,11 @@ public class DialogService : IDialogService
     /// <inheritdoc/>
     public async Task ValidationDialogAsync()
     {
-        //var dialog = new CheckOutDialog(spezifikationName, forceCheckOut)
-        //{
-        //    XamlRoot = MainRoot.XamlRoot,
-        //    RequestedTheme = MainRoot.ActualTheme,
-        //};
-        //var result = await dialog.ShowAsyncQueueDraggable();
-        //if (result == ContentDialogResult.None ||
-        //    result == ContentDialogResult.Secondary ||
-        //    result == ContentDialogResult.Primary)
-        //{
-        //    return dialog.CheckOutDialogResult;
-        //}
-        //return CheckOutDialogResult.CheckOutFailed;
-        await Task.CompletedTask;
+        var dialog = new ValidationDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme
+        };
+        await dialog.ShowAsyncQueueDraggable();
     }
 }
