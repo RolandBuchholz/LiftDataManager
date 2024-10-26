@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Contracts.Services;
+﻿using Cogs.Collections;
+
+namespace LiftDataManager.Contracts.Services;
 
 public interface IDialogService
 {
@@ -155,6 +157,8 @@ public interface IDialogService
     /// <summary>
     /// Opens a modal validation dialog.
     /// </summary>
+    /// <param name="paramterCount">count of parameter</param>
+    /// <param name="parameterErrorDictionary">ValidationErrorsDictionary</param>
     /// <returns>Task</returns>
-    Task ValidationDialogAsync();
+    Task ValidationDialogAsync(int paramterCount, ObservableDictionary<string, List<ParameterStateInfo>> parameterErrorDictionary);
 }

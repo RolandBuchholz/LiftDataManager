@@ -1,4 +1,5 @@
-﻿using Humanizer;
+﻿using Cogs.Collections;
+using Humanizer;
 using Microsoft.UI.Text;
 
 namespace LiftDataManager.Services;
@@ -389,9 +390,9 @@ public class DialogService : IDialogService
     }
 
     /// <inheritdoc/>
-    public async Task ValidationDialogAsync()
+    public async Task ValidationDialogAsync(int paramterCount, ObservableDictionary<string, List<ParameterStateInfo>>  parameterErrorDictionary)
     {
-        var dialog = new ValidationDialog()
+        var dialog = new ValidationDialog(paramterCount, parameterErrorDictionary)
         {
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme

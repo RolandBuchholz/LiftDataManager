@@ -417,7 +417,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         _logger.LogInformation(60138, "Validate all parameter startet");
         await _validationParameterDataService.ValidateAllParameterAsync();
-        await _dialogService.ValidationDialogAsync();
+        await _dialogService.ValidationDialogAsync(ParameterDictionary.Count, ParameterErrorDictionary);
         await SetModelStateAsync();
     }
 
