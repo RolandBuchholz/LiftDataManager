@@ -244,6 +244,14 @@ public partial class App : Application
 
         if (dbPath is not null && dbReadOnly)
         {
+            if (File.Exists(workPathDb))
+            {
+                FileInfo workPathDbFileInfo = new(workPathDb);
+                if (workPathDbFileInfo.IsReadOnly)
+                {
+                    workPathDbFileInfo.IsReadOnly = false;
+                }
+            }
             File.Copy(dbPath, workPathDb, true);
         }
 
