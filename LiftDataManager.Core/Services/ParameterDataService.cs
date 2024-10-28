@@ -43,6 +43,12 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
+    public async Task ResetAsync()
+    {
+        await Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
     public bool CanConnectDataBase()
     {
         if (!_parametercontext.Database.CanConnect())

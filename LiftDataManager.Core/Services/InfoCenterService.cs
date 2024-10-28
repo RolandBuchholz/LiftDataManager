@@ -20,6 +20,13 @@ public class InfoCenterService : IInfoCenterService
     }
 
     /// <inheritdoc/>
+    public async Task ResetAsync()
+    {
+        _infoCenterEntrys.Clear();
+        await AddInfoCenterMessageAsync("Infocenternachrichten wurden bereinigt.");
+    }
+
+    /// <inheritdoc/>
     public ObservableRangeCollection<InfoCenterEntry> GetInfoCenterEntrys()
     {
         if (_infoCenterEntrys is not null)

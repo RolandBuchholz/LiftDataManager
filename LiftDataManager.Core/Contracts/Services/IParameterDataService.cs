@@ -4,7 +4,12 @@ namespace LiftDataManager.Core.Contracts.Services;
 
 public interface IParameterDataService
 {
-    
+    /// <summary>
+    /// reset all values
+    /// </summary>
+    /// <returns>Task</returns>
+    Task ResetAsync();
+
     bool CanConnectDataBase();
 
     string GetCurrentUser();

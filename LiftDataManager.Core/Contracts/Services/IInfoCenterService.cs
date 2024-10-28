@@ -8,6 +8,12 @@ namespace LiftDataManager.Core.Contracts.Services;
 public interface IInfoCenterService
 {
     /// <summary>
+    /// reset all values
+    /// </summary>
+    /// <returns>Task</returns>
+    Task ResetAsync();
+
+    /// <summary>
     /// get infoCenterEntrys
     /// </summary>
     /// <returns>Task ObservableRangeCollection<InfoCenterEntry></returns>

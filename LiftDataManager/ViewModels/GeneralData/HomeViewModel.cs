@@ -152,6 +152,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
         else
         {
+            await _parameterDataService.ResetAsync();
+            await _validationParameterDataService.ResetAsync();
+            await _calculationsModuleService.ResetAsync();
+            await _infoCenterService.ResetAsync();
             downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
         }
 

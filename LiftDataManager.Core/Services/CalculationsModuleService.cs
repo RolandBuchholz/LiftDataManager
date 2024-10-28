@@ -55,6 +55,31 @@ public partial class CalculationsModuleService : ICalculationsModule
         InitializeTableData();
     }
 
+    public async Task ResetAsync()
+    {
+        kabinenbreite = default;
+        kabinentiefe = default;
+        kabinenhoehe = default;
+        zugangA = default;
+        zugangB = default;
+        zugangC = default;
+        zugangD = default;
+        anzahlKabinentueren = default;
+        tuerbreite = default;
+        tuerbreiteB = default;
+        tuerbreiteC = default;
+        tuerbreiteD = default;
+        tuerhoehe = default;
+        halsL1 = default;
+        halsR1 = default;
+        halsL2 = default;
+        halsR2 = default;
+        halsL3 = default;
+        halsR3 = default;
+        halsL4 = default;
+        halsR4 = default;
+        await Task.CompletedTask;
+    }
     private void SetDefaultParameter(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");

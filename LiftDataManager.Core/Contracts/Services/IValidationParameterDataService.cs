@@ -8,6 +8,12 @@ namespace LiftDataManager.Core.Contracts.Services;
 public interface IValidationParameterDataService
 {
     /// <summary>
+    /// reset all values
+    /// </summary>
+    /// <returns>Task</returns>
+    Task ResetAsync();
+
+    /// <summary>
     /// Set parameterDictionary
     /// </summary>
     /// <param name="ObservableDictionary<string, Parameter>">parameterDictionary</param>

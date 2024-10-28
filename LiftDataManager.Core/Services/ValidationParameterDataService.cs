@@ -41,13 +41,20 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     }
 
     /// <inheritdoc/>
+    public async Task ResetAsync()
+    {
+        _fullPathXml = string.Empty;
+        ZaHtmlCreationTime = default;
+        CFPCreationTime = default;
+        ZliDataDictionary.Clear();
+        CFPDataDictionary.Clear();
+        await Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
     public async Task SetFullPathXmlAsync(string? path)
     {
         _fullPathXml = path;
-        ZliDataDictionary.Clear();
-        CFPDataDictionary.Clear();
-        CFPCreationTime = DateTime.MinValue;
-        ZaHtmlCreationTime = DateTime.MinValue;
         await Task.CompletedTask;
     }
 

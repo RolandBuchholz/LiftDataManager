@@ -10,6 +10,12 @@ public interface ICalculationsModule
     Dictionary<int, TableRow<int, double>> Table7 { get; }
     Dictionary<int, TableRow<int, double>> Table8 { get; }
 
+    /// <summary>
+    /// reset all values
+    /// </summary>
+    /// <returns>Task</returns>
+    Task ResetAsync();
+
     int GetPersonenCarArea(double area);
 
     double GetLoadFromTable(double area, string tableName);
