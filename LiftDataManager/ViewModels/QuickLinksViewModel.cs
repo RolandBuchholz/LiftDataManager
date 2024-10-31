@@ -168,7 +168,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private void OpenBauer()
     {
         SynchronizeViewModelParameter();
-        var auftragsnummer = ParameterDictionary?["var_AuftragsNummer"].Value;
+        var auftragsnummer = ParameterDictionary["var_AuftragsNummer"].Value;
         var filename = @"C:\Work\Administration\Tools\Explorer Start.exe";
 
         if (File.Exists(FullPathXml))
@@ -227,16 +227,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         }
         if (!CheckOut)
         {
-            var checkOutResult = await CheckOutDialogAsync();
-            if (checkOutResult is null)
-            {
-                return;
-            }
-            if ((bool)checkOutResult)
-            {
-                return;
-            }
-            var pathCFP = _settingService.PathCFP;
+            //var checkOutResult = await CheckOutDialogAsync();
+            //if (checkOutResult is null)
+            //{
+            //    return;
+            //}
+            //if ((bool)checkOutResult)
+            //{
+            //    return;
+            //}
+            //var pathCFP = _settingService.PathCFP;
             //TODO NewCheckOutDialog
             //if (File.Exists(pathCFP))
             //{
@@ -274,46 +274,40 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         SynchronizeViewModelParameter();
         await SetModelStateAsync();
         CanImportZAliftData = false;
-        bool noEditMode = false;
         var auftragsnummer = ParameterDictionary["var_AuftragsNummer"].Value;
 
         if (!CheckOut)
         {
-            var checkOutResult = await CheckOutDialogAsync();
-            if (checkOutResult is null)
+            var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
+            switch (dialogResult)
             {
-                return;
+                case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                    IncreaseRevision();
+                    LikeEditParameter = true;
+                    CheckOut = true;
+                    break;
+                case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                    LikeEditParameter = true;
+                    CheckOut = true;
+                    break;
+                case CheckOutDialogResult.CheckOutFailed:
+                    goto default;
+                case CheckOutDialogResult.ReadOnly:
+                    LikeEditParameter = false;
+                    CheckOut = false;
+                    break;
+                default:
+                    break;
             }
-
-            if ((bool)checkOutResult)
+            if (CheckOut)
             {
-                return;
+                SetModifyInfos();
             }
-            noEditMode = true;
         }
-        var startargs = "StartLAST";
-        var pathZALift = _settingService.PathZALift;
-        if (noEditMode)
-        {
-            if (!File.Exists(pathZALift))
-            {
-                return;
-            }
-            ProcessHelpers.StartProgram(pathZALift, startargs);
-            await Task.Delay(1000);
-            if (File.Exists(pathSynchronizeZAlift))
-            {
-                var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
-                var exitCode = await ProcessHelpers.StartProgramWithExitCodeAsync("PowerShell.exe", args);
-                _logger.LogInformation(60192, "ExitCode SynchronizeZAlift.ps1: {exitCode}", exitCode);
-
-            }
-            return;
-        }
-
+       
         if (CanSaveAllSpeziParameters)
         {
-            await _parameterDataService!.SaveAllParameterAsync(FullPathXml!, Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(FullPathXml!, Adminmode);
         }
         var dialog = await _dialogService.ZALiftDialogAsync(FullPathXml);
 
@@ -743,35 +737,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private void RefreshQuickLinks()
     {
         CheckCanOpenFiles();
-    }
-
-    private async Task<bool?> CheckOutDialogAsync()
-    {
-        var message = """
-                Die Auslegung ist aktuell nicht ausgecheckt!
-
-                Auschecken:            Bearbeitung und Datenübernahme möglich
-                                                (Wechsel zur Homeansicht um Auschecken)
-                Nicht Auschecken:  Keine Datenübernahme möglich
-                Abbrechen:             Zurück zu LiftDataManager
-                """;
-        var checkOutResult = await _dialogService!.ConfirmationDialogAsync("Auslegungsbearbeitung", message, "Auschecken", "Nicht Auschecken", "Abbrechen");
-        if (checkOutResult != null)
-        {
-            if ((bool)checkOutResult)
-            {
-                LiftParameterNavigationHelper.NavigateToPage(typeof(HomePage), "CheckOut");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return null;
-        }
     }
 
     private static void MakeVaultLink(string path, string objectType)
