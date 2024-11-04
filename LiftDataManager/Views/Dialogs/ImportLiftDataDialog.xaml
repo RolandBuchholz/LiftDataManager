@@ -100,6 +100,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
                 Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
                 IsValid="{x:Bind ViewModel.CanImportSpeziData, Mode=TwoWay}"
                 PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                 RequestEnabled="True"
@@ -127,7 +128,7 @@
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
-                        Text="Anfrage Formular hierher ziehen oder Anfrage Formular zum hochladen auswählen."
+                        Text="{x:Bind ViewModel.DragAndDropDescription, Mode=OneWay}"
                         TextWrapping="WrapWholeWords" />
                 </StackPanel>
                 <Interactivity:Interaction.Behaviors>

@@ -26,7 +26,7 @@ public partial class ParameterDataService : IParameterDataService
     private PeriodicTimer? _autoSaveTimer;
     private readonly string user;
     private bool _saveAllParameterIsRunninng;
-    
+
     public ParameterDataService(IValidationParameterDataService validationParameterDataService,
                                  ParameterContext parametercontext, ILogger<ParameterDataService> logger)
     {
@@ -218,6 +218,15 @@ public partial class ParameterDataService : IParameterDataService
         }
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Parameter from Pdf: {path} loaded", path);
+        return transferDataList;
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<TransferData>> LoadMailOfferAsync(string path)
+    {
+        var transferDataList = new List<TransferData>();
+
+        int att = item.Attachments.Count;
         return transferDataList;
     }
 

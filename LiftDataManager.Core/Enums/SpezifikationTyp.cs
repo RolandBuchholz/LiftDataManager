@@ -25,7 +25,12 @@ public sealed class SpezifikationTyp : SmartEnum<SpezifikationTyp, ushort>
     //    /// <summary>
     //    /// SpezifikationTyp request with german humanized Displayname
     //    /// </summary>
-    public static readonly SpezifikationTyp Request = new("Anfrage Formular", 4);
+    public static readonly SpezifikationTyp Request = new("Anfrageformular", 4);
+
+    //    /// <summary>
+    //    /// SpezifikationTyp Mailrequest with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp MailRequest = new("Mailanfrage", 5);
 
     private SpezifikationTyp(string name, ushort value) : base(name, value)
     {

@@ -53,10 +53,9 @@
         <Button
             x:Name="btn_Request"
             Margin="5,0,5,0"
-            HorizontalAlignment="Stretch"
             Command="{x:Bind PickFilePath}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Anfrage Formular(Pdf)" />
+            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                <TextBlock HorizontalTextAlignment="Center" Text="{x:Bind FilePickerText, Mode=OneWay}" />
                 <SymbolIcon Margin="10,0,0,0" Symbol="Share" />
             </StackPanel>
         </Button>
