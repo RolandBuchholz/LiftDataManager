@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public event Action? CarViewChanged;
 

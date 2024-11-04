@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineDetailControlPanelViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineDetailControlPanelViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public KabineDetailControlPanelViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
      base(parameterDataService, dialogService, infoCenterService, settingService)

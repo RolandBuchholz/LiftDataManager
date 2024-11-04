@@ -4,7 +4,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly ParameterContext _parametercontext;

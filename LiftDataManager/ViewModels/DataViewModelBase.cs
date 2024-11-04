@@ -185,7 +185,7 @@ public partial class DataViewModelBase : ObservableRecipient
         if (AuftragsbezogeneXml)
         {
             HasErrors = false;
-            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            HasErrors = ParameterDictionary.Values.Any(p => p.HasErrors);
             if (HasErrors)
             {
                 SetErrorDictionary();
@@ -194,7 +194,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
-            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = ParameterDictionary.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {

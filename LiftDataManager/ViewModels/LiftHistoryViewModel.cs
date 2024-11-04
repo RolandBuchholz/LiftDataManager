@@ -2,7 +2,7 @@
 
 namespace LiftDataManager.ViewModels;
 
-public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
+public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<RefreshModelStateMessage>
 {
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }

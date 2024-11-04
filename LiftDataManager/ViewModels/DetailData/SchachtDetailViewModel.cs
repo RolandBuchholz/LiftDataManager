@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;

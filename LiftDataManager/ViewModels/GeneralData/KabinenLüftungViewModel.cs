@@ -3,7 +3,7 @@ using LiftDataManager.Core.Models.CalculationResultsModels;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
+public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;

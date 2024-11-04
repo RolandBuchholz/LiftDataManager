@@ -3,7 +3,7 @@ using LiftDataManager.Core.Models.CalculationResultsModels;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>
+public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;

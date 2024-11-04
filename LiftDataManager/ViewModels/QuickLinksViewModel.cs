@@ -220,62 +220,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             return;
         }
         SynchronizeViewModelParameter();
-        await SetModelStateAsync();
-        if (CanSaveAllSpeziParameters)
-        {
-            await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
-        }
-        if (!CheckOut)
-        {
-            //var checkOutResult = await CheckOutDialogAsync();
-            //if (checkOutResult is null)
-            //{
-            //    return;
-            //}
-            //if ((bool)checkOutResult)
-            //{
-            //    return;
-            //}
-            //var pathCFP = _settingService.PathCFP;
-            //TODO NewCheckOutDialog
-            //if (File.Exists(pathCFP))
-            //{
-            //    ProcessHelpers.StartProgram(pathCFP, startargs);
-            //}
-            return;
-        }
-        var dialog = await _dialogService.CFPEditDialogAsync(FullPathXml, ParameterDictionary["var_Bausatz"].Value);
-        if (dialog)
-        {
-            var updatedResult = await _parameterDataService.SyncFromAutodeskTransferAsync(FullPathXml, ParameterDictionary);
-            if (updatedResult is not null)
-            {
-                if (updatedResult.Count != 0)
-                {
-                    await _dialogService.ParameterChangedDialogAsync(updatedResult);
-                }
-                ParameterDictionary["var_CFPdefiniert"].Value = "True";
-            }
-            _logger.LogInformation(60138, "Validate all parameter startet");
-            await _validationParameterDataService.ValidateAllParameterAsync();
-        }
-        else
-        {
-            await _dialogService.MessageDialogAsync("CarFrameProgram abgebrochen",
-                "Achtung:\n" +
-                "Daten aus dem CarFrameProgram werden verworfen!\n" +
-                "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
-        }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanOpenZALift))]
-    private async Task OpenZiehlAbeggAsync()
-    {
-        SynchronizeViewModelParameter();
-        await SetModelStateAsync();
         CanImportZAliftData = false;
         var auftragsnummer = ParameterDictionary["var_AuftragsNummer"].Value;
-
         if (!CheckOut)
         {
             var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
@@ -301,17 +247,91 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             if (CheckOut)
             {
+                Messenger.Send(new RefreshModelStateMessage(new ModelStateParameters()
+                {
+                    IsCheckOut = CheckOut,
+                    LikeEditParameterEnabled = LikeEditParameter
+                }));
                 SetModifyInfos();
             }
         }
-       
-        if (CanSaveAllSpeziParameters)
+        if (ParameterDictionary.Values.Any(p => p.IsDirty))
         {
-            await _parameterDataService.SaveAllParameterAsync(FullPathXml!, Adminmode);
+            await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
         }
-        var dialog = await _dialogService.ZALiftDialogAsync(FullPathXml);
+        var cFPEditDialogResult = await _dialogService.CFPEditDialogAsync(FullPathXml, ParameterDictionary["var_Bausatz"].Value);
+        if (cFPEditDialogResult)
+        {
+            var updatedResult = await _parameterDataService.SyncFromAutodeskTransferAsync(FullPathXml, ParameterDictionary);
+            if (updatedResult is not null)
+            {
+                if (updatedResult.Count != 0)
+                {
+                    await _dialogService.ParameterChangedDialogAsync(updatedResult);
+                }
+                ParameterDictionary["var_CFPdefiniert"].Value = "True";
+            }
+            _logger.LogInformation(60138, "Validate all parameter startet");
+            await _validationParameterDataService.ValidateAllParameterAsync();
+        }
+        else
+        {
+            await _dialogService.MessageDialogAsync("CarFrameProgram abgebrochen",
+                "Achtung:\n" +
+                "Daten aus dem CarFrameProgram werden verworfen!\n" +
+                "Backup wird der Autodesktransfer.xml wird wiederhergestellt!");
+        }
+    }
 
-        if (dialog)
+    [RelayCommand(CanExecute = nameof(CanOpenZALift))]
+    private async Task OpenZiehlAbeggAsync()
+    {
+        if (string.IsNullOrWhiteSpace(FullPathXml))
+        {
+            return;
+        }
+        SynchronizeViewModelParameter();
+        CanImportZAliftData = false;
+        var auftragsnummer = ParameterDictionary["var_AuftragsNummer"].Value;
+        if (!CheckOut)
+        {
+            var dialogResult = await _dialogService.CheckOutDialogAsync(SpezifikationsNumber, true);
+            switch (dialogResult)
+            {
+                case CheckOutDialogResult.SuccessfulIncreaseRevision:
+                    IncreaseRevision();
+                    LikeEditParameter = true;
+                    CheckOut = true;
+                    break;
+                case CheckOutDialogResult.SuccessfulNoRevisionChange:
+                    LikeEditParameter = true;
+                    CheckOut = true;
+                    break;
+                case CheckOutDialogResult.CheckOutFailed:
+                    goto default;
+                case CheckOutDialogResult.ReadOnly:
+                    LikeEditParameter = false;
+                    CheckOut = false;
+                    break;
+                default:
+                    break;
+            }
+            if (CheckOut)
+            {
+                Messenger.Send(new RefreshModelStateMessage(new ModelStateParameters()
+                {
+                    IsCheckOut = CheckOut,
+                    LikeEditParameterEnabled = LikeEditParameter
+                }));
+                SetModifyInfos();
+            }
+        }
+        if (ParameterDictionary.Values.Any(p => p.IsDirty))
+        {
+            await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
+        }
+        var zALiftDialogResult = await _dialogService.ZALiftDialogAsync(FullPathXml);
+        if (zALiftDialogResult)
         {
             CanImportZAliftData = true;
             await ImportZAliftDataAsync(false);
@@ -344,7 +364,6 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 _logger.LogError(61092, "restoring zaliftfiles failed");
             }
         }
-
         if (File.Exists(pathSynchronizeZAlift))
         {
             var args = $"{pathSynchronizeZAlift} reset '{FullPathXml}'";
@@ -617,7 +636,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             await _validationParameterDataService.ValidateAllParameterAsync();
             await SetModelStateAsync();
-            _ = Messenger.Send(new RefreshModelStateMessage(new ModelStateParameters()
+            Messenger.Send(new RefreshModelStateMessage(new ModelStateParameters()
             {
                 IsCheckOut = CheckOut,
                 LikeEditParameterEnabled = LikeEditParameter

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>
+public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
