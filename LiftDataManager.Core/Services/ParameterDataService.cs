@@ -225,8 +225,21 @@ public partial class ParameterDataService : IParameterDataService
     public async Task<IEnumerable<TransferData>> LoadMailOfferAsync(string path)
     {
         var transferDataList = new List<TransferData>();
-
-        int att = item.Attachments.Count;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return transferDataList;
+        }
+        using (var msg = new MsgReader.Outlook.Storage.Message(path))
+        {
+            var from = msg.Sender;
+            var sentOn = msg.SentOn;
+            var recipientsTo = msg.GetEmailRecipients(MsgReader.Outlook.RecipientType.To, false, false);
+            var recipientsCc = msg.GetEmailRecipients(MsgReader.Outlook.RecipientType.Cc, false, false);
+            var subject = msg.Subject;
+            var htmlBody = msg.BodyHtml;
+            var text = msg.BodyText;
+        }
+        await Task.CompletedTask;
         return transferDataList;
     }
 

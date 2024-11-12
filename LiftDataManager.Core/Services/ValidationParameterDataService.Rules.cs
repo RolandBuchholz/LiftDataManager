@@ -228,7 +228,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         string bodentyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodentyp");
         string bodenProfil = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_BoPr");
         string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodenbelag");
-        double bodenBlech = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenblech");
+        double bodenBlech = string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value) ? -1 :LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenblech");
         double bodenBelagHoehe = GetFlooringHeight(bodenBelag);
         double bodenHoehe = -1;
 
@@ -240,12 +240,18 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 40 x 3");
                 break;
             case "verstärkt":
-                if (bodenBlech <= 0)
+                if (bodenBlech < 0)
+                {
                     SetDefaultReinforcedFloor(name);
+                }
                 if (string.IsNullOrWhiteSpace(bodenProfil))
+                {
                     SetDefaultReinforcedFloor(name);
+                }
                 if (bodenBlech == 3 && bodenProfil == "80 x 40 x 3")
+                {
                     SetDefaultReinforcedFloor(name);
+                }
                 double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
                 break;
@@ -256,23 +262,35 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 break;
             case "sonder":
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value))
+                {
                     _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_BoPr"].Value))
+                {
                     _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 bodenHoehe = -1;
                 break;
             case "extern":
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value))
+                {
                     _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_BoPr"].Value))
+                {
                     _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 bodenHoehe = -1;
                 break;
             default:
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value))
+                {
                     _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_BoPr"].Value))
+                {
                     _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("(keine Auswahl)");
+                }
                 break;
         }
 

@@ -5,6 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace>LiftDataManager.Core</RootNamespace>
     <Platforms>x64</Platforms>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -19,6 +20,7 @@
     <NoWarn>1701;1702;MVVMTK0034</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MsgReader" Version="5.6.6" />
     <PackageReference Include="Ardalis.SmartEnum" Version="8.1.0" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
