@@ -253,7 +253,8 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             "var_Demontage",
             "var_FertigstellungAm",
             "var_GeaendertAm",
-            "var_GeaendertVon"
+            "var_GeaendertVon",
+            "var_CFPdefiniert"
         };
 
         List<TransferData>? importParameter = [];
@@ -444,6 +445,15 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
 
     private void UpdateDataImportStatusText()
     {
-        DataImportStatusText = CanImportSpeziData ? $"{ImportSpezifikationName} kann importiert werden." : "Keine Daten für Import vorhanden";
+        string? importName;
+        if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest || ImportSpezifikationTyp == SpezifikationTyp.Offer)
+        {
+            importName = Path.GetFileName(ImportSpezifikationName);
+        }
+        else
+        {
+            importName = ImportSpezifikationName;
+        }
+        DataImportStatusText = CanImportSpeziData ? $"{importName} kann importiert werden." : "Keine Daten für Import vorhanden";
     }
 }

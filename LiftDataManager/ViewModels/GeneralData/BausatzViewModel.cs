@@ -27,6 +27,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         if (message.PropertyName == "var_Bausatz")
         {
             ParameterDictionary["var_Rahmengewicht"].Value = "";
+            ParameterDictionary["var_CFPdefiniert"].AutoUpdateParameterValue("False");
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
             CheckCFPStateAsync(message.NewValue, message.OldValue).SafeFireAndForget();
             UpdateCarFrameDataAsync(message.NewValue, 0).SafeFireAndForget();
