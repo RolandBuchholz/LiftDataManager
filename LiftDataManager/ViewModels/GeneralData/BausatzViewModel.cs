@@ -31,6 +31,12 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
             CheckCFPStateAsync(message.NewValue, message.OldValue).SafeFireAndForget();
             UpdateCarFrameDataAsync(message.NewValue, 0).SafeFireAndForget();
+            Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
+            {
+                SetDriveData = false,
+                UpdateQuicklinks = true
+            }));
+
         };
         if (message.PropertyName == "var_TypFV" ||
             message.PropertyName == "var_FuehrungsschieneFahrkorb" ||

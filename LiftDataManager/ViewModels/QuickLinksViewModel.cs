@@ -100,8 +100,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         }
         CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
         CanOpenCalculations = CanOpenVault;
-        CanOpenCFP = File.Exists(_settingService.PathCFP);
-
+        if (ParameterDictionary.Count > 0)
+        {
+            CanOpenCFP = File.Exists(_settingService.PathCFP) && !string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value);
+        }
         if (ParameterDictionary.Count == 0 || string.IsNullOrWhiteSpace(ParameterDictionary["var_Aufzugstyp"].Value))
         {
             CanOpenLilo = File.Exists(_settingService.PathLilo);
@@ -113,7 +115,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             CanOpenLilo = ParameterDictionary["var_Aufzugstyp"].Value!.Contains("Hydraulik") && File.Exists(_settingService.PathLilo);
         }
         if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        {
             CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
+        }
         CanImportZAliftData = CanOpenZALiftHtml && CheckOut;
 
         if (ParameterDictionary.Count != 0 &&
