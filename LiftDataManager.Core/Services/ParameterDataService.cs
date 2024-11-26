@@ -1,4 +1,5 @@
 ﻿using Cogs.Collections;
+using HtmlAgilityPack;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Models.ComponentModels;
@@ -231,13 +232,216 @@ public partial class ParameterDataService : IParameterDataService
         }
         using (var msg = new MsgReader.Outlook.Storage.Message(path))
         {
-            var from = msg.Sender;
-            var sentOn = msg.SentOn;
-            var recipientsTo = msg.GetEmailRecipients(MsgReader.Outlook.RecipientType.To, false, false);
-            var recipientsCc = msg.GetEmailRecipients(MsgReader.Outlook.RecipientType.Cc, false, false);
+            var from = msg.Sender.Email;
+            _logger.LogInformation(60100, "Mailofferimport sender: {from}", from);
             var subject = msg.Subject;
+            _logger.LogInformation(60100, "Mailofferimport subject: {subject}", subject);
             var htmlBody = msg.BodyHtml;
-            var text = msg.BodyText;
+            var mailOfferHtml = new HtmlDocument();
+            mailOfferHtml.LoadHtml(htmlBody);
+            var htmlNodes = mailOfferHtml.DocumentNode.SelectNodes("//tr");
+            double carFloorHeight = 86d;
+            double carRoofHeight = 76d;
+            Dictionary<string, (int, string)> importdataDictionary = new()
+            {
+                {"var_AnPersonZ1", (1, "Name;Vorname;Firma") },
+                {"var_AnPersonZ2", (0, "Straße")},
+                {"var_AnPersonZ3", (1, "Postleitzahl;Ort")},
+                {"var_AnPersonPhone", (0, "Telefon")},
+                {"var_AnPersonMail", (0, "Mail")},
+                {"var_Kennwort" , (0, "Projekt")},
+                {"var_ZUGANSSTELLEN_B" , (2, "Weitere Zugangsstellen")},
+                {"var_ZUGANSSTELLEN_C" , (2, "Weitere Zugangsstellen")},
+                {"var_ZUGANSSTELLEN_D" , (2, "Weitere Zugangsstellen")},
+                {"var_Bausatzlage" , (0, "Bausatzlage")},
+                {"var_Q" , (0, "Tragkraft")},
+                {"var_Fahrkorbtyp" , (3, "Kabinengewicht")},
+                {"var_KabinengewichtCAD" , (0, "Kabinengewicht")},
+                {"var_FH" , (4, "Förderhöhe")},
+                {"var_v" , (0, "Geschwindigkeit")},
+                {"var_KBI" , (0, "Kabinenbreite innen")},
+                {"var_KTI" , (0, "Kabinentiefe innen")},
+                {"var_KHI" , (0, "Kabinenhöhe innen")},
+                {"var_SB" , (0, "Schachtbreite")},
+                {"var_ST" , (0, "Schachttiefe")},
+                {"var_SG" , (0, "Schachtgrube")},
+                {"var_SK" , (0, "Schachtkopf")},
+                {"var_Aufzugstyp" , (5, "Antriebsart")},
+                {"var_Maschinenraum" , (6, "Maschinenraum")},
+                {"var_Bausatz" , (7, "Fangrahmenart")},
+                {"var_Bodentyp" , (8, "Kabinenbodendicke")},
+                {"var_KU" , (8, "Kabinenbodendicke")},
+                {"var_KD" , (9, "Kabinendeckendicke")},
+                {"var_KBA" , (10, "Kabinenbreite aussen")},
+                {"var_KTA" , (10, "Kabinentiefe aussen")},
+                {"var_KHA" , (10, "Kabinenhöhe aussen")},
+                {"var_B1" , (0, "Erster Bügel")},
+                {"var_B2" , (0, "Größter Schienenbügelabstand")},
+                {"var_Kommentare" , (0, "Anmerkungen")}
+            };
+
+            foreach (var dataSet in importdataDictionary)
+            {
+                var value = string.Empty;
+                switch (dataSet.Value.Item1)
+                {
+                    case 1:
+                        // concatenate strings
+                        var concatenatedString = string.Empty;
+                        var parameters = dataSet.Value.Item2.Split(';');
+                        if (parameters.Length > 0)
+                        {
+                            concatenatedString = string.Join(' ', parameters.Select(x => GetValueFromHtmlNode(htmlNodes.FirstOrDefault(y => y.InnerText.StartsWith(x)))));
+                        }
+                        value = concatenatedString;
+                        break;
+                    case 2:
+                        // set entrances
+                        var entrances = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        value = entrances.Contains(dataSet.Key[^1..]).ToString();
+                        break;
+                    case 3:
+                        // set carTyp
+                        value = string.IsNullOrWhiteSpace(GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)))) 
+                                ? string.Empty 
+                                : "Fremdkabine" ;
+                        break;
+                    case 4:
+                        // convert mm to m
+                        var travelmeter = "0";
+                        var travelmm = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        if (!string.IsNullOrWhiteSpace(travelmm))
+                        {
+                            if (double.TryParse(travelmm, out double doubleValue))
+                            {
+                                travelmeter = (doubleValue / 1000).ToString();
+                            }
+                        }
+                        value = travelmeter;
+                        break;
+                    case 5:
+                        // set liftTyp
+                        var selectedLiftTyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        value = selectedLiftTyp switch
+                        {
+                            "Hydraulikaufzug" => "Personen- / Lasten Hydraulik-Aufzug",
+                            "Seilaufzug" => "Personen Seil-Aufzug",
+                            _ => string.Empty,
+                        };
+                        break;
+                    case 6:
+                        // set machineroom
+                        var machineroom = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        value = machineroom switch
+                        {
+                           "mit Maschinenraum oben über" => "oben über",
+                           "mit Maschinenraum oben neben" => "oben neben",
+                           "mit Maschinenraum unten neben" => "unten neben",
+                           "ohne Maschinenraum" => "ohne",
+                           _ => string.Empty,
+                        };
+                        break;
+                    case 7:
+                        // set carFrameTyp
+                        var carFrameTyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        var drivetyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Antriebsart")));
+                        if (!string.IsNullOrWhiteSpace(drivetyp))
+                        {
+                            value = carFrameTyp switch
+                            {
+                                "Rucksackausführung" => drivetyp.StartsWith("H") ? "Sonderbausatz Hydr. Rucksack 2:1" : "Sonderbausatz Seil Rucksack MRL",
+                                "Zentral / Tandem" => drivetyp.StartsWith("H") ? "Sonderbausatz Hydr. Tandem 2:1" : "Sonderbausatz Seil Zentralrahmen",
+                                _ => string.Empty,
+                            };
+                        }
+                        break;
+                    case 8:
+                        // set carFloorTyp
+                        switch (dataSet.Key)
+                        {
+                            case "var_Bodentyp":
+                                value = "extern";
+                                break;
+                            case "var_KU":
+                                var floorHeightString = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                                if (!string.IsNullOrWhiteSpace(floorHeightString))
+                                {
+                                    if (double.TryParse(floorHeightString, out double doubleValue))
+                                    {
+                                        carFloorHeight = doubleValue;
+                                    }
+                                }
+                                value = carFloorHeight.ToString();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 9:
+                        //set carroof
+                        var roofHeightString = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        if (!string.IsNullOrWhiteSpace(roofHeightString))
+                        {
+                            if (double.TryParse(roofHeightString, out double doubleValue))
+                            {
+                                carRoofHeight = doubleValue;
+                            }
+                        }
+                        value = carRoofHeight.ToString();
+                        break;
+                    case 10:
+                        //set carWalloutside
+                        var outsideCar = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        if (string.IsNullOrWhiteSpace(outsideCar))
+                        {
+                            switch (dataSet.Key)
+                            {
+                                case "var_KBA" or "var_KTA":
+                                    var carInside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Key == "var_KBA"
+                                                                                                         ? "Kabinenbreite innen"
+                                                                                                         : "Kabinentiefe innen")));
+                                    if (!string.IsNullOrWhiteSpace(carInside))
+                                    {
+                                        if (double.TryParse(carInside, out double doubleValue))
+                                        {
+                                            value = (doubleValue + 50d).ToString();
+                                        }
+                                    }
+                                    break;
+                                case "var_KHA":
+                                    var carHeightOutside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                                    if (string.IsNullOrWhiteSpace(carHeightOutside))
+                                    {
+                                        var carHeightInside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Kabinenhöhe innen")));
+                                        if (double.TryParse(carHeightInside, out double doubleValue))
+                                        {
+                                            value = (carFloorHeight + doubleValue + carRoofHeight).ToString();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        value = carHeightOutside;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            value = outsideCar;
+                        }
+                        break;
+                    default:
+                        // return standard value
+                        value = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                        break;
+                }
+                transferDataList.Add(new TransferData(dataSet.Key, 
+                                                      string.IsNullOrWhiteSpace(value) ? string.Empty : value , 
+                                                      string.Empty, 
+                                                      false));
+            }
         }
         await Task.CompletedTask;
         return transferDataList;
@@ -821,6 +1025,16 @@ public partial class ParameterDataService : IParameterDataService
             _ => "Seil"
         };
         return $"{typ} {drive}-Aufzug";
+    }
+
+    private static string GetValueFromHtmlNode(HtmlNode? node)
+    {
+        var childNodes = node?.ChildNodes.Where(x => x.HasAttributes);
+        if (childNodes is not null && childNodes.Count() == 2)
+        {
+            return childNodes.Last().InnerText.Trim();
+        }
+        return string.Empty;
     }
 
     private static ParameterCategoryValue GetLiftParameterCategory(Dictionary<string, int> parameterDto, string parameterName)

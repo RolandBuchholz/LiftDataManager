@@ -268,6 +268,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                                        $"{ImportSpezifikationName}";
                 return;
             }
+            importParameter.AddRange(importMailOffer);
             if (!string.IsNullOrWhiteSpace(ImportSpezifikationName))
             {
                 CopyOffer(ImportSpezifikationName);
@@ -388,7 +389,16 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         {
             return;
         }
-        sender.ImportSpezifikationName = ImportSpezifikationName;
+
+        if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest || ImportSpezifikationTyp == SpezifikationTyp.Request)
+        {
+            sender.ImportSpezifikationName = Path.GetFileName(ImportSpezifikationName);
+        }
+        else
+        {
+            sender.ImportSpezifikationName = ImportSpezifikationName;
+        }
+
         sender.ImportPamameter = importParameter;
         LiftDataReadyForImport = true;
         DataImportStatus = InfoBarSeverity.Success;
@@ -446,7 +456,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private void UpdateDataImportStatusText()
     {
         string? importName;
-        if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest || ImportSpezifikationTyp == SpezifikationTyp.Offer)
+        if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest || ImportSpezifikationTyp == SpezifikationTyp.Request)
         {
             importName = Path.GetFileName(ImportSpezifikationName);
         }

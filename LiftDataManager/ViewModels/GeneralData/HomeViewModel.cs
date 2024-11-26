@@ -477,7 +477,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             ParameterDictionary["var_ImportiertVon"].AutoUpdateParameterValue(importResult.Item1);
         }
 
-        var importedParameter = (importResult.Item2)?.ToList();
+        var importedParameter = importResult.Item2?.ToList();
 
         if (importedParameter is not null)
         {

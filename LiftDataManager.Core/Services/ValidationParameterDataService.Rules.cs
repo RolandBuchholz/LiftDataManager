@@ -1905,7 +1905,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                         "11" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A1", StringComparison.CurrentCultureIgnoreCase),
                         "12" => string.Equals(value, "Jungblut HJ200 mit ASV 24V und Elektronikpaket Ausführung A2", StringComparison.CurrentCultureIgnoreCase),
                         "13" => string.Equals(value, "PFB LK 200, FA, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
-                        "14" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase),
+                        "14" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase) || string.Equals(value, "GB Ersatz durch Limax", StringComparison.CurrentCultureIgnoreCase),
                         "15" => string.Equals(value, "HJ200, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         "16" => string.Equals(value, "HJ200, AS 24V, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
