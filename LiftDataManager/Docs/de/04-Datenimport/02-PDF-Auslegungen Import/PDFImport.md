@@ -7,6 +7,6 @@
 
 ![image](/LiftDataManager/Docs/HelpImages/image37.png)  
 
->Nach dem Importvorgang kann der Importdialog geschlossen werden, detaillierte Importinformation können in dem **Infocenter Sidebarpanel** eingesehen werden.  
+>Nach dem Importvorgang kann können die **„Daten übernommen“**werden, detaillierte Importinformation können in dem Infocenter Sidebarpanel eingesehen werden.  
 
 [//]: # (Tags: PDF-Import | importieren |  Auslegungen einlesen | Pdf einlesen)  
