@@ -91,7 +91,7 @@
     <PackageReference Include="WinUICommunity.Components" Version="6.9.0" />
     <PackageReference Include="WinUICommunity.Core" Version="6.9.0" />
     <PackageReference Include="WinUIEx" Version="2.5.0" />
-    <PackageReference Include="SkiaSharp.Views.WinUI" Version="3.118.0-preview.1.2" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="3.116.1" />
   </ItemGroup>
   
   <ItemGroup>

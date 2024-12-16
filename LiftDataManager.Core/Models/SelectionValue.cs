@@ -7,6 +7,9 @@ public class SelectionValue
         Id = 0;
         Name = "(keine Auswahl)";
         DisplayName = "(keine Auswahl)";
+        SchindlerCertified = false;
+        IsFavorite = false;
+        OrderSelection = 0;
     }
 
     public SelectionValue(int id, string name, string displayName)
@@ -15,7 +18,6 @@ public class SelectionValue
         Name = name;
         DisplayName = displayName;
     }
-
     public int Id { get; set; }
     public string Name { get; set; }
     public string DisplayName { get; set; }

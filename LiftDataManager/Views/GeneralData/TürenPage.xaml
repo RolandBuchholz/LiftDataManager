@@ -917,10 +917,25 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_STdghSchwellenwinkel'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCheckBox
+                                    <Grid
                                         Grid.Column="2"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KontaktSchutzraumueberwachung'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True" />
+                                        Background="Transparent"
+                                        IsHitTestVisible="True">
+                                        <SpeziControls:ParameterCheckBox
+                                            IsHitTestVisible="False"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KontaktSchutzraumueberwachung'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock>
+                                                <Run
+                                                    FontSize="14"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                                Wird automtisch gesetzt,<LineBreak />
+                                                wenn Ersatzmaßnahmen gewählt sind</TextBlock>
+                                        </ToolTipService.ToolTip>
+                                    </Grid>
                                 </Grid>
                                 <Grid
                                     x:Name="Schachttueren3"

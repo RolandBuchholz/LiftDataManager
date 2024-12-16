@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="3.116.1" />
     <PackageReference Include="WinUIEx" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup>

@@ -273,11 +273,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             if (doorTyp.StartsWith("Wittur"))
             {
-                return sills.Where(x => x.Manufacturer == "Wittur").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                return sills.Where(x => x.Manufacturer == "Wittur").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             if (doorTyp.StartsWith("Riedl"))
             {
-                return sills.Where(x => x.Manufacturer == "Riedl").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                return sills.Where(x => x.Manufacturer == "Riedl").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             //Meiller Filter Optionen
             var cat = _parameterDictionary["var_EN8171Cat012"].Value;
@@ -285,13 +285,13 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             {
                 if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
                 {
-                    return sills.Where(x => x.Manufacturer == "Meiller").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                    return sills.Where(x => x.Manufacturer == "Meiller").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
                 }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else if (doorDescription.StartsWith("DT"))
             {
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else
             {
@@ -299,26 +299,28 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
                 if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
                 {
-                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
                 }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
         }
 
-        return sills.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+        return sills.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
     }
 
     private void UpdateDropDownList(string? parameterName, IEnumerable<SelectionValue> newList, bool defaultSelection = true)
     {
         if (string.IsNullOrWhiteSpace(parameterName))
+        {
             return;
+        }
         if (!newList.Any())
         {
             _parameterDictionary[parameterName].DropDownList.Clear();
             return;
         }
-        var updateList = defaultSelection ? newList.Prepend(new SelectionValue()) : newList;
-
+        var orderedList = newList.OrderBy(x => x.OrderSelection);
+        var updateList = defaultSelection ? orderedList.Prepend(new SelectionValue()) : orderedList;
         if (_parameterDictionary[parameterName].DropDownList.SequenceEqual(updateList))
         {
             return;

@@ -533,7 +533,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         var carframes = _parametercontext.Set<CarFrameType>().ToList();
 
-        var availableCarframes = carframes.Where(x => x.DriveTypeId == driveTypeId).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+        var availableCarframes = carframes.Where(x => x.DriveTypeId == driveTypeId).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
 
         if (availableCarframes is not null)
         {
@@ -551,21 +551,25 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("False");
+                _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("False");
             }
             else if (value == "Vorausgelöstes Anhaltesystem" || value.StartsWith("Schachtkopf und Schachtgrube"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("True");
+                _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
             }
             else if (value.StartsWith("Schachtkopf"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("False");
+                _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
             }
             else if (value.StartsWith("Schachtgrube"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("True");
+                _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
             }
         }
 
@@ -579,19 +583,19 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
             if (string.IsNullOrWhiteSpace(selectedSafetyGear))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else if (selectedSafetyGear.Contains("BS"))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else if (selectedSafetyGear.Contains("PC 13") || selectedSafetyGear.Contains("PC 24") || selectedSafetyGear.Contains("CSGB01") || selectedSafetyGear.Contains("CSGB02"))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG") && !x.Name.Contains("Voraus")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG") && !x.Name.Contains("Voraus")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
 
             if (availablEReducedProtectionSpaces is not null)
@@ -623,10 +627,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         IEnumerable<SelectionValue> availablseafetyGears = value switch
         {
             "keine" => [],
-            "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
-            "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
-            "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
-            _ => safetyGears.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
+            "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            _ => safetyGears.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
         };
         if (availablseafetyGears is not null)
         {
@@ -1015,9 +1019,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var selectedguideModel = _parameterDictionary[guideTyp].Value;
         IEnumerable<SelectionValue> availableguideModels = value switch
         {
-            "Gleitführung" => guideModels.Where(x => x.GuideTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
-            "Rollenführung" => guideModels.Where(x => x.GuideTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
-            _ => guideModels.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified }),
+            "Gleitführung" => guideModels.Where(x => x.GuideTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            "Rollenführung" => guideModels.Where(x => x.GuideTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            _ => guideModels.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
         };
         if (availableguideModels is not null)
         {
@@ -1073,7 +1077,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                                                                                 .Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
                                                                                 {
                                                                                     IsFavorite = x.IsFavorite,
-                                                                                    SchindlerCertified = x.SchindlerCertified
+                                                                                    SchindlerCertified = x.SchindlerCertified,
+                                                                                    OrderSelection = x.OrderSelection
                                                                                 });
             if (availableLiftDoorGroups is not null)
             {
@@ -1197,7 +1202,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
 
-        IEnumerable<SelectionValue> availableFloorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).Where(x => x.CarFlooring!.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified });
+        IEnumerable<SelectionValue> availableFloorColors = _parametercontext.Set<CarFloorColorTyp>().Include(i => i.CarFlooring).Where(x => x.CarFlooring!.Name == value).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
 
         if (availableFloorColors is not null)
         {

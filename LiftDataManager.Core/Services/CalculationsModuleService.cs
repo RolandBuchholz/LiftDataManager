@@ -891,11 +891,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         if (area <= 0)
             return 0;
         if (tableName == "Tabelle6" && area > 5.0)
-            return Math.Round(2500 + (area - 5.0) / 0.16 * 100, 0);
+            return Math.Round(2500 + Math.Ceiling((area - 5.0) / 0.16) * 100, 0);
         if (tableName == "Tabelle6" && area < 0.37)
             return 0;
         if (tableName == "Tabelle7" && area > 5.04)
-            return Math.Round(1600 + (area - 5.04) / 0.40 * 100, 0);
+            return Math.Round(1600 + Math.Ceiling((area - 5.04) / 0.40) * 100, 0);
         if (tableName == "Tabelle7" && area < 1.68)
             return 0;
         if (table.Any(x => x.Value.SecondValue == area))
