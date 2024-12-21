@@ -76,28 +76,28 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     public GuideRails? CounterWeightGuideRail { get; set; }
 
     [ObservableProperty]
-    private double viewBoxWidth;
+    public partial double ViewBoxWidth { get; set; }
 
     [ObservableProperty]
-    private double viewBoxHeight;
+    public partial double ViewBoxHeight { get; set; }
 
     [ObservableProperty]
-    private double shaftWidth;
+    public partial double ShaftWidth { get; set; }
 
     [ObservableProperty]
-    private double shaftDepth;
+    public partial double ShaftDepth { get; set; }
 
     [ObservableProperty]
-    private double carDistanceWallA;
+    public partial double CarDistanceWallA { get; set; }
 
     [ObservableProperty]
-    private double carDistanceWallB;
+    public partial double CarDistanceWallB { get; set; }
 
     [ObservableProperty]
-    private double carDistanceWallC;
+    public partial double CarDistanceWallC { get; set; }
 
     [ObservableProperty]
-    private double carDistanceWallD;
+    public partial double CarDistanceWallD { get; set; }
 
     public bool CanEditOpeningDirectionEntranceA => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_A") &&
                                                     ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung")).StartsWith("einseitig");
@@ -109,34 +109,34 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                                                     ((string)LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tueroeffnung_D")).StartsWith("einseitig");
 
     [ObservableProperty]
-    private double offsetWallOpeningShaftDoorA;
+    public partial double OffsetWallOpeningShaftDoorA { get; set; }
 
     [ObservableProperty]
-    private double offsetWallOpeningShaftDoorB;
+    public partial double OffsetWallOpeningShaftDoorB { get; set; }
 
     [ObservableProperty]
-    private double offsetWallOpeningShaftDoorC;
+    public partial double OffsetWallOpeningShaftDoorC { get; set; }
 
     [ObservableProperty]
-    private double offsetWallOpeningShaftDoorD;
+    public partial double OffsetWallOpeningShaftDoorD { get; set; }
 
     [ObservableProperty]
-    private bool openingDirectionNotSelected;
+    public partial bool OpeningDirectionNotSelected { get; set; }
 
     [ObservableProperty]
-    private bool showCarFrameOffsetInfoVertikal;
+    public partial bool ShowCarFrameOffsetInfoVertikal { get; set; }
 
     [ObservableProperty]
-    private bool showCarFrameOffsetInfoHorizontal;
+    public partial bool ShowCarFrameOffsetInfoHorizontal { get; set; }
 
     [ObservableProperty]
-    private bool isCarFrameOffsetXEnabled;
+    public partial bool IsCarFrameOffsetXEnabled { get; set; }
 
     [ObservableProperty]
-    private bool isFrameToCarOffsetEnabled;
+    public partial bool IsFrameToCarOffsetEnabled { get; set; }
 
     [ObservableProperty]
-    private string? openingDirectionA;
+    public partial string? OpeningDirectionA { get; set; }
     partial void OnOpeningDirectionAChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -147,7 +147,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private string? openingDirectionB;
+    public partial string? OpeningDirectionB { get; set; }
     partial void OnOpeningDirectionBChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -158,7 +158,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private string? openingDirectionC;
+    public partial string? OpeningDirectionC { get; set; }
     partial void OnOpeningDirectionCChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -169,7 +169,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private string? openingDirectionD;
+    public partial string? OpeningDirectionD { get; set; }
     partial void OnOpeningDirectionDChanged(string? value)
     {
         if (ParameterDictionary is not null)

@@ -30,16 +30,16 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     }
 
     [ObservableProperty]
-    private bool canShowUnsavedParameters;
+    public partial bool CanShowUnsavedParameters { get; set; }
 
     [ObservableProperty]
-    private bool hasHighlightedParameters;
+    public partial bool HasHighlightedParameters { get; set; }
 
     [ObservableProperty]
-    private SelectorBarItem? selectedFilter;
+    public partial SelectorBarItem? SelectedFilter { get; set; }
 
     [ObservableProperty]
-    private string? searchInput;
+    public partial string? SearchInput { get; set; }
     partial void OnSearchInputChanged(string? value)
     {
         if (CurrentSpeziProperties != null)

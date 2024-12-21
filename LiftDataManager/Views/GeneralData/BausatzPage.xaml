@@ -135,7 +135,7 @@
                                         Margin="0,0,5,0"
                                         Header="Gewicht [kg]"
                                         IsReadOnly="True"
-                                        Text="{x:Bind ViewModel.FangrahmenGewicht, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.CarSlingWeight, Mode=OneWay}" />
                                 </Grid>
                                 <TextBlock
                                     Grid.Row="1"
@@ -681,7 +681,7 @@
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind ViewModel.FangrahmenGewicht, Mode=OneWay}" />
+                                        Text="{x:Bind ViewModel.CarSlingWeight, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         VerticalAlignment="Center"

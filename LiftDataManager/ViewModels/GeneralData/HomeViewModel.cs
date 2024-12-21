@@ -58,10 +58,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     }
 
     [ObservableProperty]
-    private bool isBusy;
+    public partial bool IsBusy { get; set; }
 
     [ObservableProperty]
-    private SpezifikationTyp? currentSpezifikationTyp;
+    public partial SpezifikationTyp? CurrentSpezifikationTyp { get; set; }
     partial void OnCurrentSpezifikationTypChanged(SpezifikationTyp? value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<SpezifikationTyp?>.Default.Equals(CurrentSpeziProperties.CurrentSpezifikationTyp, value))
@@ -73,34 +73,34 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     }
 
     [ObservableProperty]
-    private bool importInfo;
+    public partial bool ImportInfo { get; set; }
 
     [ObservableProperty]
-    private string carWeightDescription = "Kabinengewicht errechnet:";
+    public partial string CarWeightDescription { get; set; } = "Kabinengewicht errechnet:";
 
     [ObservableProperty]
-    private double carFrameWeight;
+    public partial double CarFrameWeight { get; set; }
 
     [ObservableProperty]
-    private double carDoorWeight;
+    public partial double CarDoorWeight { get; set; }
 
     [ObservableProperty]
-    private double carWeight;
+    public partial double CarWeight { get; set; }
 
     [ObservableProperty]
-    private bool showFrameWeightBorder;
+    public partial bool ShowFrameWeightBorder { get; set; }
 
     [ObservableProperty]
-    private bool showCarWeightBorder;
+    public partial bool ShowCarWeightBorder { get; set; }
 
     [ObservableProperty]
-    private double payloadTable6;
+    public partial double PayloadTable6 { get; set; }
 
     [ObservableProperty]
-    private double payloadTable7;
+    public partial double PayloadTable7 { get; set; }
 
     [ObservableProperty]
-    private string? customPayload;
+    public partial string? CustomPayload { get; set; }
     partial void OnCustomPayloadChanged(string? value)
     {
         if (value.IsDecimal() || string.IsNullOrWhiteSpace(value))
@@ -110,34 +110,34 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     }
 
     [ObservableProperty]
-    private string customPayloadInfo = string.Empty;
+    public partial string CustomPayloadInfo { get; set; } = string.Empty;
 
     [ObservableProperty]
-    private bool canEditCustomPayload;
+    public partial bool CanEditCustomPayload { get; set; }
 
     [ObservableProperty]
-    private string? spezifikationName;
+    public partial string? SpezifikationName { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoadDataCommand))]
-    private bool canLoadSpeziData;
+    public partial bool CanLoadSpeziData { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CheckOutCommand))]
-    private bool canCheckOut;
+    public partial bool CanCheckOut { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ClearDataCommand))]
-    private bool canClearData;
+    public partial bool CanClearData { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadDataCommand))]
     [NotifyCanExecuteChangedFor(nameof(DataImportCommand))]
-    private bool canUpLoadSpeziData;
+    public partial bool CanUpLoadSpeziData { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ValidateAllParameterCommand))]
-    private bool canValidateAllParameter;
+    public partial bool CanValidateAllParameter { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()

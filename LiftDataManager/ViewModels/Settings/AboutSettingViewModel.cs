@@ -11,7 +11,7 @@ public partial class AboutSettingViewModel : ObservableRecipient, INavigationAwa
         _parametercontext = parametercontext;
     }
     [ObservableProperty]
-    private string? versionDescription;
+    public partial string? VersionDescription { get; set; }
 
     public List<LiftDataManagerVersion> VersionsHistory => _parametercontext.Set<LiftDataManagerVersion>().OrderByDescending(x => x.VersionsNumber).ToList();
 

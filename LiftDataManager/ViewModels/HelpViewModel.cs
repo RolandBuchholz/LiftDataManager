@@ -88,7 +88,7 @@ public partial class HelpViewModel : ObservableRecipient, INavigationAwareEx
     }
 
     [ObservableProperty]
-    private HelpContent? selectedHelpContent;
+    public partial HelpContent? SelectedHelpContent { get; set; }
 
     partial void OnSelectedHelpContentChanged(HelpContent? value)
     {

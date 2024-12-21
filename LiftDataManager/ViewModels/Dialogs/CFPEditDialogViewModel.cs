@@ -114,10 +114,10 @@ public partial class CFPEditDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string? exWorkStatus = "CFP Auslegung wird bearbeitet";
+    public partial string? ExWorkStatus { get; set; } = "CFP Auslegung wird bearbeitet";
 
     [ObservableProperty]
-    private bool cFPDataReadyForImport;
+    public partial bool CFPDataReadyForImport { get; set; }
     partial void OnCFPDataReadyForImportChanged(bool value)
     {
         ExWorkStatus = value ? "Daten zur Übernahme bereit" : "CFP Auslegung wird bearbeitet";

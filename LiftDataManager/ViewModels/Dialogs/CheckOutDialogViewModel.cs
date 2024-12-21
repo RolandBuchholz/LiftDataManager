@@ -21,16 +21,16 @@ public partial class CheckOutDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool showReadOnlyWarning = true;
+    public partial bool ShowReadOnlyWarning { get; set; } = true;
 
     [ObservableProperty]
-    private bool checkOutInprogress;
+    public partial bool CheckOutInprogress { get; set; }
 
     [ObservableProperty]
-    private string? checkOutInfoMessage;
+    public partial string? CheckOutInfoMessage { get; set; }
 
     [ObservableProperty]
-    private InfoBarSeverity checkOutInfoSeverity;
+    public partial InfoBarSeverity CheckOutInfoSeverity { get; set; }
 
 
     [RelayCommand]

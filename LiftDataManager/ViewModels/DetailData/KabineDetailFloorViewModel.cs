@@ -43,7 +43,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private string? openingDirectionA;
+    public partial string? OpeningDirectionA { get; set; }
     partial void OnOpeningDirectionAChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -54,7 +54,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private string? openingDirectionB;
+    public partial string? OpeningDirectionB { get; set; }
     partial void OnOpeningDirectionBChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -65,7 +65,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private string? openingDirectionC;
+    public partial string? OpeningDirectionC { get; set; }
     partial void OnOpeningDirectionCChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -76,7 +76,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private string? openingDirectionD;
+    public partial string? OpeningDirectionD { get; set; }
     partial void OnOpeningDirectionDChanged(string? value)
     {
         if (ParameterDictionary is not null)
@@ -87,7 +87,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private bool openingDirectionNotSelected;
+    public partial bool OpeningDirectionNotSelected { get; set; }
     private void SetupCarFloorSillParameter()
     {
         CarFloorSillParameter.Clear();
@@ -111,9 +111,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RefreshCarFloorSillParameterCommand))]
-    private bool canRefreshCarFloorSill;
-
-
+    public partial bool CanRefreshCarFloorSill { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanRefreshCarFloorSill))]
     private void RefreshCarFloorSillParameter()
@@ -179,7 +177,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)

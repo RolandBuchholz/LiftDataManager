@@ -8,8 +8,8 @@ namespace LiftDataManager.ViewModels;
 public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     public CollectionViewSource GroupedItems { get; set; }
-    private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = new();
-    public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = new();
+    private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = [];
+    public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = [];
 
     public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
          base(parameterDataService, dialogService, infoCenterService, settingService)
@@ -34,19 +34,19 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private bool isItemSelected;
+    public partial bool IsItemSelected { get; set; }
 
     [ObservableProperty]
-    private bool canShowUnsavedParameters;
+    public partial bool CanShowUnsavedParameters { get; set; }
 
     [ObservableProperty]
-    private bool hasHighlightedParameters;
+    public partial bool HasHighlightedParameters { get; set; }
 
     [ObservableProperty]
-    private SelectorBarItem? selectedFilter;
+    public partial SelectorBarItem? SelectedFilter { get; set; }
 
     [ObservableProperty]
-    private string? searchInput;
+    public partial string? SearchInput { get; set; }
     partial void OnSearchInputChanged(string? value)
     {
         if (CurrentSpeziProperties != null)
@@ -58,7 +58,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveParameterCommand))]
-    private bool canSaveParameter;
+    public partial bool CanSaveParameter { get; set; }
 
     private Parameter? _selected;
     public Parameter? Selected
@@ -114,7 +114,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         if (FullPathXml is null)
             return;
-        var saveResult = await _parameterDataService!.SaveParameterAsync(Selected, FullPathXml);
+        var saveResult = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
         if (saveResult.Item1 != "Error")
         {
             await _infoCenterService.AddInfoCenterSaveInfoAsync(saveResult);
@@ -166,7 +166,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (AuftragsbezogeneXml)
         {
             HasErrors = false;
-            HasErrors = ParameterDictionary!.Values.Any(p => p.HasErrors);
+            HasErrors = ParameterDictionary.Values.Any(p => p.HasErrors);
             if (HasErrors)
             {
                 SetErrorDictionary();
@@ -176,7 +176,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (LikeEditParameter && AuftragsbezogeneXml)
         {
             CanShowUnsavedParameters = false;
-            var dirty = ParameterDictionary!.Values.Any(p => p.IsDirty);
+            var dirty = ParameterDictionary.Values.Any(p => p.IsDirty);
 
             if (CheckOut)
             {
@@ -218,7 +218,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     {
         if (string.IsNullOrWhiteSpace(path))
             return;
-        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path);
+        var result = await _parameterDataService.LoadLiftHistoryEntryAsync(path);
         if (result != null)
         {
             foreach (var entry in result)

@@ -35,28 +35,28 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
     }
 
     [ObservableProperty]
-    private bool showCarDoorDataB;
+    public partial bool ShowCarDoorDataB { get; set; }
 
     [ObservableProperty]
-    private bool showCarDoorDataC;
+    public partial bool ShowCarDoorDataC { get; set; }
 
     [ObservableProperty]
-    private bool showCarDoorDataD;
+    public partial bool ShowCarDoorDataD { get; set; }
 
     [ObservableProperty]
-    private bool showShaftDoorDetails = true;
+    public partial bool ShowShaftDoorDetails { get; set; } = true;
 
     [ObservableProperty]
-    private bool showCarDoorDetails = true;
+    public partial bool ShowCarDoorDetails { get; set; } = true;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SetVariableCarDoorDataCommand))]
-    private bool canSetVariableCarDoorData;
+    public partial bool CanSetVariableCarDoorData { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanSetVariableCarDoorData))]
     private async Task SetVariableCarDoorDataAsync()
     {
-        var currentVariableCarDoorData = Convert.ToBoolean(ParameterDictionary!["var_Variable_Tuerdaten"].Value);
+        var currentVariableCarDoorData = Convert.ToBoolean(ParameterDictionary["var_Variable_Tuerdaten"].Value);
         ParameterDictionary["var_Variable_Tuerdaten"].Value = (currentVariableCarDoorData) ? "False" : "True";
         SetCarDoorDataVisibility();
         await Task.CompletedTask;
@@ -64,7 +64,7 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
 
     private void SetCarDoorDataVisibility()
     {
-        var variableCarDoorData = Convert.ToBoolean(ParameterDictionary!["var_Variable_Tuerdaten"].Value);
+        var variableCarDoorData = Convert.ToBoolean(ParameterDictionary["var_Variable_Tuerdaten"].Value);
         var zugangB = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_B"].Value);
         var zugangC = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_C"].Value);
         var zugangD = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_D"].Value);

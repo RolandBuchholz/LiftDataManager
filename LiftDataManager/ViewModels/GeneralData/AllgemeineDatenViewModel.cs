@@ -22,11 +22,11 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
     }
 
     [ObservableProperty]
-    private string? autoSuggestBoxText;
+    public partial string? AutoSuggestBoxText { get; set; }
 
 
     [ObservableProperty]
-    private string? selectedLiftPlanner;
+    public partial string? SelectedLiftPlanner { get; set; }
     partial void OnSelectedLiftPlannerChanged(string? value)
     {
         CanGetLiftPlannerFromDatabase = !string.IsNullOrWhiteSpace(value);
@@ -36,13 +36,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(GetLiftPlannerFromDatabaseCommand))]
-    private bool canGetLiftPlannerFromDatabase;
+    public partial bool CanGetLiftPlannerFromDatabase { get; set; }
 
     [ObservableProperty]
-    private string dataBaseAction = "Neuen Fachplaner anlegen";
+    public partial string DataBaseAction { get; set; } = "Neuen Fachplaner anlegen";
 
     [ObservableProperty]
-    private string dataBaseActionDescription = "Neuen Fachplaner erstellen und in die Datenbank speichen";
+    public partial string DataBaseActionDescription { get; set; } = "Neuen Fachplaner erstellen und in die Datenbank speichen";
 
     private void SetLiftplanners()
     {

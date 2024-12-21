@@ -46,28 +46,28 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
     }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth1;
+    public partial string? MirrorDimensionsWidth1 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth2;
+    public partial string? MirrorDimensionsWidth2 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth3;
+    public partial string? MirrorDimensionsWidth3 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight1;
+    public partial string? MirrorDimensionsHeight1 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight2;
+    public partial string? MirrorDimensionsHeight2 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight3;
+    public partial string? MirrorDimensionsHeight3 { get; set; }
 
     [ObservableProperty]
-    private bool showMirrorDimensions2;
+    public partial bool ShowMirrorDimensions2 { get; set; }
 
     [ObservableProperty]
-    private bool showMirrorDimensions3;
+    public partial bool ShowMirrorDimensions3 { get; set; }
 
     private void CanShowMirrorDimensions()
     {
@@ -116,7 +116,7 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)

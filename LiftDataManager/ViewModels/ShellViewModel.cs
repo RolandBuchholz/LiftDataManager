@@ -9,16 +9,16 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     public IJsonNavigationViewService JsonNavigationViewService { get; }
 
     [ObservableProperty]
-    private bool isBackEnabled;
+    public partial bool IsBackEnabled { get; set; }
 
     [ObservableProperty]
-    private bool showGlobalSearch = true;
+    public partial bool ShowGlobalSearch { get; set; } = true;
 
     [ObservableProperty]
-    private string? globalSearchInput;
+    public partial string? GlobalSearchInput { get; set; }
 
     [ObservableProperty]
-    private string? header;
+    public partial string? Header { get; set; }
 
     public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
     {

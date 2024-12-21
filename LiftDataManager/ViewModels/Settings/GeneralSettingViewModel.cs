@@ -13,7 +13,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
-    private bool autoSave;
+    public partial bool AutoSave { get; set; }
     partial void OnAutoSaveChanged(bool value)
     {
         if (!Equals(value, _settingService.AutoSave))
@@ -21,7 +21,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
-    private bool autoOpenInfoCenter;
+    public partial bool AutoOpenInfoCenter { get; set; }
     partial void OnAutoOpenInfoCenterChanged(bool value)
     {
         if (!Equals(value, _settingService.AutoOpenInfoCenter))
@@ -29,7 +29,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
-    private bool tonerSaveMode;
+    public partial bool TonerSaveMode { get; set; }
     partial void OnTonerSaveModeChanged(bool value)
     {
         if (!Equals(value, _settingService.TonerSaveMode))
@@ -37,7 +37,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
-    private bool lowHighlightMode;
+    public partial bool LowHighlightMode { get; set; }
     partial void OnLowHighlightModeChanged(bool value)
     {
         if (!Equals(value, _settingService.LowHighlightMode))
@@ -45,7 +45,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
-    private string? autoSavePeriod;
+    public partial string? AutoSavePeriod { get; set; }
     partial void OnAutoSavePeriodChanged(string? value)
     {
         value ??= string.Empty;
@@ -56,7 +56,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     public string[] SavePeriods = ["2 min", "5 min", "10 min", "15 min", "20 min", "30 min", "45 min"];
 
     [ObservableProperty]
-    private bool adminmode;
+    public partial bool Adminmode { get; set; }
     partial void OnAdminmodeChanged(bool value)
     {
         if (_currentSpeziProperties is not null && value != _currentSpeziProperties.Adminmode)

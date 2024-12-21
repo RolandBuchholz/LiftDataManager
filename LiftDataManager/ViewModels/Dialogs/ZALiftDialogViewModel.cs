@@ -72,27 +72,27 @@ public partial class ZALiftDialogViewModel : ObservableObject
     public string? OrderNumber { get; set; }
 
     [ObservableProperty]
-    private string? exWorkStatus = "Ziehl Abegg Auslegung wird bearbeitet";
+    public partial string? ExWorkStatus { get; set; } = "Ziehl Abegg Auslegung wird bearbeitet";
 
     [ObservableProperty]
-    private bool zAliftRegEditSuccessful;
+    public partial bool ZAliftRegEditSuccessful { get; set; }
 
     [ObservableProperty]
-    private bool zAliftDataReadyForImport;
+    public partial bool ZAliftDataReadyForImport { get; set; }
     partial void OnZAliftDataReadyForImportChanged(bool value)
     {
         ExWorkStatus = value ? "Daten zur Übernahme bereit" : "Ziehl Abegg Auslegung wird bearbeitet";
     }
 
     [ObservableProperty]
-    private bool zAliftHtmlUpdated;
+    public partial bool ZAliftHtmlUpdated { get; set; }
     partial void OnZAliftHtmlUpdatedChanged(bool value)
     {
         ZAliftDataReadyForImport = value & ZAliftAusUpdated;
     }
 
     [ObservableProperty]
-    private bool zAliftAusUpdated;
+    public partial bool ZAliftAusUpdated { get; set; }
     partial void OnZAliftAusUpdatedChanged(bool value)
     {
         ZAliftDataReadyForImport = value & ZAliftHtmlUpdated;

@@ -17,7 +17,7 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
     }
 
     [ObservableProperty]
-    private bool customAccentColor;
+    public partial bool CustomAccentColor { get; set; }
     partial void OnCustomAccentColorChanged(bool value)
     {
         _settingService.SetSettingsAsync(nameof(CustomAccentColor), value);

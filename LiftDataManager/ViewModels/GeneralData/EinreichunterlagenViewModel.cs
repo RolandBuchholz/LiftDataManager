@@ -64,16 +64,16 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
 
     [ObservableProperty]
-    private string protectedSpaceTypPitImage = "/Images/NoImage.png";
+    public partial string ProtectedSpaceTypPitImage { get; set; } = "/Images/NoImage.png";
 
     [ObservableProperty]
-    private string protectedSpaceTypPitDescription = "Kein Schutzraum gewählt";
+    public partial string ProtectedSpaceTypPitDescription { get; set; } = "Kein Schutzraum gewählt";
 
     [ObservableProperty]
-    private string protectedSpaceTypHeadImage = "/Images/NoImage.png";
+    public partial string ProtectedSpaceTypHeadImage { get; set; } = "/Images/NoImage.png";
 
     [ObservableProperty]
-    private string protectedSpaceTypHeadDescription = "Kein Schutzraum gewählt";
+    public partial string ProtectedSpaceTypHeadDescription { get; set; } = "Kein Schutzraum gewählt";
 
     private void SetLiftDocumentation()
     {

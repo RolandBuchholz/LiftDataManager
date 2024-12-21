@@ -118,41 +118,41 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string? spezifikationName;
+    public partial string? SpezifikationName { get; set; }
 
     [ObservableProperty]
-    private string? dataImportDescription = "Daten aus einer vorhandenen Spezifikation importieren.";
+    public partial string? DataImportDescription { get; set; } = "Daten aus einer vorhandenen Spezifikation importieren.";
 
     [ObservableProperty]
-    private string dragAndDropDescription = string.Empty;
+    public partial string DragAndDropDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
-    private string? dataImportDescriptionImage = defaultImage;
+    public partial string? DataImportDescriptionImage { get; set; } = defaultImage;
 
     [ObservableProperty]
-    private string? importSpezifikationName;
+    public partial string? ImportSpezifikationName { get; set; }
     partial void OnImportSpezifikationNameChanged(string? value)
     {
         UpdateDataImportStatusText();
     }
 
     [ObservableProperty]
-    private string? dataImportStatusText = "Keine Daten für Import vorhanden";
+    public partial string? DataImportStatusText { get; set; } = "Keine Daten für Import vorhanden";
 
     [ObservableProperty]
-    private InfoBarSeverity dataImportStatus = InfoBarSeverity.Informational;
+    public partial InfoBarSeverity DataImportStatus { get; set; } = InfoBarSeverity.Informational;
 
     [ObservableProperty]
-    private bool showImportCarFrames;
+    public partial bool ShowImportCarFrames { get; set; }
 
     [ObservableProperty]
-    private bool showDragAndDropPanel;
+    public partial bool ShowDragAndDropPanel { get; set; }
 
     [ObservableProperty]
-    private string? selectedImportCarFrame;
+    public partial string? SelectedImportCarFrame { get; set; }
 
     [ObservableProperty]
-    private SpezifikationTyp? importSpezifikationTyp = SpezifikationTyp.Order;
+    public partial SpezifikationTyp? ImportSpezifikationTyp { get; set; } = SpezifikationTyp.Order;
     partial void OnImportSpezifikationTypChanged(SpezifikationTyp? value)
     {
         ImportSpezifikationName = string.Empty;
@@ -210,14 +210,14 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StartDataImportCommand))]
-    private bool canImportSpeziData;
+    public partial bool CanImportSpeziData { get; set; }
     partial void OnCanImportSpeziDataChanged(bool value)
     {
         UpdateDataImportStatusText();
     }
 
     [ObservableProperty]
-    private bool liftDataReadyForImport;
+    public partial bool LiftDataReadyForImport { get; set; }
     partial void OnLiftDataReadyForImportChanged(bool value)
     {
         DataImportStatusText = value ? "Daten zur Übernahme bereit" : DataImportStatusText;

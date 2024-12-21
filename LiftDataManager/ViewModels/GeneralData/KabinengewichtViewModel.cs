@@ -30,7 +30,7 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     }
 
     [ObservableProperty]
-    private bool overridenCarWeight;
+    public partial bool OverridenCarWeight { get; set; }
 
     public void OnNavigatedTo(object parameter)
     {

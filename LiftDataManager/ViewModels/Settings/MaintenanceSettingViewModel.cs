@@ -31,7 +31,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
     public List<string> LogLevel = ["Verbose", "Debug", "Information", "Warning", "Error", "Fatal"];
 
     [ObservableProperty]
-    private string? selectedLogLevel;
+    public partial string? SelectedLogLevel { get; set; }
     partial void OnSelectedLogLevelChanged(string? value)
     {
         value ??= string.Empty;
@@ -39,7 +39,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             _settingService.SetSettingsAsync(nameof(LogLevel), value);
     }
     [ObservableProperty]
-    private string? pathCFP;
+    public partial string? PathCFP { get; set; }
     partial void OnPathCFPChanged(string? value)
     {
         value ??= string.Empty;
@@ -48,7 +48,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
     }
 
     [ObservableProperty]
-    private string? pathZALift;
+    public partial string? PathZALift { get; set; }
     partial void OnPathZALiftChanged(string? value)
     {
         value ??= string.Empty;
@@ -57,7 +57,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
     }
 
     [ObservableProperty]
-    private string? pathLilo;
+    public partial string? PathLilo { get; set; }
     partial void OnPathLiloChanged(string? value)
     {
         value ??= string.Empty;
@@ -65,7 +65,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             _settingService.SetSettingsAsync(nameof(PathLilo), value);
     }
     [ObservableProperty]
-    private string? pathExcel;
+    public partial string? PathExcel { get; set; }
     partial void OnPathExcelChanged(string? value)
     {
         value ??= string.Empty;
@@ -73,7 +73,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             _settingService.SetSettingsAsync(nameof(PathExcel), value);
     }
     [ObservableProperty]
-    private string? pathDataBase;
+    public partial string? PathDataBase { get; set; }
     partial void OnPathDataBaseChanged(string? value)
     {
         value ??= string.Empty;
@@ -81,11 +81,11 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             _settingService.SetSettingsAsync(nameof(PathDataBase), value);
     }
     [ObservableProperty]
-    private string? infoBarVersionsUpdateText;
+    public partial string? InfoBarVersionsUpdateText { get; set; }
     [ObservableProperty]
-    private bool infoBarVersionsUpdateIsOpen;
+    public partial bool InfoBarVersionsUpdateIsOpen { get; set; }
     [ObservableProperty]
-    private InfoBarSeverity infoBarVersionsUpdateSeverity;
+    public partial InfoBarSeverity InfoBarVersionsUpdateSeverity { get; set; }
     [RelayCommand]
     private async Task UpdateCheckAsync()
     {
@@ -171,7 +171,9 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
     {
         string path = Path.Combine(Path.GetTempPath(), "LiftDataManager");
         if (Directory.Exists(path))
+        {
             Process.Start("explorer.exe", path);
+        }
         await Task.CompletedTask;
     }
     private void GetProgrammsPath()

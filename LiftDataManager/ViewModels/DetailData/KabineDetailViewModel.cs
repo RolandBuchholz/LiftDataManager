@@ -11,7 +11,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private bool showAutoCeilingWarning;
+    public partial bool ShowAutoCeilingWarning { get; set; }
 
     private void CheckAutoCeilingWarning()
     {
@@ -31,7 +31,7 @@ public partial class KabineDetailViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)

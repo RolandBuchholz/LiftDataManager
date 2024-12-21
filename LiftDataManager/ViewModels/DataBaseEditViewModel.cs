@@ -19,8 +19,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         _logger = logger;
         _parametercontext = parametercontext;
         _parameterEditContext = parameterEditContext;
-        parameterDtos ??= [];
-        filteredParameterDtos ??= [];
+        ParameterDtos ??= [];
+        FilteredParameterDtos ??= [];
     }
 
     [RelayCommand]
@@ -47,28 +47,28 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? dataBasePath;
+    public partial string? DataBasePath { get; set; }
 
     [ObservableProperty]
-    private List<ParameterDto> parameterDtos;
+    public partial List<ParameterDto> ParameterDtos { get; set; }
 
     [ObservableProperty]
-    private List<ParameterDto> filteredParameterDtos;
+    public partial List<ParameterDto> FilteredParameterDtos { get; set; }
 
     [ObservableProperty]
-    private List<string?>? allTables;
+    public partial List<string?>? AllTables { get; set; }
 
     [ObservableProperty]
-    private List<string?>? filteredAllTables;
+    public partial List<string?>? FilteredAllTables { get; set; }
 
     [ObservableProperty]
-    private List<object> databaseTable = [];
+    public partial List<object> DatabaseTable { get; set; } = [];
 
     [ObservableProperty]
-    private List<DatabaseTableValueModification>? tableHistory;
+    public partial List<DatabaseTableValueModification>? TableHistory { get; set; }
 
     [ObservableProperty]
-    private string? selectedTable;
+    public partial string? SelectedTable { get; set; }
     partial void OnSelectedTableChanged(string? value)
     {
         RefreshSelectedTable(value);
@@ -104,10 +104,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private List<ParameterTyp>? parameterTyps;
+    public partial List<ParameterTyp>? ParameterTyps { get; set; }
 
     [ObservableProperty]
-    private ParameterTyp? selectedParameterTyp;
+    public partial ParameterTyp? SelectedParameterTyp { get; set; }
     partial void OnSelectedParameterTypChanged(ParameterTyp? value)
     {
         if (value is not null)
@@ -122,10 +122,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private List<ParameterTypeCode>? parameterTypeCodes;
+    public partial List<ParameterTypeCode>? ParameterTypeCodes { get; set; }
 
     [ObservableProperty]
-    private ParameterTypeCode? selectedParameterTypeCode;
+    public partial ParameterTypeCode? SelectedParameterTypeCode { get; set; }
     partial void OnSelectedParameterTypeCodeChanged(ParameterTypeCode? value)
     {
         if (value is not null)
@@ -135,10 +135,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private List<ParameterCategory>? parameterCategorys;
+    public partial List<ParameterCategory>? ParameterCategorys { get; set; }
 
     [ObservableProperty]
-    private ParameterCategory? selectedParameterCategory;
+    public partial ParameterCategory? SelectedParameterCategory { get; set; }
     partial void OnSelectedParameterCategoryChanged(ParameterCategory? value)
     {
         if (value is not null)
@@ -148,7 +148,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? uniqueName;
+    public partial string? UniqueName { get; set; }
     partial void OnUniqueNameChanged(string? value)
     {
         if (!string.IsNullOrWhiteSpace(value))
@@ -158,7 +158,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? displayName;
+    public partial string? DisplayName { get; set; }
     partial void OnDisplayNameChanged(string? value)
     {
         if (!string.IsNullOrWhiteSpace(value))
@@ -168,13 +168,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? parameterValue;
+    public partial string? ParameterValue { get; set; }
 
     [ObservableProperty]
-    private string? comment;
+    public partial string? Comment { get; set; }
 
     [ObservableProperty]
-    private bool? isKey;
+    public partial bool? IsKey { get; set; }
     partial void OnIsKeyChanged(bool? value)
     {
         if (value is not null)
@@ -184,7 +184,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private bool? isDefaultUserEditable;
+    public partial bool? IsDefaultUserEditable { get; set; }
     partial void OnIsDefaultUserEditableChanged(bool? value)
     {
         if (value is not null)
@@ -194,13 +194,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private List<string>? dropdownlistTables;
+    public partial List<string>? DropdownlistTables { get; set; }
 
     [ObservableProperty]
-    private bool isdropdownlistTablesVisible;
+    public partial bool IsdropdownlistTablesVisible { get; set; }
 
     [ObservableProperty]
-    private string? selectedDropdownlistTable;
+    public partial string? SelectedDropdownlistTable { get; set; }
     partial void OnSelectedDropdownlistTableChanged(string? value)
     {
         if (!string.IsNullOrWhiteSpace(value))
@@ -210,30 +210,30 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? removeParameterId;
+    public partial string? RemoveParameterId { get; set; }
     partial void OnRemoveParameterIdChanged(string? value)
     {
         CanRemoveParameter = !string.IsNullOrWhiteSpace(value) && value != "0";
     }
 
     [ObservableProperty]
-    private bool showTable;
+    public partial bool ShowTable { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveParameterFromDataBaseCommand))]
-    private bool canRemoveParameter;
+    public partial bool CanRemoveParameter { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddParameterToDataBaseCommand))]
-    private bool canAddParameter;
+    public partial bool CanAddParameter { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddValueToTableCommand))]
-    private bool canAddTableValue;
+    public partial bool CanAddTableValue { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeParametersDataCommand))]
-    private bool canChangeParameters;
+    public partial bool CanChangeParameters { get; set; }
 
     private void CheckCanAddParameter()
     {
@@ -248,13 +248,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private bool showParameterDeleteMessage;
+    public partial bool ShowParameterDeleteMessage { get; set; }
 
     [ObservableProperty]
-    private string? parameterDeleteMessage;
+    public partial string? ParameterDeleteMessage { get; set; }
 
     [ObservableProperty]
-    private string? searchInput;
+    public partial string? SearchInput { get; set; }
     partial void OnSearchInputChanged(string? value)
     {
         if (value is not null)
@@ -269,7 +269,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? searchTableInput;
+    public partial string? SearchTableInput { get; set; }
     partial void OnSearchTableInputChanged(string? value)
     {
         if (value is not null)
@@ -284,7 +284,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string? filterValue;
+    public partial string? FilterValue { get; set; }
 
     partial void OnFilterValueChanged(string? value)
     {

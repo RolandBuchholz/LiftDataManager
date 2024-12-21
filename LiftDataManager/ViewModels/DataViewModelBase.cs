@@ -64,13 +64,13 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
-    private bool hasErrors;
+    public partial bool HasErrors { get; set; }
 
     [ObservableProperty]
-    private bool infoCenterIsOpen;
+    public partial bool InfoCenterIsOpen { get; set; }
 
     [ObservableProperty]
-    private bool hideInfoErrors;
+    public partial bool HideInfoErrors { get; set; }
     partial void OnHideInfoErrorsChanged(bool value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.HideInfoErrors, value))
@@ -81,14 +81,14 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
-    private string? fullPathXml;
+    public partial string? FullPathXml { get; set; }
     partial void OnFullPathXmlChanged(string? value)
     {
         SetFullpathAutodeskTransfer(value);
     }
 
     [ObservableProperty]
-    private bool auftragsbezogeneXml;
+    public partial bool AuftragsbezogeneXml { get; set; }
     partial void OnAuftragsbezogeneXmlChanged(bool value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.AuftragsbezogeneXml, value))
@@ -99,7 +99,7 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
-    private bool checkOut;
+    public partial bool CheckOut { get; set; }
     partial void OnCheckOutChanged(bool value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.CheckOut, value))
@@ -121,7 +121,7 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [ObservableProperty]
-    private bool likeEditParameter;
+    public partial bool LikeEditParameter { get; set; }
     partial void OnLikeEditParameterChanged(bool value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<bool>.Default.Equals(CurrentSpeziProperties.LikeEditParameter, value))
@@ -133,7 +133,7 @@ public partial class DataViewModelBase : ObservableRecipient
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveAllParameterCommand))]
-    private bool canSaveAllSpeziParameters;
+    public partial bool CanSaveAllSpeziParameters { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanSaveAllSpeziParameters))]
     public async Task SaveAllParameterAsync()

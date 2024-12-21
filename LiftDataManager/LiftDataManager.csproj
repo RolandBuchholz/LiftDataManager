@@ -5,6 +5,7 @@
     <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
     <!--<AllowUnsafeBlocks>true</AllowUnsafeBlocks>-->
     <DefaultLanguage>de</DefaultLanguage>
+    <LangVersion>preview</LangVersion>
     <RootNamespace>LiftDataManager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PlatformTarget>x64</PlatformTarget>

@@ -28,10 +28,13 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     public override void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null)
+        {
             return;
+        }
         if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-
+        }
         if (message.PropertyName == "var_KBI" ||
             message.PropertyName == "var_KTI" ||
             message.PropertyName == "var_TuerEinbau" ||
@@ -150,91 +153,91 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     }
 
     [ObservableProperty]
-    private bool isCarCeilingReadOnly;
+    public partial bool IsCarCeilingReadOnly { get; set; }
 
     [ObservableProperty]
-    private string carCeilingReadOnlyInfo = "Parameter wird automatisch gesetzt";
+    public partial string CarCeilingReadOnlyInfo { get; set; } = "Parameter wird automatisch gesetzt";
 
     [ObservableProperty]
-    private bool showCarWidthBetweenDoors;
+    public partial bool ShowCarWidthBetweenDoors { get; set; }
 
     [ObservableProperty]
-    private bool showCarDepthBetweenDoors;
+    public partial bool ShowCarDepthBetweenDoors { get; set; }
 
     [ObservableProperty]
-    private string? infoTextCarWidthBetweenDoors;
+    public partial string? InfoTextCarWidthBetweenDoors { get; set; }
 
     [ObservableProperty]
-    private string? infoTextCarDepthBetweenDoors;
+    public partial string? InfoTextCarDepthBetweenDoors { get; set; }
 
     [ObservableProperty]
-    private string? infoTextCarCeiling;
+    public partial string? InfoTextCarCeiling { get; set; }
 
     [ObservableProperty]
-    private bool isCarCeilingOverwritten;
+    public partial bool IsCarCeilingOverwritten { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth1;
+    public partial string? MirrorDimensionsWidth1 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth2;
+    public partial string? MirrorDimensionsWidth2 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsWidth3;
+    public partial string? MirrorDimensionsWidth3 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight1;
+    public partial string? MirrorDimensionsHeight1 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight2;
+    public partial string? MirrorDimensionsHeight2 { get; set; }
 
     [ObservableProperty]
-    private string? mirrorDimensionsHeight3;
+    public partial string? MirrorDimensionsHeight3 { get; set; }
 
     [ObservableProperty]
-    private bool showMirrorDimensions2;
+    public partial bool ShowMirrorDimensions2 { get; set; }
 
     [ObservableProperty]
-    private bool showMirrorDimensions3;
+    public partial bool ShowMirrorDimensions3 { get; set; }
 
     [ObservableProperty]
-    private string floorImagePath = @"/Images/NoImage.png";
+    public partial string FloorImagePath { get; set; } = @"/Images/NoImage.png";
 
     [ObservableProperty]
-    private bool showFlooringColors;
+    public partial bool ShowFlooringColors { get; set; }
 
     [ObservableProperty]
-    private bool showFlooringSurface;
+    public partial bool ShowFlooringSurface { get; set; }
 
     [ObservableProperty]
-    private bool canEditFlooringProperties;
+    public partial bool CanEditFlooringProperties { get; set; }
 
     [ObservableProperty]
-    private bool canEditFloorWeightAndHeight;
+    public partial bool CanEditFloorWeightAndHeight { get; set; }
 
     [ObservableProperty]
-    private bool showGlassPanels;
+    public partial bool ShowGlassPanels { get; set; }
 
     [ObservableProperty]
-    private bool showGlassPanelsColor;
+    public partial bool ShowGlassPanelsColor { get; set; }
 
     [ObservableProperty]
-    private bool showCustomSkirtingBoards;
+    public partial bool ShowCustomSkirtingBoards { get; set; }
 
     [ObservableProperty]
-    private bool showCustomRammingProtections;
+    public partial bool ShowCustomRammingProtections { get; set; }
 
     [ObservableProperty]
-    private bool showRammingProtectionsRowsCount;
+    public partial bool ShowRammingProtectionsRowsCount { get; set; }
 
     [ObservableProperty]
-    private bool showRammingProtectionsRowHeight1;
+    public partial bool ShowRammingProtectionsRowHeight1 { get; set; }
 
     [ObservableProperty]
-    private bool showRammingProtectionsRowHeight2;
+    public partial bool ShowRammingProtectionsRowHeight2 { get; set; }
 
     [ObservableProperty]
-    private bool showRammingProtectionsRowHeight3;
+    public partial bool ShowRammingProtectionsRowHeight3 { get; set; }
 
     private double _floorHeight;
 

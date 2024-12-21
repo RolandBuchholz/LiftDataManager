@@ -51,45 +51,45 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     }
 
     [ObservableProperty]
-    private bool showCFPDataBaseOverriddenWarning;
+    public partial bool ShowCFPDataBaseOverriddenWarning { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenSpeziPdfCommand))]
-    private bool canOpenSpeziPdf;
+    public partial bool CanOpenSpeziPdf { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenCalculationsCommand))]
-    private bool canOpenCalculations;
+    public partial bool CanOpenCalculations { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenVaultCommand))]
-    private bool canOpenVault;
+    public partial bool CanOpenVault { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenZiehlAbeggCommand))]
-    private bool canOpenZALift;
+    public partial bool CanOpenZALift { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ImportZAliftDataCommand))]
-    private bool canImportZAliftData;
+    public partial bool CanImportZAliftData { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenZiehlAbeggHtmlCommand))]
-    private bool canOpenZALiftHtml;
+    public partial bool CanOpenZALiftHtml { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenCFPCommand))]
-    private bool canOpenCFP;
+    public partial bool CanOpenCFP { get; set; }
 
     [ObservableProperty]
-    private bool canImportCFPData;
+    public partial bool CanImportCFPData { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenLiloCommand))]
-    private bool canOpenLilo;
+    public partial bool CanOpenLilo { get; set; }
 
     [ObservableProperty]
-    private string updatedParameter = string.Empty;
+    public partial string UpdatedParameter { get; set; } = string.Empty;
 
     public void CheckCanOpenFiles()
     {

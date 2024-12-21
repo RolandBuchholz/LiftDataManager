@@ -18,10 +18,10 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     }
 
     [ObservableProperty]
-    private bool canShowHistoryEntrys;
+    public partial bool CanShowHistoryEntrys { get; set; }
 
     [ObservableProperty]
-    private string? searchInput;
+    public partial string? SearchInput { get; set; }
 
     private async Task GetLiftHistoryEntrysAsync(string? path)
     {
@@ -29,7 +29,9 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
             return;
         var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path, true);
         if (result is null)
+        {
             return;
+        }
         HistoryEntrys.AddRange(result);
     }
 
@@ -75,7 +77,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     {
         NavigatedToBaseActions();
         _ = GetLiftHistoryEntrysAsync(FullPathXml);
-        CanShowHistoryEntrys = HistoryEntrys.Any();
+        CanShowHistoryEntrys = HistoryEntrys.Count != 0;
     }
 
     public void OnNavigatedFrom()

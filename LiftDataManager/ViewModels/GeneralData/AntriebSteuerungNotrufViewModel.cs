@@ -23,7 +23,7 @@ public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavig
     }
 
     [ObservableProperty]
-    private bool isRopedrive;
+    public partial bool IsRopedrive { get; set; }
 
     private void SetDriveTyp()
     {

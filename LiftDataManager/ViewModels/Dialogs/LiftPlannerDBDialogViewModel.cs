@@ -18,7 +18,6 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     }
 
     public int LiftPlannerId { get; set; }
-
     public bool IsCompanyValid { get; set; }
     public bool IsNameValid { get; set; }
     public bool IsStreetValid { get; set; }
@@ -85,13 +84,13 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string dataBaseAction = "Neuen Fachplaner anlegen";
+    public partial string DataBaseAction { get; set; } = "Neuen Fachplaner anlegen";
 
     [ObservableProperty]
-    private string dataBaseActionDescription = "Neuen Fachplaner erstellen und in die Datenbank speichen";
+    public partial string DataBaseActionDescription { get; set; } = "Neuen Fachplaner erstellen und in die Datenbank speichen";
 
     [ObservableProperty]
-    private string dataBaseButtonText = "Fachplaner erstellen und speichern";
+    public partial string DataBaseButtonText { get; set; } = "Fachplaner erstellen und speichern";
 
     private void CheckLiftplannerIsValid()
     {
@@ -103,10 +102,10 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private int zipCodePlaces;
+    public partial int ZipCodePlaces { get; set; }
 
     [ObservableProperty]
-    private string? zipCode;
+    public partial string? ZipCode { get; set; }
     partial void OnZipCodeChanged(string? value)
     {
         if (value is not null && SelectedCountry is not null)
@@ -117,44 +116,44 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddLiftPlannerToDatabaseCommand))]
-    private bool canAddLiftPlannerToDatabase;
+    public partial bool CanAddLiftPlannerToDatabase { get; set; }
 
     [ObservableProperty]
-    private string? company;
+    public partial string? Company { get; set; }
     partial void OnCompanyChanged(string? value)
     {
         CheckLiftplannerIsValid();
     }
 
     [ObservableProperty]
-    private string? name;
+    public partial string? Name { get; set; }
     partial void OnNameChanged(string? value)
     {
         CheckLiftplannerIsValid();
     }
 
     [ObservableProperty]
-    private string? firstName;
+    public partial string? FirstName { get; set; }
 
     [ObservableProperty]
-    private string? street;
+    public partial string? Street { get; set; }
     partial void OnStreetChanged(string? value)
     {
         CheckLiftplannerIsValid();
     }
 
     [ObservableProperty]
-    private string? streetNumber;
+    public partial string? StreetNumber { get; set; }
 
     [ObservableProperty]
-    private string? town;
+    public partial string? Town { get; set; }
     partial void OnTownChanged(string? value)
     {
         CheckLiftplannerIsValid();
     }
 
     [ObservableProperty]
-    private bool canShowZipCode;
+    public partial bool CanShowZipCode { get; set; }
     partial void OnCanShowZipCodeChanged(bool value)
     {
         if (value && SelectedCountry is not null)
@@ -164,7 +163,7 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool canShowTown;
+    public partial bool CanShowTown { get; set; }
     partial void OnCanShowTownChanged(bool value)
     {
         if (!string.IsNullOrWhiteSpace(ZipCode))
@@ -184,23 +183,23 @@ public partial class LiftPlannerDBDialogViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool townIsInDataBase;
+    public partial bool TownIsInDataBase { get; set; }
 
     [ObservableProperty]
-    private string? phoneNumber;
+    public partial string? PhoneNumber { get; set; }
 
     [ObservableProperty]
-    private string? mobileNumber;
+    public partial string? MobileNumber { get; set; }
 
     [ObservableProperty]
-    private string? mailadress;
+    public partial string? Mailadress { get; set; }
     partial void OnMailadressChanged(string? value)
     {
         CheckLiftplannerIsValid();
     }
 
     [ObservableProperty]
-    private Country? selectedCountry;
+    public partial Country? SelectedCountry { get; set; }
     partial void OnSelectedCountryChanged(Country? oldValue, Country? newValue)
     {
         if (newValue is null && oldValue is not null)

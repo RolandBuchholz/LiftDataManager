@@ -8,21 +8,16 @@ public partial class ValidationDialogViewModel : ObservableObject
     public ValidationDialogViewModel(ILogger<ValidationDialogViewModel> logger)
     {
         _logger = logger;
-
     }
 
     [ObservableProperty]
-    private int parameterCount;
-
+    public partial int ParameterCount { get; set; }
     [ObservableProperty]
-    private int errorCount;
-
+    public partial int ErrorCount { get; set; }
     [ObservableProperty]
-    private int warningCount;
-
+    public partial int WarningCount { get; set; }
     [ObservableProperty]
-    private int infoCount;
-
+    public partial int InfoCount { get; set; }
 
     [RelayCommand]
     public async Task ValidationResultDialogLoadedAsync(ValidationDialog sender)

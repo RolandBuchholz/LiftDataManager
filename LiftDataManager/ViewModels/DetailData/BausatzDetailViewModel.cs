@@ -14,7 +14,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ILogger<BausatzDetailViewModel> _logger;
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
-    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService , ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
+    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
          base(parameterDataService, dialogService, infoCenterService, settingService)
     {
         _parametercontext = parametercontext;
@@ -72,10 +72,10 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     public CarFrameType? CarFrameTyp { get; set; }
 
     [ObservableProperty]
-    private string carFrameTypName = "Kein Bausatz gewählt";
+    public partial string CarFrameTypName { get; set; } = "Kein Bausatz gewählt";
 
     [ObservableProperty]
-    private double ropeDiameter = 0d;
+    public partial double RopeDiameter { get; set; } = 0d;
     partial void OnRopeDiameterChanged(double value)
     {
         if (RopeCalculationData != null)
@@ -86,7 +86,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private int wireStrength = 0;
+    public partial int WireStrength { get; set; } = 0;
     partial void OnWireStrengthChanged(int value)
     {
         if (RopeCalculationData != null)
@@ -97,7 +97,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private double ropeWeight = 0;
+    public partial double RopeWeight { get; set; } = 0;
     partial void OnRopeWeightChanged(double value)
     {
         if (RopeCalculationData != null)
@@ -108,7 +108,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private int maximumNumberOfRopes = 0;
+    public partial int MaximumNumberOfRopes { get; set; } = 0;
     partial void OnMaximumNumberOfRopesChanged(int value)
     {
         if (RopeCalculationData != null)
@@ -119,99 +119,97 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private bool showCounterWeightBuffer;
+    public partial bool ShowCounterWeightBuffer { get; set; }
+    [ObservableProperty]
+    public partial bool ShowReducedSafetyRoomHeadBuffer { get; set; }
 
     [ObservableProperty]
-    private bool showReducedSafetyRoomHeadBuffer;
+    public partial bool ShowReducedSafetyRoomPitBuffer { get; set; }
 
     [ObservableProperty]
-    private bool showReducedSafetyRoomPitBuffer;
+    public partial RopeCalculationData? RopeCalculationData { get; set; }
 
     [ObservableProperty]
-    private RopeCalculationData? ropeCalculationData;
+    public partial BufferCalculationData? BufferCalculationDataCarFrame { get; set; }
 
     [ObservableProperty]
-    private BufferCalculationData? bufferCalculationDataCarFrame;
+    public partial BufferCalculationData? BufferCalculationDataCounterWeight { get; set; }
 
     [ObservableProperty]
-    private BufferCalculationData? bufferCalculationDataCounterWeight;
+    public partial BufferCalculationData? BufferCalculationDataReducedSafetyRoomHead { get; set; }
 
     [ObservableProperty]
-    private BufferCalculationData? bufferCalculationDataReducedSafetyRoomHead;
+    public partial BufferCalculationData? BufferCalculationDataReducedSafetyRoomPit { get; set; }
 
     [ObservableProperty]
-    private BufferCalculationData? bufferCalculationDataReducedSafetyRoomPit;
+    public partial string CarFrameDescription { get; set; } = "Keine Bausatzinformationen";
 
     [ObservableProperty]
-    private string carFrameDescription = "Keine Bausatzinformationen";
+    public partial string CWTDGBName { get; set; } = "Stichmaß GGW";
 
     [ObservableProperty]
-    private string cWTDGBName = "Stichmaß GGW";
+    public partial bool IsCFPFrame { get; set; }
 
     [ObservableProperty]
-    private bool isCFPFrame;
+    public partial bool IsCFPDataBaseOverwritten { get; set; }
+    [ObservableProperty]
+    public partial bool ShowCFPFrameInfo { get; set; }
 
     [ObservableProperty]
-    private bool isCFPDataBaseOverwritten;
+    public partial bool IsRopedrive { get; set; }
 
     [ObservableProperty]
-    private bool showCFPFrameInfo;
+    public partial bool IsCantilever { get; set; }
 
     [ObservableProperty]
-    private bool isRopedrive;
+    public partial bool HasRopes { get; set; }
 
     [ObservableProperty]
-    private bool isCantilever;
-
-    [ObservableProperty]
-    private bool hasRopes;
-
-    [ObservableProperty]
-    private int selectedEulerCaseCarFrame = 1;
+    public partial int SelectedEulerCaseCarFrame { get; set; } = 1;
     partial void OnSelectedEulerCaseCarFrameChanged(int value)
     {
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", value, false);
     }
 
     [ObservableProperty]
-    private int selectedEulerCaseCounterWeight = 1;
+    public partial int SelectedEulerCaseCounterWeight { get; set; } = 1;
     partial void OnSelectedEulerCaseCounterWeightChanged(int value)
     {
         BufferCalculationDataCounterWeight = GetBufferCalculationData("var_PufferCalculationData_GGW", value, false);
     }
 
     [ObservableProperty]
-    private int selectedEulerCaseReducedSafetyRoomHead = 1;
+    public partial int SelectedEulerCaseReducedSafetyRoomHead { get; set; } = 1;
     partial void OnSelectedEulerCaseReducedSafetyRoomHeadChanged(int value)
     {
         BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", value, BufferUnderCounterweight);
     }
 
     [ObservableProperty]
-    private int selectedEulerCaseReducedSafetyRoomPit = 1;
+    public partial int SelectedEulerCaseReducedSafetyRoomPit { get; set; } = 1;
     partial void OnSelectedEulerCaseReducedSafetyRoomPitChanged(int value)
     {
         BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", value, false);
     }
 
     [ObservableProperty]
-    private bool bufferUnderCounterweight;
+    public partial bool BufferUnderCounterweight { get; set; }
     partial void OnBufferUnderCounterweightChanged(bool value)
     {
         BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, value);
     }
 
     [ObservableProperty]
-    private string bufferDataCarFrame = "Keine Pufferdaten vorhanden";
+    public partial string BufferDataCarFrame { get; set; } = "Keine Pufferdaten vorhanden";
 
     [ObservableProperty]
-    private string bufferDataCounterWeight = "Keine Pufferdaten vorhanden";
+    public partial string BufferDataCounterWeight { get; set; } = "Keine Pufferdaten vorhanden";
 
     [ObservableProperty]
-    private string bufferDataReducedSafetyRoomHead = "Keine Pufferdaten vorhanden";
+    public partial string BufferDataReducedSafetyRoomHead { get; set; } = "Keine Pufferdaten vorhanden";
 
     [ObservableProperty]
-    private string bufferDataReducedSafetyRoomPit = "Keine Pufferdaten vorhanden";
+    public partial string BufferDataReducedSafetyRoomPit { get; set; } = "Keine Pufferdaten vorhanden";
 
     [RelayCommand]
     private static void GoToBausatzViewModel()
@@ -220,7 +218,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)
@@ -228,7 +226,6 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
             var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
             if (pageType != null)
             {
-
                 LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
@@ -433,8 +430,6 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         {
             ParameterDictionary["var_PufferCalculationData_EM_SG"].AutoUpdateParameterValue(string.Empty);
         }
-
-
     }
 
     private void UpdateRopeCalculationData()

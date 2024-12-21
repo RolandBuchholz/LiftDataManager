@@ -18,22 +18,22 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? fullPathXml;
+    public partial string? FullPathXml { get; set; }
 
     [ObservableProperty]
-    private bool adminmode;
+    public partial bool Adminmode { get; set; }
 
     [ObservableProperty]
-    private bool auftragsbezogeneXml;
+    public partial bool AuftragsbezogeneXml { get; set; }
 
     [ObservableProperty]
-    private bool checkOut;
+    public partial bool CheckOut { get; set; }
 
     [ObservableProperty]
-    private bool likeEditParameter;
+    public partial bool LikeEditParameter { get; set; }
 
     [ObservableProperty]
-    private bool hideInfoErrors;
+    public partial bool HideInfoErrors { get; set; }
 
     public ErrorPageInfo? ErrorPageInfo { get; set; }
     public bool CustomAccentColor { get; set; }
@@ -57,7 +57,7 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? pathCFP;
+    public partial string? PathCFP { get; set; }
     partial void OnPathCFPChanged(string? value)
     {
         value ??= string.Empty;

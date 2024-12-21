@@ -55,7 +55,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveParameterCommand))]
-    private bool canSaveParameter;
+    public partial bool CanSaveParameter { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
@@ -108,7 +108,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         {
             if (errorList is null)
                 return;
-            if (!errorList.Any())
+            if (errorList.Count == 0)
                 return;
 
             var sortedErrorList = errorList.OrderByDescending(p => p.Severity);

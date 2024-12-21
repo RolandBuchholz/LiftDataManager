@@ -28,7 +28,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             ParameterDictionary["var_Rahmengewicht"].Value = "";
             ParameterDictionary["var_CFPdefiniert"].AutoUpdateParameterValue("False");
-            FangrahmenGewicht = GetFangrahmengewicht(message.NewValue);
+            CarSlingWeight = GetCarSlingWeight(message.NewValue);
             CheckCFPStateAsync(message.NewValue, message.OldValue).SafeFireAndForget();
             UpdateCarFrameDataAsync(message.NewValue, 0).SafeFireAndForget();
             Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
@@ -52,57 +52,53 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParameterDictionary!["var_ZA_IMP_Regler_Typ"].Value);
 
     [ObservableProperty]
-    private bool isCFPFrame;
+    public partial bool IsCFPFrame { get; set; }
 
     [ObservableProperty]
-    private bool isCFPDataBaseOverwritten;
+    public partial bool IsCFPDataBaseOverwritten { get; set; }
 
     [ObservableProperty]
-    private bool showCFPFrameInfo;
+    public partial bool ShowCFPFrameInfo { get; set; }
 
     [ObservableProperty]
-    private string cFPFrameInfoToolTip = "Empfehlung: Bausatzkonfiguration im CFP konfigurieren";
+    public partial string CFPFrameInfoToolTip { get; set; } = "Empfehlung: Bausatzkonfiguration im CFP konfigurieren";
 
     [ObservableProperty]
-    private string cWTRailName = "Führungsschienen GGW";
+    public partial string CWTRailName { get; set; } = "Führungsschienen GGW";
 
     [ObservableProperty]
-    private string cWTGuideName = "Führungsart GGW";
+    public partial string CWTGuideName { get; set; } = "Führungsart GGW";
 
     [ObservableProperty]
-    private string cWTRailState = "Status Führungsschienen GGW";
+    public partial string CWTRailState { get; set; } = "Status Führungsschienen GGW";
 
     [ObservableProperty]
-    private string cWTGuideTyp = "Typ Führung GGW";
+    public partial string CWTGuideTyp { get; set; } = "Typ Führung GGW";
 
     [ObservableProperty]
-    private string safetygearworkarea = string.Empty;
+    public partial string Safetygearworkarea { get; set; } = string.Empty;
 
-    private double _FangrahmenGewicht;
-    public double FangrahmenGewicht
-    {
-        get => _FangrahmenGewicht;
-        set => SetProperty(ref _FangrahmenGewicht, value);
-    }
+    [ObservableProperty]
+    public partial double CarSlingWeight { get; set; }
 
     private async Task SetCarWeightAsync()
     {
-        if (!string.IsNullOrWhiteSpace(ParameterDictionary!["var_Rahmengewicht"].Value))
+        if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Rahmengewicht"].Value))
         {
-            FangrahmenGewicht = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Rahmengewicht");
+            CarSlingWeight = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_Rahmengewicht");
         }
-        else if (!string.IsNullOrWhiteSpace(ParameterDictionary!["var_Bausatz"].Value))
+        else if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Bausatz"].Value))
         {
-            FangrahmenGewicht = GetFangrahmengewicht(ParameterDictionary!["var_Bausatz"].Value);
+            CarSlingWeight = GetCarSlingWeight(ParameterDictionary["var_Bausatz"].Value);
         }
         else
         {
-            FangrahmenGewicht = 0;
+            CarSlingWeight = 0;
         }
         await Task.CompletedTask;
     }
 
-    private double GetFangrahmengewicht(string? fangrahmenTyp)
+    private double GetCarSlingWeight(string? fangrahmenTyp)
     {
         if (string.IsNullOrEmpty(fangrahmenTyp))
         {

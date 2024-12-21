@@ -12,19 +12,19 @@ public partial class PasswortDialogViewModel : ObservableObject
     public int PasswordLenght => _password.Length;
 
     [ObservableProperty]
-    private bool canSwitchToAdminmode;
+    public partial bool CanSwitchToAdminmode { get; set; }
 
     [ObservableProperty]
-    private string? passwortInfoText = "Kein PIN eingegeben";
+    public partial string? PasswortInfoText { get; set; } = "Kein PIN eingegeben";
 
     [ObservableProperty]
-    private string? passwortInput;
+    public partial string? PasswortInput { get; set; }
     partial void OnPasswortInputChanged(string? value)
     {
         CheckpasswortInput();
     }
     [ObservableProperty]
-    private bool adminmodeWarningAccepted;
+    public partial bool AdminmodeWarningAccepted { get; set; }
     partial void OnAdminmodeWarningAcceptedChanged(bool value)
     {
         CanSwitchToAdminmode = (AdminmodeWarningAccepted == true

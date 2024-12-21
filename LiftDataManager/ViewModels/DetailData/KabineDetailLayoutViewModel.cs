@@ -16,7 +16,7 @@ public partial class KabineDetailLayoutViewModel : DataViewModelBase, INavigatio
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)
