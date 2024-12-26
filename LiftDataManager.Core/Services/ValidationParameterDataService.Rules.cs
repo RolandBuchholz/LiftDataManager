@@ -104,7 +104,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             return;
         }
-        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(_parameterDictionary[name].dropDownList, value);
+        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(_parameterDictionary[name].DropDownList, value);
         if (dropDownListValue == null || dropDownListValue.Id == -1)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: ungültiger Wert | {value} | ist nicht in der Auswahlliste vorhanden.", SetSeverity(severity)));

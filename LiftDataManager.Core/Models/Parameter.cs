@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LiftDataManager.Core.Contracts.Services;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MvvmHelpers;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics;
+using WinRT;
 
 namespace LiftDataManager.Core.Models;
 
@@ -39,13 +42,13 @@ public partial class Parameter : ParameterBase
     public required string DisplayName { get; set; }
 
     [ObservableProperty]
-    public ObservableRangeCollection<SelectionValue> dropDownList;
+    public partial ObservableRangeCollection<SelectionValue> DropDownList { get; set; }
 
     [ObservableProperty]
-    private bool isDirty;
+    public partial bool IsDirty { get; set; }
 
     [ObservableProperty]
-    private string? comment;
+    public partial string? Comment { get; set; }
     partial void OnCommentChanged(string? oldValue, string? newValue)
     {
         if (!DataImport)
@@ -56,7 +59,7 @@ public partial class Parameter : ParameterBase
     }
 
     [ObservableProperty]
-    private bool isKey;
+    public partial bool IsKey { get; set; }
     partial void OnIsKeyChanged(bool oldValue, bool newValue)
     {
         if (!DataImport)
@@ -67,7 +70,7 @@ public partial class Parameter : ParameterBase
     }
 
     [ObservableProperty]
-    private string? value;
+    public partial string? Value { get; set; }
     partial void OnValueChanged(string? oldValue, string? newValue)
     {
         if (!DataImport)
@@ -101,16 +104,23 @@ public partial class Parameter : ParameterBase
         }
     }
 
-    [ObservableProperty]
-    private SelectionValue? dropDownListValue;
-    partial void OnDropDownListValueChanged(SelectionValue? oldValue, SelectionValue? newValue)
+    public SelectionValue? DropDownListValue
     {
-        dropDownListValue = (newValue is null || newValue.Id != 0) ? newValue : null;
-        if (newValue is null && oldValue is not null)
+        get => field;
+        set
         {
-            dropDownListValue = oldValue;
+            if (value is null && field is not null)
+            {
+                return;
+            }
+            if (!EqualityComparer<SelectionValue?>.Default.Equals(field, value))
+            {
+                OnPropertyChanging(nameof(DropDownListValue));
+                field = value?.Id != 0 ? value : null;
+                OnPropertyChanged(nameof(DropDownListValue));
+                Value = field?.Id != 0 ? field?.Name : string.Empty;
+            }
         }
-        Value = dropDownListValue is not null ? dropDownListValue?.Name : string.Empty;
     }
 
     public async Task<List<ParameterStateInfo>> ValidateParameterAsync()
@@ -152,7 +162,6 @@ public partial class Parameter : ParameterBase
 
     public void RefreshDropDownListValue()
     {
-        dropDownListValue = null;
         DropDownListValue = LiftParameterHelper.GetDropDownListValue(DropDownList, Value);
     }
 }

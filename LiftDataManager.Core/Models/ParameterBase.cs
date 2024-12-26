@@ -18,13 +18,13 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     }
 
     [ObservableProperty]
-    private bool hasErrors;
+    public partial bool HasErrors { get; set; }
 
     [ObservableProperty]
-    private ErrorLevel parameterState;
+    public partial ErrorLevel ParameterState { get; set; }
 
     [ObservableProperty]
-    private string? validationErrors;
+    public partial string? ValidationErrors { get; set; }
 
     public IEnumerable GetErrors(string? propertyName)
     {

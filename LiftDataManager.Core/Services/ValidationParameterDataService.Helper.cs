@@ -18,7 +18,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
 
-        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(parameter.dropDownList, parameter.Value);
+        var dropDownListValue = LiftParameterHelper.GetDropDownListValue(parameter.DropDownList, parameter.Value);
         if (dropDownListValue == null || dropDownListValue.Id == -1)
         {
             parameter.AddError("Value", new ParameterStateInfo(parameter.Name!, parameter.DisplayName!, $"{parameter.DisplayName}: ungültiger Wert | {parameter.Value} | ist nicht in der Auswahlliste vorhanden.", ErrorLevel.Error, false));

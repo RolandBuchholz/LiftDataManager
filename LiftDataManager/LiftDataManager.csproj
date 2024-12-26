@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
-    <!--<AllowUnsafeBlocks>true</AllowUnsafeBlocks>-->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefaultLanguage>de</DefaultLanguage>
     <LangVersion>preview</LangVersion>
     <RootNamespace>LiftDataManager</RootNamespace>
@@ -29,6 +29,10 @@
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
     <PackageCertificateThumbprint>2BE4759304E56D677972B80FDFF39F28C765EC4C</PackageCertificateThumbprint>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <!--<PublishAot>true</PublishAot>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

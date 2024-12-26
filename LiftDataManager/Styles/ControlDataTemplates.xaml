@@ -78,7 +78,7 @@
             ItemsSource="{Binding DropDownList, Mode=OneWay}"
             PlaceholderForeground="IndianRed"
             PlaceholderText="{Binding Value, Mode=OneWay}"
-            SelectedValue="{Binding DropDownListValue, Mode=TwoWay}">
+            SelectedItem="{Binding DropDownListValue, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="models:SelectionValue">
                     <Grid>
@@ -196,7 +196,7 @@
             ItemsSource="{Binding DropDownList, Mode=OneWay}"
             PlaceholderForeground="IndianRed"
             PlaceholderText="{Binding Value, Mode=OneWay}"
-            SelectedValue="{Binding DropDownListValue, Mode=TwoWay}"
+            SelectedItem="{Binding DropDownListValue, Mode=TwoWay}"
             Style="{StaticResource GridComboboxStyle}">
             <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="models:SelectionValue">

@@ -31,7 +31,7 @@
             ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"
             PlaceholderForeground="{x:Bind LiftParameter.ParameterState, Converter={StaticResource ParameterSeverityToBrushConverter}, Mode=OneWay}"
             PlaceholderText="{x:Bind LiftParameter.Value, Mode=TwoWay}"
-            SelectedValue="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}"
+            SelectedItem="{x:Bind LiftParameter.DropDownListValue, Mode=TwoWay}"
             Style="{StaticResource ParameterDataComboBox}">
             <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="models:SelectionValue">
@@ -41,7 +41,7 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{x:Bind DisplayName}" />
+                        <TextBlock Grid.Column="0" Text="{x:Bind DisplayName, Mode=TwoWay}" />
                         <FontIcon
                             Grid.Column="1"
                             Margin="5,0,2,0"

@@ -98,10 +98,10 @@ public sealed partial class ParameterComboBox : UserControl
 
         if (liftParameter.parameterErrors.TryGetValue("Value", out List<ParameterStateInfo>? errorList))
         {
-            if (errorList is null)
+            if (errorList is null || errorList.Count == 0)
+            {
                 return;
-            if (errorList.Count == 0)
-                return;
+            }
 
             var error = errorList.OrderByDescending(p => p.Severity).FirstOrDefault();
 
