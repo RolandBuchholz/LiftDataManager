@@ -11,7 +11,7 @@ public sealed partial class ShellPage : Page
     {
         ViewModel = viewModel;
         InitializeComponent();
-        ViewModel.JsonNavigationViewService.Initialize(NavigationViewControl, NavigationFrame);
+        ViewModel.JsonNavigationViewService.Initialize(NavigationViewControl, NavigationFrame, NavigationPageMappings.PageDictionary);
         ViewModel.JsonNavigationViewService.ConfigJson("Assets/NavViewMenu/NavigationViewControlData.json");
     }
 

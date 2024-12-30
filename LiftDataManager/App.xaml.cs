@@ -21,7 +21,7 @@ public partial class App : Application
     public static WindowEx MainWindow { get; } = new MainWindow();
     public new static App Current => (App)Application.Current;
     public string AppVersion { get; set; } = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
-    public string AppName { get; } = AssemblyInfoHelper.GetAppName();
+    public string AppName { get; } = Package.Current.DisplayName;
     private bool IgnoreSaveWarning { get; set; }
     public static FrameworkElement? MainRoot { get; set; }
     public static T GetService<T>()

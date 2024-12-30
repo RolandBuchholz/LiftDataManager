@@ -27,10 +27,10 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
     private ObservableDictionary<string, Parameter>? _parameterDictionary;
 
     [ObservableProperty]
-    private string? specificationStatus;
+    public partial string? SpecificationStatus { get; set; }
 
     [ObservableProperty]
-    private string? description;
+    public partial string? Description { get; set; }
 
     [RelayCommand]
     public async Task AppClosingDialogLoadedAsync(AppClosingDialog sender)

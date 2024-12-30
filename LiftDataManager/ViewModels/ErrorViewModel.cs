@@ -1,12 +1,11 @@
-﻿using LiftDataManager.Core.Models;
-using LiftDataManager.Models;
+﻿using LiftDataManager.Models;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
+public partial class ErrorViewModel : ObservableRecipient, INavigationAwareEx
 {
     private readonly ISettingService _settingService;
     private readonly IParameterDataService _parameterDataService;
@@ -68,7 +67,8 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? pathZALift;
+    public partial string? PathZALift { get; set; }
+
     partial void OnPathZALiftChanged(string? value)
     {
         value ??= string.Empty;
@@ -79,7 +79,8 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? pathLilo;
+    public partial string? PathLilo { get; set; }
+
     partial void OnPathLiloChanged(string? value)
     {
         value ??= string.Empty;
@@ -90,7 +91,8 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? pathExcel;
+    public partial string? PathExcel { get; set; }
+
     partial void OnPathExcelChanged(string? value)
     {
         value ??= string.Empty;
@@ -101,7 +103,8 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     }
 
     [ObservableProperty]
-    private string? pathDataBase;
+    public partial string? PathDataBase { get; set; }
+
     partial void OnPathDataBaseChanged(string? value)
     {
         value ??= string.Empty;
@@ -157,7 +160,7 @@ public partial class ErrorViewModel : ObservableRecipient , INavigationAwareEx
     [RelayCommand]
     public async Task SaveAllParameterAsync()
     {
-        if (FullPathXml is  not null)
+        if (FullPathXml is not null)
         {
             await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
         }

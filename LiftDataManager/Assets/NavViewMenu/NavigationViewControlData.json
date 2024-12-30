@@ -173,7 +173,7 @@
           "Title": "Allgemeine Kabinen Detaileingabe",
           "Description": "Allgemeine Kabinen Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false
         },
@@ -182,7 +182,7 @@
           "Title": "Kabinenausstattung Detaileingabe",
           "Description": "Kabinenausstattung Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
@@ -192,7 +192,7 @@
           "Title": "Kabineboden Detaileingabe",
           "Description": "Kabineboden Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
@@ -202,7 +202,7 @@
           "Title": "Schottengrundriss Detaileingabe",
           "Description": "Schottengrundriss Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
@@ -212,7 +212,7 @@
           "Title": "Kabinendecke Detaileingabe",
           "Description": "Kabinendecke Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
@@ -222,7 +222,7 @@
           "Title": "Kabinentableau Detaileingabe",
           "Description": "Kabinentableau Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
-          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail",
+          "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
