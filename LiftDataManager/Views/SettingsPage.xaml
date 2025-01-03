@@ -4,18 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:LiftDataManager.Views"
     xmlns:wuc="using:WinUICommunity"
+    wuc:BreadcrumbNavigator.IsHeaderVisible="True"
     mc:Ignorable="d">
 
     <ScrollView HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
         <StackPanel
             Margin="10"
             wuc:PanelAttach.ChildrenTransitions="Default"
+            wuc:SettingsNavigationAttach.JsonNavigationViewService="{x:Bind ViewModel.JsonNavigationViewService, Mode=OneWay}"
             Spacing="5">
             <wuc:SettingsCard
                 x:Name="GeneralSetting"
-                Command="{x:Bind ViewModel.GoToSettingPageCommand}"
-                CommandParameter="{Binding ElementName=GeneralSetting}"
+                wuc:NavigationHelperEx.NavigateToSetting="views:GeneralSettingPage"
                 Description="Ändern Sie Ihre Standard App-Einstellungen"
                 Header="Allgemeine Einstellungen"
                 HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/settings.png}"
@@ -23,8 +25,7 @@
                 Tag="GeneralSettingPage" />
             <wuc:SettingsCard
                 x:Name="ThemeSetting"
-                Command="{x:Bind ViewModel.GoToSettingPageCommand}"
-                CommandParameter="{Binding ElementName=ThemeSetting}"
+                wuc:NavigationHelperEx.NavigateToSetting="views:ThemeSettingPage"
                 Description="Sie können das Material, das Thema, den Akzent und weitere Optionen entsprechend Ihrem Stil und Ihren Vorlieben ändern."
                 Header="Farben und Aussehen"
                 HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/theme.png}"
@@ -32,8 +33,7 @@
                 Tag="ThemeSettingPage" />
             <wuc:SettingsCard
                 x:Name="MaintenanceSetting"
-                Command="{x:Bind ViewModel.GoToSettingPageCommand}"
-                CommandParameter="{Binding ElementName=MaintenanceSetting}"
+                wuc:NavigationHelperEx.NavigateToSetting="views:MaintenanceSettingPage"
                 Description="Wartung, Installationsinformationen und externe Programmeinstellungen"
                 Header="Wartung"
                 HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}"
@@ -41,8 +41,7 @@
                 Tag="MaintenanceSettingPage" />
             <wuc:SettingsCard
                 x:Name="AboutSetting"
-                Command="{x:Bind ViewModel.GoToSettingPageCommand}"
-                CommandParameter="{Binding ElementName=AboutSetting}"
+                wuc:NavigationHelperEx.NavigateToSetting="views:AboutSettingPage"
                 Description="About and Updateinformationen"
                 Header="About"
                 HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/info.png}"

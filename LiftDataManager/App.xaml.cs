@@ -121,7 +121,6 @@ public partial class App : Application
             services.AddTransient<DatenansichtViewModel>();
             services.AddTransient<ListenansichtViewModel>();
             services.AddTransient<HomeViewModel>();
-            services.AddTransient<BreadCrumbBarViewModel>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 

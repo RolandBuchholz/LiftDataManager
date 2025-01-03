@@ -147,6 +147,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="NavMappings\BreadcrumbPageMappings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BreadcrumbPageMappings.cs</LastGenOutput>
+    </None>
     <None Update="NavMappings\NavigationPageMappings.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NavigationPageMappings.cs</LastGenOutput>
@@ -201,6 +205,11 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Include="NavMappings\BreadcrumbPageMappings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BreadcrumbPageMappings.tt</DependentUpon>
+    </None>
     <None Include="NavMappings\NavigationPageMappings.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -221,6 +230,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="NavMappings\BreadcrumbPageMappings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BreadcrumbPageMappings.tt</DependentUpon>
+    </Compile>
     <Compile Update="NavMappings\NavigationPageMappings.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

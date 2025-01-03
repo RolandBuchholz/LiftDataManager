@@ -5,7 +5,8 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:LiftDataManager"
-    xmlns:winuiex="using:WinUIEx">
+    xmlns:winuiex="using:WinUIEx"
+    xmlns:wuc="using:WinUICommunity">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -66,22 +67,24 @@
         <NavigationView
             x:Name="NavigationViewControl"
             Grid.Row="1"
+            AlwaysShowHeader="False"
             Canvas.ZIndex="0"
             ExpandedModeThresholdWidth="1280"
-            Header="{x:Bind ViewModel.Header, Mode=OneWay}"
             IsBackButtonVisible="Collapsed"
             IsPaneToggleButtonVisible="False"
             IsSettingsVisible="True">
             <NavigationView.Resources>
                 <Thickness x:Key="NavigationViewHeaderMargin">24,6,0,-6</Thickness>
             </NavigationView.Resources>
-            <NavigationView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <TextBlock Style="{ThemeResource PageTitleStyle}" Text="{Binding}" />
-                    </Grid>
-                </DataTemplate>
-            </NavigationView.HeaderTemplate>
+            <NavigationView.Header>
+                <Grid>
+                    <wuc:BreadcrumbNavigator x:Name="JsonBreadCrumbNavigator" Visibility="Collapsed" />
+                    <TextBlock
+                        x:Name="HeaderText"
+                        Text="{x:Bind ViewModel.HeaderText, Mode=OneWay}"
+                        Visibility="Visible" />
+                </Grid>
+            </NavigationView.Header>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
             </Grid>

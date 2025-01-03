@@ -13,6 +13,7 @@ public sealed partial class ShellPage : Page
         InitializeComponent();
         ViewModel.JsonNavigationViewService.Initialize(NavigationViewControl, NavigationFrame, NavigationPageMappings.PageDictionary);
         ViewModel.JsonNavigationViewService.ConfigJson("Assets/NavViewMenu/NavigationViewControlData.json");
+        ViewModel.JsonNavigationViewService.ConfigBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary,BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
     }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)

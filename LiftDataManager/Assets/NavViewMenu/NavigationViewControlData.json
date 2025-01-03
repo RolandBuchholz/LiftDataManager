@@ -1,10 +1,10 @@
 ﻿{
+  "$schema": "https://raw.githubusercontent.com/WinUICommunity/WinUICommunity/refs/heads/main/AppData.Schema.json",
   "Groups": [
     {
       "UniqueId": "LiftDataManager",
       "Title": "0_LiftDataManager",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": true,
       "Order": false,
@@ -15,7 +15,6 @@
           "Title": "Home",
           "Subtitle": "LiftDataManager Startansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/home.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/home.png",
           "HideItem": false
         },
         {
@@ -24,7 +23,6 @@
           "Description": "Allgemeine Daten",
           "Subtitle": "Allgemeine DatenAnsicht",
           "ImagePath": "ms-appx:///Assets/Fluent/building.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/building.png",
           "HideItem": false
         },
         {
@@ -33,7 +31,6 @@
           "Description": "Schacht",
           "Subtitle": "Schacht Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/shaft.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/shaft.png",
           "HideItem": false
         },
         {
@@ -42,7 +39,6 @@
           "Description": "Kabine",
           "Subtitle": "Kabinen Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/liftcar.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftcar.png",
           "HideItem": false
         },
         {
@@ -51,7 +47,6 @@
           "Description": "Bausatz",
           "Subtitle": "Bauastz Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/carFrame.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrame.png",
           "HideItem": false
         },
         {
@@ -60,7 +55,6 @@
           "Description": "Türen",
           "Subtitle": "Türen Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/liftdoors.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftdoors.png",
           "HideItem": false
         },
         {
@@ -69,7 +63,6 @@
           "Description": "Antrieb Steuerung Notruf",
           "Subtitle": "Antrieb Steuerung Notruf Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/controler.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/controler.png",
           "HideItem": false
         },
         {
@@ -78,7 +71,6 @@
           "Description": "Signalisation",
           "Subtitle": "Signalisation Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/lcd.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/lcd.png",
           "HideItem": false
         },
         {
@@ -87,7 +79,6 @@
           "Description": "Wartung Montage Tüv",
           "Subtitle": "Wartung Montage Tüv Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/montage.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/montage.png",
           "HideItem": false
         },
         {
@@ -96,7 +87,6 @@
           "Description": "Sonstiges",
           "Subtitle": "Sonstiges Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/text.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/text.png",
           "HideItem": false
         }
       ]
@@ -105,7 +95,6 @@
       "UniqueId": "LiftDataManagerBerechnungen",
       "Title": "Berechnungen",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": false,
       "Order": false,
@@ -117,7 +106,6 @@
           "Description": "Einreichunterlagen",
           "Subtitle": "Einreichunterlagen zur TÜV Vorprüfung",
           "ImagePath": "ms-appx:///Assets/Fluent/text.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/text.png",
           "HideItem": false
         },
         {
@@ -126,7 +114,6 @@
           "Description": "Kabinengewicht",
           "Subtitle": "Kabinengewicht Berechnung",
           "ImagePath": "ms-appx:///Assets/Fluent/weight.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/weight.png",
           "HideItem": false
         },
         {
@@ -135,7 +122,6 @@
           "Description": "Nutzlastberechnung",
           "Subtitle": "Nutzlast Berechnung",
           "ImagePath": "ms-appx:///Assets/Fluent/calculator.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/calculator.png",
           "HideItem": false
         },
         {
@@ -144,7 +130,6 @@
           "Description": "Kabinenlüftungsberechnung",
           "Subtitle": "Kabinenlüftungsberechnung",
           "ImagePath": "ms-appx:///Assets/Fluent/carVentilation.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/carVentilation.png",
           "HideItem": false
         }
       ]
@@ -153,7 +138,6 @@
       "UniqueId": "LiftDataManagerDetailPages",
       "Title": "Detaileingaben",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": false,
       "Order": false,
@@ -165,7 +149,6 @@
           "Description": "Schacht Detaileingabe",
           "Subtitle": "Schacht Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/shaftDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/shaftDetail.png",
           "HideItem": false
         },
         {
@@ -174,7 +157,6 @@
           "Description": "Allgemeine Kabinen Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false
         },
         {
@@ -183,7 +165,6 @@
           "Description": "Kabinenausstattung Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
         },
@@ -193,7 +174,6 @@
           "Description": "Kabineboden Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
         },
@@ -203,7 +183,6 @@
           "Description": "Schottengrundriss Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
         },
@@ -213,7 +192,6 @@
           "Description": "Kabinendecke Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
         },
@@ -223,7 +201,6 @@
           "Description": "Kabinentableau Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false,
           "HideNavigationViewItem": true
         },
@@ -233,7 +210,6 @@
           "Description": "Allgemeine Bausatz Detaileingabe",
           "Subtitle": "Bausatz Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
           "HideItem": false
         },
         {
@@ -242,7 +218,6 @@
           "Description": "Schienen/Schienenbügel Detaileingabe",
           "Subtitle": "Bausatz Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/carFrameDetail.png",
           "HideItem": true,
           "HideNavigationViewItem": true
         }
@@ -252,7 +227,6 @@
       "UniqueId": "LiftDataManagerParameterDetails",
       "Title": "ParameterDetails",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": true,
       "Order": false,
@@ -263,7 +237,6 @@
           "Title": "Parameter Listenansicht",
           "Subtitle": "Parameter Listenansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/listView.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/listView.png",
           "HideItem": true
         },
         {
@@ -271,7 +244,6 @@
           "Title": "Parameter Rasteransicht",
           "Subtitle": "Parameterdaten Rasteransicht",
           "ImagePath": "ms-appx:///Assets/Fluent/gridView.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/gridView.png",
           "HideItem": true
         },
         {
@@ -279,7 +251,6 @@
           "Title": "Parameter Tabellenansicht",
           "Subtitle": "Parameterdaten Tabellenansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/tableView.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/tableView.png",
           "HideItem": true
         },
         {
@@ -287,7 +258,6 @@
           "Title": "Lift History",
           "Subtitle": "Lift History",
           "ImagePath": "ms-appx:///Assets/Fluent/liftHistory.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/liftHistory.png",
           "HideItem": true
         },
         {
@@ -295,7 +265,6 @@
           "Title": "Databank bearbeiten",
           "Subtitle": "Databank bearbeiten",
           "ImagePath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
           "HideItem": true
         }
       ]
@@ -304,7 +273,6 @@
       "UniqueId": "LiftDataManagerFooter",
       "Title": "LiftDataManager Footer",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "ShowItemsWithoutGroup": true,
       "IsExpanded": false,
@@ -317,7 +285,6 @@
           "Description": "QuickLinks",
           "Subtitle": "Links zu häufig verwendeten Programmen",
           "ImagePath": "ms-appx:///Assets/Fluent/quickLinks.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/quickLinks.png",
           "HideItem": true
         },
         {
@@ -325,7 +292,6 @@
           "Title": "Hilfe",
           "Subtitle": "Hilfe Ansicht",
           "ImagePath": "ms-appx:///Assets/Fluent/help.png",
-          "ImageIconPath": "ms-appx:///Assets/Fluent/help.png",
           "HideItem": true
         }
       ]
@@ -334,9 +300,9 @@
       "UniqueId": "LiftDataManagerSettingPages",
       "Title": "LiftDataManager Setting Pages",
       "ImagePath": "ms-appx:///Assets/icon.png",
-      "ImageIconPath": "ms-appx:///Assets/icon.png",
       "IsSpecialSection": false,
       "HideGroup": true,
+      "Description": "Einstellungen",
       "ShowItemsWithoutGroup": true,
       "IsExpanded": false,
       "Order": false,
@@ -347,7 +313,6 @@
           "Description": "About and Updateinformationen",
           "Subtitle": "About",
           "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
           "HideItem": true
         },
         {
@@ -356,7 +321,6 @@
           "Description": "Allgemeine Einstellungen",
           "Subtitle": "General Appsettings",
           "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
           "HideItem": true
         },
         {
@@ -365,7 +329,6 @@
           "Description": "Wartung und Updatecheck",
           "Subtitle": "Maintenance",
           "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
           "HideItem": true
         },
         {
@@ -374,7 +337,6 @@
           "Description": "Personalization",
           "Subtitle": "Personalization der App",
           "ImagePath": "ms-appx:///Assets/WindowIcon.png",
-          "ImageIconPath": "ms-appx:///Assets/WindowIcon.png",
           "HideItem": true
         }
       ]

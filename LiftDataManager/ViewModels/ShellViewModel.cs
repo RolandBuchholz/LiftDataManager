@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Navigation;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using RtfPipe.Tokens;
 
 namespace LiftDataManager.ViewModels;
 
@@ -18,7 +20,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     public partial string? GlobalSearchInput { get; set; }
 
     [ObservableProperty]
-    public partial string? Header { get; set; }
+    public partial string? HeaderText { get; set; }
 
     public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
     {
@@ -54,16 +56,33 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         GC.Collect();
 
         IsBackEnabled = JsonNavigationViewService.CanGoBack;
-        if (e.SourcePageType == typeof(SettingsPage))
+
+        var view = ((Frame)sender).FindParent<NavigationView>();
+        var breadcrumbnavigator = ((Grid?)(view?.Header))?.FindChild<BreadcrumbNavigator>();
+        var headerTextBlock = ((Grid?)(view?.Header))?.FindChild<TextBlock>();
+
+        if (view is null ||
+            breadcrumbnavigator is null ||
+            headerTextBlock is null)
         {
-            Header = "Einstellungen";
-            ShowGlobalSearch = false;
+            return;
         }
-        var viewPage = JsonNavigationViewService.DataSource.GetItem(e.SourcePageType.FullName);
-        if (viewPage != null)
+
+        if (BreadcrumbPageMappings.PageDictionary.ContainsKey(e.SourcePageType))
         {
-            Header = viewPage.Description;
-            ShowGlobalSearch = !viewPage.HideItem;
+            view.AlwaysShowHeader = true;
+            ShowGlobalSearch = false;
+            breadcrumbnavigator.Visibility = Visibility.Visible;
+            headerTextBlock.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            breadcrumbnavigator.Visibility = Visibility.Collapsed;
+            headerTextBlock.Visibility = Visibility.Visible;
+            var page = e.Parameter as DataItem;
+            HeaderText = page?.Description;
+            ShowGlobalSearch = page is null || !page.HideItem;
+            view.AlwaysShowHeader = !string.IsNullOrWhiteSpace(page?.Description);
         }
     }
 }

@@ -8,6 +8,7 @@
     xmlns:models="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:sys="using:System"
     xmlns:wuc="using:WinUICommunity"
+    wuc:BreadcrumbNavigator.IsHeaderVisible="True"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="VersionsHistoryItemTemplate" x:DataType="models:LiftDataManagerVersion">
