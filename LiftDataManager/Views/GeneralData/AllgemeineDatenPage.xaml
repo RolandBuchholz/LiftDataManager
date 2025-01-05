@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
@@ -157,12 +156,12 @@
                                 QueryIcon="Find"
                                 Text="{x:Bind ViewModel.AutoSuggestBoxText, Mode=TwoWay}">
                                 <interactivity:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="TextChanged">
-                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.FilterLiftPlannersCommand}" CommandParameter="{x:Bind asb_LiftPlanner}" />
-                                    </core:EventTriggerBehavior>
-                                    <core:EventTriggerBehavior EventName="SuggestionChosen">
-                                        <core:InvokeCommandAction Command="{x:Bind ViewModel.SelectLiftPlannersCommand}" InputConverter="{StaticResource AutoSuggestionChosenParameterConverter}" />
-                                    </core:EventTriggerBehavior>
+                                    <interactivity:EventTriggerBehavior EventName="TextChanged">
+                                        <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.FilterLiftPlannersCommand}" CommandParameter="{x:Bind asb_LiftPlanner}" />
+                                    </interactivity:EventTriggerBehavior>
+                                    <interactivity:EventTriggerBehavior EventName="SuggestionChosen">
+                                        <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.SelectLiftPlannersCommand}" InputConverter="{StaticResource AutoSuggestionChosenParameterConverter}" />
+                                    </interactivity:EventTriggerBehavior>
                                 </interactivity:Interaction.Behaviors>
                             </AutoSuggestBox>
                             <TextBlock Margin="5" Text="gewählter Fachplaner:" />

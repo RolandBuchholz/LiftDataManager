@@ -2,7 +2,6 @@
     x:Class="LiftDataManager.Controls.SpezifikationsNumberControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -46,7 +45,7 @@
             Text="{x:Bind NumberBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <Interactivity:Interaction.Behaviors>
                 <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
-                    <Core:InvokeCommandAction Command="{x:Bind LoadCommand}" />
+                    <Interactivity:InvokeCommandAction Command="{x:Bind LoadCommand}" />
                 </toolkitbehaviors:KeyDownTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </TextBox>

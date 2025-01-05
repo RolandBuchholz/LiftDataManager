@@ -2,7 +2,6 @@
     x:Class="LiftDataManager.Views.HelpPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:LDMControls="using:LiftDataManager.Controls"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
@@ -61,15 +60,15 @@
                         </DataTemplate>
                     </AutoSuggestBox.ItemTemplate>
                     <Interactivity:Interaction.Behaviors>
-                        <Core:EventTriggerBehavior EventName="Loaded">
-                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxLoadedCommand}" CommandParameter="{x:Bind AutoSuggestBox}" />
-                        </Core:EventTriggerBehavior>
-                        <Core:EventTriggerBehavior EventName="TextChanged">
-                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxTextChangedCommand}"/>
-                        </Core:EventTriggerBehavior>
-                        <Core:EventTriggerBehavior EventName="SuggestionChosen">
-                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxSuggestionChosenCommand}" />
-                        </Core:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="Loaded">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxLoadedCommand}" CommandParameter="{x:Bind AutoSuggestBox}" />
+                        </Interactivity:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="TextChanged">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxTextChangedCommand}" />
+                        </Interactivity:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="SuggestionChosen">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.AutoSuggestBoxSuggestionChosenCommand}" />
+                        </Interactivity:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                 </AutoSuggestBox>
                 <TreeView
@@ -85,9 +84,9 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <Interactivity:Interaction.Behaviors>
-                        <Core:EventTriggerBehavior EventName="Loaded">
-                            <Core:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewLoadedCommand}" CommandParameter="{x:Bind HelpTreeView}" />
-                        </Core:EventTriggerBehavior>
+                        <Interactivity:EventTriggerBehavior EventName="Loaded">
+                            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.TreeViewLoadedCommand}" CommandParameter="{x:Bind HelpTreeView}" />
+                        </Interactivity:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                 </TreeView>
             </Grid>

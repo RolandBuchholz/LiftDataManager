@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:AK="using:AK.Toolkit.WinUI3"
-    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
@@ -41,7 +40,7 @@
             </NumberBox.HeaderTemplate>
             <Interactivity:Interaction.Behaviors>
                 <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
-                    <Core:CallMethodAction MethodName="MoveFocus" TargetObject="{x:Bind}" />
+                    <Interactivity:CallMethodAction MethodName="MoveFocus" TargetObject="{x:Bind}" />
                 </toolkitbehaviors:KeyDownTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
             <NumberBox.ContextFlyout>

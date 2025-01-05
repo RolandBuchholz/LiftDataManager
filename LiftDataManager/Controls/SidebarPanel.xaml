@@ -5,7 +5,6 @@
     xmlns:ani="using:CommunityToolkit.WinUI.Animations"
     xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
@@ -77,12 +76,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -100,12 +99,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -123,12 +122,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -146,12 +145,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -169,12 +168,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -215,12 +214,12 @@
                     </InfoBadge>
                 </Grid>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -238,12 +237,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -270,12 +269,12 @@
                     </ToolTipService.ToolTip>
                 </Grid>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -293,12 +292,12 @@
                     </ToolTipService.ToolTip>
                 </Image>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -327,12 +326,12 @@
                     </ToolTipService.ToolTip>
                 </Grid>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
             <Button
@@ -345,12 +344,12 @@
                     </ToolTipService.ToolTip>
                 </SymbolIcon>
                 <interactivity:Interaction.Behaviors>
-                    <interactions:EventTriggerBehavior EventName="PointerEntered">
+                    <interactivity:EventTriggerBehavior EventName="PointerEntered">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleOutAnimation}" />
-                    </interactions:EventTriggerBehavior>
-                    <interactions:EventTriggerBehavior EventName="PointerExited">
+                    </interactivity:EventTriggerBehavior>
+                    <interactivity:EventTriggerBehavior EventName="PointerExited">
                         <behaviors:StartAnimationAction Animation="{Binding ElementName=ScaleInAnimation}" />
-                    </interactions:EventTriggerBehavior>
+                    </interactivity:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
@@ -411,8 +410,8 @@
                 <ListView
                     Grid.Row="1"
                     Margin="-10,0,-10,0"
-                    IsDoubleTapEnabled="True"
                     DoubleTapped="ListView_DoubleTapped"
+                    IsDoubleTapEnabled="True"
                     ItemContainerStyle="{StaticResource ListViewInfoCenterItemContainer}"
                     ItemTemplateSelector="{StaticResource InfoCenterTemplateSelector}"
                     ItemsSource="{x:Bind InfoCenterEntrysView.View, Mode=OneWay}" />
