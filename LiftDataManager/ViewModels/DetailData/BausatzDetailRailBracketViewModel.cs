@@ -1062,7 +1062,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     }
 
     [ObservableProperty]
-    private PivotItem? selectedPivotItem;
+    public partial PivotItem? SelectedPivotItem { get; set; }
+
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
         if (value?.Tag != null)

@@ -597,6 +597,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 SetModifyInfos();
             }
         }
+        ImportInfo = !string.IsNullOrWhiteSpace(ParameterDictionary["var_ImportiertVon"].Value);
         _logger.LogInformation(60139, "Set ModelStateAsync finished");
         await Task.CompletedTask;
     }
@@ -740,7 +741,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             _ = SetCalculatedValuesAsync();
             _ = SetModelStateAsync();
-            ImportInfo = !string.IsNullOrWhiteSpace(ParameterDictionary["var_ImportiertVon"].Value);
             if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";

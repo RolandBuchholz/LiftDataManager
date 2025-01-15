@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace LiftDataManager.Models
 {
-    [Serializable]
     public class TechnicalLiftDocumentation
     {
         public event EventHandler<TechnicalLiftDocumentationEventArgs>? OnTechnicalLiftDocumentationChanged;

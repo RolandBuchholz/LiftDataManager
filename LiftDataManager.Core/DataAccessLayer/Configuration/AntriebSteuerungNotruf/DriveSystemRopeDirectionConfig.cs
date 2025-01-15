@@ -2,9 +2,9 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration.AntriebSteuerungNotruf;
 
-public class DriveSystemConfig : BaseModelBuilder<DriveSystem>
+public class DriveSystemRopeDirectionConfig : BaseModelBuilder<DriveSystemRopeDirection>
 {
-    public override void Configure(EntityTypeBuilder<DriveSystem> builder)
+    public override void Configure(EntityTypeBuilder<DriveSystemRopeDirection> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
@@ -17,8 +17,5 @@ public class DriveSystemConfig : BaseModelBuilder<DriveSystem>
         builder.Property(x => x.IsObsolete);
         builder.Property(x => x.SchindlerCertified);
         builder.Property(x => x.OrderSelection);
-        builder.Property(x => x.DriveControlTyp)
-               .HasMaxLength(50);
-        builder.Property(x => x.DriveSystemTypeId);
     }
 }

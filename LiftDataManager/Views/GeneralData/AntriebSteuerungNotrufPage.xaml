@@ -496,7 +496,7 @@
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
-                                    Grid.RowSpan="2"
+                                    Grid.RowSpan="3"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
@@ -583,10 +583,7 @@
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid
-                            x:Name="sonstigesAntrieb"
-                            Grid.Row="1"
-                            Margin="0,0,0,5">
+                        <Grid x:Name="sonstigesAntrieb" Grid.Row="1">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
                                 <Border
                                     Grid.RowSpan="2"
@@ -606,7 +603,7 @@
                                     ColumnDefinitions="*">
                                     <TextBox
                                         Grid.Column="1"
-                                        MinHeight="120"
+                                        MinHeight="135"
                                         Margin="5,5,10,0"
                                         AcceptsReturn="True"
                                         Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesAntrieb'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
@@ -638,6 +635,12 @@
                                             Text="Antrieb :" />
                                         <TextBlock Text="{x:Bind ViewModel.ParameterDictionary['var_Antrieb'].Value}" />
                                     </StackPanel>
+                                    <TextBlock Margin="10,0,0,0">
+                                        <Run Text="Treibscheibe" />
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_LageAntrieb'].Value}" />
+                                        <Run Text="," />
+                                        <Run Text="{x:Bind ViewModel.ParameterDictionary['var_SeilabgangAntrieb'].Value}" />
+                                    </TextBlock>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Width="200"
@@ -645,7 +648,7 @@
                                             Text="Aufhängung :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_AufhaengungsartRope'].Value}" />
-                                            <Run Text=" : 1" />
+                                            <Run Text=": 1" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -655,7 +658,7 @@
                                             Text="Umschlingungswinkel :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Umschlingungswinkel'].Value}" />
-                                            <Run Text=" grad" />
+                                            <Run Text="grad" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -665,9 +668,9 @@
                                             Text="Treibscheibendurchmesser :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Treibscheibendurchmesser'].Value}" />
-                                            <Run Text=" mm (RA : " />
+                                            <Run Text="mm (RA :" />
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Treibscheibe_RIA'].Value}" />
-                                            <Run Text=" mm)" />
+                                            <Run Text="mm)" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -677,7 +680,7 @@
                                             Text="Umlenkrollendurchmesser :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Umlenkrollendurchmesser'].Value}" />
-                                            <Run Text=" mm" />
+                                            <Run Text="mm" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -687,7 +690,7 @@
                                             Text="Anzahl Umlenkrollen :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_AnzahlUmlenkrollen'].Value}" />
-                                            <Run Text=" Stk." />
+                                            <Run Text="Stk." />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -697,7 +700,7 @@
                                             Text="Anzahl Umlenkrollen FK :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_AnzahlUmlenkrollenFk'].Value}" />
-                                            <Run Text=" Stk." />
+                                            <Run Text="Stk." />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -707,8 +710,15 @@
                                             Text="Anzahl Umlenkrollen GGW :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_AnzahlUmlenkrollenGgw'].Value}" />
-                                            <Run Text=" Stk." />
+                                            <Run Text="Stk." />
                                         </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Width="200"
+                                            Margin="10,0,0,0"
+                                            Text="Unterseilgewicht :" />
+                                        <TextBlock Text="{x:Bind ViewModel.ParameterDictionary['var_UnterseilGewicht'].Value}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
@@ -719,7 +729,7 @@
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Regler_Typ'].Value}" />
                                         </TextBlock>
                                     </StackPanel>
-                                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Width="200"
                                             Margin="10,0,0,0"
@@ -729,7 +739,7 @@
                                         </TextBlock>
                                     </StackPanel>
                                     <TextBlock
-                                        Margin="10,5,10,2"
+                                        Margin="10,2,10,2"
                                         FontWeight="Bold"
                                         Text="UCM - Daten:" />
                                     <StackPanel Orientation="Horizontal">
@@ -739,7 +749,7 @@
                                             Text="Erkennungsweg in mm :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Erkennungsweg'].Value}" />
-                                            <Run Text=" mm" />
+                                            <Run Text="mm" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -749,7 +759,7 @@
                                             Text="Totzeit gesamt :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Totzeit'].Value}" />
-                                            <Run Text=" ms" />
+                                            <Run Text="ms" />
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
@@ -759,7 +769,7 @@
                                             Text="V Geschwindigkeitsdetektor :" />
                                         <TextBlock>
                                             <Run Text="{x:Bind ViewModel.ParameterDictionary['var_Vdetektor'].Value}" />
-                                            <Run Text=" m/s" />
+                                            <Run Text="m/s" />
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>

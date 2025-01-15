@@ -14,13 +14,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />-->
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn>1701;1702;MVVMTK0034</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MsgReader" Version="5.7.0" />
     <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />

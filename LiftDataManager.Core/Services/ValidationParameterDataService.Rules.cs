@@ -1806,7 +1806,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         var cFPPath = Path.Combine(Path.GetDirectoryName(_fullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
         if (!File.Exists(cFPPath))
+        {
             return;
+        }
         var lastWriteTime = File.GetLastWriteTime(cFPPath);
         if (lastWriteTime != CFPCreationTime)
         {
@@ -1818,7 +1820,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 cFPDataFile = sr.ReadToEnd();
             }
 
-            var cFPDataFileLines = cFPDataFile.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var cFPDataFileLines = cFPDataFile.Split([Environment.NewLine], StringSplitOptions.None);
 
             if (cFPDataFileLines.Length > 0)
             {
@@ -1874,7 +1876,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             {
                 var isValid = name switch
                 {
-                    "var_Q" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_Q" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(cFPValue)) <= 10,
                     "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(cFPValue) * 1000) <= 20,
                     "var_SG" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
@@ -1891,10 +1893,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                         "Bucher RSG55" => true,
                         "Bucher RSG70" => true,
                         "Bucher RSG90" => true,
-                        _ => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                        _ => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     },
-                    "var_FuehrungsschieneFahrkorb" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
-                    "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase),
+                    "var_FuehrungsschieneFahrkorb" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
+                    "var_FuehrungsschieneGegengewicht" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     "var_Geschwindigkeitsbegrenzer" => cFPValue switch
                     {
                         "1" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase) || string.Equals(value, "Schlaffseilauslösung", StringComparison.CurrentCultureIgnoreCase),
