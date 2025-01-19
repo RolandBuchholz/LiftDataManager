@@ -1,11 +1,10 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.CalculationResultsModels;
-using LiftDataManager.Core.Models.PdfDocuments;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-namespace PDFTests.Services.DocumentGeneration;
+namespace LiftDataManager.Core.Models.PdfDocuments;
 
 public class KabinenLüftungDocument : PdfBaseDocument
 {
@@ -126,7 +125,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
             table.Cell().Row(10).Column(1).ColumnSpan(2).PaddingLeft(15).AlignCenter().Text(text =>
             {
                 if (CarVentilationResult.ErgebnisBelueftungDecke)
-                { text.Span("  Vorschrift erfüllt !  ").Bold().BackgroundColor(successfulColor); }
+                    text.Span("  Vorschrift erfüllt !  ").Bold().BackgroundColor(successfulColor);
                 else
                 { text.Span("  Vorschrift nicht erfüllt !  ").Bold().BackgroundColor(errorColor); };
             });
@@ -289,7 +288,7 @@ public class KabinenLüftungDocument : PdfBaseDocument
             table.Cell().Row(11).Column(1).ColumnSpan(2).PaddingLeft(15).AlignCenter().Text(text =>
             {
                 if (CarVentilationResult.ErgebnisEntlueftung)
-                { text.Span("  Vorschrift erfüllt !  ").Bold().BackgroundColor(successfulColor); }
+                    text.Span("  Vorschrift erfüllt !  ").Bold().BackgroundColor(successfulColor);
                 else
                 { text.Span("  Vorschrift nicht erfüllt !  ").Bold().BackgroundColor(errorColor); };
             });

@@ -20,10 +20,10 @@
     <PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
     <PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.7.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.7.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.7.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.7.1" />
     <PackageReference Include="SkiaSharp.Views.WinUI" Version="3.116.1" />
-    <PackageReference Include="WinUIEx" Version="2.5.0" />
+    <PackageReference Include="WinUIEx" Version="2.5.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiftDataManager\LiftDataManager.csproj" />

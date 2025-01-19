@@ -1,18 +1,21 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Models.PdfDocuments;
 using LiftDataManager.Models;
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
 using System.Text.Json;
 
-namespace PDFTests.Services.DocumentGeneration;
+namespace LiftDataManager.Core.Models.PdfDocuments;
 
 public class EinreichunterlagenDocument : PdfBaseDocument
 {
     private readonly ICalculationsModule _calculationsModuleService;
-    private readonly bool LowPrintColor;
+    private static readonly string liftDocAccentColor = "156082";
+    private static readonly string secondRowColor = Colors.Grey.Lighten3;
+    private static readonly int defaultRowSpacing = 2;
+
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
 
     public EinreichunterlagenDocument(ObservableDictionary<string, Parameter> parameterDictionary, ICalculationsModule calculationsModuleService, bool lowPrintColor)
@@ -20,9 +23,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         _calculationsModuleService = calculationsModuleService;
         ParameterDictionary = parameterDictionary;
         Title = "Technische Unterlagen";
-        LowPrintColor = lowPrintColor;
         LiftDocumentation ??= new();
-        SetPdfStyle(LowPrintColor, false);
+        SetPdfStyle(lowPrintColor, false);
         SetLiftDocumentation();
     }
 
@@ -183,30 +185,29 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 
     protected override void Content(IContainer container)
     {
-        container.PaddingLeft(25, Unit.Millimetre).Column(column =>
+        container.PaddingLeft(25, Unit.Millimetre).PaddingRight(15, Unit.Millimetre).Column(column =>
         {
-            column.Item().PaddingTop(15, Unit.Millimetre).Text("Beschreibung der Aufzugsanlage").FontSize(fontSizeXXL).FontColor(primaryVariantColor).Bold();
-            column.Item().PaddingTop(20).Element(TableBaseLiftData);
-            column.Item().PageBreak();
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("1. Allgemeine Angaben").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(5, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("BESCHREIBUNG DER AUFZUGSANLAGE").FontFamily(Fonts.SegoeUI).Italic().FontSize(fontSizeXXL).FontColor(Colors.White);
+            column.Item().PaddingTop(15).Element(TableBaseLiftData);
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("1. ALLGEMEINE ANGABEN").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(GenerallyLiftData);
             column.Item().PageBreak();
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("2.Fahrschacht - Fahrschachtzugänge").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("2.FAHRSCHACHT - FAHRSCHACHTZUGÄNGE").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(LiftShaftData);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("3. Tragmittel").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("3. TRAGMITTEL").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(LiftRopeData);
-            column.Item().PageBreak();
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("4. Antrieb").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("4. ANTRIEB").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(LiftDriveData);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("5.Fahrkorb - Gegengewicht").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
-            column.Item().PaddingTop(15).Element(LiftCarCWTData);
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("6. Elektrische Ausrüstung").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
-            column.Item().PaddingTop(15).Element(ElectricalEquipment);
             column.Item().PageBreak();
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("7. Liste der Sicherheitsbauteile").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("5.FAHRKORB - GEGENGEWICHT").FontSize(fontSizeL).FontColor(Colors.White).Italic();
+            column.Item().PaddingTop(15).Element(LiftCarCWTData);
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("6. ELEKTRISCHE AUSRÜSTUNG").FontSize(fontSizeL).FontColor(Colors.White).Italic();
+            column.Item().PaddingTop(15).Element(ElectricalEquipment);
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("7. LISTE DER SICHERHEITSBAUTEILE").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(SafetyComponents);
-            column.Item().PaddingTop(5, Unit.Millimetre).Text("Elektronische Sicherheitsschaltungen").FontSize(fontSizeStandard).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingTop(5, Unit.Millimetre).Text("Elektronische Sicherheitsschaltungen").FontSize(fontSizeL).Bold();
             column.Item().PaddingTop(15).Element(ElectricalSafetyComponents);
+            column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("8. BESONDERHEITEN DER AUFZUGSANLAGE").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(10).ShowEntire().Element(SpecialFeatures);
             column.Item().PaddingTop(10).ShowEntire().Element(Attachments);
         });
@@ -221,27 +222,27 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Betriebsort:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).Text(ParameterDictionary["var_Projekt"].Value);
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Fabrik-Nr.:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).Text(ParameterDictionary["var_FabrikNummer"].Value);
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Art des Aufzuges:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).Text(_calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value));
-            table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Aufzugtyp:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(10).Text(ParameterDictionary["var_Bausatz"].Value);
-            table.Cell().Row(5).Column(1).PaddingVertical(10).Text("Errichtungsvorschrift:").Bold();
-            table.Cell().Row(5).Column(2).PaddingVertical(10).Row(row =>
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Betriebsort:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).Text(ParameterDictionary["var_Projekt"].Value);
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Fabrik-Nr.:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text(ParameterDictionary["var_FabrikNummer"].Value);
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Art des Aufzuges:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).Text(_calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value));
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufzugtyp:").Bold();
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text(ParameterDictionary["var_Bausatz"].Value);
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Errichtungsvorschrift:").Bold();
+            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).Row(row =>
             {
                 row.AutoItem().Text(ParameterDictionary["var_Normen"].Value);
                 row.AutoItem().PaddingLeft(10).CheckBoxParameterValue(ParameterDictionary["var_EN8121"]);
                 row.RelativeItem().PaddingLeft(10).CheckBoxParameterValue(ParameterDictionary["var_EN8172"]);
             });
-            table.Cell().Row(6).Column(1).PaddingVertical(10).Text("Richtlinie:").Bold();
-            table.Cell().Row(6).Column(2).PaddingVertical(10).Text("Aufzugsrichtlinie 2014/33/EU");
-            table.Cell().Row(7).Column(1).PaddingVertical(10).Text("Name des Betreibers:").Bold();
-            table.Cell().Row(7).Column(2).PaddingVertical(10).Text(ParameterDictionary["var_Betreiber"].Value);
-            table.Cell().Row(8).Column(1).PaddingVertical(10).Text("Einzelprüfung:").Bold();
-            table.Cell().Row(8).Column(2).PaddingVertical(10).Text(ParameterDictionary["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV");
+            table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Richtlinie:").Bold();
+            table.Cell().Row(6).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufzugsrichtlinie 2014/33/EU");
+            table.Cell().Row(7).Column(1).PaddingVertical(defaultRowSpacing).Text("Name des Betreibers:").Bold();
+            table.Cell().Row(7).Column(2).PaddingVertical(defaultRowSpacing).Text(ParameterDictionary["var_Betreiber"].Value);
+            table.Cell().Row(8).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Einzelprüfung:").Bold();
+            table.Cell().Row(8).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text(ParameterDictionary["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV");
         });
     }
 
@@ -260,23 +261,23 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Hersteller und/oder Einführer:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text(manufacturer);
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Tragfähigkeit:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_Q"].Value} kg oder {ParameterDictionary["var_Personen"].Value} Personen");
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Baujahr:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation?.ManufactureYear}");
-            table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Errichtungsdatum:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation?.MonthOfConstruction} - {LiftDocumentation?.YearOfConstruction}");
-            table.Cell().Row(5).Column(1).PaddingVertical(10).Text("Betriebsgeschwindigkeit:").Bold();
-            table.Cell().Row(5).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_v"].Value} m/s");
-            table.Cell().Row(6).Column(1).PaddingVertical(10).Text("Förderhöhe:").Bold();
-            table.Cell().Row(6).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_FH"].Value} m");
-            table.Cell().Row(7).Column(1).PaddingVertical(10).Text("Anzahl der Schachttüren:").Bold();
-            table.Cell().Row(7).Column(2).PaddingVertical(10).PaddingLeft(5).Text(ParameterDictionary["var_Zugangsstellen"].Value);
-            table.Cell().Row(8).Column(1).PaddingVertical(10).Text("Anzahl der Haltestellen:").Bold();
-            table.Cell().Row(8).Column(2).PaddingVertical(10).PaddingLeft(5).Text(ParameterDictionary["var_Haltestellen"].Value);
-            table.Cell().Row(9).Column(1).ColumnSpan(2).PaddingVertical(10).Text(string.IsNullOrWhiteSpace(ParameterDictionary?["var_GemeinsamerSchachtMit"].Value) ?
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Hersteller und/oder Einführer:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(manufacturer);
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Tragfähigkeit:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Q"].Value} kg oder {ParameterDictionary["var_Personen"].Value} Personen");
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Baujahr:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{LiftDocumentation?.ManufactureYear}");
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Errichtungsdatum:").Bold();
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{LiftDocumentation?.MonthOfConstruction} - {LiftDocumentation?.YearOfConstruction}");
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Betriebsgeschwindigkeit:").Bold();
+            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_v"].Value} m/s");
+            table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Förderhöhe:").Bold();
+            table.Cell().Row(6).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_FH"].Value} m");
+            table.Cell().Row(7).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl der Schachttüren:").Bold();
+            table.Cell().Row(7).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_Zugangsstellen"].Value);
+            table.Cell().Row(8).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Anzahl der Haltestellen:").Bold();
+            table.Cell().Row(8).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_Haltestellen"].Value);
+            table.Cell().Row(9).Column(1).ColumnSpan(2).PaddingVertical(defaultRowSpacing).Text(string.IsNullOrWhiteSpace(ParameterDictionary?["var_GemeinsamerSchachtMit"].Value) ?
                                                     "Vorstehender Aufzug ist mit keinem weiteren Aufzug im gleichen Schacht errichtet." :
                                                     $"Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: {ParameterDictionary["var_GemeinsamerSchachtMit"].Value} \n" +
                                                     $"im gleichem Schacht errichtet.").Bold();
@@ -293,26 +294,26 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.RelativeColumn();
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Ausführung der Fahrschachtwände:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text(ParameterDictionary["var_Schacht"].Value);
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("untere Schutzraumhöhe:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpacePit} mm\n" +
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Ausführung der Fahrschachtwände:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_Schacht"].Value);
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("untere Schutzraumhöhe:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpacePit} mm\n" +
                                                                    $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypPit}");
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("obere Schutzraumhöhe:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpaceHead} mm\n" +
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("obere Schutzraumhöhe:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpaceHead} mm\n" +
                                                                    $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypHead}");
-            table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Column(column =>
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Column(column =>
             {
                 column.Item().Text($"{ParameterDictionary["var_Zugangsstellen"].Value} Stück");
                 column.Item().Text($"Fabrikat: {ParameterDictionary["var_Tuertyp"].Value?.Replace(" -", "")}");
                 column.Item().Text($"Türbreite: {ParameterDictionary["var_TB"].Value} mm");
                 column.Item().Text($"Türhöhe: {ParameterDictionary["var_TH"].Value} mm");
             });
-            table.Cell().Row(5).Column(1).ColumnSpan(2).PaddingVertical(10).Text(LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
+            table.Cell().Row(5).Column(1).ColumnSpan(2).PaddingVertical(defaultRowSpacing).Text(LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
                                                                                  "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." :
                                                                                  "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.").Bold();
-            table.Cell().Row(1).RowSpan(4).Column(3).Column(column =>
+            table.Cell().Row(1).RowSpan(5).Column(3).Column(column =>
             {
                 column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtgrube", LiftDocumentation.ProtectedSpaceTypPit);
                 column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf", LiftDocumentation.ProtectedSpaceTypHead);
@@ -329,12 +330,12 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Anzahl und Art der Tragmittel:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Aufhängung des Fahrkorbes:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1");
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text("keine");
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der Tragmittel:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1");
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("keine");
         });
     }
 
@@ -347,12 +348,12 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Art des Antriebs:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text(_calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, (int)LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope")));
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Antriebsregelung:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text(_calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value));
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Aufstellung des Triebwerkes:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetDrivePosition(ParameterDictionary["var_Maschinenraum"].Value));
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Art des Antriebs:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, (int)LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope")));
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Antriebsregelung:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value));
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Aufstellung des Triebwerkes:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetDrivePosition(ParameterDictionary["var_Maschinenraum"].Value));
         });
     }
 
@@ -365,18 +366,18 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Fahrkorbgrundfläche:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Fahrkorbhöhe:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
-            table.Cell().Row(3).Column(1).PaddingVertical(10).Text("Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text($"{_calculationsModuleService.GetNumberOfCardoors(ParameterDictionary)} Stück");
-            table.Cell().Row(4).Column(1).PaddingVertical(10).Text("Gewicht des Fahrkorbes:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
-            table.Cell().Row(5).Column(1).PaddingVertical(10).Text("Gewicht des Gegengewichtes:").Bold();
-            table.Cell().Row(5).Column(2).PaddingVertical(10).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg");
-            table.Cell().Row(6).Column(1).PaddingVertical(10).Text("Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):").Bold();
-            table.Cell().Row(6).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text("---");
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Fahrkorbgrundfläche:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Fahrkorbhöhe:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{_calculationsModuleService.GetNumberOfCardoors(ParameterDictionary)} Stück");
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Fahrkorbes:").Bold();
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Gewicht des Gegengewichtes:").Bold();
+            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg");
+            table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):").Bold();
+            table.Cell().Row(6).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("---");
         });
     }
 
@@ -389,10 +390,10 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Spannung und Netzform des Anschlussnetzes:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text(ParameterDictionary["var_Stromanschluss"].Value);
-            table.Cell().Row(2).Column(1).PaddingVertical(10).Text("Nennstrom des Antriebsmotors:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(10).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Spannung und Netzform des Anschlussnetzes:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(ParameterDictionary["var_Stromanschluss"].Value);
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Nennstrom des Antriebsmotors:").Bold();
+            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
         });
     }
 
@@ -405,7 +406,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("Fangvorrichtung.........");
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Fangvorrichtung.........");
         });
     }
 
@@ -418,7 +419,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(10).Text("--------");
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("--------");
         });
     }
 
@@ -426,7 +427,6 @@ public class EinreichunterlagenDocument : PdfBaseDocument
     {
         container.Column(column =>
         {
-            column.Item().PaddingBottom(5, Unit.Millimetre).Text("8. Besonderheiten der Aufzugsanlage").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
             column.Item().Text(LiftDocumentation.SpecialFeatures);
         });
     }
@@ -435,7 +435,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
     {
         container.Column(column =>
         {
-            column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).FontColor(primaryVariantColor).Bold();
+            column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).Bold();
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "Anlagenzeichnung");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "Gefahrenanalysen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "Berechnungen");

@@ -1,11 +1,10 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.CalculationResultsModels;
-using LiftDataManager.Core.Models.PdfDocuments;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-namespace PDFTests.Services.DocumentGeneration;
+namespace LiftDataManager.Core.Models.PdfDocuments;
 
 public class KabinengewichtDocument : PdfBaseDocument
 {

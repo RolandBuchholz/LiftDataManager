@@ -6,10 +6,9 @@ using QuestPDF.Infrastructure;
 using SkiaSharp;
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
-
 public class PdfBaseDocument : IDocument
 {
-    public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; } = new();
+    public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; } = [];
 
     public string Title { get; set; } = string.Empty;
     public string Index => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Index");
@@ -69,11 +68,9 @@ public class PdfBaseDocument : IDocument
         string? user;
         try
         {
-#pragma warning disable CA1416
             user = string.IsNullOrWhiteSpace(System.Security.Principal.WindowsIdentity.GetCurrent().Name)
                 ? "no user detected"
                 : System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("PPS\\", "");
-#pragma warning restore CA1416
         }
         catch
         {

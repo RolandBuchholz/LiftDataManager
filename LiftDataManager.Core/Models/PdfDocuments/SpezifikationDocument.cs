@@ -1,13 +1,12 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Models.PdfDocuments;
 using QuestPDF;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
 
-namespace PDFTests.Services.DocumentGeneration;
+namespace LiftDataManager.Core.Models.PdfDocuments;
 
 public class SpezifikationDocument : PdfBaseDocument
 {
@@ -448,13 +447,9 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(6).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);
                     if (ParameterDictionary["var_BodenbelagsTyp"].DropDownList.Any())
-                    {
                         row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_BodenbelagsTyp"]);
-                    }
                     if (ParameterDictionary["var_Bodenbelag"].DropDownListValue?.Id == 7)
-                    {
                         row.RelativeItem(4).ParameterStringCell(ParameterDictionary["var_BodenbelagOberflaeche"]);
-                    }
                     row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Bodenbelagsgewicht"], "kg/m²");
                     row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_Bodenbelagsdicke"], "mm");
                 });
@@ -777,9 +772,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                     row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"], true);
                     if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
-                    {
                         row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);
-                    }
                 });
                 table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
                 table.Cell().Row(17).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
@@ -1204,9 +1197,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Getriebe"]);
                     if (string.IsNullOrWhiteSpace(ParameterDictionary["var_Getriebe"].Value) || ParameterDictionary["var_Getriebe"].Value != "hydraulisch")
-                    {
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_GGWNutzlastausgleich"]);
-                    }
                 });
                 table.Cell().Row(3).Column(4).ColumnSpan(3).Row(row =>
                 {

@@ -1,7 +1,7 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.Models.PdfDocuments;
 using Microsoft.Extensions.Logging;
-using PDFTests.Services.DocumentGeneration;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using System.Diagnostics;

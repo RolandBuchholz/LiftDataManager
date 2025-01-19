@@ -1,11 +1,10 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.Models.CalculationResultsModels;
-using LiftDataManager.Core.Models.PdfDocuments;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-namespace PDFTests.Services.DocumentGeneration;
+namespace LiftDataManager.Core.Models.PdfDocuments;
 
 public class NutzlastberechnungDocument : PdfBaseDocument
 {
@@ -194,9 +193,7 @@ public class NutzlastberechnungDocument : PdfBaseDocument
             table.Cell().Row(6).Column(1).ColumnSpan(2).AlignCenter().Text(text =>
             {
                 if (PayLoadResult.PayloadAllowed)
-                {
                     text.Line("Nennlast enspricht der EN81:20!").Bold().FontColor(successfulColor);
-                }
                 else
                 {
                     text.Line("Nennlast enspricht nicht der EN81:20!").Bold().FontColor(errorColor);
