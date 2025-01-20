@@ -182,7 +182,6 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
         if (liloRegistryKey is not null)
         {
             var liloPath = Registry.GetValue(liloRegistryKey.Name, "basepath", "")?.ToString();
-
             if (!string.IsNullOrWhiteSpace(liloPath))
             {
                 PathLilo = Path.Combine(liloPath, "PRG", "LILO.EXE");
@@ -196,8 +195,43 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
         {
             PathLilo = string.Empty;
         }
-        PathCFP = _settingService.PathCFP;
-        PathZALift = _settingService.PathZALift;
+
+        var zaLiftRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\VB and VBA Program Settings\ZETALIFT\All");
+        if (zaLiftRegistryKey is not null)
+        {
+            var zaLiftPath = Registry.GetValue(zaLiftRegistryKey.Name, "InstallPath", "")?.ToString();
+            if (!string.IsNullOrWhiteSpace(zaLiftPath))
+            {
+                PathZALift = Path.Combine(zaLiftPath, "ZAlift.exe");
+            }
+            else
+            {
+                PathZALift = string.Empty;
+            }
+        }
+        else
+        {
+            PathZALift = string.Empty;
+        }
+
+        var cfpLiftRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\BERCHTENBREITER_GMBH\CARFRAMEPROGRAM");
+        if (cfpLiftRegistryKey is not null)
+        {
+            var cfpLiftPath = Registry.GetValue(cfpLiftRegistryKey.Name, "Path: ", "")?.ToString();
+            if (!string.IsNullOrWhiteSpace(cfpLiftPath))
+            {
+                PathCFP = Path.Combine(cfpLiftPath, "UpdateCFP.exe");
+            }
+            else
+            {
+                PathCFP = string.Empty;
+            }
+        }
+        else
+        {
+            PathCFP = string.Empty;
+        }
+
         PathExcel = _settingService.PathExcel;
     }
 

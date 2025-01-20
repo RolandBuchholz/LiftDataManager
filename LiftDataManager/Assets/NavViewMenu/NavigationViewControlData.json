@@ -153,9 +153,9 @@
         },
         {
           "UniqueId": "LiftDataManager.Views.KabineDetailPage",
-          "Title": "Allgemeine Kabinen Detaileingabe",
-          "Description": "Allgemeine Kabinen Detaileingabe",
-          "Subtitle": "Kabine Detaileingabe",
+          "Title": "Kabinen Detaileingabe",
+          "Description": "Kabinen Detaileingabe",
+          "Subtitle": "Kabinen Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",
           "HideItem": false
         },
@@ -170,7 +170,7 @@
         },
         {
           "UniqueId": "LiftDataManager.Views.KabineDetailFloorPage",
-          "Title": "Kabineboden Detaileingabe",
+          "Title": "Kabinenboden Detaileingabe",
           "Description": "Kabineboden Detaileingabe",
           "Subtitle": "Kabine Detaileingabe",
           "ImagePath": "ms-appx:///Assets/Fluent/liftCarDetail.png",

@@ -961,8 +961,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var isValid = name switch
         {
             "var_Q" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
-            "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
-            "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
+            "var_F" => string.IsNullOrWhiteSpace(value) ? (0 - Convert.ToInt32(zaLiftValue)) <= 10 : Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(zaLiftValue)) <= 10,
+            "var_FH" => string.IsNullOrWhiteSpace(value) ? (0 - Convert.ToDouble(zaLiftValue) * 1000) <= 20 : Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(zaLiftValue) * 1000) <= 20,
             "var_Fremdbelueftung" => string.Equals(value, Convert.ToString(!zaLiftValue.StartsWith("ohne")), StringComparison.CurrentCultureIgnoreCase),
             "var_ElektrBremsenansteuerung" => string.Equals(value, zaLiftValue, StringComparison.CurrentCultureIgnoreCase),
             "var_Treibscheibegehaertet" => string.Equals(value, Convert.ToString(zaLiftValue.Contains("gehaertet")), StringComparison.CurrentCultureIgnoreCase),
