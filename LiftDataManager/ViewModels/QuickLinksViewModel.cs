@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using System.Xml;
 
 namespace LiftDataManager.ViewModels;
@@ -9,6 +10,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
     private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
 
     private readonly ParameterContext _parametercontext;
     private readonly IVaultDataService _vaultDataService;
@@ -493,14 +495,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             SetSyncedParameter("var_ZA_IMP_Treibscheibe_RIA", zliDataDictionary["Treibscheibe-RIA"]);
             SetSyncedParameter("var_ZA_IMP_Regler_Typ", !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty);
 
+            var ropeDescription = string.Empty;
             if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))
             {
-                SetSyncedParameter("var_Tragseiltyp", "D " + ropeDiameter + "mm " + zliDataDictionary["Treibscheibe-Seiltyp"]);
+                ropeDescription = "D " + ropeDiameter + "mm " + zliDataDictionary["Treibscheibe-Seiltyp"];
             }
             else
             {
-                SetSyncedParameter("var_Tragseiltyp", zliDataDictionary["Treibscheibe-Seiltyp"]);
+                ropeDescription = zliDataDictionary["Treibscheibe-Seiltyp"];
             }
+            SetSyncedParameter("var_Tragseiltyp", ropeDescription);
 
             var numberOfRopes = string.Empty;
             try
@@ -509,7 +513,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             catch (Exception)
             {
-                _logger.LogWarning(61094, "numberOfRopes not found");
+                _logger.LogWarning(61094, "number of ropes not found");
             }
             SetSyncedParameter("var_NumberOfRopes", numberOfRopes);
 
@@ -524,6 +528,49 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             SetSyncedParameter("var_Mindestbruchlast", breakingload);
 
+            var ropeWeight = string.Empty;
+            try
+            {
+                ropeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilgewicht"))?.ChildNodes[4].InnerText[1..6];
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "rope weight not found");
+            }
+
+            try
+            {
+                RopeCalculationData? ropeCalculationData;
+                var ropeCalculationDataString = ParameterDictionary["var_RopeCalculationData"].Value;
+                if (string.IsNullOrWhiteSpace(ropeCalculationDataString))
+                {
+                    ropeCalculationData = new RopeCalculationData() 
+                    { 
+                        RopeDescription = ropeDescription,
+                    };
+                }
+                else
+                {
+                    ropeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
+                }
+
+                if (ropeCalculationData is not null)
+                {
+                    ropeCalculationData.RopeDescription = ropeDescription;
+                    ropeCalculationData.NumberOfRopes = Convert.ToInt32(numberOfRopes);
+                    ropeCalculationData.RopeDiameter = Convert.ToDouble(zliDataDictionary["Treibscheibe-SD"], CultureInfo.CurrentCulture);
+                    ropeCalculationData.MinimumBreakingStrength = Convert.ToInt32(breakingload);
+                    ropeCalculationData.WireStrength = ropeDescription.Contains("CTP") ? 2800 : 1570;
+                    ropeCalculationData.RopeWeight = Convert.ToDouble(ropeWeight, CultureInfo.CurrentCulture);
+                    ropeCalculationData.MaximumNumberOfRopes = Convert.ToInt32(zliDataDictionary["Treibscheibe-RZ"]);
+                    SetSyncedParameter("var_RopeCalculationData", JsonSerializer.Serialize(ropeCalculationData, _options).Replace("\r\n", "\n"));
+                }
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "create rope calculation data failed");
+            }
+
             var ropeSafety = string.Empty;
             try
             {
@@ -534,6 +581,33 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 _logger.LogWarning(61094, "ropeSafety not found");
             }
             SetSyncedParameter("var_ZA_IMP_RopeSafety", ropeSafety);
+
+            var tractionSheavePosition = string.Empty;
+            var ropeDeflection = string.Empty;
+            try
+            {
+                var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe"))?.InnerText.Replace("Treibscheibe","").Split(',');
+                tractionSheavePosition = shaftPosition?[0].Trim() + ", " + shaftPosition?[1].Trim();
+                ropeDeflection = shaftPosition?[2].Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "Traction sheave position not found");
+            }
+            SetSyncedParameter("var_LageAntrieb", tractionSheavePosition);
+            SetSyncedParameter("var_SeilabgangAntrieb", ropeDeflection);
+
+            var compensationRopeWeight = string.Empty;
+            try
+            {
+                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht"))?.ChildNodes[3].InnerText.Trim();
+            }
+            catch (Exception)
+            {
+                _logger.LogWarning(61094, "compensation rope weight not found");
+            }
+            SetSyncedParameter("var_UnterseilGewicht", compensationRopeWeight + " kg");
+
 
             var exactRatedCurrent = string.Empty;
             var exactCapacityCurrent = string.Empty;
@@ -623,7 +697,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             SetSyncedParameter("var_AnzahlUmlenkrollen", numberofPulley);
             SetSyncedParameter("var_AnzahlUmlenkrollenFk", numberofFKPulley);
             SetSyncedParameter("var_AnzahlUmlenkrollenGgw", (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString());
-            SetSyncedParameter("var_MotorGeber", zliDataDictionary["Geber-Typ"]);
+            SetSyncedParameter("var_MotorGeber", zliDataDictionary["Gebertyp"]);
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 
