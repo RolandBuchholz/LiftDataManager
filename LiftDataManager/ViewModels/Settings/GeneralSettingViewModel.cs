@@ -1,11 +1,10 @@
-﻿using LiftDataManager.Core.Migrations;
-using Microsoft.Win32;
-using Windows.Storage;
+﻿using Microsoft.Win32;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class GeneralSettingViewModel : ObservableRecipient, INavigationAwareEx
 {
+    private static readonly string _defaultDataStoragePath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"\Bausatzauslegung\Auftrag\");
     private readonly ISettingService _settingService;
     public readonly IDialogService _dialogService;
     private CurrentSpeziProperties _currentSpeziProperties;
@@ -108,12 +107,12 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
         var cfpLiftRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\BERCHTENBREITER_GMBH\CARFRAMEPROGRAM");
         if (cfpLiftRegistryKey is null)
         {
-            return string.Empty;
+            return _defaultDataStoragePath;
         }
         var cfpLiftPath = Registry.GetValue(cfpLiftRegistryKey.Name, "CFP-DataSavePath", "")?.ToString();
         if (string.IsNullOrWhiteSpace(cfpLiftPath))
         {
-            return string.Empty;
+            return _defaultDataStoragePath;
         }
         return cfpLiftPath;
     }

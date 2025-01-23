@@ -16,7 +16,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     private void OnSpezifikationsNumberControlLoaded(object sender, RoutedEventArgs e)
     {
-        SpezifikationTyps = SpezifikationTyp.List.ToList();
+        SpezifikationTyps = [.. SpezifikationTyp.List];
         if (!RequestEnabled)
         {
             SpezifikationTyps.Remove(SpezifikationTyp.Request);
