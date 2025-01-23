@@ -8,6 +8,7 @@ public interface ISettingService
     public string? PathZALift { get; set; }
     public string? PathLilo { get; set; }
     public string? PathExcel { get; set; }
+    public string? PathDataStorage { get; set; }
     public string? PathDataBase { get; set; }
     public string? LogLevel { get; set; }
     public bool AutoSave { get; set; }
@@ -15,6 +16,7 @@ public interface ISettingService
     public bool TonerSaveMode { get; set; }
     public bool LowHighlightMode { get; set; }
     public bool AutoOpenInfoCenter { get; set; }
+    public bool VaultDisabled { get; set; }
 
     Task InitializeAsync();
     Task SetSettingsAsync(string key, object setting);

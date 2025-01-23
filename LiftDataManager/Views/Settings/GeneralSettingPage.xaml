@@ -14,6 +14,25 @@
         <ScrollViewer>
             <StackPanel Margin="0,0,15,0">
                 <controls:SettingsCard
+                    Description="Dokumentenmanagement(PDM) Vault oder Windows-Explorer verwenden"
+                    Header="Dokumentenmanagement"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/vault.png}">
+                    <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                        <TextBox
+                            Margin="0,0,10,0"
+                            IsReadOnly="True"
+                            Text="{x:Bind ViewModel.PathDataStorage, Mode=OneWay}"
+                            ToolTipService.ToolTip="Pfad für Auslegungen wird aus CarFrameProgram übernommen."
+                            Visibility="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}" />
+                        <ToggleSwitch
+                            x:Name="SwitchPDM"
+                            HorizontalAlignment="Center"
+                            IsOn="{x:Bind ViewModel.VaultDisabled, Mode=TwoWay, Converter={StaticResource BoolNegationConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            OffContent="Windows-Explorer"
+                            OnContent="Vault" />
+                    </StackPanel>
+                </controls:SettingsCard>
+                <controls:SettingsCard
                     Description="Automatisches speichern der Autotransfer.xml"
                     Header="Auto Save"
                     HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/autoSaveMode.png}">

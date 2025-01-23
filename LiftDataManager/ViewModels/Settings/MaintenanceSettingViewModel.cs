@@ -217,7 +217,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
         var cfpLiftRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\BERCHTENBREITER_GMBH\CARFRAMEPROGRAM");
         if (cfpLiftRegistryKey is not null)
         {
-            var cfpLiftPath = Registry.GetValue(cfpLiftRegistryKey.Name, "Path: ", "")?.ToString();
+            var cfpLiftPath = Registry.GetValue(cfpLiftRegistryKey.Name, "Path", "")?.ToString();
             if (!string.IsNullOrWhiteSpace(cfpLiftPath))
             {
                 PathCFP = Path.Combine(cfpLiftPath, "UpdateCFP.exe");

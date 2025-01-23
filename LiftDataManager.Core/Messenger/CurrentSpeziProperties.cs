@@ -3,6 +3,7 @@
 public class CurrentSpeziProperties
 {
     public bool Adminmode { get; set; }
+    public bool VaultDisabled { get; set; }
     public bool CustomAccentColor { get; set; }
     public bool AuftragsbezogeneXml { get; set; }
     public bool CheckOut { get; set; }

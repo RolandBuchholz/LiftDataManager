@@ -1,4 +1,8 @@
-﻿namespace LiftDataManager.ViewModels;
+﻿using LiftDataManager.Core.Migrations;
+using Microsoft.Win32;
+using Windows.Storage;
+
+namespace LiftDataManager.ViewModels;
 
 public partial class GeneralSettingViewModel : ObservableRecipient, INavigationAwareEx
 {
@@ -13,11 +17,28 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     }
 
     [ObservableProperty]
+    public partial string? PathDataStorage { get; set; }
+    partial void OnPathDataStorageChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathDataStorage))
+            _settingService.SetSettingsAsync(nameof(PathDataStorage), value);
+    }
+
+    [ObservableProperty]
     public partial bool AutoSave { get; set; }
     partial void OnAutoSaveChanged(bool value)
     {
         if (!Equals(value, _settingService.AutoSave))
             _settingService.SetSettingsAsync(nameof(AutoSave), value);
+    }
+
+    [ObservableProperty]
+    public partial bool VaultDisabled { get; set; }
+    partial void OnVaultDisabledChanged(bool value)
+    {
+        if (!Equals(value, _settingService.VaultDisabled))
+            _settingService.SetSettingsAsync(nameof(VaultDisabled), value);
     }
 
     [ObservableProperty]
@@ -82,6 +103,20 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
         }
     }
 
+    private static string GetDataStoragePath()
+    {
+        var cfpLiftRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\BERCHTENBREITER_GMBH\CARFRAMEPROGRAM");
+        if (cfpLiftRegistryKey is null)
+        {
+            return string.Empty;
+        }
+        var cfpLiftPath = Registry.GetValue(cfpLiftRegistryKey.Name, "CFP-DataSavePath", "")?.ToString();
+        if (string.IsNullOrWhiteSpace(cfpLiftPath))
+        {
+            return string.Empty;
+        }
+        return cfpLiftPath;
+    }
     public void OnNavigatedTo(object parameter)
     {
         _currentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
@@ -91,6 +126,8 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
         TonerSaveMode = _settingService.TonerSaveMode;
         LowHighlightMode = _settingService.LowHighlightMode;
         AutoOpenInfoCenter = _settingService.AutoOpenInfoCenter;
+        VaultDisabled = _settingService.VaultDisabled;
+        PathDataStorage = GetDataStoragePath();
     }
     public void OnNavigatedFrom()
     {

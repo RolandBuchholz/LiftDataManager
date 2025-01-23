@@ -1,12 +1,15 @@
 ﻿using Cogs.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Windows.ApplicationModel.Appointments.DataProvider;
 
 namespace LiftDataManager.Controls;
 public sealed partial class FooterControl : UserControl
 {
+    private static readonly SolidColorBrush checkIncolorBrush = new(Colors.Red);
+    private static readonly SolidColorBrush checkOutcolorBrush = new(Colors.Green);
+    private static readonly SolidColorBrush lokalModecolorBrush = new(Colors.CornflowerBlue);
     public ObservableCollection<ParameterStateInfo> ErrorsList { get; set; }
-
 
     public FooterControl()
     {
@@ -37,6 +40,16 @@ public sealed partial class FooterControl : UserControl
 
     private void OnLoadFooterControl(object sender, RoutedEventArgs e)
     {
+        if (VaultDisabled)
+        {
+            FileInfo = "LocalMode - Dateien werden im Windowsdateisystem abgelegt";
+            FileInfoForeground = lokalModecolorBrush;
+        }
+        else
+        {
+            FileInfo = CheckOut ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt";
+            FileInfoForeground = CheckOut ? checkOutcolorBrush : checkIncolorBrush;
+        }
         ErrorsDictionary.PropertyChanged += ErrorsDictionaryPropertyChanged;
     }
 
@@ -50,13 +63,10 @@ public sealed partial class FooterControl : UserControl
         UpdateInfobar();
     }
 
-    private readonly SolidColorBrush checkIncolorBrush = new(Colors.Red);
-    private readonly SolidColorBrush checkOutcolorBrush = new(Colors.Green);
-
     private void UpdateInfobar()
     {
         ErrorsList.Clear();
-        if (ErrorsDictionary is not null && ErrorsDictionary.Any())
+        if (ErrorsDictionary is not null && ErrorsDictionary.Count != 0)
         {
             try
             {
@@ -102,11 +112,17 @@ public sealed partial class FooterControl : UserControl
     private InfoBarSeverity GetInfoBarState()
     {
         if (ErrorCount > 0)
-        { return InfoBarSeverity.Error; }
+        {
+            return InfoBarSeverity.Error; 
+        }
         if (WarningCount > 0)
-        { return InfoBarSeverity.Warning; }
+        { 
+            return InfoBarSeverity.Warning; 
+        }
         if (InfoCount > 0)
-        { return InfoBarSeverity.Informational; }
+        { 
+            return InfoBarSeverity.Informational; 
+        }
         return InfoBarState = InfoBarSeverity.Success;
     }
 
@@ -153,13 +169,29 @@ public sealed partial class FooterControl : UserControl
         set
         {
             SetValue(CheckOutProperty, value);
-            FileInfo = value ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt";
-            FileInfoForeground = value ? checkOutcolorBrush : checkIncolorBrush;
         }
     }
 
     public static readonly DependencyProperty CheckOutProperty =
-        DependencyProperty.Register(nameof(CheckOut), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(CheckOut), typeof(bool), typeof(FooterControl), new PropertyMetadata(false, CheckOutPropertyChangedCallback));
+
+    public bool VaultDisabled
+    {
+        get => (bool)GetValue(VaultDisabledProperty);
+        set
+        {
+            SetValue(VaultDisabledProperty, value);
+        }
+    }
+
+    public static readonly DependencyProperty VaultDisabledProperty =
+        DependencyProperty.Register(nameof(VaultDisabled), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
+
+    private static void CheckOutPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        d.SetValue(FileInfoProperty, (bool)e.NewValue ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt");
+        d.SetValue(FileInfoForegroundProperty, (bool)e.NewValue ? checkOutcolorBrush : checkIncolorBrush);
+    }
 
     public bool HasErrors
     {

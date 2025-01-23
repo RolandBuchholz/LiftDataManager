@@ -650,7 +650,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         CurrentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
+        VaultDisabled = _settingService.VaultDisabled;
         CurrentSpeziProperties.Adminmode = Adminmode;
+        CurrentSpeziProperties.VaultDisabled = VaultDisabled;
         _ = Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
     }
 

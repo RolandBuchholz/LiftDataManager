@@ -12,6 +12,7 @@ public partial class DataViewModelBase : ObservableRecipient
     protected readonly ISettingService _settingService;
 
     public bool Adminmode { get; set; }
+    public bool VaultDisabled { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
     public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
@@ -174,6 +175,7 @@ public partial class DataViewModelBase : ObservableRecipient
             FullPathXml = CurrentSpeziProperties.FullPathXml;
         }
         Adminmode = CurrentSpeziProperties.Adminmode;
+        VaultDisabled = CurrentSpeziProperties.VaultDisabled;
         AuftragsbezogeneXml = CurrentSpeziProperties.AuftragsbezogeneXml;
         CheckOut = CurrentSpeziProperties.CheckOut;
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;

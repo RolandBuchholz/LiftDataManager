@@ -12,6 +12,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyPathZALift = "AppPathZALiftRequested";
     private const string SettingsKeyPathLilo = "AppPathLiloRequested";
     private const string SettingsKeyPathExcel = "AppPathExcelRequested";
+    private const string SettingsKeyPathDataStorage = "AppPathDataStorageRequested";
     private const string SettingsKeyPathDataBase = "AppPathDataBaseRequested";
     private const string SettingsKeyLogLevel = "AppLogLevelRequested";
     private const string SettingsKeyAutoSave = "AppAutoSaveRequested";
@@ -19,6 +20,7 @@ public class SettingsService : ISettingService
     private const string SettingsKeyTonerSaveMode = "AppTonerSaveModeRequested";
     private const string SettingsKeyLowHighlightMode = "AppLowHighlightModeRequested";
     private const string SettingsKeyAutoOpenInfoCenter = "AppAutoOpenInfoCenterRequested";
+    private const string SettingsKeyVaultDisabled = "AppVaultDisabledRequested";
 
     private readonly ILocalSettingsService _localSettingsService;
 
@@ -34,6 +36,7 @@ public class SettingsService : ISettingService
     public string? PathZALift { get; set; }
     public string? PathLilo { get; set; }
     public string? PathExcel { get; set; }
+    public string? PathDataStorage { get; set; }
     public string? PathDataBase { get; set; }
     public string? LogLevel { get; set; }
     public bool AutoSave { get; set; }
@@ -41,6 +44,7 @@ public class SettingsService : ISettingService
     public bool TonerSaveMode { get; set; }
     public bool LowHighlightMode { get; set; }
     public bool AutoOpenInfoCenter { get; set; }
+    public bool VaultDisabled { get; set; }
 
     /// <inheritdoc/>
     public async Task InitializeAsync()
@@ -82,6 +86,10 @@ public class SettingsService : ISettingService
                 PathExcel = (string)value;
                 await SaveSettingsAsync(key, PathExcel);
                 return;
+            case nameof(PathDataStorage):
+                PathDataStorage = (string)value;
+                await SaveSettingsAsync(key, PathDataStorage);
+                return;
             case nameof(PathDataBase):
                 PathDataBase = (string)value;
                 await SaveSettingsAsync(key, PathDataBase);
@@ -110,6 +118,10 @@ public class SettingsService : ISettingService
                 AutoOpenInfoCenter = (bool)value;
                 await SaveSettingsAsync(key, AutoOpenInfoCenter);
                 return;
+            case nameof(VaultDisabled):
+                VaultDisabled = (bool)value;
+                await SaveSettingsAsync(key, VaultDisabled);
+                return;
             default:
                 return;
         }
@@ -133,6 +145,7 @@ public class SettingsService : ISettingService
         PathZALift = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathZALift);
         PathLilo = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathLilo);
         PathExcel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathExcel);
+        PathDataStorage = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathDataStorage);
         PathDataBase = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathDataBase);
         LogLevel = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyLogLevel);
         var storedAutoSave = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoSave);
@@ -144,6 +157,8 @@ public class SettingsService : ISettingService
         LowHighlightMode = !string.IsNullOrWhiteSpace(storedLowHighlightMode) && Convert.ToBoolean(storedLowHighlightMode);
         var storedAutoOpenInfoCenter = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAutoOpenInfoCenter);
         AutoOpenInfoCenter = string.IsNullOrWhiteSpace(storedAutoOpenInfoCenter) ? true : Convert.ToBoolean(storedAutoOpenInfoCenter);
+        var storedVaultDisabled = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyVaultDisabled);
+        VaultDisabled = !string.IsNullOrWhiteSpace(storedVaultDisabled) && Convert.ToBoolean(storedVaultDisabled);
     }
 
     private async Task SaveSettingsAsync(string key, object value)
@@ -171,6 +186,9 @@ public class SettingsService : ISettingService
             case nameof(PathExcel):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyPathExcel, value);
                 return;
+            case nameof(PathDataStorage):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyPathDataStorage, value);
+                return;
             case nameof(PathDataBase):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyPathDataBase, value);
                 return;
@@ -192,6 +210,9 @@ public class SettingsService : ISettingService
             case nameof(AutoOpenInfoCenter):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyAutoOpenInfoCenter, ((bool)value).ToString());
                 return;
+            case nameof(VaultDisabled):
+                await _localSettingsService.SaveSettingAsync(SettingsKeyVaultDisabled, ((bool)value).ToString());
+                return;
             default:
                 return;
         }
@@ -199,12 +220,13 @@ public class SettingsService : ISettingService
 
     private async Task SetDefaultPaths()
     {
-        await SetSettingsAsync(nameof(PathCFP), Environment.GetEnvironmentVariable("userprofile") + @"\AppData\Local\Bausatzauslegung\CFP\UpdateCFP.exe");
+        await SetSettingsAsync(nameof(PathCFP), Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"\Bausatzauslegung\CFP\UpdateCFP.exe"));
         await SetSettingsAsync(nameof(PathZALift), @"C:\Program Files (x86)\ZETALIFT\ZAlift.exe");
         await SetSettingsAsync(nameof(PathLilo), @"C:\Program Files (x86)\BucherHydraulics\LILO\PRG\LILO.EXE");
         await SetSettingsAsync(nameof(PathExcel), @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE");
+        await SetSettingsAsync(nameof(PathDataStorage), Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"\Bausatzauslegung\Auftrag\"));
         await SetSettingsAsync(nameof(PathDataBase), @"\\Bauer\AUFTRÄGE NEU\Vorlagen\DataBase\LiftDataParameter.db");
-        await SetSettingsAsync(nameof(LogLevel), @"Information");
+        await SetSettingsAsync(nameof(LogLevel), "Information");
         await SetSettingsAsync(nameof(TonerSaveMode), true);
         await SetSettingsAsync(nameof(AutoOpenInfoCenter), true);
         await SetSettingsAsync(nameof(FirstSetup), true);
