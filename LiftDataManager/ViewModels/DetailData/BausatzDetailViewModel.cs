@@ -233,7 +233,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void CheckCFPState()
     {
-        var carframe = ParameterDictionary!["var_Bausatz"].Value;
+        var carframe = ParameterDictionary["var_Bausatz"].Value;
         if (!string.IsNullOrWhiteSpace(carframe))
         {
             CarFrameTyp = _parametercontext.Set<CarFrameType>().Include(i => i.CarFrameBaseType)
