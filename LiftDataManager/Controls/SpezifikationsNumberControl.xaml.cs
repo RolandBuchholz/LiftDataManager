@@ -22,15 +22,16 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             SpezifikationTyps.Remove(SpezifikationTyp.Request);
             SpezifikationTyps.Remove(SpezifikationTyp.MailRequest);
         }
-
+        if (IsVaultDisabled)
+        {
+            SpezifikationTyps.Remove(SpezifikationTyp.Offer);
+            SpezifikationTyps.Remove(SpezifikationTyp.Planning);
+        }
         cmb_SpezifikationTyp.ItemsSource = SpezifikationTyps;
 
-        if (!IsOrderRelated)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(SpezifikationName))
+        if (IsVaultDisabled || 
+            !IsOrderRelated ||
+            string.IsNullOrWhiteSpace(SpezifikationName))
         {
             return;
         }
@@ -95,6 +96,15 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     public static readonly DependencyProperty SpezifikationTypProperty =
         DependencyProperty.Register(nameof(SpezifikationTyp), typeof(SpezifikationTyp), typeof(SpezifikationsNumberControl), new PropertyMetadata(SpezifikationTyp.Order));
+
+    public bool IsVaultDisabled
+    {
+        get => (bool)GetValue(IsVaultDisabledProperty);
+        set => SetValue(IsVaultDisabledProperty, value);
+    }
+
+    public static readonly DependencyProperty IsVaultDisabledProperty =
+        DependencyProperty.Register(nameof(IsVaultDisabled), typeof(bool), typeof(SpezifikationsNumberControl), new PropertyMetadata(false));
 
     public int? NumberBoxText
     {
@@ -173,7 +183,19 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     private void SetControlStyle(SpezifikationTyp value)
     {
+        if (IsVaultDisabled)
+        {
+            cmb_SpezifikationTyp.Visibility = Visibility.Collapsed;
+            tbx_Numberbox.Visibility = Visibility.Collapsed;
+            cmb_Year.Visibility = Visibility.Collapsed;
+            cmb_Month.Visibility = Visibility.Collapsed;
+            btn_Request.Visibility = Visibility.Visible;
+            tbx_CustomNumberbox.Visibility = Visibility.Visible;
+            return;
+        }
         NumberBoxText = null;
+        cmb_SpezifikationTyp.Visibility = Visibility.Visible;
+        tbx_CustomNumberbox.Visibility = Visibility.Collapsed;
         switch (value)
         {
             case var s when s.Equals(SpezifikationTyp.Order):
@@ -216,12 +238,9 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
     private void SetSpezifikationName()
     {
-        if (IsOrderRelated)
-        {
-            return;
-        }
-
-        if (SpezifikationTyp is null)
+        if (IsOrderRelated ||
+           SpezifikationTyp is null ||
+           IsVaultDisabled)
         {
             return;
         }
@@ -240,6 +259,10 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         if (string.IsNullOrEmpty(value))
         {
             return false;
+        }
+        if (IsVaultDisabled)
+        {
+            return true;
         }
         return (value.Length >= 6 && SpezifikationTyp.Equals(SpezifikationTyp.Order)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Offer)) ||

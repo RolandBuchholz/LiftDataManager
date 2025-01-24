@@ -356,9 +356,9 @@ public class DialogService : IDialogService
     }
 
     /// <inheritdoc/>
-    public async Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp)
+    public async Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp, bool vaultDisabled)
     {
-        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName, spezifikationTyp)
+        var dialog = new ImportLiftDataDialog(fullPathXml, spezifikationName, spezifikationTyp, vaultDisabled)
         {
             XamlRoot = MainRoot.XamlRoot,
             RequestedTheme = MainRoot.ActualTheme,

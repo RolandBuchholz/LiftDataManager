@@ -101,6 +101,7 @@
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 IsValid="{x:Bind ViewModel.CanImportSpeziData, Mode=TwoWay}"
+                IsVaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
                 PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                 RequestEnabled="True"
                 SpezifikationName="{x:Bind ViewModel.ImportSpezifikationName, Mode=TwoWay}"

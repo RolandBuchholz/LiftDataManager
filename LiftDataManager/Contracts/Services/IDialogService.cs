@@ -143,8 +143,9 @@ public interface IDialogService
     /// <param name="fullPathXml">FullPathXml AutodeskTransfer.xml</param>
     /// <param name="spezifikationName">name of the current open spezifikation</param>
     /// <param name="spezifikationTyp">type of the current open spezifikation</param>
+    /// <param name="vaultDisabled">PDM-System vault disabled</param>
     /// <returns>Task<(string?, IEnumerable<TransferData>?)></returns>
-    Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp);
+    Task<(string?, IEnumerable<TransferData>?)> ImportLiftDataDialogAsync(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp, bool vaultDisabled);
 
     /// <summary>
     /// Opens a modal CheckOutDialog.

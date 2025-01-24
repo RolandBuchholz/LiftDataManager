@@ -32,6 +32,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         FullPathXml = sender.FullPathXml;
         CurrentSpezifikationTyp = sender.CurrentSpezifikationTyp;
         SpezifikationName = sender.SpezifikationName;
+        VaultDisabled = sender.VaultDisabled;
         await Task.CompletedTask;
     }
 
@@ -119,6 +120,9 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
 
     [ObservableProperty]
     public partial string? SpezifikationName { get; set; }
+
+    [ObservableProperty]
+    public partial bool VaultDisabled { get; set; }
 
     [ObservableProperty]
     public partial string? DataImportDescription { get; set; } = "Daten aus einer vorhandenen Spezifikation importieren.";

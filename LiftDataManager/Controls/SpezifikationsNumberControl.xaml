@@ -49,6 +49,21 @@
                 </toolkitbehaviors:KeyDownTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </TextBox>
+        <TextBox
+            x:Name="tbx_CustomNumberbox"
+            MinWidth="125"
+            Margin="5,0,0,0"
+            ui:TextBoxExtensions.ValidationMode="Dynamic"
+            MaxLength="25"
+            PlaceholderText="Auftragsnummer"
+            Text="{x:Bind SpezifikationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ToolTipService.ToolTip="max. 25 Zeichen keine Sonderzeichen">
+            <Interactivity:Interaction.Behaviors>
+                <toolkitbehaviors:KeyDownTriggerBehavior Key="Enter">
+                    <Interactivity:InvokeCommandAction Command="{x:Bind LoadCommand}" />
+                </toolkitbehaviors:KeyDownTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
+        </TextBox>
         <Button
             x:Name="btn_Request"
             Margin="5,0,5,0"

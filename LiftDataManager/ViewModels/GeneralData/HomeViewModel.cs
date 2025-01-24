@@ -470,7 +470,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             _logger.LogError(61039, "Liftadataimport failed fullPathXml or spezifikationName is null");
             return;
         }
-        var importResult = await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp);
+        var importResult = await _dialogService.ImportLiftDataDialogAsync(FullPathXml, SpezifikationName, CurrentSpezifikationTyp, VaultDisabled);
 
         if (importResult.Item1 is not null)
         {

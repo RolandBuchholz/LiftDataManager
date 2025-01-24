@@ -67,6 +67,7 @@
                 IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                 IsOrderRelated="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
                 IsValid="{x:Bind ViewModel.CanLoadSpeziData, Mode=TwoWay}"
+                IsVaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
                 LoadCommand="{x:Bind ViewModel.LoadDataCommand}"
                 RequestEnabled="False"
                 SpezifikationName="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay}"
