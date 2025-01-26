@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.Models;
 using Microsoft.Extensions.Logging;
 using MvvmHelpers;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace LiftDataManager.ViewModels;
 
@@ -139,6 +142,46 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     [NotifyCanExecuteChangedFor(nameof(ValidateAllParameterCommand))]
     public partial bool CanValidateAllParameter { get; set; }
 
+    [RelayCommand]
+    private async Task PickFilePathAsync()
+    {
+        if (!VaultDisabled)
+        {
+            return;
+        }
+        var filePicker = App.MainWindow.CreateOpenFilePicker();
+        filePicker.ViewMode = PickerViewMode.Thumbnail;
+        filePicker.CommitButtonText = "Auslegung laden";
+        filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        filePicker.FileTypeFilter.Add(".xml");
+        StorageFile orderFile = await filePicker.PickSingleFileAsync();
+        if (orderFile is null)
+        {
+            return;
+        }
+        var dataPath = _settingService.PathDataStorage;
+        if (string.IsNullOrWhiteSpace(dataPath) ||
+            !orderFile.Path.StartsWith(dataPath))
+        {
+            await _dialogService.MessageDialogAsync("Auslegungspfad nicht gültig!", """
+                Der gewählte Pfad befindet sich nicht im aktuellen Arbeitsbereich.
+                Überprüfen Sie den Pfad in den Einstellungen oder verschieben 
+                Sie die Auslegung in den aktuellen Arbeitsbereich.
+                """);
+            return;
+        }
+        if (!orderFile.Name.EndsWith("AutoDeskTransfer.xml"))
+        {
+            await _dialogService.MessageDialogAsync("Datei wird nicht unterstützt!", """
+                Wählen Sie eine gültige AutoDeskTransfer.xml Datei!
+                """);
+            return;
+        }
+        FullPathXml = orderFile.Path;
+        SpezifikationName = orderFile.DisplayName.Replace("-AutoDeskTransfer", "");
+        await LoadDataFromXmlFile(0);
+    }
+
     [RelayCommand(CanExecute = nameof(CanLoadSpeziData))]
     private async Task LoadDataAsync()
     {
@@ -156,7 +199,82 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await _validationParameterDataService.ResetAsync();
             await _calculationsModuleService.ResetAsync();
             await _infoCenterService.ResetAsync();
-            downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
+            if (!VaultDisabled)
+            {
+                downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
+            }
+            else
+            {
+                var path = _settingService.PathDataStorage;
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    _logger.LogWarning(60139, "DataStoragePath is null or whiteSpace");
+                    return;
+                }
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                Stopwatch stopWatch = new();
+                stopWatch.Start();
+                var searchResult = await Task.Run(() => Directory.GetFiles(path, $"{SpezifikationName}-AutoDeskTransfer.xml", SearchOption.AllDirectories));
+                stopWatch.Stop();
+                downloadResult.Item1 = stopWatch.ElapsedMilliseconds;
+                downloadResult.Item2 = new DownloadInfo();
+                switch (searchResult.Length)
+                {
+                    case 0:
+                        {
+                            var createOrder = await _dialogService.ConfirmationDialogAsync($"Es wurde keine Auslegung {SpezifikationName} gefunden? \n" +
+                                $" Soll eine neue Auslegung erstellt werden?",
+                                "Neue Auslegung erstellen", "Abbrechen");
+                            if (!(bool)createOrder)
+                            {
+                                return;
+                            }
+                            var orderFileName = ProcessHelpers.CreateOrderFolderStructure(path, SpezifikationName, true);
+                            downloadResult.Item2.ExitCode = 0;
+                            downloadResult.Item2.CheckOutState = "CheckedOutByCurrentUser";
+                            downloadResult.Item2.ExitState = ExitCodeEnum.NoError;
+                            downloadResult.Item2.FullFileName = orderFileName;
+                            downloadResult.Item2.Success = true;
+                            downloadResult.Item2.IsCheckOut = true;
+                            _logger.LogInformation(60139, "New Order created {SpezifikationName}-AutoDeskTransfer.xml.", SpezifikationName);
+                            break;
+                        }
+                    case 1:
+                        {
+                            var autoDeskTransferpath = searchResult[0];
+                            FileInfo AutoDeskTransferInfo = new(autoDeskTransferpath);
+                            if (!AutoDeskTransferInfo.IsReadOnly)
+                            {
+                                _logger.LogInformation(60139, "Data {SpezifikationName} from workspace loaded", SpezifikationName);
+                                downloadResult.Item2.ExitCode = 0;
+                                downloadResult.Item2.CheckOutState = "CheckedOutByCurrentUser";
+                                downloadResult.Item2.ExitState = ExitCodeEnum.NoError;
+                                downloadResult.Item2.FullFileName = searchResult[0];
+                                downloadResult.Item2.Success = true;
+                                downloadResult.Item2.IsCheckOut = true;
+                            }
+                            else
+                            {
+                                await _dialogService.MessageDialogAsync("Datei ist scheibgeschützt!", """
+                                     Überprüfen Sie die schreibrechte der AutoDeskTransfer.xml Datei!
+                                     """);
+                                return;     
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            await _dialogService.MessageDialogAsync($"Duplikate gefunden!", $"""
+                                     Es wurden mehrere {SpezifikationName}-AutoDeskTransfer.xml Dateien gefunden?
+                                     Überprüfen Sie din Arbeitsbereich und löschen die ungültigen Duplikate!
+                                     """);
+                            return;
+                        }
+                }
+            }
         }
 
         if (downloadResult.Item2 is not null)
@@ -234,7 +352,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
         }
+        await LoadDataFromXmlFile(downloadResult.Item1);
+    }
 
+    private async Task LoadDataFromXmlFile(long searchTime)
+    {
         if (string.IsNullOrWhiteSpace(FullPathXml))
         {
             _logger.LogWarning(61033, "FullPathXml is null or whiteSpace");
@@ -253,9 +375,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             AuftragsbezogeneXml = true;
             CanValidateAllParameter = true;
             InfoCenterEntrys.Clear();
-            await _infoCenterService.AddInfoCenterMessageAsync($"Suche im Arbeitsbereich nach {downloadResult.Item1} ms beendet");
+            if (searchTime > 0)
+            {
+                await _infoCenterService.AddInfoCenterMessageAsync($"Suche im Arbeitsbereich nach {searchTime} ms beendet");
+            }
         }
-
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
         var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, true);
         await _infoCenterService.AddListofInfoCenterEntrysAsync(newInfoCenterEntrys);

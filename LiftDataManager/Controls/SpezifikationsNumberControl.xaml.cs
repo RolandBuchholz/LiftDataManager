@@ -1,9 +1,13 @@
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 
 public sealed partial class SpezifikationsNumberControl : UserControl
 {
+    [GeneratedRegex(@"^[a-zA-Z0-9ÄÖÜäöüß _()-]*$")]
+    private static partial Regex CustomFileNameRegex();
+    public Regex CustomFileName { get; set; } = CustomFileNameRegex();
     public List<SpezifikationTyp>? SpezifikationTyps { get; set; }
     public int[] Years { get; set; } = Enumerable.Range(10, 20).ToArray();
     public string[] Months { get; } = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];

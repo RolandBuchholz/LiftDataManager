@@ -117,4 +117,37 @@ public static class ProcessHelpers
         await Task.CompletedTask;
         return true;
     }
+
+    public static string CreateOrderFolderStructure(string rootPath, string orderName, bool createXml)
+    {
+        var pathList = new List<string>
+        {
+            Path.Join(rootPath, orderName),
+            Path.Join(rootPath, orderName, "Berechnungen", "PDF"),
+            Path.Join(rootPath, orderName, "Bestellungen"),
+            Path.Join(rootPath, orderName, "Bgr00", "CAD-CFP"),
+            Path.Join(rootPath, orderName, "Fotos"),
+            Path.Join(rootPath, orderName, "SV"),
+            Path.Join(rootPath, orderName, "Montage-TÜV-Dokumentation", "TÜV", "Zertifikate")
+        };
+
+        foreach (var path in pathList)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        if (!createXml)
+        {
+            return string.Empty;
+        }
+        else 
+        {
+            var newOrderFileName = Path.Join(rootPath, orderName, $"{orderName}-AutoDeskTransfer.xml");
+            File.Copy(@"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml", newOrderFileName, false);
+            return newOrderFileName;
+        }
+    }
 }

@@ -53,6 +53,7 @@
             x:Name="tbx_CustomNumberbox"
             MinWidth="125"
             Margin="5,0,0,0"
+            ui:TextBoxExtensions.Regex="{x:Bind CustomFileName}"
             ui:TextBoxExtensions.ValidationMode="Dynamic"
             MaxLength="25"
             PlaceholderText="Auftragsnummer"

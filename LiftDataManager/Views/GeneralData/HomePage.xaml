@@ -68,6 +68,7 @@
                 IsOrderRelated="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
                 IsValid="{x:Bind ViewModel.CanLoadSpeziData, Mode=TwoWay}"
                 IsVaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
+                PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                 LoadCommand="{x:Bind ViewModel.LoadDataCommand}"
                 RequestEnabled="False"
                 SpezifikationName="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay}"
