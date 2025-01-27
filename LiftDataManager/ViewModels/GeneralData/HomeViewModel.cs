@@ -61,6 +61,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     }
 
     [ObservableProperty]
+    public partial string? LoadButtonLabel { get; set; }
+
+    [ObservableProperty]
     public partial bool IsBusy { get; set; }
 
     [ObservableProperty]
@@ -883,26 +886,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";
             }
-            if (parameter is null)
-            {
-                return;
-            }
-            if (parameter.GetType().Equals(typeof(string)))
-            {
-                if (string.IsNullOrWhiteSpace(parameter as string))
-                {
-                    return;
-                }
-                switch (parameter as string)
-                {
-                    case "CheckOut":
-                        if (CanCheckOut)
-                            CheckOutCommand.ExecuteAsync(parameter as string);
-                        break;
-                    default:
-                        return;
-                }
-            }
+            LoadButtonLabel = VaultDisabled ? "Load or Create" : "Load Data";
         }
     }
 

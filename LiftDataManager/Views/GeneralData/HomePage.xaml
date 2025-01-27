@@ -45,37 +45,29 @@
             Grid.ColumnSpan="2"
             Margin="0,0,0,10"
             ReadOnlyMode="{x:Bind ViewModel.LikeEditParameter, Mode=TwoWay, Converter={StaticResource BoolNegationConverter}}" />
-        <!--  Optionen  -->
+        <!--  Control Panel  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--  Control Panel  -->
-
             <SpeziControls:SpezifikationsNumberControl
                 Grid.Column="0"
-                Margin="0,0,0,0"
                 IsEnabled="{x:Bind ViewModel.AuftragsbezogeneXml, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                 IsOrderRelated="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}"
                 IsValid="{x:Bind ViewModel.CanLoadSpeziData, Mode=TwoWay}"
                 IsVaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
-                PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                 LoadCommand="{x:Bind ViewModel.LoadDataCommand}"
+                PickFilePath="{x:Bind ViewModel.PickFilePathCommand}"
                 RequestEnabled="False"
                 SpezifikationName="{x:Bind ViewModel.SpezifikationName, Mode=TwoWay}"
                 SpezifikationTyp="{x:Bind ViewModel.CurrentSpezifikationTyp, Mode=TwoWay}" />
             <Button
                 Grid.Column="1"
-                Margin="5,0,0,0"
+                Margin="4,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.LoadDataCommand}"
                 FontWeight="Bold"
@@ -87,124 +79,175 @@
                 </ToolTipService.ToolTip>
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Margin="-5,0,5,0" Glyph="&#xEBD3;" />
-                    <TextBlock Text="Load Data" />
+                    <TextBlock Text="{x:Bind ViewModel.LoadButtonLabel, Mode=OneWay}" />
                 </StackPanel>
             </Button>
-            <Button
+            <StackPanel
                 Grid.Column="2"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.UploadDataCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    Lokale Daten werden auf den Server hochgeladen
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE753;" />
-                    <TextBlock Text="Upload Vault" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="3"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.CheckOutCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    Daten werden zur Bearbeitung für den Benutzer reserviert
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE785;" />
-                    <TextBlock Text="CheckOut" />
-                </StackPanel>
-            </Button>
-            <Button
+                Margin="4,0,0,0"
+                Orientation="Horizontal"
+                Spacing="4"
+                Visibility="{x:Bind ViewModel.VaultDisabled, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}">
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.UploadDataCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Lokale Daten werden auf den Server hochgeladen
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE753;" />
+                        <TextBlock Text="Upload Vault" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.CheckOutCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Daten werden zur Bearbeitung für den Benutzer reserviert
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE785;" />
+                        <TextBlock Text="CheckOut" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.ClearDataCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Alle lokalen Daten werden gelöscht
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE894;" />
+                        <TextBlock Text="Clear Data" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel
+                Grid.Column="2"
+                Margin="4,0,0,0"
+                Orientation="Horizontal"
+                Spacing="4"
+                Visibility="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}">
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.UploadDataCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Lokale Daten werden auf den Server hochgeladen
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE753;" />
+                        <TextBlock Text="Hallo" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.CheckOutCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Daten werden zur Bearbeitung für den Benutzer reserviert
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE785;" />
+                        <TextBlock Text="CheckOut" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.ClearDataCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Alle lokalen Daten werden gelöscht
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE894;" />
+                        <TextBlock Text="Clear Data" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel
                 Grid.Column="4"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.ClearDataCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom"
-                Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
-                <ToolTipService.ToolTip>
-                    Alle lokalen Daten werden gelöscht
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Margin="-5,0,5,0" Glyph="&#xE894;" />
-                    <TextBlock Text="Clear Data" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="6"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.CreatePdfCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom">
-                <ToolTipService.ToolTip>
-                    Erstellung einer Pdf-Datei für den Ausdruck
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Margin="-5,0,5,0" Glyph="&#xEA90;" />
-                    <TextBlock Text="Create Pdf" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="7"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.DataImportCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom">
-                <ToolTipService.ToolTip>
-                    Datenimport aus einer vorhandenen Spezifikation
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Margin="-5,0,5,0" Symbol="Import" />
-                    <TextBlock Text="Import LiftData" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="8"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.ValidateAllParameterCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom">
-                <ToolTipService.ToolTip>
-                    Alle Parameter werden auf Plausibilität geprüft
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Margin="-5,0,5,0" Glyph="&#xF28B;" />
-                    <TextBlock Text="Validate All Parameter" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="9"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                Command="{x:Bind ViewModel.SaveAllParameterCommand}"
-                FontWeight="Bold"
-                Style="{StaticResource AccentButtonStyle}"
-                ToolTipService.Placement="Bottom">
-                <ToolTipService.ToolTip>
-                    Alle Parameter werden in die XML gespeichert
-                </ToolTipService.ToolTip>
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Margin="-5,0,5,0" Symbol="SaveLocal" />
-                    <TextBlock Text="Save All Parameter" />
-                </StackPanel>
-            </Button>
+                Margin="4,0,0,0"
+                Orientation="Horizontal"
+                Spacing="4">
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.CreatePdfCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom">
+                    <ToolTipService.ToolTip>
+                        Erstellung einer Pdf-Datei für den Ausdruck
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xEA90;" />
+                        <TextBlock Text="Create Pdf" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.DataImportCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom">
+                    <ToolTipService.ToolTip>
+                        Datenimport aus einer vorhandenen Spezifikation
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Margin="-5,0,5,0" Symbol="Import" />
+                        <TextBlock Text="Import LiftData" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.ValidateAllParameterCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom">
+                    <ToolTipService.ToolTip>
+                        Alle Parameter werden auf Plausibilität geprüft
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xF28B;" />
+                        <TextBlock Text="Validate All Parameter" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.SaveAllParameterCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom">
+                    <ToolTipService.ToolTip>
+                        Alle Parameter werden in die XML gespeichert
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Margin="-5,0,5,0" Symbol="SaveLocal" />
+                        <TextBlock Text="Save All Parameter" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Grid>
         <!--  Parameter  -->
         <ScrollViewer

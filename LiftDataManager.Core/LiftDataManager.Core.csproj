@@ -15,6 +15,10 @@
     <WarningsAsErrors />-->
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\DataComponents\AutoDeskTransfer.xml" />
+    <None Remove="Assets\DataComponents\LiftDataParameter.db" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MsgReader" Version="5.7.0" />
     <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
