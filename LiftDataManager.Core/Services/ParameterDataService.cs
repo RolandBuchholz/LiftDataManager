@@ -907,12 +907,6 @@ public partial class ParameterDataService : IParameterDataService
             return false;
         }
 
-        if (!path.StartsWith("C:\\Work"))
-        {
-            _logger.LogError(61001, "Path is not in workspace");
-            return false;
-        }
-
         if (!path.EndsWith("AutoDeskTransfer.xml"))
         {
             _logger.LogError(61001, "Path is not a AutoDeskTransfer.xml");

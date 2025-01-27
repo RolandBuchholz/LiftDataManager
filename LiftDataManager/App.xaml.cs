@@ -227,31 +227,56 @@ public partial class App : Application
 
     public static string GetConnectionString(bool dbReadOnly)
     {
-        const string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
-        string? dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+        string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
+        string dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+        bool vaultDisabled = false;
 
-        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)!))
+        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppVaultDisabledRequested", out var vaultSettingValue))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
-        }
-
-        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var obj))
-        {
-            if (!string.IsNullOrWhiteSpace((string)obj))
-                dbPath = JsonConvert.DeserializeObject<string>((string)obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-        }
-
-        if (dbPath is not null && dbReadOnly)
-        {
-            if (File.Exists(workPathDb))
+            if (!string.IsNullOrWhiteSpace((string)vaultSettingValue))
             {
-                FileInfo workPathDbFileInfo = new(workPathDb);
-                if (workPathDbFileInfo.IsReadOnly)
-                {
-                    workPathDbFileInfo.IsReadOnly = false;
-                }
+                vaultDisabled = JsonConvert.DeserializeObject<bool>((string)vaultSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
             }
-            File.Copy(dbPath, workPathDb, true);
+        }
+
+        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var dbPathSettingValue))
+        {
+            if (!string.IsNullOrWhiteSpace((string)dbPathSettingValue))
+            {
+                var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                dbPath = string.IsNullOrWhiteSpace(dbPathValue) ? dbPath : dbPathValue;
+            }
+        }
+
+        if (!File.Exists(dbPath))
+        {
+            var installationPath = AppDomain.CurrentDomain.BaseDirectory;
+            dbPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");
+        }
+
+        if (!vaultDisabled)
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dbPath) && dbReadOnly)
+            {
+                if (File.Exists(workPathDb))
+                {
+                    FileInfo workPathDbFileInfo = new(workPathDb);
+                    if (workPathDbFileInfo.IsReadOnly)
+                    {
+                        workPathDbFileInfo.IsReadOnly = false;
+                    }
+                }
+                File.Copy(dbPath, workPathDb, true);
+            }
+        }
+        else
+        {
+            workPathDb = dbPath;
         }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;

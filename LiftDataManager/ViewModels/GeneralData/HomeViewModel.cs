@@ -232,13 +232,25 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                             {
                                 return;
                             }
-                            var orderFileName = ProcessHelpers.CreateOrderFolderStructure(path, SpezifikationName, true);
+                            var orderFileName = await ProcessHelpers.CreateOrderFolderStructure(path, SpezifikationName, true);
+                            if (string.IsNullOrWhiteSpace(orderFileName))
+                            {
+                                return;
+                            }
                             downloadResult.Item2.ExitCode = 0;
                             downloadResult.Item2.CheckOutState = "CheckedOutByCurrentUser";
                             downloadResult.Item2.ExitState = ExitCodeEnum.NoError;
                             downloadResult.Item2.FullFileName = orderFileName;
                             downloadResult.Item2.Success = true;
                             downloadResult.Item2.IsCheckOut = true;
+                            Parameter orderParameter = new Parameter(SpezifikationName, 1, 1, "Auftrags-Nr", _validationParameterDataService) 
+                            { 
+                                Name = "var_AuftragsNummer",
+                                DisplayName = "Auftragsnummer"
+                                
+                                
+                            };
+                            await _parameterDataService.SaveParameterAsync(orderParameter, downloadResult.Item2.FullFileName);
                             _logger.LogInformation(60139, "New Order created {SpezifikationName}-AutoDeskTransfer.xml.", SpezifikationName);
                             break;
                         }

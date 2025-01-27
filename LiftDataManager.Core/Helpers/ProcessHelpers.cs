@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Diagnostics;
+using Windows.Storage;
 namespace LiftDataManager.Core.Helpers;
 
 public static class ProcessHelpers
@@ -118,7 +119,7 @@ public static class ProcessHelpers
         return true;
     }
 
-    public static string CreateOrderFolderStructure(string rootPath, string orderName, bool createXml)
+    public static async Task<string> CreateOrderFolderStructure(string rootPath, string orderName, bool createXml)
     {
         var pathList = new List<string>
         {
@@ -146,7 +147,13 @@ public static class ProcessHelpers
         else 
         {
             var newOrderFileName = Path.Join(rootPath, orderName, $"{orderName}-AutoDeskTransfer.xml");
-            File.Copy(@"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml", newOrderFileName, false);
+            var installationPath = AppDomain.CurrentDomain.BaseDirectory;
+            var autodeskTransferXml = await StorageFile.GetFileFromPathAsync(Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "AutoDeskTransfer.xml"));
+            if (autodeskTransferXml is null)
+            {
+                return string.Empty;
+            }
+            File.Copy(autodeskTransferXml.Path, newOrderFileName, false);
             return newOrderFileName;
         }
     }

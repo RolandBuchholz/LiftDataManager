@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/LiftDataManager.Core/Assets/DataComponents/AutoDeskTransfer.xml
+/LiftDataManager.Core/Assets/DataComponents/LiftDataParameter.db
