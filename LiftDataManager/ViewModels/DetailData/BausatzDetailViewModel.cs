@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
-using MvvmHelpers;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;

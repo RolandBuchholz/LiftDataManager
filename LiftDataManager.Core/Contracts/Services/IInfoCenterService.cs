@@ -1,6 +1,4 @@
-﻿using MvvmHelpers;
-
-namespace LiftDataManager.Core.Contracts.Services;
+﻿namespace LiftDataManager.Core.Contracts.Services;
 
 /// <summary>
 /// The default <see langword="interface"/> for a service that handles infos in the infoCenters.

@@ -2,7 +2,6 @@
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Input;
-using MvvmHelpers;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;

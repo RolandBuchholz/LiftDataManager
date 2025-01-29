@@ -1,7 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Core.Models;
 using Microsoft.Extensions.Logging;
-using MvvmHelpers;
 
 namespace LiftDataManager.Core.Services;
 

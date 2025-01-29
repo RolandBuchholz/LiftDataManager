@@ -1,6 +1,5 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using MvvmHelpers;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Helpers;
