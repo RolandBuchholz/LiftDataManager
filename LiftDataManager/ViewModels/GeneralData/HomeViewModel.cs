@@ -206,6 +206,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             await _validationParameterDataService.ResetAsync();
             await _calculationsModuleService.ResetAsync();
             await _infoCenterService.ResetAsync();
+            LikeEditParameter = true;
             if (!VaultDisabled)
             {
                 downloadResult = await _vaultDataService.GetAutoDeskTransferAsync(SpezifikationName, CurrentSpezifikationTyp, OpenReadOnly);
@@ -318,6 +319,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             else if (downloadInfo.ExitState == ExitCodeEnum.CheckedOutByOtherUser || downloadInfo.ExitState == ExitCodeEnum.CheckedOutLinkedFilesByOtherUser)
             {
                 FullPathXml = downloadInfo.FullFileName;
+                AuftragsbezogeneXml = true;
+                CanValidateAllParameter = true;
+                CheckOut = false;
+                LikeEditParameter = false;
                 await _dialogService.MessageDialogAsync($"Datei wird von {downloadInfo.EditedBy} bearbeitet",
                     "Kein speichern möglich!\n" +
                     "\n" +
@@ -325,10 +330,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 _logger.LogWarning(60139, "Data locked by {EditedBy}", downloadInfo.EditedBy);
                 await _infoCenterService.AddInfoCenterMessageAsync($"Achtung Datei wird von {downloadInfo.EditedBy} bearbeitet\n" +
                                                                                       "Kein speichern möglich!");
-                AuftragsbezogeneXml = true;
-                CanValidateAllParameter = true;
-                CheckOut = false;
-                LikeEditParameter = false;
             }
             else if (downloadInfo.ExitState == ExitCodeEnum.MultipleAutoDeskTransferXml)
             {
@@ -407,10 +408,6 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         await _infoCenterService.AddInfoCenterMessageAsync($"Daten aus {FullPathXml} geladen");
 
-        LikeEditParameter = true;
-        OpenReadOnly = true;
-        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
-
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
             if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
@@ -426,6 +423,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }));
         }
         InfoCenterIsOpen = _settingService.AutoOpenInfoCenter;
+        CanCheckOut = !CheckOut && AuftragsbezogeneXml;
+        OpenReadOnly = true;
     }
 
     [RelayCommand(CanExecute = nameof(CanCheckOut))]
