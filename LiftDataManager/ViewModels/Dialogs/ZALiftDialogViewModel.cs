@@ -5,7 +5,7 @@ namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class ZALiftDialogViewModel : ObservableObject
 {
-    private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
+    private const string defaultPathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private readonly DispatcherQueue dispatcherQueue;
     private readonly ISettingService _settingService;
     private readonly ILogger<ZALiftDialogViewModel> _logger;
@@ -123,11 +123,15 @@ public partial class ZALiftDialogViewModel : ObservableObject
         ProcessHelpers.MakeBackupFile(Path.Combine(pathAutodeskTransfer, "Berechnungen", OrderNumber + ".html"), OrderNumber);
         ProcessHelpers.MakeBackupFile(Path.Combine(pathAutodeskTransfer, "Berechnungen", OrderNumber + ".aus"), OrderNumber);
 
-        if (!File.Exists(pathSynchronizeZAlift))
+        if (!_settingService.VaultDisabled && !File.Exists(defaultPathSynchronizeZAlift))
         {
             var downloadResult = await _vaultDataService.GetFileAsync("SynchronizeZAlift.ps1", true, true);
             _logger.LogInformation(60191, "downloadResult SynchronizeZAlift.ps1: ErrorState {downloadResult.ErrorState}", downloadResult.ErrorState);
         }
+
+        var pathSynchronizeZAlift = _settingService.VaultDisabled ?
+                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiftDataManager.Core", "Assets", "DataComponents", "SynchronizeZAlift.ps1")
+                            : defaultPathSynchronizeZAlift;
 
         if (File.Exists(pathSynchronizeZAlift))
         {

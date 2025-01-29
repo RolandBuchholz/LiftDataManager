@@ -65,14 +65,22 @@ public partial class AppClosingDialogViewModel : ObservableRecipient
         }
         else
         {
-            SpecificationStatus = "Warnung Autodesktranfer.xml wurde noch nicht hochgeladen!";
-            Description = """
+            if (_currentSpeziProperties.VaultDisabled)
+            {
+                sender.IgnoreSaveWarning = true;
+                sender.Hide();
+            }
+            else
+            {
+                SpecificationStatus = "Warnung Autodesktranfer.xml wurde noch nicht hochgeladen!";
+                Description = """
                            Der Auftrag wurde noch nicht ins Vault hochgeladen.
 
                            Wollen Sie den Auftrag ins Vault hochladen und einchecken?
                            """;
-            sender.PrimaryButtonText = "Daten einchecken";
-            sender.SecondaryButtonText = "Daten nicht einchecken";
+                sender.PrimaryButtonText = "Daten einchecken";
+                sender.SecondaryButtonText = "Daten nicht einchecken";
+            }
         }
         await Task.CompletedTask;
     }

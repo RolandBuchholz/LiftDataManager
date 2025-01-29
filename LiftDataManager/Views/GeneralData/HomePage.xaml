@@ -142,47 +142,32 @@
                 Visibility="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}">
                 <Button
                     HorizontalAlignment="Stretch"
-                    Command="{x:Bind ViewModel.UploadDataCommand}"
+                    Command="{x:Bind ViewModel.NewLiftDataCommand}"
                     FontWeight="Bold"
                     Style="{StaticResource AccentButtonStyle}"
                     ToolTipService.Placement="Bottom"
                     Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
                     <ToolTipService.ToolTip>
-                        Lokale Daten werden auf den Server hochgeladen
-                    </ToolTipService.ToolTip>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE753;" />
-                        <TextBlock Text="Hallo" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    Command="{x:Bind ViewModel.CheckOutCommand}"
-                    FontWeight="Bold"
-                    Style="{StaticResource AccentButtonStyle}"
-                    ToolTipService.Placement="Bottom"
-                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
-                    <ToolTipService.ToolTip>
-                        Daten werden zur Bearbeitung für den Benutzer reserviert
-                    </ToolTipService.ToolTip>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE785;" />
-                        <TextBlock Text="CheckOut" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    Command="{x:Bind ViewModel.ClearDataCommand}"
-                    FontWeight="Bold"
-                    Style="{StaticResource AccentButtonStyle}"
-                    ToolTipService.Placement="Bottom"
-                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
-                    <ToolTipService.ToolTip>
-                        Alle lokalen Daten werden gelöscht
+                        Neue Spezifikation öffnen
                     </ToolTipService.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="-5,0,5,0" Glyph="&#xE894;" />
-                        <TextBlock Text="Clear Data" />
+                        <TextBlock Text="New Lift Data" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.RestoreDataCommand}"
+                    FontWeight="Bold"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.Placement="Bottom"
+                    Visibility="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}">
+                    <ToolTipService.ToolTip>
+                        Daten vor dem Laden wiederhergestellen
+                    </ToolTipService.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Margin="-5,0,5,0" Glyph="&#xE777;" />
+                        <TextBlock Text="Restore Backup" />
                     </StackPanel>
                 </Button>
             </StackPanel>

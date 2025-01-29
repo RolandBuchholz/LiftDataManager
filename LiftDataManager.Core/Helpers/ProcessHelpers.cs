@@ -157,4 +157,10 @@ public static class ProcessHelpers
             return newOrderFileName;
         }
     }
+
+    public static string GetDefaultAutodeskTransferPath(bool vaultDisabled)
+    {
+        return vaultDisabled ?  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiftDataManager.Core", "Assets", "DataComponents", "AutoDeskTransfer.xml") 
+                             : @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    }
 }

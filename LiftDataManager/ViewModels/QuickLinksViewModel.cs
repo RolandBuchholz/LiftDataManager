@@ -9,7 +9,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 {
     private const string pathSynchronizeZAlift = @"C:\Work\Administration\PowerShellScripts\SynchronizeZAlift.ps1";
     private const string pathVaultPro = @"C:\Programme\Autodesk\Vault Client 2023\Explorer\Connectivity.VaultPro.exe";
-    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private string _pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
     private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
 
     private readonly ParameterContext _parametercontext;
@@ -43,7 +43,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         }
         if (message.Value.SetDriveData)
         {
-            if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+            if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
                 CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
             if (CanOpenZALiftHtml)
             {
@@ -62,6 +62,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenCalculationsCommand))]
     public partial bool CanOpenCalculations { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenBauerCommand))]
+    public partial bool CanOpenBauer { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenVaultCommand))]
@@ -96,11 +100,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     public void CheckCanOpenFiles()
     {
         SynchronizeViewModelParameter();
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
         {
             CanOpenSpeziPdf = File.Exists(FullPathXml.Replace("-AutoDeskTransfer.xml", "-Spezifikation.pdf"));
         }
-        CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer);
+        CanOpenVault = !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer);
         CanOpenCalculations = CanOpenVault;
         if (ParameterDictionary.Count > 0)
         {
@@ -116,7 +120,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             CanOpenZALift = ParameterDictionary["var_Aufzugstyp"].Value!.Contains("Seil") && File.Exists(_settingService.PathZALift);
             CanOpenLilo = ParameterDictionary["var_Aufzugstyp"].Value!.Contains("Hydraulik") && File.Exists(_settingService.PathLilo);
         }
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
         {
             CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
         }
@@ -138,6 +142,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 }
             }
         }
+
+        CanOpenCalculations = !VaultDisabled;
+        CanOpenBauer = !VaultDisabled;
+        CanOpenVault = !VaultDisabled;
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenSpeziPdf))]
@@ -157,7 +165,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private void OpenCalculations()
     {
         SynchronizeViewModelParameter();
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
         {
             var path = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", "PDF");
             MakeVaultLink(path, "Folder");
@@ -170,7 +178,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanOpenBauer))]
     private void OpenBauer()
     {
         SynchronizeViewModelParameter();
@@ -206,7 +214,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     private void OpenVault()
     {
         SynchronizeViewModelParameter();
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
         {
             MakeVaultLink(FullPathXml, "File");
             var filename = pathVaultPro;
@@ -747,7 +755,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     {
         var filePath = string.Empty;
         var zaliftHtml = new HtmlDocument();
-        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+        if (!string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
         {
             filePath = Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html");
         }
@@ -888,6 +896,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
     public void OnNavigatedTo(object parameter)
     {
+        _pathDefaultAutoDeskTransfer = ProcessHelpers.GetDefaultAutodeskTransferPath(VaultDisabled);
         CheckCanOpenFiles();
     }
 

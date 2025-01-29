@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /LiftDataManager.Core/Assets/DataComponents/AutoDeskTransfer.xml
 /LiftDataManager.Core/Assets/DataComponents/LiftDataParameter.db
+/LiftDataManager.Core/Assets/DataComponents/SynchronizeZAlift.ps1

@@ -8,10 +8,9 @@ namespace LiftDataManager.Core.Services;
 /// </summary>
 public partial class ValidationParameterDataService : IValidationParameterDataService
 {
-    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
     private ObservableDictionary<string, Parameter> _parameterDictionary;
     private string? _fullPathXml;
-    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer ? 
+    private string SpezifikationsNumber => !string.IsNullOrWhiteSpace(_fullPathXml) ? 
                                            Path.GetFileNameWithoutExtension(_fullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
     private DateTime ZaHtmlCreationTime { get; set; }
     private DateTime CFPCreationTime { get; set; }

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Core.Models;
 using Microsoft.Extensions.Logging;
 using MvvmHelpers;
+using System.IO.Compression;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -15,7 +15,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private readonly ILogger<HomeViewModel> _logger;
     private readonly IPdfService _pdfService;
     private bool OpenReadOnly { get; set; } = true;
-    private const string pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+    private string _pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                          ISettingService settingService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
@@ -137,6 +137,10 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     public partial bool CanClearData { get; set; }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(RestoreDataCommand))]
+    public partial bool CanRestoreData { get; set; }
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(UploadDataCommand))]
     [NotifyCanExecuteChangedFor(nameof(DataImportCommand))]
     public partial bool CanUpLoadSpeziData { get; set; }
@@ -246,14 +250,15 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                             downloadResult.Item2.FullFileName = orderFileName;
                             downloadResult.Item2.Success = true;
                             downloadResult.Item2.IsCheckOut = true;
-                            Parameter orderParameter = new Parameter(SpezifikationName, 1, 1, "Auftrags-Nr", _validationParameterDataService) 
-                            { 
+                            Parameter orderParameter = new Parameter(SpezifikationName, 1, 1, "Auftrags-Nr", _validationParameterDataService)
+                            {
                                 Name = "var_AuftragsNummer",
                                 DisplayName = "Auftragsnummer"
-                                
-                                
+
+
                             };
                             await _parameterDataService.SaveParameterAsync(orderParameter, downloadResult.Item2.FullFileName);
+                            CreateOrderBackup(orderFileName);
                             _logger.LogInformation(60139, "New Order created {SpezifikationName}-AutoDeskTransfer.xml.", SpezifikationName);
                             break;
                         }
@@ -270,13 +275,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                                 downloadResult.Item2.FullFileName = searchResult[0];
                                 downloadResult.Item2.Success = true;
                                 downloadResult.Item2.IsCheckOut = true;
+                                CreateOrderBackup(searchResult[0]);
                             }
                             else
                             {
                                 await _dialogService.MessageDialogAsync("Datei ist scheibgeschützt!", """
                                      Überprüfen Sie die schreibrechte der AutoDeskTransfer.xml Datei!
                                      """);
-                                return;     
+                                return;
                             }
                             break;
                         }
@@ -346,13 +352,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                         await _dialogService.LiftDataManagerdownloadInfoAsync(vaultDownloadResult);
                         _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadResult.ExitState}", SpezifikationName, vaultDownloadResult.ExitState);
                         await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {vaultDownloadResult.ExitState}");
-                        FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                        FullPathXml = _pathDefaultAutoDeskTransfer;
                     }
                 }
                 else
                 {
                     _logger.LogInformation(60139, "Standarddata loaded");
-                    FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                    FullPathXml = _pathDefaultAutoDeskTransfer;
                 }
             }
             else
@@ -360,12 +366,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 await _dialogService.LiftDataManagerdownloadInfoAsync(downloadInfo);
                 _logger.LogError(61039, "{SpezifikationName}-AutoDeskTransfer.xml failed {downloadInfo.ExitState}", SpezifikationName, downloadInfo.ExitState);
                 await _infoCenterService.AddInfoCenterErrorAsync($"Fehler: {downloadInfo.ExitState}");
-                FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+                FullPathXml = _pathDefaultAutoDeskTransfer;
             }
         }
         else
         {
-            FullPathXml = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
+            FullPathXml = _pathDefaultAutoDeskTransfer;
         }
         await LoadDataFromXmlFile(downloadResult.Item1);
     }
@@ -378,7 +384,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             return;
         }
 
-        if (string.Equals(FullPathXml, @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml"))
+        if (string.Equals(FullPathXml, _pathDefaultAutoDeskTransfer))
         {
             SpezifikationName = string.Empty;
             AuftragsbezogeneXml = false;
@@ -407,7 +413,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
         if (AuftragsbezogeneXml & !string.IsNullOrWhiteSpace(SpezifikationName))
         {
-            if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != pathDefaultAutoDeskTransfer))
+            if (ParameterDictionary is not null && !string.IsNullOrWhiteSpace(FullPathXml) && (FullPathXml != _pathDefaultAutoDeskTransfer))
             {
                 ParameterDictionary["var_CFPdefiniert"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat")).ToString());
             }
@@ -553,6 +559,50 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
         }
         await _parameterDataService.StopAutoSaveTimerAsync();
+    }
+
+    [RelayCommand]
+    private async Task NewLiftDataAsync()
+    {
+        await Task.Delay(30);
+        if (string.IsNullOrWhiteSpace(SpezifikationName) || string.IsNullOrWhiteSpace(FullPathXml))
+        {
+            _logger.LogError(61037, "SpezifikationName or FullPathXml are null or empty");
+            return;
+        }
+
+        if (ParameterDictionary!.Values.Any(p => p.IsDirty))
+        {
+            var savedData = await _dialogService.ConfirmationDialogAsync("Wollen Sie die nicht gespeicherten Daten speichern?",
+                "Daten speichern", "Daten verwerfen");
+            if ((bool)savedData)
+            {
+                await _parameterDataService.SaveAllParameterAsync(FullPathXml, Adminmode);
+            }
+        }
+
+        var pdfcreationResult = _pdfService.MakeDefaultSetofPdfDocuments(ParameterDictionary, FullPathXml);
+        _logger.LogInformation(60137, "Pdf CreationResult: {pdfcreationResult}", pdfcreationResult);
+        await _parameterDataService.StopAutoSaveTimerAsync();
+        ClearExpiredLiftData();
+        await LoadDataAsync();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanRestoreData))]
+    private async Task RestoreDataAsync()
+    {
+        var orderDic = Path.GetDirectoryName(FullPathXml);
+        if (!string.IsNullOrWhiteSpace(orderDic))
+        {
+            var backupFileName = string.Concat(orderDic, "-LDM-Backup.zip");
+            if (File.Exists(backupFileName))
+            {
+                Directory.Delete(orderDic, true);
+                ZipFile.ExtractToDirectory(backupFileName, orderDic);
+            }
+            await LoadDataFromXmlFile(0);
+            _logger.LogInformation(60139, "Backup restored {SpezifikationName}-LDM-Backup.zip.", SpezifikationName);
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanValidateAllParameter))]
@@ -874,6 +924,22 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         PayloadTable7 = 0;
     }
 
+    private void CreateOrderBackup(string orderFileName)
+    {
+        var orderDic = Path.GetDirectoryName(orderFileName);
+        if (!string.IsNullOrWhiteSpace(orderDic))
+        {
+            var backupFileName = string.Concat(orderDic, "-LDM-Backup.zip");
+            if (File.Exists(backupFileName))
+            {
+                File.Delete(backupFileName);
+            }
+            ZipFile.CreateFromDirectory(orderDic, backupFileName);
+            CanRestoreData = true;
+            _logger.LogInformation(60139, "Backup created {SpezifikationName}-LDM-Backup.zip.", SpezifikationName);
+        }
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
@@ -887,6 +953,11 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";
             }
             LoadButtonLabel = VaultDisabled ? "Load or Create" : "Load Data";
+            _pathDefaultAutoDeskTransfer = ProcessHelpers.GetDefaultAutodeskTransferPath(VaultDisabled);
+            if (!string.IsNullOrWhiteSpace(FullPathXml) && !string.Equals(FullPathXml,_pathDefaultAutoDeskTransfer))
+            { 
+                CanRestoreData = File.Exists(FullPathXml?.Replace($"\\{SpezifikationName}-AutoDeskTransfer.xml", "-LDM-Backup.zip"));
+            }
         }
     }
 

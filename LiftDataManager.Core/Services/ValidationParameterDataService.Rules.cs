@@ -831,7 +831,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateZAliftData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        if (string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer)
+        if (string.IsNullOrWhiteSpace(_fullPathXml))
         {
             return;
         }
@@ -1801,7 +1801,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
-        if (string.IsNullOrWhiteSpace(_fullPathXml) || _fullPathXml == pathDefaultAutoDeskTransfer)
+        if (string.IsNullOrWhiteSpace(_fullPathXml))
             return;
 
         var cFPPath = Path.Combine(Path.GetDirectoryName(_fullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
