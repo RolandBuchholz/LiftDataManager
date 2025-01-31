@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.Models.CalculationResultsModels;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -10,9 +11,9 @@ public partial class KabinenLüftungViewModel : DataViewModelBase, INavigationAw
 
     public CarVentilationResult CarVentilationResult = new();
 
-    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                   ICalculationsModule calculationsModuleService, IPdfService pdfService, ISettingService settingService) :
-                                   base(parameterDataService, dialogService, infoCenterService ,settingService)
+    public KabinenLüftungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                   ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, IPdfService pdfService ) :
+                                   base(parameterDataService, dialogService, infoCenterService ,settingService, baseLogger)
     {
         _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;

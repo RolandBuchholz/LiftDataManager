@@ -14,8 +14,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
     public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                  ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-     base(parameterDataService, dialogService, infoCenterService, settingService)
+                                  ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+                                  base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;

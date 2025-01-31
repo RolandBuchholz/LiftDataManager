@@ -1,4 +1,5 @@
 ﻿using LiftDataManager.Core.Models.CalculationResultsModels;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -14,9 +15,9 @@ public partial class NutzlastberechnungViewModel : DataViewModelBase, INavigatio
 
     public PayLoadResult PayLoadResult = new();
 
-    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService,
-                                       ICalculationsModule calculationsModuleService, ISettingService settingsSelectorService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public NutzlastberechnungViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService, 
+                                       ILogger<DataViewModelBase> baseLogger,ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

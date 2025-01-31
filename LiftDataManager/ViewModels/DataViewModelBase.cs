@@ -1,5 +1,5 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Messaging.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -9,17 +9,18 @@ public partial class DataViewModelBase : ObservableRecipient
     protected readonly IDialogService _dialogService;
     protected readonly IInfoCenterService _infoCenterService;
     protected readonly ISettingService _settingService;
+    protected readonly ILogger<DataViewModelBase> _baseLogger;
 
     public bool Adminmode { get; set; }
     public bool VaultDisabled { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
-    public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+    public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "") : string.Empty;
     public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; }
     public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
-    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService)
+    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService, ILogger<DataViewModelBase> baseLogger)
     {
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
@@ -28,6 +29,7 @@ public partial class DataViewModelBase : ObservableRecipient
         ParameterDictionary = _parameterDataService.GetParameterDictionary();
         InfoCenterEntrys = _infoCenterService.GetInfoCenterEntrys();
         ParameterErrorDictionary ??= [];
+        _baseLogger = baseLogger;
     }
 
     public virtual void Receive(PropertyChangedMessage<string> message)
@@ -38,7 +40,7 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public virtual void Receive(PropertyChangedMessage<bool> message)
@@ -49,7 +51,7 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelHighlightText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public virtual void Receive(RefreshModelStateMessage message)
@@ -60,7 +62,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         CheckOut = message.Value.IsCheckOut;
         LikeEditParameter = message.Value.LikeEditParameterEnabled;
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]
@@ -111,11 +113,11 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             if (value)
             {
-                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget();
+                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
             else
             {
-                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget();
+                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
         }
     }
@@ -308,7 +310,7 @@ public partial class DataViewModelBase : ObservableRecipient
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null)
         {
-            _ = SetModelStateAsync();
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         }
     }
 
@@ -316,4 +318,13 @@ public partial class DataViewModelBase : ObservableRecipient
     {
         IsActive = false;
     }
+
+    //private static void LogTaskException(Exception ex)
+    //{
+    //    Debug.WriteLine(ex.ToString());
+    //}
+
+    [LoggerMessage(03001, LogLevel.Error,
+    "TaskException: {ex}")]
+    partial void LogTaskException(Exception ex);
 }

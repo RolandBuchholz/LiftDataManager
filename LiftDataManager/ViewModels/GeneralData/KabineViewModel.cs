@@ -10,8 +10,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     private readonly ParameterContext _parametercontext;
 
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                           ISettingService settingService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-                           base(parameterDataService, dialogService, infoCenterService, settingService)
+                           ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
+                           base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;

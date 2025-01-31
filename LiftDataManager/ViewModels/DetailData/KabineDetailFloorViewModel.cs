@@ -9,8 +9,9 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
     public ObservableDictionary<string, double?> CarFloorSillParameter { get; set; }
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
-    public KabineDetailFloorViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-     base(parameterDataService, dialogService, infoCenterService, settingService)
+    public KabineDetailFloorViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                      ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+                                      base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         CarFloorSillParameter = [];
         SetupCarFloorSillParameter();

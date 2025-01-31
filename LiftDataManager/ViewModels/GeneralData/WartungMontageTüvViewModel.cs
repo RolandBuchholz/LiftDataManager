@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
 public class WartungMontageTüvViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public WartungMontageTüvViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public WartungMontageTüvViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                      ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
     }
 

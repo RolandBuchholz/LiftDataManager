@@ -17,9 +17,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private string _pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                         ISettingService settingService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
+                         ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
-        : base(parameterDataService, dialogService, infoCenterService, settingService)
+                         : base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;

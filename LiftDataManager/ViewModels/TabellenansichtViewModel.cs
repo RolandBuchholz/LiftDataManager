@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -6,8 +7,9 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 {
     public CollectionViewSource GroupedItems { get; set; }
 
-    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                    ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         GroupedItems = new CollectionViewSource
         {

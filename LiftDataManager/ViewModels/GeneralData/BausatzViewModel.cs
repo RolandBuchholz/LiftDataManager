@@ -9,8 +9,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     private readonly ICalculationsModule _calculationsModuleService;
 
     public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
-                            ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                            ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

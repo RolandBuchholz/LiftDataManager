@@ -1,5 +1,6 @@
 ﻿using Cogs.Collections;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -11,8 +12,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     private ObservableDictionary<string, List<LiftHistoryEntry>> HistoryEntrysDictionary { get; set; } = [];
     public ObservableCollection<LiftHistoryEntry> ParameterHistoryEntrys { get; set; } = [];
 
-    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public ListenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                  ILogger<DataViewModelBase> baseLogger, ISettingService settingService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         GroupedItems = new CollectionViewSource
         {

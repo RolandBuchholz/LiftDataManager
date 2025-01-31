@@ -19,9 +19,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     public List<InfoCenterEntry>? SyncedParameter {  get; set; }
 
     public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-        IValidationParameterDataService validationParameterDataService, ISettingService settingService, ParameterContext parametercontext,
-        IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                               IValidationParameterDataService validationParameterDataService, ISettingService settingService, ILogger<DataViewModelBase> baseLogger, 
+                               ParameterContext parametercontext, IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _vaultDataService = vaultDataService;
