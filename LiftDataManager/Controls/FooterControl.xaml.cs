@@ -135,7 +135,6 @@ public sealed partial class FooterControl : UserControl
     public static readonly DependencyProperty ErrorsDictionaryProperty =
         DependencyProperty.Register(nameof(ErrorsDictionary), typeof(ObservableDictionary<string, List<ParameterStateInfo>>), typeof(FooterControl), new PropertyMetadata(null));
 
-
     public string ErrorMessage
     {
         get => (string)GetValue(ErrorMessageProperty);
@@ -175,6 +174,19 @@ public sealed partial class FooterControl : UserControl
     public static readonly DependencyProperty CheckOutProperty =
         DependencyProperty.Register(nameof(CheckOut), typeof(bool), typeof(FooterControl), new PropertyMetadata(false, CheckOutPropertyChangedCallback));
 
+    private static void CheckOutPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if ((bool)d.GetValue(VaultDisabledProperty))
+        {
+            d.SetValue(FileInfoProperty, "LocalMode - Dateien werden im Windowsdateisystem abgelegt");
+            d.SetValue(FileInfoForegroundProperty, lokalModecolorBrush);
+        }
+        else
+        {
+            d.SetValue(FileInfoProperty, (bool)e.NewValue ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt");
+            d.SetValue(FileInfoForegroundProperty, (bool)e.NewValue ? checkOutcolorBrush : checkIncolorBrush);
+        }
+    }
     public bool VaultDisabled
     {
         get => (bool)GetValue(VaultDisabledProperty);
@@ -186,13 +198,6 @@ public sealed partial class FooterControl : UserControl
 
     public static readonly DependencyProperty VaultDisabledProperty =
         DependencyProperty.Register(nameof(VaultDisabled), typeof(bool), typeof(FooterControl), new PropertyMetadata(false));
-
-    private static void CheckOutPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        d.SetValue(FileInfoProperty, (bool)e.NewValue ? "CheckOut - Datei kann gespeichert werden" : "CheckIn - Datei schreibgeschützt");
-        d.SetValue(FileInfoForegroundProperty, (bool)e.NewValue ? checkOutcolorBrush : checkIncolorBrush);
-    }
-
     public bool HasErrors
     {
         get => (bool)GetValue(HasErrorsProperty);

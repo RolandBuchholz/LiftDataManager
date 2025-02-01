@@ -1,6 +1,4 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Messaging;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.Models.ComponentModels;
@@ -23,6 +21,8 @@ namespace LiftDataManager.Core.Services;
 
 public partial class ParameterDataService : IParameterDataService
 {
+    public event EventHandler? ParameterDataAutoSaveStarted;
+
     private readonly IValidationParameterDataService _validationParameterDataService;
     private readonly ParameterContext _parametercontext;
     private readonly ILogger<ParameterDataService> _logger;
@@ -888,7 +888,7 @@ public partial class ParameterDataService : IParameterDataService
                 _logger.LogInformation(60100, "AutoSave started");
                 if (_parameterDictionary.Values.Any(p => p.IsDirty))
                 {
-                    await SaveAllParameterAsync(fullPath, adminMode);
+                    ParameterDataAutoSaveStarted?.Invoke(this, new EventArgs());
                 }
             }
         }

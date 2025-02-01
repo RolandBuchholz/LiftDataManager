@@ -1,5 +1,4 @@
 ﻿using Humanizer;
-using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
@@ -14,15 +13,17 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private const string mailImage = "/Images/Mail.png";
     private readonly IParameterDataService _parameterDataService;
     private readonly IVaultDataService _vaultDataService;
+    private readonly ISettingService _settingService;
     public string? FullPathXml { get; set; }
     public string? DragAndDropFileType { get; set; }
     public SpezifikationTyp? CurrentSpezifikationTyp { get; set; }
 
     private readonly ILogger<ImportLiftDataDialogViewModel> _logger;
-    public ImportLiftDataDialogViewModel(IParameterDataService parameterDataService, IVaultDataService vaultDataService, ILogger<ImportLiftDataDialogViewModel> logger)
+    public ImportLiftDataDialogViewModel(IParameterDataService parameterDataService, IVaultDataService vaultDataService, ISettingService settingService, ILogger<ImportLiftDataDialogViewModel> logger)
     {
         _parameterDataService = parameterDataService;
         _vaultDataService = vaultDataService;
+        _settingService = settingService;
         _logger = logger;
     }
 
@@ -414,9 +415,22 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         var filePicker = App.MainWindow.CreateOpenFilePicker();
         filePicker.ViewMode = PickerViewMode.Thumbnail;
         filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-        filePicker.FileTypeFilter.Add(ImportSpezifikationTyp == SpezifikationTyp.Request ? ".pdf" : ".msg");
+        filePicker.FileTypeFilter.Add(SetFileTypeFilter());
         StorageFile file = await filePicker.PickSingleFileAsync();
         ImportSpezifikationName = (file is not null) ? file.Path : string.Empty;
+    }
+
+    private string SetFileTypeFilter()
+    {
+        if (_settingService.VaultDisabled)
+        {
+            return ".xml";
+        }
+        if (ImportSpezifikationTyp == SpezifikationTyp.Request)
+        {
+            return ".pdf";
+        }
+        return ".pdf";
     }
 
     private void CopyOffer(string importSpezifikationName)
@@ -463,6 +477,18 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest || ImportSpezifikationTyp == SpezifikationTyp.Request)
         {
             importName = Path.GetFileName(ImportSpezifikationName);
+        }
+        else if (_settingService.VaultDisabled)
+        {
+            if(!string.IsNullOrWhiteSpace(ImportSpezifikationName) && ImportSpezifikationName.EndsWith(".xml"))
+            {
+                importName = Path.GetFileName(ImportSpezifikationName);
+                ImportSpezifikationName = importName.Replace("-AutoDeskTransfer.xml", "");
+            }
+            else
+            {
+                importName = ImportSpezifikationName;
+            }
         }
         else
         {
