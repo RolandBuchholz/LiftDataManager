@@ -4,10 +4,10 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                          ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
-
     }
 
     public override void Receive(PropertyChangedMessage<string> message)
@@ -31,7 +31,7 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]

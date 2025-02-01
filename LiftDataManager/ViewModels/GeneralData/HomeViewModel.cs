@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
-using MvvmHelpers;
 using System.IO.Compression;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -18,9 +17,9 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     private string _pathDefaultAutoDeskTransfer = @"C:\Work\Administration\Spezifikation\AutoDeskTransfer.xml";
 
     public HomeViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                         ISettingService settingService, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
+                         ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IVaultDataService vaultDataService, ICalculationsModule calculationsModuleService,
                          IValidationParameterDataService validationParameterDataService, IPdfService pdfService, ILogger<HomeViewModel> logger)
-        : base(parameterDataService, dialogService, infoCenterService, settingService)
+                         : base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _vaultDataService = vaultDataService;
         _validationParameterDataService = validationParameterDataService;
@@ -40,7 +39,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (message.PropertyName == "var_SkipRatedLoad")
         {
             ValidateCustomPayload(CustomPayload);
-            _ = SetCalculatedValuesAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         };
 
         if (message.PropertyName == "var_Rahmengewicht" ||
@@ -51,12 +50,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             message.PropertyName == "var_KTI" ||
             message.PropertyName == "var_KHLicht")
         {
-            _ = SetCalculatedValuesAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         //Task.Run(async () => await SetModelStateAsync());
     }
 
@@ -945,8 +944,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
         if (CurrentSpeziProperties is not null)
         {
-            _ = SetCalculatedValuesAsync();
-            _ = SetModelStateAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";

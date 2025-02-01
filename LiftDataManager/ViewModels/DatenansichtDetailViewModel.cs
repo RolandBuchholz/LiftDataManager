@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -28,8 +29,9 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
         }
     }
 
-    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public DatenansichtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                       ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         ErrorsList ??= [];
     }
@@ -148,7 +150,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item = data.First(i => i.Name == (string)parameter);
             SetParameterState(Item);
         }
-        _ = GetHistoryEntrysAsync(FullPathXml);
+        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public void OnNavigatedFrom()

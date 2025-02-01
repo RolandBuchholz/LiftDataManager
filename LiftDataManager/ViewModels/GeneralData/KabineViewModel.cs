@@ -10,8 +10,8 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
     private readonly ParameterContext _parametercontext;
 
     public KabineViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                           ISettingService settingService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
-                           base(parameterDataService, dialogService, infoCenterService, settingService)
+                           ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext) :
+                           base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -42,7 +42,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             message.PropertyName == "var_TuerEinbauC" ||
             message.PropertyName == "var_TuerEinbauD")
         {
-            _ = SetCalculatedValuesAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             SetDistanceBetweenDoors();
         };
 
@@ -65,7 +65,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             if (liftparameter is not null && liftparameter.Name is not null)
             {
                 string[] zugang = [$"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}"];
-                _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
+                liftparameter.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
         }
 
@@ -73,8 +73,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         {
             var liftparameter = message.Sender as Parameter;
             string[] zugang = ["var_ZUGANSSTELLEN_C"];
-            if (liftparameter is not null)
-                _ = liftparameter.AfterValidateRangeParameterAsync(zugang);
+            liftparameter?.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex));
         }
 
         if (message.PropertyName == "var_Paneelmaterial")
@@ -149,7 +148,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]

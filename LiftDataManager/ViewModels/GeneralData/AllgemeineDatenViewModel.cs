@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
@@ -10,15 +9,13 @@ public partial class AllgemeineDatenViewModel : DataViewModelBase, INavigationAw
 {
     public Dictionary<int, string> LiftPlanners { get; set; } = [];
     public ObservableCollection<string?> FilteredLiftPlanners { get; set; } = [];
-    private readonly ILogger<AllgemeineDatenViewModel> _logger;
     private readonly ParameterContext _parametercontext;
 
     public AllgemeineDatenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
-                                    ISettingService settingService, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                                    ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ILogger<AllgemeineDatenViewModel> logger) :
+                                    base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
-        _logger = logger;
     }
 
     [ObservableProperty]

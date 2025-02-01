@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.Models.CalculationResultsModels;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -12,9 +13,9 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     public CarWeightResult CarWeightResult = new();
 
     public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                   ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService,
+                                   ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService,
                                    IPdfService pdfService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

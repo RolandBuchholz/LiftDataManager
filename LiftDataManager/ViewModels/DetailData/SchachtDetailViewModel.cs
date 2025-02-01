@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using MvvmHelpers;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -15,8 +14,8 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
     public ObservableCollection<string?> OpeningDirections { get; set; }
 
     public SchachtDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                  ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
-     base(parameterDataService, dialogService, infoCenterService, settingService)
+                                  ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
+                                  base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _calculationsModuleService = calculationsModuleService;
         _parametercontext = parametercontext;
@@ -63,7 +62,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             RefreshView();
         };
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     private float _scale;

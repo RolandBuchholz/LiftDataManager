@@ -1,9 +1,9 @@
-﻿using Cogs.Collections;
-
-namespace LiftDataManager.Core.Contracts.Services;
+﻿namespace LiftDataManager.Core.Contracts.Services;
 
 public interface IParameterDataService
 {
+    event EventHandler ParameterDataAutoSaveStarted;
+
     /// <summary>
     /// reset all values
     /// </summary>

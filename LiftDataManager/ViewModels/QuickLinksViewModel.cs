@@ -19,9 +19,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     public List<InfoCenterEntry>? SyncedParameter {  get; set; }
 
     public QuickLinksViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-        IValidationParameterDataService validationParameterDataService, ISettingService settingService, ParameterContext parametercontext,
-        IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                               IValidationParameterDataService validationParameterDataService, ISettingService settingService, ILogger<DataViewModelBase> baseLogger, 
+                               ParameterContext parametercontext, IVaultDataService vaultDataService, ILogger<QuickLinksViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _vaultDataService = vaultDataService;
@@ -47,7 +47,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
             if (CanOpenZALiftHtml)
             {
-                _ = ImportZAliftDataAsync(true);
+                ImportZAliftDataAsync(true).SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
         }
     }
@@ -594,9 +594,9 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var ropeDeflection = string.Empty;
             try
             {
-                var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe"))?.InnerText.Replace("Treibscheibe","").Split(',');
-                tractionSheavePosition = shaftPosition?[0].Trim() + ", " + shaftPosition?[1].Trim();
-                ropeDeflection = shaftPosition?[2].Trim();
+                var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") || x.InnerText.StartsWith("Maschine"))?.InnerText.Replace("Treibscheibe","").Replace("Maschine", "").Split(',');
+                tractionSheavePosition = HtmlEntity.DeEntitize(shaftPosition?[0].Trim()) + ", " + HtmlEntity.DeEntitize(shaftPosition?[1].Trim());
+                ropeDeflection = HtmlEntity.DeEntitize(shaftPosition?[2].Trim());
             }
             catch (Exception)
             {

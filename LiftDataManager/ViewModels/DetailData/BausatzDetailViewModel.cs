@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
-using MvvmHelpers;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -14,8 +13,9 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     private readonly ILogger<BausatzDetailViewModel> _logger;
     public int[] EulerscheBucklingLoadCases { get; } = [1, 2, 3, 4];
 
-    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+    public BausatzDetailViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService,
+                                  ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -66,7 +66,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public CarFrameType? CarFrameTyp { get; set; }

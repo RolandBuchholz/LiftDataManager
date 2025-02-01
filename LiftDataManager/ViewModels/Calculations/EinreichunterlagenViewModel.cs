@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Models;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -11,8 +12,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private readonly IPdfService _pdfService;
 
     public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                       ISettingService settingService, ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                                       ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -7,8 +8,9 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingService) :
-                                base(parameterDataService, dialogService, infoCenterService,settingService)
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+                                ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+                                base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         FilteredItems = new CollectionViewSource
         {

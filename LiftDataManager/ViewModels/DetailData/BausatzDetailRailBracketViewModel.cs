@@ -2,7 +2,6 @@
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Input;
-using MvvmHelpers;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
@@ -22,8 +21,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     public List<double> RailBracketDistances { get; set; } = [];
 
     public BausatzDetailRailBracketViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                             ISettingService settingService, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
-         base(parameterDataService, dialogService, infoCenterService, settingService)
+                                             ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService, ILogger<BausatzDetailViewModel> logger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
@@ -87,7 +86,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     private float _scale;
@@ -1083,7 +1082,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         if (CurrentSpeziProperties is not null)
         {
             SetViewBoxDimensions();
-            UpdateCarFrameDataAsync(500).SafeFireAndForget();
+            UpdateCarFrameDataAsync(500).SafeFireAndForget(onException: ex => LogTaskException(ex));
         }
     }
 

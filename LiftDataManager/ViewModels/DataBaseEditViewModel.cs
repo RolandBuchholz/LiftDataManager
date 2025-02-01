@@ -12,8 +12,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                 ISettingService settingService, IVaultDataService vaultDataService, ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
-                                 base(parameterDataService, dialogService, infoCenterService, settingService)
+                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger,IVaultDataService vaultDataService, 
+                                 ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
+                                 base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _vaultDataService = vaultDataService;
         _logger = logger;
@@ -318,7 +319,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             {
                 _parameterEditContext.Remove(deletableParameterDto);
                 _parameterEditContext.SaveChanges();
-                _ = RefreshDataBaseAsync();
+                RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
                 ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} erfolgreich aus der Datenbank gelöscht !";
                 SetDatabaseTableValueModification("delete", "ParameterDtos", id, deletableParameterDto.DisplayName!);
                 _logger.LogInformation(60171, "parameter {deletableParameterDto.DisplayName} successfully deleted from database", deletableParameterDto.DisplayName);
@@ -390,7 +391,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             var newEntity = _parameterEditContext.Entry(addedParameterDto.Entity);
             SetDatabaseTableValueModification("add", "ParameterDtos", newEntity.Entity.Id, newEntity.Entity.DisplayName!, newEntity.DebugView.LongView);
             _logger.LogInformation(60174, "parameter: {newEntity} successfully add to database", newEntity.DebugView.LongView);
-            _ = RefreshDataBaseAsync();
+            RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             SelectedParameterTyp = null;
             SelectedParameterTypeCode = null;
             SelectedParameterCategory = null;

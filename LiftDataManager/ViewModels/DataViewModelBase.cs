@@ -1,6 +1,5 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using MvvmHelpers;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -10,17 +9,18 @@ public partial class DataViewModelBase : ObservableRecipient
     protected readonly IDialogService _dialogService;
     protected readonly IInfoCenterService _infoCenterService;
     protected readonly ISettingService _settingService;
+    protected readonly ILogger<DataViewModelBase> _baseLogger;
 
     public bool Adminmode { get; set; }
     public bool VaultDisabled { get; set; }
     public bool CheckoutDialogIsOpen { get; set; }
-    public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml!).Replace("-AutoDeskTransfer", "") : string.Empty;
+    public string SpezifikationsNumber => !string.IsNullOrWhiteSpace(FullPathXml) ? Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "") : string.Empty;
     public CurrentSpeziProperties? CurrentSpeziProperties { get; set; }
     public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; }
     public ObservableDictionary<string, List<ParameterStateInfo>> ParameterErrorDictionary { get; set; }
     public ObservableRangeCollection<InfoCenterEntry> InfoCenterEntrys { get; set; }
 
-    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService)
+    public DataViewModelBase(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, ISettingService settingsSelectorService, ILogger<DataViewModelBase> baseLogger)
     {
         _parameterDataService = parameterDataService;
         _dialogService = dialogService;
@@ -29,8 +29,8 @@ public partial class DataViewModelBase : ObservableRecipient
         ParameterDictionary = _parameterDataService.GetParameterDictionary();
         InfoCenterEntrys = _infoCenterService.GetInfoCenterEntrys();
         ParameterErrorDictionary ??= [];
+        _baseLogger = baseLogger;
     }
-
     public virtual void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null ||
@@ -39,9 +39,8 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
-
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
         if (message is null ||
@@ -50,7 +49,7 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelHighlightText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public virtual void Receive(RefreshModelStateMessage message)
@@ -61,7 +60,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         CheckOut = message.Value.IsCheckOut;
         LikeEditParameter = message.Value.LikeEditParameterEnabled;
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]
@@ -112,11 +111,11 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             if (value)
             {
-                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget();
+                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
             else
             {
-                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget();
+                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             }
         }
     }
@@ -154,7 +153,6 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         await SetModelStateAsync();
     }
-
     protected virtual void SetFullpathAutodeskTransfer(string? value)
     {
         if (CurrentSpeziProperties is not null && !EqualityComparer<string>.Default.Equals(CurrentSpeziProperties.FullPathXml, value))
@@ -181,7 +179,6 @@ public partial class DataViewModelBase : ObservableRecipient
         HideInfoErrors = CurrentSpeziProperties.HideInfoErrors;
         LikeEditParameter = CurrentSpeziProperties.LikeEditParameter;
     }
-
     protected async virtual Task SetModelStateAsync()
     {
         if (AuftragsbezogeneXml)
@@ -232,7 +229,6 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         await Task.CompletedTask;
     }
-
     public void SetErrorDictionary()
     {
         ParameterErrorDictionary ??= [];
@@ -254,7 +250,6 @@ public partial class DataViewModelBase : ObservableRecipient
             }
         }
     }
-
     protected void SetInfoSidebarPanelText(PropertyChangedMessage<string> message)
     {
         _infoCenterService.AddInfoCenterParameterChangedAsync(
@@ -264,18 +259,15 @@ public partial class DataViewModelBase : ObservableRecipient
             message.NewValue,
             ((Parameter)message.Sender).IsAutoUpdated);
     }
-
     protected void SetInfoSidebarPanelHighlightText(PropertyChangedMessage<bool> message)
     {
         var sender = (Parameter)message.Sender;
         _infoCenterService.AddInfoCenterMessageAsync($"|{sender.DisplayName}| Markierung " + (message.NewValue ? "hinzugefügt" : "entfernt"));
     }
-
     public CurrentSpeziProperties GetCurrentSpeziProperties()
     {
         return Messenger.Send<SpeziPropertiesRequestMessage>();
     }
-
     protected void SetModifyInfos()
     {
         ParameterDictionary["var_GeaendertVon"].AutoUpdateParameterValue(string.IsNullOrWhiteSpace(Environment.UserName) ? "Keine Angaben" : Environment.UserName);
@@ -302,19 +294,28 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         return defaultSaveTime;
     }
-
+    private void ParameterDataService_ParameterDataAutoSaveStarted(object? sender, EventArgs e) 
+    {
+        SaveAllParameterCommand.Execute(null);
+        _infoCenterService.AddInfoCenterMessageAsync("Parameter wurden automatisch gespeichert.");
+    }
     protected void NavigatedToBaseActions()
     {
         IsActive = true;
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null)
         {
-            _ = SetModelStateAsync();
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         }
+        _parameterDataService.ParameterDataAutoSaveStarted += ParameterDataService_ParameterDataAutoSaveStarted;
     }
-
     protected void NavigatedFromBaseActions()
     {
         IsActive = false;
+        _parameterDataService.ParameterDataAutoSaveStarted -= ParameterDataService_ParameterDataAutoSaveStarted;
     }
+
+    [LoggerMessage(03001, LogLevel.Error,
+    "TaskException: {ex}")]
+    protected partial void LogTaskException(Exception ex);
 }
