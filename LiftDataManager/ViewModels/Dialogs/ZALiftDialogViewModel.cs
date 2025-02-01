@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.UI.Dispatching;
+﻿using Microsoft.UI.Dispatching;
 
 namespace LiftDataManager.ViewModels.Dialogs;
 

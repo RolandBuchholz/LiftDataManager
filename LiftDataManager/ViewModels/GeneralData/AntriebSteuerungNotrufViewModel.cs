@@ -20,7 +20,7 @@ public partial class AntriebSteuerungNotrufViewModel : DataViewModelBase, INavig
             SetDriveTyp();
         };
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]

@@ -31,7 +31,7 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     [ObservableProperty]

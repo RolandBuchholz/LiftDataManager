@@ -319,12 +319,7 @@ public partial class DataViewModelBase : ObservableRecipient
         IsActive = false;
     }
 
-    //private static void LogTaskException(Exception ex)
-    //{
-    //    Debug.WriteLine(ex.ToString());
-    //}
-
     [LoggerMessage(03001, LogLevel.Error,
     "TaskException: {ex}")]
-    partial void LogTaskException(Exception ex);
+    protected partial void LogTaskException(Exception ex);
 }

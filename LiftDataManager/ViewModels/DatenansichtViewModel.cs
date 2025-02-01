@@ -95,7 +95,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     private bool CheckhasHighlightedParameters()
     {
         if (ParameterDictionary is null || ParameterDictionary.Values is null)
+        {
             return false;
+        }
         return ParameterDictionary.Values.Any(x => x.IsKey);
     }
 
@@ -103,7 +105,9 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
         NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
+        {
             SearchInput = CurrentSpeziProperties.SearchInput;
+        }
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 

@@ -30,7 +30,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         }
         SetInfoSidebarPanelHighlightText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
@@ -104,7 +104,9 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             foreach (var item in historyEntry.OrderByDescending(x => x.TimeStamp))
             {
                 if (item is not null)
+                {
                     ParameterHistoryEntrys.Add(item);
+                }
             }
         }
     }
@@ -112,10 +114,11 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
     [RelayCommand(CanExecute = nameof(CanSaveParameter))]
     private async Task SaveParameterAsync()
     {
-        if (Selected is null)
-            return;
-        if (FullPathXml is null)
-            return;
+        if (Selected is null || 
+            FullPathXml is null)
+        {  
+            return; 
+        }
         var saveResult = await _parameterDataService.SaveParameterAsync(Selected, FullPathXml);
         if (saveResult.Item1 != "Error")
         {
@@ -251,7 +254,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (CurrentSpeziProperties is not null)
             SearchInput = CurrentSpeziProperties.SearchInput;
 
-        _ = GetHistoryEntrysAsync(FullPathXml);
+        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex));
         HasHighlightedParameters = CheckhasHighlightedParameters();
 
         if (parameter is null and not string)

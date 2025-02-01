@@ -150,7 +150,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item = data.First(i => i.Name == (string)parameter);
             SetParameterState(Item);
         }
-        _ = GetHistoryEntrysAsync(FullPathXml);
+        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
 
     public void OnNavigatedFrom()

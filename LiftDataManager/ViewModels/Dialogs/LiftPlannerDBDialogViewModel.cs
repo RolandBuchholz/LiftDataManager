@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models.AllgemeineDaten;
 using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels.Dialogs;

@@ -39,7 +39,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (message.PropertyName == "var_SkipRatedLoad")
         {
             ValidateCustomPayload(CustomPayload);
-            _ = SetCalculatedValuesAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         };
 
         if (message.PropertyName == "var_Rahmengewicht" ||
@@ -50,12 +50,12 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             message.PropertyName == "var_KTI" ||
             message.PropertyName == "var_KHLicht")
         {
-            _ = SetCalculatedValuesAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
         };
 
         SetInfoSidebarPanelText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         //Task.Run(async () => await SetModelStateAsync());
     }
 
@@ -944,8 +944,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
         if (CurrentSpeziProperties is not null)
         {
-            _ = SetCalculatedValuesAsync();
-            _ = SetModelStateAsync();
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";

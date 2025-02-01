@@ -26,7 +26,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         }
 
         SetInfoSidebarPanelHighlightText(message);
-        _ = SetModelStateAsync();
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
         HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
@@ -115,7 +115,9 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     {
         NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
+        {
             SearchInput = CurrentSpeziProperties.SearchInput;
+        }
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
 
