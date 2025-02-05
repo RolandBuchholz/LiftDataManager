@@ -24,10 +24,19 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null)
+        if (message is null || 
+           !(message.Sender.GetType() == typeof(Parameter)))
+        {
             return;
-        if (!(message.Sender.GetType() == typeof(Parameter)))
-            return;
+        }
+
+        if (message.PropertyName == "var_Puffertyp" ||
+            message.PropertyName == "var_Puffertyp_GGW" ||
+            message.PropertyName == "var_Puffertyp_EM_SK " ||
+            message.PropertyName == "var_Puffertyp_EM_SG")
+        {
+            GetPufferDetailData();
+        };
 
         if (message.PropertyName == "var_Anzahl_Puffer_FK" ||
             message.PropertyName == "var_Puffer_Profil_FK" ||

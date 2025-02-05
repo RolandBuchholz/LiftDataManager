@@ -23,6 +23,7 @@ public class LiftBufferConfig : BaseModelBuilder<LiftBuffer>
         builder.Property(x => x.TypeExaminationCertificateId);
         builder.Property(x => x.Diameter);
         builder.Property(x => x.Height);
+        builder.Property(x => x.BufferStroke);
         builder.Property(x => x.MinLoad063);
         builder.Property(x => x.MaxLoad063);
         builder.Property(x => x.MinLoad100);
@@ -31,6 +32,8 @@ public class LiftBufferConfig : BaseModelBuilder<LiftBuffer>
         builder.Property(x => x.MaxLoad130);
         builder.Property(x => x.MinLoad160);
         builder.Property(x => x.MaxLoad160);
+        builder.Property(x => x.MinLoad180);
+        builder.Property(x => x.MaxLoad180);
         builder.Property(x => x.MinLoad200);
         builder.Property(x => x.MaxLoad200);
         builder.Property(x => x.MinLoad250);

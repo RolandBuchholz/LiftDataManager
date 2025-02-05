@@ -331,7 +331,8 @@
                                     Grid.Column="3"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="kg" />
+                                    Unit="kg"
+                                    Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="4"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'], Mode=TwoWay}"
@@ -594,7 +595,8 @@
                                     Grid.Column="0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FUEBP'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
-                                    Unit="mm" />
+                                    Unit="mm"
+                                    Visibility="{x:Bind ViewModel.IsRopedrive, Mode=OneWay}" />
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RHO'], Mode=TwoWay}"
@@ -628,8 +630,8 @@
                                 TextWrapping="WrapWholeWords" />
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="175" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="200" />
                                 </Grid.ColumnDefinitions>
@@ -638,13 +640,11 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_FK'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="Stk." />
-                                <SpeziControls:ParameterTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
-                                    ReadOnly="True"
-                                    ShowDefaultHeader="True"
-                                    ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                    ShowDefaultHeader="True" />
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -671,7 +671,7 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="350" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition />
@@ -824,8 +824,8 @@
                                 TextWrapping="WrapWholeWords" />
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="175" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="200" />
                                 </Grid.ColumnDefinitions>
@@ -834,13 +834,11 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_GGW'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="Stk." />
-                                <SpeziControls:ParameterTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'], Mode=TwoWay}"
-                                    ReadOnly="True"
-                                    ShowDefaultHeader="True"
-                                    ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                    ShowDefaultHeader="True" />
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -867,7 +865,7 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="350" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition />
@@ -1020,8 +1018,8 @@
                                 TextWrapping="WrapWholeWords" />
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="175" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="200" />
                                 </Grid.ColumnDefinitions>
@@ -1030,13 +1028,11 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SK'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="Stk." />
-                                <SpeziControls:ParameterTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SK'], Mode=TwoWay}"
-                                    ReadOnly="True"
-                                    ShowDefaultHeader="True"
-                                    ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                    ShowDefaultHeader="True" />
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -1063,7 +1059,7 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="350" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition />
@@ -1223,8 +1219,8 @@
                                 TextWrapping="WrapWholeWords" />
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="175" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="200" />
                                 </Grid.ColumnDefinitions>
@@ -1233,13 +1229,11 @@
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Anzahl_Puffer_EM_SG'], Mode=TwoWay}"
                                     ShowDefaultHeader="True"
                                     Unit="Stk." />
-                                <SpeziControls:ParameterTextBox
+                                <SpeziControls:ParameterComboBox
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SG'], Mode=TwoWay}"
-                                    ReadOnly="True"
-                                    ShowDefaultHeader="True"
-                                    ToolTipService.ToolTip="Pufferauswahl erfolgt durch CFP" />
+                                    ShowDefaultHeader="True" />
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -1266,7 +1260,7 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="350" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition />
