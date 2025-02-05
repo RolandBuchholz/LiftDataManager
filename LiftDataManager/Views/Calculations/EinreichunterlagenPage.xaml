@@ -581,6 +581,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
@@ -614,9 +615,22 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Seilschlösser:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="510"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="-----------------------------------------------------------------------------" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Aufhängung des Fahrkorbes:" />
                             <StackPanel
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                                 <TextBox
@@ -647,14 +661,14 @@
                                     Visibility="{x:Bind ViewModel.IsRopeLift}" />
                             </StackPanel>
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="0"
                                 Margin="0,0,0,0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Anzahl und Art der gespannten - nicht gespannten Unterseile:" />
                             <TextBox
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="1"
                                 Width="100"
                                 HorizontalAlignment="Left"
@@ -670,6 +684,7 @@
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -686,10 +701,18 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="500"
+                                MinWidth="250"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.DriveTyp}" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                MinWidth="250"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Antrieb'].Value}" />
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -699,10 +722,18 @@
                             <TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Width="500"
+                                MinWidth="250"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.DriveControl}" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                MinWidth="250"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Regler_Typ'].Value}" />
                             <TextBlock
                                 Grid.Row="2"
                                 Grid.Column="0"
@@ -713,7 +744,8 @@
                             <TextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Width="500"
+                                Grid.ColumnSpan="2"
+                                MinWidth="250"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.DrivePosition}" />
@@ -827,12 +859,21 @@
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'].Value}"
                                 TextAlignment="Right" />
-                            <TextBlock
+                            <StackPanel
                                 Grid.Row="4"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
-                                VerticalAlignment="Center"
-                                Text="kg" />
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="kg" />
+                                <TextBox IsReadOnly="True" Text="{x:Bind sys:String.Format('{0}%', ViewModel.CWTBalancePercent)}" />
+                                <TextBlock
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="Ausgleich" />
+                            </StackPanel>
                             <TextBlock
                                 Grid.Row="5"
                                 Grid.Column="0"
@@ -857,8 +898,8 @@
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
-                                <ColumnDefinition Width="200" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -873,7 +914,16 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                HorizontalTextAlignment="Right"
+                                MinWidth="250"
+                                HorizontalTextAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'].Value}" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                MinWidth="250"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'].Value}" />
                             <TextBlock
@@ -885,6 +935,7 @@
                             <TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
+                                MinWidth="250"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ir'].Value}"
