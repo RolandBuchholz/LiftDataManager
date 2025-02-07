@@ -80,6 +80,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     [ObservableProperty]
     public partial double CarSlingWeight { get; set; }
 
+    [ObservableProperty]
+    public partial bool OverspeedGovernorVisibility { get; set; }
+
     private async Task SetCarWeightAsync()
     {
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Rahmengewicht"].Value))
@@ -190,6 +193,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
         await Task.CompletedTask;
     }
+    private void SetOverspeedGovernorWeightVisibility() 
+    { 
+    
+    }
 
     [RelayCommand]
     private static void GoToBausatzDetail()
@@ -206,8 +213,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             SetCarWeightAsync().SafeFireAndForget();
             CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
             UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
+            SetOverspeedGovernorWeightVisibility();
         }
     }
+
 
     public void OnNavigatedFrom()
     {

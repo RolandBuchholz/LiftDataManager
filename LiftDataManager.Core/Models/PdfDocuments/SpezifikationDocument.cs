@@ -495,7 +495,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(13).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(18).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(borderColor).Bold();
                 table.Cell().Row(1).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Beleuchtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Beleuchtung"]);
                 table.Cell().Row(1).Column(5).ParameterStringCell(ParameterDictionary["var_AnzahlBeleuchtung"], "Stk");
@@ -1064,7 +1064,7 @@ public class SpezifikationDocument : PdfBaseDocument
 
 
                 table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Steuerung").FontColor(borderColor).Bold();
-                table.Cell().Row(1).RowSpan(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Steuerungstyp"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSteuerung"], null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
@@ -1135,9 +1135,13 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
 
                 });
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluß").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
-                table.Cell().Row(13).Column(5).ColumnSpan(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_22"]);
+                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluss").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(13).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Netzform"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_22"]);
+                });
                 table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schaltschrank").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(14).Column(3).ColumnSpan(4).Row(row =>
                 {

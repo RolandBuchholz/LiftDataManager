@@ -342,15 +342,15 @@
                             x:Name="GB"
                             Grid.Row="6"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
                                     Grid.Row="0"
-                                    Grid.RowSpan="2"
+                                    Grid.RowSpan="3"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
@@ -368,6 +368,13 @@
                                     Margin="0,0,5,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbeg_ZT'], Mode=TwoWay}"
                                     ShowDefaultHeader="True" />
+                                <SpeziControls:ParameterComboBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpanngewichtTyp'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Visibility="{x:Bind ViewModel.OverspeedGovernorVisibility, Mode=OneWay}" />
                             </Grid>
                         </Grid>
                         <Grid

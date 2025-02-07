@@ -616,13 +616,13 @@
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Seilschlösser:" />
-                            <TextBox
+                            <SpeziControls:ParameterComboBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Width="510"
+                                Width="520"
+                                Margin="-5,-5,-5,5"
                                 HorizontalAlignment="Left"
-                                Style="{StaticResource InfoTextboxStyle}"
-                                Text="-----------------------------------------------------------------------------" />
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SeilschlossTyp'], Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Row="2"
                                 Grid.Column="0"
@@ -904,6 +904,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
@@ -911,21 +912,20 @@
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Spannung und Netzform des Anschlussnetzes:" />
-                            <TextBox
+                            <SpeziControls:ParameterComboBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                MinWidth="250"
-                                HorizontalTextAlignment="Left"
-                                Style="{StaticResource InfoTextboxStyle}"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'].Value}" />
-                            <TextBox
+                                MinWidth="260"
+                                Margin="-5,0,-5,5"
+                                HorizontalAlignment="Left"
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'], Mode=TwoWay}" />
+                            <SpeziControls:ParameterComboBox
                                 Grid.Row="0"
                                 Grid.Column="2"
                                 MinWidth="250"
-                                Margin="5,0,0,5"
+                                Margin="0,0,-5,5"
                                 HorizontalAlignment="Left"
-                                Style="{StaticResource InfoTextboxStyle}"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'].Value}" />
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Netzform'], Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -946,6 +946,21 @@
                                 Margin="5,0,5,5"
                                 VerticalAlignment="Center"
                                 Text="A" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Nennstrom des Antriebsmotors:" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                MinWidth="500"
+                                HorizontalTextAlignment="Right"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ir'].Value}"
+                                TextAlignment="Right" />
                         </Grid>
                         <!--  7. Liste der Sicherheitsbauteile  -->
                         <TextBlock
@@ -994,7 +1009,7 @@
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Anlagen:" />
                         <CheckBox Content="Anlagenzeichnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.Layoutdrawing, Mode=TwoWay}" />
-                        <CheckBox Content="Gefahrenanalysen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
+                        <CheckBox Content="Risikobewertungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
                         <CheckBox Content="Berechnungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.Calculations, Mode=TwoWay}" />
                         <CheckBox Content="Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen" IsChecked="{x:Bind ViewModel.LiftDocumentation.CircuitDiagrams, Mode=TwoWay}" />
                         <CheckBox Content="Prüfanleitung UCM inkl. Berechnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.TestingInstructions, Mode=TwoWay}" />

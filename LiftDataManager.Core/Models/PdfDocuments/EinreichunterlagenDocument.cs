@@ -30,7 +30,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 
     private void SetLiftDocumentation()
     {
-        var liftDocumentation = ParameterDictionary?["var_Einreichunterlagen"].Value;
+        var liftDocumentation = ParameterDictionary["var_Einreichunterlagen"].Value;
         if (!string.IsNullOrWhiteSpace(liftDocumentation))
         {
             var liftdoku = JsonSerializer.Deserialize<TechnicalLiftDocumentation>(liftDocumentation);
@@ -333,7 +333,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der Tragmittel:").Bold();
             table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
             table.Cell().Row(2).Column(1).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"----------------------------------------------------------");
+            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
             table.Cell().Row(3).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
             table.Cell().Row(3).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1");
             table.Cell().Row(4).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
@@ -397,7 +397,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.RelativeColumn();
             });
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Spannung und Netzform des Anschlussnetzes:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_Stromanschluss"].Value} | TN-C-S-System");
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_Stromanschluss"].DropDownListValue?.DisplayName} | {ParameterDictionary["var_Netzform"].DropDownListValue?.DisplayName}");
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Nennstrom des Antriebsmotors:").Bold();
             table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
         });

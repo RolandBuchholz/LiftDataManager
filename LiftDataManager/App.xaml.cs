@@ -248,7 +248,7 @@ public partial class App : Application
             }
         }
 
-        if (!File.Exists(dbPath))
+        if (!File.Exists(dbPath) || vaultDisabled)
         {
             var installationPath = AppDomain.CurrentDomain.BaseDirectory;
             dbPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");

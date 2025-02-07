@@ -773,7 +773,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             return zliDataDictionary;
         }
         var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
-                                                                        .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                                                                        .InnerHtml.Split([Environment.NewLine], StringSplitOptions.None);
         if (zliData is null)
         {
             return zliDataDictionary;

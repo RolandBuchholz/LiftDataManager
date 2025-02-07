@@ -366,18 +366,25 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Stromanschluß" />
+                                    Text="Stromanschluss" />
                                 <Grid
                                     x:Name="Steuerung13"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="*,*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
-                                        Margin="0,0,5,0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'], Mode=TwoWay}" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_22'], Mode=TwoWay}" />
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Stromanschluss'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Netzform'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterCustomCheckBox
+                                        Grid.Column="2"
+                                        Margin="0,20,0,0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_22'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>

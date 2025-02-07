@@ -6,10 +6,10 @@
 
 ### Systemanforderungen für LiftDataManager
 
-| Betriebssystem | 64-Bit-Version von Microsoft® Windows® 11 oder Windows 10, Build 19041 |
+| Betriebssystem | 64-Bit-Version von Microsoft® Windows® 11 , Build 22621 |
 | --- | --- |
 | Bildschirmauflösung | 1920 x 1080 mit True Color |
-| Runtime | .NET 8 oder höher |
+| Runtime | .NET 9 oder höher |
 | AutodeskVault Version | Vault 2023 oder höher |
 | AutodeskVault Data Standard | Vault 2023 oder höher |
 | AdskLicensingSDK | Version 6 oder höher |
