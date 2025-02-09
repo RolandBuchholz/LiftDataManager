@@ -11,7 +11,6 @@ public class SelectionValue
         IsFavorite = false;
         OrderSelection = 0;
     }
-
     public SelectionValue(int id, string name, string displayName)
     {
         Id = id;

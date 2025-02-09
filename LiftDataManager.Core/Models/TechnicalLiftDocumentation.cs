@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
-namespace LiftDataManager.Models
+namespace LiftDataManager.Core.Models
 {
     public class TechnicalLiftDocumentation
     {
@@ -23,6 +23,8 @@ namespace LiftDataManager.Models
         public List<ProtectedSpaceTyp> ProtectedSpacePits { get; set; }
         [JsonIgnore]
         public List<ProtectedSpaceTyp> ProtectedSpaceHeads { get; set; }
+
+        public List<LiftSafetyComponent>? CustomLiftSafetyComponents { get; set; }
 
         private MonthGerman monthOfConstruction;
         public MonthGerman MonthOfConstruction
