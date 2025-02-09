@@ -1,15 +1,17 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
+using LiftDataManager.Core.Helpers;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 using Microsoft.Extensions.Logging;
+using PdfSharp.Snippets;
 using System.Globalization;
+using System.Linq;
 
 namespace LiftDataManager.Core.Services;
 
@@ -54,7 +56,6 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         InitializeTableData();
     }
-
     public async Task ResetAsync()
     {
         kabinenbreite = default;
@@ -982,34 +983,61 @@ public partial class CalculationsModuleService : ICalculationsModule
     /// <inheritdoc/>
     public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-
-        //var shaftdoor = "";
-        //var cardoor = "";
-
-
-        //var listOfSafetyComponents = new List<(string,string,string)>()
-        //{
-        //     ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
-        //     ("Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer","OverspeedGovernor"),
-        //     ("Fahrkorbpuffer","var_Puffertyp","XXX"),
-        //     ("Gegengewichtspuffer","var_Puffertyp_GGW","XXX"),
-        //     ("Schachttürverriegelung",shaftdoor,"XXX"),
-        //     ("Kabinentürverriegelung",cardoor,"XXX"),
-        //     ("Sicherheitsschaltung","var_Steuerungstyp","XXX"),
-        //};
         var liftSafetyComponents = new List<LiftSafetyComponent>();
+        var listOfSafetyComponents = new List<(string, string, string)>()
+        {
+             ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
+             ("Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer","OverspeedGovernor"),
+             ("Fahrkorbpuffer","var_Puffertyp","XXX"),
+             ("Gegengewichtspuffer","var_Puffertyp_GGW","XXX"),
+             ("Schachttürverriegelung","var_Tuerbezeichnung","XXX"),
+             ("Kabinentürverriegelung","var_Tuerbezeichnung","XXX"),
+             ("Sicherheitsschaltung","var_Steuerungstyp","XXX"),
+        };
+        var typeExaminationCertificates = _parametercontext.Set<TypeExaminationCertificate>();
 
-        //foreach (var item in listOfSafetyComponents)
-        //{
-        //    var safetyType = item.Item1;
-        //    var manufacturer = "Hallo";
-        //    var model = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary,item.Item2);
-        //    var certificateNumber = "0815";
-        //    liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber));
-        //}
+        foreach (var item in listOfSafetyComponents)
+        {
+            string value = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, item.Item2);
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                continue;
+            }
+            var model = string.Empty;
+            var manufacturer = string.Empty;
+            var certificateNumber = string.Empty;
+
+            //var safetyComponentw4 = _parametercontext.Model.GetEntityTypes();
+            //var safetyComponentww = _parametercontext.Model.FindEntityType("SafetyGearModelType");
+            var entityType = _parametercontext.Model.FindEntityType("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearModelType");
+            //var table = _parametercontext.Query("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearModelType");
+            var table = _parametercontext.Query(entityType.ClrType);
+
+            if (table != null)
+            {
+                var tt = table.Cast<SelectionEntity>();
+                var yy = tt.Where(x => x.Name == value);
+            }
+
+            var safetyComponent = _parametercontext.Set<SafetyGearModelType>().FirstOrDefault(x => x.Name == value);
+            if (safetyComponent is not null)
+            {
+                var certificate = typeExaminationCertificates.FirstOrDefault(x => x.Id == safetyComponent.TypeExaminationCertificateId);
+                model = safetyComponent.DisplayName;
+                manufacturer = certificate?.ManufacturerName;
+                certificateNumber = certificate?.CertificateNumber;
+            }
+            if (string.IsNullOrWhiteSpace(model) ||
+                string.IsNullOrWhiteSpace(manufacturer) ||
+                string.IsNullOrWhiteSpace(certificateNumber))
+            {
+                continue;
+            }
+            var safetyType = item.Item1;
+            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber));
+        }
         return liftSafetyComponents;
     }
-
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)
     {
         var dic = new Dictionary<int, TableRow<int, double>>();

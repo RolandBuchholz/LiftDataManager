@@ -1,6 +1,5 @@
 ﻿using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
-using LiftDataManager.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
