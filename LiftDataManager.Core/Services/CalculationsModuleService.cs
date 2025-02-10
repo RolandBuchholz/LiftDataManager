@@ -8,6 +8,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Helpers;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Snippets;
 using System.Globalization;
@@ -988,13 +989,14 @@ public partial class CalculationsModuleService : ICalculationsModule
         {
              ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
              ("Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer","OverspeedGovernor"),
-             ("Fahrkorbpuffer","var_Puffertyp","XXX"),
-             ("Gegengewichtspuffer","var_Puffertyp_GGW","XXX"),
-             ("Schachttürverriegelung","var_Tuerbezeichnung","XXX"),
-             ("Kabinentürverriegelung","var_Tuerbezeichnung","XXX"),
-             ("Sicherheitsschaltung","var_Steuerungstyp","XXX"),
+             ("Fahrkorbpuffer","var_Puffertyp","LiftBuffer"),
+             ("Gegengewichtspuffer","var_Puffertyp_GGW","LiftBuffer"),
+             //("Schachttürverriegelung","var_Tuerbezeichnung","XXX"),
+             //("Kabinentürverriegelung","var_Tuerbezeichnung","XXX"),
+             //("Sicherheitsschaltung","var_Steuerungstyp","XXX")
         };
         var typeExaminationCertificates = _parametercontext.Set<TypeExaminationCertificate>();
+        var safetyComponentTyps = _parametercontext.Model.GetEntityTypes().ToList();
 
         foreach (var item in listOfSafetyComponents)
         {
@@ -1006,35 +1008,35 @@ public partial class CalculationsModuleService : ICalculationsModule
             var model = string.Empty;
             var manufacturer = string.Empty;
             var certificateNumber = string.Empty;
-
-            //var safetyComponentw4 = _parametercontext.Model.GetEntityTypes();
-            //var safetyComponentww = _parametercontext.Model.FindEntityType("SafetyGearModelType");
-            var entityType = _parametercontext.Model.FindEntityType("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearModelType");
-            //var table = _parametercontext.Query("LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb.SafetyGearModelType");
-            var table = _parametercontext.Query(entityType.ClrType);
-
-            if (table != null)
+            var safetyComponentTyp = string.Empty;
+            var entityType = safetyComponentTyps.FirstOrDefault(x => x.Name.EndsWith(item.Item3));
+            if (entityType is null)
             {
-                var tt = table.Cast<SelectionEntity>();
-                var yy = tt.Where(x => x.Name == value);
+                continue;
             }
-
-            var safetyComponent = _parametercontext.Set<SafetyGearModelType>().FirstOrDefault(x => x.Name == value);
+            var table = _parametercontext.Query(entityType.ClrType);
+            if (table is null)
+            {
+                continue;
+            }
+            var safetyComponent = table.Cast<SafetyComponentEntity>().FirstOrDefault(x => x.Name == value);
             if (safetyComponent is not null)
             {
                 var certificate = typeExaminationCertificates.FirstOrDefault(x => x.Id == safetyComponent.TypeExaminationCertificateId);
                 model = safetyComponent.DisplayName;
                 manufacturer = certificate?.ManufacturerName;
                 certificateNumber = certificate?.CertificateNumber;
+                safetyComponentTyp = certificate?.SafetyComponentTypId.ToString();
             }
             if (string.IsNullOrWhiteSpace(model) ||
                 string.IsNullOrWhiteSpace(manufacturer) ||
-                string.IsNullOrWhiteSpace(certificateNumber))
+                string.IsNullOrWhiteSpace(certificateNumber) ||
+                string.IsNullOrWhiteSpace(safetyComponentTyp))
             {
                 continue;
             }
             var safetyType = item.Item1;
-            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber));
+            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber, safetyComponentTyp));
         }
         return liftSafetyComponents;
     }

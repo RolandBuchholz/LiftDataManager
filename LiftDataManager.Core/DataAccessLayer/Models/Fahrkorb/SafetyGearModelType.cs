@@ -1,11 +1,9 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 
-public class SafetyGearModelType : SelectionEntity
+public class SafetyGearModelType : SafetyComponentEntity
 {
     public int SafetyGearTypeId { get; set; }
     public SafetyGearType? SafetyGearType { get; set; }
-    public int TypeExaminationCertificateId { get; set; }
-    public TypeExaminationCertificate? TypeExaminationCertificate { get; set; }
     public int MinLoadOiledColddrawn { get; set; }
     public int MaxLoadOiledColddrawn { get; set; }
     public int MinLoadDryColddrawn { get; set; }
@@ -15,6 +13,4 @@ public class SafetyGearModelType : SelectionEntity
     public int MinLoadDryMachined { get; set; }
     public int MaxLoadDryMachined { get; set; }
     public string? AllowableWidth { get; set; }
-
-
 }
