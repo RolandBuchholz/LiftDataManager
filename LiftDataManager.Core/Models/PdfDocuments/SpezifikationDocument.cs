@@ -1,5 +1,4 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using QuestPDF;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -717,7 +716,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 var cWTRailName = carFrameType?.DriveTypeId == 2 ? "Schienen Joch" : "Schienen GGW";
                 var cWTGuideName = carFrameType?.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
 
-                table.Cell().Row(1).Column(1).RowSpan(19).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(21).RotateLeft().AlignMiddle().AlignCenter().Text("Bausatz").FontColor(borderColor).Bold();
                 table.Cell().Row(1).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Bausatztyp").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).Row(row =>
                 {
@@ -731,7 +730,7 @@ public class SpezifikationDocument : PdfBaseDocument
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
                                        });
                 });
-                table.Cell().Row(1).RowSpan(19).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
+                table.Cell().Row(1).RowSpan(20).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bausatz_ZT"]);
                 table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
@@ -757,42 +756,43 @@ public class SpezifikationDocument : PdfBaseDocument
                                            var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
                                            text.Line($"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}");
                                        });
-                table.Cell().Row(9).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(9).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbegrenzer"]);
                 table.Cell().Row(10).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbeg_ZT"]);
-                table.Cell().Row(11).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
-                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
-                table.Cell().Row(13).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
-                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
-                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung Aufsetzvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(!string.IsNullOrWhiteSpace(ParameterDictionary["var_SpanngewichtTyp"].Value)).ParameterStringCell(ParameterDictionary["var_SpanngewichtTyp"]);
+                table.Cell().Row(12).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
+                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
+                table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
+                table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
+                table.Cell().Row(16).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung Aufsetzvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(16).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                     row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"], true);
                     if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
                         row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);
                 });
-                table.Cell().Row(16).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
-                table.Cell().Row(17).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(17).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
+                table.Cell().Row(18).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(18).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"]);
                 });
-                table.Cell().Row(18).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(19).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungSchachteinbauten"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonSchachteinbauten"]);
                 });
-                table.Cell().Row(19).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(20).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungAntrieb"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonAntrieb"]);
                 });
-                table.Cell().Row(20).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(20).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
+                table.Cell().Row(21).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(21).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
             });
         });
     }

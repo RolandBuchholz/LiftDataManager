@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -24,7 +23,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     public override void Receive(PropertyChangedMessage<string> message)
     {
-        if (message is null || 
+        if (message is null ||
            !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;

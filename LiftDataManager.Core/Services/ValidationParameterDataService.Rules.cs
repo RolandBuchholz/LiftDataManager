@@ -32,7 +32,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void NotEmptyWhenAnotherTrue(string name, string displayname, string? value, string? severity, string? anotherBoolean)
     {
         if (string.IsNullOrWhiteSpace(anotherBoolean))
+        {
             return;
+        }
         var anotherParameter = Convert.ToBoolean(_parameterDictionary[anotherBoolean].Value, CultureInfo.CurrentCulture);
         if (string.IsNullOrWhiteSpace(value) && anotherParameter)
         {
@@ -64,10 +66,14 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void NotTrueWhenTheOtherIsTrue(string name, string displayname, string? value, string? severity, string? anotherBoolean)
     {
         if (string.IsNullOrWhiteSpace(anotherBoolean))
+        {
             return;
+        }
         var anotherParameter = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, anotherBoolean!);
         if (!anotherParameter)
+        {
             return;
+        }
 
         if (string.Equals(value, "True", StringComparison.CurrentCultureIgnoreCase))
         {
@@ -77,6 +83,23 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         else
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = [anotherBoolean] });
+        }
+    }
+
+    private void NotTrueWhenTheOtherIsTrueForce(string name, string displayname, string? value, string? severity, string? anotherBoolean)
+    {
+        if (string.IsNullOrWhiteSpace(anotherBoolean))
+        {
+            return;
+        }
+        bool anotherParameter = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, anotherBoolean);
+        if (!anotherParameter)
+        {
+            return;
+        }
+        if (string.Equals(value, "True", StringComparison.CurrentCultureIgnoreCase))
+        {
+            _parameterDictionary[anotherBoolean].AutoUpdateParameterValue("False");
         }
     }
 
@@ -116,18 +139,24 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCreationDate(string name, string displayname, string? value, string? severity, string? odernummerName)
     {
         if (!string.IsNullOrWhiteSpace(value))
+        {
             return;
+        }
         _parameterDictionary["var_ErstelltAm"].Value = DateTime.Now.ToShortDateString();
     }
 
     private void ValidateJobNumber(string name, string displayname, string? value, string? severity, string? odernummerName)
     {
         if (string.IsNullOrWhiteSpace(odernummerName))
+        {
             return;
+        }
         var fabriknummer = _parameterDictionary["var_FabrikNummer"].Value;
 
         if (string.IsNullOrWhiteSpace(fabriknummer))
+        {
             return;
+        }
         _parameterDictionary["var_FabrikNummer"].ClearErrors("var_FabrikNummer");
 
         var auftragsnummer = _parameterDictionary[odernummerName].Value;
@@ -195,7 +224,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateTravel(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "0"))
+        {
             return;
+        }
         var foerderhoehe = Math.Round(LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_FH") * 1000);
         var etagenhoehe0 = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Etagenhoehe0");
         var etagenhoehe1 = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Etagenhoehe1");
@@ -208,10 +239,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var etagenhoehe8 = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Etagenhoehe8");
 
         if ((etagenhoehe0 + etagenhoehe1 + etagenhoehe2 + etagenhoehe3 + etagenhoehe4 + etagenhoehe5 + etagenhoehe6 + etagenhoehe7 + etagenhoehe8) == 0)
+        {
             return;
-
+        }
         var etagenhoeheTotal = etagenhoehe0 + etagenhoehe1 + etagenhoehe2 + etagenhoehe3 + etagenhoehe4 + etagenhoehe5 + etagenhoehe6 + etagenhoehe7 + etagenhoehe8;
-
         if (etagenhoeheTotal != foerderhoehe)
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Die Förderhöhe ({foerderhoehe} mm) stimmt nicht mit Etagenabständen ({etagenhoeheTotal} mm) überein.", SetSeverity(severity))
@@ -491,11 +522,17 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         if (variableTuerdaten)
         {
             if (!zugangB)
+            {
                 RemoveCarDoorData("B");
+            }
             if (!zugangC)
+            {
                 RemoveCarDoorData("C");
+            }
             if (!zugangD)
+            {
                 RemoveCarDoorData("D");
+            }
             return;
         }
         if (zugangB)
@@ -650,7 +687,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             string.IsNullOrWhiteSpace(_parameterDictionary["var_Fuehrungsart"].Value) ||
             string.IsNullOrWhiteSpace(_parameterDictionary["var_FuehrungsschieneFahrkorb"].Value) ||
             string.IsNullOrWhiteSpace(_parameterDictionary["var_TypFV"].Value))
+        {
             return;
+        }
 
         var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(_parameterDictionary);
         if (safetygearResult is not null)
@@ -695,8 +734,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCarweightWithoutFrame(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return;
-
+        }
         int carFrameWeight = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Rahmengewicht");
         string? fangrahmenTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bausatz");
 
@@ -722,7 +762,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCorrectionWeight(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return;
+        }
         try
         {
             if (Math.Abs(Convert.ToInt16(value)) > 10)
@@ -995,7 +1037,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateShaftWalls(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (value is null)
+        {
             return;
+        }
 
         if (string.Equals(value, "Holz"))
         {
@@ -1043,8 +1087,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateDoorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!name.StartsWith("var_Tuertyp"))
+        {
             return;
-
+        }
         var liftDoorGroups = name.Replace("var_Tuertyp", "var_Tuerbezeichnung");
 
         if (string.IsNullOrWhiteSpace(value))
@@ -1091,10 +1136,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!name.StartsWith("var_Tuerbezeichnung"))
+        {
             return;
-
+        }
         var liftDoortyp = name.Replace("var_Tuerbezeichnung", "var_Tuertyp");
-
         var doorOpeningDirection = name.Replace("var_Tuerbezeichnung", "var_Tueroeffnung");
         var doorPanelCount = name.Replace("var_Tuerbezeichnung", "var_AnzahlTuerfluegel");
 
@@ -1127,7 +1172,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCarEquipmentPosition(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, name))
+        {
             return;
+        }
 
         var zugang = name.Last();
         bool hasSpiegel = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, $"var_Spiegel{zugang}");
@@ -1171,7 +1218,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var liftPositionSystem = _parameterDictionary["var_Schachtinformationssystem"].Value;
 
         if (string.IsNullOrWhiteSpace(controler) || string.IsNullOrWhiteSpace(liftPositionSystem))
+        {
             return;
+        }
 
         var validSystem = liftPositionSystem switch
         {
@@ -1218,11 +1267,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateEntryDimensions(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AutogenerateFloorDoorData"))
+        {
             return;
-
+        }
         var zugang = name.StartsWith("var_TB") ? string.Equals(name[^1..], "_B") || string.Equals(name[^1..], "_C") || string.Equals(name[^1..], "_D") ? name[^1..] : "A"
                                                : string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
-
         if (name.StartsWith("var_TuerEinbau"))
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -1286,7 +1335,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateHydrauliclock(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.Equals(value, "False", StringComparison.CurrentCultureIgnoreCase))
+        {
             _parameterDictionary["var_AufsetzvorrichtungSystem"].AutoUpdateParameterValue(string.Empty);
+        }
     }
 
     private void ValidateCounterweightMass(string name, string displayname, string? value, string? severity, string? optional = null)
@@ -1545,8 +1596,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateReducedCarDoorHeaderHeight(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (string.IsNullOrWhiteSpace(value) && !string.Equals(name, "var_Tuerverriegelung"))
+        {
             return;
-
+        }
         var zugang = name.StartsWith("var_TB") ? string.Equals(name[^1..], "_B") || string.Equals(name[^1..], "_C") || string.Equals(name[^1..], "_D") ? name[^1..] : "A"
                                                : string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
 
@@ -1613,17 +1665,17 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCarCeilingDetails(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         if (!LiftParameterHelper.IsDefaultCarTyp(_parameterDictionary["var_Fahrkorbtyp"].Value))
+        {
             return;
-
+        }
         var ruleActivationDate = new DateTime(2024, 01, 11);
         var creationDate = DateTime.MinValue;
-
         if (DateTime.TryParse(LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_ErstelltAm"), out DateTime parsedDate))
             creationDate = parsedDate;
-
         if (!string.IsNullOrWhiteSpace(_parameterDictionary["var_KD"].Value) && ruleActivationDate.CompareTo(creationDate) > 0)
+        {
             return;
-
+        }
         switch (name)
         {
             case "var_KBI" or "var_overrideDefaultCeiling":
@@ -1660,7 +1712,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         double deckenhoehe = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_KD");
 
         if (bodenHoehe + kabinenHoeheInnen + deckenhoehe == kabinenHoeheAussen)
+        {
             return;
+        }
         _parameterDictionary["var_KHA"].AutoUpdateParameterValue(Convert.ToString(bodenHoehe + kabinenHoeheInnen + deckenhoehe));
     }
 
@@ -1802,8 +1856,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateCarFrameProgramData(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         if (string.IsNullOrWhiteSpace(_fullPathXml))
+        {
             return;
-
+        }
         var cFPPath = Path.Combine(Path.GetDirectoryName(_fullPathXml)!, "Berechnungen", SpezifikationsNumber + ".dat");
         if (!File.Exists(cFPPath))
         {
@@ -2016,4 +2071,5 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             msz9e.SchindlerCertified = msz9eSchindlerCertified;
         }
     }
+
 }
