@@ -66,5 +66,8 @@ public interface ICalculationsModule
 
     double GetHandrailDiameterByName(string handrailName);
 
+    string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp);
+
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
+
 }

@@ -64,6 +64,8 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value);
     public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
+    public string CarGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
+    public string CWTGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
 
     [ObservableProperty]
     public partial string ProtectedSpaceTypPitImage { get; set; } = "/Images/NoImage.png";

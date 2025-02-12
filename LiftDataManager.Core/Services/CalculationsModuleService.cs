@@ -665,6 +665,29 @@ public partial class CalculationsModuleService : ICalculationsModule
             FahrkorbGewicht = fahrkorbGewicht
         };
     }
+    
+    /// <inheritdoc/>
+    public string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp) 
+    {
+        if (guideRail is null || 
+            guidetyp is null)
+        {
+            return "fehlende Schienendaten / Führungsart";
+        }
+        var railSurface = string.Empty;
+        var carRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Id == guideRail.Id);
+        if (carRail is not null)
+        {
+            railSurface = carRail.Machined ? "bearbeitet" : "gezogen";
+        }
+        var lubrication = guidetyp.Id switch
+        {
+            1 => "geölt",
+            2 => "trocken",
+            _ => string.Empty,
+        };
+        return $"{railSurface} / {lubrication}";
+    }
 
     /// <inheritdoc/>
     public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary)

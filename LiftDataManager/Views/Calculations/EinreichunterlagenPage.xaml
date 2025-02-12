@@ -769,98 +769,148 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Führungsschienen:" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Fahrkorb:" />
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="125"
+                                    HorizontalTextAlignment="Right"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_FuehrungsschieneFahrkorb'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind ViewModel.CarGuideRailSurface, Mode=OneWay}" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                Text="Gegengewicht:" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="125"
+                                    HorizontalTextAlignment="Right"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_FuehrungsschieneGegengewicht'].Value}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind ViewModel.CWTGuideRailSurface, Mode=OneWay}" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Fahrkorbgrundfläche:" />
                             <TextBox
-                                Grid.Row="0"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_A_Kabine'].Value}"
                                 TextAlignment="Right" />
                             <TextBlock
-                                Grid.Row="0"
+                                Grid.Row="2"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
                                 VerticalAlignment="Center"
                                 Text="m²" />
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="3"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Fahrkorbhöhe:" />
                             <TextBox
-                                Grid.Row="1"
+                                Grid.Row="3"
                                 Grid.Column="1"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_KHLicht'].Value}"
                                 TextAlignment="Right" />
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="3"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
                                 VerticalAlignment="Center"
                                 Text="mm" />
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="4"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:" />
                             <TextBox
-                                Grid.Row="2"
+                                Grid.Row="4"
                                 Grid.Column="1"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.CarDoorCount}"
                                 TextAlignment="Right" />
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="4"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
                                 VerticalAlignment="Center"
                                 Text="Stück" />
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="5"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Gewicht des Fahrkorbes:" />
                             <TextBox
-                                Grid.Row="3"
+                                Grid.Row="5"
                                 Grid.Column="1"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_F'].Value}"
                                 TextAlignment="Right" />
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="5"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
                                 VerticalAlignment="Center"
                                 Text="kg" />
                             <TextBlock
-                                Grid.Row="4"
+                                Grid.Row="6"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Gewicht des Gegengewichtes:" />
                             <TextBox
-                                Grid.Row="4"
+                                Grid.Row="6"
                                 Grid.Column="1"
                                 HorizontalTextAlignment="Right"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'].Value}"
                                 TextAlignment="Right" />
                             <StackPanel
-                                Grid.Row="4"
+                                Grid.Row="6"
                                 Grid.Column="2"
                                 Margin="5,0,5,5"
                                 Orientation="Horizontal">
@@ -875,14 +925,14 @@
                                     Text="Ausgleich" />
                             </StackPanel>
                             <TextBlock
-                                Grid.Row="5"
+                                Grid.Row="7"
                                 Grid.Column="0"
                                 Margin="0,0,0,10"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):" />
                             <TextBlock
-                                Grid.Row="5"
+                                Grid.Row="7"
                                 Grid.Column="1"
                                 Margin="5,0,5,5"
                                 HorizontalAlignment="Center"
@@ -951,16 +1001,15 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Nennstrom des Antriebsmotors:" />
+                                Text="Steuerung:" />
                             <TextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
-                                MinWidth="500"
-                                HorizontalTextAlignment="Right"
+                                MinWidth="250"
+                                HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
-                                Text="{x:Bind ViewModel.ParameterDictionary['var_ZA_IMP_Motor_Ir'].Value}"
-                                TextAlignment="Right" />
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Steuerungstyp'].Value}" />
                         </Grid>
                         <!--  7. Liste der Sicherheitsbauteile  -->
                         <TextBlock

@@ -369,21 +369,29 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.ColumnsDefinition(columns =>
             {
                 columns.ConstantColumn(60, Unit.Millimetre);
-                columns.RelativeColumn();
+                columns.RelativeColumn(2);
+                columns.RelativeColumn(5);
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Fahrkorbgrundfläche:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
-            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Fahrkorbhöhe:").Bold();
-            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
-            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{_calculationsModuleService.GetNumberOfCardoors(ParameterDictionary)} Stück");
-            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Fahrkorbes:").Bold();
-            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
-            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Gewicht des Gegengewichtes:").Bold();
+            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Führungsschienen:").Bold();
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).Text("Fahrkorb:");
+            var carRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
+            table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).Text($"{ParameterDictionary["var_FuehrungsschieneFahrkorb"]?.DropDownListValue?.DisplayName} - {carRailSurface}");
+            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text("Gegengewicht:");
+            var cwtRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
+            table.Cell().Row(2).Column(3).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text($"{ParameterDictionary["var_FuehrungsschieneGegengewicht"]?.DropDownListValue?.DisplayName} - {cwtRailSurface}");
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Fahrkorbgrundfläche:").Bold();
+            table.Cell().Row(3).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Fahrkorbhöhe:").Bold();
+            table.Cell().Row(4).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_KHLicht"].Value} mm");
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl der Fahrkorbzugänge mit maschinell betätigter Fahrkorbtür:").Bold();
+            table.Cell().Row(5).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{_calculationsModuleService.GetNumberOfCardoors(ParameterDictionary)} Stück");
+            table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Fahrkorbes:").Bold();
+            table.Cell().Row(6).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
+            table.Cell().Row(7).Column(1).PaddingVertical(defaultRowSpacing).Text("Gewicht des Gegengewichtes:").Bold();
             var cWTBalancePercent = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
-            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg  (Ausgleich {cWTBalancePercent}%)");
-            table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):").Bold();
-            table.Cell().Row(6).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("---");
+            table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg  (Ausgleich {cWTBalancePercent}%)");
+            table.Cell().Row(8).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):").Bold();
+            table.Cell().Row(8).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("---");
         });
     }
 
@@ -400,9 +408,10 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_Stromanschluss"].DropDownListValue?.DisplayName} | {ParameterDictionary["var_Netzform"].DropDownListValue?.DisplayName}");
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Nennstrom des Antriebsmotors:").Bold();
             table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Steuerung:").Bold();
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().ParameterStringCell(ParameterDictionary["var_Steuerungstyp"], null, true, true);
         });
     }
-
     void SafetyComponents(IContainer container)
     {
         container.Table(table =>
