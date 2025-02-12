@@ -9,6 +9,10 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;
+    private static readonly JsonSerializerOptions writeOptions = new()
+    {
+        WriteIndented = true
+    };
 
     public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                        ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
@@ -96,8 +100,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     private void UpdateLiftDocumentation()
     {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        ParameterDictionary!["var_Einreichunterlagen"].AutoUpdateParameterValue(JsonSerializer.Serialize(LiftDocumentation, options).Replace("\r\n", "\n"));
+        ParameterDictionary["var_Einreichunterlagen"].AutoUpdateParameterValue(JsonSerializer.Serialize(LiftDocumentation, writeOptions).Replace("\r\n", "\n"));
     }
 
     private void UpdateProtectedSpaceTyp()
@@ -108,13 +111,18 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         ProtectedSpaceTypHeadDescription = TechnicalLiftDocumentation.GetProtectedSpaceTypDescription(LiftDocumentation.ProtectedSpaceTypHead);
     }
 
+    private void SetListofSafetyComponents()
+    {
+        LiftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
         {
             SetLiftDocumentation();
-            LiftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+            SetListofSafetyComponents();
         }
     }
 

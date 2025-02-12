@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -12,7 +11,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger,IVaultDataService vaultDataService, 
+                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IVaultDataService vaultDataService,
                                  ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
                                  base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
@@ -644,7 +643,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         if (Adminmode)
         {
             GetDropdownValues();
-            _ = RefreshDataBaseAsync();
+            RefreshDataBaseAsync().SafeFireAndForget();
         }
     }
 
