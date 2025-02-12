@@ -5,14 +5,10 @@ using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using LiftDataManager.Core.Helpers;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
-using PdfSharp.Snippets;
 using System.Globalization;
-using System.Linq;
 
 namespace LiftDataManager.Core.Services;
 
@@ -131,7 +127,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         var loadTable7 = GetLoadFromTable(area, "Tabelle7");
 
         if (load >= loadTable6)
+        {
             return true;
+        }
         if (cargotyp == "Lastenaufzug" && drivesystem == "Hydraulik")
         {
             if (loadTable7 > 0)
@@ -685,11 +683,11 @@ public partial class CalculationsModuleService : ICalculationsModule
             FahrkorbGewicht = fahrkorbGewicht
         };
     }
-    
+
     /// <inheritdoc/>
-    public string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp) 
+    public string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp)
     {
-        if (guideRail is null || 
+        if (guideRail is null ||
             guidetyp is null)
         {
             return "fehlende Schienendaten / Führungsart";
@@ -980,7 +978,6 @@ public partial class CalculationsModuleService : ICalculationsModule
     /// <inheritdoc/>
     public double GetCarFrameWeight(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-
         if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Rahmengewicht"].Value))
         {
             return LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Rahmengewicht");
