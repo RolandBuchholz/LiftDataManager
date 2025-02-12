@@ -19,7 +19,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public override void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null ||
-            !(message.Sender.GetType() == typeof(Parameter)))
+           !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
@@ -81,7 +81,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public partial double CarSlingWeight { get; set; }
 
     [ObservableProperty]
-    public partial bool OverspeedGovernorVisibility { get; set; }
+    public partial bool OverspeedGovernorWeightVisibility { get; set; }
 
     private async Task SetCarWeightAsync()
     {
@@ -194,8 +194,21 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         await Task.CompletedTask;
     }
     private void SetOverspeedGovernorWeightVisibility() 
-    { 
-    
+    {
+        var overSpeedGovernor = ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue;
+        if (overSpeedGovernor is null ||
+            overSpeedGovernor.Id == 1 ||
+            overSpeedGovernor.Id == 18 ||
+            overSpeedGovernor.Id == 19 ||
+            overSpeedGovernor.Id == 20 )
+        {
+            OverspeedGovernorWeightVisibility = false;
+            ParameterDictionary["var_SpanngewichtTyp"].AutoUpdateParameterValue(string.Empty);
+        }
+        else
+        {
+            OverspeedGovernorWeightVisibility = true;
+        }
     }
 
     [RelayCommand]

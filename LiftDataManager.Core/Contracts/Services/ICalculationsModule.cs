@@ -1,5 +1,4 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 
@@ -34,6 +33,8 @@ public interface ICalculationsModule
 
     string GetDrivePosition(string? drivePos);
 
+    bool IsRopeLift(SelectionValue? carTyp);
+
     string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter> parameterDictionary, string orientation);
 
     int GetNumberOfCardoors(ObservableDictionary<string, Parameter> parameterDictionary);
@@ -66,5 +67,8 @@ public interface ICalculationsModule
 
     double GetHandrailDiameterByName(string handrailName);
 
+    string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp);
+
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
+
 }

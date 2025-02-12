@@ -1,21 +1,22 @@
-﻿using Cogs.Collections;
-using QuestPDF.Drawing;
+﻿using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
+using Windows.ApplicationModel;
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
 public class PdfBaseDocument : IDocument
 {
-    public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; } = [];
+    private readonly string _user;
+    private readonly string _LDMVersion;
 
+    public ObservableDictionary<string, Parameter> ParameterDictionary { get; set; } = [];
     public string Title { get; set; } = string.Empty;
     public string Index => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Index");
     public string AuftragsNummer => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_AuftragsNummer");
     public string FabrikNummer => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_FabrikNummer");
     public string Kennwort => LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Kennwort");
-    private readonly string user;
 
     //Colors
     public string primaryColor = string.Empty;
@@ -48,7 +49,8 @@ public class PdfBaseDocument : IDocument
 
     public PdfBaseDocument()
     {
-        user = GetUserName();
+        _user = GetUserName();
+        _LDMVersion = GetVersion();
     }
 
     public DocumentMetadata GetMetadata() => new()
@@ -56,7 +58,7 @@ public class PdfBaseDocument : IDocument
         ImageQuality = 101,
         RasterDpi = 72,
         Title = $"{AuftragsNummer}-{Title}",
-        Author = user,
+        Author = _user,
         Subject = "Berechnung",
         Keywords = "#LiftDataManager#Berechnung",
         ModifiedDate = DateTime.Now,
@@ -77,6 +79,12 @@ public class PdfBaseDocument : IDocument
             user = "Useridentification failed";
         }
         return user;
+    }
+
+    private static string GetVersion()
+    {
+        var version = Package.Current.Id.Version;
+        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
     public void SetPdfStyle(bool lowColor, bool lowHighlightColor)
@@ -226,52 +234,44 @@ public class PdfBaseDocument : IDocument
                     row.ConstantItem(65).PaddingTop(10).PaddingLeft(10).Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BE_Logo.png"));
                     row.AutoItem().PaddingTop(8).PaddingLeft(10).Column(column =>
                     {
-                        column
-                            .Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
-                            .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(baseHeaderColor);
-                        column
-                            .Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
-                            .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(onSecondaryColor);
-                        column
-                            .Item().Text("Mähderweg 1a  86637 Rieblingen")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().PaddingTop(3).PaddingLeft(-50).Text(Title)
-                            .Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
+                        column.Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
+                              .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(baseHeaderColor);
+                        column.Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
+                              .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(onSecondaryColor);
+                        column.Item().Text("Mähderweg 1a  86637 Rieblingen")
+                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
+                        column.Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
+                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
+                        column.Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
+                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
+                        column.Item().PaddingTop(3).PaddingLeft(-50).Row(row =>
+                        {
+                            row.AutoItem().Text(Title).Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
+                            row.AutoItem().PaddingLeft(5).AlignBottom().Text($"LDM-Version: {_LDMVersion}").Bold().FontSize(fontSizeXXS).FontColor(onSecondaryColor);
+                        });
                     });
                     row.RelativeItem().PaddingLeft(5, Unit.Millimetre).Column(column =>
                     {
-                        column
-                            .Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
+                        column.Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
 
-                        column
-                            .Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(onSecondaryColor);
+                        column.Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(onSecondaryColor);
 
-                        column
-                            .Item().PaddingTop(7).Row(row =>
-                            {
-                                row.AutoItem().PaddingLeft(50).Column(column =>
-                                {
-                                    column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
-                                    column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
-                                });
-                                row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
-                                row.AutoItem().PaddingLeft(10).Column(column =>
-                                {
-                                    column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
-                                    column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
-                                });
-                            });
-                        column
-                            .Item().PaddingLeft(20).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
-                        column
-                           .Item().PaddingLeft(20).Text(Kennwort).FontSize(fontSizeL);
+                        column.Item().PaddingTop(7).Row(row =>
+                                                    {
+                                                    row.AutoItem().PaddingLeft(50).Column(column =>
+                                                    {
+                                                        column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                                        column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
+                                                    });
+                                                    row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
+                                                    row.AutoItem().PaddingLeft(10).Column(column =>
+                                                    {
+                                                        column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                                        column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
+                                                    });
+                                                    });
+                        column.Item().PaddingLeft(20).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
+                        column.Item().PaddingLeft(20).Text(Kennwort).FontSize(fontSizeL);
                     });
                 });
             });

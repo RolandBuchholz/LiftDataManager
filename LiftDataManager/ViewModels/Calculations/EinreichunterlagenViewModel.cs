@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
+using LiftDataManager.Models;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -45,14 +45,14 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
     public List<LiftSafetyComponent> LiftSafetyComponents { get; set; }
-    public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary?["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
+    public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
     public double CWTBalancePercent => LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
     public string DriveControl => _calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value);
     public string DrivePosition => _calculationsModuleService.GetDrivePosition(ParameterDictionary["var_Maschinenraum"].Value);
     public string SameShaftWith => string.IsNullOrWhiteSpace(ParameterDictionary["var_GemeinsamerSchachtMit"].Value) ?
                                                     "Vorstehender Aufzug ist mit keinem weiteren Aufzug im gleichen Schacht errichtet." :
                                                     $"Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: {ParameterDictionary["var_GemeinsamerSchachtMit"].Value} im gleichem Schacht errichtet.";
-    public string TuevExamination => ParameterDictionary?["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV";
+    public string TuevExamination => ParameterDictionary["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV";
     public int CarDoorCount => _calculationsModuleService.GetNumberOfCardoors(ParameterDictionary);
     public string DoorTyp => !string.IsNullOrWhiteSpace(ParameterDictionary["var_Tuertyp"].Value) ? ParameterDictionary["var_Tuertyp"].Value!.Replace(" -", "") : string.Empty;
     public string DateTimeNow => DateTime.Now.ToShortDateString();
@@ -66,7 +66,10 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." :
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value);
-    public bool IsRopeLift => DriveTyp.StartsWith("elektrisch");
+    public bool IsRopeLift => _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue);
+    public string CWTRailName => IsRopeLift ? "Gegengewicht:" : "Jochschiene:";
+    public string CarGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
+    public string CWTGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
 
     [ObservableProperty]
     public partial string ProtectedSpaceTypPitImage { get; set; } = "/Images/NoImage.png";

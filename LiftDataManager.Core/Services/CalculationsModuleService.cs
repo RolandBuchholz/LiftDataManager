@@ -195,12 +195,30 @@ public partial class CalculationsModuleService : ICalculationsModule
     public string GetLiftTyp(string? liftTyp)
     {
         if (string.IsNullOrWhiteSpace(liftTyp))
+        {
             return "Aufzugstyp noch nicht gewählt !";
-
+        }
         var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
-                                                        .ToList()
-                                                        .FirstOrDefault(x => x.Name == liftTyp);
+                                                          .ToList()
+                                                          .FirstOrDefault(x => x.Name == liftTyp);
         return cargoTypDB is not null ? cargoTypDB.CargoType!.Name! : "Aufzugstyp noch nicht gewählt !";
+    }
+
+    /// <inheritdoc/>
+    public bool IsRopeLift(SelectionValue? carTyp)
+    {
+        if (carTyp is null)
+        {
+            return false;
+        }
+        var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
+                                                          .ToList()
+                                                          .FirstOrDefault(x => x.Id == carTyp.Id);
+        if (cargoTypDB is null)
+        {
+            return false;
+        }
+        return cargoTypDB.DriveTypeId == 1;
     }
 
     /// <inheritdoc/>
@@ -666,6 +684,29 @@ public partial class CalculationsModuleService : ICalculationsModule
             FangrahmenGewicht = fangrahmenGewicht,
             FahrkorbGewicht = fahrkorbGewicht
         };
+    }
+    
+    /// <inheritdoc/>
+    public string GetGuideRailSurface(SelectionValue? guideRail, SelectionValue? guidetyp) 
+    {
+        if (guideRail is null || 
+            guidetyp is null)
+        {
+            return "fehlende Schienendaten / Führungsart";
+        }
+        var railSurface = string.Empty;
+        var carRail = _parametercontext.Set<GuideRails>().FirstOrDefault(x => x.Id == guideRail.Id);
+        if (carRail is not null)
+        {
+            railSurface = carRail.Machined ? "bearbeitet" : "gezogen";
+        }
+        var lubrication = guidetyp.Id switch
+        {
+            1 => "geölt",
+            2 => "trocken",
+            _ => string.Empty,
+        };
+        return $"{railSurface} / {lubrication}";
     }
 
     /// <inheritdoc/>
@@ -1522,10 +1563,14 @@ public partial class CalculationsModuleService : ICalculationsModule
     private double? GetGewichtHandlauf(string handlauf)
     {
         if (string.IsNullOrEmpty(handlauf))
+        {
             return 0;
+        }
         var handrail = _parametercontext.Set<Handrail>().FirstOrDefault(x => x.Name == handlauf);
         if (handrail is null)
+        {
             return 0;
+        }
         return handrail.WeightPerMeter;
     }
 

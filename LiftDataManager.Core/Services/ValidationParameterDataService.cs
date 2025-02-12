@@ -662,6 +662,12 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Haupthaltestelle",
             [new(ValidateEntrancePosition, "Error", null)]);
 
+        ValidationDictionary.Add("var_Gegengewicht_Verkleidung",
+            [new(NotTrueWhenTheOtherIsTrueForce, "None", "var_Gegengewicht_Verkleidung_Gewicht")]);
+
+        ValidationDictionary.Add("var_Gegengewicht_Verkleidung_Gewicht",
+            [new(NotTrueWhenTheOtherIsTrueForce, "None", "var_Gegengewicht_Verkleidung")]);
+
         AddDropDownListValidation();
     }
 
