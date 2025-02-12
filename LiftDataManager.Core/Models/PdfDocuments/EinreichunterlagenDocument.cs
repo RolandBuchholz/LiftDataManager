@@ -376,7 +376,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).Text("Fahrkorb:");
             var carRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
             table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).Text($"{ParameterDictionary["var_FuehrungsschieneFahrkorb"]?.DropDownListValue?.DisplayName} - {carRailSurface}");
-            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text("Gegengewicht:");
+            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "Gegengewicht:" : "Jochschiene:");
             var cwtRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
             table.Cell().Row(2).Column(3).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text($"{ParameterDictionary["var_FuehrungsschieneGegengewicht"]?.DropDownListValue?.DisplayName} - {cwtRailSurface}");
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Fahrkorbgrundfläche:").Bold();

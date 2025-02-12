@@ -1,5 +1,4 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
 
@@ -33,6 +32,8 @@ public interface ICalculationsModule
     string GetLiftTyp(string? liftTyp);
 
     string GetDrivePosition(string? drivePos);
+
+    bool IsRopeLift(SelectionValue? carTyp);
 
     string GetDistanceBetweenDoors(ObservableDictionary<string, Parameter> parameterDictionary, string orientation);
 

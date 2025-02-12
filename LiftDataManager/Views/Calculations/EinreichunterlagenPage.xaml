@@ -804,7 +804,7 @@
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Gegengewicht:" />
+                                Text="{x:Bind ViewModel.CWTRailName, Mode=OneTime}" />
                             <StackPanel
                                 Grid.Row="1"
                                 Grid.Column="2"
