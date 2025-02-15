@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -17,6 +18,8 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     public string? FullPathXml { get; set; }
     public string? DragAndDropFileType { get; set; }
     public SpezifikationTyp? CurrentSpezifikationTyp { get; set; }
+
+    public ObservableCollection<string> CarFrames { get; set; } = [];
 
     private readonly ILogger<ImportLiftDataDialogViewModel> _logger;
     public ImportLiftDataDialogViewModel(IParameterDataService parameterDataService, IVaultDataService vaultDataService, ISettingService settingService, ILogger<ImportLiftDataDialogViewModel> logger)
@@ -293,20 +296,34 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             }
 
             var isMultiCarframe = importParameterPdf.Any(x => x.Name == "var_Firma_TG2");
-            ShowImportCarFrames = isMultiCarframe;
-            if (!isMultiCarframe)
+            if (SelectedImportCarFrame is null)
             {
-                SelectedImportCarFrame = null;
+                CarFrames.Clear();
+                if (isMultiCarframe)
+                {
+                    CarFrames.Add("Tiger TG2");
+                    CarFrames.Add("BR1 1:1");
+                    CarFrames.Add("BR2 2:1");
+                    CarFrames.Add("Jupiter BT1");
+                    CarFrames.Add("Jupiter BT2");
+                    CarFrames.Add("Seil-Rucksack BRR");
+                    CarFrames.Add("Seil-Zentral ZZE-S");
+                }
+                else
+                {
+                    CarFrames.Add("Seil-Rucksack EZE-SR");
+                    CarFrames.Add("Seil-Zentral ZZE-S");
+                }
             }
+            ShowImportCarFrames = SelectedImportCarFrame is null;
 
-            if (isMultiCarframe && SelectedImportCarFrame is null)
+            if (SelectedImportCarFrame is null)
             {
                 DataImportStatus = InfoBarSeverity.Warning;
                 DataImportStatusText = "Mehrere Bausatztypen für DatenImport vorhanden.\n" +
                                        "Wählen sie den gewünschten Bausatztyp aus!";
                 return;
             }
-
             var carTypPrefix = SelectedImportCarFrame switch
             {
                 "Tiger TG2" => "_TG2",
@@ -316,6 +333,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 "Jupiter BT2" => "_BT2",
                 "Seil-Rucksack BRR" => "_BRR",
                 "Seil-Zentral ZZE-S" => "_ZZE_S",
+                "Seil-Rucksack EZE-SR" => "_EZE_SR",
                 _ => "_EZE_SR"
             };
 
