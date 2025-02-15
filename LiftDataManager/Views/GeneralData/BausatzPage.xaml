@@ -659,7 +659,7 @@
                                         VerticalAlignment="Center"
                                         Text="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'].Value, Mode=OneWay}" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="Puffer Typ GGW:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -694,7 +694,7 @@
                                         VerticalAlignment="Center"
                                         Text="kg" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="Gegengewicht kompl. (Ausgleich " />
                                         <Run Text="{x:Bind ViewModel.ParameterDictionary['var_GGWNutzlastausgleich'].Value, Mode=OneWay}" />
@@ -711,7 +711,7 @@
                                         VerticalAlignment="Center"
                                         Text="kg" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="GGW-Rahmengewicht:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -724,7 +724,7 @@
                                         VerticalAlignment="Center"
                                         Text="kg" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="GGW-Füllungsgewicht:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -737,7 +737,7 @@
                                         VerticalAlignment="Center"
                                         Text="kg" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="Gegengewichts Füllhöhe:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -764,7 +764,7 @@
                                         Text="mm" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Schienenlänge Gegengewicht:" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.CWTRailLenghtName, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -790,7 +790,7 @@
                                         Text="mm" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Startschiene Gegengewicht:" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.StartCWTRailName, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -816,7 +816,7 @@
                                         Text="mm" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Gegengewicht Endstück:" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.CWTRailEndName, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -913,7 +913,7 @@
                                         VerticalAlignment="Center"
                                         Text="N" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="Belastung unter GGW Schiene:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -947,7 +947,7 @@
                                         VerticalAlignment="Center"
                                         Text="N" />
                                 </Grid>
-                                <Grid Grid.ColumnDefinitions="auto,*,30">
+                                <Grid Grid.ColumnDefinitions="auto,*,30" Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay}">
                                     <TextBlock VerticalAlignment="Center" Text="Belastung unter GGW Puffer:" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -999,7 +999,7 @@
                                         Text="N" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Kraft Fx auf GGW-Schiene:" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.ForceXCWTRail, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"
@@ -1016,7 +1016,7 @@
                                         Text="N" />
                                 </Grid>
                                 <Grid Grid.ColumnDefinitions="auto,*,30">
-                                    <TextBlock VerticalAlignment="Center" Text="Kraft Fy auf GGW-Schiene:" />
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.ForceYCWTRail, Mode=OneWay}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0,0,5,0"

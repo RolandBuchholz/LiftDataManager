@@ -25,7 +25,7 @@
         <controls:DataComboBox
             x:Name="cmb_Liftparameter"
             Grid.Column="0"
-            Header="{x:Bind Header}"
+            Header="{x:Bind Header, Mode=OneWay}"
             IsEnabled="{x:Bind IsControlActive, Mode=OneWay}"
             IsRightTapEnabled="True"
             ItemsSource="{x:Bind LiftParameter.DropDownList, Mode=OneWay}"

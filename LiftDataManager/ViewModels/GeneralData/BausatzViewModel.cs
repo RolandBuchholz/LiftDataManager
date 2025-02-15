@@ -51,6 +51,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value);
 
     [ObservableProperty]
+    public partial bool IsRopeLift { get; set; } = true;
+
+    [ObservableProperty]
     public partial bool IsCFPFrame { get; set; }
 
     [ObservableProperty]
@@ -73,6 +76,21 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
 
     [ObservableProperty]
     public partial string CWTGuideTyp { get; set; } = "Typ Führung GGW";
+
+    [ObservableProperty]
+    public partial string CWTRailLenghtName { get; set; } = "Schienenlänge Gegengewicht:";
+
+    [ObservableProperty]
+    public partial string StartCWTRailName { get; set; } = "Startschiene Gegengewicht:";
+
+    [ObservableProperty]
+    public partial string CWTRailEndName { get; set; } = "Gegengewicht Endstück:";
+
+    [ObservableProperty]
+    public partial string ForceXCWTRail { get; set; } = "Kraft Fx auf GGW-Schiene";
+
+    [ObservableProperty]
+    public partial string ForceYCWTRail { get; set; } = "Kraft Fy auf GGW-Schiene";
 
     [ObservableProperty]
     public partial string Safetygearworkarea { get; set; } = string.Empty;
@@ -111,13 +129,18 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             return 0;
         }
-        CWTRailName = carFrameType.DriveTypeId == 2 ? "Führungsschienen Joch" : "Führungsschienen GGW";
-        CWTGuideName = carFrameType.DriveTypeId == 2 ? "Führungsart Joch" : "Führungsart GGW";
-        CWTRailState = carFrameType.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW";
-        CWTGuideTyp = carFrameType.DriveTypeId == 2 ? "Typ Führung Joch" : "Typ Führung GGW";
+        IsRopeLift = carFrameType.DriveTypeId == 1;
+        CWTRailName = IsRopeLift ? "Führungsschienen GGW" : "Führungsschienen Joch";
+        CWTGuideName = IsRopeLift ? "Führungsart GGW" : "Führungsart Joch";
+        CWTRailState = IsRopeLift ? "Status Führungsschienen GGW" : "Status Führungsschienen Joch";
+        CWTGuideTyp = IsRopeLift ? "Typ Führung GGW" : "Typ Führung Joch";
+        CWTRailLenghtName = IsRopeLift ? "Schienenlänge Gegengewicht:" : "Jochschienenlänge:";
+        StartCWTRailName = IsRopeLift ? "Startschiene Gegengewicht:" : "Startschiene Joch:";
+        CWTRailEndName = IsRopeLift ? "Gegengewicht Endstück:" : "Jochschiene Endstück:";
+        ForceXCWTRail = IsRopeLift ? "Kraft Fx auf GGW-Schiene" : "Kraft Fx auf Joch-Schiene";
+        ForceYCWTRail = IsRopeLift ? "Kraft Fy auf GGW-Schiene" : "Kraft Fy auf Joch-Schiene";
         return carFrameType.CarFrameWeight;
     }
-
     private async Task CheckCFPStateAsync(string? newCarFrame, string? oldCarFrame)
     {
         if (string.IsNullOrWhiteSpace(newCarFrame))
