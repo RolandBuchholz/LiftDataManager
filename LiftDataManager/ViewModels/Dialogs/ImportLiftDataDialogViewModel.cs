@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -12,6 +13,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     private const string defaultImage = "/Images/TonerSaveOFF.png";
     private const string pdfImage = "/Images/PdfTransparent.png";
     private const string mailImage = "/Images/Mail.png";
+    private readonly ParameterContext _parametercontext;
     private readonly IParameterDataService _parameterDataService;
     private readonly IVaultDataService _vaultDataService;
     private readonly ISettingService _settingService;
@@ -22,11 +24,13 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     public ObservableCollection<string> CarFrames { get; set; } = [];
 
     private readonly ILogger<ImportLiftDataDialogViewModel> _logger;
-    public ImportLiftDataDialogViewModel(IParameterDataService parameterDataService, IVaultDataService vaultDataService, ISettingService settingService, ILogger<ImportLiftDataDialogViewModel> logger)
+    public ImportLiftDataDialogViewModel(IParameterDataService parameterDataService, IVaultDataService vaultDataService, ISettingService settingService,
+                                         ParameterContext parametercontext, ILogger<ImportLiftDataDialogViewModel> logger)
     {
         _parameterDataService = parameterDataService;
         _vaultDataService = vaultDataService;
         _settingService = settingService;
+        _parametercontext = parametercontext;
         _logger = logger;
     }
 
@@ -154,10 +158,20 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     public partial bool ShowImportCarFrames { get; set; }
 
     [ObservableProperty]
+    public partial bool ShowImportOptions { get; set; } = true;
+
+    [ObservableProperty]
     public partial bool ShowDragAndDropPanel { get; set; }
 
     [ObservableProperty]
     public partial string? SelectedImportCarFrame { get; set; }
+
+    [ObservableProperty]
+    public partial bool ImportDriveData { get; set; } = true;
+    [ObservableProperty]
+    public partial bool ImportCFPData { get; set; } = true;
+    [ObservableProperty]
+    public partial bool ImportCFPDataBaseOverrides { get; set; }
 
     [ObservableProperty]
     public partial SpezifikationTyp? ImportSpezifikationTyp { get; set; } = SpezifikationTyp.Order;
@@ -177,6 +191,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
+                ShowImportOptions = true;
             })
             .When(SpezifikationTyp.Offer).Then(() =>
             {
@@ -184,6 +199,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
+                ShowImportOptions = true;
             })
             .When(SpezifikationTyp.Planning).Then(() =>
             {
@@ -191,6 +207,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
+                ShowImportOptions = true;
             })
             .When(SpezifikationTyp.Request).Then(() =>
             {
@@ -198,6 +215,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = pdfImage;
                 DragAndDropDescription = "Anfrage Formular hierher ziehen oder Anfrage Formular zum hochladen auswählen.";
                 ShowDragAndDropPanel = true;
+                ShowImportOptions = false;
             })
             .When(SpezifikationTyp.MailRequest).Then(() =>
             {
@@ -205,6 +223,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = mailImage;
                 DragAndDropDescription = "Mail aus Outlook hierher ziehen oder gespeicherte Mail zum hochladen auswählen.";
                 ShowDragAndDropPanel = true;
+                ShowImportOptions = false;
             })
             .Default(() =>
             {
@@ -212,6 +231,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
+                ShowImportOptions = true;
             });
         _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);
     }
@@ -262,10 +282,37 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             "var_FertigstellungAm",
             "var_GeaendertAm",
             "var_GeaendertVon",
-            "var_dbChanges",
             "var_CFPdefiniert"
         };
 
+        if (!ImportDriveData)
+        {
+            {
+                var cfpParameter = _parametercontext.ParameterDtos?.Where(x => x.ParameterCategoryId == 15);
+                if (cfpParameter is not null)
+                {
+                    foreach (var parameter in cfpParameter)
+                    {
+                        ignoreImportParameters.Add(parameter.Name);
+                    }
+                }
+            }
+        }
+        if (!ImportCFPData)
+        {
+            var cfpParameter = _parametercontext.ParameterDtos?.Where(x => x.ParameterCategoryId == 13);
+            if (cfpParameter is not null)
+            {
+                foreach (var parameter in cfpParameter)
+                {
+                    ignoreImportParameters.Add(parameter.Name);
+                }
+            }
+        }
+        if (!ImportCFPDataBaseOverrides)
+        {
+            ignoreImportParameters.Add("var_dbChanges");
+        }
         List<TransferData>? importParameter = [];
         if (ImportSpezifikationTyp == SpezifikationTyp.MailRequest)
         {

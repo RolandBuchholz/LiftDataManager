@@ -166,6 +166,35 @@
                 MaxColumns="3"
                 SelectedItem="{x:Bind ViewModel.SelectedImportCarFrame, Mode=TwoWay}"
                 Visibility="{x:Bind ViewModel.ShowImportCarFrames, Mode=OneWay}" />
+            <Grid
+                x:Name="ImportOptions"
+                Grid.Row="7"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="0,10,0,0"
+                Visibility="{x:Bind ViewModel.ShowImportOptions, Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <CheckBox
+                    Grid.Column="0"
+                    Content="Antriebs-Daten übernehmen"
+                    IsChecked="{x:Bind ViewModel.ImportDriveData, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Column="1"
+                    Content="CFP-Daten übernehmen"
+                    IsChecked="{x:Bind ViewModel.ImportCFPData, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Content="CFP-Datenbanküberschreibungen übernehmen"
+                    IsChecked="{x:Bind ViewModel.ImportCFPDataBaseOverrides, Mode=TwoWay}" />
+            </Grid>
             <Button
                 Grid.Row="8"
                 Grid.Column="0"
