@@ -170,9 +170,11 @@ public sealed partial class CommandBar : UserControl
     private void DrawupFilterView(SelectorBarItem? selectedFilterItem, string searchValue)
     {
         if (selectedFilterItem is null)
+        {
             return;
+        }
         GroupedFilteredParameters.Clear();
-        IEnumerable<Parameter> filteredParameters = Enumerable.Empty<Parameter>();
+        IEnumerable<Parameter> filteredParameters = [];
         switch (selectedFilterItem.Text)
         {
             case "All":

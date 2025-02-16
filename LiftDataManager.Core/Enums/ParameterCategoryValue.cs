@@ -67,6 +67,14 @@ public sealed class ParameterCategoryValue : SmartEnum<ParameterCategoryValue>
     //    /// Category car design
     //    /// </summary>
     public static readonly ParameterCategoryValue CarDesign = new(nameof(CarDesign), 14);
+    //    /// <summary>
+    //    /// Category drive data
+    //    /// </summary>
+    public static readonly ParameterCategoryValue DriveData = new(nameof(DriveData), 15);
+    //    /// <summary>
+    //    /// Category force and loads
+    //    /// </summary>
+    public static readonly ParameterCategoryValue KräfteBelastungen = new(nameof(KräfteBelastungen), 16);
 
     private ParameterCategoryValue(string name, int value) : base(name, value)
     {

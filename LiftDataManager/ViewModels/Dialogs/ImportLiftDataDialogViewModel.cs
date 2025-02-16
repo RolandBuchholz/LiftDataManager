@@ -300,7 +300,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         }
         if (!ImportCFPData)
         {
-            var cfpParameter = _parametercontext.ParameterDtos?.Where(x => x.ParameterCategoryId == 13);
+            var cfpParameter = _parametercontext.ParameterDtos?.Where(x => x.ParameterCategoryId == 13 || x.ParameterCategoryId == 16);
             if (cfpParameter is not null)
             {
                 foreach (var parameter in cfpParameter)

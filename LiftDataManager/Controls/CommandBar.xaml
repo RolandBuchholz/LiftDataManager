@@ -122,6 +122,14 @@
                                 x:Name="CarDesign"
                                 Click="SetFilter_Click"
                                 Text="CarDesign Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="DriveData"
+                                Click="SetFilter_Click"
+                                Text="Antriebsdaten Parameter" />
+                            <MenuFlyoutItem
+                                x:Name="KräfteBelastungen"
+                                Click="SetFilter_Click"
+                                Text="KräfteBelastungen Parameter" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
