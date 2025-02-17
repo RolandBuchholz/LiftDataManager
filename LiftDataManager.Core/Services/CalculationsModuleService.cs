@@ -1,5 +1,6 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
@@ -7,6 +8,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 
@@ -1033,7 +1035,6 @@ public partial class CalculationsModuleService : ICalculationsModule
              //("Kabinentürverriegelung","var_Tuerbezeichnung","XXX"),
              //("Sicherheitsschaltung","var_Steuerungstyp","XXX")
         };
-        var typeExaminationCertificates = _parametercontext.Set<TypeExaminationCertificate>();
         var safetyComponentTyps = _parametercontext.Model.GetEntityTypes().ToList();
 
         foreach (var item in listOfSafetyComponents)
@@ -1057,14 +1058,16 @@ public partial class CalculationsModuleService : ICalculationsModule
             {
                 continue;
             }
-            var safetyComponent = table.Cast<SafetyComponentEntity>().FirstOrDefault(x => x.Name == value);
+            var safetyComponent = table.Cast<SafetyComponentEntity>()
+                                       .Include(i => i.TypeExaminationCertificate)
+                                       .ThenInclude(t => t!.SafetyComponentTyp)
+                                       .FirstOrDefault(x => x.Name == value);
             if (safetyComponent is not null)
             {
-                var certificate = typeExaminationCertificates.FirstOrDefault(x => x.Id == safetyComponent.TypeExaminationCertificateId);
                 model = safetyComponent.DisplayName;
-                manufacturer = certificate?.ManufacturerName;
-                certificateNumber = certificate?.CertificateNumber;
-                safetyComponentTyp = certificate?.SafetyComponentTypId.ToString();
+                manufacturer = safetyComponent.TypeExaminationCertificate?.ManufacturerName;
+                certificateNumber = safetyComponent.TypeExaminationCertificate?.CertificateNumber;
+                safetyComponentTyp = safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name;
             }
             if (string.IsNullOrWhiteSpace(model) ||
                 string.IsNullOrWhiteSpace(manufacturer) ||
