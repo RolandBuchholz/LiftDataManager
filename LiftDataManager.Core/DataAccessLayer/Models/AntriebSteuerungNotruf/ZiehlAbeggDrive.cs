@@ -2,4 +2,5 @@
 
 public class ZiehlAbeggDrive : SafetyComponentEntity
 {
+    public required string SafetyBrakeName { get; set; }
 }

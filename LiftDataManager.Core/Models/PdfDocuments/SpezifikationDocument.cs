@@ -1193,7 +1193,7 @@ public class SpezifikationDocument : PdfBaseDocument
                     columns.RelativeColumn(1);
                 });
 
-                table.Cell().Row(1).Column(1).RowSpan(5).RotateLeft().AlignMiddle().AlignCenter().Text("Antrieb").FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(6).RotateLeft().AlignMiddle().AlignCenter().Text("Antrieb").FontColor(borderColor).Bold();
                 table.Cell().Row(2).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Antrieb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ParameterStringCell(ParameterDictionary["var_Aggregat"]);
                 table.Cell().Row(2).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_AnmerkungAntrieb"]);
@@ -1220,7 +1220,14 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(5).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(3).ParameterStringCell(ParameterDictionary["var_SonstigesAntrieb"]);
-                    row.RelativeItem(2).BorderLeft(0.1f).BorderTop(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(DriveDetailData);
+                    row.RelativeItem(2).Border(0.1F).BorderColor(borderColor).PaddingHorizontal(5).Element(DriveDetailData);
+                });
+                table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("UCMP Komponenten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(6).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_UCMP_DetektierendesElement"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_UCMP_AusloesendesElement"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_UCMP_BremsendesElement"], null, false, true);
                 });
             });
         });

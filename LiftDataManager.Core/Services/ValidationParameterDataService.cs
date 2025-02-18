@@ -1,4 +1,3 @@
-using Cogs.Collections;
 using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
 
@@ -114,6 +113,12 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_AuftragsNummer",
             [new(NotEmpty, "Error", null)]);
 
+        ValidationDictionary.Add("var_Antrieb",
+            [new(ValidateUCMBrakingComponents, "None", null)]);
+
+        ValidationDictionary.Add("var_Hydraulikventil",
+            [new(ValidateUCMBrakingComponents, "None", null)]);
+
         ValidationDictionary.Add("var_FabrikNummer",
             [new(NotEmpty, "Warning", null),
             new(ValidateJobNumber, "Warning", "var_AuftragsNummer") ]);
@@ -199,6 +204,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         ValidationDictionary.Add("var_Geschwindigkeitsbegrenzer",
             [new(ValidateJungblutOSG, "Informational", null),
+            new(ValidateUCMDetectingAndTriggeringComponents, "None", null),
             new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_FH",
@@ -367,6 +373,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         ValidationDictionary.Add("var_Steuerungstyp",
             [new(ValidateUCMValues, "None", null),
+            new(ValidateUCMDetectingAndTriggeringComponents, "None", null),
             new(ValidateLiftPositionSystems, "Warning", "var_Schachtinformationssystem")]);
 
         ValidationDictionary.Add("var_ElektrBremsenansteuerung",
@@ -376,6 +383,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Schachtinformationssystem",
             [new(ValidateUCMValues, "None", null),
             new(ValidateLiftPositionSystems, "Warning", "var_Steuerungstyp"),
+            new(ValidateUCMDetectingAndTriggeringComponents, "None", null),
             new(ValidateSchindlerCertifiedComponents, "None", null)]);
 
         ValidationDictionary.Add("var_Treibscheibegehaertet",

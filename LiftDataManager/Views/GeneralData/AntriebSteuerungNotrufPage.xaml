@@ -494,7 +494,7 @@
                     Header="Antrieb"
                     IsExpanded="True"
                     Style="{StaticResource ExpanderContentStyle}">
-                    <Grid ColumnDefinitions="2.5*,*" RowDefinitions="Auto,Auto,*">
+                    <Grid ColumnDefinitions="2.5*,*" RowDefinitions="Auto,Auto,Auto,*">
                         <Grid x:Name="Antriebdetails" Grid.Row="0">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
@@ -615,6 +615,43 @@
                                         AcceptsReturn="True"
                                         Text="{x:Bind ViewModel.ParameterDictionary['var_SonstigesAntrieb'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}"
                                         TextWrapping="Wrap" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="UCMDaten"
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                                <Border
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="UCMP Komponenten" />
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,5,0"
+                                    ColumnDefinitions="*,*,*">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UCMP_DetektierendesElement'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UCMP_AusloesendesElement'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_UCMP_BremsendesElement'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
                                 </Grid>
                             </Grid>
                         </Grid>

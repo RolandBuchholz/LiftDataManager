@@ -2072,4 +2072,65 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
     }
 
+    private void ValidateUCMDetectingAndTriggeringComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        List<SelectionValue> availableDetectingAndTriggeringComponents = [];
+
+        var overSpeedGovernor = _parameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue;
+        var liftPositionSystem = _parameterDictionary["var_Schachtinformationssystem"].DropDownListValue;
+        var liftControler = _parameterDictionary["var_Steuerungstyp"].DropDownListValue;
+
+        if (overSpeedGovernor is not null)
+        {
+            var overSpeedGovernorDb = _parametercontext.Set<OverspeedGovernor>().FirstOrDefault(x => x.Id == overSpeedGovernor.Id);
+            if (overSpeedGovernorDb is not null && overSpeedGovernorDb.HasUCMPCertification)
+            {
+                overSpeedGovernor.Id = 1;
+                availableDetectingAndTriggeringComponents.Add(overSpeedGovernor);
+            }
+        }
+        if (liftPositionSystem is not null)
+        {
+            var liftPositionSystemDb = _parametercontext.Set<LiftPositionSystem>().FirstOrDefault(x => x.Id == liftPositionSystem.Id);
+            if (liftPositionSystemDb is not null && liftPositionSystemDb.TypeExaminationCertificateId != 1)
+            { 
+                liftPositionSystem.Id = 2;
+                availableDetectingAndTriggeringComponents.Add(liftPositionSystem);
+            }
+        }
+        if (liftControler is not null)
+        {
+            liftControler.Id = 3;
+            availableDetectingAndTriggeringComponents.Add(liftControler);
+        }
+
+        UpdateDropDownList("var_UCMP_DetektierendesElement", availableDetectingAndTriggeringComponents);
+        UpdateDropDownList("var_UCMP_AusloesendesElement", availableDetectingAndTriggeringComponents);
+    }
+    private void ValidateUCMBrakingComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        var isRopedrive = string.IsNullOrWhiteSpace(_parameterDictionary["var_Getriebe"].Value) || _parameterDictionary["var_Getriebe"].Value != "hydraulisch";
+        if (isRopedrive && string.Equals(name, "var_Antrieb"))
+        {
+            var availableBrakingComponents = _parametercontext.Set<ZiehlAbeggDrive>().Select(x => new SelectionValue(x.Id, x.Name, $"{x.SafetyBrakeName} ({x.DisplayName})")
+            {
+                IsFavorite = x.IsFavorite,
+                SchindlerCertified = x.SchindlerCertified,
+                OrderSelection = x.OrderSelection
+            });
+            UpdateDropDownList("var_UCMP_BremsendesElement", availableBrakingComponents);
+            _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(value?.Trim());
+        }
+        if (!isRopedrive && string.Equals(name, "var_Hydraulikventil"))
+        {
+            var availableBrakingComponents = _parametercontext.Set<HydraulicValve>().Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
+            {
+                IsFavorite = x.IsFavorite,
+                SchindlerCertified = x.SchindlerCertified,
+                OrderSelection = x.OrderSelection
+            });
+            UpdateDropDownList("var_UCMP_BremsendesElement", availableBrakingComponents);
+            _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(value?.Trim());
+        }
+    }
 }

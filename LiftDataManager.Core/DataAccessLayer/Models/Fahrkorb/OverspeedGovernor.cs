@@ -2,4 +2,5 @@
 
 public class OverspeedGovernor : SafetyComponentEntity
 {
+    public bool HasUCMPCertification { get; set; }
 }

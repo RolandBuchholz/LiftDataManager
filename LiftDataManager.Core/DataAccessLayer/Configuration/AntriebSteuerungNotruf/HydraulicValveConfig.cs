@@ -2,18 +2,15 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration.AntriebSteuerungNotruf;
 
-public class ZiehlAbeggDriveConfig : BaseModelBuilder<ZiehlAbeggDrive>
+public class HydraulicValveConfig : BaseModelBuilder<HydraulicValve>
 {
-    public override void Configure(EntityTypeBuilder<ZiehlAbeggDrive> builder)
+    public override void Configure(EntityTypeBuilder<HydraulicValve> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
                .HasMaxLength(50)
                .IsRequired();
         builder.Property(x => x.DisplayName)
-               .HasMaxLength(50)
-               .IsRequired();
-        builder.Property(x => x.SafetyBrakeName)
                .HasMaxLength(50)
                .IsRequired();
         builder.Property(x => x.IsFavorite);
