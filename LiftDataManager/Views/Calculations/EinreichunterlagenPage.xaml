@@ -26,7 +26,7 @@
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
         <DataTemplate x:Key="SafetyComponentItemTemplate" x:DataType="coreModels:LiftSafetyComponent">
-            <Grid Height="60">
+            <Grid Margin="0,5,0,5" Style="{ThemeResource GridCardPanel}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -40,32 +40,46 @@
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
+                    Margin="5"
+                    Style="{ThemeResource DetailSubTitleStyle}"
                     Text="{x:Bind SafetyType}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
-                    Text="{x:Bind CertificateNumber}" />
+                    Margin="5"
+                    VerticalAlignment="Bottom"
+                    FontWeight="SemiBold"
+                    Style="{ThemeResource DetailBodyStyle}"
+                    Text="{x:Bind Manufacturer}" />
                 <TextBlock
                     Grid.Row="0"
+                    Grid.RowSpan="2"
                     Grid.Column="2"
-                    Text="{x:Bind Manufacturer}" />
+                    Margin="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Text="{x:Bind CertificateNumber}" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="{x:Bind Model}" />
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="1"
+                    Margin="5"
+                    FontSize="12"
+                    FontWeight="SemiBold"
+                    Style="{ThemeResource DetailBodyBaseMediumStyle}"
                     Text="{x:Bind SafetyComponentTyp}" />
                 <TextBlock
                     Grid.Row="1"
-                    Grid.Column="2"
-                    Text="-------" />
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{x:Bind Model}"
+                    TextWrapping="WrapWholeWords" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Text="-------------------------------------------" />
+                    Margin="5"
+                    Text="{x:Bind SpecialOption}" />
             </Grid>
         </DataTemplate>
     </Page.Resources>
