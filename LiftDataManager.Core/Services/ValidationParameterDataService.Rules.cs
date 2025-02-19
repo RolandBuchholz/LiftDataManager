@@ -2093,7 +2093,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             var liftPositionSystemDb = _parametercontext.Set<LiftPositionSystem>().FirstOrDefault(x => x.Id == liftPositionSystem.Id);
             if (liftPositionSystemDb is not null && liftPositionSystemDb.TypeExaminationCertificateId != 1)
-            { 
+            {
                 liftPositionSystem.Id = 2;
                 availableDetectingAndTriggeringComponents.Add(liftPositionSystem);
             }
@@ -2112,14 +2112,25 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var isRopedrive = string.IsNullOrWhiteSpace(_parameterDictionary["var_Getriebe"].Value) || _parameterDictionary["var_Getriebe"].Value != "hydraulisch";
         if (isRopedrive && string.Equals(name, "var_Antrieb"))
         {
-            var availableBrakingComponents = _parametercontext.Set<ZiehlAbeggDrive>().Select(x => new SelectionValue(x.Id, x.Name, $"{x.SafetyBrakeName} ({x.DisplayName})")
+            var availableBrakingComponents = _parametercontext.Set<DriveSafetyBrake>().Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
             {
                 IsFavorite = x.IsFavorite,
                 SchindlerCertified = x.SchindlerCertified,
                 OrderSelection = x.OrderSelection
             });
             UpdateDropDownList("var_UCMP_BremsendesElement", availableBrakingComponents);
-            _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(value?.Trim());
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(string.Empty);
+                return;
+            }
+            var drive = _parametercontext.Set<ZiehlAbeggDrive>().Include(i => i.DriveSafetyBrake).FirstOrDefault(x => x.Name == value.Trim());
+            if (drive is null)
+            {
+                _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(string.Empty);
+                return;
+            }
+            _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(drive.DriveSafetyBrake?.Name);
         }
         if (!isRopedrive && string.Equals(name, "var_Hydraulikventil"))
         {

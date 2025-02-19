@@ -1,6 +1,7 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 
-public class ZiehlAbeggDrive : SafetyComponentEntity
+public class ZiehlAbeggDrive : SelectionEntity
 {
-    public required string SafetyBrakeName { get; set; }
+    public DriveSafetyBrake? DriveSafetyBrake { get; set; }
+    public int DriveSafetyBrakeId { get; set; }
 }

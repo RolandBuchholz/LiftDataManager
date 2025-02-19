@@ -2,9 +2,9 @@
 
 namespace LiftDataManager.Core.DataAccessLayer.Configuration.AntriebSteuerungNotruf;
 
-public class ZiehlAbeggDriveConfig : BaseModelBuilder<ZiehlAbeggDrive>
+public class DriveSafetyBrakeConfig : BaseModelBuilder<DriveSafetyBrake>
 {
-    public override void Configure(EntityTypeBuilder<ZiehlAbeggDrive> builder)
+    public override void Configure(EntityTypeBuilder<DriveSafetyBrake> builder)
     {
         base.Configure(builder);
         builder.Property(x => x.Name)
@@ -17,6 +17,9 @@ public class ZiehlAbeggDriveConfig : BaseModelBuilder<ZiehlAbeggDrive>
         builder.Property(x => x.IsObsolete);
         builder.Property(x => x.SchindlerCertified);
         builder.Property(x => x.OrderSelection);
-        builder.Property(x => x.DriveSafetyBrakeId);
+        builder.Property(x => x.TypeExaminationCertificateId);
+        builder.HasMany(t => t.ZiehlAbeggDrives)
+               .WithOne(g => g.DriveSafetyBrake)
+               .HasForeignKey(t => t.DriveSafetyBrakeId);
     }
 }
