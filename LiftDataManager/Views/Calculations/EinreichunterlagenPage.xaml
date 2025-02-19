@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
+    xmlns:coreModels="using:LiftDataManager.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,6 +25,63 @@
             TrueValue="Collapsed" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
         <helpers:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" />
+        <DataTemplate x:Key="SafetyComponentItemTemplate" x:DataType="coreModels:LiftSafetyComponent">
+            <Grid Margin="0,5,0,5" Style="{ThemeResource GridCardPanel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="5"
+                    Style="{ThemeResource DetailSubTitleStyle}"
+                    Text="{x:Bind SafetyType}" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5"
+                    VerticalAlignment="Bottom"
+                    FontWeight="SemiBold"
+                    Style="{ThemeResource DetailBodyStyle}"
+                    Text="{x:Bind Manufacturer}" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Margin="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Text="{x:Bind CertificateNumber}" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="5"
+                    FontSize="12"
+                    FontWeight="SemiBold"
+                    Style="{ThemeResource DetailBodyBaseMediumStyle}"
+                    Text="{x:Bind SafetyComponentTyp}" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="5"
+                    Text="{x:Bind Model}"
+                    TextWrapping="WrapWholeWords" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="5"
+                    Text="{x:Bind SpecialOption}" />
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -1017,13 +1075,13 @@
                             FontSize="20"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="7. Liste der Sicherheitsbauteile" />
+                        <ListView
+                            Margin="0,0,0,10"
+                            ItemTemplate="{StaticResource SafetyComponentItemTemplate}"
+                            ItemsSource="{x:Bind ViewModel.LiftSafetyComponents, Mode=OneWay}" />
                         <StackPanel Margin="0,0,0,10">
-                            <TextBlock Text="Fangvorrichtung" />
                             <TextBlock Text="Türverschlüsse Schachttür" />
                             <TextBlock Text="Türverschlüsse Kabinentür" />
-                            <TextBlock Text="Geschwindigkeitsbegenzer" />
-                            <TextBlock Text="Fahrkorbpuffer" />
-                            <TextBlock Text="Gegengewichtspuffer" />
                             <TextBlock Text="SaFÜ" />
                             <TextBlock Text="SaFÜ" />
                             <TextBlock Text="UCMP" />

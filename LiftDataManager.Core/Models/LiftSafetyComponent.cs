@@ -7,4 +7,5 @@ public class LiftSafetyComponent(string safetyType, string manufacturer, string 
     public string Model { get; set; } = model;
     public string CertificateNumber { get; set; } = certificateNumber;
     public string SafetyComponentTyp { get; set; } = safetyComponentTyp;
+    public string? SpecialOption { get; set; }
 }
