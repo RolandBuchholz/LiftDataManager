@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Models;
 using System.Text.Json;
 
 namespace LiftDataManager.ViewModels;
@@ -23,6 +22,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         _pdfService = pdfService;
         LiftDocumentation ??= new();
         LiftSafetyComponents ??= [];
+        UCMPComponents ??= [];
     }
 
     [RelayCommand]
@@ -45,6 +45,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     public TechnicalLiftDocumentation LiftDocumentation { get; set; }
     public List<LiftSafetyComponent> LiftSafetyComponents { get; set; }
+    public List<LiftSafetyComponent> UCMPComponents { get; set; }
     public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
     public double CWTBalancePercent => LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
     public string DriveControl => _calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value);
@@ -67,6 +68,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value);
     public bool IsRopeLift => _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue);
+    public string? DriveName => IsRopeLift ? ParameterDictionary["var_Antrieb"]?.Value : $"{ParameterDictionary["var_Antrieb"]?.Value} - {ParameterDictionary["var_Hydraulikventil"]?.Value} - {ParameterDictionary["var_Pumpenbezeichnung"]?.Value}";
     public string CWTRailName => IsRopeLift ? "Gegengewicht:" : "Jochschiene:";
     public string CarGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
     public string CWTGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
@@ -114,6 +116,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private void SetListofSafetyComponents()
     {
         LiftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+        UCMPComponents = _calculationsModuleService.GetUCMPComponents(ParameterDictionary);
     }
 
     public void OnNavigatedTo(object parameter)

@@ -2,6 +2,7 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
+using Windows.UI;
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
 public static class PdfHelpers
@@ -23,6 +24,7 @@ public static class PdfHelpers
     private static readonly string highlightColor = Colors.Lime.Accent3;
     private static readonly string borderColor = Colors.BlueGrey.Darken3;
     private static readonly string baseHeaderColor = Colors.Red.Darken4;
+    private static readonly string liftDocAccentColor = "156082";
 
     //FontSize
     private static readonly float fontSizeXXS = 6;
@@ -315,4 +317,22 @@ public static class PdfHelpers
             column.Item().PaddingHorizontal(20).Width(100).Image(imagePath);
             column.Item().AlignCenter().Text(protectedSpaceTypDescription).FontSize(fontSizeS);
         });
+
+    public static void SafetyComponentTypDataField(this IContainer container, LiftSafetyComponent safetyComponentTyp) => container
+    .Table(table =>
+    {
+        table.ColumnsDefinition(columns =>
+        {
+            columns.RelativeColumn();
+            columns.RelativeColumn();
+            columns.RelativeColumn();
+        });
+        table.Cell().Row(1).Column(1).PaddingLeft(5).Text(safetyComponentTyp.SafetyType).FontColor(liftDocAccentColor).Bold();
+        table.Cell().Row(1).Column(2).Text(safetyComponentTyp.Manufacturer);
+        table.Cell().Row(1).Column(3).AlignMiddle().AlignCenter().Text("EU-Baumusterprüfbescheinigung").FontColor(secondaryVariantColor).FontSize(fontSizeS).Bold();
+        table.Cell().Row(2).Column(1).PaddingLeft(5).Text(safetyComponentTyp.SafetyComponentTyp).FontColor(secondaryVariantColor).FontSize(fontSizeS).Bold();
+        table.Cell().Row(2).Column(2).Text(safetyComponentTyp.Model);
+        table.Cell().Row(2).Column(3).RowSpan(2).AlignMiddle().AlignCenter().Text(safetyComponentTyp.CertificateNumber).Bold();
+        table.Cell().Row(3).Column(1).ColumnSpan(2).PaddingLeft(25).Text(safetyComponentTyp.SpecialOption).FontSize(fontSizeS).Italic().Bold();
+    });
 }

@@ -523,41 +523,41 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             if (!zugangB)
             {
-                RemoveCarDoorData("B");
+                RemoveShaftDoorDoorData("B");
             }
             if (!zugangC)
             {
-                RemoveCarDoorData("C");
+                RemoveShaftDoorDoorData("C");
             }
             if (!zugangD)
             {
-                RemoveCarDoorData("D");
+                RemoveShaftDoorDoorData("D");
             }
             return;
         }
         if (zugangB)
         {
-            SetCarDoorData("B");
+            SetShaftDoorDoorData("B");
         }
         else
         {
-            RemoveCarDoorData("B");
+            RemoveShaftDoorDoorData("B");
         }
         if (zugangC)
         {
-            SetCarDoorData("C");
+            SetShaftDoorDoorData("C");
         }
         else
         {
-            RemoveCarDoorData("C");
+            RemoveShaftDoorDoorData("C");
         }
         if (zugangD)
         {
-            SetCarDoorData("D");
+            SetShaftDoorDoorData("D");
         }
         else
         {
-            RemoveCarDoorData("D");
+            RemoveShaftDoorDoorData("D");
         }
     }
 
@@ -1142,6 +1142,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         var liftDoortyp = name.Replace("var_Tuerbezeichnung", "var_Tuertyp");
         var doorOpeningDirection = name.Replace("var_Tuerbezeichnung", "var_Tueroeffnung");
         var doorPanelCount = name.Replace("var_Tuerbezeichnung", "var_AnzahlTuerfluegel");
+        var carDoorDescription = string.Equals(name, "var_Tuerbezeichnung") ? "var_CarDoorDescriptionA" : name.Replace("var_Tuerbezeichnung_", "var_CarDoorDescription");
+        var shaftDoorDescription = string.Equals(name, "var_Tuerbezeichnung") ? "var_ShaftDoorDescriptionA" : name.Replace("var_Tuerbezeichnung_", "var_ShaftDoorDescription");
 
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -1152,9 +1154,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         else
         {
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.ShaftDoor)
+                                                                      .Include(i => i.CarDoor)
                                                                       .ThenInclude(t => t!.LiftDoorOpeningDirection)
                                                                       .FirstOrDefault(x => x.Name == value);
-            if (liftDoorGroup is not null && liftDoorGroup.ShaftDoor is not null)
+            if (liftDoorGroup is not null && liftDoorGroup.ShaftDoor is not null && liftDoorGroup.CarDoor is not null)
             {
                 if (liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection is not null)
                 {
@@ -1165,6 +1168,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                     }
                 }
                 _parameterDictionary[doorPanelCount].AutoUpdateParameterValue(Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount));
+                _parameterDictionary[carDoorDescription].AutoUpdateParameterValue(liftDoorGroup.CarDoor.Name);
+                _parameterDictionary[shaftDoorDescription].AutoUpdateParameterValue(liftDoorGroup.ShaftDoor.Name);
             }
         }
     }

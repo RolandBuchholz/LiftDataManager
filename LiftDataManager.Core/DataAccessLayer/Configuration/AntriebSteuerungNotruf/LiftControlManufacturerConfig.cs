@@ -17,6 +17,7 @@ public class LiftControlManufacturerConfig : BaseModelBuilder<LiftControlManufac
         builder.Property(x => x.IsObsolete);
         builder.Property(x => x.SchindlerCertified);
         builder.Property(x => x.OrderSelection);
+        builder.Property(x => x.TypeExaminationCertificateId);
         builder.Property(x => x.DetectionDistance)
                .HasMaxLength(3)
                .IsRequired();

@@ -29,7 +29,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
     }
 
-    private void SetCarDoorData(string zugang)
+    private void SetShaftDoorDoorData(string zugang)
     {
         if (string.IsNullOrWhiteSpace(zugang))
         {
@@ -45,6 +45,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         double tuerGewicht = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Tuergewicht");
         string kaempferBreiteKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_KabTuerKaempferBreiteA");
         string kaempferHoeheKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_KabTuerKaempferHoeheA");
+        string carDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_CarDoorDescriptionA");
+        string shaftDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_ShaftDoorDescriptionA");
 
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuertyp_{zugang}"], tuerTyp);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuerbezeichnung_{zugang}"], tuerBezeichnung);
@@ -55,9 +57,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"], schwellenprofilKabinentuer);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"], kaempferBreiteKabinentuer);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"], kaempferHoeheKabinentuer);
+        LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_CarDoorDescription{zugang}"], carDoorDescription);
+        LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_ShaftDoorDescription{zugang}"], shaftDoorDescription);
     }
 
-    private void RemoveCarDoorData(string zugang)
+    private void RemoveShaftDoorDoorData(string zugang)
     {
         if (string.IsNullOrWhiteSpace(zugang))
         {
@@ -134,6 +138,20 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             if (_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value != "0")
             {
                 _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value = string.Empty;
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(_parameterDictionary[$"var_CarDoorDescription{zugang}"].Value))
+        {
+            if (_parameterDictionary[$"var_CarDoorDescription{zugang}"].Value != "0")
+            {
+                _parameterDictionary[$"var_CarDoorDescription{zugang}"].Value = string.Empty;
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(_parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value))
+        {
+            if (_parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value != "0")
+            {
+                _parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value = string.Empty;
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

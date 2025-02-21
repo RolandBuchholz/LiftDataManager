@@ -220,10 +220,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     {
         var overSpeedGovernor = ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue;
         if (overSpeedGovernor is null ||
-            overSpeedGovernor.Id == 1 ||
-            overSpeedGovernor.Id == 18 ||
-            overSpeedGovernor.Id == 19 ||
-            overSpeedGovernor.Id == 20 )
+            overSpeedGovernor.Name == "kein GB" ||
+            overSpeedGovernor.Name == "GB durch Kunde" ||
+            overSpeedGovernor.Name == "Schlaffseilauslösung" ||
+            overSpeedGovernor.Name == "GB Ersatz durch Limax")
         {
             OverspeedGovernorWeightVisibility = false;
             ParameterDictionary["var_SpanngewichtTyp"].AutoUpdateParameterValue(string.Empty);

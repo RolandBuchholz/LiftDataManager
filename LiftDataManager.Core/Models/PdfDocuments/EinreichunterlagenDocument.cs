@@ -1,5 +1,4 @@
-﻿using Cogs.Collections;
-using LiftDataManager.Core.Contracts.Services;
+﻿using LiftDataManager.Core.Contracts.Services;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -204,8 +203,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             column.Item().PaddingTop(15).Element(ElectricalEquipment);
             column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("7. LISTE DER SICHERHEITSBAUTEILE").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(15).Element(SafetyComponents);
-            column.Item().PaddingTop(5, Unit.Millimetre).Text("Elektronische Sicherheitsschaltungen").FontSize(fontSizeL).Bold();
-            column.Item().PaddingTop(15).Element(ElectricalSafetyComponents);
+            column.Item().PaddingTop(5, Unit.Millimetre).Text("UCMP-KOMPONENTEN").FontSize(fontSizeL).Bold();
+            column.Item().PaddingTop(15).Element(UCMPComponents);
             column.Item().PaddingTop(10, Unit.Millimetre).Background(liftDocAccentColor).PaddingLeft(15).Text("8. BESONDERHEITEN DER AUFZUGSANLAGE").FontSize(fontSizeL).FontColor(Colors.White).Italic();
             column.Item().PaddingTop(10).ShowEntire().Element(SpecialFeatures);
             column.Item().PaddingTop(10).ShowEntire().Element(Attachments);
@@ -301,18 +300,20 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("obere Schutzraumhöhe:").Bold();
             table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{LiftDocumentation.SafetySpaceHead} mm\n" +
                                                                    $"Art des Schutzraums: {LiftDocumentation.ProtectedSpaceTypHead}");
-            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
-            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Column(column =>
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Ersatzmaßnahmen\nSchachtkopf / Schachtgrube:").Bold();
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).AlignMiddle().PaddingLeft(5).Text(ParameterDictionary["var_Ersatzmassnahmen"].DropDownListValue?.DisplayName);
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Art der maschinell- handbetätigten Fahrschachttüren:").Bold();
+            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Column(column =>
             {
                 column.Item().Text($"{ParameterDictionary["var_Zugangsstellen"].Value} Stück");
                 column.Item().Text($"Fabrikat: {ParameterDictionary["var_Tuertyp"].Value?.Replace(" -", "")}");
                 column.Item().Text($"Türbreite: {ParameterDictionary["var_TB"].Value} mm");
                 column.Item().Text($"Türhöhe: {ParameterDictionary["var_TH"].Value} mm");
             });
-            table.Cell().Row(5).Column(1).ColumnSpan(2).PaddingVertical(defaultRowSpacing).Text(LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
+            table.Cell().Row(6).Column(1).ColumnSpan(2).PaddingVertical(defaultRowSpacing).Text(LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
                                                                                  "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." :
                                                                                  "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.").Bold();
-            table.Cell().Row(1).RowSpan(5).Column(3).Column(column =>
+            table.Cell().Row(1).RowSpan(6).Column(3).Column(column =>
             {
                 column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtgrube", LiftDocumentation.ProtectedSpaceTypPit);
                 column.Item().PaddingVertical(5).ProtectedSpaceTypInfoBox("Schachtkopf", LiftDocumentation.ProtectedSpaceTypHead);
@@ -352,12 +353,15 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             });
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Art des Antriebs:").Bold();
             table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, (int)LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope")));
-            table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_Antrieb"].Value);
-            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Antriebsregelung:").Bold();
-            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value));
-            table.Cell().Row(2).Column(3).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value);
-            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Aufstellung des Triebwerkes:").Bold();
-            table.Cell().Row(3).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetDrivePosition(ParameterDictionary["var_Maschinenraum"].Value));
+            table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? ParameterDictionary["var_Antrieb"].Value
+                                                                                                                                                                                             : $"{ParameterDictionary["var_Antrieb"]?.Value} - {ParameterDictionary["var_Hydraulikventil"]?.Value} - {ParameterDictionary["var_Pumpenbezeichnung"]?.Value}");
+            table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Hydraulikzylinder:").Bold();
+            table.Cell().Row(2).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "---" 
+                                                                                                                                                                                                                                                    : ParameterDictionary["var_Hydraulikzylinder"]?.Value);
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value));
+            table.Cell().Row(3).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value);
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufstellung des Triebwerkes:").Bold();
+            table.Cell().Row(4).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetDrivePosition(ParameterDictionary["var_Maschinenraum"].Value));
         });
     }
 
@@ -408,32 +412,30 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Nennstrom des Antriebsmotors:").Bold();
             table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Steuerung:").Bold();
-            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().ParameterStringCell(ParameterDictionary["var_Steuerungstyp"], null, true, true);
+            table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(ParameterDictionary["var_Steuerungstyp"].DropDownListValue?.DisplayName);
         });
     }
     void SafetyComponents(IContainer container)
     {
-        container.Table(table =>
+        var liftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+        container.Column(column => 
         {
-            table.ColumnsDefinition(columns =>
+            foreach (var item in liftSafetyComponents)
             {
-                columns.ConstantColumn(60, Unit.Millimetre);
-                columns.RelativeColumn();
-            });
-            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Fangvorrichtung.........");
+                column.Item().PaddingVertical(5).Background(secondRowColor).SafetyComponentTypDataField(item);
+            }
         });
     }
 
-    void ElectricalSafetyComponents(IContainer container)
+    void UCMPComponents(IContainer container)
     {
-        container.Table(table =>
+        var ucmpComponents = _calculationsModuleService.GetUCMPComponents(ParameterDictionary);
+        container.Column(column =>
         {
-            table.ColumnsDefinition(columns =>
+            foreach (var item in ucmpComponents)
             {
-                columns.ConstantColumn(60, Unit.Millimetre);
-                columns.RelativeColumn();
-            });
-            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("--------");
+                column.Item().PaddingVertical(5).Background(secondRowColor).SafetyComponentTypDataField(item);
+            }
         });
     }
 
@@ -451,7 +453,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         {
             column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).Bold();
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "Anlagenzeichnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "Gefahrenanalysen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "Risikobewertungen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "Berechnungen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams, "Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions, "Prüfanleitung UCM inkl. Berechnung");

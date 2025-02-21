@@ -19,5 +19,7 @@ public class OverspeedGovernorConfig : BaseModelBuilder<OverspeedGovernor>
         builder.Property(x => x.OrderSelection);
         builder.Property(x => x.TypeExaminationCertificateId);
         builder.Property(x => x.HasUCMPCertification);
+        builder.Property(x => x.ShortName)
+               .HasMaxLength(15);
     }
 }

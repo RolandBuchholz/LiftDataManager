@@ -53,6 +53,8 @@ public interface ICalculationsModule
 
     List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary);
 
+    List<LiftSafetyComponent> GetUCMPComponents(ObservableDictionary<string, Parameter> parameterDictionary);
+
     BufferCalculationData GetBufferCalculationData(ObservableDictionary<string, Parameter> parameterDictionary, string parameterName, int eulerCase, bool bufferUnderCounterweight);
 
     string GetBufferDetails(string buffertyp, double liftSpeed);

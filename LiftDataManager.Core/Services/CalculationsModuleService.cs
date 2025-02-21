@@ -8,7 +8,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.Signalisation;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using LiftDataManager.Core.Models.CalculationResultsModels;
 using LiftDataManager.Core.Models.ComponentModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 
@@ -211,9 +210,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         {
             return false;
         }
-        var cargoTypDB = _parametercontext.Set<LiftType>().Include(i => i.CargoType)
-                                                          .ToList()
-                                                          .FirstOrDefault(x => x.Id == carTyp.Id);
+        var cargoTypDB = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Id == carTyp.Id);
         if (cargoTypDB is null)
         {
             return false;
@@ -986,7 +983,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
         else if (!string.IsNullOrWhiteSpace(parameterDictionary["var_Bausatz"].Value))
         {
-            var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary!["var_Bausatz"].Value);
+            var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == parameterDictionary["var_Bausatz"].Value);
             if (carFrameType is null)
                 return 0;
             return carFrameType.CarFrameWeight;
@@ -1025,15 +1022,23 @@ public partial class CalculationsModuleService : ICalculationsModule
     public List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         var liftSafetyComponents = new List<LiftSafetyComponent>();
-        var listOfSafetyComponents = new List<(string, string, string)>()
+        var listOfSafetyComponents = new List<(string, string, string, bool)>()
         {
-             ("Fangvorrichtung","var_TypFV","SafetyGearModelType"),
-             ("Geschwindigkeitsbegrenzer","var_Geschwindigkeitsbegrenzer","OverspeedGovernor"),
-             ("Fahrkorbpuffer","var_Puffertyp","LiftBuffer"),
-             ("Gegengewichtspuffer","var_Puffertyp_GGW","LiftBuffer"),
-             //("Schachttürverriegelung","var_Tuerbezeichnung","XXX"),
-             //("Kabinentürverriegelung","var_Tuerbezeichnung","XXX"),
-             //("Sicherheitsschaltung","var_Steuerungstyp","XXX")
+             ("Fangvorrichtung", "var_TypFV", "SafetyGearModelType", false),
+             ("Geschwindigkeitsbegrenzer", "var_Geschwindigkeitsbegrenzer", "OverspeedGovernor", true),
+             ("Fahrkorbpuffer", "var_Puffertyp", "LiftBuffer", true),
+             ("Gegengewichtspuffer", "var_Puffertyp_GGW", "LiftBuffer", true),
+             ("Puffer Ersatzmaßnahmen Schachtkopf", "var_Puffertyp_EM_SK", "LiftBuffer", true),
+             ("Puffer Ersatzmaßnahmen Schachtgrube", "var_Puffertyp_EM_SG", "LiftBuffer", true),
+             ("Schachttürverriegelung A","var_ShaftDoorDescriptionA","ShaftDoor", false),
+             ("Schachttürverriegelung B","var_ShaftDoorDescriptionB","ShaftDoor", false),
+             ("Schachttürverriegelung C","var_ShaftDoorDescriptionC","ShaftDoor", false),
+             ("Schachttürverriegelung D","var_ShaftDoorDescriptionD","ShaftDoor", false),
+             ("Kabinentürverriegelung A","var_CarDoorDescriptionA","CarDoor", false),
+             ("Kabinentürverriegelung B","var_CarDoorDescriptionB","CarDoor", false),
+             ("Kabinentürverriegelung C","var_CarDoorDescriptionC","CarDoor", false),
+             ("Kabinentürverriegelung D","var_CarDoorDescriptionD","CarDoor", false),
+             ("Sicherheitsschaltung", "var_Steuerungstyp", "LiftControlManufacturer", false)
         };
         var safetyComponentTyps = _parametercontext.Model.GetEntityTypes().ToList();
 
@@ -1044,10 +1049,12 @@ public partial class CalculationsModuleService : ICalculationsModule
             {
                 continue;
             }
+            var safetyType = item.Item1;
             var model = string.Empty;
             var manufacturer = string.Empty;
             var certificateNumber = string.Empty;
             var safetyComponentTyp = string.Empty;
+            var specialOption = string.Empty;
             var entityType = safetyComponentTyps.FirstOrDefault(x => x.Name.EndsWith(item.Item3));
             if (entityType is null)
             {
@@ -1058,17 +1065,25 @@ public partial class CalculationsModuleService : ICalculationsModule
             {
                 continue;
             }
-            var safetyComponent = table.Cast<SafetyComponentEntity>()
-                                       .Include(i => i.TypeExaminationCertificate)
-                                       .ThenInclude(t => t!.SafetyComponentTyp)
-                                       .FirstOrDefault(x => x.Name == value);
+            SafetyComponentEntity? safetyComponent = null;
+
+            safetyComponent = table.Cast<SafetyComponentEntity>()
+                       .Include(i => i.TypeExaminationCertificate)
+                       .ThenInclude(t => t!.SafetyComponentTyp)
+                       .FirstOrDefault(x => x.Name == value);
+
             if (safetyComponent is not null)
             {
-                model = safetyComponent.DisplayName;
+                model = string.Equals(safetyType, "Geschwindigkeitsbegrenzer") ? ((OverspeedGovernor)safetyComponent).ShortName : safetyComponent.DisplayName;
                 manufacturer = safetyComponent.TypeExaminationCertificate?.ManufacturerName;
                 certificateNumber = safetyComponent.TypeExaminationCertificate?.CertificateNumber;
                 safetyComponentTyp = safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name;
+                if (item.Item4)
+                {
+                    specialOption = GetSafetyComponentSpecialOption(parameterDictionary, safetyComponent, safetyType);
+                }
             }
+
             if (string.IsNullOrWhiteSpace(model) ||
                 string.IsNullOrWhiteSpace(manufacturer) ||
                 string.IsNullOrWhiteSpace(certificateNumber) ||
@@ -1076,10 +1091,90 @@ public partial class CalculationsModuleService : ICalculationsModule
             {
                 continue;
             }
-            var safetyType = item.Item1;
-            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber, safetyComponentTyp));
+            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber, safetyComponentTyp, specialOption));
         }
         return liftSafetyComponents;
+    }
+
+    private string GetSafetyComponentSpecialOption(ObservableDictionary<string, Parameter> parameterDictionary, SafetyComponentEntity safetyComponent, string safetyType)
+    {
+        return (safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name) switch
+        {
+            "Geschwindigkeitsbegrenzer" => $"Spanngewicht: {parameterDictionary["var_SpanngewichtTyp"].DropDownListValue?.DisplayName}",
+            "Energiespeichernder Puffer" or "Energieverzehrender Puffer" => safetyType switch
+            {
+                "Fahrkorbpuffer" => $"{parameterDictionary["var_Anzahl_Puffer_FK"].Value} Stück",
+                "Gegengewichtspuffer" => $"{parameterDictionary["var_Anzahl_Puffer_GGW"].Value} Stück",
+                "Puffer Ersatzmaßnahmen Schachtkopf" => $"{parameterDictionary["var_Anzahl_Puffer_EM_SK"].Value} Stück",
+                "Puffer Ersatzmaßnahmen Schachtgrube" => $"{parameterDictionary["var_Anzahl_Puffer_EM_SG"].Value} Stück",
+                _ => string.Empty,
+            },
+            _ => string.Empty,
+        };
+    }
+
+    /// <inheritdoc/>
+    public List<LiftSafetyComponent> GetUCMPComponents(ObservableDictionary<string, Parameter> parameterDictionary)
+    {
+        bool isRopeLift = IsRopeLift(parameterDictionary["var_Bausatz"].DropDownListValue);
+
+        var detectingComponentValue = parameterDictionary["var_UCMP_DetektierendesElement"].Value;
+        var triggeringComponentValue = parameterDictionary["var_UCMP_AusloesendesElement"].Value;
+        var brakingComponentValue = parameterDictionary["var_UCMP_BremsendesElement"].Value;
+
+        SafetyComponentEntity? detectingComponent = null;
+        SafetyComponentEntity? triggeringComponent = null;
+        SafetyComponentEntity? brakingComponent = null;
+
+        detectingComponent = _parametercontext.Set<LiftPositionSystem>().Include(i => i.TypeExaminationCertificate)
+                                                                        .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                        .FirstOrDefault(x => x.Name == detectingComponentValue);
+        detectingComponent ??= _parametercontext.Set<LiftControlManufacturer>().Include(i => i.TypeExaminationCertificate)
+                                                                        .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                        .FirstOrDefault(x => x.Name == detectingComponentValue);
+        detectingComponent ??= _parametercontext.Set<OverspeedGovernor>().Include(i => i.TypeExaminationCertificate)
+                                                                         .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                         .FirstOrDefault(x => x.Name == detectingComponentValue);
+        triggeringComponent = _parametercontext.Set<LiftPositionSystem>().Include(i => i.TypeExaminationCertificate)
+                                                                         .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                         .FirstOrDefault(x => x.Name == triggeringComponentValue);
+        triggeringComponent ??= _parametercontext.Set<LiftControlManufacturer>().Include(i => i.TypeExaminationCertificate)
+                                                                                .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                                .FirstOrDefault(x => x.Name == triggeringComponentValue);
+        triggeringComponent ??= _parametercontext.Set<OverspeedGovernor>().Include(i => i.TypeExaminationCertificate)
+                                                                          .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                          .FirstOrDefault(x => x.Name == triggeringComponentValue);
+        if (isRopeLift)
+        {
+            brakingComponent = _parametercontext.Set<DriveSafetyBrake>().Include(i => i.TypeExaminationCertificate)
+                                                                        .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                        .FirstOrDefault(x => x.Name == brakingComponentValue);
+        }
+        else
+        {
+            brakingComponent = _parametercontext.Set<HydraulicValve>().Include(i => i.TypeExaminationCertificate)
+                                                                      .ThenInclude(t => t!.SafetyComponentTyp)
+                                                                      .FirstOrDefault(x => x.Name == brakingComponentValue);
+        }
+
+        return
+        [
+            new("Detektierendes Element",
+            detectingComponent?.TypeExaminationCertificate?.ManufacturerName is not null? detectingComponent.TypeExaminationCertificate.ManufacturerName : "---",
+            detectingComponent is not null? detectingComponent.DisplayName : "---",
+            detectingComponent?.TypeExaminationCertificate?.CertificateNumber is not null? detectingComponent.TypeExaminationCertificate.CertificateNumber : "---",
+            detectingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? detectingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---"),
+            new("Auslösendes Element",
+            triggeringComponent?.TypeExaminationCertificate?.ManufacturerName is not null? triggeringComponent.TypeExaminationCertificate.ManufacturerName : "---",
+            triggeringComponent is not null? triggeringComponent.DisplayName : "---",
+            triggeringComponent?.TypeExaminationCertificate?.CertificateNumber is not null? triggeringComponent.TypeExaminationCertificate.CertificateNumber : "---",
+            triggeringComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? triggeringComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---"),
+            new("Bremsendes Element",
+            brakingComponent?.TypeExaminationCertificate?.ManufacturerName is not null? brakingComponent.TypeExaminationCertificate.ManufacturerName : "---",
+            brakingComponent is not null? brakingComponent.DisplayName : "---",
+            brakingComponent?.TypeExaminationCertificate?.CertificateNumber is not null? brakingComponent.TypeExaminationCertificate.CertificateNumber : "---",
+            brakingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? brakingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---")
+        ];
     }
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)
     {
