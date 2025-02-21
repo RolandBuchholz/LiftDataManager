@@ -1,3 +1,4 @@
+using CommunityToolkit.Labs.WinUI.MarkdownTextBlock;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Windows.Input;
 
@@ -55,9 +56,19 @@ public sealed partial class MarkdownTextBlockControl : UserControl
         {"image182","Parameteraufbau" },
         {"image183","Datenbank" },
     };
+
+    private MarkdownConfig _config;
+    public MarkdownConfig MarkdownConfig
+    {
+        get => _config;
+        set => _config = value;
+    }
+
+
     public MarkdownTextBlockControl()
     {
         InitializeComponent();
+        _config = new MarkdownConfig();
     }
 
     public ICommand SwitchContentCommand
@@ -84,78 +95,78 @@ public sealed partial class MarkdownTextBlockControl : UserControl
             typeof(MarkdownTextBlockControl),
             new PropertyMetadata(default(string)));
 
-    private void MarkdownTextBlock_ImageClicked(object sender, CommunityToolkit.WinUI.UI.Controls.LinkClickedEventArgs e)
-    {
-        var imageName = Path.GetFileNameWithoutExtension(e.Link);
-        if (_imageMapping.TryGetValue(imageName, out var link))
-        {
+    //private void MarkdownTextBlock_ImageClicked(object sender, CommunityToolkit.WinUI.UI.Controls.LinkClickedEventArgs e)
+    //{
+    //    var imageName = Path.GetFileNameWithoutExtension(e.Link);
+    //    if (_imageMapping.TryGetValue(imageName, out var link))
+    //    {
 
-            SwitchContentCommand.Execute(link);
-        }
-    }
+    //        SwitchContentCommand.Execute(link);
+    //    }
+    //}
 
-    private void MarkdownTextBlock_ImageResolving(object sender, CommunityToolkit.WinUI.UI.Controls.ImageResolvingEventArgs e)
-    {
-        var imageUrl = new Uri(e.Url[16..], UriKind.Relative);
-        var fullImageUri = new Uri(_baseUri, imageUrl);
-        if (fullImageUri != null)
-        {
-            e.Image = new BitmapImage(fullImageUri);
-            e.Handled = true;
-        }
-    }
+    //private void MarkdownTextBlock_ImageResolving(object sender, CommunityToolkit.WinUI.UI.Controls.ImageResolvingEventArgs e)
+    //{
+    //    var imageUrl = new Uri(e.Url[16..], UriKind.Relative);
+    //    var fullImageUri = new Uri(_baseUri, imageUrl);
+    //    if (fullImageUri != null)
+    //    {
+    //        e.Image = new BitmapImage(fullImageUri);
+    //        e.Handled = true;
+    //    }
+    //}
 
-    private void MarkdownTextBlock_LinkClicked(object sender, CommunityToolkit.WinUI.UI.Controls.LinkClickedEventArgs e)
-    {
-        var link = e.Link;
-        if (string.IsNullOrWhiteSpace(link))
-        {
-            return;
-        }
-        if (link.StartsWith("https"))
-        {
-            ProcessHelpers.StartProgram(link, string.Empty);
-        }
-        else
-        {
-            SwitchContentCommand.Execute(link);
-        }
-    }
+    //private void MarkdownTextBlock_LinkClicked(object sender, CommunityToolkit.WinUI.UI.Controls.LinkClickedEventArgs e)
+    //{
+    //    var link = e.Link;
+    //    if (string.IsNullOrWhiteSpace(link))
+    //    {
+    //        return;
+    //    }
+    //    if (link.StartsWith("https"))
+    //    {
+    //        ProcessHelpers.StartProgram(link, string.Empty);
+    //    }
+    //    else
+    //    {
+    //        SwitchContentCommand.Execute(link);
+    //    }
+    //}
 
-    private void MarkdownTextBlock_MarkdownRendered(object sender, CommunityToolkit.WinUI.UI.Controls.MarkdownRenderedEventArgs e)
-    {
-        if (string.IsNullOrWhiteSpace(MarkdownText))
-        {
-            return;
-        }
+    //private void MarkdownTextBlock_MarkdownRendered(object sender, CommunityToolkit.WinUI.UI.Controls.MarkdownRenderedEventArgs e)
+    //{
+    //    if (string.IsNullOrWhiteSpace(MarkdownText))
+    //    {
+    //        return;
+    //    }
 
-        var startTags = MarkdownText.IndexOf("[//]: # (Tags:");
-        if (startTags == -1)
-        {
-            return;
-        }
-        Random rnd = new();
-        HashtagsColors.Add(Colors.BlueViolet);
-        HashtagsColors.Add(Colors.DarkOliveGreen);
-        HashtagsColors.Add(Colors.DarkRed);
-        HashtagsColors.Add(Colors.DarkOrange);
-        HashtagsColors.Add(Colors.Goldenrod);
-        HashtagsColors.Add(Colors.Brown);
-        HashtagsColors.Add(Colors.CadetBlue);
-        HashtagsColors.Add(Colors.DarkKhaki);
-        HashtagsColors.Add(Colors.Crimson);
-        HashtagsColors.Add(Colors.Chocolate);
-        HashtagsColors.Add(Colors.BurlyWood);
+    //    var startTags = MarkdownText.IndexOf("[//]: # (Tags:");
+    //    if (startTags == -1)
+    //    {
+    //        return;
+    //    }
+    //    Random rnd = new();
+    //    HashtagsColors.Add(Colors.BlueViolet);
+    //    HashtagsColors.Add(Colors.DarkOliveGreen);
+    //    HashtagsColors.Add(Colors.DarkRed);
+    //    HashtagsColors.Add(Colors.DarkOrange);
+    //    HashtagsColors.Add(Colors.Goldenrod);
+    //    HashtagsColors.Add(Colors.Brown);
+    //    HashtagsColors.Add(Colors.CadetBlue);
+    //    HashtagsColors.Add(Colors.DarkKhaki);
+    //    HashtagsColors.Add(Colors.Crimson);
+    //    HashtagsColors.Add(Colors.Chocolate);
+    //    HashtagsColors.Add(Colors.BurlyWood);
 
-        var tagString = MarkdownText[startTags..];
-        var tagsArray = tagString[15..tagString.IndexOf(')')].Split('|');
-        if (tagsArray.Length > 1)
-        {
-            var subject = tagsArray[0].Trim();
-            for (global::System.Int32 i = 1; i < tagsArray.Length; i++)
-            {
-                HashtagsList.Add(new Tuple<string, string, SolidColorBrush>(subject, tagsArray[i].Trim(), new SolidColorBrush(HashtagsColors[rnd.Next(HashtagsColors.Count)])));
-            }
-        }
-    }
+    //    var tagString = MarkdownText[startTags..];
+    //    var tagsArray = tagString[15..tagString.IndexOf(')')].Split('|');
+    //    if (tagsArray.Length > 1)
+    //    {
+    //        var subject = tagsArray[0].Trim();
+    //        for (global::System.Int32 i = 1; i < tagsArray.Length; i++)
+    //        {
+    //            HashtagsList.Add(new Tuple<string, string, SolidColorBrush>(subject, tagsArray[i].Trim(), new SolidColorBrush(HashtagsColors[rnd.Next(HashtagsColors.Count)])));
+    //        }
+    //    }
+    //}
 }
