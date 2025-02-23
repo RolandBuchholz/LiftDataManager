@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:sys="using:System"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -90,6 +91,16 @@
                     Text="{x:Bind SpecialOption}" />
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="LiftDescriptionInfoItemTemplate" x:DataType="coreModels:LiftDescriptionInfoEntry">
+            <InfoBar
+                Title="{x:Bind EntryName}"
+                Margin="2"
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Message="{x:Bind Message}"
+                Severity="{x:Bind State}" />
+        </DataTemplate>
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -126,6 +137,7 @@
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -141,13 +153,14 @@
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
+                                MinHeight="80"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Betriebsort:" />
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="500"
+                                Width="450"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value}" />
@@ -239,7 +252,8 @@
                             <TextBox
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                Width="500"
+                                Width="450"
+                                MinHeight="80"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value}" />
@@ -257,6 +271,52 @@
                                 VerticalAlignment="Center"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.TuevExamination}" />
+                            <Grid
+                                Grid.Row="0"
+                                Grid.RowSpan="8"
+                                Grid.Column="2"
+                                MaxHeight="400"
+                                Margin="5,0,0,0"
+                                Style="{ThemeResource GridCardPanel}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Margin="5"
+                                    FontSize="20"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Informationen Anlagenbeschreibung" />
+                                <ListView
+                                    Grid.Row="1"
+                                    Margin="5,0,0,0"
+                                    ItemTemplate="{StaticResource LiftDescriptionInfoItemTemplate}"
+                                    ItemsSource="{x:Bind ViewModel.LiftDescriptionInfos, Mode=OneWay}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Margin="5"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="LightGreen"
+                                    Text="Anlagenbeschreibung vollständig ausgefüllt"
+                                    TextWrapping="WrapWholeWords"
+                                    Visibility="{x:Bind ViewModel.CanCreateTechnicalLiftDocumentation, Mode=OneWay}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Margin="5"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="IndianRed"
+                                    Text="Anlagenbeschreibung unvollständig ausgefüllt "
+                                    TextWrapping="WrapWholeWords"
+                                    Visibility="{x:Bind ViewModel.CanCreateTechnicalLiftDocumentation, Converter={StaticResource InvertBoolToObjectConverter}, Mode=OneWay}" />
+                            </Grid>
                         </Grid>
                         <!--  1. Allgemeine Angaben  -->
                         <TextBlock
@@ -289,7 +349,7 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="500"
+                                Width="450"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.Manufacturer}" />
@@ -471,6 +531,8 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
+                                    ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                    ui:TextBoxExtensions.ValidationType="Number"
                                     Text="{x:Bind ViewModel.LiftDocumentation.SafetySpacePit, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
@@ -503,6 +565,8 @@
                                 Orientation="Horizontal">
                                 <TextBox
                                     Width="100"
+                                    ui:TextBoxExtensions.ValidationMode="Dynamic"
+                                    ui:TextBoxExtensions.ValidationType="Number"
                                     Text="{x:Bind ViewModel.LiftDocumentation.SafetySpaceHead, Mode=TwoWay}"
                                     TextAlignment="Right" />
                                 <TextBlock
@@ -1177,12 +1241,26 @@
                         Width="55"
                         Height="34"
                         Margin="0,0,5,0"
+                        Command="{x:Bind ViewModel.CreateTechnicalLiftDocumentationCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Einreichunterlagen erstellen" />
+                        </ToolTipService.ToolTip>
+                        <FontIcon Glyph="&#xEB95;" />
+                    </Button>
+                    <Button
+                        Width="55"
+                        Height="34"
+                        Margin="0,0,5,0"
                         Command="{x:Bind ViewModel.CreatePdfCommand}">
                         <ToolTipService.ToolTip>
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
-                                Text="Create PDF" />
+                                Text="PDF erstellen" />
                         </ToolTipService.ToolTip>
                         <SymbolIcon Symbol="Print" />
                     </Button>
@@ -1191,7 +1269,7 @@
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
-                                Text="Save All Parameter" />
+                                Text="Alle Parameter speichern" />
                         </ToolTipService.ToolTip>
                         <SymbolIcon Symbol="Save" />
                     </Button>

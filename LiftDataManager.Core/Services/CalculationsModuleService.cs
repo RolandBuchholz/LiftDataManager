@@ -707,6 +707,20 @@ public partial class CalculationsModuleService : ICalculationsModule
     }
 
     /// <inheritdoc/>
+    public bool IsOverspeedGovernorWeightRequired(SelectionValue? overSpeedGovernor)
+    {
+        if (overSpeedGovernor is null ||
+            overSpeedGovernor.Name == "kein GB" ||
+            overSpeedGovernor.Name == "GB durch Kunde" ||
+            overSpeedGovernor.Name == "Schlaffseilauslösung" ||
+            overSpeedGovernor.Name == "GB Ersatz durch Limax")
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <inheritdoc/>
     public SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         var carRailSurface = string.Empty;
@@ -1024,8 +1038,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         var liftSafetyComponents = new List<LiftSafetyComponent>();
         var listOfSafetyComponents = new List<(string, string, string, bool)>()
         {
-             ("Fangvorrichtung", "var_TypFV", "SafetyGearModelType", false),
+             ("Fangvorrichtung", "var_TypFV", "SafetyGearModelType", true),
              ("Geschwindigkeitsbegrenzer", "var_Geschwindigkeitsbegrenzer", "OverspeedGovernor", true),
+             ("Schachtinformationssystem", "var_Schachtinformationssystem", "LiftPositionSystem", false),
              ("Fahrkorbpuffer", "var_Puffertyp", "LiftBuffer", true),
              ("Gegengewichtspuffer", "var_Puffertyp_GGW", "LiftBuffer", true),
              ("Puffer Ersatzmaßnahmen Schachtkopf", "var_Puffertyp_EM_SK", "LiftBuffer", true),
@@ -1068,18 +1083,20 @@ public partial class CalculationsModuleService : ICalculationsModule
             SafetyComponentEntity? safetyComponent = null;
 
             safetyComponent = table.Cast<SafetyComponentEntity>()
-                       .Include(i => i.TypeExaminationCertificate)
-                       .ThenInclude(t => t!.SafetyComponentTyp)
-                       .FirstOrDefault(x => x.Name == value);
+                                   .Include(i => i.TypeExaminationCertificate)
+                                   .ThenInclude(t => t!.SafetyComponentTyp)
+                                   .FirstOrDefault(x => x.Name == value);
 
             if (safetyComponent is not null)
             {
-                model = string.Equals(safetyType, "Geschwindigkeitsbegrenzer") ? ((OverspeedGovernor)safetyComponent).ShortName : safetyComponent.DisplayName;
+                model = safetyComponent.DisplayName;
                 manufacturer = safetyComponent.TypeExaminationCertificate?.ManufacturerName;
                 certificateNumber = safetyComponent.TypeExaminationCertificate?.CertificateNumber;
                 safetyComponentTyp = safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name;
                 if (item.Item4)
                 {
+                    safetyType = GetSafetyTypeName(safetyComponent, safetyType);
+                    model = GetSafetyComponentModelName(safetyComponent, safetyType);
                     specialOption = GetSafetyComponentSpecialOption(parameterDictionary, safetyComponent, safetyType);
                 }
             }
@@ -1095,8 +1112,15 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
         return liftSafetyComponents;
     }
-
-    private string GetSafetyComponentSpecialOption(ObservableDictionary<string, Parameter> parameterDictionary, SafetyComponentEntity safetyComponent, string safetyType)
+    private static string GetSafetyTypeName(SafetyComponentEntity safetyComponent, string safetyType)
+    {
+        return safetyType switch
+        {
+            "Fangvorrichtung" => safetyComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Id == 12 ? "Rohrbruchsicherung" : "Fangvorrichtung",
+            _ => safetyType,
+        };
+    }
+    private static string GetSafetyComponentSpecialOption(ObservableDictionary<string, Parameter> parameterDictionary, SafetyComponentEntity safetyComponent, string safetyType)
     {
         return (safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name) switch
         {
@@ -1110,6 +1134,14 @@ public partial class CalculationsModuleService : ICalculationsModule
                 _ => string.Empty,
             },
             _ => string.Empty,
+        };
+    }
+    private static string GetSafetyComponentModelName(SafetyComponentEntity safetyComponent, string safetyType)
+    {
+        return safetyType switch
+        {
+            "Geschwindigkeitsbegrenzer" => ((OverspeedGovernor)safetyComponent).ShortName!,
+            _ => safetyComponent.DisplayName,
         };
     }
 

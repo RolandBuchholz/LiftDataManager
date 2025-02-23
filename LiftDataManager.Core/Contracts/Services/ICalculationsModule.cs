@@ -73,4 +73,6 @@ public interface ICalculationsModule
 
     void SetPayLoadResult(ObservableDictionary<string, Parameter> parameterDictionary, int personenBerechnet, double nutzflaecheGesamt);
 
+    bool IsOverspeedGovernorWeightRequired(SelectionValue? overSpeedGovernor);
+
 }

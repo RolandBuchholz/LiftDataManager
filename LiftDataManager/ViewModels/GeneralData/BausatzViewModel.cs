@@ -43,7 +43,10 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             SetSafetygearDataAsync().SafeFireAndForget();
         };
-
+        if (message.PropertyName == "var_Geschwindigkeitsbegrenzer")
+        {
+            SetOverspeedGovernorWeightVisibility();
+        }
         SetInfoSidebarPanelText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
@@ -218,19 +221,14 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     }
     private void SetOverspeedGovernorWeightVisibility() 
     {
-        var overSpeedGovernor = ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue;
-        if (overSpeedGovernor is null ||
-            overSpeedGovernor.Name == "kein GB" ||
-            overSpeedGovernor.Name == "GB durch Kunde" ||
-            overSpeedGovernor.Name == "Schlaffseilauslösung" ||
-            overSpeedGovernor.Name == "GB Ersatz durch Limax")
+        if(_calculationsModuleService.IsOverspeedGovernorWeightRequired(ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue))
         {
-            OverspeedGovernorWeightVisibility = false;
-            ParameterDictionary["var_SpanngewichtTyp"].AutoUpdateParameterValue(string.Empty);
+            OverspeedGovernorWeightVisibility = true;
         }
         else
         {
-            OverspeedGovernorWeightVisibility = true;
+            OverspeedGovernorWeightVisibility = false;
+            ParameterDictionary["var_SpanngewichtTyp"].AutoUpdateParameterValue(string.Empty);
         }
     }
 
