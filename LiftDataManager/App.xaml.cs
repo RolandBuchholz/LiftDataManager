@@ -227,7 +227,8 @@ public partial class App : Application
 
     public static string GetConnectionString(bool dbReadOnly)
     {
-        string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
+        var dbConnectionStringLogger = GetService<ILogger<App>>();
+        var installationPath = AppDomain.CurrentDomain.BaseDirectory;
         string dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
         bool vaultDisabled = false;
 
@@ -236,6 +237,7 @@ public partial class App : Application
             if (!string.IsNullOrWhiteSpace((string)vaultSettingValue))
             {
                 vaultDisabled = JsonConvert.DeserializeObject<bool>((string)vaultSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                dbConnectionStringLogger.LogInformation(00101, "DbConnectionString VaultDisabled: {vaultDisabled} ", vaultDisabled);
             }
         }
 
@@ -244,43 +246,45 @@ public partial class App : Application
             if (!string.IsNullOrWhiteSpace((string)dbPathSettingValue))
             {
                 var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                dbConnectionStringLogger.LogInformation(00102, "DbConnectionString SettingsDBPath: {dbPathValue} ", dbPathValue);
                 dbPath = string.IsNullOrWhiteSpace(dbPathValue) ? dbPath : dbPathValue;
+                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString DBPath: {dbPath} ", dbPath);
             }
         }
 
         if (!File.Exists(dbPath) || vaultDisabled)
         {
-            var installationPath = AppDomain.CurrentDomain.BaseDirectory;
+            dbConnectionStringLogger.LogInformation(00104, "DbConnectionString InstallationPath LocalMode: {installationPath} ", installationPath);
             dbPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");
+            dbConnectionStringLogger.LogInformation(00104, "DbConnectionString DBPath LocalMode: {dbPath} ", dbPath);
         }
+        string workPathDb = Path.Combine(installationPath, "DataBase", "LiftDataParameter.db");
 
-        if (!vaultDisabled)
+        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
         {
-            if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
-            }
+            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+        }
+        dbConnectionStringLogger.LogInformation(00106, "DbConnectionString workPathDb LocalMode: {workPathDb} ", workPathDb);
 
-            if (!string.IsNullOrWhiteSpace(dbPath) && dbReadOnly)
+        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+        }
+        if (!string.IsNullOrWhiteSpace(dbPath) && dbReadOnly)
+        {
+            if (File.Exists(workPathDb))
             {
-                if (File.Exists(workPathDb))
+                FileInfo workPathDbFileInfo = new(workPathDb);
+                if (workPathDbFileInfo.IsReadOnly)
                 {
-                    FileInfo workPathDbFileInfo = new(workPathDb);
-                    if (workPathDbFileInfo.IsReadOnly)
-                    {
-                        workPathDbFileInfo.IsReadOnly = false;
-                    }
+                    workPathDbFileInfo.IsReadOnly = false;
                 }
-                File.Copy(dbPath, workPathDb, true);
             }
-        }
-        else
-        {
-            workPathDb = dbPath;
+            File.Copy(dbPath, workPathDb, true);
+            dbConnectionStringLogger.LogInformation(00105, "DbConnectionString workPathDb: {workPathDb} ", workPathDb);
         }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
-
         return new SqliteConnectionStringBuilder()
         {
             DataSource = dbReadOnly ? workPathDb : dbPath,
