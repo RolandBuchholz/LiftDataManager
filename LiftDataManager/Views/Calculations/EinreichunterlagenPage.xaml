@@ -1212,15 +1212,15 @@
                             FontSize="20"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Anlagen:" />
-                        <CheckBox Content="Anlagenzeichnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.Layoutdrawing, Mode=TwoWay}" />
-                        <CheckBox Content="Risikobewertungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
-                        <CheckBox Content="Berechnungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.Calculations, Mode=TwoWay}" />
-                        <CheckBox Content="Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen" IsChecked="{x:Bind ViewModel.LiftDocumentation.CircuitDiagrams, Mode=TwoWay}" />
-                        <CheckBox Content="Prüfanleitung UCM inkl. Berechnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.TestingInstructions, Mode=TwoWay}" />
-                        <CheckBox Content="Werksbescheinigungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.FactoryCertificate, Mode=TwoWay}" />
-                        <CheckBox Content="Betriebsanleitungen allgemein" IsChecked="{x:Bind ViewModel.LiftDocumentation.OperatingInstructions, Mode=TwoWay}" />
-                        <CheckBox Content="Wartungsanleitungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.MaintenanceInstructions, Mode=TwoWay}" />
-                        <CheckBox Content="Sonstige Dokumente" IsChecked="{x:Bind ViewModel.LiftDocumentation.OtherDocuments, Mode=TwoWay}" />
+                        <CheckBox Content="1. Anlagenzeichnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.Layoutdrawing, Mode=TwoWay}" />
+                        <CheckBox Content="2. Risikobewertungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
+                        <CheckBox Content="3. Berechnungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.Calculations, Mode=TwoWay}" />
+                        <CheckBox Content="4. Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen" IsChecked="{x:Bind ViewModel.LiftDocumentation.CircuitDiagrams, Mode=TwoWay}" />
+                        <CheckBox Content="5. Prüfanleitung UCM inkl. Berechnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.TestingInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="6. Werksbescheinigungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.FactoryCertificate, Mode=TwoWay}" />
+                        <CheckBox Content="7. Betriebsanleitungen allgemein" IsChecked="{x:Bind ViewModel.LiftDocumentation.OperatingInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="8. Wartungsanleitungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.MaintenanceInstructions, Mode=TwoWay}" />
+                        <CheckBox Content="9. Sonstige Dokumente" IsChecked="{x:Bind ViewModel.LiftDocumentation.OtherDocuments, Mode=TwoWay}" />
                         <!--  Signatur  -->
                         <TextBlock Margin="0,10,0,10" FontSize="16">
                             <Run Text=" Der Montagebetrieb" /> <LineBreak />

@@ -335,7 +335,9 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(2).Column(1).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
             table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
             table.Cell().Row(3).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
-            table.Cell().Row(3).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1");
+            var suspension = _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1"
+                                                                                                                         : $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1";
+            table.Cell().Row(3).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(suspension);
             table.Cell().Row(4).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
             table.Cell().Row(4).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("keine");
         });
@@ -358,6 +360,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Hydraulikzylinder:").Bold();
             table.Cell().Row(2).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "---" 
                                                                                                                                                                                                                                                     : ParameterDictionary["var_Hydraulikzylinder"]?.Value);
+
+            table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Antriebsregelung:").Bold();
             table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveControl(ParameterDictionary["var_Aggregat"].Value));
             table.Cell().Row(3).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value);
             table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufstellung des Triebwerkes:").Bold();
@@ -422,7 +426,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         {
             foreach (var item in liftSafetyComponents)
             {
-                column.Item().PaddingVertical(5).Background(secondRowColor).SafetyComponentTypDataField(item);
+                column.Item().PaddingVertical(5).Background(secondRowColor).ShowEntire().SafetyComponentTypDataField(item);
             }
         });
     }
@@ -434,7 +438,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         {
             foreach (var item in ucmpComponents)
             {
-                column.Item().PaddingVertical(5).Background(secondRowColor).SafetyComponentTypDataField(item);
+                column.Item().PaddingVertical(5).Background(secondRowColor).ShowEntire().SafetyComponentTypDataField(item);
             }
         });
     }
@@ -452,15 +456,15 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         container.Column(column =>
         {
             column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).Bold();
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "Anlagenzeichnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "Risikobewertungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "Berechnungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams, "Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions, "Prüfanleitung UCM inkl. Berechnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.FactoryCertificate, "Werksbescheinigungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OperatingInstructions, "Betriebsanleitungen allgemein");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.MaintenanceInstructions, "Wartungsanleitungen");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OtherDocuments, "Sonstige Dokumente");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "|1| Anlagenzeichnung");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "|2| Risikobewertungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "|3| Berechnungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams, "|4| Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions, "|5| Prüfanleitung UCM inkl. Berechnung");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.FactoryCertificate, "|6| Werksbescheinigungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OperatingInstructions, "|7| Betriebsanleitungen allgemein");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.MaintenanceInstructions, "|8| Wartungsanleitungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.OtherDocuments, "|9| Sonstige Dokumente");
             column.Item().PaddingTop(10, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
             column.Item().PaddingTop(15, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
         });

@@ -477,7 +477,7 @@
                                         Grid.Column="3"
                                         Margin="0,0,5,0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AufsetzvorrichtungSystem'], Mode=TwoWay}"
-                                        ShowDefaultHeader="True"
+                                        ShowDefaultHeader="False"
                                         Visibility="{x:Bind ViewModel.ParameterDictionary['var_Aufsetzvorrichtung'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
                                 </Grid>
                                 <SpeziControls:ParameterTextBox

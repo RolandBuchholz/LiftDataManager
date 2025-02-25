@@ -132,16 +132,6 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         {
             return 0;
         }
-        IsRopeLift = carFrameType.DriveTypeId == 1;
-        CWTRailName = IsRopeLift ? "Führungsschienen GGW" : "Führungsschienen Joch";
-        CWTGuideName = IsRopeLift ? "Führungsart GGW" : "Führungsart Joch";
-        CWTRailState = IsRopeLift ? "Status Führungsschienen GGW" : "Status Führungsschienen Joch";
-        CWTGuideTyp = IsRopeLift ? "Typ Führung GGW" : "Typ Führung Joch";
-        CWTRailLenghtName = IsRopeLift ? "Schienenlänge Gegengewicht:" : "Jochschienenlänge:";
-        StartCWTRailName = IsRopeLift ? "Startschiene Gegengewicht:" : "Startschiene Joch:";
-        CWTRailEndName = IsRopeLift ? "Gegengewicht Endstück:" : "Jochschiene Endstück:";
-        ForceXCWTRail = IsRopeLift ? "Kraft Fx auf GGW-Schiene" : "Kraft Fx auf Joch-Schiene";
-        ForceYCWTRail = IsRopeLift ? "Kraft Fy auf GGW-Schiene" : "Kraft Fy auf Joch-Schiene";
         return carFrameType.CarFrameWeight;
     }
     private async Task CheckCFPStateAsync(string? newCarFrame, string? oldCarFrame)
@@ -210,6 +200,16 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         if (carFrameType is not null)
         {
             LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
+            IsRopeLift = carFrameType.DriveTypeId == 1;
+            CWTRailName = IsRopeLift ? "Führungsschienen GGW" : "Führungsschienen Joch";
+            CWTGuideName = IsRopeLift ? "Führungsart GGW" : "Führungsart Joch";
+            CWTRailState = IsRopeLift ? "Status Führungsschienen GGW" : "Status Führungsschienen Joch";
+            CWTGuideTyp = IsRopeLift ? "Typ Führung GGW" : "Typ Führung Joch";
+            CWTRailLenghtName = IsRopeLift ? "Schienenlänge Gegengewicht:" : "Jochschienenlänge:";
+            StartCWTRailName = IsRopeLift ? "Startschiene Gegengewicht:" : "Startschiene Joch:";
+            CWTRailEndName = IsRopeLift ? "Gegengewicht Endstück:" : "Jochschiene Endstück:";
+            ForceXCWTRail = IsRopeLift ? "Kraft Fx auf GGW-Schiene" : "Kraft Fx auf Joch-Schiene";
+            ForceYCWTRail = IsRopeLift ? "Kraft Fy auf GGW-Schiene" : "Kraft Fy auf Joch-Schiene";
         }
     }
 
