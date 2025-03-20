@@ -229,6 +229,7 @@ public partial class App : Application
     {
         var dbConnectionStringLogger = GetService<ILogger<App>>();
         var installationPath = AppDomain.CurrentDomain.BaseDirectory;
+        dbConnectionStringLogger.LogInformation(00104, "DbConnectionString InstallationPath: {installationPath} ", installationPath);
         string dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
         bool vaultDisabled = false;
 
@@ -248,23 +249,25 @@ public partial class App : Application
                 var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
                 dbConnectionStringLogger.LogInformation(00102, "DbConnectionString SettingsDBPath: {dbPathValue} ", dbPathValue);
                 dbPath = string.IsNullOrWhiteSpace(dbPathValue) ? dbPath : dbPathValue;
-                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString DBPath: {dbPath} ", dbPath);
+                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString selected DBPath: {dbPath} ", dbPath);
             }
         }
 
         if (!File.Exists(dbPath) || vaultDisabled)
         {
-            dbConnectionStringLogger.LogInformation(00104, "DbConnectionString InstallationPath LocalMode: {installationPath} ", installationPath);
             dbPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");
             dbConnectionStringLogger.LogInformation(00104, "DbConnectionString DBPath LocalMode: {dbPath} ", dbPath);
         }
-        string workPathDb = Path.Combine(installationPath, "DataBase", "LiftDataParameter.db");
+
+        //TODO UseForLocalModeSpecialFolder
+        
+        string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
 
         if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
         {
             Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
         }
-        dbConnectionStringLogger.LogInformation(00106, "DbConnectionString workPathDb LocalMode: {workPathDb} ", workPathDb);
+        dbConnectionStringLogger.LogInformation(00106, "DbConnectionString workPathDb: {workPathDb} ", workPathDb);
 
         if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
         {
@@ -281,7 +284,6 @@ public partial class App : Application
                 }
             }
             File.Copy(dbPath, workPathDb, true);
-            dbConnectionStringLogger.LogInformation(00105, "DbConnectionString workPathDb: {workPathDb} ", workPathDb);
         }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;

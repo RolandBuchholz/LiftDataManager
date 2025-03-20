@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
@@ -367,7 +366,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         var nutzflaecheZugangC = zugangC ? GetCarDoorArea(parameterDictionary, "C") : 0;
         var nutzflaecheZugangD = zugangD ? GetCarDoorArea(parameterDictionary, "D") : 0;
 
-        var nutzflaeche = Math.Round(nutzflaecheKabine + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
+        var nutzflaeche = Math.Round(kabinenbreite * kabinentiefe / Math.Pow(10, 6) + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
         var nennlast = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
 
         var nennlast6 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle6"), 1);
@@ -854,13 +853,19 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         if (tuerEinbau <= 0)
+        {
             return 0;
+        }
 
         if (tuerbreiteZugang <= 0)
+        {
             return 0;
+        }
 
         if (string.IsNullOrWhiteSpace(tuerbezeichnung))
+        {
             return 0;
+        }
 
         var kabinenTuer = new CarDoorDesignParameter();
 
@@ -880,7 +885,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         if (kabinenTuer is null)
+        {
             return 0;
+        }
 
         if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
