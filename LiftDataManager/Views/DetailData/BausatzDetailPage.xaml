@@ -594,6 +594,7 @@
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RHU'], Mode=TwoWay}"
+                                    ReadOnly="True"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
                             </Grid>
@@ -611,6 +612,7 @@
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="1"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RHO'], Mode=TwoWay}"
+                                    ReadOnly="True"
                                     ShowDefaultHeader="True"
                                     Unit="mm" />
                             </Grid>

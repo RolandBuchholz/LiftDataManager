@@ -1927,6 +1927,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             "var_FuehrungsschieneGegengewicht" => "Hilfsschienentyp",
             "var_Geschwindigkeitsbegrenzer" => "GB_ID",
             "var_TypFuehrung" => "Fuehrungsart",
+            "var_RHU" => "Reservehub_Zylinder_unten",
+            "var_RHO" => "Reservehub_Zylinder_oben",
             _ => string.Empty,
         };
 
@@ -1945,6 +1947,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                     "var_ST" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KBI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KTI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
+                    "var_RHU" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
+                    "var_RHO" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KHLicht" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KHA" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
@@ -2112,6 +2116,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         UpdateDropDownList("var_UCMP_DetektierendesElement", availableDetectingAndTriggeringComponents);
         UpdateDropDownList("var_UCMP_AusloesendesElement", availableDetectingAndTriggeringComponents);
     }
+
     private void ValidateUCMBrakingComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         var isRopedrive = string.IsNullOrWhiteSpace(_parameterDictionary["var_Getriebe"].Value) || _parameterDictionary["var_Getriebe"].Value != "hydraulisch";
@@ -2148,5 +2153,29 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             UpdateDropDownList("var_UCMP_BremsendesElement", availableBrakingComponents);
             _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(value?.Trim());
         }
+    }
+
+    private void ValidateOverAndUnderTravels(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        switch (name)
+        {
+            case "var_FUBP" or "var_Puffertyp":
+                double freeUnderTravel = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_FUBP");
+                var bufferstokeCar = _calculationsModuleService.GetmaxBufferStoke(_parameterDictionary["var_Puffertyp"].Value);
+                _parameterDictionary["var_RHU"].AutoUpdateParameterValue((freeUnderTravel + bufferstokeCar).ToString());
+                break;
+            case "var_FUEBP" or "var_Puffertyp_GGW":
+                double freeOverTravel = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_FUEBP");
+                var bufferstokeCWT = _calculationsModuleService.GetmaxBufferStoke(_parameterDictionary["var_Puffertyp"].Value);
+                _parameterDictionary["var_RHO"].AutoUpdateParameterValue((freeOverTravel + bufferstokeCWT).ToString());
+                break;
+            default:
+                return;
+        }
+    }
+
+    private void ValidateLiftBuffers(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+
     }
 }

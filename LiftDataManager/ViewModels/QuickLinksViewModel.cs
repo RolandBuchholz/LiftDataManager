@@ -595,8 +595,14 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             try
             {
                 var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") || x.InnerText.StartsWith("Maschine"))?.InnerText.Replace("Treibscheibe","").Replace("Maschine", "").Split(',');
-                tractionSheavePosition = HtmlEntity.DeEntitize(shaftPosition?[0].Trim()) + ", " + HtmlEntity.DeEntitize(shaftPosition?[1].Trim());
-                ropeDeflection = HtmlEntity.DeEntitize(shaftPosition?[2].Trim());
+                if (!string.IsNullOrWhiteSpace(shaftPosition?[0]) && !string.IsNullOrWhiteSpace(shaftPosition?[1]))
+                {
+                    tractionSheavePosition = HtmlEntity.DeEntitize(shaftPosition[0].Trim()) + ", " + HtmlEntity.DeEntitize(shaftPosition[1].Trim());
+                }
+                if (!string.IsNullOrWhiteSpace(shaftPosition?[2]))
+                {
+                    ropeDeflection = HtmlEntity.DeEntitize(shaftPosition[2].Trim());
+                }
             }
             catch (Exception)
             {

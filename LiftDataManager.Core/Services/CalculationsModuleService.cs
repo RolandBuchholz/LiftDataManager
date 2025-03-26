@@ -1493,6 +1493,16 @@ public partial class CalculationsModuleService : ICalculationsModule
         return bufferDetails;
     }
 
+    public int GetmaxBufferStoke(string? buffertyp)
+    {
+        if (string.IsNullOrWhiteSpace(buffertyp))
+        {
+            return 0;
+        }
+        var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
+        return buffer is null ? 0 : buffer.BufferStroke;
+    }
+
     /// <inheritdoc/>
     public (double, double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index)
     {

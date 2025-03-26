@@ -916,7 +916,36 @@
                                     <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_STdghSchwellenwinkel'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True" />
+                                        ShowDefaultCheckBoxContent="True">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Info Schwellenträger (T DE 8200 3003 339 f):" />
+                                                <TextBlock Text="Die einzelnen Standardschwellenkonsolen sind für eine" TextWrapping="WrapWholeWords" />
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Radlast R48=6kN bzw. 0,6t zulässig,"
+                                                    TextWrapping="WrapWholeWords" />
+                                                <TextBlock Text="bei größeren Radlasten ist der durchgehende Schwellenträger zu verwenden." TextWrapping="WrapWholeWords" />
+                                                <TextBlock Text="Der durchgehende Schwellenträger ist für eine" TextWrapping="WrapWholeWords" />
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Radlast R48=50kN bzw. 5t zulässig,"
+                                                    TextWrapping="WrapWholeWords" />
+                                                <TextBlock Text="dies gilt für den in 8200 3003 350 Blatt 6 zulässigen Bereich des Maß4. Wenn das Maß4 größer vom Kunden gewünscht wird, so minimiert sich die mögliche Radlast R4 wie folgt:" TextWrapping="WrapWholeWords" />
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="R4 = R48 x (180/Maß4)2"
+                                                    TextWrapping="WrapWholeWords" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterCheckBox>
                                     <Grid
                                         Grid.Column="2"
                                         Background="Transparent"
