@@ -1493,6 +1493,38 @@ public partial class CalculationsModuleService : ICalculationsModule
         return bufferDetails;
     }
 
+    /// <inheritdoc/>
+    public bool ValidateBufferRange(string buffertyp, double liftSpeed, double bufferLoad)
+    {
+        var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
+        if (buffer is null)
+        {
+            return false;
+        }
+        int minLoad = liftSpeed switch
+        {
+            <= 0.63 => buffer.MinLoad063,
+            <= 1.00 => buffer.MinLoad100,
+            <= 1.30 => buffer.MinLoad130,
+            <= 1.60 => buffer.MinLoad160,
+            <= 2.00 => buffer.MinLoad200,
+            <= 2.50 => buffer.MinLoad250,
+            _ => 0
+        };
+        int maxLoad = liftSpeed switch
+        {
+            <= 0.63 => buffer.MaxLoad063,
+            <= 1.00 => buffer.MaxLoad100,
+            <= 1.30 => buffer.MaxLoad130,
+            <= 1.60 => buffer.MaxLoad160,
+            <= 2.00 => buffer.MaxLoad200,
+            <= 2.50 => buffer.MaxLoad250,
+            _ => 0
+        };
+        return bufferLoad <= maxLoad && bufferLoad >= minLoad;
+    }
+
+    /// <inheritdoc/>
     public int GetmaxBufferStoke(string? buffertyp)
     {
         if (string.IsNullOrWhiteSpace(buffertyp))

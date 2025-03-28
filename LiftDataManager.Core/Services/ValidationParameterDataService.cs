@@ -702,6 +702,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_RHO",
             [new(ValidateCarFrameProgramData, "Warning", null)]);
 
+        ValidationDictionary.Add("var_Stichmass",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
         AddDropDownListValidation();
     }
 

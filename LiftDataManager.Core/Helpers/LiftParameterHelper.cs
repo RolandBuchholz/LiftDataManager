@@ -132,7 +132,9 @@ public class LiftParameterHelper
     public static bool IsDefaultCarTyp(string? carTyp)
     {
         if (string.IsNullOrWhiteSpace(carTyp))
+        {
             return true;
+        }
         return string.Equals(carTyp, "C100 (aufg. Sockel)", StringComparison.CurrentCultureIgnoreCase) ||
                string.Equals(carTyp, "C200 (vers. Sockel)", StringComparison.CurrentCultureIgnoreCase);
     }
@@ -205,6 +207,22 @@ public class LiftParameterHelper
             {
                 parameterDictionary["var_Gegengewicht_Einlagentiefe"].AutoUpdateParameterValue(carFrameTyp.CounterweightFillingDepth.ToString());
             }
+        }
+    }
+
+    public static string ConvertMeterStringToMillimeterString(string? meterString)
+    {
+        if (string.IsNullOrWhiteSpace(meterString))
+        {
+            return string.Empty;
+        }
+        if (double.TryParse(meterString.Trim(), out double meter))
+        {
+            return (meter * 1000).ToString();
+        }
+        else
+        {
+            return string.Empty;
         }
     }
 }
