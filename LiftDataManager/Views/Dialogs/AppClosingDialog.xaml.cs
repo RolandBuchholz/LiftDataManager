@@ -14,6 +14,7 @@ public sealed partial class AppClosingDialog : ContentDialog
     public AppClosingDialog()
     {
         ViewModel = App.GetService<AppClosingDialogViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

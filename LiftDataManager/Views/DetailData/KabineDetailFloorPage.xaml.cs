@@ -9,6 +9,7 @@ public sealed partial class KabineDetailFloorPage : Page
     public KabineDetailFloorPage()
     {
         ViewModel = App.GetService<KabineDetailFloorViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

@@ -81,8 +81,8 @@ public class ActivationService : IActivationService
     private async Task StartupAsync()
     {
         _themeService.Initialize(App.MainWindow);
-        _themeService.ConfigBackdrop();
-        _themeService.ConfigElementTheme();
+        _themeService.ConfigureBackdrop();
+        _themeService.ConfigureElementTheme();
         await Task.CompletedTask;
     }
 

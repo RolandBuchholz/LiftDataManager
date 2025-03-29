@@ -10,6 +10,7 @@ public sealed partial class SchachtDetailPage : Page
     public SchachtDetailPage()
     {
         ViewModel = App.GetService<SchachtDetailViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

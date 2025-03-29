@@ -48,7 +48,7 @@ public class LocalSettingsService : ILocalSettingsService
     /// <inheritdoc/>
     public async Task<T?> ReadSettingAsync<T>(string key)
     {
-        if (RuntimeHelper.IsMSIX)
+        if (Helpers.RuntimeHelper.IsMSIX)
         {
             if (ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out var obj))
             {
@@ -71,7 +71,7 @@ public class LocalSettingsService : ILocalSettingsService
     /// <inheritdoc/>
     public async Task SaveSettingAsync<T>(string key, T value)
     {
-        if (RuntimeHelper.IsMSIX)
+        if (Helpers.RuntimeHelper.IsMSIX)
         {
             ApplicationData.Current.LocalSettings.Values[key] = await Json.StringifyAsync(value);
         }

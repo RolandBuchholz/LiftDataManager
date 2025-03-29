@@ -10,6 +10,7 @@ public sealed partial class QuickLinksPage : Page
     public QuickLinksPage()
     {
         ViewModel = App.GetService<QuickLinksViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

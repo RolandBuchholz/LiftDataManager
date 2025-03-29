@@ -10,6 +10,7 @@ public sealed partial class ErrorPage : Page
     public ErrorPage()
     {
         ViewModel = App.GetService<ErrorViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

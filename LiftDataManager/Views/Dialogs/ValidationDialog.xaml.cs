@@ -11,6 +11,7 @@ public sealed partial class ValidationDialog : ContentDialog
     public ValidationDialog(int parameterCount, ObservableDictionary<string, List<ParameterStateInfo>> parameterErrorDictionary)
     {
         ViewModel = App.GetService<ValidationDialogViewModel>();
+        DataContext = ViewModel;
         ParamterCount = parameterCount;
         ParameterErrorDictionary = parameterErrorDictionary;
         InitializeComponent();

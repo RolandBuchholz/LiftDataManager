@@ -10,6 +10,7 @@ public sealed partial class AntriebSteuerungNotrufPage : Page
     public AntriebSteuerungNotrufPage()
     {
         ViewModel = App.GetService<AntriebSteuerungNotrufViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

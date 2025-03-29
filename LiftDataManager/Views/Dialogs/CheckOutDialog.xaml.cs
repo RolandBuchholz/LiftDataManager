@@ -16,6 +16,7 @@ public sealed partial class CheckOutDialog : ContentDialog
     public CheckOutDialog(string spezifikationName, bool forceCheckOut)
     {
         ViewModel = App.GetService<CheckOutDialogViewModel>();
+        DataContext = ViewModel;
         SpezifikationName = spezifikationName;
         ForceCheckOut = forceCheckOut;
         InitializeComponent();

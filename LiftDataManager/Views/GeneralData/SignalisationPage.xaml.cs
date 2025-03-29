@@ -10,6 +10,7 @@ public sealed partial class SignalisationPage : Page
     public SignalisationPage()
     {
         ViewModel = App.GetService<SignalisationViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

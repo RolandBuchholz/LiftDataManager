@@ -10,6 +10,7 @@ public sealed partial class EinreichunterlagenPage : Page
     public EinreichunterlagenPage()
     {
         ViewModel = App.GetService<EinreichunterlagenViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

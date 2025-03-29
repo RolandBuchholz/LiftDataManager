@@ -10,6 +10,7 @@ public sealed partial class BausatzDetailPage : Page
     public BausatzDetailPage()
     {
         ViewModel = App.GetService<BausatzDetailViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

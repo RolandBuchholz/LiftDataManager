@@ -10,6 +10,7 @@ public sealed partial class ThemeSettingPage : Page
     public ThemeSettingPage()
     {
         ViewModel = App.GetService<ThemeSettingViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
         Loaded += ThemeSettingPage_Loaded;
     }

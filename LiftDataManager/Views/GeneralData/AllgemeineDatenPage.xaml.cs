@@ -10,6 +10,7 @@ public sealed partial class AllgemeineDatenPage : Page
     public AllgemeineDatenPage()
     {
         ViewModel = App.GetService<AllgemeineDatenViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

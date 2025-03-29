@@ -10,6 +10,7 @@ public sealed partial class KabinenLüftungPage : Page
     public KabinenLüftungPage()
     {
         ViewModel = App.GetService<KabinenLüftungViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

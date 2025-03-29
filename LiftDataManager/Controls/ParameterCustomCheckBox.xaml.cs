@@ -1,3 +1,5 @@
+using TextBox = Microsoft.UI.Xaml.Controls.TextBox;
+
 namespace LiftDataManager.Controls;
 
 public sealed partial class ParameterCustomCheckBox : UserControl

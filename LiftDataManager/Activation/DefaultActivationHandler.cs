@@ -2,9 +2,9 @@
 
 public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventArgs>
 {
-    private readonly IJsonNavigationViewService _navigationService;
+    private readonly IJsonNavigationService _navigationService;
 
-    public DefaultActivationHandler(IJsonNavigationViewService navigationService)
+    public DefaultActivationHandler(IJsonNavigationService navigationService)
     {
         _navigationService = navigationService;
     }

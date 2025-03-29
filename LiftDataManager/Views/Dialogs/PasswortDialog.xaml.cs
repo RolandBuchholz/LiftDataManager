@@ -13,6 +13,7 @@ public sealed partial class PasswortDialog : ContentDialog
     public PasswortDialog()
     {
         ViewModel = App.GetService<PasswortDialogViewModel>();
+        DataContext = ViewModel;
         this.InitializeComponent();
     }
 }

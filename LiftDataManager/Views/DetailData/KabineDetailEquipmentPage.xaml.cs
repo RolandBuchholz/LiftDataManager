@@ -10,6 +10,7 @@ public sealed partial class KabineDetailEquipmentPage : Page
     public KabineDetailEquipmentPage()
     {
         ViewModel = App.GetService<KabineDetailEquipmentViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
         Loaded += KabineDetailEquipmentPage_Loaded;
         Unloaded += KabineDetailEquipmentPage_Unloaded;

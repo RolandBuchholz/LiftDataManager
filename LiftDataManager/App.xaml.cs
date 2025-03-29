@@ -58,13 +58,7 @@ public partial class App : Application
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<IJsonNavigationViewService>(factory =>
-            {
-                var json = new JsonNavigationViewService();
-                json.ConfigDefaultPage(typeof(HomePage));
-                json.ConfigSettingsPage(typeof(SettingsPage));
-                return json;
-            });
+            services.AddSingleton<IJsonNavigationService, JsonNavigationService>();
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<ISettingService, SettingsService>();
             services.AddSingleton<IDialogService, DialogService>();
@@ -312,7 +306,7 @@ public partial class App : Application
     private static void SwitchToErrorHandlingPage(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e, [CallerMemberName] string membername = "")
     {
         MainWindow.Activate();
-        var navigationService = GetService<IJsonNavigationViewService>();
+        var navigationService = GetService<IJsonNavigationService>();
         navigationService?.NavigateTo(typeof(ErrorPage), new ErrorPageInfo(membername, sender, e), true);
     }
 }

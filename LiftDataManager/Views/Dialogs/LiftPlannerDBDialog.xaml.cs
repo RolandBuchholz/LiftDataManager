@@ -14,6 +14,7 @@ public sealed partial class LiftPlannerDBDialog : ContentDialog
     public LiftPlannerDBDialog()
     {
         ViewModel = App.GetService<LiftPlannerDBDialogViewModel>();
+        DataContext = ViewModel;
         this.InitializeComponent();
     }
 

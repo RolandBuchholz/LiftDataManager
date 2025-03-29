@@ -1,5 +1,5 @@
 namespace LiftDataManager.Controls;
-public sealed class ValidationTextbox : TextBox
+public sealed class ValidationTextbox : Microsoft.UI.Xaml.Controls.TextBox
 {
     public enum ValidationTypMode
     {

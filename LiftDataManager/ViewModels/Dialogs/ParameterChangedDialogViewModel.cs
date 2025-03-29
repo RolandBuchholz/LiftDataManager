@@ -18,7 +18,7 @@ public partial class ParameterChangedDialogViewModel : ObservableObject
             {
                 return;
             }
-            var navigationService = App.GetService<IJsonNavigationViewService>();
+            var navigationService = App.GetService<IJsonNavigationService>();
             navigationService.NavigateTo(typeof(DatenansichtDetailPage), parameterName);
         }
         await Task.CompletedTask;

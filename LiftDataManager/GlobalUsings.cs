@@ -27,6 +27,6 @@ global using System.Diagnostics;
 global using System.Globalization;
 global using System.Text;
 global using Windows.UI;
-global using WinUICommunity;
+global using DevWinUI;
 global using WinUIEx;
 global using Microsoft.Extensions.Logging;

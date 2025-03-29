@@ -10,6 +10,7 @@ public sealed partial class NutzlastberechnungPage : Page
     public NutzlastberechnungPage()
     {
         ViewModel = App.GetService<NutzlastberechnungViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }
