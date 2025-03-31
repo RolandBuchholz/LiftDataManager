@@ -10,6 +10,7 @@ public sealed partial class BausatzDetailRailBracketPage : Page
     public BausatzDetailRailBracketPage()
     {
         ViewModel = App.GetService<BausatzDetailRailBracketViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

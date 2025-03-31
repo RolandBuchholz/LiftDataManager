@@ -10,6 +10,7 @@ public sealed partial class MaintenanceSettingPage : Page
     public MaintenanceSettingPage()
     {
         ViewModel = App.GetService<MaintenanceSettingViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

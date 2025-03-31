@@ -10,6 +10,7 @@ public sealed partial class KabinengewichtPage : Page
     public KabinengewichtPage()
     {
         ViewModel = App.GetService<KabinengewichtViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

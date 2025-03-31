@@ -9,6 +9,7 @@ public sealed partial class ParameterChangedDialog : ContentDialog
     public ParameterChangedDialog()
     {
         ViewModel = App.GetService<ParameterChangedDialogViewModel>();
+        DataContext = ViewModel;
         this.InitializeComponent();
     }
 }

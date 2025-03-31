@@ -10,6 +10,7 @@ public sealed partial class LiftHistoryPage : Page
     public LiftHistoryPage()
     {
         ViewModel = App.GetService<LiftHistoryViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 

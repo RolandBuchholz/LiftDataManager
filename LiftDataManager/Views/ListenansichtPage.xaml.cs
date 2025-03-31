@@ -10,6 +10,7 @@ public sealed partial class ListenansichtPage : Page
     public ListenansichtPage()
     {
         ViewModel = App.GetService<ListenansichtViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 

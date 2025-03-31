@@ -1,4 +1,4 @@
-﻿using Cogs.Collections;
+﻿using TextBox = Microsoft.UI.Xaml.Controls.TextBox;
 
 namespace LiftDataManager.Controls;
 
@@ -105,7 +105,7 @@ public sealed partial class EntranceControl : UserControl
         if (entrance is not null && entrance.StartsWith("txtBox_"))
         {
             var entranceName = entrance.Contains("Etagenhoehe") ? entrance.Replace("txtBox", "var") : entrance.Replace("txtBox_", "var_Zugang");
-            var navigationService = App.GetService<IJsonNavigationViewService>();
+            var navigationService = App.GetService<IJsonNavigationService>();
             navigationService.NavigateTo(typeof(DatenansichtDetailPage), ItemSource[entranceName].Name);
         }
     }

@@ -10,6 +10,7 @@ public sealed partial class GeneralSettingPage : Page
     public GeneralSettingPage()
     {
         ViewModel = App.GetService<GeneralSettingViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

@@ -20,6 +20,7 @@ public sealed partial class ImportLiftDataDialog : ContentDialog
     public ImportLiftDataDialog(string fullPathXml, string spezifikationName, SpezifikationTyp spezifikationTyp, bool vaultDisabled)
     {
         ViewModel = App.GetService<ImportLiftDataDialogViewModel>();
+        DataContext = ViewModel;
         FullPathXml = fullPathXml;
         SpezifikationName = spezifikationName;
         CurrentSpezifikationTyp = spezifikationTyp;

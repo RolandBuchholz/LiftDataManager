@@ -10,6 +10,7 @@ public sealed partial class WartungMontageTüvPage : Page
     public WartungMontageTüvPage()
     {
         ViewModel = App.GetService<WartungMontageTüvViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

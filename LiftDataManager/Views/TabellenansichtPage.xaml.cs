@@ -12,6 +12,7 @@ public sealed partial class TabellenansichtPage : Page
     public TabellenansichtPage()
     {
         ViewModel = App.GetService<TabellenansichtViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 

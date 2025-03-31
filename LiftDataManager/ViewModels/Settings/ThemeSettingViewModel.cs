@@ -4,20 +4,23 @@ namespace LiftDataManager.ViewModels;
 
 public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwareEx
 {
-    private readonly IThemeService _themeService;
+    public readonly IThemeService ThemeService;
     private readonly ISettingService _settingService;
     private readonly IDialogService _dialogService;
     private CurrentSpeziProperties _currentSpeziProperties;
     public ThemeSettingViewModel(IThemeService themeService, IDialogService dialogService, ISettingService settingService)
     {
         _currentSpeziProperties ??= new();
-        _themeService = themeService;
+        ThemeService = themeService;
         _settingService = settingService;
         _dialogService = dialogService;
     }
 
     [ObservableProperty]
     public partial bool CustomAccentColor { get; set; }
+
+    [ObservableProperty]
+    public partial SolidColorBrush TintColor { get; set; } = new SolidColorBrush();
     partial void OnCustomAccentColorChanged(bool value)
     {
         _settingService.SetSettingsAsync(nameof(CustomAccentColor), value);
@@ -27,22 +30,6 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
             Messenger.Send(new SpeziPropertiesChangedMessage(_currentSpeziProperties));
         }
     }
-    [RelayCommand]
-    private void OnBackdropChanged(object sender)
-    {
-        _themeService.OnBackdropComboBoxSelectionChanged(sender);
-    }
-
-    [RelayCommand]
-    private void OnThemeChanged(object sender)
-    {
-        _themeService.OnThemeComboBoxSelectionChanged(sender);
-    }
-    [RelayCommand]
-    private static async Task OpenWindowsColorSettings()
-    {
-        _ = await Launcher.LaunchUriAsync(new Uri("ms-settings:colors"));
-    }
 
     [RelayCommand]
     private async Task SwitchAccentColorAsync()
@@ -50,14 +37,28 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
         await _dialogService.MessageDialogAsync("Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
 
-    public void SetDefaultTheme(ComboBox cmbTheme)
+    [RelayCommand]
+    private void TintColorChanged(ColorChangedEventArgs args)
     {
-        _themeService.SetThemeComboBoxDefaultItem(cmbTheme);
+        TintColor = new SolidColorBrush(args.NewColor);
+        ThemeService.SetBackdropTintColor(args.NewColor);
     }
 
-    public void SetDefaultBackdrop(ComboBox cmbBackdrop)
+    [RelayCommand]
+    private void TintColorPaletteItemClick(ItemClickEventArgs e)
     {
-        _themeService.SetBackdropComboBoxDefaultItem(cmbBackdrop);
+        if (e.ClickedItem is ColorPaletteItem color)
+        {
+            if (color.Hex is null || color.Hex.Contains("#000000"))
+            {
+                ThemeService.ResetBackdropProperties();
+            }
+            else
+            {
+                ThemeService.SetBackdropTintColor(color.Color);
+            }
+            TintColor = new SolidColorBrush(color.Color);
+        }
     }
 
     public void OnNavigatedTo(object parameter)
@@ -67,6 +68,5 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
     }
     public void OnNavigatedFrom()
     {
-
     }
 }

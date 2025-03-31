@@ -10,6 +10,7 @@ public sealed partial class DatenansichtPage : Page
     public DatenansichtPage()
     {
         ViewModel = App.GetService<DatenansichtViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

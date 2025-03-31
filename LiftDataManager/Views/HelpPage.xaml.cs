@@ -10,6 +10,7 @@ public sealed partial class HelpPage : Page
     public HelpPage()
     {
         ViewModel = App.GetService<HelpViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

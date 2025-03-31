@@ -33,7 +33,7 @@ public sealed partial class FooterControl : UserControl
         if (SelectedError is not null)
         {
             DetailErrorDialog.Hide();
-            var navigationService = App.GetService<IJsonNavigationViewService>();
+            var navigationService = App.GetService<IJsonNavigationService>();
             navigationService.NavigateTo(typeof(DatenansichtDetailPage), SelectedError.Name);
         }
     }

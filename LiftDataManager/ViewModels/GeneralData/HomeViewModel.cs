@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
 using System.IO.Compression;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -40,7 +39,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             ValidateCustomPayload(CustomPayload);
             SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
-        };
+        }
+        ;
 
         if (message.PropertyName == "var_Rahmengewicht" ||
             message.PropertyName == "var_KabinengewichtCAD" ||
@@ -52,7 +52,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
-        };
+        }
+        ;
 
         SetInfoSidebarPanelText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
@@ -952,8 +953,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
             LoadButtonLabel = VaultDisabled ? "Load or Create" : "Load Data";
             _pathDefaultAutoDeskTransfer = ProcessHelpers.GetDefaultAutodeskTransferPath(VaultDisabled);
-            if (!string.IsNullOrWhiteSpace(FullPathXml) && !string.Equals(FullPathXml,_pathDefaultAutoDeskTransfer))
-            { 
+            if (!string.IsNullOrWhiteSpace(FullPathXml) && !string.Equals(FullPathXml, _pathDefaultAutoDeskTransfer))
+            {
                 CanRestoreData = File.Exists(FullPathXml?.Replace($"\\{SpezifikationName}-AutoDeskTransfer.xml", "-LDM-Backup.zip"));
             }
         }

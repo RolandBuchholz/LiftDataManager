@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml.Input;
 using System.ComponentModel;
+using TextBox = Microsoft.UI.Xaml.Controls.TextBox;
 
 namespace LiftDataManager.Controls;
 

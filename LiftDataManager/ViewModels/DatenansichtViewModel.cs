@@ -5,14 +5,14 @@ namespace LiftDataManager.ViewModels;
 
 public partial class DatenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    private readonly IJsonNavigationViewService _jsonNavigationViewService;
+    private readonly IJsonNavigationService _jsonNavigationService;
     public CollectionViewSource GroupedItems { get; set; }
 
     public DatenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
-                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IJsonNavigationViewService jsonNavigationViewService) :
+                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IJsonNavigationService jsonNavigationService) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
-        _jsonNavigationViewService = jsonNavigationViewService;
+        _jsonNavigationService = jsonNavigationService;
         GroupedItems = new CollectionViewSource
         {
             IsSourceGrouped = true
@@ -121,8 +121,8 @@ public partial class DatenansichtViewModel : DataViewModelBase, INavigationAware
     {
         if (e.ClickedItem is Parameter parameter)
         {
-            _jsonNavigationViewService.Frame?.SetListDataItemForNextConnectedAnimation(parameter);
-            _jsonNavigationViewService.NavigateTo(typeof(DatenansichtDetailPage), parameter.Name);
+            _jsonNavigationService.Frame?.SetListDataItemForNextConnectedAnimation(parameter);
+            _jsonNavigationService.NavigateTo(typeof(DatenansichtDetailPage), parameter.Name);
         }
     }
 }

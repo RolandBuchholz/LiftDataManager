@@ -12,6 +12,7 @@ public sealed partial class DataBaseEditPage : Page
     public DataBaseEditPage()
     {
         ViewModel = App.GetService<DataBaseEditViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 

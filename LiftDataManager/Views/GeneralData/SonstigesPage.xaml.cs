@@ -10,6 +10,7 @@ public sealed partial class SonstigesPage : Page
     public SonstigesPage()
     {
         ViewModel = App.GetService<SonstigesViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

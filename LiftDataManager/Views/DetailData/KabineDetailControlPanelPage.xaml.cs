@@ -10,6 +10,7 @@ namespace LiftDataManager.Views
         public KabineDetailControlPanelPage()
         {
             ViewModel = App.GetService<KabineDetailControlPanelViewModel>();
+            DataContext = ViewModel;
             InitializeComponent();
         }
     }

@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LiftDataManager.Styles"
-    xmlns:wuc="using:WinUICommunity">
+    xmlns:wuc="using:DevWinUI">
 
     <Style x:Name="DividerHeader2Style" TargetType="wuc:Divider">
         <Setter Property="Margin" Value="0,0,0,0" />

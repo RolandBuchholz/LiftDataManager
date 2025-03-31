@@ -2,8 +2,8 @@
 
 public partial class SettingsViewModel : ObservableRecipient
 {
-    public IJsonNavigationViewService JsonNavigationViewService { get; }
-    public SettingsViewModel(IJsonNavigationViewService jsonNavigationViewService)
+    public IJsonNavigationService JsonNavigationViewService { get; }
+    public SettingsViewModel(IJsonNavigationService jsonNavigationViewService)
     {
         JsonNavigationViewService = jsonNavigationViewService;
     }

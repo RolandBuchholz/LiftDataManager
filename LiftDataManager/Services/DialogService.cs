@@ -1,6 +1,6 @@
-﻿using Cogs.Collections;
-using Humanizer;
+﻿using Humanizer;
 using Microsoft.UI.Text;
+using TextBox = DevWinUI.TextBox;
 
 namespace LiftDataManager.Services;
 
@@ -380,7 +380,7 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme,
         };
         var result = await dialog.ShowAsyncQueueDraggable();
-        if (result == ContentDialogResult.None || 
+        if (result == ContentDialogResult.None ||
             result == ContentDialogResult.Secondary ||
             result == ContentDialogResult.Primary)
         {
@@ -390,7 +390,7 @@ public class DialogService : IDialogService
     }
 
     /// <inheritdoc/>
-    public async Task ValidationDialogAsync(int paramterCount, ObservableDictionary<string, List<ParameterStateInfo>>  parameterErrorDictionary)
+    public async Task ValidationDialogAsync(int paramterCount, ObservableDictionary<string, List<ParameterStateInfo>> parameterErrorDictionary)
     {
         var dialog = new ValidationDialog(paramterCount, parameterErrorDictionary)
         {

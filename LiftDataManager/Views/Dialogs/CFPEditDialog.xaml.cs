@@ -15,6 +15,7 @@ public sealed partial class CFPEditDialog : ContentDialog
     public CFPEditDialog()
     {
         ViewModel = App.GetService<CFPEditDialogViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

@@ -12,6 +12,7 @@ public sealed partial class ZALiftDialog : ContentDialog
     public ZALiftDialog()
     {
         ViewModel = App.GetService<ZALiftDialogViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

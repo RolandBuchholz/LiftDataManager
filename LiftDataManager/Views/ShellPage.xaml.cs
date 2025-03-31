@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Views;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace LiftDataManager.Views;
 
 public sealed partial class ShellPage : Page
 {
@@ -10,38 +12,18 @@ public sealed partial class ShellPage : Page
     public ShellPage(ShellViewModel viewModel)
     {
         ViewModel = viewModel;
+        DataContext = ViewModel;
         InitializeComponent();
-        ViewModel.JsonNavigationViewService.Initialize(NavigationViewControl, NavigationFrame, NavigationPageMappings.PageDictionary);
-        ViewModel.JsonNavigationViewService.ConfigJson("Assets/NavViewMenu/NavigationViewControlData.json");
-        ViewModel.JsonNavigationViewService.ConfigBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary,BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
+        ViewModel.JsonNavigationService.Initialize(NavigationViewControl, NavigationFrame, NavigationPageMappings.PageDictionary)
+                                       .ConfigureJsonFile("Assets/NavViewMenu/NavigationViewControlData.json")
+                                       .ConfigureDefaultPage(typeof(HomePage))
+                                       .ConfigureSettingsPage(typeof(SettingsPage))
+                                       .ConfigureTitleBar(AppTitleBar)
+                                       .ConfigureBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary,BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
     }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
     {
-        if (App.MainWindow.Content is not FrameworkElement element)
-        {
-            return;
-        }
-        if (element.ActualTheme == ElementTheme.Light)
-        {
-            element.RequestedTheme = ElementTheme.Dark;
-        }
-        else if (element.ActualTheme == ElementTheme.Dark)
-        {
-            element.RequestedTheme = ElementTheme.Light;
-        }
-    }
-
-    private void TitleBar_PaneToggleRequested(WinUIEx.TitleBar sender, object args)
-    {
-        NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
-    }
-
-    private void TitleBar_BackRequested(WinUIEx.TitleBar sender, object args)
-    {
-        if (NavigationFrame.CanGoBack)
-        {
-            NavigationFrame.GoBack();
-        }
+        ThemeService.ChangeThemeWithoutSave(App.MainWindow);
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using RtfPipe.Tokens;
+﻿using Microsoft.UI.Xaml.Navigation;
 
 namespace LiftDataManager.ViewModels;
 
@@ -8,7 +6,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
 {
     private CurrentSpeziProperties CurrentSpeziProperties = new();
 
-    public IJsonNavigationViewService JsonNavigationViewService { get; }
+    public IJsonNavigationService JsonNavigationService { get; }
 
     [ObservableProperty]
     public partial bool IsBackEnabled { get; set; }
@@ -22,10 +20,10 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     [ObservableProperty]
     public partial string? HeaderText { get; set; }
 
-    public ShellViewModel(IJsonNavigationViewService jsonNavigationViewService)
+    public ShellViewModel(IJsonNavigationService jsonNavigationViewService)
     {
-        JsonNavigationViewService = jsonNavigationViewService;
-        JsonNavigationViewService.Navigated += OnNavigated;
+        JsonNavigationService = jsonNavigationViewService;
+        JsonNavigationService.FrameNavigated += OnNavigated;
         IsActive = true;
     }
 
@@ -44,18 +42,15 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     {
         var searchInput = GlobalSearchInput;
         GlobalSearchInput = string.Empty;
-        JsonNavigationViewService.NavigateTo(typeof(ListenansichtPage), searchInput);
+        JsonNavigationService.NavigateTo(typeof(ListenansichtPage), searchInput);
     }
 
     [RelayCommand]
-    private void GoToHelpViewModel() => JsonNavigationViewService.NavigateTo(typeof(HelpPage));
+    private void GoToHelpViewModel() => JsonNavigationService.NavigateTo(typeof(HelpPage));
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
-        //workaround navigationview dispose
-        GC.Collect();
-
-        IsBackEnabled = JsonNavigationViewService.CanGoBack;
+        IsBackEnabled = JsonNavigationService.CanGoBack;
 
         var view = ((Frame)sender).FindParent<NavigationView>();
         var breadcrumbnavigator = ((Grid?)(view?.Header))?.FindChild<BreadcrumbNavigator>();

@@ -13,6 +13,7 @@ public sealed partial class DatenansichtDetailPage : Page
     public DatenansichtDetailPage()
     {
         ViewModel = App.GetService<DatenansichtDetailViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
     }
 
@@ -27,7 +28,7 @@ public sealed partial class DatenansichtDetailPage : Page
         base.OnNavigatingFrom(e);
         if (e.NavigationMode == NavigationMode.Back)
         {
-            var navigationService = App.GetService<IJsonNavigationViewService>();
+            var navigationService = App.GetService<IJsonNavigationService>();
             if (ViewModel.Item is not null)
             {
                 navigationService.Frame?.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
