@@ -1928,6 +1928,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             "var_FuehrungsschieneGegengewicht" => "Hilfsschienentyp",
             "var_Geschwindigkeitsbegrenzer" => "GB_ID",
             "var_TypFuehrung" => "Fuehrungsart",
+            "var_Puffertyp" => "Puffer",
             "var_RHU" => _calculationsModuleService.IsRopeLift(_parameterDictionary["var_Bausatz"].DropDownListValue) ? "Reservehub_Zylinder_unten" : "Reservehub_Kabine_unten",
             "var_RHO" => "Reservehub_Zylinder_oben",
             _ => string.Empty,
@@ -1999,6 +2000,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                         "12" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
                     },
+                    "var_Puffertyp" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     _ => true
                 };
 

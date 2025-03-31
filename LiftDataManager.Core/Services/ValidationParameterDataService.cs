@@ -683,7 +683,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             [new(ValidateOverAndUnderTravels, "None", null)]);
 
         ValidationDictionary.Add("var_Puffertyp",
-            [new(ValidateOverAndUnderTravels, "None", null),
+            [new(ValidateCarFrameProgramData, "Warning", null),
+            new(ValidateOverAndUnderTravels, "None", null),
             new(ValidateLiftBuffers, "Warning", null)]);
 
         ValidationDictionary.Add("var_Puffertyp_GGW",

@@ -396,6 +396,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
 
         if (ParameterDictionary is not null && zliDataDictionary.Count != 0 && pKDictionary.Count != 0)
         {
+            int languageEnum = int.Parse(zliDataDictionary["Sprache"]);
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
 
             if (!onlyDiveData)
@@ -512,33 +513,53 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             SetSyncedParameter("var_ZA_IMP_RopeSafety", ropeSafety);
 
-            var tractionSheavePosition = string.Empty;
+            var drivePos1 = pKDictionary["Anlage-MLAGE"] == "0" ? "oben" : "unten";
+            var drivePos2 = pKDictionary["Anlage-NLAGE"] switch
+            {
+                "0" => "über",
+                "1" => "neben",
+                "2" => "im Schacht",
+                _ => "im Schacht",
+            };
+            SetSyncedParameter("var_LageAntrieb", $"{drivePos1}, {drivePos2}" );
+
             var ropeDeflection = string.Empty;
             try
             {
+                if (languageEnum == 0)
+                {
+                    ropeDeflection = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") ||
+                                                                   x.InnerText.StartsWith("Maschine"))?
+                                               .InnerText.Split(',').LastOrDefault()?.Trim();
+                }
+                else
+                {
+                    var ropeDeflectionString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Traction sheave") || 
+                                                                             x.InnerText.StartsWith("Machine") )?
+                                               .InnerText.Split(',').LastOrDefault()?.Trim();
 
-                var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") || x.InnerText.StartsWith("Maschine"))?.InnerText.Replace("Treibscheibe", "").Replace("Maschine", "").Split(',');
-                if (!string.IsNullOrWhiteSpace(shaftPosition?[0]) && !string.IsNullOrWhiteSpace(shaftPosition?[1]))
-                {
-                    tractionSheavePosition = HtmlEntity.DeEntitize(shaftPosition[0].Trim()) + ", " + HtmlEntity.DeEntitize(shaftPosition[1].Trim());
+                    ropeDeflection = ropeDeflectionString switch
+                    {
+                        "Motor foot down" => "Motorfuss unten",
+                        "Motor foot up" => "Motorfuss oben",
+                        "S-Wrap" => "Motorfuss seitlich",
+                        "without deflection pulley" => "ohne Ableitrolle",
+                        "with deflection pulley" => "mit Ableitrolle",
+                        _ => string.Empty,
+                    };
                 }
-                if (!string.IsNullOrWhiteSpace(shaftPosition?[2]))
-                {
-                    ropeDeflection = HtmlEntity.DeEntitize(shaftPosition[2].Trim());
-                }
+
             }
             catch (Exception)
             {
-                _logger.LogWarning(61094, "Traction sheave position not found");
+                _logger.LogWarning(61094, "Ropedeflection not found");
             }
-
-            SetSyncedParameter("var_LageAntrieb", tractionSheavePosition);
             SetSyncedParameter("var_SeilabgangAntrieb", ropeDeflection);
 
             var compensationRopeWeight = string.Empty;
             try
             {
-                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht"))?.ChildNodes[3].InnerText.Trim();
+                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht") || x.InnerText.StartsWith("Compensation rope"))?.ChildNodes[3].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -555,11 +576,26 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var nominalVoltage = string.Empty;
             try
             {
-                var exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+                var exactCurrentString = string.Empty;
+                if (languageEnum == 0)
+                {
+                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+                    if (!string.IsNullOrWhiteSpace(exactCurrentString))
+                    {
+                        exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
+                    }
+                }
+                else
+                {
+                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("mains current"))?.InnerText;
+                    if (!string.IsNullOrWhiteSpace(exactCurrentString))
+                    {
+                        exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("mains current", "").Trim();
+                    }
+                }
 
                 if (!string.IsNullOrWhiteSpace(exactCurrentString))
                 {
-                    exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
                     ratedCurrent = Math.Ceiling(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) + 10).ToString() + ",0";
                     maxCurrent = Math.Round(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) * 1.8 + 10, 2).ToString();
 
@@ -586,7 +622,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var maxEngineCurrent = string.Empty;
             try
             {
-                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment"))?.ChildNodes[2].InnerText.Trim();
+                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment") || x.InnerText.StartsWith("Current at maximum torque"))?.ChildNodes[2].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -596,46 +632,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var powerDissipation = string.Empty;
             try
             {
-                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung"))?.ChildNodes[1].InnerText.Trim();
+                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung") || x.InnerText.StartsWith("Average power losses"))?.ChildNodes[1].InnerText.Trim();
             }
             catch (Exception)
             {
                 _logger.LogWarning(61094, "powerDissipation not found");
             }
-            ParameterDictionary["var_ZA_IMP_VerlustLeistung"].Value = powerDissipation;
+            SetSyncedParameter("var_ZA_IMP_VerlustLeistung", powerDissipation);
 
             SetSyncedParameter("var_AufhaengungsartRope", zliDataDictionary["Aufhaengung_is"]);
             SetSyncedParameter("var_Umschlingungswinkel", zliDataDictionary["Treibscheibe-Umschlingung"]);
-            var pulleyDiameter = "0";
-            var numberofFKPulley = "0";
-            try
-            {
-                var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText.Trim();
-                if (!string.IsNullOrWhiteSpace(pulleyDiameterString))
-                {
-                    pulleyDiameter = pulleyDiameterString[(pulleyDiameterString.IndexOf('=') + 1)..pulleyDiameterString.IndexOf("mm")].Trim();
-                    numberofFKPulley = pulleyDiameterString[(pulleyDiameterString.Length - 2)..].Trim();
-                }
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "pulleyDiameter or numberofFKPulley not found");
-            }
-            SetSyncedParameter("var_Umlenkrollendurchmesser", pulleyDiameter);
-
-            var numberofPulley = "0";
-            try
-            {
-                numberofPulley = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Zahl der Umlenkrollen"))?.ChildNodes[1].InnerText.Trim();
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "numberofPulley not found");
-            }
-            SetSyncedParameter("var_AnzahlUmlenkrollen", numberofPulley);
-            SetSyncedParameter("var_AnzahlUmlenkrollenFk", numberofFKPulley);
-            SetSyncedParameter("var_AnzahlUmlenkrollenGgw", (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString());
-            SetSyncedParameter("var_MotorGeber", zliDataDictionary["Gebertyp"]);
+            SetSyncedParameter("var_Umlenkrollendurchmesser", pKDictionary["Treibfaehigkeit-Seilrollendurchmesser"]);
+            SetSyncedParameter("var_AnzahlUmlenkrollen", (Convert.ToInt32(pKDictionary["Anlage-URF"], CultureInfo.CurrentCulture) + Convert.ToInt32(pKDictionary["Anlage-URG"], CultureInfo.CurrentCulture)).ToString());
+            SetSyncedParameter("var_AnzahlUmlenkrollenFk", pKDictionary["Anlage-URF"]);
+            SetSyncedParameter("var_AnzahlUmlenkrollenGgw", pKDictionary["Anlage-URG"]);
+            SetSyncedParameter("var_MotorGeber", pKDictionary["Geber-Typ"]);
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 
@@ -719,11 +730,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 {
                     if (zliPairValue.Length == 2)
                     {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                        zliDataDictionary.Add(zliPairValue[0].Trim(), zliPairValue[1].Trim());
                     }
                     else if (zliPairValue.Length > 2)
                     {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1] + "=" + zliPairValue[2]);
+                        zliDataDictionary.Add(zliPairValue[0].Trim(), zliPairValue[1].Trim() + "=" + zliPairValue[2].Trim());
                     }
                 }
             }
