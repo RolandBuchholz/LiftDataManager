@@ -87,12 +87,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     public int CarDoorCount => _calculationsModuleService.GetNumberOfCardoors(ParameterDictionary);
     public string DoorTyp => !string.IsNullOrWhiteSpace(ParameterDictionary["var_Tuertyp"].Value) ? ParameterDictionary["var_Tuertyp"].Value!.Replace(" -", "") : string.Empty;
     public string DateTimeNow => DateTime.Now.ToShortDateString();
-    public string Manufacturer => """
-                                    Berchtenbreiter GmbH
-                                    Maschinenbau - Aufzugtechnik
-                                    Mähderweg 1a
-                                    86637 Rieblingen
-                                    """;
+
     public string ViewingOpening => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?
                                     "Schauöffnungen (aus 10 mm dickem VSG - Glas) in den Fahr/Schachttüren vorhanden." :
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";

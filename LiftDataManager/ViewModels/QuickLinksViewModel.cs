@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Xml;
 
@@ -391,11 +390,13 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
     {
         var zaliftHtml = GetZaliftHtml();
         var zliDataDictionary = GetZliDataDictionary(zaliftHtml);
+        var pKDictionary = GetPKDictionary(zaliftHtml);
         SyncedParameter ??= [];
         SyncedParameter.Clear();
 
-        if (ParameterDictionary is not null && zliDataDictionary.Count != 0)
+        if (ParameterDictionary is not null && zliDataDictionary.Count != 0 && pKDictionary.Count != 0)
         {
+            int languageEnum = int.Parse(zliDataDictionary["Sprache"]);
             var htmlNodes = zaliftHtml.DocumentNode.SelectNodes("//tr");
 
             if (!onlyDiveData)
@@ -415,41 +416,10 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                     _logger.LogWarning(61094, "balance not found");
                 }
 
-                var detectionDistance = "0";
-                try
-                {
-                    var detectionDistanceMeter = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Erkennungsweg"))?.ChildNodes[1].InnerText;
+                SetSyncedParameter("var_Erkennungsweg", LiftParameterHelper.ConvertMeterStringToMillimeterString(pKDictionary["UCM-Erkennungsweg"]));
+                SetSyncedParameter("var_Totzeit", pKDictionary["UCM-Totzeit"]);
+                SetSyncedParameter("var_Vdetektor", pKDictionary["UCM-Geschwindigkeitsdetektor"]);
 
-                    if (!string.IsNullOrWhiteSpace(detectionDistanceMeter))
-                    {
-                        detectionDistance = (Convert.ToDouble(detectionDistanceMeter.Replace("m", "").Trim(), CultureInfo.CurrentCulture) * 1000).ToString();
-                    }
-                }
-                catch (Exception)
-                {
-                    _logger.LogWarning(61094, "detectionDistance not found");
-                }
-                SetSyncedParameter("var_Erkennungsweg", detectionDistance);
-                var deadTime = "0";
-                try
-                {
-                    deadTime = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Totzeit"))?.ChildNodes[1].InnerText.Replace("ms", "").Trim();
-                }
-                catch (Exception)
-                {
-                    _logger.LogWarning(61094, "deadTime not found");
-                }
-                SetSyncedParameter("var_Totzeit", deadTime);
-                var vDetector = "0";
-                try
-                {
-                    vDetector = Convert.ToDouble(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("V Detektor"))?.ChildNodes[1].InnerText.Replace("m/s", "").Trim(), CultureInfo.CurrentCulture).ToString();
-                }
-                catch (Exception)
-                {
-                    _logger.LogWarning(61094, "vDetector not found");
-                }
-                ParameterDictionary["var_Vdetektor"].Value = vDetector;
                 var brakerelease = string.Empty;
                 if (zliDataDictionary["Bremse-Handlueftung"] == "ohne Handlueftung" && zliDataDictionary["Bremse-Lueftueberwachung"] == "Mikroschalter")
                 {
@@ -476,33 +446,16 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                     brakerelease = "207 V Bremse. v. für Bowdenz. Handl. Indukt. NS";
                 }
                 SetSyncedParameter("var_Handlueftung", brakerelease);
-
-                var ventilation = zliDataDictionary["Motor-Fan"] == "ohne Belüftung" || zliDataDictionary["Motor-Fan"] == "ohne" ? "False" : "True";
-                SetSyncedParameter("var_Fremdbelueftung", ventilation);
-
-                try
-                {
-                    var brakeControl = htmlNodes.Any(x => x.InnerText.StartsWith("Bremsansteuermodul")).ToString();
-                    SetSyncedParameter("var_ElektrBremsenansteuerung", LiftParameterHelper.FirstCharToUpperAsSpan(brakeControl));
-                }
-                catch (Exception)
-                {
-
-                    _logger.LogWarning(61094, "ElektrBremsenansteuerung not found");
-                }
-
-                var hardened = zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False";
-                SetSyncedParameter("var_Treibscheibegehaertet", hardened);
+                SetSyncedParameter("var_Fremdbelueftung", zliDataDictionary["Motor-Fan"] == "ohne Belüftung" || zliDataDictionary["Motor-Fan"] == "ohne" ? "False" : "True");
+                SetSyncedParameter("var_ElektrBremsenansteuerung", pKDictionary["Bremsmodul-TYP"] == "ohne" ? "False" : "True");
+                SetSyncedParameter("var_Treibscheibegehaertet", zliDataDictionary["Treibscheibe-RF"].Contains("gehaertet") ? "True" : "False");
             }
 
-            if (zliDataDictionary.TryGetValue("Getriebebezeichnung", out string? drive))
-            {
-                SetSyncedParameter("var_Antrieb", string.IsNullOrWhiteSpace(drive) ? string.Empty : drive.Replace(',', '.'));
-            }
+            SetSyncedParameter("var_Antrieb", pKDictionary["Getriebe-Typ"]);
+            SetSyncedParameter("var_ZA_IMP_Regler_Typ", pKDictionary["Regler-Typ"]);
             SetSyncedParameter("var_Treibscheibendurchmesser", zliDataDictionary["Treibscheibe-D"]);
             SetSyncedParameter("var_ZA_IMP_Treibscheibe_RIA", zliDataDictionary["Treibscheibe-RIA"]);
-            SetSyncedParameter("var_ZA_IMP_Regler_Typ", !string.IsNullOrWhiteSpace(zliDataDictionary["Regler-Typ"]) ? zliDataDictionary["Regler-Typ"].Replace(" ", "") : string.Empty);
-
+            
             var ropeDescription = string.Empty;
             if (zliDataDictionary.TryGetValue("Treibscheibe-SD", out string? ropeDiameter))
             {
@@ -513,38 +466,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 ropeDescription = zliDataDictionary["Treibscheibe-Seiltyp"];
             }
             SetSyncedParameter("var_Tragseiltyp", ropeDescription);
-
-            var numberOfRopes = string.Empty;
-            try
-            {
-                numberOfRopes = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Anzahl der Seile"))?.ChildNodes[2].InnerText;
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "number of ropes not found");
-            }
-            SetSyncedParameter("var_NumberOfRopes", numberOfRopes);
-
-            var breakingload = string.Empty;
-            try
-            {
-                breakingload = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mindestbruchkraft"))?.ChildNodes[3].InnerText;
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "breakingload not found");
-            }
-            SetSyncedParameter("var_Mindestbruchlast", breakingload);
-
-            var ropeWeight = string.Empty;
-            try
-            {
-                ropeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilgewicht"))?.ChildNodes[4].InnerText[1..6];
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "rope weight not found");
-            }
+            SetSyncedParameter("var_NumberOfRopes", pKDictionary["Treibscheibe-SZ"]);
+            SetSyncedParameter("var_Mindestbruchlast", pKDictionary["Anlage-SBK"]);
 
             try
             {
@@ -565,11 +488,11 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 if (ropeCalculationData is not null)
                 {
                     ropeCalculationData.RopeDescription = ropeDescription;
-                    ropeCalculationData.NumberOfRopes = Convert.ToInt32(numberOfRopes);
+                    ropeCalculationData.NumberOfRopes = Convert.ToInt32(pKDictionary["Treibscheibe-SZ"]);
                     ropeCalculationData.RopeDiameter = Convert.ToDouble(zliDataDictionary["Treibscheibe-SD"], CultureInfo.CurrentCulture);
-                    ropeCalculationData.MinimumBreakingStrength = Convert.ToInt32(breakingload);
+                    ropeCalculationData.MinimumBreakingStrength = Convert.ToInt32(pKDictionary["Anlage-SBK"]);
                     ropeCalculationData.WireStrength = ropeDescription.Contains("CTP") ? 2800 : 1570;
-                    ropeCalculationData.RopeWeight = Convert.ToDouble(ropeWeight, CultureInfo.CurrentCulture);
+                    ropeCalculationData.RopeWeight = Convert.ToDouble(pKDictionary["Anlage-SKGM"], CultureInfo.CurrentCulture);
                     ropeCalculationData.MaximumNumberOfRopes = Convert.ToInt32(zliDataDictionary["Treibscheibe-RZ"]);
                     SetSyncedParameter("var_RopeCalculationData", JsonSerializer.Serialize(ropeCalculationData, _options).Replace("\r\n", "\n"));
                 }
@@ -582,7 +505,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var ropeSafety = string.Empty;
             try
             {
-                ropeSafety = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilsicherheit"))?.InnerText.Split('=', '&')[1].Trim();
+                ropeSafety = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilsicherheit") || x.InnerText.StartsWith("Rope safety  nue"))?.InnerText.Split('=', '&')[1].Trim();
             }
             catch (Exception)
             {
@@ -590,25 +513,53 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             }
             SetSyncedParameter("var_ZA_IMP_RopeSafety", ropeSafety);
 
-            var tractionSheavePosition = string.Empty;
+            var drivePos1 = pKDictionary["Anlage-MLAGE"] == "0" ? "oben" : "unten";
+            var drivePos2 = pKDictionary["Anlage-NLAGE"] switch
+            {
+                "0" => "über",
+                "1" => "neben",
+                "2" => "im Schacht",
+                _ => "im Schacht",
+            };
+            SetSyncedParameter("var_LageAntrieb", $"{drivePos1}, {drivePos2}" );
+
             var ropeDeflection = string.Empty;
             try
             {
-                var shaftPosition = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") || x.InnerText.StartsWith("Maschine"))?.InnerText.Replace("Treibscheibe","").Replace("Maschine", "").Split(',');
-                tractionSheavePosition = HtmlEntity.DeEntitize(shaftPosition?[0].Trim()) + ", " + HtmlEntity.DeEntitize(shaftPosition?[1].Trim());
-                ropeDeflection = HtmlEntity.DeEntitize(shaftPosition?[2].Trim());
+                if (languageEnum == 0)
+                {
+                    ropeDeflection = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") ||
+                                                                   x.InnerText.StartsWith("Maschine"))?
+                                               .InnerText.Split(',').LastOrDefault()?.Trim();
+                }
+                else
+                {
+                    var ropeDeflectionString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Traction sheave") || 
+                                                                             x.InnerText.StartsWith("Machine") )?
+                                               .InnerText.Split(',').LastOrDefault()?.Trim();
+
+                    ropeDeflection = ropeDeflectionString switch
+                    {
+                        "Motor foot down" => "Motorfuss unten",
+                        "Motor foot up" => "Motorfuss oben",
+                        "S-Wrap" => "Motorfuss seitlich",
+                        "without deflection pulley" => "ohne Ableitrolle",
+                        "with deflection pulley" => "mit Ableitrolle",
+                        _ => string.Empty,
+                    };
+                }
+
             }
             catch (Exception)
             {
-                _logger.LogWarning(61094, "Traction sheave position not found");
+                _logger.LogWarning(61094, "Ropedeflection not found");
             }
-            SetSyncedParameter("var_LageAntrieb", tractionSheavePosition);
             SetSyncedParameter("var_SeilabgangAntrieb", ropeDeflection);
 
             var compensationRopeWeight = string.Empty;
             try
             {
-                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht"))?.ChildNodes[3].InnerText.Trim();
+                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht") || x.InnerText.StartsWith("Compensation rope"))?.ChildNodes[3].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -625,11 +576,26 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var nominalVoltage = string.Empty;
             try
             {
-                var exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+                var exactCurrentString = string.Empty;
+                if (languageEnum == 0)
+                {
+                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+                    if (!string.IsNullOrWhiteSpace(exactCurrentString))
+                    {
+                        exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
+                    }
+                }
+                else
+                {
+                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("mains current"))?.InnerText;
+                    if (!string.IsNullOrWhiteSpace(exactCurrentString))
+                    {
+                        exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("mains current", "").Trim();
+                    }
+                }
 
                 if (!string.IsNullOrWhiteSpace(exactCurrentString))
                 {
-                    exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
                     ratedCurrent = Math.Ceiling(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) + 10).ToString() + ",0";
                     maxCurrent = Math.Round(Convert.ToDouble(exactRatedCurrent, CultureInfo.CurrentCulture) * 1.8 + 10, 2).ToString();
 
@@ -656,7 +622,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var maxEngineCurrent = string.Empty;
             try
             {
-                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment"))?.ChildNodes[2].InnerText.Trim();
+                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment") || x.InnerText.StartsWith("Current at maximum torque"))?.ChildNodes[2].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -666,46 +632,21 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var powerDissipation = string.Empty;
             try
             {
-                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung"))?.ChildNodes[1].InnerText.Trim();
+                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung") || x.InnerText.StartsWith("Average power losses"))?.ChildNodes[1].InnerText.Trim();
             }
             catch (Exception)
             {
                 _logger.LogWarning(61094, "powerDissipation not found");
             }
-            ParameterDictionary["var_ZA_IMP_VerlustLeistung"].Value = powerDissipation;
+            SetSyncedParameter("var_ZA_IMP_VerlustLeistung", powerDissipation);
 
             SetSyncedParameter("var_AufhaengungsartRope", zliDataDictionary["Aufhaengung_is"]);
             SetSyncedParameter("var_Umschlingungswinkel", zliDataDictionary["Treibscheibe-Umschlingung"]);
-            var pulleyDiameter = "0";
-            var numberofFKPulley = "0";
-            try
-            {
-                var pulleyDiameterString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Umlenkrollen"))?.InnerText.Trim();
-                if (!string.IsNullOrWhiteSpace(pulleyDiameterString))
-                {
-                    pulleyDiameter = pulleyDiameterString[(pulleyDiameterString.IndexOf('=') + 1)..pulleyDiameterString.IndexOf("mm")].Trim();
-                    numberofFKPulley = pulleyDiameterString[(pulleyDiameterString.Length - 2)..].Trim();
-                }
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "pulleyDiameter or numberofFKPulley not found");
-            }
-            SetSyncedParameter("var_Umlenkrollendurchmesser", pulleyDiameter);
-
-            var numberofPulley = "0";
-            try
-            {
-                numberofPulley = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Zahl der Umlenkrollen"))?.ChildNodes[1].InnerText.Trim();
-            }
-            catch (Exception)
-            {
-                _logger.LogWarning(61094, "numberofPulley not found");
-            }
-            SetSyncedParameter("var_AnzahlUmlenkrollen", numberofPulley);
-            SetSyncedParameter("var_AnzahlUmlenkrollenFk", numberofFKPulley);
-            SetSyncedParameter("var_AnzahlUmlenkrollenGgw", (Convert.ToInt32(numberofPulley, CultureInfo.CurrentCulture) - Convert.ToInt32(numberofFKPulley, CultureInfo.CurrentCulture)).ToString());
-            SetSyncedParameter("var_MotorGeber", zliDataDictionary["Gebertyp"]);
+            SetSyncedParameter("var_Umlenkrollendurchmesser", pKDictionary["Treibfaehigkeit-Seilrollendurchmesser"]);
+            SetSyncedParameter("var_AnzahlUmlenkrollen", (Convert.ToInt32(pKDictionary["Anlage-URF"], CultureInfo.CurrentCulture) + Convert.ToInt32(pKDictionary["Anlage-URG"], CultureInfo.CurrentCulture)).ToString());
+            SetSyncedParameter("var_AnzahlUmlenkrollenFk", pKDictionary["Anlage-URF"]);
+            SetSyncedParameter("var_AnzahlUmlenkrollenGgw", pKDictionary["Anlage-URG"]);
+            SetSyncedParameter("var_MotorGeber", pKDictionary["Geber-Typ"]);
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 
@@ -789,16 +730,37 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 {
                     if (zliPairValue.Length == 2)
                     {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1]);
+                        zliDataDictionary.Add(zliPairValue[0].Trim(), zliPairValue[1].Trim());
                     }
                     else if (zliPairValue.Length > 2)
                     {
-                        zliDataDictionary.Add(zliPairValue[0], zliPairValue[1] + "=" + zliPairValue[2]);
+                        zliDataDictionary.Add(zliPairValue[0].Trim(), zliPairValue[1].Trim() + "=" + zliPairValue[2].Trim());
                     }
                 }
             }
         }
         return zliDataDictionary;
+    }
+
+    private Dictionary<string, string> GetPKDictionary(HtmlDocument zaliftHtml)
+    {
+        var pKDictionary = new Dictionary<string, string>();
+        if (zaliftHtml.Text is null)
+        {
+            return pKDictionary;
+        }
+        var pKData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- PK"))?
+                                                                       .InnerHtml.Split(";", StringSplitOptions.None);
+        if (pKData is null)
+        {
+            return pKDictionary;
+        }
+
+        for (int i = 0; i < pKData.Length - 1 ; i+=2)
+        {
+            pKDictionary.AddIfNotExists(pKData[i].Trim(), pKData[i + 1].Trim());
+        }
+        return pKDictionary;
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenZALiftHtml))]

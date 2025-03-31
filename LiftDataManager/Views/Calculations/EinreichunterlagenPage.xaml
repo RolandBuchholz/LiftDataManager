@@ -350,9 +350,10 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Width="450"
+                                Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
-                                Style="{StaticResource InfoTextboxStyle}"
-                                Text="{x:Bind ViewModel.Manufacturer}" />
+                                AcceptsReturn="True"
+                                Text="{x:Bind ViewModel.ParameterDictionary['var_Hersteller'].Value, Converter={StaticResource NewLineConveter}, Mode=TwoWay}" />
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"

@@ -676,14 +676,56 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Gegengewicht_Verkleidung_Gewicht",
             [new(NotTrueWhenTheOtherIsTrueForce, "None", "var_Gegengewicht_Verkleidung")]);
 
+        ValidationDictionary.Add("var_FUBP",
+            [new(ValidateOverAndUnderTravels, "None", null)]);
+
+        ValidationDictionary.Add("var_FUEBP",
+            [new(ValidateOverAndUnderTravels, "None", null)]);
+
+        ValidationDictionary.Add("var_Puffertyp",
+            [new(ValidateCarFrameProgramData, "Warning", null),
+            new(ValidateOverAndUnderTravels, "None", null),
+            new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Puffertyp_GGW",
+            [new(ValidateOverAndUnderTravels, "None", null), 
+            new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Puffertyp_EM_SG",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Puffertyp_EM_SK",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_FK",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_GGW",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_EM_SG",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_EM_SK",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_RHU",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_RHO",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Stichmass",
+            [new(ValidateCarFrameProgramData, "Warning", null)]);
+
         AddDropDownListValidation();
     }
 
     private void AddDropDownListValidation()
     {
         var dropDownParameters = _parametercontext.ParameterDtos?.Where(x => !string.IsNullOrWhiteSpace(x.DropdownList))
-                                    .Select(x => x.Name)
-                                    .ToList();
+                                                                 .Select(x => x.Name)
+                                                                 .ToList();
         if (dropDownParameters is not null)
         {
             foreach (var par in dropDownParameters)

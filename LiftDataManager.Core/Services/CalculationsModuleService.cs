@@ -1,6 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
 using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
@@ -367,7 +366,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         var nutzflaecheZugangC = zugangC ? GetCarDoorArea(parameterDictionary, "C") : 0;
         var nutzflaecheZugangD = zugangD ? GetCarDoorArea(parameterDictionary, "D") : 0;
 
-        var nutzflaeche = Math.Round(nutzflaecheKabine + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
+        var nutzflaeche = Math.Round(kabinenbreite * kabinentiefe / Math.Pow(10, 6) + nutzflaecheZugangA + nutzflaecheZugangB + nutzflaecheZugangC + nutzflaecheZugangD, 2);
         var nennlast = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
 
         var nennlast6 = Math.Round(GetLoadFromTable(nutzflaeche, "Tabelle6"), 1);
@@ -854,13 +853,19 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         if (tuerEinbau <= 0)
+        {
             return 0;
+        }
 
         if (tuerbreiteZugang <= 0)
+        {
             return 0;
+        }
 
         if (string.IsNullOrWhiteSpace(tuerbezeichnung))
+        {
             return 0;
+        }
 
         var kabinenTuer = new CarDoorDesignParameter();
 
@@ -880,7 +885,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         if (kabinenTuer is null)
+        {
             return 0;
+        }
 
         if ((tuerEinbau - kabinenTuer.TuerFluegelBreite) <= 100)
         {
@@ -1053,6 +1060,7 @@ public partial class CalculationsModuleService : ICalculationsModule
              ("Kabinentürverriegelung B","var_CarDoorDescriptionB","CarDoor", false),
              ("Kabinentürverriegelung C","var_CarDoorDescriptionC","CarDoor", false),
              ("Kabinentürverriegelung D","var_CarDoorDescriptionD","CarDoor", false),
+             ("Frequenzumrichter","var_ZA_IMP_Regler_Typ","LiftInverterType", false),
              ("Sicherheitsschaltung", "var_Steuerungstyp", "LiftControlManufacturer", false)
         };
         var safetyComponentTyps = _parametercontext.Model.GetEntityTypes().ToList();
@@ -1484,6 +1492,48 @@ public partial class CalculationsModuleService : ICalculationsModule
             bufferDetails = $"{buffer.Manufacturer} {buffer.Name} ( Ø{buffer.Diameter} x {buffer.Height} )  min Last: {minLoad} kg  max Last: {maxLoad} kg";
         }
         return bufferDetails;
+    }
+
+    /// <inheritdoc/>
+    public bool ValidateBufferRange(string buffertyp, double liftSpeed, double bufferLoad)
+    {
+        var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
+        if (buffer is null)
+        {
+            return false;
+        }
+        int minLoad = liftSpeed switch
+        {
+            <= 0.63 => buffer.MinLoad063,
+            <= 1.00 => buffer.MinLoad100,
+            <= 1.30 => buffer.MinLoad130,
+            <= 1.60 => buffer.MinLoad160,
+            <= 2.00 => buffer.MinLoad200,
+            <= 2.50 => buffer.MinLoad250,
+            _ => 0
+        };
+        int maxLoad = liftSpeed switch
+        {
+            <= 0.63 => buffer.MaxLoad063,
+            <= 1.00 => buffer.MaxLoad100,
+            <= 1.30 => buffer.MaxLoad130,
+            <= 1.60 => buffer.MaxLoad160,
+            <= 2.00 => buffer.MaxLoad200,
+            <= 2.50 => buffer.MaxLoad250,
+            _ => 0
+        };
+        return bufferLoad <= maxLoad && bufferLoad >= minLoad;
+    }
+
+    /// <inheritdoc/>
+    public int GetmaxBufferStoke(string? buffertyp)
+    {
+        if (string.IsNullOrWhiteSpace(buffertyp))
+        {
+            return 0;
+        }
+        var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
+        return buffer is null ? 0 : buffer.BufferStroke;
     }
 
     /// <inheritdoc/>

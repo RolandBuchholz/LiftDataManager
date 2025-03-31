@@ -1921,12 +1921,16 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             "var_KTI" => "Kabinentiefe_innen",
             "var_KHLicht" => "Kabinenhoehe_innen",
             "var_KHA" => "Kabinenhoehe_aussen",
+            "var_Stichmass" => "Stichmaß",
             "var_v" => "Sollgeschwindigkeit abw",
             "var_TypFV" => "Fangvorrichtung",
             "var_FuehrungsschieneFahrkorb" => "Schienentyp",
             "var_FuehrungsschieneGegengewicht" => "Hilfsschienentyp",
             "var_Geschwindigkeitsbegrenzer" => "GB_ID",
             "var_TypFuehrung" => "Fuehrungsart",
+            "var_Puffertyp" => "Puffer",
+            "var_RHU" => _calculationsModuleService.IsRopeLift(_parameterDictionary["var_Bausatz"].DropDownListValue) ? "Reservehub_Zylinder_unten" : "Reservehub_Kabine_unten",
+            "var_RHO" => "Reservehub_Zylinder_oben",
             _ => string.Empty,
         };
 
@@ -1945,8 +1949,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                     "var_ST" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KBI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KTI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
+                    "var_RHU" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
+                    "var_RHO" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KHLicht" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_KHA" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
+                    "var_Stichmass" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
                     "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
                     "var_TypFV" => value switch
                     {
@@ -1993,6 +2000,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                         "12" => string.Equals(value, "RF FK 1", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
                     },
+                    "var_Puffertyp" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     _ => true
                 };
 
@@ -2112,6 +2120,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         UpdateDropDownList("var_UCMP_DetektierendesElement", availableDetectingAndTriggeringComponents);
         UpdateDropDownList("var_UCMP_AusloesendesElement", availableDetectingAndTriggeringComponents);
     }
+
     private void ValidateUCMBrakingComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
     {
         var isRopedrive = string.IsNullOrWhiteSpace(_parameterDictionary["var_Getriebe"].Value) || _parameterDictionary["var_Getriebe"].Value != "hydraulisch";
@@ -2148,5 +2157,79 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             UpdateDropDownList("var_UCMP_BremsendesElement", availableBrakingComponents);
             _parameterDictionary["var_UCMP_BremsendesElement"].AutoUpdateParameterValue(value?.Trim());
         }
+    }
+
+    private void ValidateOverAndUnderTravels(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (!_calculationsModuleService.IsRopeLift(_parameterDictionary["var_Bausatz"].DropDownListValue))
+        {
+            return;
+        }
+        switch (name)
+        {
+            case "var_FUBP" or "var_Puffertyp":
+                double freeUnderTravel = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_FUBP");
+                var bufferstokeCar = _calculationsModuleService.GetmaxBufferStoke(_parameterDictionary["var_Puffertyp"].Value);
+                _parameterDictionary["var_RHU"].AutoUpdateParameterValue((freeUnderTravel + bufferstokeCar).ToString());
+                break;
+            case "var_FUEBP" or "var_Puffertyp_GGW":
+                double freeOverTravel = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_FUEBP");
+                var bufferstokeCWT = _calculationsModuleService.GetmaxBufferStoke(_parameterDictionary["var_Puffertyp"].Value);
+                _parameterDictionary["var_RHO"].AutoUpdateParameterValue((freeOverTravel + bufferstokeCWT).ToString());
+                break;
+            default:
+                return;
+        }
+    }
+
+    private void ValidateLiftBuffers(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+            return;
+        }
+        double liftspeed = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_v");
+        double load = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Q");
+        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_F");
+        double cwtWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Gegengewichtsmasse");
+        double bufferLoad = 0.0;
+        int bufferCount = 0;
+        string bufferTyp = string.Empty;
+
+        switch (name)
+        {
+            case "var_Puffertyp" or "var_Anzahl_Puffer_FK":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp");
+                bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_FK");
+                bufferLoad = (load + carWeight) / bufferCount;
+                break;
+            case "var_Puffertyp_GGW" or "var_Anzahl_Puffer_GGW":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_GGW");
+                bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_GGW");
+                bufferLoad = cwtWeight / bufferCount;
+                break;
+            case "var_Puffertyp_EM_SG" or "var_Anzahl_Puffer_EM_SG":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SG");
+                bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SG");
+                bufferLoad = (load + carWeight) / bufferCount;
+                break;
+            case "var_Puffertyp_EM_SK" or "var_Anzahl_Puffer_EM_SK":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SK");
+                bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SK");
+                bufferLoad = (cwtWeight-load) / bufferCount;
+                break;
+            default:
+                break;
+        }
+
+        if (string.IsNullOrWhiteSpace(bufferTyp) || _calculationsModuleService.ValidateBufferRange(bufferTyp, liftspeed, bufferLoad))
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)));
+        }      
     }
 }

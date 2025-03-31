@@ -246,12 +246,6 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 
     void GenerallyLiftData(IContainer container)
     {
-        var manufacturer = """
-                           Berchtenbreiter GmbH
-                           Maschinenbau - Aufzugtechnik
-                           Mähderweg 1a
-                           86637 Rieblingen
-                           """;
         container.Table(table =>
         {
             table.ColumnsDefinition(columns =>
@@ -260,7 +254,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.RelativeColumn();
             });
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Hersteller und/oder Einführer:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(manufacturer);
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_Hersteller"].Value);
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Tragfähigkeit:").Bold();
             table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Q"].Value} kg oder {ParameterDictionary["var_Personen"].Value} Personen");
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Baujahr:").Bold();
