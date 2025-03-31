@@ -7,6 +7,6 @@ public sealed partial class MainWindow : WindowEx
         InitializeComponent();
         Content = null;
         ExtendsContentIntoTitleBar = true;
-        this.SetTitleBarBackgroundColors(Microsoft.UI.Colors.Transparent);
+        AppWindow.TitleBar.PreferredHeightOption = Microsoft.UI.Windowing.TitleBarHeightOption.Tall;
     }
 }

@@ -50,9 +50,6 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
-        //workaround navigationview dispose
-        GC.Collect();
-
         IsBackEnabled = JsonNavigationService.CanGoBack;
 
         var view = ((Frame)sender).FindParent<NavigationView>();

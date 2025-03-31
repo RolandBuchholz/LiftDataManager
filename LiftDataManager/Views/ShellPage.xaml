@@ -11,43 +11,39 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <winuiex:TitleBar
+        <TitleBar
+            x:Name="AppTitleBar"
             Title="{x:Bind local:App.Current.AppName}"
-            BackRequested="TitleBar_BackRequested"
-            IsBackButtonVisible="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IconSource="{dev:BitmapIconSource Source=ms-appx:///Assets/WindowIcon.png}"
+            IsBackButtonVisible="False"
             IsPaneToggleButtonVisible="True"
-            PaneToggleRequested="TitleBar_PaneToggleRequested"
             Subtitle="{x:Bind local:App.Current.AppVersion}">
-            <winuiex:TitleBar.IconSource>
-                <ImageIconSource ImageSource="ms-appx:///Assets/WindowIcon.png" />
-            </winuiex:TitleBar.IconSource>
-            <winuiex:TitleBar.Content>
-                <AutoSuggestBox
-                    Width="300"
-                    VerticalAlignment="Center"
-                    PlaceholderText="globale Suche"
-                    QueryIcon="Find"
-                    Text="{x:Bind ViewModel.GlobalSearchInput, Mode=TwoWay}"
-                    ToolTipService.ToolTip="globale Suche"
-                    Visibility="{x:Bind ViewModel.ShowGlobalSearch, Mode=OneWay}">
-                    <interactivity:Interaction.Behaviors>
-                        <interactivity:EventTriggerBehavior EventName="QuerySubmitted">
-                            <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.StartGlobalSearchCommand}" />
-                        </interactivity:EventTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
-                </AutoSuggestBox>
-            </winuiex:TitleBar.Content>
-            <winuiex:TitleBar.Footer>
+            <AutoSuggestBox
+                x:Name="HeaderAutoSuggestBox"
+                MinWidth="320"
+                VerticalAlignment="Center"
+                PlaceholderText="globale Suche"
+                QueryIcon="Find"
+                Text="{x:Bind ViewModel.GlobalSearchInput, Mode=TwoWay}"
+                ToolTipService.ToolTip="globale Suche"
+                Visibility="{x:Bind ViewModel.ShowGlobalSearch, Mode=OneWay}">
+                <interactivity:Interaction.Behaviors>
+                    <interactivity:EventTriggerBehavior EventName="QuerySubmitted">
+                        <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.StartGlobalSearchCommand}" />
+                    </interactivity:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </AutoSuggestBox>
+            <TitleBar.RightHeader>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         x:Name="ThemeButton"
                         Height="32"
                         Margin="0,0,4,0"
                         Click="ThemeButton_Click"
+                        Content="{dev:FontIcon GlyphCode=E793,
+                                               FontSize=16}"
                         Style="{ThemeResource SubtleButtonStyle}"
-                        ToolTipService.ToolTip="temporärer Themewechsel">
-                        <FontIcon FontSize="16" Glyph="&#xE793;" />
-                    </Button>
+                        ToolTipService.ToolTip="Ttemporärer Themewechsel" />
                     <Button
                         x:Name="HelpButton"
                         Height="32"
@@ -61,8 +57,8 @@
                             Glyph="&#xE897;" />
                     </Button>
                 </StackPanel>
-            </winuiex:TitleBar.Footer>
-        </winuiex:TitleBar>
+            </TitleBar.RightHeader>
+        </TitleBar>
         <NavigationView
             x:Name="NavigationViewControl"
             Grid.Row="1"

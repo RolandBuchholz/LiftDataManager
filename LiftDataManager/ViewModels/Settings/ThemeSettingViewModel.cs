@@ -68,6 +68,5 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
     }
     public void OnNavigatedFrom()
     {
-
     }
 }
