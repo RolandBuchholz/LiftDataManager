@@ -2195,22 +2195,27 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         double cwtWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Gegengewichtsmasse");
         double bufferLoad = 0.0;
         int bufferCount = 0;
+        string bufferTyp = string.Empty;
 
         switch (name)
         {
-            case "var_Puffertyp":
+            case "var_Puffertyp" or "var_Anzahl_Puffer_FK":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_FK");
                 bufferLoad = (load + carWeight) / bufferCount;
                 break;
-            case "var_Puffertyp_GGW":
+            case "var_Puffertyp_GGW" or "var_Anzahl_Puffer_GGW":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_GGW");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_GGW");
                 bufferLoad = cwtWeight / bufferCount;
                 break;
-            case "var_Puffertyp_EM_SG":
+            case "var_Puffertyp_EM_SG" or "var_Anzahl_Puffer_EM_SG":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SG");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SG");
                 bufferLoad = (load + carWeight) / bufferCount;
                 break;
-            case "var_Puffertyp_EM_SK":
+            case "var_Puffertyp_EM_SK" or "var_Anzahl_Puffer_EM_SK":
+                bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SK");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SK");
                 bufferLoad = (cwtWeight-load) / bufferCount;
                 break;
@@ -2218,13 +2223,13 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 break;
         }
 
-        if (_calculationsModuleService.ValidateBufferRange(value, liftspeed, bufferLoad))
+        if (string.IsNullOrWhiteSpace(bufferTyp) || _calculationsModuleService.ValidateBufferRange(bufferTyp, liftspeed, bufferLoad))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {value} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)));
         }      
     }
 }

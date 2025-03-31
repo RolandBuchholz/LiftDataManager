@@ -402,7 +402,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             }
         }
         var data = await _parameterDataService.LoadParameterAsync(FullPathXml);
-        var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, true);
+        var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(FullPathXml, data, false);
         await _infoCenterService.AddListofInfoCenterEntrysAsync(newInfoCenterEntrys);
         _logger.LogInformation(60136, "Data loaded from {FullPathXml}", FullPathXml);
         await _infoCenterService.AddInfoCenterMessageAsync($"Daten aus {FullPathXml} geladen");

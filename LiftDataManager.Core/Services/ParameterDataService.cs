@@ -106,9 +106,9 @@ public partial class ParameterDataService : IParameterDataService
                                              .ToList();
 
         var dropdownValues = _parametercontext.DropdownValues!
-                              .AsNoTracking()
-                              .ToList()
-                              .GroupBy(x => x.Base);
+                                              .AsNoTracking()
+                                              .ToList()
+                                              .GroupBy(x => x.Base);
 
         if (parameterDtos is not null)
         {
@@ -160,11 +160,11 @@ public partial class ParameterDataService : IParameterDataService
         XElement doc = XElement.Load(path);
         var transferDataList = (from para in doc.Elements("parameters").Elements("ParamWithValue")
                                 select new TransferData(
-                                                     para.Element("name")!.GetAs<string>()!,
-                                                     para.Element("value")!.GetAs<string>()!,
-                                                     para.Element("comment")!.GetAs<string>()!,
-                                                     para.Element("isKey")!.GetAs<bool>()))
-                                  .ToList();
+                                para.Element("name")!.GetAs<string>()!,
+                                para.Element("value")!.GetAs<string>()!,
+                                para.Element("comment")!.GetAs<string>()!,
+                                para.Element("isKey")!.GetAs<bool>()))
+                                .ToList();
         await Task.CompletedTask;
         _logger.LogInformation(60101, "Get TranferData form {path}", path);
         return transferDataList;
@@ -689,7 +689,7 @@ public partial class ParameterDataService : IParameterDataService
                 infoCenterEntrys.Add(new InfoCenterEntry(InfoCenterEntryState.InfoCenterWarning)
                 {
                     Message = $"Parameter {item.Name} wird nicht unterstützt\n" +
-                                                                                                             "Überprüfen Sie die AutodeskTransfer.XML Datei"
+                              "Überprüfen Sie die AutodeskTransfer.XML Datei"
                 });
             }
         }

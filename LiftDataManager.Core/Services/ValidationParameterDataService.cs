@@ -697,6 +697,18 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Puffertyp_EM_SK",
             [new(ValidateLiftBuffers, "Warning", null)]);
 
+        ValidationDictionary.Add("var_Anzahl_Puffer_FK",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_GGW",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_EM_SG",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
+        ValidationDictionary.Add("var_Anzahl_Puffer_EM_SK",
+            [new(ValidateLiftBuffers, "Warning", null)]);
+
         ValidationDictionary.Add("var_RHU",
             [new(ValidateCarFrameProgramData, "Warning", null)]);
 

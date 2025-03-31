@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace LiftDataManager.ViewModels.Dialogs;
+﻿namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class CheckOutDialogViewModel : ObservableObject
 {
@@ -119,10 +117,10 @@ public partial class CheckOutDialogViewModel : ObservableObject
                     return false;
             }
 
-            if (ForceCheckOut && !string.IsNullOrWhiteSpace(downloadResult.FullFileName))
+            if (!string.IsNullOrWhiteSpace(downloadResult.FullFileName))
             {
                 var data = await _parameterDataService.LoadParameterAsync(downloadResult.FullFileName);
-                var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(downloadResult.FullFileName, data, false);
+                var newInfoCenterEntrys = await _parameterDataService.UpdateParameterDictionary(downloadResult.FullFileName, data, true);
                 await _infoCenterService.AddListofInfoCenterEntrysAsync(newInfoCenterEntrys);
                 _logger.LogInformation(60136, "Data loaded from {FullPathXml}", downloadResult.FullFileName);
                 await _infoCenterService.AddInfoCenterMessageAsync($"Daten aus {downloadResult.FullFileName} geladen");
