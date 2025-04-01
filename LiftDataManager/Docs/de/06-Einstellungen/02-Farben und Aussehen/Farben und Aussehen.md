@@ -4,4 +4,4 @@
 
 ![image](/LiftDataManager/Docs/HelpImages/image101.png) 
 
-[//]: # (Tags: Farben und Aussehen | App Theme | App Material | App Akzentfarbe | System Akzentfarbe)  
+[//]: # (Tags: Farben und Aussehen | App Theme | App Material | App Akzentfarbe | System Akzentfarbe | Tint Color)  
