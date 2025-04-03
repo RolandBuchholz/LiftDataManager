@@ -1,6 +1,4 @@
-﻿using Cogs.Collections;
-
-namespace LiftDataManager.Services;
+﻿namespace LiftDataManager.Services;
 
 /// <summary>
 /// A <see langword="class"/> that implements the <see cref="IActivationService"/> <see langword="interface"/> using ActivationService
@@ -108,7 +106,7 @@ public class ActivationService : IActivationService
         }
         await Task.CompletedTask;
     }
-    private async Task InitializeCoreServiceAsync() 
+    private async Task InitializeCoreServiceAsync()
     {
         ObservableDictionary<string, Parameter> parameterDictionary = [];
         await _parameterDataService.InitializeParameterDataServicerAsync(parameterDictionary);

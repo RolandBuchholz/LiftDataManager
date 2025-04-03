@@ -129,14 +129,16 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             new(ValidateCarArea, "Error", null),
             new(ValidateSafetyRange, "Error", null),
             new(ValidateCarFrameProgramData, "Warning", null),
-            new(ValidateZAliftData, "Warning", null) ]);
+            new(ValidateZAliftData, "Warning", null),
+            new(ValidateLiftBuffers, "Warning", null)]);
 
         ValidationDictionary.Add("var_F",
             [new(ValidateZAliftData, "Warning", null),
             new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateSafetyRange, "Error", null),
             new(ValidateCarweightWithoutFrame, "None", null),
-            new(ValidateCounterweightMass, "None", null) ]);
+            new(ValidateCounterweightMass, "None", null),
+            new(ValidateLiftBuffers, "Warning", null)]);
 
         ValidationDictionary.Add("var_Kennwort",
             [new(NotEmpty, "Warning", null)]);
@@ -653,7 +655,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             [new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_v",
-            [new(ValidateCarFrameProgramData, "Warning", null)]);
+            [new(ValidateCarFrameProgramData, "Warning", null), 
+            new(ValidateLiftBuffers, "Warning", null)]);
 
         ValidationDictionary.Add("var_CFPdefiniert",
             [new(ValidateLayOutDrawingLoads, "None", null)]);
@@ -685,29 +688,35 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Puffertyp",
             [new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateOverAndUnderTravels, "None", null),
-            new(ValidateLiftBuffers, "Warning", null)]);
+            new(ValidateLiftBuffers, "Warning", "var_Anzahl_Puffer_FK")]);
 
         ValidationDictionary.Add("var_Puffertyp_GGW",
             [new(ValidateOverAndUnderTravels, "None", null), 
-            new(ValidateLiftBuffers, "Warning", null)]);
+            new(ValidateLiftBuffers, "Warning", "var_Anzahl_Puffer_GGW")]);
 
         ValidationDictionary.Add("var_Puffertyp_EM_SG",
-            [new(ValidateLiftBuffers, "Warning", null)]);
+            [new(ValidateLiftBuffers, "Warning", "var_Anzahl_Puffer_EM_SG")]);
 
         ValidationDictionary.Add("var_Puffertyp_EM_SK",
-            [new(ValidateLiftBuffers, "Warning", null)]);
+            [new(ValidateLiftBuffers, "Warning", "var_Anzahl_Puffer_EM_SK")]);
 
         ValidationDictionary.Add("var_Anzahl_Puffer_FK",
-            [new(ValidateLiftBuffers, "Warning", null)]);
+            [new(ValidateLiftBuffers, "Warning", "var_Puffertyp")]);
 
         ValidationDictionary.Add("var_Anzahl_Puffer_GGW",
             [new(ValidateLiftBuffers, "Warning", null)]);
 
         ValidationDictionary.Add("var_Anzahl_Puffer_EM_SG",
-            [new(ValidateLiftBuffers, "Warning", null)]);
+            [new(ValidateLiftBuffers, "Warning", "var_Puffertyp_GGW")]);
 
         ValidationDictionary.Add("var_Anzahl_Puffer_EM_SK",
-            [new(ValidateLiftBuffers, "Warning", null)]);
+            [new(ValidateLiftBuffers, "Warning", "var_Puffertyp_EM_SK")]);
+
+        ValidationDictionary.Add("var_ErsatzmassnahmenSK_unter_GGW",
+            [new(ValidateLiftBuffers, "Warning", "var_Puffertyp_EM_SK")]);
+
+        ValidationDictionary.Add("var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit",
+            [new(ValidateLiftBuffers, "Warning", "var_Puffertyp_EM_SK")]);
 
         ValidationDictionary.Add("var_RHU",
             [new(ValidateCarFrameProgramData, "Warning", null)]);

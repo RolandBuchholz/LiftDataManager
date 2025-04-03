@@ -225,4 +225,17 @@ public class LiftParameterHelper
             return string.Empty;
         }
     }
+
+    public static double ConvertStringToDouble(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return 0d;
+        }
+        if (double.TryParse(value, out double doubleValue))
+        {
+            return doubleValue;
+        }
+        return 0d;
+    }
 }

@@ -61,6 +61,8 @@ public interface ICalculationsModule
 
     int GetmaxBufferStoke(string? buffertyp);
 
+    double GetCurrentBufferForce(ObservableDictionary<string, Parameter> parameterDictionary, string bufferParameterName);
+
     bool ValidateBufferRange(string buffertyp, double liftSpeed, double bufferLoad);
 
     (double, double) GetMirrorWidth(ObservableDictionary<string, Parameter> parameterDictionary, string wallSide, int index);

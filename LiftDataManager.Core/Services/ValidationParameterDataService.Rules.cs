@@ -1153,8 +1153,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         else
         {
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.ShaftDoor)
-                                                                      .Include(i => i.CarDoor)
+            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor)
+                                                                      .Include(i => i.ShaftDoor)
                                                                       .ThenInclude(t => t!.LiftDoorOpeningDirection)
                                                                       .FirstOrDefault(x => x.Name == value);
             if (liftDoorGroup is not null && liftDoorGroup.ShaftDoor is not null && liftDoorGroup.CarDoor is not null)
@@ -1943,18 +1943,18 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                     "var_Q" => string.Equals(value, cFPValue, StringComparison.CurrentCultureIgnoreCase) || (value ?? string.Empty) == (cFPValue ?? string.Empty),
                     "var_F" => Math.Abs(Convert.ToInt32(value) - Convert.ToInt32(cFPValue)) <= 10,
                     "var_FH" => Math.Abs(Convert.ToDouble(value) * 1000 - Convert.ToDouble(cFPValue) * 1000) <= 20,
-                    "var_SG" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_SK" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_SB" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_ST" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_KBI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_KTI" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_RHU" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_RHO" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_KHLicht" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_KHA" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_Stichmass" => Convert.ToDouble(value) == Math.Round(Convert.ToDouble(cFPValue) * 1000),
-                    "var_v" => Convert.ToDouble(value) == Convert.ToDouble(cFPValue),
+                    "var_SG" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_SK" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_SB" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_ST" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_KBI" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_KTI" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_RHU" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_RHO" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_KHLicht" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_KHA" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_Stichmass" => LiftParameterHelper.ConvertStringToDouble(value) == Math.Round(LiftParameterHelper.ConvertStringToDouble(cFPValue) * 1000),
+                    "var_v" => LiftParameterHelper.ConvertStringToDouble(value) == LiftParameterHelper.ConvertStringToDouble(cFPValue),
                     "var_TypFV" => value switch
                     {
                         "Bucher RSG55" => true,
@@ -2202,34 +2202,45 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             case "var_Puffertyp" or "var_Anzahl_Puffer_FK":
                 bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_FK");
-                bufferLoad = (load + carWeight) / bufferCount;
+                bufferLoad = _calculationsModuleService.GetCurrentBufferForce(_parameterDictionary, "var_Puffertyp");
                 break;
             case "var_Puffertyp_GGW" or "var_Anzahl_Puffer_GGW":
                 bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_GGW");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_GGW");
-                bufferLoad = cwtWeight / bufferCount;
+                bufferLoad = _calculationsModuleService.GetCurrentBufferForce(_parameterDictionary, "var_Puffertyp_GGW");
                 break;
             case "var_Puffertyp_EM_SG" or "var_Anzahl_Puffer_EM_SG":
                 bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SG");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SG");
-                bufferLoad = (load + carWeight) / bufferCount;
+                bufferLoad = _calculationsModuleService.GetCurrentBufferForce(_parameterDictionary, "var_Puffertyp_EM_SG");
                 break;
-            case "var_Puffertyp_EM_SK" or "var_Anzahl_Puffer_EM_SK":
+            case "var_Puffertyp_EM_SK" or "var_Anzahl_Puffer_EM_SK" or "var_ErsatzmassnahmenSK_unter_GGW":
+                liftspeed = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit") ? 0.6 : liftspeed;
                 bufferTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Puffertyp_EM_SK");
                 bufferCount = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Anzahl_Puffer_EM_SK");
-                bufferLoad = (cwtWeight-load) / bufferCount;
+                bufferLoad = _calculationsModuleService.GetCurrentBufferForce(_parameterDictionary, "var_Puffertyp_EM_SK");
                 break;
+            case "var_Q" or "var_F" or "var_v":
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = ["var_Puffertyp", "var_Puffertyp_GGW", "var_Puffertyp_EM_SG", "var_Puffertyp_EM_SK"] });
+                return;
             default:
                 break;
         }
 
+        string[] dependentParameter = [];
+        if (optionalCondition is not null)
+        {
+            dependentParameter = [optionalCondition];
+        }
+            
         if (string.IsNullOrWhiteSpace(bufferTyp) || _calculationsModuleService.ValidateBufferRange(bufferTyp, liftspeed, bufferLoad))
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = dependentParameter });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)));
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)) 
+            { DependentParameter = dependentParameter });
         }      
     }
 }

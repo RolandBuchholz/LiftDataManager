@@ -16,6 +16,8 @@
             TrueValue="Collapsed" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <helpers:StringToVisibilityInvertConverter x:Key="StringToVisibilityInvertConverter" />
         <helpers:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         <helpers:IntegerToStringConverter x:Key="IntegerToStringConverter" />
     </Page.Resources>
@@ -657,7 +659,52 @@
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                    ShowDefaultHeader="True">
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                FontSize="16"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Anlagenwerte FK-Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Geschwindigkeit:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
+                                                <Run Text=" m/s" />
+                                            </TextBlock>
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Gewichtskraft pro Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.BufferForceCarframe, Mode=OneWay}" />
+                                                <Run Text=" kg" />
+                                            </TextBlock>
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterComboBox>
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -851,7 +898,52 @@
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_GGW'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                    ShowDefaultHeader="True">
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                FontSize="16"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Anlagenwerte GGW-Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Geschwindigkeit:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
+                                                <Run Text=" m/s" />
+                                            </TextBlock>
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Gewichtskraft pro Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.BufferForceCwt, Mode=OneWay}" />
+                                                <Run Text=" kg" />
+                                            </TextBlock>
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterComboBox>
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"
@@ -1045,13 +1137,90 @@
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SK'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
-                                <TextBox
-                                    Grid.Column="2"
-                                    Margin="5,0,5,0"
-                                    Header="Pufferdaten Fahrkorb"
-                                    IsEnabled="False"
-                                    Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomHead, Mode=OneWay}" />
+                                    ShowDefaultHeader="True">
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                FontSize="16"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Anlagenwerte Ersatzmaßnahmen SK:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Geschwindigkeit:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="14"
+                                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityInvertConverter}}">
+                                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
+                                                <Run Text=" m/s" />
+                                            </TextBlock>
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="14"
+                                                Text="0,6 m/s (Inspektion)"
+                                                Visibility="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Gewichtskraft pro Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.BufferForceReducedHead, Mode=OneWay}" />
+                                                <Run Text=" kg" />
+                                            </TextBlock>
+                                            <CheckBox
+                                                Grid.Row="3"
+                                                Grid.ColumnSpan="2"
+                                                Content="Puffer unter Gegengewicht"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_unter_GGW'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}" />
+                                            <CheckBox
+                                                Grid.Row="4"
+                                                Grid.ColumnSpan="2"
+                                                Content="Inspektionsgeschwindigkeit max 0,6 m/s"
+                                                IsChecked="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}" />
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterComboBox>
+                                <Grid Grid.Column="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox
+                                        Grid.Column="0"
+                                        Margin="5,0,5,0"
+                                        Header="Pufferdaten Fahrkorb"
+                                        IsEnabled="False"
+                                        Text="{x:Bind ViewModel.BufferDataReducedSafetyRoomHead, Mode=OneWay}" />
+                                    <SpeziControls:ParameterCheckBox
+                                        Grid.Column="1"
+                                        Margin="0,0,0,-4"
+                                        VerticalAlignment="Bottom"
+                                        CheckBoxContent="Inspektionsgeschwindigkeit"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="False" />
+                                </Grid>
                                 <SpeziControls:ParameterNumberTextBox
                                     Grid.Column="3"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Pufferstuezenlaenge_EM_SK'], Mode=TwoWay}"
@@ -1184,12 +1353,13 @@
                                         </StackPanel>
                                     </ToolTipService.ToolTip>
                                 </SpeziControls:DataComboBox>
-                                <CheckBox
+                                <SpeziControls:ParameterCheckBox
                                     Grid.Column="6"
-                                    Margin="5,0,5,-3"
+                                    Margin="0,0,0,-4"
                                     VerticalAlignment="Bottom"
-                                    Content="Puffer unter GGW"
-                                    IsChecked="{x:Bind ViewModel.BufferUnderCounterweight, Mode=TwoWay}" />
+                                    CheckBoxContent="Puffer unter GGW"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ErsatzmassnahmenSK_unter_GGW'], Mode=TwoWay}"
+                                    ShowDefaultCheckBoxContent="False" />
                                 <TextBox
                                     Grid.Column="7"
                                     Margin="5,0,5,0"
@@ -1246,7 +1416,52 @@
                                     Grid.Column="1"
                                     Margin="-10,0,0,0"
                                     LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Puffertyp_EM_SG'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                    ShowDefaultHeader="True">
+                                    <ToolTipService.ToolTip>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="160" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                FontSize="16"
+                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                Text="Anlagenwerte Ersatzmaßnahmen SG:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Geschwindigkeit:" />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.ParameterDictionary['var_v'].Value}" />
+                                                <Run Text=" m/s" />
+                                            </TextBlock>
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                FontSize="14"
+                                                Text="Gewichtskraft pro Puffer:" />
+                                            <TextBlock
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="14">
+                                                <Run Text="{x:Bind ViewModel.BufferForceReducedPit, Mode=OneWay}" />
+                                                <Run Text=" kg" />
+                                            </TextBlock>
+                                        </Grid>
+                                    </ToolTipService.ToolTip>
+                                </SpeziControls:ParameterComboBox>
                                 <TextBox
                                     Grid.Column="2"
                                     Margin="5,0,5,0"

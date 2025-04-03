@@ -53,6 +53,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         InitializeTableData();
     }
+
     public async Task ResetAsync()
     {
         kabinenbreite = default;
@@ -78,6 +79,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         halsR4 = default;
         await Task.CompletedTask;
     }
+
     private void SetDefaultParameter(ObservableDictionary<string, Parameter> parameterDictionary)
     {
         kabinenbreite = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KBI");
@@ -1120,6 +1122,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
         return liftSafetyComponents;
     }
+
     private static string GetSafetyTypeName(SafetyComponentEntity safetyComponent, string safetyType)
     {
         return safetyType switch
@@ -1128,6 +1131,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             _ => safetyType,
         };
     }
+
     private static string GetSafetyComponentSpecialOption(ObservableDictionary<string, Parameter> parameterDictionary, SafetyComponentEntity safetyComponent, string safetyType)
     {
         return (safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name) switch
@@ -1144,6 +1148,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             _ => string.Empty,
         };
     }
+
     private static string GetSafetyComponentModelName(SafetyComponentEntity safetyComponent, string safetyType)
     {
         return safetyType switch
@@ -1216,6 +1221,7 @@ public partial class CalculationsModuleService : ICalculationsModule
             brakingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? brakingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---")
         ];
     }
+
     private static Dictionary<int, TableRow<int, double>> SetTableData(object[]? tabledata, string firstUnit, string secondUnit)
     {
         var dic = new Dictionary<int, TableRow<int, double>>();
@@ -1534,6 +1540,25 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
         var buffer = _parametercontext.Set<LiftBuffer>().FirstOrDefault(x => x.Name == buffertyp);
         return buffer is null ? 0 : buffer.BufferStroke;
+    }
+
+    /// <inheritdoc/>
+    public double GetCurrentBufferForce(ObservableDictionary<string, Parameter> parameterDictionary, string bufferParameterName)
+    {
+        double load = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Q");
+        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_F");
+        double cwtWeight = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_Gegengewichtsmasse");
+
+        bool bufferUnderCounterweight = bufferParameterName == "var_Puffertyp_EM_SK" && LiftParameterHelper.GetLiftParameterValue<bool>(parameterDictionary, "var_ErsatzmassnahmenSK_unter_GGW");
+        return bufferParameterName switch
+        {
+            "var_Puffertyp" => (double)((load + carWeight) / LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_FK")),
+            "var_Puffertyp_GGW" => (double)(cwtWeight / LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_GGW")),
+            "var_Puffertyp_EM_SG" => (double)((load + carWeight) / LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SG")),
+            "var_Puffertyp_EM_SK" => (double)(bufferUnderCounterweight ? cwtWeight / LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SK")
+                                                                       : (cwtWeight - carWeight) / LiftParameterHelper.GetLiftParameterValue<int>(parameterDictionary, "var_Anzahl_Puffer_EM_SK")),
+            _ => 0.0,
+        };
     }
 
     /// <inheritdoc/>

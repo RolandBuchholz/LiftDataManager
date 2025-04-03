@@ -31,8 +31,14 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
         if (message.PropertyName == "var_Puffertyp" ||
             message.PropertyName == "var_Puffertyp_GGW" ||
-            message.PropertyName == "var_Puffertyp_EM_SK " ||
-            message.PropertyName == "var_Puffertyp_EM_SG")
+            message.PropertyName == "var_Puffertyp_EM_SK" ||
+            message.PropertyName == "var_Puffertyp_EM_SG"||
+            message.PropertyName == "var_Anzahl_Puffer_FK" ||
+            message.PropertyName == "var_Anzahl_Puffer_GGW" ||
+            message.PropertyName == "var_Anzahl_Puffer_EM_SK" ||
+            message.PropertyName == "var_Anzahl_Puffer_EM_SG" ||
+            message.PropertyName == "var_ErsatzmassnahmenSK_unter_GGW" ||
+            message.PropertyName == "var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit")
         {
             GetPufferDetailData();
         };
@@ -53,9 +59,10 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
         if (message.PropertyName == "var_Anzahl_Puffer_EM_SK" ||
             message.PropertyName == "var_Puffer_Profil_EM_SK" ||
-            message.PropertyName == "var_Pufferstuezenlaenge_EM_SK")
+            message.PropertyName == "var_Pufferstuezenlaenge_EM_SK" ||
+            message.PropertyName == "var_ErsatzmassnahmenSK_unter_GGW")
         {
-            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
+            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ErsatzmassnahmenSK_unter_GGW"));
         };
 
         if (message.PropertyName == "var_Anzahl_Puffer_EM_SG" ||
@@ -190,7 +197,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     public partial int SelectedEulerCaseReducedSafetyRoomHead { get; set; } = 1;
     partial void OnSelectedEulerCaseReducedSafetyRoomHeadChanged(int value)
     {
-        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", value, BufferUnderCounterweight);
+        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", value, LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ErsatzmassnahmenSK_unter_GGW"));
     }
 
     [ObservableProperty]
@@ -198,13 +205,6 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
     partial void OnSelectedEulerCaseReducedSafetyRoomPitChanged(int value)
     {
         BufferCalculationDataReducedSafetyRoomPit = GetBufferCalculationData("var_PufferCalculationData_EM_SG", value, false);
-    }
-
-    [ObservableProperty]
-    public partial bool BufferUnderCounterweight { get; set; }
-    partial void OnBufferUnderCounterweightChanged(bool value)
-    {
-        BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, value);
     }
 
     [ObservableProperty]
@@ -218,6 +218,18 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     [ObservableProperty]
     public partial string BufferDataReducedSafetyRoomPit { get; set; } = "Keine Pufferdaten vorhanden";
+
+    [ObservableProperty]
+    public partial double BufferForceCarframe { get; set; } 
+
+    [ObservableProperty]
+    public partial double BufferForceCwt { get; set; } 
+
+    [ObservableProperty]
+    public partial double BufferForceReducedPit { get; set; } 
+
+    [ObservableProperty]
+    public partial double BufferForceReducedHead { get; set; } 
 
     [RelayCommand]
     private static void GoToBausatzViewModel()
@@ -311,7 +323,6 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
                                 break;
                             case "var_PufferCalculationData_EM_SK":
                                 SelectedEulerCaseReducedSafetyRoomHead = restoredBufferCalculation.EulerCase;
-                                BufferUnderCounterweight = restoredBufferCalculation.ReducedSafetyRoomBufferUnderCounterweight;
                                 break;
                             case "var_PufferCalculationData_EM_SG":
                                 SelectedEulerCaseReducedSafetyRoomPit = restoredBufferCalculation.EulerCase;
@@ -373,22 +384,34 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
 
     private void GetPufferDetailData()
     {
-        Tuple<string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame"),
-                                           new("var_Puffertyp_GGW", "BufferDataCounterWeight"),
-                                           new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomHead"),
-                                           new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomPit")];
+        Tuple<string, string, string>[] puffers = [new("var_Puffertyp", "BufferDataCarFrame", "BufferForceCarframe"),
+                                           new("var_Puffertyp_GGW", "BufferDataCounterWeight", "BufferForceCwt"),
+                                           new("var_Puffertyp_EM_SK", "BufferDataReducedSafetyRoomHead", "BufferForceReducedHead"),
+                                           new("var_Puffertyp_EM_SG", "BufferDataReducedSafetyRoomPit", "BufferForceReducedPit")];
 
         double liftSpeed = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_v");
 
         if (liftSpeed == 0.0)
+        {
             return;
+        }
 
         foreach (var puffer in puffers)
         {
             if (!string.IsNullOrWhiteSpace(ParameterDictionary[puffer.Item1].Value))
             {
                 var bufferProperty = GetType().GetProperty(puffer.Item2);
-                bufferProperty?.SetValue(this, _calculationsModuleService.GetBufferDetails(ParameterDictionary[puffer.Item1].Value!, liftSpeed), null);
+                var bufferForceProperty = GetType().GetProperty(puffer.Item3);
+                if (puffer.Item1 == "var_Puffertyp_EM_SK" && LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ErsatzmassnahmenSK_Inspektionsgeschwindigkeit"))
+                {
+                    bufferProperty?.SetValue(this, _calculationsModuleService.GetBufferDetails(ParameterDictionary[puffer.Item1].Value!, 0.6), null);
+                }
+                else
+                {
+                    bufferProperty?.SetValue(this, _calculationsModuleService.GetBufferDetails(ParameterDictionary[puffer.Item1].Value!, liftSpeed), null);
+                }
+
+                bufferForceProperty?.SetValue(this, _calculationsModuleService.GetCurrentBufferForce(ParameterDictionary, puffer.Item1), null);
             }
         }
     }
@@ -424,7 +447,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         }
         if (ShowReducedSafetyRoomHeadBuffer)
         {
-            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, BufferUnderCounterweight);
+            BufferCalculationDataReducedSafetyRoomHead = GetBufferCalculationData("var_PufferCalculationData_EM_SK", SelectedEulerCaseReducedSafetyRoomHead, LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ErsatzmassnahmenSK_unter_GGW"));
         }
         else
         {

@@ -24,6 +24,7 @@
         <helpers:NewLineConveter x:Key="NewLineConveter" />
         <helpers:CustomInputStringConveter x:Key="CustomInputStringConveter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -1382,7 +1383,11 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KThlRollen'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_55'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeleskopschuerzenTyp'], Mode=TwoWay}"
+                                        ShowDefaultHeader="False"
+                                        Visibility="{x:Bind ViewModel.ParameterDictionary['var_KTteleskopSchuerze'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
                                 </Grid>
                                 <Grid
                                     Grid.Row="2"
@@ -1397,7 +1402,7 @@
                                         Grid.Column="1"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KtSchwellenheizung'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_6'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_55'], Mode=TwoWay}" />
                                 </Grid>
                                 <Grid
                                     Grid.Row="3"
@@ -1408,10 +1413,8 @@
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TuerSchauOeffnungKT'], Mode=TwoWay}"
                                         ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterCustomCheckBox
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_54'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_6'], Mode=TwoWay}" />
                                 </Grid>
                             </Grid>
                         </Grid>
