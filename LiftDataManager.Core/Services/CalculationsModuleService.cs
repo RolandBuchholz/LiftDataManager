@@ -1062,6 +1062,7 @@ public partial class CalculationsModuleService : ICalculationsModule
              ("Kabinentürverriegelung B","var_CarDoorDescriptionB","CarDoor", false),
              ("Kabinentürverriegelung C","var_CarDoorDescriptionC","CarDoor", false),
              ("Kabinentürverriegelung D","var_CarDoorDescriptionD","CarDoor", false),
+             ("Teleskopschürze","var_TeleskopschuerzenTyp","LiftDoorTelescopicApron", false),
              ("Frequenzumrichter","var_ZA_IMP_Regler_Typ","LiftInverterType", false),
              ("Sicherheitsschaltung", "var_Steuerungstyp", "LiftControlManufacturer", false)
         };

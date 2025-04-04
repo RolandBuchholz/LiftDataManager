@@ -2119,6 +2119,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         UpdateDropDownList("var_UCMP_DetektierendesElement", availableDetectingAndTriggeringComponents);
         UpdateDropDownList("var_UCMP_AusloesendesElement", availableDetectingAndTriggeringComponents);
+        if (availableDetectingAndTriggeringComponents.Count == 1)
+        {
+            _parameterDictionary["var_UCMP_DetektierendesElement"].AutoUpdateParameterValue(availableDetectingAndTriggeringComponents[0].Name);
+            _parameterDictionary["var_UCMP_AusloesendesElement"].AutoUpdateParameterValue(availableDetectingAndTriggeringComponents[0].Name);
+        }
     }
 
     private void ValidateUCMBrakingComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)

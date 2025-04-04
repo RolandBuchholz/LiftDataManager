@@ -698,6 +698,39 @@
                     </ToolTipService.ToolTip>
                     <SymbolIcon Symbol="Save" />
                 </Button>
+                <StackPanel
+                    Grid.Row="0"
+                    Margin="250,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <SpeziControls:ParameterCheckBox
+                        x:Name="AdvancedDoorSelection"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AdvancedDoorSelection'], Mode=TwoWay}"
+                        ShowDefaultCheckBoxContent="True" />
+                    <TextBlock
+                        Margin="5,3,0,0"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="IndianRed"
+                        Text="Türvalidierung deaktiviert!"
+                        ToolTipService.Placement="Bottom"
+                        Visibility="{x:Bind ViewModel.ParameterDictionary['var_AdvancedDoorSelection'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                        <ToolTipService.ToolTip>
+                            <TextBlock FontSize="12" Foreground="IndianRed">
+                                <Run
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Text="Achtung:" /><LineBreak />
+                                <Run Text="Bei deaktivierter Türvalidierung können Tür-" /><LineBreak />
+                                <Run Text="kombinationen gewählt werden die nicht" /><LineBreak />
+                                <Run Text="realisierbar sind. Sollten sie sich nicht sicher sein" /><LineBreak />
+                                <Run Text="ob diese Türkombinationen möglich sind wenden sie" /><LineBreak />
+                                <Run Text="sich an den Türhesteller oder das Technische Büro." /><LineBreak />
+                            </TextBlock>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
                 <Expander
                     x:Name="Schachttueren"
                     Grid.Row="1"
@@ -1091,7 +1124,7 @@
                 <SpeziControls:ParameterCheckBox
                     x:Name="ReuseShaftDoors"
                     Grid.Row="1"
-                    Margin="220,10,0,0"
+                    Margin="250,10,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     CheckBoxContent="Bestands Schachttüren weiterverwenden"
@@ -1387,7 +1420,20 @@
                                         Grid.Column="2"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TeleskopschuerzenTyp'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
-                                        Visibility="{x:Bind ViewModel.ParameterDictionary['var_KTteleskopSchuerze'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
+                                        Visibility="{x:Bind ViewModel.ParameterDictionary['var_KTteleskopSchuerze'].Value, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}">
+                                        <ToolTipService.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                    Text="Zusatzinformationen" />
+                                                <TextBlock Text="TekoS-265mm Teleskopschürze 4-teilig" />
+                                                <TextBlock Text="TekoS-286mm Teleskopschürze 4-teilig Automatik" />
+                                                <TextBlock Text="TekoS-350mm Teleskopschürze 3-teilig" />
+                                                <TextBlock Text="TekoS-450mm Teleskopschürze 2-teilig" />
+                                            </StackPanel>
+                                        </ToolTipService.ToolTip>
+                                    </SpeziControls:ParameterComboBox>
                                 </Grid>
                                 <Grid
                                     Grid.Row="2"
@@ -1455,7 +1501,7 @@
                 </Expander>
                 <SpeziControls:ParameterCheckBox
                     Grid.Row="2"
-                    Margin="220,10,0,0"
+                    Margin="250,10,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     CheckBoxContent="Bestands Kabinentüren weiterverwenden"

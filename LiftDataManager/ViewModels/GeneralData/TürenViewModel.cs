@@ -4,7 +4,7 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+    public TürenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                           ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
@@ -21,15 +21,19 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
         if (message.PropertyName == "var_SchachttuereBestand")
         {
             if (!string.IsNullOrWhiteSpace(message.NewValue))
+            {
                 ShowShaftDoorDetails = !Convert.ToBoolean(message.NewValue);
-        };
-
+            }
+        }
+        
         if (message.PropertyName == "var_KabinentuereBestand")
         {
             if (!string.IsNullOrWhiteSpace(message.NewValue))
+            {
                 ShowCarDoorDetails = !Convert.ToBoolean(message.NewValue);
-        };
-
+            }
+        }
+        
         SetInfoSidebarPanelText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }
@@ -50,32 +54,36 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
     public partial bool ShowCarDoorDetails { get; set; } = true;
 
     [ObservableProperty]
+    public partial bool ShowAdvancedDoorSelection { get; set; }
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SetVariableCarDoorDataCommand))]
     public partial bool CanSetVariableCarDoorData { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanSetVariableCarDoorData))]
     private async Task SetVariableCarDoorDataAsync()
     {
-        var currentVariableCarDoorData = Convert.ToBoolean(ParameterDictionary["var_Variable_Tuerdaten"].Value);
-        ParameterDictionary["var_Variable_Tuerdaten"].Value = (currentVariableCarDoorData) ? "False" : "True";
+        bool currentVariableCarDoorData = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Variable_Tuerdaten");
+        ParameterDictionary["var_Variable_Tuerdaten"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(currentVariableCarDoorData.ToString());
         SetCarDoorDataVisibility();
         await Task.CompletedTask;
     }
 
     private void SetCarDoorDataVisibility()
     {
-        var variableCarDoorData = Convert.ToBoolean(ParameterDictionary["var_Variable_Tuerdaten"].Value);
-        var zugangB = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_B"].Value);
-        var zugangC = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_C"].Value);
-        var zugangD = Convert.ToBoolean(ParameterDictionary["var_ZUGANSSTELLEN_D"].Value);
+        bool variableCarDoorData = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Variable_Tuerdaten");
+        ShowAdvancedDoorSelection = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_AdvancedDoorSelection");
+        bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_B");
+        bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_C");
+        bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ZUGANSSTELLEN_D");
 
-        CanSetVariableCarDoorData = (zugangB || zugangC || zugangD);
-        ShowCarDoorDataB = (variableCarDoorData && zugangB);
-        ShowCarDoorDataC = (variableCarDoorData && zugangC);
-        ShowCarDoorDataD = (variableCarDoorData && zugangD);
+        CanSetVariableCarDoorData = zugangB || zugangC || zugangD;
+        ShowCarDoorDataB = variableCarDoorData && zugangB;
+        ShowCarDoorDataC = variableCarDoorData && zugangC;
+        ShowCarDoorDataD = variableCarDoorData && zugangD;
 
-        ShowShaftDoorDetails = !Convert.ToBoolean(ParameterDictionary["var_SchachttuereBestand"].Value);
-        ShowCarDoorDetails = !Convert.ToBoolean(ParameterDictionary["var_KabinentuereBestand"].Value);
+        ShowShaftDoorDetails = !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SchachttuereBestand");
+        ShowCarDoorDetails = !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_KabinentuereBestand");
     }
 
     public void OnNavigatedTo(object parameter)
