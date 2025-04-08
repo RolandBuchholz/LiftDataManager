@@ -64,7 +64,7 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
     private async Task SetVariableCarDoorDataAsync()
     {
         bool currentVariableCarDoorData = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Variable_Tuerdaten");
-        ParameterDictionary["var_Variable_Tuerdaten"].Value = LiftParameterHelper.FirstCharToUpperAsSpan(currentVariableCarDoorData.ToString());
+        ParameterDictionary["var_Variable_Tuerdaten"].Value = LiftParameterHelper.FirstCharToUpperAsSpan((!currentVariableCarDoorData).ToString());
         SetCarDoorDataVisibility();
         await Task.CompletedTask;
     }

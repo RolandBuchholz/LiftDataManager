@@ -223,6 +223,8 @@ public static class SkiaSharpHelpers
                 frameWidthLeft = 0;
                 frameDepth = 0;
                 break;
+            case "Meiller Kompakt -":
+                break;
             case "Meiller Typ DT -":
                 break;
             default:

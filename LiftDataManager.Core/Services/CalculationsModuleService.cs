@@ -1100,8 +1100,15 @@ public partial class CalculationsModuleService : ICalculationsModule
 
             if (safetyComponent is not null)
             {
-                model = safetyComponent.DisplayName;
                 manufacturer = safetyComponent.TypeExaminationCertificate?.ManufacturerName;
+                if (string.Equals(manufacturer, "Riedl"))
+                {
+                    model = $"{safetyComponent.DisplayName} (LIZ 3.0)";
+                }
+                else
+                {
+                    model = safetyComponent.DisplayName;
+                }
                 certificateNumber = safetyComponent.TypeExaminationCertificate?.CertificateNumber;
                 safetyComponentTyp = safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name;
                 if (item.Item4)

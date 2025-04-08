@@ -1086,10 +1086,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateDoorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!name.StartsWith("var_Tuertyp"))
+        if (!name.StartsWith("var_Tuertyp") || LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AdvancedDoorSelection"))
         {
             return;
         }
+
         var liftDoorGroups = name.Replace("var_Tuertyp", "var_Tuerbezeichnung");
 
         if (string.IsNullOrWhiteSpace(value))
@@ -1104,13 +1105,17 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             Expression<Func<LiftDoorGroup, bool>> filterDoorSystems;
             if (selectedDoorSytem == "M")
             {
-                if (_parameterDictionary[name].DropDownListValue is not null && _parameterDictionary[name].DropDownListValue!.Id == 4)
+                if (_parameterDictionary[name].DropDownListValue?.Id == 4)
                 {
                     filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && x.Name.Contains("DT");
                 }
+                else if (_parameterDictionary[name].DropDownListValue?.Id == 7)
+                {
+                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && x.Name.Contains("Kompakt");
+                }
                 else
                 {
-                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && !x.Name.Contains("DT");
+                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && !x.Name.Contains("DT") && !x.Name.Contains("Kompakt");
                 }
             }
             else
@@ -1133,43 +1138,84 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
     }
 
-    private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
+    private void ValidateSetLiftDoors(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!name.StartsWith("var_Tuerbezeichnung"))
+        if (!name.StartsWith("var_Tuerbezeichnung") || LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AdvancedDoorSelection"))
         {
             return;
         }
-        var liftDoortyp = name.Replace("var_Tuerbezeichnung", "var_Tuertyp");
-        var doorOpeningDirection = name.Replace("var_Tuerbezeichnung", "var_Tueroeffnung");
-        var doorPanelCount = name.Replace("var_Tuerbezeichnung", "var_AnzahlTuerfluegel");
         var carDoorDescription = string.Equals(name, "var_Tuerbezeichnung") ? "var_CarDoorDescriptionA" : name.Replace("var_Tuerbezeichnung_", "var_CarDoorDescription");
         var shaftDoorDescription = string.Equals(name, "var_Tuerbezeichnung") ? "var_ShaftDoorDescriptionA" : name.Replace("var_Tuerbezeichnung_", "var_ShaftDoorDescription");
 
         if (string.IsNullOrWhiteSpace(value))
         {
-            _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(string.Empty);
-            _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(null);
-            _parameterDictionary[doorPanelCount].AutoUpdateParameterValue("0");
+            _parameterDictionary[carDoorDescription].AutoUpdateParameterValue(string.Empty);
+            _parameterDictionary[shaftDoorDescription].AutoUpdateParameterValue(string.Empty);
         }
         else
         {
             var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor)
                                                                       .Include(i => i.ShaftDoor)
-                                                                      .ThenInclude(t => t!.LiftDoorOpeningDirection)
                                                                       .FirstOrDefault(x => x.Name == value);
             if (liftDoorGroup is not null && liftDoorGroup.ShaftDoor is not null && liftDoorGroup.CarDoor is not null)
             {
-                if (liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection is not null)
-                {
-                    if (string.IsNullOrWhiteSpace(_parameterDictionary[doorOpeningDirection].Value) || !_parameterDictionary[doorOpeningDirection].Value!.StartsWith(liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name))
-                    {
-                        _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name);
-                        _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(liftDoorGroup.ShaftDoor.LiftDoorOpeningDirection.Name);
-                    }
-                }
-                _parameterDictionary[doorPanelCount].AutoUpdateParameterValue(Convert.ToString(liftDoorGroup.ShaftDoor.DoorPanelCount));
                 _parameterDictionary[carDoorDescription].AutoUpdateParameterValue(liftDoorGroup.CarDoor.Name);
                 _parameterDictionary[shaftDoorDescription].AutoUpdateParameterValue(liftDoorGroup.ShaftDoor.Name);
+            }
+        }
+    }
+
+    private void ValidateDoorData(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (!name.StartsWith("var_ShaftDoorDescription"))
+        {
+            return;
+        }
+
+        var entrance = name[^1];
+        var doorOpeningDirection = entrance switch
+        {
+            'A' => "var_Tueroeffnung",
+            'B' => "var_Tueroeffnung_B",
+            'C' => "var_Tueroeffnung_C",
+            'D' => "var_Tueroeffnung_D",
+            _ => string.Empty,
+        };
+        var doorPanelCount = entrance switch
+        {
+            'A' => "var_AnzahlTuerfluegel",
+            'B' => "var_AnzahlTuerfluegel_B",
+            'C' => "var_AnzahlTuerfluegel_C",
+            'D' => "var_AnzahlTuerfluegel_D",
+            _ => string.Empty,
+        };
+        if (string.IsNullOrWhiteSpace(doorOpeningDirection) || string.IsNullOrWhiteSpace(doorPanelCount))
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(string.Empty);
+            _parameterDictionary[doorPanelCount].AutoUpdateParameterValue("0");
+        }
+        else
+        {
+            var shaftDoor = _parametercontext.Set<ShaftDoor>().Include(i => i.LiftDoorOpeningDirection)
+                                                              .FirstOrDefault(x => x.Name == value);
+            if (shaftDoor is not null )
+            {
+                _parameterDictionary[doorPanelCount].AutoUpdateParameterValue(Convert.ToString(shaftDoor.DoorPanelCount));
+
+                if (shaftDoor.LiftDoorOpeningDirection is null)
+                {
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(_parameterDictionary[doorOpeningDirection].Value) || 
+                   !_parameterDictionary[doorOpeningDirection].Value!.StartsWith(shaftDoor.LiftDoorOpeningDirection.Name))
+                {
+                    _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(shaftDoor.LiftDoorOpeningDirection.Name);
+                }
             }
         }
     }

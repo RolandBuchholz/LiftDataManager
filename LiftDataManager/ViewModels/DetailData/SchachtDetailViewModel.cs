@@ -463,7 +463,6 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         canvas.DrawPath(midLineCarVertical, paintCarMidLine);
 
         //LiftDoors
-        string liftDoortyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
         string[] entrances = ["A", "B", "C", "D"];
 
         foreach (var entrance in entrances)
@@ -472,44 +471,18 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             {
                 continue;
             }
-            string liftDoorGroupName = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, entrance == "A" ? "var_Tuerbezeichnung"
-                                                                                                                              : $"var_Tuerbezeichnung_{entrance}");
+
             float carDoorWidth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, entrance == "A" ? "var_TB"
                                                                                                                        : $"var_TB_{entrance}");
             string doorOpening = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, entrance == "A" ? "var_Tueroeffnung"
                                                                                                                         : $"var_Tueroeffnung_{entrance}");
             float crossbarDepth = LiftParameterHelper.GetLiftParameterValue<float>(ParameterDictionary, $"var_KabTuerKaempferBreite{entrance}");
+            string carDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, $"var_CarDoorDescription{entrance}");
+            string shaftDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, $"var_ShaftDoorDescription{entrance}");
+            var carDoor = _parametercontext.Set<CarDoor>().FirstOrDefault(x => x.Name == carDoorDescription);
+            var shaftDoor = _parametercontext.Set<ShaftDoor>().FirstOrDefault(x => x.Name == shaftDoorDescription);
 
-            if (string.IsNullOrWhiteSpace(liftDoorGroupName) || string.IsNullOrWhiteSpace(doorOpening) || carDoorWidth <= 0)
-            {
-                continue;
-            }
-
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>()
-                                                                      .Include(i => i.CarDoor)
-                                                                      .Include(i => i.ShaftDoor)
-                                                                      .FirstOrDefault(x => x.Name == liftDoorGroupName);
-            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null)
-            {
-                continue;
-            }
-            var openingDirection = string.Empty;
-
-            if (liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 3)
-            {
-                openingDirection = "zentral";
-            }
-            else if (liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 2)
-            {
-                openingDirection = doorOpening switch
-                {
-                    "einseitig öffnend (rechts)" => "rechts",
-                    "einseitig öffnend (links)" => "links",
-                    _ => string.Empty
-                };
-            }
-
-            if (string.IsNullOrWhiteSpace(openingDirection))
+            if (string.IsNullOrWhiteSpace(doorOpening) || carDoorWidth <= 0)
             {
                 continue;
             }
@@ -539,18 +512,70 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     return;
             }
 
-            var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, liftDoorGroup.CarDoor, entrance, carDoorWidth, openingDirection, crossbarDepth);
-            var shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, liftDoorGroup.ShaftDoor, entrance, carDoorWidth, openingDirection, liftDoortyp);
+            (SKPath, SKPath)? carDoorPath = null;
+            if (carDoor is not null)
+            {
+                var carDoorOpeningDirection = string.Empty;
+
+                if (carDoor.LiftDoorOpeningDirectionId == 3)
+                {
+                    carDoorOpeningDirection = "zentral";
+                }
+                else if (carDoor.LiftDoorOpeningDirectionId == 2)
+                {
+                    carDoorOpeningDirection = doorOpening switch
+                    {
+                        "einseitig öffnend (rechts)" => "rechts",
+                        "einseitig öffnend (links)" => "links",
+                        _ => string.Empty
+                    };
+                }
+
+                if (string.IsNullOrWhiteSpace(carDoorOpeningDirection))
+                {
+                    carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, carDoor, entrance, carDoorWidth, carDoorOpeningDirection, crossbarDepth);
+                }
+            }
+
+            (SKPath, SKPath)? shaftDoorPath = null;
+
+            if (shaftDoor is not null)
+            {
+                var shaftDoorOpeningDirection = string.Empty;
+
+                if (shaftDoor.LiftDoorOpeningDirectionId == 3)
+                {
+                    shaftDoorOpeningDirection = "zentral";
+                }
+                else if (shaftDoor.LiftDoorOpeningDirectionId == 2)
+                {
+                    shaftDoorOpeningDirection = doorOpening switch
+                    {
+                        "einseitig öffnend (rechts)" => "rechts",
+                        "einseitig öffnend (links)" => "links",
+                        _ => string.Empty
+                    };
+                }
+
+                //TODO improve installationType advanced door Selection 
+                string liftDoortyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
+
+                if (string.IsNullOrWhiteSpace(shaftDoorOpeningDirection))
+                {
+                    shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, shaftDoor, entrance, carDoorWidth, shaftDoorOpeningDirection, liftDoortyp);
+                }
+            }
+
             using var paintDoor = new SKPaint
             {
                 Color = SKColors.MediumSlateBlue,
                 IsAntialias = true,
                 Style = SKPaintStyle.Fill
             };
-            canvas.DrawPath(carDoorPath.Item1, paintDoor);
-            canvas.DrawPath(carDoorPath.Item1, paintOutline);
-            canvas.DrawPath(shaftDoorPath.Item1, paintDoor);
-            canvas.DrawPath(shaftDoorPath.Item1, paintOutline);
+            canvas.DrawPath(carDoorPath?.Item1, paintDoor);
+            canvas.DrawPath(carDoorPath?.Item1, paintOutline);
+            canvas.DrawPath(shaftDoorPath?.Item1, paintDoor);
+            canvas.DrawPath(shaftDoorPath?.Item1, paintOutline);
 
             using var paintDoorPanels = new SKPaint
             {
@@ -558,10 +583,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 IsAntialias = true,
                 Style = SKPaintStyle.Fill
             };
-            canvas.DrawPath(carDoorPath.Item2, paintDoorPanels);
-            canvas.DrawPath(carDoorPath.Item2, paintOutline);
-            canvas.DrawPath(shaftDoorPath.Item2, paintDoorPanels);
-            canvas.DrawPath(shaftDoorPath.Item2, paintOutline);
+            canvas.DrawPath(carDoorPath?.Item2, paintDoorPanels);
+            canvas.DrawPath(carDoorPath?.Item2, paintOutline);
+            canvas.DrawPath(shaftDoorPath?.Item2, paintDoorPanels);
+            canvas.DrawPath(shaftDoorPath?.Item2, paintOutline);
         }
     }
 
