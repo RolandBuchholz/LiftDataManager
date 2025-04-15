@@ -29,15 +29,22 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
     }
 
-    private void SetShaftDoorDoorData(string zugang)
+    private void SetShaftDoorDoorData(string zugang, bool advancedDoorSelection)
     {
         if (string.IsNullOrWhiteSpace(zugang))
         {
             return;
         }
 
-        string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Tuertyp");
-        string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Tuerbezeichnung");
+        if (!advancedDoorSelection)
+        {
+            string tuerTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Tuertyp");
+            string tuerBezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Tuerbezeichnung");
+            LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuertyp_{zugang}"], tuerTyp);
+            LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuerbezeichnung_{zugang}"], tuerBezeichnung);
+        }
+
+        string zulassungTuere = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_ZulassungTuere");
         string schwellenprofilSchachttuer = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Schwellenprofil");
         string schwellenprofilKabinentuer = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_SchwellenprofilKabTuere");
         double tuerBreite = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_TB");
@@ -48,13 +55,12 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         string carDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_CarDoorDescriptionA");
         string shaftDoorDescription = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_ShaftDoorDescriptionA");
 
-        LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuertyp_{zugang}"], tuerTyp);
-        LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Tuerbezeichnung_{zugang}"], tuerBezeichnung);
         _parameterDictionary[$"var_TB_{zugang}"].Value = Convert.ToString(tuerBreite);
         _parameterDictionary[$"var_TH_{zugang}"].Value = Convert.ToString(tuerHoehe);
         _parameterDictionary[$"var_Tuergewicht_{zugang}"].Value = Convert.ToString(tuerGewicht);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_Schwellenprofil{zugang}"], schwellenprofilSchachttuer);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"], schwellenprofilKabinentuer);
+        LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_ZulassungTuere_{zugang}"], zulassungTuere);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"], kaempferBreiteKabinentuer);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"], kaempferHoeheKabinentuer);
         LiftParameterHelper.UpdateParameterDropDownListValue(_parameterDictionary[$"var_CarDoorDescription{zugang}"], carDoorDescription);
@@ -97,7 +103,21 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownListValue = new SelectionValue();
         }
-
+        if (_parameterDictionary[$"var_ZulassungTuere_{zugang}"].DropDownListValue is not null ||
+            _parameterDictionary[$"var_ZulassungTuere_{zugang}"].DropDownListValue?.Id != 0)
+        {
+            _parameterDictionary[$"var_ZulassungTuere_{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (_parameterDictionary[$"var_CarDoorDescription{zugang}"].DropDownListValue is not null ||
+            _parameterDictionary[$"var_CarDoorDescription{zugang}"].DropDownListValue?.Id != 0)
+        {
+            _parameterDictionary[$"var_CarDoorDescription{zugang}"].DropDownListValue = new SelectionValue();
+        }
+        if (_parameterDictionary[$"var_ShaftDoorDescription{zugang}"].DropDownListValue is not null ||
+            _parameterDictionary[$"var_ShaftDoorDescription{zugang}"].DropDownListValue?.Id != 0)
+        {
+            _parameterDictionary[$"var_ShaftDoorDescription{zugang}"].DropDownListValue = new SelectionValue();
+        }
         if (!string.IsNullOrWhiteSpace(_parameterDictionary[$"var_TB_{zugang}"].Value))
         {
             if (_parameterDictionary[$"var_TB_{zugang}"].Value != "0")
@@ -138,20 +158,6 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             if (_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value != "0")
             {
                 _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].Value = string.Empty;
-            }
-        }
-        if (!string.IsNullOrWhiteSpace(_parameterDictionary[$"var_CarDoorDescription{zugang}"].Value))
-        {
-            if (_parameterDictionary[$"var_CarDoorDescription{zugang}"].Value != "0")
-            {
-                _parameterDictionary[$"var_CarDoorDescription{zugang}"].Value = string.Empty;
-            }
-        }
-        if (!string.IsNullOrWhiteSpace(_parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value))
-        {
-            if (_parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value != "0")
-            {
-                _parameterDictionary[$"var_ShaftDoorDescription{zugang}"].Value = string.Empty;
             }
         }
     }

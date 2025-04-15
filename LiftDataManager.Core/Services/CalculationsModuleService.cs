@@ -1049,6 +1049,7 @@ public partial class CalculationsModuleService : ICalculationsModule
         {
              ("Fangvorrichtung", "var_TypFV", "SafetyGearModelType", true),
              ("Geschwindigkeitsbegrenzer", "var_Geschwindigkeitsbegrenzer", "OverspeedGovernor", true),
+             ("Rohrbruchventil", "var_RuptureValueOptional", "SafetyGearModelType", false),
              ("Schachtinformationssystem", "var_Schachtinformationssystem", "LiftPositionSystem", false),
              ("Fahrkorbpuffer", "var_Puffertyp", "LiftBuffer", true),
              ("Gegengewichtspuffer", "var_Puffertyp_GGW", "LiftBuffer", true),

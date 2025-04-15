@@ -208,24 +208,24 @@ public static class SkiaSharpHelpers
 
         switch (installationType)
         {
-            case "Meiller Typ EvoN -" or "Wittur Typ -" or "Riedl Typ -":
+            case "Nischeneinbau":
                 frameWidthRight = (float)shaftDoor.DefaultFrameWidth;
                 frameWidthLeft = (float)shaftDoor.DefaultFrameWidth;
                 frameDepth = (float)shaftDoor.DefaultFrameDepth;
                 break;
-            case "Meiller Typ EvoS -":
+            case "Schachteinbau":
                 frameWidthRight = openingDirection == "zentral" ? 200f : (float)shaftDoor.DefaultFrameWidth;
                 frameWidthLeft = 200f;
                 frameDepth = 23f;
                 break;
-            case "Meiller Typ EvoM -":
+            case "Modernisierung":
                 frameWidthRight = 0;
                 frameWidthLeft = 0;
                 frameDepth = 0;
                 break;
-            case "Meiller Kompakt -":
+            case "Kompakt":
                 break;
-            case "Meiller Typ DT -":
+            case "Drehtuer":
                 break;
             default:
                 break;

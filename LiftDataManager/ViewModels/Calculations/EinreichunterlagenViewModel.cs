@@ -93,6 +93,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                     "Schauöffnungen in den Fahr/Schachttüren - nicht vorhanden.";
     public string LiftType => _calculationsModuleService.GetLiftTyp(ParameterDictionary["var_Aufzugstyp"].Value);
     public bool IsRopeLift => _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue);
+    public bool ShowRopes => !string.Equals(DriveTyp, "hydraulisch direkt");
     public string? DriveName => IsRopeLift ? ParameterDictionary["var_Antrieb"]?.Value : $"{ParameterDictionary["var_Antrieb"]?.Value} - {ParameterDictionary["var_Hydraulikventil"]?.Value} - {ParameterDictionary["var_Pumpenbezeichnung"]?.Value}";
     public string CWTRailName => IsRopeLift ? "Gegengewicht:" : "Jochschiene:";
     public string CarGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
@@ -141,7 +142,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         }
 
         if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_Tragseiltyp"].Value) &&
-            ParameterDictionary["var_SeilschlossTyp"].DropDownListValue is null)
+            ParameterDictionary["var_SeilschlossTyp"].DropDownListValue is null && ShowRopes)
         {
             liftDescriptionInfos.Add(new LiftDescriptionInfoEntry(InfoBarSeverity.Warning, "Tragmittel", "Seilschlosstyp nicht angegeben"));
         }

@@ -512,7 +512,19 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     return;
             }
 
-            (SKPath, SKPath)? carDoorPath = null;
+            using var paintDoor = new SKPaint
+            {
+                Color = SKColors.MediumSlateBlue,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill
+            };
+            using var paintDoorPanels = new SKPaint
+            {
+                Color = SKColors.BlueViolet,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill
+            };
+
             if (carDoor is not null)
             {
                 var carDoorOpeningDirection = string.Empty;
@@ -531,13 +543,15 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                     };
                 }
 
-                if (string.IsNullOrWhiteSpace(carDoorOpeningDirection))
+                if (!string.IsNullOrWhiteSpace(carDoorOpeningDirection))
                 {
-                    carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, carDoor, entrance, carDoorWidth, carDoorOpeningDirection, crossbarDepth);
+                    var carDoorPath = SkiaSharpHelpers.CreateCarDoor(doorPositionX, doorPositionY, carDoor, entrance, carDoorWidth, carDoorOpeningDirection, crossbarDepth);
+                    canvas.DrawPath(carDoorPath.Item1, paintDoor);
+                    canvas.DrawPath(carDoorPath.Item1, paintOutline);
+                    canvas.DrawPath(carDoorPath.Item2, paintDoorPanels);
+                    canvas.DrawPath(carDoorPath.Item2, paintOutline);
                 }
             }
-
-            (SKPath, SKPath)? shaftDoorPath = null;
 
             if (shaftDoor is not null)
             {
@@ -556,37 +570,16 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                         _ => string.Empty
                     };
                 }
-
-                //TODO improve installationType advanced door Selection 
-                string liftDoortyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Tuertyp");
-
-                if (string.IsNullOrWhiteSpace(shaftDoorOpeningDirection))
+                string shaftDoorInstallationTyp = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, $"var_ShaftDoorInstallationTyp{entrance}");
+                if (!string.IsNullOrWhiteSpace(shaftDoorOpeningDirection))
                 {
-                    shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, shaftDoor, entrance, carDoorWidth, shaftDoorOpeningDirection, liftDoortyp);
+                    var shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, shaftDoor, entrance, carDoorWidth, shaftDoorOpeningDirection, shaftDoorInstallationTyp);
+                    canvas.DrawPath(shaftDoorPath.Item2, paintDoorPanels);
+                    canvas.DrawPath(shaftDoorPath.Item2, paintOutline);
+                    canvas.DrawPath(shaftDoorPath.Item1, paintDoor);
+                    canvas.DrawPath(shaftDoorPath.Item1, paintOutline);
                 }
             }
-
-            using var paintDoor = new SKPaint
-            {
-                Color = SKColors.MediumSlateBlue,
-                IsAntialias = true,
-                Style = SKPaintStyle.Fill
-            };
-            canvas.DrawPath(carDoorPath?.Item1, paintDoor);
-            canvas.DrawPath(carDoorPath?.Item1, paintOutline);
-            canvas.DrawPath(shaftDoorPath?.Item1, paintDoor);
-            canvas.DrawPath(shaftDoorPath?.Item1, paintOutline);
-
-            using var paintDoorPanels = new SKPaint
-            {
-                Color = SKColors.BlueViolet,
-                IsAntialias = true,
-                Style = SKPaintStyle.Fill
-            };
-            canvas.DrawPath(carDoorPath?.Item2, paintDoorPanels);
-            canvas.DrawPath(carDoorPath?.Item2, paintOutline);
-            canvas.DrawPath(shaftDoorPath?.Item2, paintDoorPanels);
-            canvas.DrawPath(shaftDoorPath?.Item2, paintOutline);
         }
     }
 

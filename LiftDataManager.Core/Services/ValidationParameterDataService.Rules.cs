@@ -515,6 +515,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
     private void ValidateVariableCarDoors(string name, string displayname, string? value, string? severity, string? optional = null)
     {
         bool variableTuerdaten = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_Variable_Tuerdaten");
+        bool advancedDoorSelection = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AdvancedDoorSelection");
         bool zugangB = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_ZUGANSSTELLEN_B");
         bool zugangC = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_ZUGANSSTELLEN_C");
         bool zugangD = LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_ZUGANSSTELLEN_D");
@@ -537,7 +538,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         if (zugangB)
         {
-            SetShaftDoorDoorData("B");
+            SetShaftDoorDoorData("B", advancedDoorSelection);
         }
         else
         {
@@ -545,7 +546,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         if (zugangC)
         {
-            SetShaftDoorDoorData("C");
+            SetShaftDoorDoorData("C", advancedDoorSelection);
         }
         else
         {
@@ -553,7 +554,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         if (zugangD)
         {
-            SetShaftDoorDoorData("D");
+            SetShaftDoorDoorData("D", advancedDoorSelection);
         }
         else
         {
@@ -1092,36 +1093,36 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
 
         var liftDoorGroups = name.Replace("var_Tuertyp", "var_Tuerbezeichnung");
+        var shaftDoorInstallationTyp = string.Equals(name, "var_Tuertyp") ? "var_ShaftDoorInstallationTypA" : name.Replace("var_Tuertyp_", "var_ShaftDoorInstallationTyp");
 
         if (string.IsNullOrWhiteSpace(value))
         {
             _parameterDictionary[liftDoorGroups].AutoUpdateParameterValue(string.Empty);
             _parameterDictionary[liftDoorGroups].AutoUpdateParameterValue(null);
             _parameterDictionary[liftDoorGroups].DropDownList.Clear();
+            _parameterDictionary[shaftDoorInstallationTyp].AutoUpdateParameterValue(null);
         }
         else
         {
-            var selectedDoorSytem = value[..1];
             Expression<Func<LiftDoorGroup, bool>> filterDoorSystems;
-            if (selectedDoorSytem == "M")
+            filterDoorSystems = _parameterDictionary[name].DropDownListValue?.Id switch
             {
-                if (_parameterDictionary[name].DropDownListValue?.Id == 4)
-                {
-                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && x.Name.Contains("DT");
-                }
-                else if (_parameterDictionary[name].DropDownListValue?.Id == 7)
-                {
-                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && x.Name.Contains("Kompakt");
-                }
-                else
-                {
-                    filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem) && !x.Name.Contains("DT") && !x.Name.Contains("Kompakt");
-                }
-            }
-            else
+                1 or 2 or 3 => x => x.DoorManufacturer! == "Meiller",
+                4 => x => x.DoorManufacturer! == "Meiller" && x.Name.Contains("DT"),
+                5 => x => x.DoorManufacturer! == "Wittur",
+                6 => x => x.DoorManufacturer! == "Riedl",
+                7 => x => x.DoorManufacturer! == "Meiller" && x.Name.Contains("Kompakt"),
+                _ => x => x.DoorManufacturer! != "",
+            };
+            _parameterDictionary[shaftDoorInstallationTyp].AutoUpdateParameterValue(_parameterDictionary[name].DropDownListValue?.Id switch
             {
-                filterDoorSystems = x => x.DoorManufacturer!.StartsWith(selectedDoorSytem);
-            }
+                1 => "Nischeneinbau",
+                2 => "Schachteinbau",
+                3 => "Modernisierung",
+                4 => "Drehtuer",
+                7 => "Kompakt",
+                _ => "Nischeneinbau",
+            });
 
             var availableLiftDoorGroups = _parametercontext.Set<LiftDoorGroup>().Where(filterDoorSystems)
                                                                                 .Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName)
@@ -2028,6 +2029,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                         "14" => string.Equals(value, "kein GB", StringComparison.CurrentCultureIgnoreCase) || string.Equals(value, "GB Ersatz durch Limax", StringComparison.CurrentCultureIgnoreCase),
                         "15" => string.Equals(value, "HJ200, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         "16" => string.Equals(value, "HJ200, AS 24V, el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
+                        "18" => string.Equals(value, "HJ300, FA u. el. Vorab. 230V (elektrom. Rückst.)", StringComparison.CurrentCultureIgnoreCase),
                         _ => true
                     },
                     "var_TypFuehrung" => cFPValue switch

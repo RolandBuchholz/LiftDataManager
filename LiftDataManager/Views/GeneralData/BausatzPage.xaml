@@ -357,11 +357,21 @@
                                     FontSize="16">
                                     Geschwindigkeits-<LineBreak />
                                     begrenzer</TextBlock>
-                                <SpeziControls:ParameterComboBox
+                                <Grid
                                     Grid.Row="0"
                                     Grid.Column="1"
-                                    Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
+                                    Margin="0,0,5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbegrenzer'], Mode=TwoWay}" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        MinWidth="200"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RuptureValueOptional'], Mode=TwoWay}"
+                                        Visibility="{x:Bind ViewModel.RuptureValueVisibility, Mode=OneWay}" />
+                                </Grid>
                                 <SpeziControls:ParameterTextBox
                                     Grid.Row="1"
                                     Grid.Column="1"

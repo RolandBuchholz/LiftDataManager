@@ -73,7 +73,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*">
+                                    ColumnDefinitions="*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp'], Mode=TwoWay}"
@@ -84,6 +85,30 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Tuertyp_A_Advanced"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay}">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorInstallationTypA'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorDescriptionA'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CarDoorDescriptionA'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
@@ -234,7 +259,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*">
+                                    ColumnDefinitions="*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_B'], Mode=TwoWay}"
@@ -245,6 +271,30 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_B'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Tuertyp_B_Advanced"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay}">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorInstallationTypB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorDescriptionB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CarDoorDescriptionB'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_B'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
@@ -391,7 +441,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*">
+                                    ColumnDefinitions="*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_C'], Mode=TwoWay}"
@@ -402,6 +453,30 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_C'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Tuertyp_C_Advanced"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay}">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorInstallationTypC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorDescriptionC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CarDoorDescriptionC'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_C'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
@@ -548,7 +623,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*,*">
+                                    ColumnDefinitions="*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Tuertyp_D'], Mode=TwoWay}"
@@ -559,6 +635,30 @@
                                         ShowDefaultHeader="True" />
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_D'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    x:Name="Tuertyp_D_Advanced"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*,*,*"
+                                    Visibility="{x:Bind ViewModel.ShowAdvancedDoorSelection, Mode=OneWay}">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorInstallationTypD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ShaftDoorDescriptionD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="2"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CarDoorDescriptionD'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere_D'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>

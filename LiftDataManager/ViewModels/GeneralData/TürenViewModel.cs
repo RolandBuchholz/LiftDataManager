@@ -33,7 +33,15 @@ public partial class TürenViewModel : DataViewModelBase, INavigationAwareEx, IR
                 ShowCarDoorDetails = !Convert.ToBoolean(message.NewValue);
             }
         }
-        
+
+        if (message.PropertyName == "var_AdvancedDoorSelection")
+        {
+            if (!string.IsNullOrWhiteSpace(message.NewValue))
+            {
+                ShowAdvancedDoorSelection = Convert.ToBoolean(message.NewValue);
+            }
+        }
+
         SetInfoSidebarPanelText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
     }

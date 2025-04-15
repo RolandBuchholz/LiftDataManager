@@ -46,6 +46,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         if (message.PropertyName == "var_Geschwindigkeitsbegrenzer")
         {
             SetOverspeedGovernorWeightVisibility();
+            SetRuptureValueVisibility();
         }
         SetInfoSidebarPanelText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
@@ -103,6 +104,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
 
     [ObservableProperty]
     public partial bool OverspeedGovernorWeightVisibility { get; set; }
+
+    [ObservableProperty]
+    public partial bool RuptureValueVisibility { get; set; }
 
     private async Task SetCarWeightAsync()
     {
@@ -219,6 +223,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
         await Task.CompletedTask;
     }
+
     private void SetOverspeedGovernorWeightVisibility() 
     {
         if(_calculationsModuleService.IsOverspeedGovernorWeightRequired(ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue))
@@ -230,6 +235,11 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             OverspeedGovernorWeightVisibility = false;
             ParameterDictionary["var_SpanngewichtTyp"].AutoUpdateParameterValue(string.Empty);
         }
+    }
+
+    private void SetRuptureValueVisibility()
+    {
+        RuptureValueVisibility = ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue?.Id == 19;
     }
 
     [RelayCommand]
@@ -248,6 +258,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
             UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
             SetOverspeedGovernorWeightVisibility();
+            SetRuptureValueVisibility();
         }
     }
 

@@ -26,6 +26,9 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         SetLiftDocumentation();
     }
 
+    public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
+    public bool ShowRopes => !string.Equals(DriveTyp, "hydraulisch direkt");
+
     private void SetLiftDocumentation()
     {
         var liftDocumentation = ParameterDictionary["var_Einreichunterlagen"].Value;
@@ -324,10 +327,10 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
             });
-            table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der Tragmittel:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
-            table.Cell().Row(2).Column(1).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
-            table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
+            table.Cell().Row(1).Column(1).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der Tragmittel:").Bold();
+            table.Cell().Row(1).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
+            table.Cell().Row(2).Column(1).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
+            table.Cell().Row(2).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
             table.Cell().Row(3).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
             var suspension = _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1"
                                                                                                                          : $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1";
@@ -348,7 +351,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
                 columns.RelativeColumn();
             });
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Art des Antriebs:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, (int)LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope")));
+            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(DriveTyp);
             table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? ParameterDictionary["var_Antrieb"].Value
                                                                                                                                                                                              : $"{ParameterDictionary["var_Antrieb"]?.Value} - {ParameterDictionary["var_Hydraulikventil"]?.Value} - {ParameterDictionary["var_Pumpenbezeichnung"]?.Value}");
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Hydraulikzylinder:").Bold();
@@ -378,7 +381,8 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             var carRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
             table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).Text($"{ParameterDictionary["var_FuehrungsschieneFahrkorb"]?.DropDownListValue?.DisplayName} - {carRailSurface}");
             table.Cell().Row(2).Column(2).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "Gegengewicht:" : "Jochschiene:");
-            var cwtRailSurface = _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
+            var cwtRailSurface = string.IsNullOrWhiteSpace(ParameterDictionary["var_FuehrungsschieneGegengewicht"].Value) ? string.Empty
+                                                                                                                          : _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
             table.Cell().Row(2).Column(3).PaddingVertical(defaultRowSpacing).Background(secondRowColor).Text($"{ParameterDictionary["var_FuehrungsschieneGegengewicht"]?.DropDownListValue?.DisplayName} - {cwtRailSurface}");
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Fahrkorbgrundfläche:").Bold();
             table.Cell().Row(3).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_A_Kabine"].Value} m²");
@@ -389,7 +393,9 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Fahrkorbes:").Bold();
             table.Cell().Row(6).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
             table.Cell().Row(7).Column(1).PaddingVertical(defaultRowSpacing).Text("Gewicht des Gegengewichtes:").Bold();
-            var cWTBalancePercent = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
+            var cWTBalancePercent = string.IsNullOrWhiteSpace(ParameterDictionary["var_Gegengewichtsmasse"].Value) || string.Equals(ParameterDictionary["var_Gegengewichtsmasse"].Value,"0") ? 
+                                    string.Empty :
+                                    LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
             table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg  (Ausgleich {cWTBalancePercent}%)");
             table.Cell().Row(8).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Seilgewichtsausgleiches (Unterseil bzw. Seilausgleichskette):").Bold();
             table.Cell().Row(8).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("---");

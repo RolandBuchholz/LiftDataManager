@@ -734,11 +734,13 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Anzahl und Art der Tragmittel:" />
+                                Text="Anzahl und Art der Tragmittel:"
+                                Visibility="{x:Bind ViewModel.ShowRopes}" />
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind ViewModel.ShowRopes}">
                                 <TextBox
                                     Width="65"
                                     HorizontalAlignment="Left"
@@ -761,14 +763,16 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="Seilschlösser:" />
+                                Text="Seilschlösser:"
+                                Visibility="{x:Bind ViewModel.ShowRopes}" />
                             <SpeziControls:ParameterComboBox
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Width="520"
                                 Margin="-5,-5,-5,5"
                                 HorizontalAlignment="Left"
-                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SeilschlossTyp'], Mode=TwoWay}" />
+                                LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SeilschlossTyp'], Mode=TwoWay}"
+                                Visibility="{x:Bind ViewModel.ShowRopes}" />
                             <TextBlock
                                 Grid.Row="2"
                                 Grid.Column="0"
