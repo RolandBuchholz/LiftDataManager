@@ -574,10 +574,10 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
                 if (!string.IsNullOrWhiteSpace(shaftDoorOpeningDirection))
                 {
                     var shaftDoorPath = SkiaSharpHelpers.CreateShaftDoor(doorPositionX, doorPositionY, shaftDoor, entrance, carDoorWidth, shaftDoorOpeningDirection, shaftDoorInstallationTyp);
-                    canvas.DrawPath(shaftDoorPath.Item2, paintDoorPanels);
-                    canvas.DrawPath(shaftDoorPath.Item2, paintOutline);
                     canvas.DrawPath(shaftDoorPath.Item1, paintDoor);
                     canvas.DrawPath(shaftDoorPath.Item1, paintOutline);
+                    canvas.DrawPath(shaftDoorPath.Item2, paintDoorPanels);
+                    canvas.DrawPath(shaftDoorPath.Item2, paintOutline);
                 }
             }
         }
@@ -607,6 +607,11 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
         }
 
         var cantiLever = carFrameTyp.CarFrameBaseType != null && (carFrameTyp.CarFrameBaseTypeId == 1 || carFrameTyp.CarFrameBaseTypeId == 4);
+
+        if (carFrameTyp.Id == 4)
+        {
+            carframeDGB *= -1f;
+        }
 
         SKPoint startPointDGB = new();
         SKPoint endPointDGB = new();

@@ -282,6 +282,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             "var_FertigstellungAm",
             "var_GeaendertAm",
             "var_GeaendertVon",
+            "var_ImportiertVon",
             "var_CFPdefiniert"
         };
 

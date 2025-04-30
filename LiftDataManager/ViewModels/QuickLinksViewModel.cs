@@ -646,7 +646,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             SetSyncedParameter("var_AnzahlUmlenkrollen", (Convert.ToInt32(pKDictionary["Anlage-URF"], CultureInfo.CurrentCulture) + Convert.ToInt32(pKDictionary["Anlage-URG"], CultureInfo.CurrentCulture)).ToString());
             SetSyncedParameter("var_AnzahlUmlenkrollenFk", pKDictionary["Anlage-URF"]);
             SetSyncedParameter("var_AnzahlUmlenkrollenGgw", pKDictionary["Anlage-URG"]);
-            SetSyncedParameter("var_MotorGeber", pKDictionary["Geber-Typ"]);
+            SetSyncedParameter("var_MotorGeber", zliDataDictionary["Gebertyp"]);
         }
         _logger.LogInformation(60195, "ZAliftData imported");
 

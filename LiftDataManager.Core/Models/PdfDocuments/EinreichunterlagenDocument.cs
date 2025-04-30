@@ -457,7 +457,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         {
             column.Item().PaddingBottom(5, Unit.Millimetre).Text("Anlagen:").FontSize(fontSizeL).Bold();
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Layoutdrawing, "|1| Anlagenzeichnung");
-            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "|2| Risikobewertungen");
+            column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.RiskAssessment, "|2| Risikobeurteilungen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.Calculations, "|3| Berechnungen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.CircuitDiagrams, "|4| Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen");
             column.Item().PaddingVertical(1).CheckBoxValue(LiftDocumentation.TestingInstructions, "|5| Prüfanleitung UCM inkl. Berechnung");

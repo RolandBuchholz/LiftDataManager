@@ -1218,7 +1218,7 @@
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                             Text="Anlagen:" />
                         <CheckBox Content="1. Anlagenzeichnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.Layoutdrawing, Mode=TwoWay}" />
-                        <CheckBox Content="2. Risikobewertungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
+                        <CheckBox Content="2. Risikobeurteilungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.RiskAssessment, Mode=TwoWay}" />
                         <CheckBox Content="3. Berechnungen" IsChecked="{x:Bind ViewModel.LiftDocumentation.Calculations, Mode=TwoWay}" />
                         <CheckBox Content="4. Schaltplan, Sicherheitsschaltung mit elektronischen Bauteilen" IsChecked="{x:Bind ViewModel.LiftDocumentation.CircuitDiagrams, Mode=TwoWay}" />
                         <CheckBox Content="5. Prüfanleitung UCM inkl. Berechnung" IsChecked="{x:Bind ViewModel.LiftDocumentation.TestingInstructions, Mode=TwoWay}" />

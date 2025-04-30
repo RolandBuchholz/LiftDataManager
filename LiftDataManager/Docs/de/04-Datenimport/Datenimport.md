@@ -23,7 +23,8 @@ Folgende Parameter werden beim Import ignoriert und nicht übernommen, alle ande
 - var_FertigstellungAm  
 - var_GeaendertAm  
 - var_GeaendertVon
-- var_dbChanges  
+- var_dbChanges
+- var_ImportiertVon
 - var_CFPdefiniert  
 
 [//]: # (Tags: Datenimport | importieren |  kopieren | Pdf einlesen)  

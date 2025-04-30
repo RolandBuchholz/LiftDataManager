@@ -23,12 +23,14 @@ public static class SkiaSharpHelpers
         arrow.Transform(SKMatrix.CreateTranslation(x, y));
         return arrow;
     }
+
     public static SKMatrix Multiply(SKMatrix first, SKMatrix second)
     {
         SKMatrix target = SKMatrix.CreateIdentity();
         SKMatrix.Concat(ref target, first, second);
         return target;
     }
+
     public static SKPath CreateGuideRail(float x, float y, GuideRails guideRail, float degrees = 0)
     {
         var rail = new SKPath();
