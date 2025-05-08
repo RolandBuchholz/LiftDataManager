@@ -505,7 +505,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var ropeSafety = string.Empty;
             try
             {
-                ropeSafety = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Seilsicherheit") || x.InnerText.StartsWith("Rope safety  nue"))?.InnerText.Split('=', '&')[1].Trim();
+                ropeSafety = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Seilsicherheit") || x.InnerText.StartsWith("Rope safety  nue"))?.InnerText.Split('=', '&')[1].Trim();
             }
             catch (Exception)
             {
@@ -528,13 +528,13 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             {
                 if (languageEnum == 0)
                 {
-                    ropeDeflection = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") ||
+                    ropeDeflection = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Treibscheibe") ||
                                                                    x.InnerText.StartsWith("Maschine"))?
                                                .InnerText.Split(',').LastOrDefault()?.Trim();
                 }
                 else
                 {
-                    var ropeDeflectionString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Traction sheave") || 
+                    var ropeDeflectionString = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Traction sheave") || 
                                                                              x.InnerText.StartsWith("Machine") )?
                                                .InnerText.Split(',').LastOrDefault()?.Trim();
 
@@ -559,7 +559,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var compensationRopeWeight = string.Empty;
             try
             {
-                compensationRopeWeight = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht") || x.InnerText.StartsWith("Compensation rope"))?.ChildNodes[3].InnerText.Trim();
+                compensationRopeWeight = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Unterseilgewicht") || x.InnerText.StartsWith("Compensation rope"))?.ChildNodes[3].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -579,7 +579,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 var exactCurrentString = string.Empty;
                 if (languageEnum == 0)
                 {
-                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
+                    exactCurrentString = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Netzstromaufnahme"))?.InnerText;
                     if (!string.IsNullOrWhiteSpace(exactCurrentString))
                     {
                         exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("Netzstromaufnahme", "").Trim();
@@ -587,7 +587,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 }
                 else
                 {
-                    exactCurrentString = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("mains current"))?.InnerText;
+                    exactCurrentString = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("mains current"))?.InnerText;
                     if (!string.IsNullOrWhiteSpace(exactCurrentString))
                     {
                         exactRatedCurrent = exactCurrentString[..exactCurrentString.IndexOf('A')].Replace("mains current", "").Trim();
@@ -622,7 +622,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var maxEngineCurrent = string.Empty;
             try
             {
-                maxEngineCurrent = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment") || x.InnerText.StartsWith("Current at maximum torque"))?.ChildNodes[2].InnerText.Trim();
+                maxEngineCurrent = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Strom bei Maximalmoment") || x.InnerText.StartsWith("Current at maximum torque"))?.ChildNodes[2].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -632,7 +632,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
             var powerDissipation = string.Empty;
             try
             {
-                powerDissipation = htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung") || x.InnerText.StartsWith("Average power losses"))?.ChildNodes[1].InnerText.Trim();
+                powerDissipation = htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Mittl. Verlustleistung") || x.InnerText.StartsWith("Average power losses"))?.ChildNodes[1].InnerText.Trim();
             }
             catch (Exception)
             {
@@ -713,8 +713,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         {
             return zliDataDictionary;
         }
-        var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
-                                                                        .InnerHtml.Split([Environment.NewLine], StringSplitOptions.None);
+        var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()")?.FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+                                                                         .InnerHtml.Split([Environment.NewLine], StringSplitOptions.None);
         if (zliData is null)
         {
             return zliDataDictionary;
@@ -749,8 +749,8 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
         {
             return pKDictionary;
         }
-        var pKData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- PK"))?
-                                                                       .InnerHtml.Split(";", StringSplitOptions.None);
+        var pKData = zaliftHtml.DocumentNode.SelectNodes("//comment()")?.FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- PK"))?
+                                                                        .InnerHtml.Split(";", StringSplitOptions.None);
         if (pKData is null)
         {
             return pKDictionary;

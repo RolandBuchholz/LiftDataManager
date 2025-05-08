@@ -297,25 +297,25 @@ public partial class ParameterDataService : IParameterDataService
                     var parameters = dataSet.Value.Item2.Split(';');
                     if (parameters.Length > 0)
                     {
-                        concatenatedString = string.Join(' ', parameters.Select(x => GetValueFromHtmlNode(htmlNodes.FirstOrDefault(y => y.InnerText.StartsWith(x)))));
+                        concatenatedString = string.Join(' ', parameters.Select(x => GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(y => y.InnerText.StartsWith(x)))));
                     }
                     value = concatenatedString;
                     break;
                 case 2:
                     // set entrances
-                    var entrances = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var entrances = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     value = entrances.Contains(dataSet.Key[^1..]).ToString();
                     break;
                 case 3:
                     // set carTyp
-                    value = string.IsNullOrWhiteSpace(GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2))))
+                    value = string.IsNullOrWhiteSpace(GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2))))
                             ? string.Empty
                             : "Fremdkabine";
                     break;
                 case 4:
                     // convert mm to m
                     var travelmeter = "0";
-                    var travelmm = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var travelmm = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     if (!string.IsNullOrWhiteSpace(travelmm))
                     {
                         if (double.TryParse(travelmm, out double doubleValue))
@@ -327,7 +327,7 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 case 5:
                     // set liftTyp
-                    var selectedLiftTyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var selectedLiftTyp = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     value = selectedLiftTyp switch
                     {
                         "Hydraulikaufzug" => "Personen- / Lasten Hydraulik-Aufzug",
@@ -337,7 +337,7 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 case 6:
                     // set machineroom
-                    var machineroom = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var machineroom = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     value = machineroom switch
                     {
                         "mit Maschinenraum oben über" => "oben über",
@@ -349,14 +349,14 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 case 7:
                     // set carFrameTyp
-                    var carFrameTyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
-                    var drivetyp = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Antriebsart")));
+                    var carFrameTyp = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var drivetyp = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Antriebsart")));
                     if (!string.IsNullOrWhiteSpace(drivetyp))
                     {
                         value = carFrameTyp switch
                         {
-                            "Rucksackausführung" => drivetyp.StartsWith("H") ? "Sonderbausatz Hydr. Rucksack 2:1" : "Sonderbausatz Seil Rucksack MRL",
-                            "Zentral / Tandem" => drivetyp.StartsWith("H") ? "Sonderbausatz Hydr. Tandem 2:1" : "Sonderbausatz Seil Zentralrahmen",
+                            "Rucksackausführung" => drivetyp.StartsWith('H') ? "Sonderbausatz Hydr. Rucksack 2:1" : "Sonderbausatz Seil Rucksack MRL",
+                            "Zentral / Tandem" => drivetyp.StartsWith('H') ? "Sonderbausatz Hydr. Tandem 2:1" : "Sonderbausatz Seil Zentralrahmen",
                             _ => string.Empty,
                         };
                     }
@@ -369,7 +369,7 @@ public partial class ParameterDataService : IParameterDataService
                             value = "extern";
                             break;
                         case "var_KU":
-                            var floorHeightString = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                            var floorHeightString = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                             if (!string.IsNullOrWhiteSpace(floorHeightString))
                             {
                                 if (double.TryParse(floorHeightString, out double doubleValue))
@@ -385,7 +385,7 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 case 9:
                     //set carroof
-                    var roofHeightString = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var roofHeightString = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     if (!string.IsNullOrWhiteSpace(roofHeightString))
                     {
                         if (double.TryParse(roofHeightString, out double doubleValue))
@@ -397,13 +397,13 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 case 10:
                     //set carWalloutside
-                    var outsideCar = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    var outsideCar = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     if (string.IsNullOrWhiteSpace(outsideCar))
                     {
                         switch (dataSet.Key)
                         {
                             case "var_KBA" or "var_KTA":
-                                var carInside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Key == "var_KBA"
+                                var carInside = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Key == "var_KBA"
                                                                                                      ? "Kabinenbreite innen"
                                                                                                      : "Kabinentiefe innen")));
                                 if (!string.IsNullOrWhiteSpace(carInside))
@@ -415,10 +415,10 @@ public partial class ParameterDataService : IParameterDataService
                                 }
                                 break;
                             case "var_KHA":
-                                var carHeightOutside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                                var carHeightOutside = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                                 if (string.IsNullOrWhiteSpace(carHeightOutside))
                                 {
-                                    var carHeightInside = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith("Kabinenhöhe innen")));
+                                    var carHeightInside = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith("Kabinenhöhe innen")));
                                     if (double.TryParse(carHeightInside, out double doubleValue))
                                     {
                                         value = (carFloorHeight + doubleValue + carRoofHeight).ToString();
@@ -440,7 +440,7 @@ public partial class ParameterDataService : IParameterDataService
                     break;
                 default:
                     // return standard value
-                    value = GetValueFromHtmlNode(htmlNodes.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
+                    value = GetValueFromHtmlNode(htmlNodes?.FirstOrDefault(x => x.InnerText.StartsWith(dataSet.Value.Item2)));
                     break;
             }
             transferDataList.Add(new TransferData(dataSet.Key,
