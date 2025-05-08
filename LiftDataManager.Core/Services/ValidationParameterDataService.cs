@@ -421,34 +421,17 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         ValidationDictionary.Add("var_Tuerbezeichnung",
             [new(ValidateSetLiftDoors, "None", null),
-            new(ValidateVariableCarDoors, "None", null),
-            new(ValidateDoorSill, "None", null),
-            new(ValidateCarDoorHeaders, "None", null),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null)]);
+            new(ValidateVariableCarDoors, "None", null)]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_B",
-            [new(ValidateSetLiftDoors, "None", null),
-            new(ValidateDoorSill, "None", null),
-            new(ValidateCarDoorHeaders, "None", null),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateSetLiftDoors, "None", null)]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_C",
-            [new(ValidateSetLiftDoors, "None", null),
-            new(ValidateDoorSill, "None", null),
-            new(ValidateCarDoorHeaders, "None", null),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateSetLiftDoors, "None", null)]);
 
         ValidationDictionary.Add("var_Tuerbezeichnung_D",
-            [new(ValidateSetLiftDoors, "None", null),
-            new(ValidateDoorSill, "None", null),
-            new(ValidateCarDoorHeaders, "None", null),
-            new(ValidateCarDoorMountingDimensions, "Warning", null),
-            new(ValidateEntryDimensions, "None", null) ]);
+            [new(ValidateSetLiftDoors, "None", null)]);
 
-//-------------------------------------------------------------------------
         ValidationDictionary.Add("var_ShaftDoorDescriptionA",
             [new(ValidateDoorData, "None", null),
             new(ValidateVariableCarDoors, "None", null)]);
@@ -459,18 +442,30 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_ShaftDoorDescriptionD",
             [new(ValidateDoorData, "None", null)]);
 
-        //-------------------------------------------------------------------------
-
         ValidationDictionary.Add("var_CarDoorDescriptionA",
-            [new(ValidateVariableCarDoors, "None", null)]);
-        //ValidationDictionary.Add("var_CarDoorDescriptionB",
-        //    [new(ValidateDoorData, "None", null)]);
-        //ValidationDictionary.Add("var_CarDoorDescriptionC",
-        //    [new(ValidateDoorData, "None", null)]);
-        //ValidationDictionary.Add("var_CarDoorDescriptionD",
-        //    [new(ValidateDoorData, "None", null)]);
+            [new(ValidateVariableCarDoors, "None", null),
+            new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateEntryDimensions, "None", null)]);
 
-        //-------------------------------------------------------------------------
+        ValidationDictionary.Add("var_CarDoorDescriptionB",
+            [new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),            
+            new(ValidateEntryDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_CarDoorDescriptionC",
+            [new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),            
+            new(ValidateEntryDimensions, "None", null)]);
+
+        ValidationDictionary.Add("var_CarDoorDescriptionD",
+            [new(ValidateDoorSill, "None", null),
+            new(ValidateCarDoorHeaders, "None", null),
+            new(ValidateCarDoorMountingDimensions, "Warning", null),
+            new(ValidateEntryDimensions, "None", null)]);
 
         ValidationDictionary.Add("var_Aufsetzvorrichtung",
             [new(ValidateHydrauliclock, "None", null)]);

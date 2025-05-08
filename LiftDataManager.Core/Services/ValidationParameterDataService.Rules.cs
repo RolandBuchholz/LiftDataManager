@@ -1324,6 +1324,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         var zugang = name.StartsWith("var_TB") ? string.Equals(name[^1..], "_B") || string.Equals(name[^1..], "_C") || string.Equals(name[^1..], "_D") ? name[^1..] : "A"
                                                : string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
+
+        string carDoorName = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, $"var_CarDoorDescription{zugang}");
+        var carDoor = _parametercontext.Set<CarDoor>().FirstOrDefault(x => x.Name == carDoorName);
+
         if (name.StartsWith("var_TuerEinbau"))
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -1332,18 +1336,16 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 return;
             }
 
-            var liftDoor = _parameterDictionary[zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
             var doorEntrance = Convert.ToDouble(value, CultureInfo.CurrentCulture);
-            if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+            if (carDoor is null || carDoor.SillWidth >= doorEntrance)
             {
                 _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue(string.Empty);
                 _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(string.Empty);
                 return;
             }
-            _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue((doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString());
-            _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(liftDoorGroup.CarDoor.SillWidth.ToString());
-            SetCarDesignParameterSill(zugang, liftDoorGroup);
+            _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue((doorEntrance - carDoor.SillWidth).ToString());
+            _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(carDoor.SillWidth.ToString());
+            SetCarDesignParameterSill(zugang, carDoor);
         }
         else if (name.StartsWith("var_Tuerbezeichnung"))
         {
@@ -1354,33 +1356,28 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 return;
             }
 
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
             var doorEntranceString = _parameterDictionary[zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}"].Value;
             if (!string.IsNullOrWhiteSpace(doorEntranceString))
             {
                 var doorEntrance = Convert.ToDouble(doorEntranceString, CultureInfo.CurrentCulture);
-                if (liftDoorGroup is null || liftDoorGroup.CarDoor is null || liftDoorGroup.CarDoor.SillWidth >= doorEntrance)
+                if (carDoor is null || carDoor.SillWidth >= doorEntrance)
                 {
                     _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue(string.Empty);
                     _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(string.Empty);
                     return;
                 }
-                _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue((doorEntrance - liftDoorGroup.CarDoor.SillWidth).ToString());
-                _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(liftDoorGroup.CarDoor.SillWidth.ToString());
-                SetCarDesignParameterSill(zugang, liftDoorGroup);
+                _parameterDictionary[$"var_EinzugN_{zugang}"].AutoUpdateParameterValue((doorEntrance - carDoor.SillWidth).ToString());
+                _parameterDictionary[$"var_Schwellenbreite{zugang}"].AutoUpdateParameterValue(carDoor.SillWidth.ToString());
+                SetCarDesignParameterSill(zugang, carDoor);
             }
         }
         else if (name.StartsWith("var_SchwellenprofilKab") || name.StartsWith("var_TB") || name.StartsWith("var_Tueroeffnung"))
         {
             if (string.IsNullOrWhiteSpace(value) || value == "0")
-                return;
-
-            var liftDoor = _parameterDictionary[zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == liftDoor);
-            if (liftDoorGroup is not null)
             {
-                SetCarDesignParameterSill(zugang, liftDoorGroup);
+                return;
             }
+            SetCarDesignParameterSill(zugang, carDoor);
         }
     }
 
@@ -1552,7 +1549,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateDoorSill(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_Tuerbezeichnung") || string.Equals(name, "var_EN8171Cat012")))
+        if (!(name.StartsWith("var_Tuertyp") || name.StartsWith("var_CarDoorDescription") || string.Equals(name, "var_EN8171Cat012")))
         {
             return;
         }
@@ -1563,22 +1560,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         IEnumerable<SelectionValue> availableDoorSills;
 
-        if (name.StartsWith("var_Tuertyp"))
-        {
-            var doorDescription = _parameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
-            availableDoorSills = GetAvailableDoorSills(value, doorDescription);
-        }
-        else if (string.Equals(name, "var_EN8171Cat012"))
-        {
-            var doorTyp = _parameterDictionary[string.Equals(zugang, "A") ? "var_Tuertyp" : $"var_Tuertyp_{zugang}"].Value;
-            var doorDescription = _parameterDictionary[string.Equals(zugang, "A") ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}"].Value;
-            availableDoorSills = GetAvailableDoorSills(doorTyp, doorDescription);
-        }
-        else
-        {
-            var doorTyp = _parameterDictionary[string.Equals(zugang, "A") ? "var_Tuertyp" : $"var_Tuertyp_{zugang}"].Value;
-            availableDoorSills = GetAvailableDoorSills(doorTyp, value);
-        }
+        string carDoorName = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, $"var_CarDoorDescription{zugang}");
+        availableDoorSills = GetAvailableDoorSills(carDoorName);
 
         UpdateDropDownList(shaftSillParameterName, availableDoorSills);
         CheckListContainsValue(_parameterDictionary[shaftSillParameterName]);
@@ -1589,58 +1572,59 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateCarDoorHeaders(string name, string displayname, string? value, string? severity, string? optional = null)
     {
+        if (!name.StartsWith("var_CarDoorDescription"))
+        {
+            return;
+        }
         var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
 
-        if (name.StartsWith("var_Tuerbezeichnung"))
+        if (string.IsNullOrWhiteSpace(value))
         {
-            if (string.IsNullOrWhiteSpace(value))
+            _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Clear();
+            _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Clear();
+            _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(string.Empty);
+            _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(string.Empty);
+        }
+
+        var carDoor = _parametercontext.Set<CarDoor>().FirstOrDefault(x => x.Name == value);
+        var carDoorHeaderDepths = carDoor?.CarDoorHeaderDepth.ToImmutableList();
+        var carDoorHeaderHeights = carDoor?.CarDoorHeaderHeight.ToImmutableList();
+
+        if (carDoorHeaderDepths is not null)
+        {
+            List<SelectionValue> availablcarDoorHeaderDepths = [];
+            for (int i = 0; i < carDoorHeaderDepths.Count; i++)
             {
-                _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Clear();
-                _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Clear();
-                _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(string.Empty);
-                _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(string.Empty);
+                availablcarDoorHeaderDepths.Add(new SelectionValue(i + 1, carDoorHeaderDepths[i].ToString(), carDoorHeaderDepths[i].ToString()) { IsFavorite = false, SchindlerCertified = false });
             }
+            UpdateDropDownList($"var_KabTuerKaempferBreite{zugang}", availablcarDoorHeaderDepths, false);
 
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == value);
-            var carDoorHeaderDepths = liftDoorGroup?.CarDoor?.CarDoorHeaderDepth.ToImmutableList();
-            var carDoorHeaderHeights = liftDoorGroup?.CarDoor?.CarDoorHeaderHeight.ToImmutableList();
-
-            if (carDoorHeaderDepths is not null)
+            if (_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Count == 1)
             {
-                List<SelectionValue> availablcarDoorHeaderDepths = [];
-                for (int i = 0; i < carDoorHeaderDepths.Count; i++)
-                {
-                    availablcarDoorHeaderDepths.Add(new SelectionValue(i + 1, carDoorHeaderDepths[i].ToString(), carDoorHeaderDepths[i].ToString()) { IsFavorite = false, SchindlerCertified = false });
-                }
-                UpdateDropDownList($"var_KabTuerKaempferBreite{zugang}", availablcarDoorHeaderDepths, false);
-
-                if (_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList.Count == 1)
-                {
-                    _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList[0].Name);
-                }
-                else
-                {
-                    CheckListContainsValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"]);
-                }
+                _parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].AutoUpdateParameterValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].DropDownList[0].Name);
             }
-
-            if (carDoorHeaderHeights is not null)
+            else
             {
-                List<SelectionValue> availablcarDoorHeaderHeights = [];
-                for (int i = 0; i < carDoorHeaderHeights.Count; i++)
-                {
-                    availablcarDoorHeaderHeights.Add(new SelectionValue(i + 1, carDoorHeaderHeights[i].ToString(), carDoorHeaderHeights[i].ToString()) { IsFavorite = false, SchindlerCertified = false });
-                }
-                UpdateDropDownList($"var_KabTuerKaempferHoehe{zugang}", availablcarDoorHeaderHeights, false);
+                CheckListContainsValue(_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"]);
+            }
+        }
 
-                if (_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Count == 1)
-                {
-                    _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList[0].Name);
-                }
-                else
-                {
-                    CheckListContainsValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"]);
-                }
+        if (carDoorHeaderHeights is not null)
+        {
+            List<SelectionValue> availablcarDoorHeaderHeights = [];
+            for (int i = 0; i < carDoorHeaderHeights.Count; i++)
+            {
+                availablcarDoorHeaderHeights.Add(new SelectionValue(i + 1, carDoorHeaderHeights[i].ToString(), carDoorHeaderHeights[i].ToString()) { IsFavorite = false, SchindlerCertified = false });
+            }
+            UpdateDropDownList($"var_KabTuerKaempferHoehe{zugang}", availablcarDoorHeaderHeights, false);
+
+            if (_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList.Count == 1)
+            {
+                _parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].AutoUpdateParameterValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"].DropDownList[0].Name);
+            }
+            else
+            {
+                CheckListContainsValue(_parameterDictionary[$"var_KabTuerKaempferHoehe{zugang}"]);
             }
         }
     }
@@ -2071,24 +2055,24 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
         var zugang = string.Equals(name[^1..], "B") || string.Equals(name[^1..], "C") || string.Equals(name[^1..], "D") ? name[^1..] : "A";
-        string doorTyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, zugang == "A" ? "var_Tuerbezeichnung" : $"var_Tuerbezeichnung_{zugang}");
+        string carDoorName = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, $"var_CarDoorDescription{zugang}");
 
-        if (string.IsNullOrWhiteSpace(doorTyp))
+        if (string.IsNullOrWhiteSpace(carDoorName))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
         }
         else
         {
-            var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor).FirstOrDefault(x => x.Name == doorTyp);
-            if (liftDoorGroup == null || liftDoorGroup.CarDoor == null)
+            var carDoor = _parametercontext.Set<CarDoor>().FirstOrDefault(x => x.Name == carDoorName);
+            if (carDoor is null)
             {
                 return;
             }
-            double minMountingSpace = liftDoorGroup.CarDoor.MinimalMountingSpace;
+            double minMountingSpace = carDoor.MinimalMountingSpace;
             double minMountingSpaceReduced = 0d;
             if (_parameterDictionary[$"var_KabTuerKaempferBreite{zugang}"].Value == "97")
             {
-                minMountingSpaceReduced = liftDoorGroup.CarDoor.ReducedMinimalMountingSpace;
+                minMountingSpaceReduced = carDoor.ReducedMinimalMountingSpace;
             }
             string doorMounting = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, zugang == "A" ? "var_TuerEinbau" : $"var_TuerEinbau{zugang}");
 

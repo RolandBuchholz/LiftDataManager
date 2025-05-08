@@ -174,18 +174,20 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         return driveSystem;
     }
 
-    private void SetCarDesignParameterSill(string zugang, LiftDoorGroup liftDoorGroup)
+    private void SetCarDesignParameterSill(string? zugang, CarDoor? carDoor)
     {
-        if (string.IsNullOrWhiteSpace(zugang) || liftDoorGroup is null || liftDoorGroup.CarDoor is null)
+        if (string.IsNullOrWhiteSpace(zugang))
+        {
             return;
+        }
 
         var openingDirection = zugang == "A" ? _parameterDictionary["var_Tueroeffnung"].Value :
-                                 _parameterDictionary[$"var_Tueroeffnung_{zugang}"].Value;
+                                               _parameterDictionary[$"var_Tueroeffnung_{zugang}"].Value;
 
         var sillProfil = zugang == "A" ? _parameterDictionary["var_SchwellenprofilKabTuere"].Value :
                                          _parameterDictionary[$"var_SchwellenprofilKabTuere{zugang}"].Value;
 
-        if (liftDoorGroup.DoorManufacturer != "Meiller" || string.IsNullOrWhiteSpace(openingDirection) || string.IsNullOrWhiteSpace(sillProfil))
+        if (carDoor is null || carDoor.Manufacturer != "Meiller" || string.IsNullOrWhiteSpace(openingDirection) || string.IsNullOrWhiteSpace(sillProfil))
         {
             _parameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
             return;
@@ -210,30 +212,30 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         if (openingDirection == "zentral öffnend")
         {
-            supportPlateExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //1
-            supportPlateExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //2
-            sillExtensionLeft = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //9
-            sillExtensionRight = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //10
-            sillBracketExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //11
-            sillBracketExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //12
+            supportPlateExtensionLeft = Math.Round((doorWidth / carDoor.DoorPanelCount) - 65, 2); //1
+            supportPlateExtensionRight = Math.Round((doorWidth / carDoor.DoorPanelCount) - 65, 2); //2
+            sillExtensionLeft = Math.Round((doorWidth / (carDoor.DoorPanelCount * 2)) + 80, 2); //9
+            sillExtensionRight = Math.Round((doorWidth / (carDoor.DoorPanelCount * 2)) + 80, 2); //10
+            sillBracketExtensionLeft = Math.Round((doorWidth / carDoor.DoorPanelCount) + 35, 2); //11
+            sillBracketExtensionRight = Math.Round((doorWidth / carDoor.DoorPanelCount) + 35, 2); //12
         }
         else if (openingDirection == "einseitig öffnend (links)")
         {
-            supportPlateExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //1
+            supportPlateExtensionLeft = Math.Round((doorWidth / carDoor.DoorPanelCount) - 65, 2); //1
             supportPlateExtensionRight = 0; //2
-            sillExtensionLeft = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //9
+            sillExtensionLeft = Math.Round((doorWidth / (carDoor.DoorPanelCount * 2)) + 80, 2); //9
             sillExtensionRight = 0; //10
-            sillBracketExtensionLeft = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //11
+            sillBracketExtensionLeft = Math.Round((doorWidth / carDoor.DoorPanelCount) + 35, 2); //11
             sillBracketExtensionRight = 50; //12
         }
         else if (openingDirection == "einseitig öffnend (rechts)")
         {
             supportPlateExtensionLeft = 0; //1
-            supportPlateExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) - 65, 2); //2
+            supportPlateExtensionRight = Math.Round((doorWidth / carDoor.DoorPanelCount) - 65, 2); //2
             sillExtensionLeft = 0; //9
-            sillExtensionRight = Math.Round((doorWidth / (liftDoorGroup.CarDoor.DoorPanelCount * 2)) + 80, 2); //10
+            sillExtensionRight = Math.Round((doorWidth / (carDoor.DoorPanelCount * 2)) + 80, 2); //10
             sillBracketExtensionLeft = 50; //11
-            sillBracketExtensionRight = Math.Round((doorWidth / liftDoorGroup.CarDoor.DoorPanelCount) + 35, 2); //12
+            sillBracketExtensionRight = Math.Round((doorWidth / carDoor.DoorPanelCount) + 35, 2); //12
         }
         else
         {
@@ -241,12 +243,12 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
 
-        var distanceMudHolesFloorEdge = liftDoorGroup.CarDoor.Name == "STK26" ? 51.5 : 25.5; //3
-        var quantityRowMudHoles = liftDoorGroup.CarDoor.LiftDoorOpeningDirectionId == 3 ? liftDoorGroup.CarDoor.DoorPanelCount / 2 : liftDoorGroup.CarDoor.DoorPanelCount; //4
-        var distanceMudHole = liftDoorGroup.CarDoor.Name == "STK26" ? 0 : 42; //5
-        var distanceSillBracketHoles = liftDoorGroup.CarDoor.Name == "STK26" ? 26 : 46.5; //6
-        var quantityRowHolesSillBracket = (liftDoorGroup.CarDoor.DoorPanelCount == 3 || liftDoorGroup.CarDoor.DoorPanelCount == 6) ? 2 : 1; //7
-        var distanceSillMounting = (liftDoorGroup.CarDoor.DoorPanelCount == 3 || liftDoorGroup.CarDoor.DoorPanelCount == 6) ? 42 : 0; //8
+        var distanceMudHolesFloorEdge = carDoor.Name == "STK26" ? 51.5 : 25.5; //3
+        var quantityRowMudHoles = carDoor.LiftDoorOpeningDirectionId == 3 ? carDoor.DoorPanelCount / 2 : carDoor.DoorPanelCount; //4
+        var distanceMudHole = carDoor.Name == "STK26" ? 0 : 42; //5
+        var distanceSillBracketHoles = carDoor.Name == "STK26" ? 26 : 46.5; //6
+        var quantityRowHolesSillBracket = (carDoor.DoorPanelCount == 3 || carDoor.DoorPanelCount == 6) ? 2 : 1; //7
+        var distanceSillMounting = (carDoor.DoorPanelCount == 3 || carDoor.DoorPanelCount == 6) ? 42 : 0; //8
 
         double supportPlateWidth; //13
         double offsetOKAprontoOKFF; //14
@@ -259,25 +261,25 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 _parameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = string.Empty;
                 return;
             case 1:
-                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                supportPlateWidth = carDoor.SillWidth - 13; //13
                 offsetOKAprontoOKFF = 4; //14
                 distanceBetweenSillBracketholes = 42; //15
                 triangularLockingDistance = 100; //16
                 break;
             case 2:
-                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                supportPlateWidth = carDoor.SillWidth - 13; //13
                 offsetOKAprontoOKFF = 29; //14
                 distanceBetweenSillBracketholes = 43; //15
                 triangularLockingDistance = 100; //16
                 break;
             case 3:
-                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 25; //13
+                supportPlateWidth = carDoor.SillWidth - 25; //13
                 offsetOKAprontoOKFF = 88; //14
                 distanceBetweenSillBracketholes = 105; //15
                 triangularLockingDistance = 168; //16
                 break;
             case 4:
-                supportPlateWidth = liftDoorGroup.CarDoor.SillWidth - 13; //13
+                supportPlateWidth = carDoor.SillWidth - 13; //13
                 offsetOKAprontoOKFF = 31; //14
                 distanceBetweenSillBracketholes = 45; //15
                 triangularLockingDistance = 100; //16
@@ -289,47 +291,38 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         _parameterDictionary[$"var_SchwellenUnterbau{zugang}"].Value = $"{supportPlateExtensionLeft};{supportPlateExtensionRight};{distanceMudHolesFloorEdge};{quantityRowMudHoles};{distanceMudHole};{distanceSillBracketHoles};{quantityRowHolesSillBracket};{distanceSillMounting};{sillExtensionLeft};{sillExtensionRight};{sillBracketExtensionLeft};{sillBracketExtensionRight};{supportPlateWidth};{offsetOKAprontoOKFF};{distanceBetweenSillBracketholes};{triangularLockingDistance};{carFloorSill.SillMountTyp}";
     }
 
-    private IEnumerable<SelectionValue> GetAvailableDoorSills(string? doorTyp, string? doorDescription)
+    private IEnumerable<SelectionValue> GetAvailableDoorSills(string carDoorName)
     {
         var sills = _parametercontext.Set<LiftDoorSill>();
+        var availableDoorSills = Enumerable.Empty<SelectionValue>();
 
-        if (!string.IsNullOrWhiteSpace(doorTyp))
+        var carDoor = _parametercontext.Set<CarDoor>().FirstOrDefault(x => x.Name == carDoorName);
+        if (carDoor is not null)
         {
-            if (doorTyp.StartsWith("Wittur"))
+            if (carDoor.Manufacturer == "Meiller")
             {
-                return sills.Where(x => x.Manufacturer == "Wittur").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
-            }
-            if (doorTyp.StartsWith("Riedl"))
-            {
-                return sills.Where(x => x.Manufacturer == "Riedl").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
-            }
-            //Meiller Filter Optionen
-            var cat = _parameterDictionary["var_EN8171Cat012"].Value;
-            if (string.IsNullOrWhiteSpace(doorDescription))
-            {
+                string cat = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_EN8171Cat012");
+                var doorNumber = carDoor.Name[3..5];
+
                 if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
                 {
-                    return sills.Where(x => x.Manufacturer == "Meiller").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                    availableDoorSills = sills.Where(x => x.Manufacturer == carDoor.Manufacturer && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
                 }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
-            }
-            else if (doorDescription.StartsWith("DT"))
-            {
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.SillFilterTyp == "0").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                else
+                {
+                    availableDoorSills = sills.Where(x => x.Manufacturer == carDoor.Manufacturer && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                }
             }
             else
             {
-                var doorNumber = doorDescription.Replace("HD", "")[^3..].Trim();
-
-                if (string.IsNullOrWhiteSpace(cat) || string.Equals(cat, "EN81-71 Cat 0"))
-                {
-                    return sills.Where(x => x.Manufacturer == "Meiller" && (x.SillFilterTyp == "0" || x.SillFilterTyp!.Contains(doorNumber))).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
-                }
-                return sills.Where(x => x.Manufacturer == "Meiller" && x.IsVandalResistant).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                availableDoorSills = sills.Where(x => x.Manufacturer == carDoor.Manufacturer).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
         }
-
-        return sills.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+        else
+        {
+            availableDoorSills = sills.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+        }
+        return availableDoorSills;
     }
 
     private void UpdateDropDownList(string? parameterName, IEnumerable<SelectionValue> newList, bool defaultSelection = true)
