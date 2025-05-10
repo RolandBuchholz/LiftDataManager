@@ -2,7 +2,6 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SkiaSharp;
-using Windows.UI;
 
 namespace LiftDataManager.Core.Models.PdfDocuments;
 public static class PdfHelpers

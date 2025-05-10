@@ -30,7 +30,7 @@ public class PdfService : IPdfService
 
         if (!path.EndsWith("AutoDeskTransfer.xml"))
         {
-            _logger.LogError(61001, "Path is not a AutoDeskTransfer.xml");
+            _logger.LogError(61101, "Path is not a AutoDeskTransfer.xml");
             return false;
         }
 
@@ -39,7 +39,7 @@ public class PdfService : IPdfService
             FileInfo AutoDeskTransferInfo = new(path);
             if (AutoDeskTransferInfo.IsReadOnly)
             {
-                _logger.LogError(61101, "Saving failed AutoDeskTransferXml is readonly");
+                _logger.LogError(61201, "Saving failed AutoDeskTransferXml is readonly");
                 return false;
             }
         }
@@ -67,8 +67,10 @@ public class PdfService : IPdfService
             if (showPdf)
             {
                 var filePath = Path.Combine(Path.GetTempPath(), $@"{Guid.NewGuid()}.pdf");
-                document.GeneratePdf(filePath);
-
+                if (!GeneratePdfDocument(document, filePath, pdfModel))
+                {
+                    return false;
+                }
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo(filePath)
@@ -76,23 +78,24 @@ public class PdfService : IPdfService
                         UseShellExecute = true
                     }
                 };
-
                 process.Start();
             }
             else
             {
                 if (!ValidatePath(path, false))
+                {
                     return false;
+                }
 
                 var fileName = document.GetMetadata().Title;
                 string? filePath;
                 if (document.GetType() == typeof(SpezifikationDocument))
                 {
-                    filePath = Path.Combine(Path.GetDirectoryName(path!)!, $@"{fileName}.pdf");
+                    filePath = Path.Combine(Path.GetDirectoryName(path)!, $@"{fileName}.pdf");
                 }
                 else
                 {
-                    filePath = Path.Combine(Path.GetDirectoryName(path!)!, "Berechnungen", "PDF", $@"{fileName}.pdf");
+                    filePath = Path.Combine(Path.GetDirectoryName(path)!, "Berechnungen", "PDF", $@"{fileName}.pdf");
                 }
 
                 if (Path.Exists(Path.GetDirectoryName(filePath)))
@@ -118,10 +121,12 @@ public class PdfService : IPdfService
                 }
                 else
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath!)!);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
                 }
-
-                document.GeneratePdf(filePath);
+                if (!GeneratePdfDocument(document, filePath, pdfModel))
+                {
+                    return false;
+                }
             }
         }
         return true;
@@ -143,6 +148,27 @@ public class PdfService : IPdfService
             MakeSinglePdfDocument(pdf, ParameterDictionary, path, false, false, false);
         }
 
+        return true;
+    }
+
+    private bool GeneratePdfDocument(IDocument document, string? filePath, string? pdfModel)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            document.GeneratePdf(filePath);
+            _logger.LogInformation(60000, "Create Pdf : {document}", document.ToString());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(61301, "Create Pdf failed : {document}", document.ToString());
+            var errorDocument = new ErrorPdfDocument(ex, pdfModel);
+            errorDocument.GeneratePdf(filePath);
+        }
         return true;
     }
 }
