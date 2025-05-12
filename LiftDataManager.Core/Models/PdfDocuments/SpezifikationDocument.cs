@@ -42,7 +42,8 @@ public class SpezifikationDocument : PdfBaseDocument
             column.Item().PageBreak();
             column.Item().Element(CarData);
             column.Item().ShowEntire().Element(CarDataDetail);
-            column.Item().ShowEntire().Element(CarFrameData);
+            column.Item().PageBreak();
+            column.Item().Element(CarFrameData);
             column.Item().ShowEntire().Element(LiftDoorData);
             column.Item().ShowEntire().Element(LiftControlerData);
             column.Item().ShowEntire().Element(LiftDriveData);
