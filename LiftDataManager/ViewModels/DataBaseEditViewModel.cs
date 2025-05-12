@@ -318,7 +318,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             {
                 _parameterEditContext.Remove(deletableParameterDto);
                 _parameterEditContext.SaveChanges();
-                RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+                RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
                 ParameterDeleteMessage = $"Parameter {deletableParameterDto.DisplayName} erfolgreich aus der Datenbank gelöscht !";
                 SetDatabaseTableValueModification("delete", "ParameterDtos", id, deletableParameterDto.DisplayName!);
                 _logger.LogInformation(60171, "parameter {deletableParameterDto.DisplayName} successfully deleted from database", deletableParameterDto.DisplayName);
@@ -390,7 +390,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             var newEntity = _parameterEditContext.Entry(addedParameterDto.Entity);
             SetDatabaseTableValueModification("add", "ParameterDtos", newEntity.Entity.Id, newEntity.Entity.DisplayName!, newEntity.DebugView.LongView);
             _logger.LogInformation(60174, "parameter: {newEntity} successfully add to database", newEntity.DebugView.LongView);
-            RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            RefreshDataBaseAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             SelectedParameterTyp = null;
             SelectedParameterTypeCode = null;
             SelectedParameterCategory = null;

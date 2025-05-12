@@ -26,7 +26,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         }
 
         SetInfoSidebarPanelHighlightText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }

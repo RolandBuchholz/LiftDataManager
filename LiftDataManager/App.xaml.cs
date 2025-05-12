@@ -20,6 +20,8 @@ public partial class App : Application
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();
     public new static App Current => (App)Application.Current;
+    public IJsonNavigationService NavService => GetService<IJsonNavigationService>();
+    public IThemeService ThemeService => GetService<IThemeService>();
     public string AppVersion { get; set; } = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
     public string AppName { get; } = Package.Current.DisplayName;
     private bool IgnoreSaveWarning { get; set; }

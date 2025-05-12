@@ -86,7 +86,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         };
 
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     private float _scale;
@@ -1082,7 +1082,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         if (CurrentSpeziProperties is not null)
         {
             SetViewBoxDimensions();
-            UpdateCarFrameDataAsync(500).SafeFireAndForget(onException: ex => LogTaskException(ex));
+            UpdateCarFrameDataAsync(500).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         }
     }
 

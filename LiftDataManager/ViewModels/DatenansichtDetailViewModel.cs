@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -150,7 +149,7 @@ public partial class DatenansichtDetailViewModel : DataViewModelBase, INavigatio
             Item = data.First(i => i.Name == (string)parameter);
             SetParameterState(Item);
         }
-        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex));
+        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     public void OnNavigatedFrom()

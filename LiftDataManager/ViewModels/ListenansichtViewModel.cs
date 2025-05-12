@@ -28,7 +28,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
             return;
         }
         SetInfoSidebarPanelHighlightText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
@@ -252,7 +252,7 @@ public partial class ListenansichtViewModel : DataViewModelBase, INavigationAwar
         if (CurrentSpeziProperties is not null)
             SearchInput = CurrentSpeziProperties.SearchInput;
 
-        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex));
+        GetHistoryEntrysAsync(FullPathXml).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         HasHighlightedParameters = CheckhasHighlightedParameters();
 
         if (parameter is null and not string)

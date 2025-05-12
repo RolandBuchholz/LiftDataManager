@@ -36,20 +36,28 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
                 UpdateQuicklinks = true
             }));
 
-        };
+        }
+
         if (message.PropertyName == "var_TypFV" ||
             message.PropertyName == "var_FuehrungsschieneFahrkorb" ||
             message.PropertyName == "var_Fuehrungsart")
         {
             SetSafetygearDataAsync().SafeFireAndForget();
-        };
+        }
+
         if (message.PropertyName == "var_Geschwindigkeitsbegrenzer")
         {
             SetOverspeedGovernorWeightVisibility();
             SetRuptureValueVisibility();
         }
+
+        if (message.PropertyName == "var_Geschwindigkeitsbegrenzer_GGW")
+        {
+            SetOverspeedGovernorCounterWeightWeightVisibility();
+        }
+
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     public int MaxFuse => _calculationsModuleService.GetMaxFuse(ParameterDictionary["var_ZA_IMP_Regler_Typ"].Value);
@@ -106,6 +114,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public partial bool OverspeedGovernorWeightVisibility { get; set; }
 
     [ObservableProperty]
+    public partial bool OverspeedGovernorCWTWeightVisibility { get; set; }
+
+    [ObservableProperty]
     public partial bool RuptureValueVisibility { get; set; }
 
     private async Task SetCarWeightAsync()
@@ -138,6 +149,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         }
         return carFrameType.CarFrameWeight;
     }
+
     private async Task CheckCFPStateAsync(string? newCarFrame, string? oldCarFrame)
     {
         if (string.IsNullOrWhiteSpace(newCarFrame))
@@ -237,6 +249,19 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         }
     }
 
+    private void SetOverspeedGovernorCounterWeightWeightVisibility()
+    {
+        if (_calculationsModuleService.IsOverspeedGovernorWeightRequired(ParameterDictionary["var_Geschwindigkeitsbegrenzer_GGW"].DropDownListValue))
+        {
+            OverspeedGovernorCWTWeightVisibility = true;
+        }
+        else
+        {
+            OverspeedGovernorCWTWeightVisibility = false;
+            ParameterDictionary["var_SpanngewichtTyp_GGW"].AutoUpdateParameterValue(string.Empty);
+        }
+    }
+
     private void SetRuptureValueVisibility()
     {
         RuptureValueVisibility = ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue?.Id == 19;
@@ -247,6 +272,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     {
         LiftParameterNavigationHelper.NavigateToPage(typeof(BausatzDetailPage));
     }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
@@ -258,6 +284,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
             UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
             SetOverspeedGovernorWeightVisibility();
+            SetOverspeedGovernorCounterWeightWeightVisibility();
             SetRuptureValueVisibility();
         }
     }

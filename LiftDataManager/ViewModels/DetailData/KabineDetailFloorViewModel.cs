@@ -40,7 +40,7 @@ public partial class KabineDetailFloorViewModel : DataViewModelBase, INavigation
             FillCarFloorSillParameter();
         }
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     [ObservableProperty]

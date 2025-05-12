@@ -42,7 +42,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             message.PropertyName == "var_TuerEinbauC" ||
             message.PropertyName == "var_TuerEinbauD")
         {
-            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             SetDistanceBetweenDoors();
         };
 
@@ -65,7 +65,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             if (liftparameter is not null && liftparameter.Name is not null)
             {
                 string[] zugang = [$"var_ZUGANSSTELLEN_{liftparameter.Name[^1..]}"];
-                liftparameter.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex));
+                liftparameter.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             }
         }
 
@@ -73,7 +73,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         {
             var liftparameter = message.Sender as Parameter;
             string[] zugang = ["var_ZUGANSSTELLEN_C"];
-            liftparameter?.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex));
+            liftparameter?.AfterValidateRangeParameterAsync(zugang).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         }
 
         if (message.PropertyName == "var_Paneelmaterial")
@@ -148,7 +148,7 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         }
 
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     [ObservableProperty]

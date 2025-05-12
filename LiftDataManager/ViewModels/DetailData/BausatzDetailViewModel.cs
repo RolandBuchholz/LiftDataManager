@@ -81,7 +81,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
         };
 
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     public CarFrameType? CarFrameTyp { get; set; }

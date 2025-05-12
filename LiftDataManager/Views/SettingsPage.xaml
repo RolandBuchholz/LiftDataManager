@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dev="using:DevWinUI"
+    xmlns:local="using:LiftDataManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:LiftDataManager.Views"
     dev:BreadcrumbNavigator.IsHeaderVisible="True"
@@ -13,40 +14,43 @@
         <StackPanel
             Margin="10"
             dev:PanelAttach.ChildrenTransitions="Default"
-            dev:SettingsNavigationAttach.JsonNavigationService="{x:Bind ViewModel.JsonNavigationViewService, Mode=OneWay}"
             Spacing="2">
             <dev:SettingsCard
                 x:Name="GeneralSetting"
-                dev:NavigationHelperEx.NavigateToSetting="views:GeneralSettingPage"
+                Command="{x:Bind local:App.Current.NavService.NavigateToCommand}"
+                CommandParameter="{dev:NavigationParameter PageType=views:GeneralSettingPage,
+                                                           BreadCrumbHeader='Allgemeine Einstellungen'}"
                 Description="Ändern Sie Ihre Standard App-Einstellungen"
                 Header="Allgemeine Einstellungen"
                 HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/settings.png}"
-                IsClickEnabled="True"
-                Tag="GeneralSettingPage" />
+                IsClickEnabled="True" />
             <dev:SettingsCard
                 x:Name="ThemeSetting"
-                dev:NavigationHelperEx.NavigateToSetting="views:ThemeSettingPage"
+                Command="{x:Bind local:App.Current.NavService.NavigateToCommand}"
+                CommandParameter="{dev:NavigationParameter PageType=views:ThemeSettingPage,
+                                                           BreadCrumbHeader='Farben und Aussehen'}"
                 Description="Sie können das Material, das Thema, den Akzent und weitere Optionen entsprechend Ihrem Stil und Ihren Vorlieben ändern."
                 Header="Farben und Aussehen"
                 HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/theme.png}"
-                IsClickEnabled="True"
-                Tag="ThemeSettingPage" />
+                IsClickEnabled="True" />
             <dev:SettingsCard
                 x:Name="MaintenanceSetting"
-                dev:NavigationHelperEx.NavigateToSetting="views:MaintenanceSettingPage"
+                Command="{x:Bind local:App.Current.NavService.NavigateToCommand}"
+                CommandParameter="{dev:NavigationParameter PageType=views:MaintenanceSettingPage,
+                                                           BreadCrumbHeader='Wartung'}"
                 Description="Wartung, Installationsinformationen und externe Programmeinstellungen"
                 Header="Wartung"
                 HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/update.png}"
-                IsClickEnabled="True"
-                Tag="MaintenanceSettingPage" />
+                IsClickEnabled="True" />
             <dev:SettingsCard
                 x:Name="AboutSetting"
-                dev:NavigationHelperEx.NavigateToSetting="views:AboutSettingPage"
+                Command="{x:Bind local:App.Current.NavService.NavigateToCommand}"
+                CommandParameter="{dev:NavigationParameter PageType=views:AboutSettingPage,
+                                                           BreadCrumbHeader='About'}"
                 Description="About and Updateinformationen"
                 Header="About"
                 HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/info.png}"
-                IsClickEnabled="True"
-                Tag="AboutSettingPage" />
+                IsClickEnabled="True" />
         </StackPanel>
     </ScrollView>
 </Page>

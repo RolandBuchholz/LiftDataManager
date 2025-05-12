@@ -46,7 +46,7 @@ public partial class QuickLinksViewModel : DataViewModelBase, INavigationAwareEx
                 CanOpenZALiftHtml = File.Exists(Path.Combine(Path.GetDirectoryName(FullPathXml)!, "Berechnungen", SpezifikationsNumber + ".html"));
             if (CanOpenZALiftHtml)
             {
-                ImportZAliftDataAsync(true).SafeFireAndForget(onException: ex => LogTaskException(ex));
+                ImportZAliftDataAsync(true).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             }
         }
     }

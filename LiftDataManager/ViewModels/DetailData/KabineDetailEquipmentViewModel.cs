@@ -42,7 +42,7 @@ public partial class KabineDetailEquipmentViewModel : DataViewModelBase, INaviga
             RefreshView();
         }
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     [ObservableProperty]

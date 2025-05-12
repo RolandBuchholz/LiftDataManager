@@ -34,4 +34,10 @@ public static class XamlFunctions
         return !string.IsNullOrWhiteSpace(value);
     }
 
+    public static Visibility TrueStringToVisible(string value)
+    {
+        return  string.Equals(value, "True")
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
 }

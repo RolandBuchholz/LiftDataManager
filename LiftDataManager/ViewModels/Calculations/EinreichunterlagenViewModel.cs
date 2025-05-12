@@ -40,7 +40,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
             CheckLiftDescriptionInfos();
         }
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     [RelayCommand]

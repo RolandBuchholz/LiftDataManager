@@ -52,7 +52,7 @@
                     Header="Bausatzdaten"
                     IsExpanded="True"
                     Style="{StaticResource ExpanderOnlyOpenContentStyle}">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="*" />
@@ -298,22 +298,21 @@
                             x:Name="Fangvorrichtung"
                             Grid.Row="5"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto, Auto, 10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto, Auto, Auto, 10">
                                 <Border
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="4"
                                     Grid.ColumnSpan="2"
                                     ui:Effects.Shadow="{StaticResource CommonShadow}"
                                     Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
                                 <TextBlock
                                     Grid.Row="0"
-                                    Grid.RowSpan="2"
+                                    Grid.RowSpan="3"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     Text="Fangvorrichtung" />
                                 <Grid
-                                    x:Name="Bausatz5"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
@@ -336,11 +335,63 @@
                                     <TextBlock Text="Fangvorrichtungsbereich" />
                                     <TextBlock Grid.Row="1" Text="{x:Bind ViewModel.Safetygearworkarea, Mode=OneWay}" />
                                 </Grid>
+                                <SpeziControls:ParameterCheckBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="-5,0,0,0"
+                                    CheckBoxContent="zusätzliche Fangvorrichtung am Gegengewicht"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_HasCwtSafetyGear'], Mode=TwoWay}" />
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            x:Name="Fangvorrichtung_GGW"
+                            Grid.Row="6"
+                            Margin="0,0,0,5"
+                            Visibility="{x:Bind helpers:XamlFunctions.TrueStringToVisible(ViewModel.ParameterDictionary['var_HasCwtSafetyGear'].Value), Mode=OneWay}">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto, Auto, 10">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Fangvorrichtung am Gegengewicht"
+                                    TextWrapping="WrapWholeWords" />
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    ColumnDefinitions="*,*">
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Fangvorrichtung_GGW'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TypFV_GGW'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
+                                <Grid
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="5,0,5,0"
+                                    RowDefinitions="Auto, Auto">
+                                    <TextBlock Text="Fangvorrichtungsbereich" />
+                                    <TextBlock Grid.Row="1" Text="{x:Bind ViewModel.Safetygearworkarea, Mode=OneWay}" />
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid
                             x:Name="GB"
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
                                 <Border
@@ -388,8 +439,54 @@
                             </Grid>
                         </Grid>
                         <Grid
+                            x:Name="GB_GGW"
+                            Grid.Row="8"
+                            Margin="0,0,0,5"
+                            Visibility="{x:Bind helpers:XamlFunctions.TrueStringToVisible(ViewModel.ParameterDictionary['var_HasCwtSafetyGear'].Value), Mode=OneWay}">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
+                                <Border
+                                    Grid.RowSpan="4"
+                                    Grid.ColumnSpan="2"
+                                    ui:Effects.Shadow="{StaticResource CommonShadow}"
+                                    Style="{StaticResource ResourceKey=SpeziRowBorderStyle}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16">
+                                    Geschwindigkeits-<LineBreak />
+                                    begrenzer<LineBreak />
+                                    am Gegengewicht</TextBlock>
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <SpeziControls:ParameterComboBox Grid.Column="0" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbegrenzer_GGW'], Mode=TwoWay}" />
+                                </Grid>
+                                <SpeziControls:ParameterTextBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Geschwindigkeitsbeg_ZT_GGW'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True" />
+                                <SpeziControls:ParameterComboBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,5,0"
+                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SpanngewichtTyp_GGW'], Mode=TwoWay}"
+                                    ShowDefaultHeader="True"
+                                    Visibility="{x:Bind ViewModel.OverspeedGovernorCWTWeightVisibility, Mode=OneWay}" />
+                            </Grid>
+                        </Grid>
+                        <Grid
                             x:Name="Ersatzmassnahmen"
-                            Grid.Row="7"
+                            Grid.Row="9"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
                                 <Border
@@ -420,7 +517,7 @@
                         </Grid>
                         <Grid
                             x:Name="Schachtinformation"
-                            Grid.Row="8"
+                            Grid.Row="10"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
                                 <Border
@@ -451,7 +548,7 @@
                         </Grid>
                         <Grid
                             x:Name="Lastmessung"
-                            Grid.Row="9"
+                            Grid.Row="11"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,10">
                                 <Border
@@ -500,7 +597,7 @@
                         </Grid>
                         <Grid
                             x:Name="Beschichtung"
-                            Grid.Row="10"
+                            Grid.Row="12"
                             Grid.ColumnSpan="2"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,Auto,Auto,10">
@@ -560,7 +657,7 @@
                         </Grid>
                         <Grid
                             x:Name="SonstigesBausatz"
-                            Grid.Row="11"
+                            Grid.Row="13"
                             Grid.ColumnSpan="2"
                             Margin="0,0,0,5">
                             <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
@@ -595,7 +692,7 @@
                         <!--  Datafield CFP Parameter  -->
                         <Border
                             Grid.Row="0"
-                            Grid.RowSpan="10"
+                            Grid.RowSpan="12"
                             Grid.Column="1"
                             Margin="0,0,5,10"
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
@@ -603,7 +700,7 @@
                         <Grid
                             x:Name="CFPParameter"
                             Grid.Row="0"
-                            Grid.RowSpan="10"
+                            Grid.RowSpan="12"
                             Grid.Column="1"
                             Margin="15,10,15,10">
                             <StackPanel

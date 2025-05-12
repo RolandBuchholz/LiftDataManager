@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -39,7 +38,7 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
     public virtual void Receive(PropertyChangedMessage<bool> message)
     {
@@ -49,7 +48,7 @@ public partial class DataViewModelBase : ObservableRecipient
             return;
         }
         SetInfoSidebarPanelHighlightText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     public virtual void Receive(RefreshModelStateMessage message)
@@ -60,7 +59,7 @@ public partial class DataViewModelBase : ObservableRecipient
         }
         CheckOut = message.Value.IsCheckOut;
         LikeEditParameter = message.Value.LikeEditParameterEnabled;
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     [ObservableProperty]
@@ -111,11 +110,11 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             if (value)
             {
-                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget(onException: ex => LogTaskException(ex));
+                _parameterDataService.StartAutoSaveTimerAsync(GetSaveTimerPeriod(), FullPathXml, Adminmode).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             }
             else
             {
-                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+                _parameterDataService.StopAutoSaveTimerAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             }
         }
     }
@@ -240,12 +239,12 @@ public partial class DataViewModelBase : ObservableRecipient
         {
             if (ParameterErrorDictionary.TryGetValue(error.Name!, out List<ParameterStateInfo>? value))
             {
-                value.AddRange(error.parameterErrors["Value"].ToList());
+                value.AddRange([.. error.parameterErrors["Value"]]);
             }
             else
             {
                 var errorList = new List<ParameterStateInfo>();
-                errorList.AddRange(error.parameterErrors["Value"].ToList());
+                errorList.AddRange([.. error.parameterErrors["Value"]]);
                 ParameterErrorDictionary.Add(error.Name!, errorList);
             }
         }
@@ -305,7 +304,7 @@ public partial class DataViewModelBase : ObservableRecipient
         SynchronizeViewModelParameter();
         if (CurrentSpeziProperties is not null)
         {
-            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         }
         _parameterDataService.ParameterDataAutoSaveStarted += ParameterDataService_ParameterDataAutoSaveStarted;
     }
@@ -316,6 +315,6 @@ public partial class DataViewModelBase : ObservableRecipient
     }
 
     [LoggerMessage(03001, LogLevel.Error,
-    "TaskException: {ex}")]
-    protected partial void LogTaskException(Exception ex);
+    "TaskException: {taskEx}")]
+    protected partial void LogTaskException(string taskEx);
 }

@@ -901,7 +901,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             var zaliftHtml = new HtmlDocument();
             zaliftHtml.Load(zaHtmlPath);
-            var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()").FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
+            var zliData = zaliftHtml.DocumentNode.SelectNodes("//comment()")?.FirstOrDefault(x => x.InnerHtml.StartsWith("<!-- zli"))?
                                                                             .InnerHtml.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             if (zliData is null)
             {

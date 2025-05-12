@@ -38,7 +38,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         if (message.PropertyName == "var_SkipRatedLoad")
         {
             ValidateCustomPayload(CustomPayload);
-            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         }
         ;
 
@@ -50,13 +50,13 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             message.PropertyName == "var_KTI" ||
             message.PropertyName == "var_KHLicht")
         {
-            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             //Task.Run(async () => await SetCalculatedValuesAsync().ConfigureAwait(false));
         }
         ;
 
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
         //Task.Run(async () => await SetModelStateAsync());
     }
 
@@ -945,8 +945,8 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
 
         if (CurrentSpeziProperties is not null)
         {
-            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
-            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+            SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
+            SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";

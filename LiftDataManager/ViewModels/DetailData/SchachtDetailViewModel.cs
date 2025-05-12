@@ -62,7 +62,7 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             RefreshView();
         };
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex));
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
     }
 
     private float _scale;
