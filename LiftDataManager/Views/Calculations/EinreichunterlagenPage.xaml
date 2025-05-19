@@ -504,6 +504,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
@@ -632,7 +633,22 @@
                                     Style="{StaticResource InfoTextboxStyle}"
                                     Text="{x:Bind ViewModel.DoorTyp}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="5" Grid.Column="1">
+                            <StackPanel
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,5,22,10"
+                                    VerticalAlignment="Bottom"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="Feuerwiderstandsklasse:" />
+                                <TextBox
+                                    Width="250"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.ParameterDictionary['var_ZulassungTuere'].Value}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="6" Grid.Column="1">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         Width="65"
@@ -671,7 +687,7 @@
                                 </StackPanel>
                             </StackPanel>
                             <TextBlock
-                                Grid.Row="6"
+                                Grid.Row="7"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 VerticalAlignment="Center"

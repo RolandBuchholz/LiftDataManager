@@ -303,7 +303,9 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Column(column =>
             {
                 column.Item().Text($"{ParameterDictionary["var_Zugangsstellen"].Value} Stück");
-                column.Item().Text($"Fabrikat: {ParameterDictionary["var_Tuertyp"].Value?.Replace(" -", "")}");
+                column.Item().Text($"{ParameterDictionary["var_ShaftDoorDescriptionA"].Value} ({ParameterDictionary["var_ShaftDoorInstallationTypA"].Value})");
+                column.Item().Text("Feuerwiderstandsklasse:").Bold();
+                column.Item().Text(ParameterDictionary["var_ZulassungTuere"].Value);
                 column.Item().Text($"Türbreite: {ParameterDictionary["var_TB"].Value} mm");
                 column.Item().Text($"Türhöhe: {ParameterDictionary["var_TH"].Value} mm");
             });

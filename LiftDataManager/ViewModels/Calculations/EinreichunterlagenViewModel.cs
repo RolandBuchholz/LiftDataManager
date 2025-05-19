@@ -85,7 +85,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
                                                     $"Vorstehender Aufzug ist mit dem Aufzug - den Aufzügen - Fabrik.-Nr.: {ParameterDictionary["var_GemeinsamerSchachtMit"].Value} im gleichem Schacht errichtet.";
     public string TuevExamination => ParameterDictionary["var_Aufzugstyp"].Value != "Umbau" ? "gemäß Anhang VIII (Modul G)" : "Prüfung nach § 15 BetrSichV";
     public int CarDoorCount => _calculationsModuleService.GetNumberOfCardoors(ParameterDictionary);
-    public string DoorTyp => !string.IsNullOrWhiteSpace(ParameterDictionary["var_Tuertyp"].Value) ? ParameterDictionary["var_Tuertyp"].Value!.Replace(" -", "") : string.Empty;
+    public string DoorTyp => !string.IsNullOrWhiteSpace(ParameterDictionary["var_ShaftDoorDescriptionA"].Value) ? $"{ParameterDictionary["var_ShaftDoorDescriptionA"].Value} ({ParameterDictionary["var_ShaftDoorInstallationTypA"].Value})" : string.Empty;
     public string DateTimeNow => DateTime.Now.ToShortDateString();
 
     public string ViewingOpening => LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungKT") || LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_TuerSchauOeffnungST") ?

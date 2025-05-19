@@ -8,7 +8,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
 
-    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+    public BausatzViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                             ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ParameterContext parametercontext, ICalculationsModule calculationsModuleService) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
@@ -236,9 +236,9 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         await Task.CompletedTask;
     }
 
-    private void SetOverspeedGovernorWeightVisibility() 
+    private void SetOverspeedGovernorWeightVisibility()
     {
-        if(_calculationsModuleService.IsOverspeedGovernorWeightRequired(ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue))
+        if (_calculationsModuleService.IsOverspeedGovernorWeightRequired(ParameterDictionary["var_Geschwindigkeitsbegrenzer"].DropDownListValue))
         {
             OverspeedGovernorWeightVisibility = true;
         }
