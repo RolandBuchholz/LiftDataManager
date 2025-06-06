@@ -45,6 +45,14 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             SetSafetygearDataAsync().SafeFireAndForget();
         }
 
+        if (message.PropertyName == "var_TypFV_GGW" ||
+            message.PropertyName == "var_HasCwtSafetyGear" ||
+            message.PropertyName == "var_FuehrungsschieneGegengewicht" ||
+            message.PropertyName == "var_Fuehrungsart_GGW")
+        {
+            SetCwtSafetygearDataAsync().SafeFireAndForget();
+        }
+
         if (message.PropertyName == "var_Geschwindigkeitsbegrenzer")
         {
             SetOverspeedGovernorWeightVisibility();
@@ -99,13 +107,16 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     public partial string CWTRailEndName { get; set; } = "Gegengewicht Endstück:";
 
     [ObservableProperty]
-    public partial string ForceXCWTRail { get; set; } = "Kraft Fx auf GGW-Schiene";
+    public partial string ForceXCWTRail { get; set; } = "Kraft Fx(FF2) auf GGW-Schiene";
 
     [ObservableProperty]
-    public partial string ForceYCWTRail { get; set; } = "Kraft Fy auf GGW-Schiene";
+    public partial string ForceYCWTRail { get; set; } = "Kraft Fy(FF1) auf GGW-Schiene";
 
     [ObservableProperty]
     public partial string Safetygearworkarea { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string CwtSafetygearworkarea { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial double CarSlingWeight { get; set; }
@@ -224,8 +235,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             CWTRailLenghtName = IsRopeLift ? "Schienenlänge Gegengewicht:" : "Jochschienenlänge:";
             StartCWTRailName = IsRopeLift ? "Startschiene Gegengewicht:" : "Startschiene Joch:";
             CWTRailEndName = IsRopeLift ? "Gegengewicht Endstück:" : "Jochschiene Endstück:";
-            ForceXCWTRail = IsRopeLift ? "Kraft Fx auf GGW-Schiene" : "Kraft Fx auf Joch-Schiene";
-            ForceYCWTRail = IsRopeLift ? "Kraft Fy auf GGW-Schiene" : "Kraft Fy auf Joch-Schiene";
+            ForceXCWTRail = IsRopeLift ? "Kraft Fx(FF2) auf GGW-Schiene" : "Kraft Fx(FF2) auf Joch-Schiene";
+            ForceYCWTRail = IsRopeLift ? "Kraft Fy(FF1) auf GGW-Schiene" : "Kraft Fy(FF1) auf Joch-Schiene";
         }
     }
 
@@ -233,6 +244,13 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
     {
         var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
         Safetygearworkarea = $"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}";
+        await Task.CompletedTask;
+    }
+
+    private async Task SetCwtSafetygearDataAsync()
+    {
+        var cwtSafteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
+        CwtSafetygearworkarea = $"{cwtSafteyGearResult.MinLoad} - {cwtSafteyGearResult.MaxLoad} kg | {cwtSafteyGearResult.CarRailSurface} / {cwtSafteyGearResult.Lubrication} | Schienenkopf : {cwtSafteyGearResult.AllowedRailHeads}";
         await Task.CompletedTask;
     }
 
@@ -280,6 +298,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         if (CurrentSpeziProperties is not null)
         {
             SetSafetygearDataAsync().SafeFireAndForget();
+            SetCwtSafetygearDataAsync().SafeFireAndForget();
             SetCarWeightAsync().SafeFireAndForget();
             CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
             UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
