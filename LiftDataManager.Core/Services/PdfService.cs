@@ -3,6 +3,7 @@ using LiftDataManager.Core.Models.PdfDocuments;
 using Microsoft.Extensions.Logging;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using System;
 using System.Diagnostics;
 
 namespace LiftDataManager.Core.Services;
@@ -88,6 +89,10 @@ public class PdfService : IPdfService
                 }
 
                 var fileName = document.GetMetadata().Title;
+                if (string.IsNullOrWhiteSpace(fileName))
+                {
+                    return false;
+                }
                 string? filePath;
                 if (document.GetType() == typeof(SpezifikationDocument))
                 {
@@ -104,18 +109,24 @@ public class PdfService : IPdfService
                     {
                         FileInfo PdfFileInfo = new(filePath);
                         if (PdfFileInfo.IsReadOnly)
+                        {
                             PdfFileInfo.IsReadOnly = false;
+                        }
                         if (PdfFileInfo.IsLocked())
                         {
                             var acrobatProcesses = Process.GetProcessesByName("Acrobat");
-                            if (acrobatProcesses.Any())
+                            if (acrobatProcesses.Length == 1)
+                            {
+                                acrobatProcesses[0].CloseMainWindow();
+                            }
+                            else if (acrobatProcesses.Length > 1)
                             {
                                 foreach (var process in acrobatProcesses)
                                 {
-                                    process.CloseMainWindow();
+                                    process.Kill();
                                 }
-                                Thread.Sleep(1000);
                             }
+                            Thread.Sleep(1000);
                         }
                     }
                 }

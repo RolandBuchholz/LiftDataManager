@@ -342,6 +342,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         ValidationDictionary.Add("var_Fangvorrichtung",
             [new(ValidateSafetyGear, "None", null)]);
 
+        ValidationDictionary.Add("var_Fangvorrichtung_GGW",
+            [new(ValidateCwtSafetyGear, "None", null)]);
+
         ValidationDictionary.Add("var_TypFV",
             [new(ValidateSafetyRange, "None", null),
             new(ValidateCarFrameProgramData, "Warning", null),

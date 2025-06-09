@@ -660,22 +660,36 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
         var selectedSafetyGear = _parameterDictionary["var_TypFV"].Value;
-        IEnumerable<SelectionValue> availablseafetyGears = value switch
-        {
-            "keine" => [],
-            "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
-            "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
-            "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
-            _ => safetyGears.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
-        };
+        var availablseafetyGears = FilterSafetyGears(value);
         if (availablseafetyGears is not null)
         {
             UpdateDropDownList("var_TypFV", availablseafetyGears);
             if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Any(x => x.Name == selectedSafetyGear))
             {
                 _parameterDictionary["var_TypFV"].AutoUpdateParameterValue(string.Empty);
+            }
+        }
+    }
+
+    private void ValidateCwtSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_HasCwtSafetyGear")) 
+        {
+            if (!string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_TypFV_GGW")))
+            {
+                _parameterDictionary["var_TypFV_GGW"].AutoUpdateParameterValue(string.Empty);
+            }
+            return;
+        }
+        var selectedSafetyGear = _parameterDictionary["var_TypFV_GGW"].Value;
+        var availablseafetyGears = FilterSafetyGears(value);
+        if (availablseafetyGears is not null)
+        {
+            UpdateDropDownList("var_TypFV_GGW", availablseafetyGears);
+            if (!string.IsNullOrWhiteSpace(selectedSafetyGear) && !availablseafetyGears.Any(x => x.Name == selectedSafetyGear))
+            {
+                _parameterDictionary["var_TypFV_GGW"].AutoUpdateParameterValue(string.Empty);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -374,5 +375,18 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return 35;
         }
         return 0;
+    }
+
+    private IEnumerable<SelectionValue> FilterSafetyGears(string? safetyGear)
+    {
+        var safetyGears = _parametercontext.Set<SafetyGearModelType>().ToList();
+        return safetyGear switch
+        {
+            "keine" => [],
+            "Sperrfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 1).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            "Bremsfangvorrichtung" => safetyGears.Where(x => x.SafetyGearTypeId == 2).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            "Rohrbruchventil" => safetyGears.Where(x => x.SafetyGearTypeId == 3).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+            _ => safetyGears.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
+        };
     }
 }
