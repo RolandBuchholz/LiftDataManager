@@ -731,7 +731,7 @@ public class SpezifikationDocument : PdfBaseDocument
                                            text.Line($"{_calculationsModuleService.GetCarFrameWeight(ParameterDictionary)} kg");
                                        });
                 });
-                table.Cell().Row(1).RowSpan(20).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
+                table.Cell().Row(1).RowSpan(26).Column(5).ColumnSpan(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingHorizontal(5).Element(CarFrameDetailData);
                 table.Cell().Row(2).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bausatz_ZT"]);
                 table.Cell().Row(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).Padding(5).AlignMiddle().Text("Führungsart FK").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(3).Column(3).ParameterStringCell(ParameterDictionary["var_Fuehrungsart"]);
@@ -745,7 +745,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(6).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(cWTRailName).FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(6).Column(3).ParameterStringCell(ParameterDictionary["var_FuehrungsschieneGegengewicht"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Führungsschiene Joch" : "Führungsschiene Gegengewicht");
                 table.Cell().Row(6).Column(4).ParameterStringCell(ParameterDictionary["var_StatusGGWSchienen"], null, false, false, carFrameType?.DriveTypeId == 2 ? "Status Führungsschienen Joch" : "Status Führungsschienen GGW");
-                table.Cell().Row(7).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fangvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(7).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fangvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(7).Column(3).ParameterStringCell(ParameterDictionary["var_Fangvorrichtung"]);
                 table.Cell().Row(7).Column(4).ParameterStringCell(ParameterDictionary["var_TypFV"]);
                 table.Cell().Row(8).Column(3).ColumnSpan(2).Border(0.1f)
@@ -754,46 +754,64 @@ public class SpezifikationDocument : PdfBaseDocument
                                        .PaddingBottom(-10).Text(text =>
                                        {
                                            text.Line("Fangvorrichtungsbereich").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
-                                           var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary);
+                                           var safteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary, false);
                                            text.Line($"{safteyGearResult.MinLoad} - {safteyGearResult.MaxLoad} kg | {safteyGearResult.CarRailSurface} / {safteyGearResult.Lubrication} | Schienenkopf : {safteyGearResult.AllowedRailHeads}");
                                        });
-                table.Cell().Row(9).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbegrenzer"]);
-                table.Cell().Row(10).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbeg_ZT"]);
-                table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(!string.IsNullOrWhiteSpace(ParameterDictionary["var_SpanngewichtTyp"].Value)).ParameterStringCell(ParameterDictionary["var_SpanngewichtTyp"]);
-                table.Cell().Row(12).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
-                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
-                table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(14).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
-                table.Cell().Row(15).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
-                table.Cell().Row(16).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung Aufsetzvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(16).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(9).Column(3).ColumnSpan(2).ParameterBoolCell(ParameterDictionary["var_HasCwtSafetyGear"], false, "zusätzliche Fangvorrichtung am Gegengewicht");
+                bool hasCwtSafetyGear = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_HasCwtSafetyGear");
+                table.Cell().Row(10).RowSpan(2).Column(2).ShowIf(hasCwtSafetyGear).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fangvorrichtung am Gegengewicht").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(10).Column(3).ShowIf(hasCwtSafetyGear).ParameterStringCell(ParameterDictionary["var_Fangvorrichtung_GGW"]);
+                table.Cell().Row(10).Column(4).ShowIf(hasCwtSafetyGear).ParameterStringCell(ParameterDictionary["var_TypFV_GGW"]);
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ShowIf(hasCwtSafetyGear).Border(0.1f)
+                                       .BorderColor(borderColor)
+                                       .PaddingLeft(5).PaddingTop(0)
+                                       .PaddingBottom(-10).Text(text =>
+                                       {
+                                           text.Line("Gegengewichtsfangvorrichtungsbereich").FontSize(fontSizeXXS).FontColor(borderColor).Bold();
+                                           var cwtSafteyGearResult = _calculationsModuleService.GetSafetyGearCalculation(ParameterDictionary, true);
+                                           text.Line($"{cwtSafteyGearResult.MinLoad} - {cwtSafteyGearResult.MaxLoad} kg | {cwtSafteyGearResult.CarRailSurface} / {cwtSafteyGearResult.Lubrication} | Schienenkopf : {cwtSafteyGearResult.AllowedRailHeads}");
+                                       });
+                table.Cell().Row(12).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(12).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbegrenzer"]);
+                table.Cell().Row(13).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbeg_ZT"]);
+                table.Cell().Row(14).Column(3).ColumnSpan(2).ShowIf(!string.IsNullOrWhiteSpace(ParameterDictionary["var_SpanngewichtTyp"].Value)).ParameterStringCell(ParameterDictionary["var_SpanngewichtTyp"]);
+                table.Cell().Row(15).RowSpan(3).Column(2).ShowIf(hasCwtSafetyGear).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Geschwindigkeits- begrenzer am Gegengewicht").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(15).Column(3).ColumnSpan(2).ShowIf(hasCwtSafetyGear).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbegrenzer_GGW"]);
+                table.Cell().Row(16).Column(3).ColumnSpan(2).ShowIf(hasCwtSafetyGear).ParameterStringCell(ParameterDictionary["var_Geschwindigkeitsbeg_ZT_GGW"]);
+                table.Cell().Row(17).Column(3).ColumnSpan(2).ShowIf(!string.IsNullOrWhiteSpace(ParameterDictionary["var_SpanngewichtTyp_GGW"].Value)).ParameterStringCell(ParameterDictionary["var_SpanngewichtTyp"]);
+                table.Cell().Row(18).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Ersatzmaßnahmen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(18).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmassnahmen"]);
+                table.Cell().Row(19).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Ersatzmaßnahmen_ZT"]);
+                table.Cell().Row(20).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schachtinformationen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(20).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformationssystem"]);
+                table.Cell().Row(21).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Schachtinformation_ZT"]);
+                table.Cell().Row(22).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Lastmesseinrichtung Aufsetzvorrichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(22).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung"]);
                     row.ConstantItem(87).BorderColor(borderColor).BorderRight(0.1f).AlignBottom().ParameterBoolCell(ParameterDictionary["var_Aufsetzvorrichtung"], true);
                     if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_Aufsetzvorrichtung"))
                         row.AutoItem().ParameterStringCell(ParameterDictionary["var_AufsetzvorrichtungSystem"]);
                 });
-                table.Cell().Row(17).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
-                table.Cell().Row(18).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(18).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(23).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Lastmesseinrichtung_ZT"]);
+                table.Cell().Row(24).RowSpan(3).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Beschichtung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(24).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Beschichtung"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonTragrahmen"]);
                 });
-                table.Cell().Row(19).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(25).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungSchachteinbauten"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonSchachteinbauten"]);
                 });
-                table.Cell().Row(20).Column(3).ColumnSpan(2).Row(row =>
+                table.Cell().Row(26).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_BeschichtungAntrieb"]);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_RALTonAntrieb"]);
                 });
-                table.Cell().Row(21).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(21).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
+                table.Cell().Row(27).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Bausatz").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(27).Column(3).ColumnSpan(4).MinHeight(70).ParameterStringCell(ParameterDictionary["var_SonstigesBausatz"], null, true, true);
             });
         });
     }
@@ -1999,19 +2017,19 @@ public class SpezifikationDocument : PdfBaseDocument
 
             table.Cell().Row(1).Column(1).ColumnSpan(3).Text("Bausatz Parameter").FontSize(fontSizeS).FontColor(borderColor).Bold();
             table.Cell().Row(2).Column(1).ColumnSpan(3).Text("Basisdaten").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-            table.Cell().Row(3).Column(1).Text("Stichmaß:").FontSize(fontSizeXXS);
+            table.Cell().Row(3).Column(1).Text("Stichmaß Fahrkorb (BKS):").FontSize(fontSizeXXS);
             table.Cell().Row(3).Column(2).AlignRight().Text(ParameterDictionary["var_Stichmass"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(3).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
             table.Cell().Row(4).Column(1).Text("freie Unterfahrt:").FontSize(fontSizeXXS);
             table.Cell().Row(4).Column(2).AlignRight().Text(ParameterDictionary["var_FUBP"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(4).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
-            table.Cell().Row(5).Column(1).Text("Unterfahrt inkl. Pufferhub:").FontSize(fontSizeXXS);
+            table.Cell().Row(5).Column(1).Text("Unterfahrt inkl. Pufferhub (SKU):").FontSize(fontSizeXXS);
             table.Cell().Row(5).Column(2).AlignRight().Text(ParameterDictionary["var_RHU"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(5).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
             table.Cell().Row(6).Column(1).Text("freie Überfahrt:").FontSize(fontSizeXXS);
             table.Cell().Row(6).Column(2).AlignRight().Text(ParameterDictionary["var_FUEBP"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(6).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
-            table.Cell().Row(7).Column(1).Text("Überfahrt inkl. Pufferhub:").FontSize(fontSizeXXS);
+            table.Cell().Row(7).Column(1).Text("Überfahrt inkl. Pufferhub (SKO):").FontSize(fontSizeXXS);
             table.Cell().Row(7).Column(2).AlignRight().Text(ParameterDictionary["var_RHO"].Value).FontSize(fontSizeXXS);
             table.Cell().Row(7).Column(3).AlignLeft().PaddingLeft(2).Text("mm").FontSize(fontSizeXXS);
             table.Cell().Row(8).Column(1).Text("Puffer Typ FK:").FontSize(fontSizeXXS);
@@ -2074,16 +2092,16 @@ public class SpezifikationDocument : PdfBaseDocument
             table.Cell().Row(30).Column(1).ShowIf(isRopeLift).Text("Belastung unter GGW Puffer:").FontSize(fontSizeXXS);
             table.Cell().Row(30).Column(2).ShowIf(isRopeLift).AlignRight().Text($"({ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_GGW"].Value}) {ParameterDictionary["var_Belastung_Pufferstuetze_auf_Grundelement_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(30).Column(3).ShowIf(isRopeLift).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(31).Column(1).Text("Kraft Fx(FF2) auf FK-Schiene:").FontSize(fontSizeXXS);
+            table.Cell().Row(31).Column(1).Text("Kraft Fx (FF2) auf FK-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(31).Column(2).AlignRight().Text($"({ParameterDictionary["var_FxF"].Value}) {ParameterDictionary["var_FxF_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(31).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(32).Column(1).Text("Kraft Fy(FF1) auf FK-Schiene:").FontSize(fontSizeXXS);
+            table.Cell().Row(32).Column(1).Text("Kraft Fy (FF1) auf FK-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(2).AlignRight().Text($"({ParameterDictionary["var_FyF"].Value}) {ParameterDictionary["var_FyF_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(32).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(33).Column(1).Text(isRopeLift ? "Kraft Fx(FF2) auf GGW-Schiene:" : "Kraft Fx(FF2) auf Joch-Schiene:").FontSize(fontSizeXXS);
+            table.Cell().Row(33).Column(1).Text(isRopeLift ? "Kraft Fx (FF2) auf GGW-Schiene:" : "Kraft Fx (FF2) auf Joch-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(33).Column(2).AlignRight().Text($"({ParameterDictionary["var_FxFA_GGW"].Value}) {ParameterDictionary["var_FxFA_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(33).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
-            table.Cell().Row(34).Column(1).Text(isRopeLift ? "Kraft Fy(FF1) auf GGW-Schiene:" : "Kraft Fy(FF1) auf Loch-Schiene:").FontSize(fontSizeXXS);
+            table.Cell().Row(34).Column(1).Text(isRopeLift ? "Kraft Fy (FF1) auf GGW-Schiene:" : "Kraft Fy (FF1) auf Loch-Schiene:").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(2).AlignRight().Text($"({ParameterDictionary["var_FyFA_GGW"].Value}) {ParameterDictionary["var_FyFA_GGW_AZ"].Value}").FontSize(fontSizeXXS);
             table.Cell().Row(34).Column(3).AlignLeft().PaddingLeft(2).Text("N").FontSize(fontSizeXXS);
             table.Cell().Row(35).Column(1).ColumnSpan(3).PaddingTop(3).Text("Anschlusswerte").FontSize(fontSizeXS).FontColor(borderColor).Bold();

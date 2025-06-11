@@ -706,7 +706,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
 
-        var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(_parameterDictionary);
+        var safetygearResult = _calculationsModuleService.GetSafetyGearCalculation(_parameterDictionary, false);
         if (safetygearResult is not null)
         {
             if (safetygearResult.PipeRuptureValve)
@@ -732,6 +732,48 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             if (safetygearResult.MaxLoad < load + carWeight)
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Fangvorrichtung nicht zulässig Maximalgewicht {safetygearResult.MaxLoad} kg | Nutzlast+Fahrkorbgewicht: {carWeight + load} kg überschritten.", SetSeverity(severity)));
+                return;
+            }
+        }
+    }
+
+    private void ValidateCwtSafetyRange(string name, string displayname, string? value, string? severity, string? optional = null)
+    {
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_HasCwtSafetyGear") ||
+            string.IsNullOrWhiteSpace(_parameterDictionary["var_Gegengewichtsmasse"].Value) ||
+            _parameterDictionary["var_Gegengewichtsmasse"].Value == "0" ||
+            string.IsNullOrWhiteSpace(_parameterDictionary["var_Fuehrungsart_GGW"].Value) ||
+            string.IsNullOrWhiteSpace(_parameterDictionary["var_FuehrungsschieneGegengewicht"].Value) ||
+            string.IsNullOrWhiteSpace(_parameterDictionary["var_TypFV_GGW"].Value))
+        {
+            return;
+        }
+
+        var cwtSafetygearResult = _calculationsModuleService.GetSafetyGearCalculation(_parameterDictionary, true);
+        if (cwtSafetygearResult is not null)
+        {
+            if (cwtSafetygearResult.PipeRuptureValve)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+                return;
+            }
+
+            if (!cwtSafetygearResult.RailHeadAllowed)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählter Schienenkopf ist für diese Gegengewichtsfangvorrichtung nicht zulässig.", SetSeverity(severity)));
+                return;
+            }
+
+            var cwtLoad = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Gegengewichtsmasse");
+ 
+            if (cwtSafetygearResult.MinLoad > cwtLoad)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Gegengewichtsfangvorrichtung nicht zulässig Minimalgewicht {cwtSafetygearResult.MinLoad} kg | Gegengewichtsmasse: {cwtLoad} kg unterschritten.", SetSeverity(severity)));
+                return;
+            }
+            if (cwtSafetygearResult.MaxLoad < cwtLoad)
+            {
+                ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Gegengewichtsfangvorrichtung nicht zulässig Maximalgewicht {cwtSafetygearResult.MaxLoad} kg | Gegengewichtsmasse: {cwtLoad} kg überschritten.", SetSeverity(severity)));
                 return;
             }
         }

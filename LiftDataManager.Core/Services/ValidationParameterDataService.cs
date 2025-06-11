@@ -334,10 +334,12 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_FuehrungsschieneGegengewicht",
-            [new(ValidateCarFrameProgramData, "Warning", null)]);
+            [new(ValidateCwtSafetyRange, "Error", null),
+            new(ValidateCarFrameProgramData, "Warning", null)]);
 
         ValidationDictionary.Add("var_Fuehrungsart_GGW",
-            [new(ValidateGuideModel, "None", null)]);
+            [new(ValidateCwtSafetyRange, "Error", null),
+            new(ValidateGuideModel, "None", null)]);
 
         ValidationDictionary.Add("var_Fangvorrichtung",
             [new(ValidateSafetyGear, "None", null)]);
@@ -349,6 +351,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             [new(ValidateSafetyRange, "None", null),
             new(ValidateCarFrameProgramData, "Warning", null),
             new(ValidateReducedProtectionSpaces, "Warning", "var_Ersatzmassnahmen")]);
+
+        ValidationDictionary.Add("var_TypFV_GGW",
+            [new(ValidateCwtSafetyRange, "None", null)]);
 
         ValidationDictionary.Add("var_Aggregat",
             [new(ValidateDriveSystemTypes, "None", null),
@@ -688,6 +693,9 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         ValidationDictionary.Add("var_GGW_Rahmen_Gewicht",
             [new(ValidateCounterweightMass, "None", null)]);
+
+        ValidationDictionary.Add("var_Gegengewichtsmasse",
+            [new(ValidateCwtSafetyRange, "Error", null)]);
 
         ValidationDictionary.Add("var_Gegengewicht_Einlagenbreite",
             [new(ValidateCounterweightMass, "None", null)]);

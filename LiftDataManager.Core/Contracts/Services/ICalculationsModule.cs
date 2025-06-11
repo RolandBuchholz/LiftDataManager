@@ -49,7 +49,7 @@ public interface ICalculationsModule
 
     CarWeightResult GetCarWeightCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
 
-    SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary);
+    SafetyGearResult GetSafetyGearCalculation(ObservableDictionary<string, Parameter> parameterDictionary, bool counterweightSafetyGear);
 
     List<LiftSafetyComponent> GetLiftSafetyComponents(ObservableDictionary<string, Parameter> parameterDictionary);
 
