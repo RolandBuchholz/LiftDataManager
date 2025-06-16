@@ -205,6 +205,21 @@ public partial class CalculationsModuleService : ICalculationsModule
     }
 
     /// <inheritdoc/>
+    public string GetSoftStartTyp(string? liftcontroltyp, bool isRopeLift)
+    {
+        if (string.IsNullOrWhiteSpace(liftcontroltyp) || isRopeLift)
+        {
+            return string.Empty;        
+        }
+        return liftcontroltyp switch
+        {
+            var c when c.StartsWith("New") => "Sanftanlaufgerät - Liftstart",
+            "Kühn MSZ 9E" => "Softstart Ascentronic",
+            _ => string.Empty,
+        };
+    }
+
+    /// <inheritdoc/>
     public bool IsRopeLift(SelectionValue? carTyp)
     {
         if (carTyp is null)
@@ -1052,7 +1067,9 @@ public partial class CalculationsModuleService : ICalculationsModule
         var listOfSafetyComponents = new List<(string, string, string, bool)>()
         {
              ("Fangvorrichtung", "var_TypFV", "SafetyGearModelType", true),
+             ("Fangvorrichtung Gegengewicht", "var_TypFV_GGW", "SafetyGearModelType", true),
              ("Geschwindigkeitsbegrenzer", "var_Geschwindigkeitsbegrenzer", "OverspeedGovernor", true),
+             ("Geschwindigkeitsbegrenzer Gegengewicht", "var_Geschwindigkeitsbegrenzer_GGW", "OverspeedGovernor", true),
              ("Rohrbruchventil", "var_RuptureValueOptional", "SafetyGearModelType", false),
              ("Schachtinformationssystem", "var_Schachtinformationssystem", "LiftPositionSystem", false),
              ("Fahrkorbpuffer", "var_Puffertyp", "LiftBuffer", true),

@@ -1,4 +1,5 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
+using Microsoft.Extensions.Logging;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -24,7 +25,11 @@ public class EinreichunterlagenDocument : PdfBaseDocument
         LiftDocumentation ??= new();
         SetPdfStyle(lowPrintColor, false);
         SetLiftDocumentation();
+        SetRopeData();
     }
+
+    private RopeCalculationData? _ropeCalculationData;
+    private double _totalRopeWeight;
 
     public string DriveTyp => _calculationsModuleService.GetDriveTyp(ParameterDictionary["var_Getriebe"].Value, LiftParameterHelper.GetLiftParameterValue<int>(ParameterDictionary, "var_AufhaengungsartRope"));
     public bool ShowRopes => !string.Equals(DriveTyp, "hydraulisch direkt");
@@ -38,6 +43,28 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             if (liftdoku is not null)
             {
                 LiftDocumentation = liftdoku;
+            }
+        }
+    }
+
+    private void SetRopeData()
+    {
+        if (ShowRopes)
+        {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_RopeCalculationData"].Value))
+            {
+                try
+                {
+                    _ropeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
+                    if (_ropeCalculationData is not null)
+                    {
+                        _totalRopeWeight = Math.Round(_ropeCalculationData.RopeWeight * _ropeCalculationData.NumberOfRopes * _ropeCalculationData.RopeLength, 0);
+                    }
+                }
+                catch (Exception)
+                {
+                    _totalRopeWeight = 0;
+                }
             }
         }
     }
@@ -331,14 +358,15 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             });
             table.Cell().Row(1).Column(1).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der Tragmittel:").Bold();
             table.Cell().Row(1).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_NumberOfRopes"].Value} Stk  {ParameterDictionary["var_Tragseiltyp"].Value}");
-            table.Cell().Row(2).Column(1).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
-            table.Cell().Row(2).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
-            table.Cell().Row(3).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
+            table.Cell().Row(2).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{_ropeCalculationData?.RopeWeight} kg/m | gesamtes Seilgewicht: {_totalRopeWeight} kg");
+            table.Cell().Row(3).Column(1).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).Text("Seilschlösser:").Bold();
+            table.Cell().Row(3).Column(2).ShowIf(ShowRopes).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(ParameterDictionary["var_SeilschlossTyp"].DropDownListValue?.DisplayName);
+            table.Cell().Row(4).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Aufhängung des Fahrkorbes:").Bold();
             var suspension = _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1, des Gegengewichtes {ParameterDictionary["var_AufhaengungsartRope"].Value}:1"
                                                                                                                          : $"{ParameterDictionary["var_AufhaengungsartRope"].Value}:1";
-            table.Cell().Row(3).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(suspension);
-            table.Cell().Row(4).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
-            table.Cell().Row(4).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("keine");
+            table.Cell().Row(4).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(suspension);
+            table.Cell().Row(5).Column(1).PaddingVertical(defaultRowSpacing).Text("Anzahl und Art der\n" + "gespannten oder nicht\n" + "gespannten Unterseile:").Bold();
+            table.Cell().Row(5).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text("keine");
         });
     }
 
@@ -412,13 +440,15 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             {
                 columns.ConstantColumn(60, Unit.Millimetre);
                 columns.RelativeColumn();
+                columns.RelativeColumn();
             });
             table.Cell().Row(1).Column(1).PaddingVertical(defaultRowSpacing).Text("Spannung und Netzform des Anschlussnetzes:").Bold();
-            table.Cell().Row(1).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_Stromanschluss"].DropDownListValue?.DisplayName} | {ParameterDictionary["var_Netzform"].DropDownListValue?.DisplayName}");
+            table.Cell().Row(1).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_Stromanschluss"].DropDownListValue?.DisplayName} | {ParameterDictionary["var_Netzform"].DropDownListValue?.DisplayName}");
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Nennstrom des Antriebsmotors:").Bold();
-            table.Cell().Row(2).Column(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
+            table.Cell().Row(2).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text($"{ParameterDictionary["var_ZA_IMP_Motor_Ir"].Value} A");
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Steuerung:").Bold();
             table.Cell().Row(3).Column(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(ParameterDictionary["var_Steuerungstyp"].DropDownListValue?.DisplayName);
+            table.Cell().Row(3).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetSoftStartTyp(ParameterDictionary["var_Steuerungstyp"].Value, _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue)));
         });
     }
     void SafetyComponents(IContainer container)

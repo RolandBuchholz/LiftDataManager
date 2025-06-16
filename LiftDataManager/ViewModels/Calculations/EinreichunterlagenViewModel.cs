@@ -8,18 +8,20 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     private readonly ParameterContext _parametercontext;
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;
+    private readonly ILogger<EinreichunterlagenViewModel> _logger;
     private static readonly JsonSerializerOptions writeOptions = new()
     {
         WriteIndented = true
     };
 
     public EinreichunterlagenViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
-                                       ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService) :
+                                       ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService, ParameterContext parametercontext, IPdfService pdfService, ILogger<EinreichunterlagenViewModel> logger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _parametercontext = parametercontext;
         _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;
+        _logger = logger;
         LiftDocumentation ??= new();
         LiftSafetyComponents ??= [];
         UCMPComponents ??= [];
@@ -98,6 +100,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
     public string CWTRailName => IsRopeLift ? "Gegengewicht:" : "Jochschiene:";
     public string CarGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneFahrkorb"].DropDownListValue, ParameterDictionary["var_Fuehrungsart"].DropDownListValue);
     public string CWTGuideRailSurface => _calculationsModuleService.GetGuideRailSurface(ParameterDictionary["var_FuehrungsschieneGegengewicht"].DropDownListValue, ParameterDictionary["var_Fuehrungsart_GGW"].DropDownListValue);
+    public string SoftStart => _calculationsModuleService.GetSoftStartTyp(ParameterDictionary["var_Steuerungstyp"].Value, IsRopeLift);
 
     [ObservableProperty]
     public partial string ProtectedSpaceTypPitImage { get; set; } = "/Images/NoImage.png";
@@ -110,6 +113,13 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
 
     [ObservableProperty]
     public partial string ProtectedSpaceTypHeadDescription { get; set; } = "Kein Schutzraum gewählt";
+
+    [ObservableProperty]
+    public partial RopeCalculationData? RopeCalculationData { get; set; }
+
+    [ObservableProperty]
+    public partial double TotalRopeWeight { get; set; }
+
     private void CheckLiftDescriptionInfos()
     {
         LiftDescriptionInfos.Clear();
@@ -213,6 +223,28 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         UpdateProtectedSpaceTyp();
     }
 
+    private void SetRopeData()
+    {
+        if (ShowRopes)
+        {
+            if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_RopeCalculationData"].Value))
+            {
+                try
+                {
+                    RopeCalculationData = JsonSerializer.Deserialize<RopeCalculationData>(ParameterDictionary["var_RopeCalculationData"].Value!);
+                    if (RopeCalculationData is not null)
+                    {
+                        TotalRopeWeight = Math.Round(RopeCalculationData.RopeWeight * RopeCalculationData.NumberOfRopes * RopeCalculationData.RopeLength, 0);
+                    }
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning(60202, "Restore ropecalculationdata failed");
+                }
+            }
+        }
+    }
+
     private void UpdateLiftDocumentation()
     {
         ParameterDictionary["var_Einreichunterlagen"].AutoUpdateParameterValue(JsonSerializer.Serialize(LiftDocumentation, writeOptions).Replace("\r\n", "\n"));
@@ -238,6 +270,7 @@ public partial class EinreichunterlagenViewModel : DataViewModelBase, INavigatio
         if (CurrentSpeziProperties is not null)
         {
             SetLiftDocumentation();
+            SetRopeData();
             SetListofSafetyComponents();
             CheckLiftDescriptionInfos();
         }

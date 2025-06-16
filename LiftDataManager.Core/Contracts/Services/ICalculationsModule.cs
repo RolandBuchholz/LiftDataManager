@@ -31,6 +31,8 @@ public interface ICalculationsModule
 
     string GetLiftTyp(string? liftTyp);
 
+    string GetSoftStartTyp(string? liftcontroltyp, bool isRopeLift);
+
     string GetDrivePosition(string? drivePos);
 
     bool IsRopeLift(SelectionValue? carTyp);

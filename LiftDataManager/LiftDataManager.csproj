@@ -27,7 +27,7 @@
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
-    <PackageCertificateThumbprint>2BE4759304E56D677972B80FDFF39F28C765EC4C</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0CD8FB65AE2C0CA386EBD01686E71A6D1521F529</PackageCertificateThumbprint>
     <EnableMsixTooling>true</EnableMsixTooling>
     <!--<PublishAot>true</PublishAot>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>

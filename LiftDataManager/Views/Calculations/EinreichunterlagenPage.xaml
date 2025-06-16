@@ -744,6 +744,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
                                 Grid.Row="0"
@@ -764,25 +765,58 @@
                                     Text="{x:Bind ViewModel.ParameterDictionary['var_NumberOfRopes'].Value}"
                                     TextAlignment="Right" />
                                 <TextBlock
-                                    Width="25"
+                                    Width="35"
                                     Margin="5,0,5,5"
                                     VerticalAlignment="Center"
                                     Text="Stk" />
                                 <TextBox
-                                    Width="410"
+                                    Width="400"
                                     HorizontalAlignment="Left"
                                     Style="{StaticResource InfoTextboxStyle}"
                                     Text="{x:Bind ViewModel.ParameterDictionary['var_Tragseiltyp'].Value}" />
                             </StackPanel>
-                            <TextBlock
+                            <StackPanel
                                 Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind ViewModel.ShowRopes}">
+                                <TextBox
+                                    Width="65"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.RopeCalculationData.RopeWeight}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Width="35"
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="kg/m" />
+                                <TextBlock
+                                    Width="200"
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="gesamtes Seilgewicht:" />
+                                <TextBox
+                                    Width="180"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource InfoTextboxStyle}"
+                                    Text="{x:Bind ViewModel.TotalRopeWeight}"
+                                    TextAlignment="Right" />
+                                <TextBlock
+                                    Width="25"
+                                    Margin="5,0,5,5"
+                                    VerticalAlignment="Center"
+                                    Text="kg" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Row="2"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Seilschlösser:"
                                 Visibility="{x:Bind ViewModel.ShowRopes}" />
                             <SpeziControls:ParameterComboBox
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Width="520"
                                 Margin="-5,-5,-5,5"
@@ -790,13 +824,13 @@
                                 LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SeilschlossTyp'], Mode=TwoWay}"
                                 Visibility="{x:Bind ViewModel.ShowRopes}" />
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Aufhängung des Fahrkorbes:" />
                             <StackPanel
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                                 <TextBox
@@ -827,14 +861,14 @@
                                     Visibility="{x:Bind ViewModel.IsRopeLift}" />
                             </StackPanel>
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="4"
                                 Grid.Column="0"
                                 Margin="0,0,0,0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="Anzahl und Art der gespannten - nicht gespannten Unterseile:" />
                             <TextBox
-                                Grid.Row="3"
+                                Grid.Row="4"
                                 Grid.Column="1"
                                 Width="100"
                                 HorizontalAlignment="Left"
@@ -1189,11 +1223,19 @@
                             <TextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Grid.ColumnSpan="2"
                                 MinWidth="250"
                                 HorizontalAlignment="Left"
                                 Style="{StaticResource InfoTextboxStyle}"
                                 Text="{x:Bind ViewModel.ParameterDictionary['var_Steuerungstyp'].Value}" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                MinWidth="240"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.SoftStart}"
+                                Visibility="{x:Bind ViewModel.IsRopeLift, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}" />
                         </Grid>
                         <!--  7. Liste der Sicherheitsbauteile  -->
                         <TextBlock
