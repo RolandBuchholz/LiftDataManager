@@ -29,7 +29,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             ParameterDictionary["var_CFPdefiniert"].AutoUpdateParameterValue("False");
             CarSlingWeight = GetCarSlingWeight(message.NewValue);
             CheckCFPStateAsync(message.NewValue, message.OldValue).SafeFireAndForget();
-            UpdateCarFrameDataAsync(message.NewValue, 0).SafeFireAndForget();
+            UpdateCarFrameDataAsync(message.NewValue, message.OldValue, 0).SafeFireAndForget();
             Messenger.Send(new QuicklinkControlMessage(new QuickLinkControlParameters()
             {
                 SetDriveData = false,
@@ -215,7 +215,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         }
     }
 
-    private async Task UpdateCarFrameDataAsync(string? carFrame, int delay)
+    private async Task UpdateCarFrameDataAsync(string? carFrame, string? oldCarFrame, int delay)
     {
         await Task.Delay(delay);
         if (string.IsNullOrWhiteSpace(carFrame))
@@ -226,7 +226,8 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
         var carFrameType = _parametercontext.Set<CarFrameType>().FirstOrDefault(x => x.Name == carFrame);
         if (carFrameType is not null)
         {
-            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType);
+            var resetCarFrameData = !string.Equals(carFrame, oldCarFrame, StringComparison.OrdinalIgnoreCase);
+            LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, carFrameType, resetCarFrameData);
             IsRopeLift = carFrameType.DriveTypeId == 1;
             CWTRailName = IsRopeLift ? "Führungsschienen GGW" : "Führungsschienen Joch";
             CWTGuideName = IsRopeLift ? "Führungsart GGW" : "Führungsart Joch";
@@ -301,7 +302,7 @@ public partial class BausatzViewModel : DataViewModelBase, INavigationAwareEx, I
             SetCwtSafetygearDataAsync().SafeFireAndForget();
             SetCarWeightAsync().SafeFireAndForget();
             CheckCFPStateAsync(ParameterDictionary["var_Bausatz"].Value, null).SafeFireAndForget();
-            UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
+            UpdateCarFrameDataAsync(ParameterDictionary["var_Bausatz"].Value, ParameterDictionary["var_Bausatz"].Value, 1000).SafeFireAndForget();
             SetOverspeedGovernorWeightVisibility();
             SetOverspeedGovernorCounterWeightWeightVisibility();
             SetRuptureValueVisibility();

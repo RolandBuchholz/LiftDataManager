@@ -152,56 +152,56 @@ public class LiftParameterHelper
         ;
     }
 
-    public static void SetDefaultCarFrameData(ObservableDictionary<string, Parameter> parameterDictionary, CarFrameType? carFrameTyp)
+    public static void SetDefaultCarFrameData(ObservableDictionary<string, Parameter> parameterDictionary, CarFrameType? carFrameTyp, bool resetCarFrameData)
     {
         if (carFrameTyp is null)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Stichmass"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Stichmass"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CarFrameDGB != 0)
             {
                 parameterDictionary["var_Stichmass"].AutoUpdateParameterValue(carFrameTyp.CarFrameDGB.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Stichmass_GGW"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Stichmass_GGW"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CounterweightDGB != 0)
             {
                 parameterDictionary["var_Stichmass_GGW"].AutoUpdateParameterValue(carFrameTyp.CounterweightDGB.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Stichmass_Y"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Stichmass_Y"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CarFrameDGBOffset != 0)
             {
                 parameterDictionary["var_Versatz_Stichmass_Y"].AutoUpdateParameterValue(carFrameTyp.CarFrameDGBOffset.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Gegengewicht_Stichmass"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Gegengewicht_Stichmass"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CounterweightDGBOffset != 0)
             {
                 parameterDictionary["var_Versatz_Gegengewicht_Stichmass"].AutoUpdateParameterValue(carFrameTyp.CounterweightDGBOffset.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CarFrametoCWTDGBOffset != 0)
             {
                 parameterDictionary["var_Versatz_Gegengewicht_Stichmass_parallel"].AutoUpdateParameterValue(carFrameTyp.CarFrametoCWTDGBOffset.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagenbreite"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagenbreite"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CounterweightFillingWidth != 0)
             {
                 parameterDictionary["var_Gegengewicht_Einlagenbreite"].AutoUpdateParameterValue(carFrameTyp.CounterweightFillingWidth.ToString());
             }
         }
-        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagentiefe"].Value))
+        if (string.IsNullOrWhiteSpace(parameterDictionary["var_Gegengewicht_Einlagentiefe"].Value) || resetCarFrameData)
         {
             if (carFrameTyp.CounterweightFillingDepth != 0)
             {

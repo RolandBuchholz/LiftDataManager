@@ -479,7 +479,7 @@ public partial class BausatzDetailViewModel : DataViewModelBase, INavigationAwar
             ParameterDictionary["var_Pufferstuetzenmaterial"].AutoUpdateParameterValue("1.0038-ST37-2-S235");
         }
         CheckCFPState();
-        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp, false);
         RestorePufferCalculationData();
         RestoreRopeCalculationData();
         BufferCalculationDataCarFrame = GetBufferCalculationData("var_PufferCalculationData_FK", SelectedEulerCaseCarFrame, false);

@@ -977,7 +977,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) &&
                            !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
         FillListOfRailBrackets();
-        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp);
+        LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp, false);
         CalculateDimensions();
         RestoreFrameCalculationData();
         RefreshView();
