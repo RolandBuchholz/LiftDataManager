@@ -1,12 +1,11 @@
-﻿using Cogs.Collections;
-using CommunityToolkit.Mvvm.Collections;
+﻿using CommunityToolkit.Mvvm.Collections;
 using System.Windows.Input;
 
 namespace LiftDataManager.Controls;
 
 public sealed partial class CommandBar : UserControl
 {
-    public ObservableGroupedCollection<string, Parameter> GroupedFilteredParameters { get; private set; } = new();
+    public ObservableGroupedCollection<string, Parameter> GroupedFilteredParameters { get; private set; } = [];
 
     public CommandBar()
     {

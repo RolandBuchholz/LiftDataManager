@@ -14,6 +14,7 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
         builder.Property(x => x.DisplayName)
                .HasMaxLength(50)
                .IsRequired();
+        builder.Property(x => x.Abbreviation);
         builder.Property(x => x.Value);
         builder.Property(x => x.IsKey);
         builder.Property(x => x.DefaultUserEditable);

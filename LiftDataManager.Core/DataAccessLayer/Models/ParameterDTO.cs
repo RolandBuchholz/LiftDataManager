@@ -9,6 +9,7 @@ public class ParameterDto : BaseEntity
     public int ParameterTypeCodeId { get; set; }
     public required ParameterTypeCode ParameterTypeCode { get; set; }
     public required string DisplayName { get; set; }
+    public string? Abbreviation { get; set; }
     public string? Value { get; set; }
     public string? Comment;
     public bool IsKey;

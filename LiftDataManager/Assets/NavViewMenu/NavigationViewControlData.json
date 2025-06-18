@@ -261,6 +261,14 @@
           "HideItem": true
         },
         {
+          "UniqueId": "LiftDataManager.Views.AbbreviationPage",
+          "Title": "Schindler Abkürzungen",
+          "Description": "Schindler Abkürzungen",
+          "Subtitle": "Schindler Abkürzungen",
+          "ImagePath": "ms-appx:///Assets/Fluent/abbreviation.png",
+          "HideItem": false
+        },
+        {
           "UniqueId": "LiftDataManager.Views.DataBaseEditPage",
           "Title": "Databank bearbeiten",
           "Subtitle": "Databank bearbeiten",

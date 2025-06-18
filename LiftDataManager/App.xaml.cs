@@ -80,6 +80,7 @@ public partial class App : Application
             services.AddSingleton<IStorageService, StorageService>();
 
             // ViewModels
+            services.AddTransient<AbbreviationViewModel>();
             services.AddTransient<AboutSettingViewModel>();
             services.AddTransient<GeneralSettingViewModel>();
             services.AddTransient<MaintenanceSettingViewModel>();

@@ -145,13 +145,13 @@
                                     ColumnDefinitions="*,*,*">
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="0"
-                                        Header="Türbreite"
+                                        Header="Türbreite (BT)"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TB'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
                                         Unit="mm" />
                                     <SpeziControls:ParameterNumberTextBox
                                         Grid.Column="1"
-                                        Header="Türhöhe"
+                                        Header="Türhöhe (HT)"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_TH'], Mode=TwoWay}"
                                         ShowDefaultHeader="False"
                                         Unit="mm" />

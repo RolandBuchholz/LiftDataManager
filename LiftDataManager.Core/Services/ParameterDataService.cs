@@ -117,7 +117,7 @@ public partial class ParameterDataService : IParameterDataService
                 var newParameter = new Parameter(par.Value!, par.ParameterTypeCodeId, par.ParameterTypId, par.Comment!, _validationParameterDataService)
                 {
                     Name = par.Name,
-                    DisplayName = par.DisplayName,
+                    DisplayName = par.Abbreviation is null ? par.DisplayName : $"{par.DisplayName} ({par.Abbreviation})",
                     ParameterCategory = (ParameterCategoryValue)par.ParameterCategoryId,
                     DefaultUserEditable = par.DefaultUserEditable,
                     IsKey = par.IsKey,

@@ -871,8 +871,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(2).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text(variableDoorData ? "Tür Abmessungen A" : "Türen Abmessungen").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB"], "mm", false, false, "Türbreite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH"], "mm", false, false, "Türhöhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB"], "mm", false, false, "Türbreite (BT)");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH"], "mm", false, false, "Türhöhe (HT)");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht"], "kg");
                 });
                 table.Cell().Row(3).Column(3).ColumnSpan(4).Row(row =>
@@ -892,8 +892,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(5).RowSpan(2).Column(2).ShowIf(entranceB && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen B").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(5).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
                 {
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_B"], "mm", false, false, "Türbreite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_B"], "mm", false, false, "Türhöhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_B"], "mm", false, false, null);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_B"], "mm", false, false, null);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_B"], "kg");
                 });
 
@@ -914,8 +914,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(8).RowSpan(2).Column(2).ShowIf(entranceC && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen C").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(8).Column(3).ColumnSpan(4).ShowIf(entranceC && variableDoorData).Row(row =>
                 {
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_C"], "mm", false, false, "Türbreite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_C"], "mm", false, false, "Türhöhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_C"], "mm", false, false, null);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_C"], "mm", false, false, null);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_C"], "kg");
                 });
 
@@ -936,8 +936,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(11).RowSpan(2).Column(2).ShowIf(entranceD && variableDoorData).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Tür Abmessungen D").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(11).Column(3).ColumnSpan(4).ShowIf(entranceD && variableDoorData).Row(row =>
                 {
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_D"], "mm", false, false, "Türbreite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_D"], "mm", false, false, "Türhöhe");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TB_D"], "mm", false, false, null);
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_TH_D"], "mm", false, false, null);
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_Tuergewicht_D"], "kg");
                 });
                 table.Cell().Row(12).Column(3).ColumnSpan(4).ShowIf(entranceB && variableDoorData).Row(row =>
