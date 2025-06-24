@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
-using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Input;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
@@ -38,17 +37,19 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                                                                 "var_B2_11", "var_B2_12", "var_B2_13" ,"var_B2_14","var_B2_15",
                                                                 "var_B2_16", "var_B2_17", "var_B2_18" ,"var_B2_19" ];
 
-    public override void Receive(PropertyChangedMessage<string> message)
+    public override async void Receive(PropertyChangedMessage<string> message)
     {
         if (message is null ||
             !(message.Sender.GetType() == typeof(Parameter)))
         {
             return;
         }
+
         if (message.PropertyName == "var_SG" || message.PropertyName == "var_FH" || message.PropertyName == "var_SK")
         {
-            SetViewBoxDimensions();
-        };
+            await SetViewBoxDimensionsAsync();
+        }
+        ;
 
         if (message.PropertyName == "var_Gegengewicht_Einlagenbreite" || message.PropertyName == "var_Gegengewicht_Einlagentiefe")
         {
@@ -67,26 +68,26 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
                     UpdateFrameCalculationData();
                 }
             }
-        };
+        }
+        ;
 
         if (shaftDesignParameter.Contains(message.PropertyName))
         {
-            CalculateDimensions();
+            await CalculateDimensionsAsync();
             RefreshView();
-        };
+        }
+        ;
 
         if (railBracketDistancesParameter.Contains(message.PropertyName))
         {
-            //Workaround for ActiveCustomRailBracketDistances.Clear();
-            Thread.Sleep(50);
-            //Workaround for ActiveCustomRailBracketDistances.Clear();
-            OrderListOfRailBrackets(message.NewValue, message.PropertyName);
-            CalculateDimensions();
+            await OrderListOfRailBracketsAsync(message.NewValue, message.PropertyName);
+            await CalculateDimensionsAsync();
             RefreshView();
-        };
+        }
+        ;
 
         SetInfoSidebarPanelText(message);
-        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
+        await SetModelStateAsync();
     }
 
     private float _scale;
@@ -103,14 +104,19 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     [ObservableProperty]
     public partial FrameCalculationData? FrameCalculationData { get; set; }
+
     [ObservableProperty]
     public partial double ViewBoxWidth { get; set; }
+
     [ObservableProperty]
     public partial double ViewBoxHeight { get; set; }
+
     [ObservableProperty]
     public partial double ShaftDepth { get; set; }
+
     [ObservableProperty]
     public partial double ShaftPit { get; set; }
+
     [ObservableProperty]
     public partial double ShaftTravel { get; set; }
     partial void OnShaftTravelChanged(double value)
@@ -120,41 +126,58 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
     [ObservableProperty]
     public partial double ShaftHeadroom { get; set; }
+
     [ObservableProperty]
     public partial double ShaftHeight { get; set; }
+
     [ObservableProperty]
     public partial bool IsCFPControlled { get; set; }
+
     [ObservableProperty]
     public partial string CWTRailName { get; set; } = "Führungsschienen Gegengewicht";
+
     [ObservableProperty]
     public partial string CWTRailNameShaftCeilling { get; set; } = "Führungsschienen Gegengewicht";
+
     [ObservableProperty]
     public partial bool ErrorStartRail { get; set; }
+
     [ObservableProperty]
     public partial bool ErrorStandardRail { get; set; }
+
     [ObservableProperty]
     public partial bool ErrorTotalRailLength { get; set; }
+
     [ObservableProperty]
     public partial bool ErrorDistanceGuideRailBracket { get; set; }
 
     [ObservableProperty]
     public partial bool ErrorTotalDistanceGuideRailBrackets { get; set; }
+
     [ObservableProperty]
     public partial double DistanceCarRailShaftCeiling { get; set; }
+
     [ObservableProperty]
     public partial double DistanceCWTRailShaftCeiling { get; set; }
+
     [ObservableProperty]
     public partial double CarRailBracketDistanceLeft { get; set; }
+
     [ObservableProperty]
     public partial double CwtRailBracketDistanceLeft { get; set; }
+
     [ObservableProperty]
     public partial int RailBracketLevelCount { get; set; }
+
     [ObservableProperty]
     public partial double MaxRailBracketSpacing { get; set; }
+
     [ObservableProperty]
     public partial double DistanceCarRailjoint { get; set; }
+
     [ObservableProperty]
     public partial double DistanceCwtRailjoint { get; set; }
+
     [ObservableProperty]
     public partial bool CustomRailBracketSpacing { get; set; }
     partial void OnCustomRailBracketSpacingChanged(bool oldValue, bool newValue)
@@ -163,8 +186,13 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         {
             foreach (string railBracket in railBracketDistancesParameter)
             {
+                ParameterDictionary[railBracket].DataImport = true;
                 ParameterDictionary[railBracket].Value = "0";
+                ParameterDictionary[railBracket].DataImport = false;
             }
+            RailBracketDistances.Clear();
+            ActiveCustomRailBracketDistances.Clear();
+            CalculateDimensionsAsync().Wait();
         }
         if (newValue)
         {
@@ -176,9 +204,11 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RemoveCustomRailBracketDistanceCommand))]
     public partial bool CanRemoveCustomRailBracketDistance { get; set; }
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCustomRailBracketDistanceCommand))]
     public partial bool CanAddCustomRailBracketDistance { get; set; }
+
     [ObservableProperty]
     public partial double DistanceGuideShoesCarframe { get; set; }
     partial void OnDistanceGuideShoesCarframeChanged(double value)
@@ -189,6 +219,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double DistanceGuideShoesCounterweight { get; set; }
     partial void OnDistanceGuideShoesCounterweightChanged(double value)
@@ -199,6 +230,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double CarCenterOfMassX { get; set; }
     partial void OnCarCenterOfMassXChanged(double value)
@@ -209,6 +241,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double CarCenterOfMassY { get; set; }
     partial void OnCarCenterOfMassYChanged(double value)
@@ -220,6 +253,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double AdditionalRailForceCarframe { get; set; }
     partial void OnAdditionalRailForceCarframeChanged(double value)
@@ -230,6 +264,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double AdditionalRailForceCounterweight { get; set; }
     partial void OnAdditionalRailForceCounterweightChanged(double value)
@@ -240,6 +275,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double OffsetCounterweightSuspensionCenter { get; set; }
     partial void OnOffsetCounterweightSuspensionCenterChanged(double value)
@@ -250,6 +286,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial int CarframeBracketClipCount { get; set; } = 2;
     partial void OnCarframeBracketClipCountChanged(int value)
@@ -260,6 +297,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial int CounterweightBracketClipCount { get; set; } = 2;
     partial void OnCounterweightBracketClipCountChanged(int value)
@@ -270,6 +308,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial bool HasSlidingClips { get; set; }
     partial void OnHasSlidingClipsChanged(bool value)
@@ -280,6 +319,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double BuildingDeflectionX { get; set; }
     partial void OnBuildingDeflectionXChanged(double value)
@@ -290,8 +330,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     [ObservableProperty]
     public partial double BuildingDeflectionY { get; set; }
+
     partial void OnBuildingDeflectionYChanged(double value)
     {
         if (FrameCalculationData is not null)
@@ -300,6 +342,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             UpdateFrameCalculationData();
         }
     }
+
     private void DrawShaftWall(SKCanvas canvas)
     {
         SKPathEffect diagLinesPath = SKPathEffect.Create2DLine(_stokeWith,
@@ -669,7 +712,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         _xamlCanvas?.Invalidate();
     }
 
-    private void CalculateDimensions()
+    private async Task CalculateDimensionsAsync()
     {
         double firstRailBracket = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B1");
         double equallyBracketSpacing = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_B2");
@@ -759,6 +802,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         ErrorStandardRail = _carRailSplit > maxRailLength || _cwtRailSplit > maxRailLength;
         ErrorTotalRailLength = DistanceCarRailShaftCeiling < 0 || DistanceCWTRailShaftCeiling < 0;
         ErrorTotalDistanceGuideRailBrackets = CarRailBracketDistanceLeft < 0 && CwtRailBracketDistanceLeft < 0;
+        await Task.CompletedTask;
     }
 
     private static (double, double) CalculateRailData(double railLength, double startRailLength, double railSplit, double maxRailLength)
@@ -819,7 +863,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         return minJointDistance;
     }
 
-    private void SetViewBoxDimensions()
+    private async Task SetViewBoxDimensionsAsync()
     {
         ShaftPit = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_SG");
         ShaftTravel = LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_FH") * 1000;
@@ -838,10 +882,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             ViewBoxWidth = (ShaftDepth + 800) * _scale;
             ViewBoxHeight = (ShaftHeight + 800) * _scale;
         }
-        CalculateDimensions();
+        await CalculateDimensionsAsync();
     }
 
-    private void FillListOfRailBrackets()
+    private async Task FillListOfRailBracketsAsync()
     {
         foreach (string railBracket in railBracketDistancesParameter)
         {
@@ -849,11 +893,11 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         }
         if (CustomRailBracketSpacing)
         {
-            OrderListOfRailBrackets("0", null);
+            await OrderListOfRailBracketsAsync("0", null);
         }
     }
 
-    private void OrderListOfRailBrackets(string value, string? name)
+    private async Task OrderListOfRailBracketsAsync(string value, string? name)
     {
         if (value == "0" || name is null || string.IsNullOrWhiteSpace(value))
         {
@@ -897,6 +941,7 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
 
         CanRemoveCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count > 0;
         CanAddCustomRailBracketDistance = ActiveCustomRailBracketDistances.Count < 19;
+        await Task.CompletedTask;
     }
 
     private void UpdateFrameCalculationData()
@@ -964,9 +1009,8 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         UpdateFrameCalculationData();
     }
 
-    private async Task UpdateCarFrameDataAsync(int delay)
+    private async Task UpdateCarFrameDataAsync()
     {
-        await Task.Delay(delay);
         CarFrameTyp = _calculationsModuleService.GetCarFrameTyp(ParameterDictionary);
         if (CarFrameTyp is not null)
         {
@@ -975,10 +1019,10 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
             IsCFPControlled = CarFrameTyp.IsCFPControlled;
         }
         CustomRailBracketSpacing = !string.IsNullOrWhiteSpace(ParameterDictionary["var_B2_1"].Value) &&
-                           !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
-        FillListOfRailBrackets();
+                                   !string.Equals(ParameterDictionary["var_B2_1"].Value, "0");
+        await FillListOfRailBracketsAsync();
         LiftParameterHelper.SetDefaultCarFrameData(ParameterDictionary, CarFrameTyp, false);
-        CalculateDimensions();
+        await CalculateDimensionsAsync();
         RestoreFrameCalculationData();
         RefreshView();
     }
@@ -1076,13 +1120,13 @@ public partial class BausatzDetailRailBracketViewModel : DataViewModelBase, INav
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         if (CurrentSpeziProperties is not null)
         {
-            SetViewBoxDimensions();
-            UpdateCarFrameDataAsync(500).SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
+            await SetViewBoxDimensionsAsync();
+            await UpdateCarFrameDataAsync();
         }
     }
 
