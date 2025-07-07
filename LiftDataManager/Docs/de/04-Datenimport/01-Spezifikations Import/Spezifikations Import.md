@@ -2,7 +2,8 @@
 
 ![image](/LiftDataManager/Docs/HelpImages/image33.png)  
 
->Nach der Eingabe einer gültigen Auftragsnummer wird der Button **„Start Datenimport“** aktiv und Import kann durch klicken des Buttons gestartet werden.  
+>Nach der Eingabe einer gültigen Auftragsnummer wird der Button **„Start Datenimport“** aktiv und Import kann durch klicken des Buttons gestartet werden.
+>Es ist möglich **Antriebsdaten**, **CFP-Daten** und **CFP-Datenbankanpassungen** zu übernehmen.
 
 ![image](/LiftDataManager/Docs/HelpImages/image34.png)  
 

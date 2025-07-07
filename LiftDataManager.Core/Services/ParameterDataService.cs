@@ -615,6 +615,7 @@ public partial class ParameterDataService : IParameterDataService
             {
                 _logger.LogWarning(61001, "Saving failed {Name} >Saving is only possible in adminmode<", parameter.Name);
                 saveResult.Add(new Tuple<string, string, string?>("Error", "Error", $"Parameter: {parameter.Name} ist scheibgeschützt!\nSpeichern nur im Adminmode möglich!"));
+                parameter.IsDirty = false;
             }
         }
         await AddParameterListToHistoryAsync(historyEntrys, path, false);
@@ -893,6 +894,7 @@ public partial class ParameterDataService : IParameterDataService
             }
         }
     }
+    
     /// <inheritdoc/>
     public async Task StopAutoSaveTimerAsync()
     {

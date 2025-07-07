@@ -26,19 +26,23 @@
 
 > Komplette Änderungshistorie der Aufzugsanlage
 
-## 7.Datenbank editieren
+## 7.Schindler Abkürzungen
+
+> Es steht eine Schindler Abkürzungsdatenbank mit Suchfunktion zur Verfügung
+
+## 8.Datenbank editieren
 
 > Im Admin Modus kann hier die Datendank bearbeitet werden
 
-## 8.Quicklinks
+## 9.Quicklinks
 
 > Schnelle Links zu dem meist benötigen Unterlagen und Ordner
 
-## 9.Hilfe
+## 10.Hilfe
 
 > Link zur Hilfe
 
-## 10.Einstellungen
+## 11.Einstellungen
 
 > Allgemeine Einstellungen, Farben und Aussehen, Wartung und About  
 

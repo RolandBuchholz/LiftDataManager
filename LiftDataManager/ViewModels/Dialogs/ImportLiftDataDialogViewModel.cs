@@ -167,9 +167,11 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
     public partial string? SelectedImportCarFrame { get; set; }
 
     [ObservableProperty]
-    public partial bool ImportDriveData { get; set; } = true;
+    public partial bool ImportDriveData { get; set; }
+
     [ObservableProperty]
-    public partial bool ImportCFPData { get; set; } = true;
+    public partial bool ImportCFPData { get; set; }
+
     [ObservableProperty]
     public partial bool ImportCFPDataBaseOverrides { get; set; }
 
