@@ -35,6 +35,23 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         {
             return;
         }
+
+        if (message.PropertyName == "var_KBI")
+        {
+            if (!string.Equals(message.NewValue, message.OldValue))
+            {
+                ParameterDictionary["var_KBA"].AutoUpdateParameterValue(string.Empty);
+            }
+
+        }
+        if (message.PropertyName == "var_KTI")
+        {
+            if (!string.Equals(message.NewValue, message.OldValue))
+            {
+                ParameterDictionary["var_KTA"].AutoUpdateParameterValue(string.Empty);
+            }
+        }
+
         if (message.PropertyName == "var_KBI" ||
             message.PropertyName == "var_KTI" ||
             message.PropertyName == "var_TuerEinbau" ||

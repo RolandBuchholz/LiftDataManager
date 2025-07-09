@@ -590,24 +590,28 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("False");
+                ResetReducedProtectionSpacesbuffer(_parameterDictionary["var_Ersatzmassnahmen"].DropDownListValue);
             }
             else if (value == "Vorausgelöstes Anhaltesystem" || value.StartsWith("Schachtkopf und Schachtgrube"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
+                ResetReducedProtectionSpacesbuffer(_parameterDictionary["var_Ersatzmassnahmen"].DropDownListValue);
             }
             else if (value.StartsWith("Schachtkopf"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
+                ResetReducedProtectionSpacesbuffer(_parameterDictionary["var_Ersatzmassnahmen"].DropDownListValue);
             }
             else if (value.StartsWith("Schachtgrube"))
             {
                 _parameterDictionary["var_ErsatzmassnahmenSK"].AutoUpdateParameterValue("False");
                 _parameterDictionary["var_ErsatzmassnahmenSG"].AutoUpdateParameterValue("True");
                 _parameterDictionary["var_KontaktSchutzraumueberwachung"].AutoUpdateParameterValue("True");
+                ResetReducedProtectionSpacesbuffer(_parameterDictionary["var_Ersatzmassnahmen"].DropDownListValue);
             }
         }
 
@@ -1143,9 +1147,21 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateDoorTyps(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!name.StartsWith("var_Tuertyp") || LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AdvancedDoorSelection"))
+        if (!name.StartsWith("var_Tuertyp"))
         {
             return;
+        }
+
+        if (LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_AdvancedDoorSelection"))
+        {
+            _parameterDictionary["var_Tuertyp"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuertyp_B"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuertyp_C"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuertyp_D"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuerbezeichnung"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuerbezeichnung_B"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuerbezeichnung_C"].DropDownListValue = new SelectionValue();
+            _parameterDictionary["var_Tuerbezeichnung_D"].DropDownListValue = new SelectionValue();
         }
 
         var liftDoorGroups = name.Replace("var_Tuertyp", "var_Tuerbezeichnung");

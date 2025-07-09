@@ -58,7 +58,7 @@
     <PackageReference Include="AsyncAwaitBestPractices" Version="9.0.0" />
     <PackageReference Include="DevWinUI" Version="8.4.1" />
     <PackageReference Include="DevWinUI.Controls" Version="8.4.1" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3296.44" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />   
     <PackageReference Include="AK.Toolkit.WinUI3.NumberBoxEx" Version="1.0.1" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />

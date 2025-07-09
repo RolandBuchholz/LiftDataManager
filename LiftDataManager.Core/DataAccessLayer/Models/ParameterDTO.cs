@@ -11,8 +11,11 @@ public class ParameterDto : BaseEntity
     public required string DisplayName { get; set; }
     public string? Abbreviation { get; set; }
     public string? Value { get; set; }
-    public string? Comment;
-    public bool IsKey;
+    public string? Comment { get; set; }
+    public bool IsKey { get; set; }
     public bool DefaultUserEditable { get; set; }
     public string? DropdownList { get; set; }
+    public bool CarDesignRelated { get; set; }
+    public bool DispoPlanRelated { get; set; }
+    public bool LiftPanelRelated { get; set; }
 }

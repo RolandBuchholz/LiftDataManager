@@ -49,6 +49,22 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
             return;
         }
 
+        if (message.PropertyName == "var_KBI")
+        {
+            if (!string.Equals(message.NewValue, message.OldValue))
+            {
+                ParameterDictionary["var_KBA"].AutoUpdateParameterValue(string.Empty);
+            }
+
+        }
+        if (message.PropertyName == "var_KTI")
+        {
+            if (!string.Equals(message.NewValue, message.OldValue))
+            {
+                ParameterDictionary["var_KTA"].AutoUpdateParameterValue(string.Empty);
+            }
+        }
+
         if (message.PropertyName == "var_SB" || message.PropertyName == "var_ST")
         {
             SetViewBoxDimensions();
