@@ -1851,7 +1851,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 }
                 break;
             case "var_PaneelmaterialGlas":
-                if (string.IsNullOrWhiteSpace(value) || !value.StartsWith("Euro"))
+                if (string.IsNullOrWhiteSpace(value) || !(value.StartsWith("Euro") || value.StartsWith("Weissglas")))
                 {
                     _parameterDictionary["var_PaneelGlasRAL"].AutoUpdateParameterValue(string.Empty);
                 }

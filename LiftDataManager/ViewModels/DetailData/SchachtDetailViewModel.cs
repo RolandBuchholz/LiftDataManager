@@ -4,6 +4,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
 using SkiaSharp;
 using SkiaSharp.Views.Windows;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 
 namespace LiftDataManager.ViewModels;
 
@@ -806,9 +807,38 @@ public partial class SchachtDetailViewModel : DataViewModelBase, INavigationAwar
 
         if (!cantiLever && frameOffsetY != 0)
         {
+            float diameter = 330f;
+            float with = 182f;
+            float pulleyfromDGB = 100f;
+
+            if (string.Equals(carFrameTyp.Name, "ZZE-S1600"))
+            {
+                diameter = 160f;
+                with = 114f;
+                pulleyfromDGB = 35f;
+            }
+            else if (string.Equals(carFrameTyp.Name, "ZZE-S2600"))
+            {
+                diameter = 210f;
+                with = 118f;
+                pulleyfromDGB = 60f;
+            }
+
+            using var paintPulleyLine = new SKPaint
+            {
+                Color = SKColors.DarkSeaGreen,
+                IsAntialias = true,
+                StrokeWidth = _stokeWith * 2.0f,
+                Style = SKPaintStyle.StrokeAndFill
+            };
+            
             SKPath midLineCarFrameHorizonal = new();
-            midLineCarFrameHorizonal.MoveTo(startPointMidDGB.X - 250f, midLineCarFrame.Bounds.MidY);
-            midLineCarFrameHorizonal.LineTo(endPointMidDGB.X + 250f, midLineCarFrame.Bounds.MidY);
+            midLineCarFrameHorizonal.MoveTo(startPointMidDGB.X - (carframeDGB / 2f - pulleyfromDGB), midLineCarFrame.Bounds.MidY);
+            midLineCarFrameHorizonal.LineTo(endPointMidDGB.X + (carframeDGB / 2f - pulleyfromDGB), midLineCarFrame.Bounds.MidY);
+            var pulleyPathLeft = SkiaSharpHelpers.CreateDeflectionPulley(midLineCarFrameHorizonal.Bounds.Left, midLineCarFrame.Bounds.MidY, diameter, with);
+            var pulleyPathRight = SkiaSharpHelpers.CreateDeflectionPulley(midLineCarFrameHorizonal.Bounds.Right, midLineCarFrame.Bounds.MidY, diameter, with);
+            canvas.DrawPath(pulleyPathLeft, paintPulleyLine);
+            canvas.DrawPath(pulleyPathRight, paintPulleyLine);
             canvas.DrawPath(midLineCarFrameHorizonal, paintCarFrameMidLine);
         }
 

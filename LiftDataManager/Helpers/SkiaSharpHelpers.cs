@@ -24,6 +24,26 @@ public static class SkiaSharpHelpers
         return arrow;
     }
 
+    public static SKPath CreateDeflectionPulley(float x, float y, float diameter, float width, float degrees = 0)
+    {
+        var pulley = new SKPath();
+        pulley.RMoveTo(-diameter / 2f, - width / 2f);
+        pulley.RLineTo(0, width);
+        pulley.RLineTo(diameter, 0);
+        pulley.RLineTo(-diameter, -width);
+        pulley.RLineTo(diameter, 0);
+        pulley.RLineTo(-diameter, width);
+        pulley.RMoveTo(diameter, 0);
+        pulley.RLineTo(0, -width);
+        pulley.Close();
+        if (degrees != 0)
+        {
+            pulley.Transform(SKMatrix.CreateRotationDegrees(degrees));
+        }
+        pulley.Transform(SKMatrix.CreateTranslation(x, y));
+        return pulley;
+    }
+
     public static SKMatrix Multiply(SKMatrix first, SKMatrix second)
     {
         SKMatrix target = SKMatrix.CreateIdentity();
