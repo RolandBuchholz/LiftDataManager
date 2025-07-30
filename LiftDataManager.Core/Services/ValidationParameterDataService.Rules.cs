@@ -1847,6 +1847,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 if (string.IsNullOrWhiteSpace(value) || !value.StartsWith("ESG"))
                 {
                     _parameterDictionary["var_PaneelmaterialGlas"].AutoUpdateParameterValue(string.Empty);
+                    _parameterDictionary["var_SchattenfugenGlaspaneele"].AutoUpdateParameterValue(string.Empty);
                     _parameterDictionary["var_PaneelGlasRAL"].AutoUpdateParameterValue(string.Empty);
                 }
                 break;

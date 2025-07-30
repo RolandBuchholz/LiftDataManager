@@ -490,10 +490,10 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     columns.ConstantColumn(15);
                     columns.ConstantColumn(85);
-                    columns.RelativeColumn(1);
-                    columns.RelativeColumn(1);
-                    columns.RelativeColumn(1);
-                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(4);
+                    columns.RelativeColumn(4);
+                    columns.RelativeColumn(3);
+                    columns.RelativeColumn(3);
                 });
 
                 table.Cell().Row(1).Column(1).RowSpan(18).RotateLeft().AlignMiddle().AlignCenter().Text("Fahrkorb Ausstattung").FontColor(borderColor).Bold();
@@ -503,15 +503,15 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(1).Column(6).ParameterStringCell(ParameterDictionary["var_FarbtemperaturBeleuchtung"], "Kelvin", false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_abgDecke"]);
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_52"]);
+                    row.RelativeItem(4).ParameterBoolCell(ParameterDictionary["var_abgDecke"]);
+                    row.RelativeItem(4).ParameterBoolCell(ParameterDictionary["var_NotlichtKab"]);
+                    row.RelativeItem(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_52"]);
                 });
                 table.Cell().Row(3).Column(3).ColumnSpan(4).Row(row =>
                 {
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_Dimmer"]);
-                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtTab"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_1"]);
+                    row.RelativeItem(4).ParameterBoolCell(ParameterDictionary["var_Dimmer"]);
+                    row.RelativeItem(4).ParameterBoolCell(ParameterDictionary["var_NotlichtTab"]);
+                    row.RelativeItem(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_1"]);
                 });
 
                 table.Cell().Row(4).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Spiegel").FontSize(fontSizeXS).FontColor(borderColor).Bold();
@@ -574,7 +574,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(8).Column(5).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_2"]);
                 table.Cell().Row(8).Column(6).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_3"]);
 
-                table.Cell().Row(9).RowSpan(5).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(9).RowSpan(8).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(9).Column(3).ColumnSpan(2).Row(row =>
                 {
                     row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Handlauf"]);
@@ -642,9 +642,11 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
                 table.Cell().Row(15).Column(3).ColumnSpan(2).Row(row =>
                 {
-                    row.RelativeItem(2).ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
+                    row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Paneelmaterial"]);
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelmaterialGlas"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelmaterialGlas"]);
+                    if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_SchattenfugenGlaspaneele"].Value))
+                        row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SchattenfugenGlaspaneele"]);
                     if (!string.IsNullOrWhiteSpace(ParameterDictionary["var_PaneelGlasRAL"].Value))
                         row.RelativeItem().ParameterStringCell(ParameterDictionary["var_PaneelGlasRAL"], null, false, false, "Farbton(RAL)");
                 });

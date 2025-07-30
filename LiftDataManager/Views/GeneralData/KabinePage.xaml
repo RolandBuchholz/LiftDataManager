@@ -1599,7 +1599,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="0.7*,0.3*,*">
+                                    ColumnDefinitions="2.1*,0.9*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Handlauf'], Mode=TwoWay}"
@@ -1725,7 +1725,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="0.4*,0.3*,0.3*,*">
+                                    ColumnDefinitions="1.2*,0.9*,0.9*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Sockelleiste'], Mode=TwoWay}"
@@ -1860,7 +1860,7 @@
                                     Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="3*,2*">
                                     <Grid Grid.Column="0" ColumnDefinitions="*,Auto,Auto,Auto">
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
@@ -2021,7 +2021,7 @@
                                     Grid.Row="5"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="3*,2*">
                                     <SpeziControls:ParameterTextBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Aussenverkleidung_ZT'], Mode=TwoWay}"
@@ -2121,7 +2121,7 @@
                                     Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="*,*">
+                                    ColumnDefinitions="3*,2*">
                                     <Grid Grid.Column="0" ColumnDefinitions="*,auto,auto,auto">
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
@@ -2277,7 +2277,7 @@
                                     Grid.Row="7"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="0.4*,0.3*,0.3*,*">
+                                    ColumnDefinitions="1.2*,0.9*,0.9*,2*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Teilungsleiste'], Mode=TwoWay}"
