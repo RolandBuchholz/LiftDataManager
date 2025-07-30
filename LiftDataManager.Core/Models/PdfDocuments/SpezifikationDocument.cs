@@ -442,7 +442,8 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_BoPr"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SonderExternBodengewicht"], "kg/m²");
                 });
-                table.Cell().Row(20).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, "Boden Zusatzinformationen");
+                table.Cell().Row(20).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Bodenprofil_ZT"], null, false, false, null);
+                table.Cell().Row(20).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_BeschichtungBoden"], null, false, false, null);
                 table.Cell().Row(21).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem(6).ParameterStringCell(ParameterDictionary["var_Bodenbelag"]);

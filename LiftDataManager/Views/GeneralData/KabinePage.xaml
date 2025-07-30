@@ -1032,12 +1032,20 @@
                                         ShowDefaultHeader="False"
                                         Unit="kg/m²" />
                                 </Grid>
-                                <SpeziControls:ParameterTextBox
+                                <Grid
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bodenprofil_ZT'], Mode=TwoWay}"
-                                    ShowDefaultHeader="True" />
+                                    ColumnDefinitions="*,*">
+                                    <SpeziControls:ParameterTextBox
+                                        Grid.Column="0"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Bodenprofil_ZT'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                    <SpeziControls:ParameterComboBox
+                                        Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BeschichtungBoden'], Mode=TwoWay}"
+                                        ShowDefaultHeader="True" />
+                                </Grid>
                                 <Grid
                                     x:Name="Kabine13"
                                     Grid.Row="3"
@@ -2114,7 +2122,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
                                     ColumnDefinitions="*,*">
-                                    <Grid Grid.Column="0" ColumnDefinitions="*,auto,auto">
+                                    <Grid Grid.Column="0" ColumnDefinitions="*,auto,auto,auto">
                                         <SpeziControls:ParameterComboBox
                                             Grid.Column="0"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Paneelmaterial'], Mode=TwoWay}"
@@ -2157,8 +2165,13 @@
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
                                         </SpeziControls:ParameterComboBox>
-                                        <SpeziControls:ParameterTextBox
+                                        <SpeziControls:ParameterComboBox
                                             Grid.Column="2"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SchattenfugenGlaspaneele'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True"
+                                            Visibility="{x:Bind ViewModel.ShowGlassPanels, Mode=OneWay}" />
+                                        <SpeziControls:ParameterTextBox
+                                            Grid.Column="3"
                                             MinWidth="100"
                                             Header="Farbton(RAL)"
                                             LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_PaneelGlasRAL'], Mode=TwoWay}"
