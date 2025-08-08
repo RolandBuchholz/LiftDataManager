@@ -18,6 +18,13 @@ public partial class ParameterBase : ObservableRecipient, INotifyDataErrorInfo
     }
 
     [ObservableProperty]
+    public partial bool CarDesignRelated { get; set; }
+    [ObservableProperty]
+    public partial bool DispoPlanRelated { get; set; }
+    [ObservableProperty]
+    public partial bool LiftPanelRelated { get; set; }
+
+    [ObservableProperty]
     public partial bool HasErrors { get; set; }
 
     [ObservableProperty]

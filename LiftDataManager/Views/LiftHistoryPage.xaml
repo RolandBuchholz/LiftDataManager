@@ -5,9 +5,11 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:speziControls="using:LiftDataManager.Controls"
+    xmlns:tableView="using:WinUI.TableView"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -15,20 +17,20 @@
             x:Key="InvertBoolToObjectConverter"
             FalseValue="Visible"
             TrueValue="Collapsed" />
+        <helpers:EnumToStringConverter x:Key="EnumToStringConverter" />
     </Page.Resources>
-
     <Grid x:Name="ContentAreaTabelle">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" CornerRadius="0,0,8,8">
+        <!--  HistorySearchBar  -->
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--  CommandBar  -->
             <speziControls:HistorySearchBar
                 Grid.Row="0"
                 Grid.Column="0"
@@ -47,131 +49,121 @@
                 Text="Keine Daten in der Lift History vorhanden."
                 TextWrapping="WrapWholeWords" />
         </Grid>
+        <!--  HistoryTableView  -->
         <Grid Grid.Row="1" Visibility="{x:Bind ViewModel.CanShowHistoryEntrys, Mode=OneWay}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <Grid Margin="0,0,5,0" CornerRadius="0,0,8,8">
-                <controls:DataGrid
-                    AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                    AutoGenerateColumns="False"
-                    Background="Transparent"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                    BorderThickness="1"
-                    CanUserReorderColumns="True"
-                    CanUserResizeColumns="True"
-                    ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
-                    GridLinesVisibility="All"
-                    ItemsSource="{x:Bind ViewModel.FilteredItems.View, Mode=OneWay}">
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTemplateColumn
-                            Width="170"
-                            Header="Änderungsdatum"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind TimeStamp}"
-                                        TextAlignment="Center" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="150"
-                            Header="Author"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind Author}"
-                                        TextAlignment="Center" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="350"
-                            Header="geänderter Wert"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind NewValue}"
-                                        TextAlignment="Right"
-                                        TextWrapping="WrapWholeWords" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="180"
-                            Header="Parametername"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind DisplayName}"
-                                        TextAlignment="Center" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="180"
-                            Header="Interner Name"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        Margin="10,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind Name}"
-                                        TextAlignment="Center" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn Width="300" Header="Kommentar">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:LiftHistoryEntry">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind Comment}"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn Width="80" Header="Edit">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button
-                                        Margin="0"
+            <tableView:TableView
+                x:Name="HistoryTableView"
+                Grid.Column="0"
+                Margin="0,0,5,0"
+                AutoGenerateColumns="False"
+                CornerRadius="4"
+                ItemsSource="{x:Bind ViewModel.HistoryEntrys, Mode=OneWay}">
+                <tableView:TableView.Columns>
+                    <tableView:TableViewDateColumn
+                        Width="160"
+                        Binding="{Binding TimeStamp}"
+                        DateFormat="shortdate longtime"
+                        Header="Änderungsdatum"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="150"
+                        Binding="{Binding Author}"
+                        Header="Author"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="180"
+                        Binding="{Binding DisplayName}"
+                        CanResize="True"
+                        Header="Parametername"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTemplateColumn
+                        Width="350"
+                        CanFilter="True"
+                        CanResize="True"
+                        CanSort="True"
+                        Header="geänderter Wert"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:LiftHistoryEntry">
+                                <TextBlock
+                                    Margin="10,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind NewValue}"
+                                    TextWrapping="WrapWholeWords" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTextColumn
+                        Width="140"
+                        Binding="{Binding Category, Converter={StaticResource EnumToStringConverter}}"
+                        Header="Category"
+                        IsReadOnly="True" />
+                    <tableView:TableViewCheckBoxColumn
+                        Width="80"
+                        Binding="{Binding CarDesignRelated}"
+                        IsReadOnly="True">
+                        <tableView:TableViewCheckBoxColumn.Header>
+                            <FontIcon Glyph="&#xE70A;" ToolTipService.ToolTip="CarDesignRelated: Relevant für Kabinenerstellung" />
+                        </tableView:TableViewCheckBoxColumn.Header>
+                    </tableView:TableViewCheckBoxColumn>
+                    <tableView:TableViewCheckBoxColumn
+                        Width="80"
+                        Binding="{Binding DispoPlanRelated}"
+                        IsReadOnly="True">
+                        <tableView:TableViewCheckBoxColumn.Header>
+                            <FontIcon Glyph="&#xE8BF;" ToolTipService.ToolTip="DispoPlanRelated: Relevant für Dispoplanerstellung" />
+                        </tableView:TableViewCheckBoxColumn.Header>
+                    </tableView:TableViewCheckBoxColumn>
+                    <tableView:TableViewCheckBoxColumn
+                        Width="80"
+                        Binding="{Binding LiftPanelRelated}"
+                        IsReadOnly="True">
+                        <tableView:TableViewCheckBoxColumn.Header>
+                            <FontIcon Glyph="&#xEF3D;" ToolTipService.ToolTip="LiftPanelRelated: Relevant für Tableauerstellung" />
+                        </tableView:TableViewCheckBoxColumn.Header>
+                    </tableView:TableViewCheckBoxColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="250"
+                        Header="Kommentar"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:LiftHistoryEntry">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind Comment, Mode=TwoWay}"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTemplateColumn Width="80" Header="Edit">
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Click="EditComment_Click"
+                                    CommandParameter="{Binding}">
+                                    <FontIcon
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Click="EditComment_Click"
-                                        CommandParameter="{Binding}">
-                                        <FontIcon
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                            FontSize="16"
-                                            Glyph="&#xE70F;" />
-                                        <ToolTipService.ToolTip>
-                                            <TextBlock Text="Kommentar anpassen" />
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-            </Grid>
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="16"
+                                        Glyph="&#xE70F;" />
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock Text="Kommentar anpassen" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                </tableView:TableView.Columns>
+            </tableView:TableView>
             <!--  InfoSidebarPanel  -->
             <speziControls:SidebarPanel
                 Grid.Column="1"
@@ -188,8 +180,8 @@
             ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

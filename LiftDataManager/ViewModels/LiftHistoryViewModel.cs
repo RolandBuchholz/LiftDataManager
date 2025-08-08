@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
 
 namespace LiftDataManager.ViewModels;
 
@@ -8,7 +7,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
     public CollectionViewSource FilteredItems { get; set; }
 
-    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+    public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
                                 base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
@@ -29,7 +28,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     {
         if (string.IsNullOrWhiteSpace(path))
             return;
-        var result = await _parameterDataService!.LoadLiftHistoryEntryAsync(path, true);
+        var result = await _parameterDataService.LoadLiftHistoryEntryAsync(path, true);
         if (result is null)
         {
             return;
@@ -75,10 +74,10 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
-        _ = GetLiftHistoryEntrysAsync(FullPathXml);
+        await GetLiftHistoryEntrysAsync(FullPathXml);
         CanShowHistoryEntrys = HistoryEntrys.Count != 0;
     }
 

@@ -4,21 +4,29 @@ public class EnumToStringConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, string language)
     {
-        string? enumString;
-        try
-        {
-            enumString = Enum.GetName(value.GetType(), value);
-            return enumString;
-        }
-        catch
-        {
-            return string.Empty;
-        }
+        return value?.ToString();
     }
 
-    //// No need to implement converting back on a one-way binding 
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    public object? ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        throw new NotImplementedException();
+        if (value == null || targetType == null)
+            return null;
+
+        if (!targetType.IsEnum)
+            throw new ArgumentException("Target type must be an Enum.");
+
+        if (value is string stringValue)
+        {
+            try
+            {
+                return Enum.Parse(targetType, stringValue, ignoreCase: true);
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

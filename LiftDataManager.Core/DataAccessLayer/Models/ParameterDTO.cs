@@ -14,5 +14,8 @@ public class ParameterDto : BaseEntity
     public string? Comment;
     public bool IsKey;
     public bool DefaultUserEditable { get; set; }
+    public bool CarDesignRelated { get; set; }
+    public bool DispoPlanRelated { get; set; }
+    public bool LiftPanelRelated { get; set; }
     public string? DropdownList { get; set; }
 }

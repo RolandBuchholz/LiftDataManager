@@ -121,6 +121,9 @@ public partial class ParameterDataService : IParameterDataService
                     ParameterCategory = (ParameterCategoryValue)par.ParameterCategoryId,
                     DefaultUserEditable = par.DefaultUserEditable,
                     IsKey = par.IsKey,
+                    CarDesignRelated = par.CarDesignRelated,
+                    DispoPlanRelated = par.DispoPlanRelated,
+                    LiftPanelRelated = par.LiftPanelRelated,
                     IsDirty = false
                 };
 
@@ -454,10 +457,10 @@ public partial class ParameterDataService : IParameterDataService
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool includeCategory = false)
+    public async Task<IEnumerable<LiftHistoryEntry>> LoadLiftHistoryEntryAsync(string path, bool optionalData = false)
     {
         var historyEntrys = new List<LiftHistoryEntry>();
-        Dictionary<string, int> parameterCategory = [];
+        Dictionary<string, Tuple<int, bool,bool,bool>> parameterOptionalData = [];
 
         if (!ValidatePath(path, true))
         {
@@ -470,14 +473,17 @@ public partial class ParameterDataService : IParameterDataService
         }
         var entrys = File.ReadAllLines(historyPath);
 
-        if (includeCategory)
+        if (optionalData)
         {
             var parDto = _parametercontext.ParameterDtos;
             if (parDto is not null)
             {
                 foreach (var item in parDto)
                 {
-                    parameterCategory.Add(item.Name, item.ParameterCategoryId);
+                    parameterOptionalData.Add(item.Name, new Tuple<int, bool, bool, bool> (item.ParameterCategoryId, 
+                                                                                           item.CarDesignRelated, 
+                                                                                           item.DispoPlanRelated,
+                                                                                           item.LiftPanelRelated));
                 }
             }
         }
@@ -500,13 +506,17 @@ public partial class ParameterDataService : IParameterDataService
             {
                 continue;
             }
-            if (!includeCategory)
+            if (!optionalData)
             {
                 historyEntrys.Add(lifthistoryentry);
             }
             else
             {
-                lifthistoryentry.Category = GetLiftParameterCategory(parameterCategory, lifthistoryentry.Name);
+                var optionalParameterData = GetOptionalParameterData(parameterOptionalData, lifthistoryentry.Name);
+                lifthistoryentry.Category = optionalParameterData.Item1;
+                lifthistoryentry.CarDesignRelated = optionalParameterData.Item2;
+                lifthistoryentry.DispoPlanRelated = optionalParameterData.Item3;
+                lifthistoryentry.LiftPanelRelated = optionalParameterData.Item4;
                 historyEntrys.Add(lifthistoryentry);
             }
         }
@@ -1039,13 +1049,13 @@ public partial class ParameterDataService : IParameterDataService
         return string.Empty;
     }
 
-    private static ParameterCategoryValue GetLiftParameterCategory(Dictionary<string, int> parameterDto, string parameterName)
+    private static Tuple<ParameterCategoryValue, bool, bool, bool> GetOptionalParameterData(Dictionary<string, Tuple<int, bool, bool, bool>> parameterOptionalData, string parameterName)
     {
-        if (parameterDto.TryGetValue(parameterName, out int category))
+        if (parameterOptionalData.TryGetValue(parameterName, out var value))
         {
-            return (ParameterCategoryValue)category;
+            return new Tuple<ParameterCategoryValue, bool, bool, bool>((ParameterCategoryValue)value.Item1, value.Item2, value.Item3, value.Item4);
         }
-        return ParameterCategoryValue.AllgemeineDaten;
+        return new Tuple<ParameterCategoryValue, bool, bool, bool>( ParameterCategoryValue.AllgemeineDaten, false, false, false);
     }
 
     [LoggerMessage(60104, LogLevel.Information,
