@@ -26,5 +26,8 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
                .HasMaxLength(50);
         builder.Property(x => x.DropdownList)
                .HasMaxLength(50);
+        builder.Property(x => x.CarDesignRelated);
+        builder.Property(x => x.DispoPlanRelated);
+        builder.Property(x => x.LiftPanelRelated);
     }
 }

@@ -389,4 +389,31 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             _ => safetyGears.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection }),
         };
     }
+
+    private void ResetReducedProtectionSpacesbuffer(SelectionValue? protectionSpace)
+    {
+        switch (protectionSpace?.Id)
+        {
+            //Headroom
+            case 2:
+                _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                _parameterDictionary["var_Puffertyp_EM_SG"].DropDownListValue = new SelectionValue();
+                break;
+            //Shaftpit
+            case 3:
+                _parameterDictionary["var_Anzahl_Puffer_EM_SK"].AutoUpdateParameterValue(string.Empty);
+                _parameterDictionary["var_Puffertyp_EM_SK"].DropDownListValue = new SelectionValue();
+                break;
+            //Headroom and Shaftpit
+            case 4:
+                break;
+            //None or ESG or pre-triggered stopping system
+            default:
+                _parameterDictionary["var_Anzahl_Puffer_EM_SK"].AutoUpdateParameterValue(string.Empty);
+                _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                _parameterDictionary["var_Puffertyp_EM_SK"].DropDownListValue = new SelectionValue();
+                _parameterDictionary["var_Puffertyp_EM_SG"].DropDownListValue = new SelectionValue();
+                break;
+        }
+    }
 }
