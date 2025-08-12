@@ -20,7 +20,7 @@
     <None Remove="Assets\DataComponents\SynchronizeZAlift.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MsgReader" Version="6.0.1" />
+    <PackageReference Include="MsgReader" Version="6.0.3" />
     <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />

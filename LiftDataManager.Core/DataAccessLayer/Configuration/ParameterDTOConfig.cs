@@ -17,6 +17,9 @@ public class ParameterDtoConfig : BaseModelBuilder<ParameterDto>
         builder.Property(x => x.Abbreviation);
         builder.Property(x => x.Value);
         builder.Property(x => x.IsKey);
+        builder.Property(x => x.CarDesignRelated);
+        builder.Property(x => x.DispoPlanRelated);
+        builder.Property(x => x.LiftPanelRelated);
         builder.Property(x => x.DefaultUserEditable);
         builder.Property(x => x.Comment)
                .IsRequired()

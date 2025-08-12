@@ -1,4 +1,4 @@
-﻿using Windows.System;
+﻿using DevWinUI;
 
 namespace LiftDataManager.ViewModels;
 
@@ -31,6 +31,8 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
         }
     }
 
+    public DropdownColorPicker? MainDropdownColorPicker { get; set; }
+
     [RelayCommand]
     private async Task SwitchAccentColorAsync()
     {
@@ -38,26 +40,33 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
     }
 
     [RelayCommand]
-    private void TintColorChanged(ColorChangedEventArgs args)
+    private void MainDropdownColorPickerLoaded(DropdownColorPicker dropdownColorPicker)
     {
-        TintColor = new SolidColorBrush(args.NewColor);
-        ThemeService.SetBackdropTintColor(args.NewColor);
+        MainDropdownColorPicker = dropdownColorPicker;
     }
 
     [RelayCommand]
-    private void TintColorPaletteItemClick(ItemClickEventArgs e)
+    private void TintColorChanged(DropdownColorPickerColorChangedEventArgs e)
     {
-        if (e.ClickedItem is ColorPaletteItem color)
+        SetTintColor(e.Color);
+    }
+
+    [RelayCommand]
+    private void TintColorPaletteItemClick(ColorPaletteColorChangedEventArgs e)
+    {
+        SetTintColor(e.Color);
+        MainDropdownColorPicker?.Color = e.Color;
+    }
+
+    private void SetTintColor(Color color)
+    {
+        if (color.ToString().Contains("#FF000000") || color.ToString().Contains("#000000"))
         {
-            if (color.Hex is null || color.Hex.Contains("#000000"))
-            {
-                ThemeService.ResetBackdropProperties();
-            }
-            else
-            {
-                ThemeService.SetBackdropTintColor(color.Color);
-            }
-            TintColor = new SolidColorBrush(color.Color);
+            ThemeService.ResetBackdropProperties();
+        }
+        else
+        {
+            ThemeService.SetBackdropTintColor(color);
         }
     }
 
