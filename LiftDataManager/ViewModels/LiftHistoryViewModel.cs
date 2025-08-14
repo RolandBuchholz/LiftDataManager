@@ -1,21 +1,42 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using WinUI.TableView;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<RefreshModelStateMessage>
 {
     public List<LiftHistoryEntry> HistoryEntrys { get; set; }
-    public CollectionViewSource FilteredItems { get; set; }
+    public TableView? HistoryTableView { get; set; }
 
     public LiftHistoryViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                 ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
                                 base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
-        FilteredItems = new CollectionViewSource
-        {
-            IsSourceGrouped = false
-        };
         HistoryEntrys ??= [];
+    }
+
+    [RelayCommand]
+    public async Task HistoryTableViewLoadedAsync(TableView sender)
+    {
+        HistoryTableView = sender as TableView;
+        HistoryTableView.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
+        await Task.CompletedTask;
+    }
+
+
+    private bool Filter(object? item)
+    {
+        if (string.IsNullOrWhiteSpace(SearchInput))
+            return true;
+        if (item is null)
+            return false;
+
+        var model = (LiftHistoryEntry)item;
+
+        return model.DisplayName.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+               model.Name.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+               model.NewValue?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+               model.Comment?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true;
     }
 
     [ObservableProperty]
@@ -23,6 +44,27 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
 
     [ObservableProperty]
     public partial string? SearchInput { get; set; }
+    partial void OnSearchInputChanged(string? value)
+    {
+        RefreshFilterCommand.Execute(this);
+    }
+
+    [RelayCommand]
+    public async Task RefreshFilterAsync() 
+    {
+        HistoryTableView?.RefreshFilter();
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    public async Task ResetFilterAsync()
+    {
+        HistoryTableView?.ClearAllFilters();
+        HistoryTableView?.ClearAllSorting();
+        HistoryTableView?.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
+        SearchInput = string.Empty;
+        await Task.CompletedTask;
+    }
 
     private async Task GetLiftHistoryEntrysAsync(string? path)
     {
@@ -33,7 +75,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
         {
             return;
         }
-        HistoryEntrys.AddRange(result);
+        HistoryEntrys.AddRange(result.OrderByDescending(x => x.TimeStamp));
     }
 
     [RelayCommand]

@@ -18,7 +18,4 @@ public class ParameterDto : BaseEntity
     public bool DispoPlanRelated { get; set; }
     public bool LiftPanelRelated { get; set; }
     public string? DropdownList { get; set; }
-    public bool CarDesignRelated { get; set; }
-    public bool DispoPlanRelated { get; set; }
-    public bool LiftPanelRelated { get; set; }
 }
