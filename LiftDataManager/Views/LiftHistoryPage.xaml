@@ -46,23 +46,45 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Margin="5,0,5,0" Symbol="Filter" />
+                    <FontIcon
+                        Margin="5,0,5,0"
+                        Glyph="&#xE835;"
+                        ToolTipService.ToolTip="Spezifikations Revisionen" />
                     <ComboBox
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        ItemsSource=""
-                        SelectedValue="" />
-                    <FontIcon Margin="5,0,5,0" Glyph="&#xE835;" />
-                    <ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <FontIcon Margin="5,0,5,0" Glyph="&#xE799;" />
-                    <ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <SymbolIcon Margin="5,0,5,0" Symbol="Calendar" />
-                    <CalendarDatePicker PlaceholderText="Start Datum" />
-                    <SymbolIcon Margin="5,0,5,0" Symbol="CalendarReply" />
-                    <CalendarDatePicker PlaceholderText="End Datum" />
+                        ItemsSource="{x:Bind ViewModel.RevisionsDictionary.Keys, Mode=OneWay}"
+                        SelectedValue="{x:Bind ViewModel.Revision, Mode=TwoWay}"
+                        ToolTipService.ToolTip="Spezifikations Revisionen" />
+                    <FontIcon
+                        Margin="5,0,5,0"
+                        Glyph="&#xE799;"
+                        ToolTipService.ToolTip="Parameter Priority" />
+                    <ComboBox
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ItemsSource="{x:Bind ViewModel.Prioritys, Mode=OneWay}"
+                        SelectedValue="{x:Bind ViewModel.Priority, Mode=TwoWay}"
+                        ToolTipService.ToolTip="Parameter Priority" />
+                    <SymbolIcon
+                        Margin="5,0,5,0"
+                        Symbol="Calendar"
+                        ToolTipService.ToolTip="Start Datum" />
+                    <CalendarDatePicker
+                        Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                        PlaceholderText="Start Datum"
+                        ToolTipService.ToolTip="Start Datum" />
+                    <SymbolIcon
+                        Margin="5,0,5,0"
+                        Symbol="CalendarReply"
+                        ToolTipService.ToolTip="End Datum" />
+                    <CalendarDatePicker
+                        Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                        PlaceholderText="End Datum"
+                        ToolTipService.ToolTip="End Datum" />
                     <Button
                         Margin="5,0,5,0"
-                        Command="{x:Bind ViewModel.RefreshFilterCommand}"
+                        Command="{x:Bind ViewModel.ResetFilterCommand}"
                         Style="{StaticResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="5,0,5,0" Glyph="&#xE8D8;" />
@@ -80,7 +102,9 @@
                         Margin="15,0,5,0"
                         VerticalAlignment="Center"
                         FontSize="16"
-                        Text="" />
+                        FontWeight="Bold"
+                        Foreground="{ThemeResource AccentFillColorTertiaryBrush}"
+                        Text="{x:Bind ViewModel.FilteredHistoryEntrysCount, Mode=OneWay}" />
                     <TextBlock
                         VerticalAlignment="Center"
                         FontSize="16"
