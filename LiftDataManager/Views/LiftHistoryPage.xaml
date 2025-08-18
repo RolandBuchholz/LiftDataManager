@@ -47,12 +47,15 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
                     <FontIcon
-                        Margin="5,0,5,0"
+                        Margin="5,0,0,0"
                         Glyph="&#xE835;"
-                        ToolTipService.ToolTip="Spezifikations Revisionen" />
+                        ToolTipService.ToolTip="Spezifikations Revisionen"
+                        Visibility="{x:Bind ViewModel.IsRevisionSelectionAktiv, Mode=OneWay}" />
                     <ComboBox
+                        Margin="5,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        IsEnabled="{x:Bind ViewModel.IsRevisionSelectionAktiv, Mode=OneWay}"
                         ItemsSource="{x:Bind ViewModel.RevisionsDictionary.Keys, Mode=OneWay}"
                         SelectedValue="{x:Bind ViewModel.Revision, Mode=TwoWay}"
                         ToolTipService.ToolTip="Spezifikations Revisionen" />
@@ -67,21 +70,32 @@
                         SelectedValue="{x:Bind ViewModel.Priority, Mode=TwoWay}"
                         ToolTipService.ToolTip="Parameter Priority" />
                     <SymbolIcon
-                        Margin="5,0,5,0"
+                        Margin="5,0,0,0"
                         Symbol="Calendar"
-                        ToolTipService.ToolTip="Start Datum" />
+                        ToolTipService.ToolTip="Start Datum"
+                        Visibility="{x:Bind ViewModel.IsDateSelectionAktiv, Mode=OneWay}" />
                     <CalendarDatePicker
+                        Margin="5,0,0,0"
                         Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                        IsEnabled="{x:Bind ViewModel.IsDateSelectionAktiv, Mode=OneWay}"
                         PlaceholderText="Start Datum"
                         ToolTipService.ToolTip="Start Datum" />
                     <SymbolIcon
-                        Margin="5,0,5,0"
+                        Margin="5,0,0,0"
                         Symbol="CalendarReply"
-                        ToolTipService.ToolTip="End Datum" />
+                        ToolTipService.ToolTip="End Datum"
+                        Visibility="{x:Bind ViewModel.IsDateSelectionAktiv, Mode=OneWay}" />
                     <CalendarDatePicker
+                        Margin="5,0,0,0"
                         Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                        IsEnabled="{x:Bind ViewModel.IsDateSelectionAktiv, Mode=OneWay}"
                         PlaceholderText="End Datum"
                         ToolTipService.ToolTip="End Datum" />
+                    <ToggleSwitch
+                        Margin="5,0,5,0"
+                        IsOn="{x:Bind ViewModel.ParameterHistory, Mode=TwoWay}"
+                        OffContent="nur letzter Wert"
+                        OnContent="Verlauf der Werte" />
                     <Button
                         Margin="5,0,5,0"
                         Command="{x:Bind ViewModel.ResetFilterCommand}"

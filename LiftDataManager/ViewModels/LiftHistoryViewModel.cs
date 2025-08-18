@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using LiftDataManager.Helpers;
 using WinUI.TableView;
 
 namespace LiftDataManager.ViewModels;
@@ -8,7 +7,8 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
 {
     const string defaultRevisionName = "All Revisions";
     const string defaultPriorityName = "All Parameter";
-    public List<LiftHistoryEntry> HistoryEntrys { get; set; }
+    public ObservableRangeCollection<LiftHistoryEntry> HistoryEntrys { get; set; }
+    public List<LiftHistoryEntry> AllHistoryEntrys { get; set; }
     public TableView? HistoryTableView { get; set; }
     public ObservableDictionary<string, DateTime> RevisionsDictionary { get; set; }
     public List<string> Prioritys { get; set; }
@@ -20,6 +20,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
                                 base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         HistoryEntrys ??= [];
+        AllHistoryEntrys ??= [];
         RevisionsDictionary ??= [];
         Prioritys ??=
         [
@@ -33,11 +34,12 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     [RelayCommand]
     public async Task HistoryTableViewLoadedAsync(TableView sender)
     {
-        HistoryTableView = sender as TableView;
+        HistoryTableView = sender;
         HistoryTableView.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
         FilteredHistoryEntrysCount = HistoryTableView.Items.Count;
         await Task.CompletedTask;
     }
+
     private bool Filter(object? item)
     {
         if (item is null)
@@ -64,11 +66,19 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
         return matchTextSearch && matchPriority && inDateRange;
     }
 
-    private static void SetDateRange(DateTimeOffset? startDate, DateTimeOffset? enddate)
+    private static void SetDateRange(DateTimeOffset? startDate, DateTimeOffset? enddate, bool onlyDate = true)
     {
         var start = startDate is null ? DateTime.MinValue : startDate.GetValueOrDefault().DateTime;
         var end = enddate is null ? DateTime.MaxValue : enddate.GetValueOrDefault().DateTime;
-        _dateRange = new DateRange(start, end);
+
+        if (onlyDate)
+        {
+            _dateRange = new DateRange(start.Date, end == DateTime.MaxValue? end : end.Date.AddDays(1));
+        }
+        else
+        {
+            _dateRange = new DateRange(start, end);
+        }
     }
 
     [ObservableProperty]
@@ -78,36 +88,63 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     public partial int FilteredHistoryEntrysCount { get; set; }
 
     [ObservableProperty]
+    public partial bool IsRevisionSelectionAktiv { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool IsDateSelectionAktiv { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ParameterHistory { get; set; } = true;
+    partial void OnParameterHistoryChanged(bool value) 
+    {
+        HistoryEntrys.Clear();
+        if (value)
+        {
+            HistoryEntrys.AddRange<LiftHistoryEntry>(AllHistoryEntrys);
+        }
+        else
+        {
+            HistoryEntrys.AddRange<LiftHistoryEntry>(AllHistoryEntrys.DistinctBy(x => x.Name));
+        }
+    }
+
+    [ObservableProperty]
     public partial string Revision { get; set; } = defaultRevisionName;
     partial void OnRevisionChanged(string value)
     {
+        DateTimeOffset? start = DateTimeOffset.MinValue;
+        DateTimeOffset? end = DateTimeOffset.MaxValue;
+
         if (!string.Equals(value, defaultRevisionName))
         {
             if (string.Equals(Revision, "Erster Stand"))
             {
                 if (RevisionsDictionary.TryGetValue($"Stand : A", out DateTime endValue))
                 {
-                    EndDate = endValue;
+                    end = endValue;
                 }
             }
             else
             {
                 if (RevisionsDictionary.TryGetValue(Revision, out DateTime startValue))
                 {
-                    StartDate = startValue;
+                    start = startValue;
                 }
                 var nextRevision = RevisionHelper.GetNextRevision(Revision.Replace("Stand :", ""));
                 if (RevisionsDictionary.TryGetValue($"Stand : {nextRevision}", out DateTime endValue))
                 {
-                    EndDate = endValue;
+                    end = endValue;
                 }
             }
         }
         else
         {
-            StartDate = null;
-            EndDate = null;
+            start = null;
+            end = null;
         }
+        SetDateRange(start, end, false);
+        IsDateSelectionAktiv = string.Equals(value, defaultRevisionName);
+        RefreshFilterCommand.Execute(this);
     }
 
     [ObservableProperty]
@@ -126,6 +163,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
             EndDate = value.Value;
         }
         SetDateRange(value, EndDate);
+        IsRevisionSelectionAktiv = value is null && EndDate is null;
         RefreshFilterCommand.Execute(this);
     }
 
@@ -138,6 +176,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
             StartDate = value.Value;
         }
         SetDateRange(StartDate, value);
+        IsRevisionSelectionAktiv = value is null && StartDate is null;
         RefreshFilterCommand.Execute(this);
     }
 
@@ -168,6 +207,8 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
         HistoryTableView?.ClearAllSorting();
         HistoryTableView?.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
         SearchInput = string.Empty;
+        IsDateSelectionAktiv = true;
+        IsRevisionSelectionAktiv = true;
         await Task.CompletedTask;
     }
 
@@ -182,7 +223,8 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
         {
             return;
         }
-        HistoryEntrys.AddRange(result.OrderByDescending(x => x.TimeStamp));
+        AllHistoryEntrys.AddRange(result.OrderByDescending(x => x.TimeStamp));
+        HistoryEntrys.AddRange<LiftHistoryEntry>(AllHistoryEntrys);
     }
 
     [RelayCommand]
@@ -203,7 +245,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
 
             if (!string.IsNullOrWhiteSpace(result))
             {
-                var entry = HistoryEntrys.SingleOrDefault(s => s.TimeStamp == timestamp && s.Name == name);
+                var entry = AllHistoryEntrys.SingleOrDefault(s => s.TimeStamp == timestamp && s.Name == name);
                 if (entry is not null)
                 {
                     var user = _parameterDataService?.GetCurrentUser();
@@ -216,7 +258,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
                 }
                 if (FullPathXml is not null && _parameterDataService is not null)
                 {
-                    await _parameterDataService.AddParameterListToHistoryAsync(HistoryEntrys, FullPathXml, true);
+                    await _parameterDataService.AddParameterListToHistoryAsync(AllHistoryEntrys, FullPathXml, true);
                 }
                 SearchInput = string.Empty;
             }
@@ -241,6 +283,7 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
             }
         }
     }
+
     public async void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
