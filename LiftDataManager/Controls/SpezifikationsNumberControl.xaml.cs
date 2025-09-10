@@ -9,7 +9,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     private static partial Regex CustomFileNameRegex();
     public Regex CustomFileName { get; set; } = CustomFileNameRegex();
     public List<SpezifikationTyp>? SpezifikationTyps { get; set; }
-    public int[] Years { get; set; } = Enumerable.Range(10, 20).ToArray();
+    public int[] Years { get; set; } = [.. Enumerable.Range(10, 20)];
     public string[] Months { get; } = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 
     public SpezifikationsNumberControl()
@@ -44,21 +44,21 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         switch (SpezifikationTyp)
         {
             case var s when s.Equals(SpezifikationTyp.Order):
-                NumberBoxText = SpezifikationName.ConvertToInt();
+                NumberBoxText = SpezifikationName;
                 break;
             case var s when s.Equals(SpezifikationTyp.Offer):
                 if (speziNameArray is not null && speziNameArray.Length == 3)
                 {
                     cmb_Year.SelectedItem = speziNameArray[0].ConvertToInt();
                     cmb_Month.SelectedItem = speziNameArray[1];
-                    NumberBoxText = speziNameArray[2].ConvertToInt();
+                    NumberBoxText = speziNameArray[2];
                 }
                 break;
             case var s when s.Equals(SpezifikationTyp.Planning):
                 if (speziNameArray is not null && speziNameArray.Length == 3)
                 {
                     cmb_Year.SelectedItem = speziNameArray[1].ConvertToInt();
-                    NumberBoxText = speziNameArray[2].ConvertToInt();
+                    NumberBoxText = speziNameArray[2];
                 }
                 break;
         }
@@ -110,9 +110,9 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     public static readonly DependencyProperty IsVaultDisabledProperty =
         DependencyProperty.Register(nameof(IsVaultDisabled), typeof(bool), typeof(SpezifikationsNumberControl), new PropertyMetadata(false));
 
-    public int? NumberBoxText
+    public string? NumberBoxText
     {
-        get => (int?)GetValue(NumberBoxTextProperty);
+        get => (string)GetValue(NumberBoxTextProperty);
         set
         {
             SetValue(NumberBoxTextProperty, value);
@@ -121,7 +121,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     }
 
     public static readonly DependencyProperty NumberBoxTextProperty =
-        DependencyProperty.Register(nameof(NumberBoxText), typeof(int?), typeof(SpezifikationsNumberControl), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(NumberBoxText), typeof(string), typeof(SpezifikationsNumberControl), new PropertyMetadata(null));
 
     public string SpezifikationName
     {
@@ -249,11 +249,18 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             return;
         }
 
+        int numberBoxTextAsInt = 0;
+        if (SpezifikationTyp == SpezifikationTyp.Offer ||
+            SpezifikationTyp == SpezifikationTyp.Planning)
+        {
+             numberBoxTextAsInt = string.IsNullOrWhiteSpace(NumberBoxText) ? 0 : NumberBoxText.ConvertToInt();
+        }
+
         SpezifikationName = SpezifikationTyp switch
         {
             var s when s.Equals(SpezifikationTyp.Order) => $"{NumberBoxText}",
-            var s when s.Equals(SpezifikationTyp.Offer) => $"{SelectedYear}-{SelectedMonth}-{NumberBoxText:0000}",
-            var s when s.Equals(SpezifikationTyp.Planning) => $"VP-{SelectedYear}-{NumberBoxText:0000}",
+            var s when s.Equals(SpezifikationTyp.Offer) => $"{SelectedYear}-{SelectedMonth}-{numberBoxTextAsInt:0000}",
+            var s when s.Equals(SpezifikationTyp.Planning) => $"VP-{SelectedYear}-{numberBoxTextAsInt:0000}",
             _ => string.Empty,
         };
     }
