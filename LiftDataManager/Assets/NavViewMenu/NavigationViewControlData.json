@@ -125,6 +125,14 @@
           "HideItem": false
         },
         {
+          "UniqueId": "LiftDataManager.Views.StructureLoadsPage",
+          "Title": "Statische Belastungen",
+          "Description": "Statische Belastungen",
+          "Subtitle": "Belastung auf das Gebäude",
+          "ImagePath": "ms-appx:///Assets/Fluent/building.png",
+          "HideItem": false
+        },
+        {
           "UniqueId": "LiftDataManager.Views.KabinenLüftungPage",
           "Title": "Kabinenlüftungsberechnung",
           "Description": "Kabinenlüftungsberechnung",

@@ -1166,7 +1166,12 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         return (safetyComponent.TypeExaminationCertificate?.SafetyComponentTyp.Name) switch
         {
-            "Geschwindigkeitsbegrenzer" => $"Spanngewicht: {parameterDictionary["var_SpanngewichtTyp"].DropDownListValue?.DisplayName}",
+            "Geschwindigkeitsbegrenzer" => safetyType switch 
+            {
+                "Geschwindigkeitsbegrenzer" => $"Spanngewicht: {parameterDictionary["var_SpanngewichtTyp"].DropDownListValue?.DisplayName}",
+                "Geschwindigkeitsbegrenzer Gegengewicht" => $"Spanngewicht: {parameterDictionary["var_SpanngewichtTyp_GGW"].DropDownListValue?.DisplayName}",
+                _ => string.Empty,
+            },
             "Energiespeichernder Puffer" or "Energieverzehrender Puffer" => safetyType switch
             {
                 "Fahrkorbpuffer" => $"{parameterDictionary["var_Anzahl_Puffer_FK"].Value} Stück",
