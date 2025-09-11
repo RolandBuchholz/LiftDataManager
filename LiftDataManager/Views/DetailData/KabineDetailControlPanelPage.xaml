@@ -70,10 +70,23 @@
                         </PivotItem>
                     </Pivot.Items>
                 </Pivot>
-                <TextBlock
-                    Grid.Row="1"
-                    FontSize="36"
-                    Text="coming soon" />
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <SpeziControls:ParameterNumberTextBox
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabTabBreite'], Mode=TwoWay}"
+                        ShowDefaultHeader="True"
+                        Unit="mm" />
+                </Grid>
             </Grid>
         </Expander>
         <StackPanel
@@ -118,8 +131,8 @@
             ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>
