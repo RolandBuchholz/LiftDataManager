@@ -27,7 +27,7 @@
             Margin="0,0,0,0"
             Padding="0,0,15,0">
             <Grid>
-                <TextBlock Text="Hallo" />
+                <TextBlock FontSize="26" Text="Coming soon" />
             </Grid>
         </ScrollViewer>
         <!--  InfoSidebarPanel  -->

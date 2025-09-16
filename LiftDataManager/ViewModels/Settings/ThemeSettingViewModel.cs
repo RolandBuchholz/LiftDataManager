@@ -1,10 +1,9 @@
-﻿using DevWinUI;
-
-namespace LiftDataManager.ViewModels;
+﻿namespace LiftDataManager.ViewModels;
 
 public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwareEx
 {
     public readonly IThemeService ThemeService;
+    //public DropdownColorPicker? MainDropdownColorPicker { get; set; }
     private readonly ISettingService _settingService;
     private readonly IDialogService _dialogService;
     private CurrentSpeziProperties _currentSpeziProperties;
@@ -31,44 +30,43 @@ public partial class ThemeSettingViewModel : ObservableRecipient, INavigationAwa
         }
     }
 
-    public DropdownColorPicker? MainDropdownColorPicker { get; set; }
-
     [RelayCommand]
     private async Task SwitchAccentColorAsync()
     {
         await _dialogService.MessageDialogAsync("Switch Accent Color", "Accentfarbe wurde geändert und wird nach einen Appneustart aktiviert");
     }
 
-    [RelayCommand]
-    private void MainDropdownColorPickerLoaded(DropdownColorPicker dropdownColorPicker)
-    {
-        MainDropdownColorPicker = dropdownColorPicker;
-    }
+    //[RelayCommand]
+    //private void MainDropdownColorPickerLoaded(DropdownColorPicker dropdownColorPicker)
+    //{
+    //    MainDropdownColorPicker = dropdownColorPicker;
+    //}
 
-    [RelayCommand]
-    private void TintColorChanged(DropdownColorPickerColorChangedEventArgs e)
-    {
-        SetTintColor(e.Color);
-    }
+    //[RelayCommand]
+    //private void TintColorChanged(DropdownColorPickerColorChangedEventArgs e)
+    //{
+    //    SetTintColor(e.Color);
+    //}
 
-    [RelayCommand]
-    private void TintColorPaletteItemClick(ColorPaletteColorChangedEventArgs e)
-    {
-        SetTintColor(e.Color);
-        MainDropdownColorPicker?.Color = e.Color;
-    }
+    //[RelayCommand]
+    //private void TintColorPaletteItemClick(ColorPaletteColorChangedEventArgs e)
+    //{
+    //    SetTintColor(e.Color);
+    //    MainDropdownColorPicker?.Color = e.Color;
+    //}
 
-    private void SetTintColor(Color color)
-    {
-        if (color.ToString().Contains("#FF000000") || color.ToString().Contains("#000000"))
-        {
-            ThemeService.ResetBackdropProperties();
-        }
-        else
-        {
-            ThemeService.SetBackdropTintColor(color);
-        }
-    }
+    //private void SetTintColor(Color color)
+    //{
+    //    if (color.ToString().Contains("#FF000000") || color.ToString().Contains("#000000"))
+    //    {
+
+    //        ThemeService.ResetBackdropProperties();
+    //    }
+    //    else
+    //    {
+    //        ThemeService.SetBackdropTintColor(color);
+    //    }
+    //}
 
     public void OnNavigatedTo(object parameter)
     {

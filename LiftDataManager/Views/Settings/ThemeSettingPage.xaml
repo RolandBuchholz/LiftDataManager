@@ -62,7 +62,7 @@
                         HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/color.png}"
                         IsClickEnabled="True"
                         LaunchUri="ms-settings:colors" />
-                    <dev:SettingsExpander
+                    <!--<dev:SettingsExpander
                         Description="Fügen Sie LiftDataManager eine Tönung hinzu, um Ihr Erlebnis persönlicher zu gestalten."
                         Header="TintColor"
                         HeaderIcon="{dev:BitmapIcon Source=Assets/Fluent/Tint.png}">
@@ -89,7 +89,7 @@
                                 </dev:SettingsCard.Description>
                             </dev:SettingsCard>
                         </dev:SettingsExpander.ItemsHeader>
-                    </dev:SettingsExpander>
+                    </dev:SettingsExpander>-->
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
