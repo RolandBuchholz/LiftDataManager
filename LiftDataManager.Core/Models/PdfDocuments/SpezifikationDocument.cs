@@ -606,7 +606,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "mm", false, false, "benutzerdef. Gewicht");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "kg/m", false, false, "benutzerdef. Gewicht");
                 });
                 table.Cell().Row(12).Column(3).ColumnSpan(2).Row(row =>
                 {

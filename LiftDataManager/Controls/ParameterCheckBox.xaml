@@ -12,7 +12,6 @@
         <helpers:ParameterSeverityToBrushConverter x:Key="ParameterSeverityToBrushConverter" />
         <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
     </UserControl.Resources>
-
     <Grid
         Background="Transparent"
         DoubleTapped="SetLiftParameterValueFalse"

@@ -53,21 +53,64 @@
                 <Grid Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="170" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <TextBlock
+                        Grid.Row="0"
                         Grid.Column="0"
                         Style="{StaticResource PageTitleStyle}"
                         Text="Daten der Aufzugkabine C100" />
                     <Button
+                        Grid.Row="0"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         Command="{x:Bind ViewModel.CreatePdfCommand}">
                         <SymbolIcon Symbol="Print" />
                     </Button>
+                    <ToggleButton
+                        x:Name="carCalkTyp"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Stretch"
+                        IsChecked="{x:Bind ViewModel.ParameterDictionary['var_ImprovedCarWeightCalc'].Value, Converter={StaticResource StringToBoolConverter}, Mode=TwoWay}"
+                        ToolTipService.Placement="Bottom">
+                        <StackPanel>
+                            <TextBlock Text="Optimierte Kabinengewichtsberechnung" Visibility="{Binding ElementName=carCalkTyp, Path=IsChecked}" />
+                            <TextBlock Text="Standard Kabinengewichtsberechnung" Visibility="{Binding ElementName=carCalkTyp, Path=IsChecked, Converter={StaticResource BoolNegationConverter}}" />
+                        </StackPanel>
+                        <ToolTipService.ToolTip>
+                            <StackPanel>
+                                <TextBlock
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Optimierte Kabinengewichtsberechnung:" />
+                                <TextBlock Text=" - optimierte Schwellenunterbauberechnung" />
+                                <TextBlock Text=" - optimierte Schutzgeländerberechnung" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    FontWeight="Bold"
+                                    Foreground="IndianRed"
+                                    Text="Info:" />
+                                <TextBlock
+                                    Foreground="IndianRed"
+                                    Text="Berechnungen nach dem 1.10.2025 werden mit der optimierten Version ausgeführt."
+                                    TextWrapping="WrapWholeWords" />
+                                <TextBlock
+                                    Foreground="IndianRed"
+                                    Text="Bei Anlagen vor diesem Termin kann bei Bedarf die optimierte Berechnung manuell aktiviert werden."
+                                    TextWrapping="WrapWholeWords" />
+                            </StackPanel>
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
                 </Grid>
                 <!--  Kabinenabmessungen  -->
-                <Grid Grid.Row="1" Margin="20,10,0,0">
+                <Grid Grid.Row="1" Margin="20,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" MinWidth="150" />
