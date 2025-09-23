@@ -615,11 +615,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         var sockelleisteGewicht = sockelleisteLaenge * sockelleisteGewichtproMeter;
 
         //<!--  KabinenZubehör  -->
-        var schutzgelaenderAnzahlPfosten = Math.Ceiling(carDepth / 400 * 2 + carWidth / 400 + 2);
-        var schutzgelaenderGewicht = (carWidth > 0 && carWidth > 0) ?
-                                     ((2 * 3 * 1.5 * (carDepth > 0 ? (carDepth - 250) : 0) * 137 +
-                                     (doorcount > 1 ? 0 : 1) * 3 * 1.5 * carWidth * 137) * 8 / Math.Pow(10, 6) +
-                                     (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * schutzgelaenderAnzahlPfosten) : 0;
+        var schutzgelaenderAnzahlPfosten = improvedCarWeightCalc ? ImprovedProtectiveRailingWeight(parameterDictionary).Item1
+                                                                 : DefaultProtectiveRailingWeight().Item1;
+        var schutzgelaenderGewicht = improvedCarWeightCalc ? ImprovedProtectiveRailingWeight(parameterDictionary).Item2
+                                                           : DefaultProtectiveRailingWeight().Item2;
+
         var klemmkastenGewicht = (carWidth > 0 && carWidth > 0) ? gewichtKlemmkasten : 0;
         var schraubenZubehoerGewicht = (carWidth > 0 && carWidth > 0) ? gewichtSchraubenZubehoer : 0;
 
@@ -1922,6 +1922,104 @@ public partial class CalculationsModuleService : ICalculationsModule
         return ((reinforcedApron ? 5 : 3) * 1.5 * (doorWidth - 100) *
                 266 + 1.5 * doorWidth * 800 + (doorWidth / 300 + 1) *
                 1.5 * 380 * 109 + 7 * (reinforcedApron ? 5 : 3) * 100 * 81) * 8 / Math.Pow(10, 6);
+    }
+
+    private (double, double) DefaultProtectiveRailingWeight()
+    {
+        if (carWidth > 0 && carWidth > 0)
+        {
+            return (0, 0);
+        }
+
+        var uprightCount = Math.Ceiling(carDepth / 400 * 2 + carWidth / 400 + 2);
+        var protectiveRailingWeight = (2 * 3 * 1.5 * (carDepth > 0 ? (carDepth - 250) : 0) * 137 + (doorcount > 1 ? 0 : 1) * 3 * 1.5 * carWidth * 137) * 8 / Math.Pow(10, 6) +
+                                      (1.5 * 670 * 120 + 5 * 50 * 85) * 8 / Math.Pow(10, 6) * uprightCount;
+        return (uprightCount, protectiveRailingWeight);
+    }
+
+    private (double, double) ImprovedProtectiveRailingWeight(ObservableDictionary<string, Parameter> parameterDictionary)
+    {
+        if (carWidth > 0 && carWidth > 0)
+        {
+            return (0, 0);
+        }
+        string protectiveRailingA = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Schutzgelaender_A");
+        string protectiveRailingB = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Schutzgelaender_B");
+        string protectiveRailingC = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Schutzgelaender_C");
+        string protectiveRailingD = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Schutzgelaender_D");
+
+        if (string.IsNullOrWhiteSpace(protectiveRailingA) &&
+            string.IsNullOrWhiteSpace(protectiveRailingB) &&
+            string.IsNullOrWhiteSpace(protectiveRailingC) &&
+            string.IsNullOrWhiteSpace(protectiveRailingD))
+        {
+            return DefaultProtectiveRailingWeight();
+        }
+        else
+        {
+            (double, double) protectiveRailingData = (0, 0);
+            protectiveRailingData = CalculateFrontBackProtectiveRailing(protectiveRailingData, protectiveRailingA, protectiveRailingB, protectiveRailingD);
+            protectiveRailingData = CalculateSideProtectiveRailing(protectiveRailingData, protectiveRailingB);
+            protectiveRailingData = CalculateFrontBackProtectiveRailing(protectiveRailingData, protectiveRailingC, protectiveRailingB, protectiveRailingD);
+            protectiveRailingData = CalculateSideProtectiveRailing(protectiveRailingData, protectiveRailingD);
+            return protectiveRailingData;
+        }
+    }
+
+    private (double, double) CalculateSideProtectiveRailing((double, double) protectiveRailingData, string protectiveRailingTyp)
+    {
+        var uprightCount = protectiveRailingData.Item1;
+        var protectiveRailingWeight = protectiveRailingData.Item2;
+        double additionaluprightCount = 0;
+        double additionalprotectiveRailingWeight = 0;
+
+        if (!string.IsNullOrWhiteSpace(protectiveRailingTyp))
+        {
+            var railingSpecificData = GetProtectiveRailingSpecificWeight(protectiveRailingTyp);
+            additionaluprightCount = carDepth <= 1600 ? 4 : Math.Ceiling(carDepth / 400);
+            additionalprotectiveRailingWeight = additionaluprightCount * railingSpecificData.Item1 + carDepth * railingSpecificData.Item2;
+        }
+        return (uprightCount + additionaluprightCount, protectiveRailingWeight + additionalprotectiveRailingWeight);
+    }
+
+    private (double, double) CalculateFrontBackProtectiveRailing((double, double) protectiveRailingData, string protectiveRailingTyp, 
+                                                                 string protectiveRailingTypLeft, string protectiveRailingTypRight)
+    {
+        var uprightCount = protectiveRailingData.Item1;
+        var protectiveRailingWeight = protectiveRailingData.Item2;
+        double additionaluprightCount = 0;
+        double additionalprotectiveRailingWeight = 0;
+
+        if (!string.IsNullOrWhiteSpace(protectiveRailingTyp))
+        {
+            var railingSpecificData = GetProtectiveRailingSpecificWeight(protectiveRailingTyp);
+            if (!protectiveRailingTyp.StartsWith("100"))
+            {
+                additionaluprightCount += string.IsNullOrWhiteSpace(protectiveRailingTypLeft) || protectiveRailingTypLeft.StartsWith("100") ? 1 : 0;
+                additionaluprightCount += string.IsNullOrWhiteSpace(protectiveRailingTypRight) || protectiveRailingTypRight.StartsWith("100") ? 1 : 0;
+                additionaluprightCount += additionaluprightCount == 2 ? 2 : 0;
+                additionaluprightCount += carWidth >= 1400 ? 1 : 0;
+            }
+            additionaluprightCount += carWidth >= 1400 ? 1 : 0;
+            additionalprotectiveRailingWeight = additionaluprightCount * railingSpecificData.Item1 + carWidth * railingSpecificData.Item2;
+        }
+        return (uprightCount + additionaluprightCount, protectiveRailingWeight + additionalprotectiveRailingWeight);
+    }
+
+    private static (double, double) GetProtectiveRailingSpecificWeight(string protectiveRailingTyp)
+    {
+        if (string.IsNullOrWhiteSpace(protectiveRailingTyp))
+        {
+            return (0,0);
+        }
+
+        return protectiveRailingTyp switch
+        {
+            var x when x.StartsWith("100") => (0.4, 1.5),
+            var x when x.StartsWith("700") => (2.1, 4.5),
+            var x when x.StartsWith("1100") => (2.8, 4.5),
+            _ => (0,0)
+        };
     }
 
     [LoggerMessage(60121, LogLevel.Debug,
