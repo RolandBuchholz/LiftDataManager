@@ -2360,6 +2360,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             return;
         }
-        _parameterDictionary["var_HasOilbuffer"].AutoUpdateParameterValue(value?.StartsWith("LSB").ToString());
+        bool hasOilBuffer = !string.IsNullOrWhiteSpace(value) && value.StartsWith("LSB");
+        _parameterDictionary["var_HasOilbuffer"].AutoUpdateParameterValue(LiftParameterHelper.FirstCharToUpperAsSpan(hasOilBuffer.ToString()));
     }
 }

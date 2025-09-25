@@ -501,10 +501,10 @@ public partial class CalculationsModuleService : ICalculationsModule
         //Database
         double sockelleisteHoehe = GetSkirtingBoardHeightByName(parameterDictionary);
         double tableauGewicht = GetCarPanelWeight(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"));
-        double tableauBreite = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"))
+        double tableauBreite = string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabBreite"))
                                                              ? GetCarPanelWidth(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabKabinentableau"))
                                                              : LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_KabTabKabinentableau");
-        double belagAufDerDeckeGewichtproQm = GetSpecialCarFlooringWeight(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_KabTabBreite"));
+        double belagAufDerDeckeGewichtproQm = GetSpecialCarFlooringWeight(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BelagAufDemKabinendach"));
         double paneeleGewichtproQm = GetCoverPanelWeight(LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Paneelmaterial"));
         double sockelleisteGewichtproMeter = Math.Round(GetSkirtingBoardWeight(parameterDictionary, LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Sockelleiste")), 2);
 
@@ -513,15 +513,11 @@ public partial class CalculationsModuleService : ICalculationsModule
         int anzahlReihenStossleiste = stossleisteData.Item2;
 
         //Calculations
-        double bodengewicht = carWidth * carDepth * bodenblech * 7.85 / Math.Pow(10, 6) +
-                              ((((carWidth / 230) + 1 + ((carWidth > 2000) ? 1 : 0)) * carDepth / 1000 +
-                              (((carWidth > 1250) || (carDepth > 2350)) ? 3 : 2) * carWidth / 1000 +
-                              doorcount * doorwidthA / 1000) * bodenProfilGewicht);
         var kabinenBodengewicht =
             bodenTyp switch
             {
-                "standard" or "verstärkt" => bodengewicht,
-                "standard mit Wanne" => bodengewicht + (carWidth * carDepth * 11.8 / Math.Pow(10, 6)),
+                "standard" or "verstärkt" => GetCarFloorWeight(bodenblech, bodenProfilGewicht, improvedCarWeightCalc, LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BoPr")),
+                "standard mit Wanne" => GetCarFloorWeight(bodenblech, bodenProfilGewicht, improvedCarWeightCalc, LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_BoPr")) + (carWidth * carDepth * 11.8 / Math.Pow(10, 6)),
                 "sonder" or "extern" => carWidth * carDepth * bodengewichtProQM / Math.Pow(10, 6),
                 _ => 0,
             };
@@ -1926,7 +1922,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     private (double, double) DefaultProtectiveRailingWeight()
     {
-        if (carWidth > 0 && carWidth > 0)
+        if (carWidth <= 0 && carWidth <= 0)
         {
             return (0, 0);
         }
@@ -1939,7 +1935,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     private (double, double) ImprovedProtectiveRailingWeight(ObservableDictionary<string, Parameter> parameterDictionary)
     {
-        if (carWidth > 0 && carWidth > 0)
+        if (carWidth <= 0 && carWidth <= 0)
         {
             return (0, 0);
         }
@@ -2015,11 +2011,31 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         return protectiveRailingTyp switch
         {
-            var x when x.StartsWith("100") => (0.4, 1.5),
-            var x when x.StartsWith("700") => (2.1, 4.5),
-            var x when x.StartsWith("1100") => (2.8, 4.5),
+            var x when x.StartsWith("100") => (0.4, 0.0015),
+            var x when x.StartsWith("700") => (2.1, 0.0045),
+            var x when x.StartsWith("1100") => (2.8, 0.0045),
             _ => (0,0)
         };
+    }
+
+    private double GetCarFloorWeight(double carFloorSheetThickness, double carFloorProfilWeight, bool improvedCarWeightCalc, string carFloorProfil)
+    {
+        if (carWidth <= 0 && carWidth <= 0)
+        {
+            return 0d;
+        }
+
+        if (improvedCarWeightCalc && carFloorProfil.Contains('P'))
+        {
+            return carWidth * carDepth * carFloorSheetThickness * 7.85 / Math.Pow(10, 6) +
+                          ((((carWidth / 275) + 1 + ((carWidth > 2000) ? 1 : 0)) * carDepth / 1000 +
+                          2 * carWidth / 1000) * carFloorProfilWeight);
+        }
+        
+        return carWidth * carDepth * carFloorSheetThickness * 7.85 / Math.Pow(10, 6) +
+                      ((((carWidth / 230) + 1 + ((carWidth > 2000) ? 1 : 0)) * carDepth / 1000 +
+                      (((carWidth > 1250) || (carDepth > 2350)) ? 3 : 2) * carWidth / 1000 +
+                      doorcount * doorwidthA / 1000) * carFloorProfilWeight);
     }
 
     [LoggerMessage(60121, LogLevel.Debug,

@@ -8,8 +8,6 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
     private readonly ICalculationsModule _calculationsModuleService;
     private readonly IPdfService _pdfService;
 
-    public CarWeightResult CarWeightResult = new();
-
     public KabinengewichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                    ISettingService settingService, ILogger<DataViewModelBase> baseLogger, ICalculationsModule calculationsModuleService,
                                    IPdfService pdfService) :
@@ -18,7 +16,32 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         _calculationsModuleService = calculationsModuleService;
         _pdfService = pdfService;
         ParameterDictionary = _parameterDataService.GetParameterDictionary();
+        CarWeightResult ??= new();
     }
+
+    public override void Receive(PropertyChangedMessage<string> message)
+    {
+        if (message is null)
+        {
+            return;
+        }
+        if (!(message.Sender.GetType() == typeof(Parameter)))
+        {
+            return;
+        }
+
+        if (message.PropertyName == "var_ImprovedCarWeightCalc")
+        {
+            if (!string.Equals(message.NewValue, message.OldValue))
+            {
+                CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
+            }
+        }
+ 
+        SetInfoSidebarPanelText(message);
+        SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
+    }
+
 
     [RelayCommand]
     public void CreatePdf()
@@ -26,6 +49,9 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         if (ParameterDictionary is not null)
             _pdfService.MakeSinglePdfDocument(nameof(KabinengewichtViewModel), ParameterDictionary, FullPathXml, true, _settingService.TonerSaveMode, _settingService.LowHighlightMode);
     }
+
+    [ObservableProperty]
+    public partial CarWeightResult CarWeightResult { get; set; }
 
     [ObservableProperty]
     public partial bool OverridenCarWeight { get; set; }

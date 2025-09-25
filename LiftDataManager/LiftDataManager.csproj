@@ -147,6 +147,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Docs\HelpImages\image196.png" />
+  </ItemGroup>
   <!--Update-->
   <ItemGroup>
     <None Update="appsettings.json">
@@ -207,6 +210,12 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Docs\HelpImages\image196.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <ItemGroup>
