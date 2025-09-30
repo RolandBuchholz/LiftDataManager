@@ -2300,9 +2300,6 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
         double liftspeed = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_v");
-        double load = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Q");
-        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_F");
-        double cwtWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Gegengewichtsmasse");
         double bufferLoad = 0.0;
         int bufferCount = 0;
         string bufferTyp = string.Empty;
