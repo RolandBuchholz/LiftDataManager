@@ -20,7 +20,7 @@
     <None Remove="Assets\DataComponents\SynchronizeZAlift.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MsgReader" Version="6.0.3" />
+    <PackageReference Include="MsgReader" Version="6.0.4" />
     <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -30,12 +30,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PDFsharp" Version="6.2.1" />
     <PackageReference Include="QuestPDF" Version="2022.12.15" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

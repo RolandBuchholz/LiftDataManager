@@ -1,5 +1,7 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using Microsoft.Data.Sqlite;
+using System.Collections.ObjectModel;
+using WinUI.TableView;
 
 namespace LiftDataManager.ViewModels;
 
@@ -10,6 +12,8 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private readonly ParameterEditContext _parameterEditContext;
     private readonly ILogger<DataBaseEditViewModel> _logger;
 
+    [ObservableProperty]
+    public partial List<ParameterDto> ParameterDtos { get; set; }
     public DataBaseEditViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                  ISettingService settingService, ILogger<DataViewModelBase> baseLogger, IVaultDataService vaultDataService,
                                  ILogger<DataBaseEditViewModel> logger, ParameterContext parametercontext, ParameterEditContext parameterEditContext) :
@@ -20,7 +24,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         _parametercontext = parametercontext;
         _parameterEditContext = parameterEditContext;
         ParameterDtos ??= [];
-        FilteredParameterDtos ??= [];
+        DatabaseTable ??= [];
     }
 
     [RelayCommand]
@@ -46,14 +50,19 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         }
     }
 
+    public void DataBaseTable_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is TableView tableView)
+        {
+            DataBaseTableView = tableView;
+        }
+    }
+
+    [ObservableProperty]
+    public partial bool CanEditDatabase { get; set; }
+
     [ObservableProperty]
     public partial string? DataBasePath { get; set; }
-
-    [ObservableProperty]
-    public partial List<ParameterDto> ParameterDtos { get; set; }
-
-    [ObservableProperty]
-    public partial List<ParameterDto> FilteredParameterDtos { get; set; }
 
     [ObservableProperty]
     public partial List<string?>? AllTables { get; set; }
@@ -61,8 +70,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     [ObservableProperty]
     public partial List<string?>? FilteredAllTables { get; set; }
 
+    public TableView? DataBaseTableView { get; set; }
+
     [ObservableProperty]
-    public partial List<object> DatabaseTable { get; set; } = [];
+    public partial ObservableCollection<dynamic> DatabaseTable { get; set; }
 
     [ObservableProperty]
     public partial List<DatabaseTableValueModification>? TableHistory { get; set; }
@@ -73,10 +84,10 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     {
         RefreshSelectedTable(value);
     }
-
     private void RefreshSelectedTable(string? tableName)
     {
         DatabaseTable = [];
+        DataBaseTableView?.AutoGenerateColumns = false;
         if (tableName is not null)
         {
             var entityType = TypeFinder.FindLiftmanagerType(tableName[..^1]);
@@ -100,6 +111,22 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             DatabaseTable = [];
             ShowTable = false;
             CanAddTableValue = false;
+        }
+        DataBaseTableView?.AutoGenerateColumns = true;
+    }
+
+    private readonly string[] skipPropertys = [ "Id", "OrderSelection", "Name", "DisplayName",
+                                               "IsFavorite", "IsObsolete" , "SchindlerCertified", "LiftTypes",
+                                               "GuideModelTypes" , "DriveSystems" , "LiftDoorGroups", "LiftDoorOpeningDirection",
+                                               "TypeExaminationCertificate", "CarDoors" , "ShaftDoors", "OverspeedGovernors" ,
+                                               "LiftPositionSystems" , "SafetyGearModelTypes", "CarFloorColorTyps", "CarFrameTypes",
+                                               "CarDoorHeaderDepth","CarDoorHeaderHeight", "DriveType", "CarFrameBaseType", "ZipCodes",
+                                               "ZiehlAbeggDrives", "DriveSystemType"];
+    public void DataBaseTables_AutoGeneratingColumn(object sender, WinUI.TableView.TableViewAutoGeneratingColumnEventArgs e)
+    {
+        if (e.Column is null || skipPropertys.Contains(e.PropertyName))
+        {
+            e.Cancel = true;
         }
     }
 
@@ -184,6 +211,36 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
+    public partial bool? IsCarDesignRelated { get; set; }
+    partial void OnIsCarDesignRelatedChanged(bool? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    public partial bool? IsDispoPlanRelated { get; set; }
+    partial void OnIsDispoPlanRelatedChanged(bool? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
+    public partial bool? IsLiftPanelRelated { get; set; }
+    partial void OnIsLiftPanelRelatedChanged(bool? value)
+    {
+        if (value is not null)
+        {
+            CheckCanAddParameter();
+        }
+    }
+
+    [ObservableProperty]
     public partial bool? IsDefaultUserEditable { get; set; }
     partial void OnIsDefaultUserEditableChanged(bool? value)
     {
@@ -244,6 +301,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                           !string.IsNullOrWhiteSpace(DisplayName) &&
                           IsKey is not null &&
                           IsDefaultUserEditable is not null &&
+                          IsCarDesignRelated is not null &&
+                          IsDispoPlanRelated is not null &&
+                          IsLiftPanelRelated is not null &&
                           (SelectedParameterTyp.Name != "DropDownList" || !string.IsNullOrWhiteSpace(SelectedDropdownlistTable));
     }
 
@@ -254,56 +314,17 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     public partial string? ParameterDeleteMessage { get; set; }
 
     [ObservableProperty]
-    public partial string? SearchInput { get; set; }
-    partial void OnSearchInputChanged(string? value)
-    {
-        if (value is not null)
-        {
-            FilterParameterDtos();
-        }
-        else
-        {
-            SearchInput = string.Empty;
-            FilterParameterDtos();
-        }
-    }
-
-    [ObservableProperty]
     public partial string? SearchTableInput { get; set; }
     partial void OnSearchTableInputChanged(string? value)
     {
-        if (value is not null)
-        {
-            FilterTable();
-        }
-        else
-        {
-            SearchInput = string.Empty;
-            FilterTable();
-        }
-    }
-
-    [ObservableProperty]
-    public partial string? FilterValue { get; set; }
-
-    partial void OnFilterValueChanged(string? value)
-    {
-        if (value is not null)
-        {
-            FilterParameterDtos();
-        }
+        FilterTable();
     }
 
     [RelayCommand]
-    private void SetFilter(string filterValue)
-    {
-        FilterValue = filterValue;
-    }
-
-    [RelayCommand]
-    public void CheckParameterChanged()
+    public async Task CheckParameterChangedAsync()
     {
         CanChangeParameters = _parameterEditContext.ChangeTracker.HasChanges();
+        await Task.CompletedTask;
     }
 
     [RelayCommand(CanExecute = nameof(CanRemoveParameter))]
@@ -383,6 +404,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
                 Comment = Comment,
                 IsKey = (bool)IsKey!,
                 DefaultUserEditable = (bool)IsDefaultUserEditable!,
+                CarDesignRelated = (bool)IsCarDesignRelated!,
+                DispoPlanRelated = (bool)IsDispoPlanRelated!,
+                LiftPanelRelated = (bool)IsCarDesignRelated!,
                 DropdownList = SelectedDropdownlistTable
             };
             var addedParameterDto = _parameterEditContext.Add(newParameterDto);
@@ -400,6 +424,9 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             Comment = null;
             IsKey = null;
             IsDefaultUserEditable = null;
+            IsCarDesignRelated = null;
+            IsDispoPlanRelated = null;
+            IsLiftPanelRelated = null;
             SelectedDropdownlistTable = null;
             CanAddParameter = false;
         }
@@ -495,57 +522,13 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         _parameterEditContext.SaveChanges();
     }
 
-    private void FilterParameterDtos()
-    {
-        if (string.IsNullOrWhiteSpace(SearchInput))
-        {
-            FilteredParameterDtos = FilterValue switch
-            {
-                "None" => ParameterDtos,
-                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(x => x.ParameterTyp!.Name == FilterValue).ToList(),
-                "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
-                                                       or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(x => x.ParameterCategory!.Name == FilterValue).ToList(),
-                _ => ParameterDtos,
-            };
-        }
-        else
-        {
-            FilteredParameterDtos = FilterValue switch
-            {
-                "None" => ParameterDtos.Where(
-                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList(),
-                "Text" or "NumberOnly" or "Date" or "Boolean" or "DropDownList" => ParameterDtos.Where(
-                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                                         .Where(x => x.ParameterTyp!.Name == FilterValue).ToList(),
-                "AllgemeineDaten" or "Schacht" or "Bausatz" or "Fahrkorb" or "Tueren" or "AntriebSteuerungNotruf" or "Signalisation"
-                                           or "Wartung" or "MontageTUEV" or "RWA" or "FilterSonstiges" or "KommentareVault" or "CFP" => ParameterDtos.Where(
-                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase))
-                                                                        .Where(x => x.ParameterCategory!.Name == FilterValue).ToList(),
-                _ => ParameterDtos.Where(
-                                        p => p.Name is not null && p.Name.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.DisplayName is not null && p.DisplayName.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Value is not null && p.Value.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)
-                                          || p.Comment is not null && p.Comment.Contains(SearchInput, StringComparison.CurrentCultureIgnoreCase)).ToList(),
-            };
-        }
-    }
-
     private void FilterTable()
     {
         if (AllTables is not null)
         {
             if (SearchTableInput is not null)
             {
-                FilteredAllTables = AllTables.Where(x => x is not null && x.Contains(SearchTableInput, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                FilteredAllTables = [.. AllTables.Where(x => x is not null && x.Contains(SearchTableInput, StringComparison.CurrentCultureIgnoreCase))];
             }
             else
             {
@@ -558,36 +541,25 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
     private async Task RefreshDataBaseAsync()
     {
         ParameterDtos.Clear();
-        ParameterDtos = _parameterEditContext.ParameterDtos!
+        ParameterDtos = [.. _parameterEditContext.ParameterDtos!
                                      .Include(x => x.ParameterTyp)
                                      .Include(x => x.ParameterTypeCode)
-                                     .Include(x => x.ParameterCategory)
-                                     .ToList();
-        FilteredParameterDtos.Clear();
-        FilterValue = "None";
-        SearchInput = string.Empty;
-        if (ParameterDtos is not null)
-        {
-            FilteredParameterDtos = ParameterDtos;
-        }
+                                     .Include(x => x.ParameterCategory)];
         await Task.CompletedTask;
     }
 
     [RelayCommand]
     public void LoadDatabaseTableValueModificationHistory()
     {
-        TableHistory = _parameterEditContext.Set<DatabaseTableValueModification>().OrderByDescending(x => x.Id)
-                                                                                  .ToList();
+        TableHistory = [.. _parameterEditContext.Set<DatabaseTableValueModification>().OrderByDescending(x => x.Id)];
     }
 
     private void GetDropdownValues()
     {
-        ParameterTyps = _parameterEditContext.Set<ParameterTyp>().ToList();
-        ParameterTypeCodes = _parameterEditContext.Set<ParameterTypeCode>().ToList();
-        ParameterCategorys = _parameterEditContext.Set<ParameterCategory>().ToList();
-        DropdownlistTables = _parameterEditContext.DropdownValues!.Select(x => x.Base)
-                                                                  .Distinct()
-                                                                  .ToList();
+        ParameterTyps = [.. _parameterEditContext.Set<ParameterTyp>()];
+        ParameterTypeCodes = [.. _parameterEditContext.Set<ParameterTypeCode>()];
+        ParameterCategorys = [.. _parameterEditContext.Set<ParameterCategory>()];
+        DropdownlistTables = [.. _parameterEditContext.DropdownValues!.Select(x => x.Base).Distinct()];
         var allTablesfromDB = _parameterEditContext.Model.GetEntityTypes().Select(t => t.GetTableName())
                                                                           .Where(x => x is not null)
                                                                           .Order()
@@ -605,7 +577,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
             "DatabaseTableValueModifications"
         };
 
-        AllTables = allTablesfromDB.Except(ignoredTables).ToList();
+        AllTables = [.. allTablesfromDB.Except(ignoredTables)];
 
 
         FilteredAllTables = AllTables;
@@ -619,7 +591,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
 
         if (downloadResult.ExitCode == 0 && downloadResult.CheckOutState == "CheckedOutByCurrentUser")
         {
-            var updateResult = await _parameterDataService!.UpdateAutodeskTransferAsync(downloadResult.FullFileName!, ParameterDtos);
+            var updateResult = await _parameterDataService.UpdateAutodeskTransferAsync(downloadResult.FullFileName!, ParameterDtos);
 
             if (updateResult)
             {
@@ -636,14 +608,16 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         Adminmode = _settingService.Adminmode;
         DataBasePath = _settingService.PathDataBase;
+        var vaultDisabled = _settingService.VaultDisabled;
+        CanEditDatabase = Adminmode & !vaultDisabled;
         if (Adminmode)
         {
             GetDropdownValues();
-            RefreshDataBaseAsync().SafeFireAndForget();
+            await RefreshDataBaseAsync();
         }
     }
 
