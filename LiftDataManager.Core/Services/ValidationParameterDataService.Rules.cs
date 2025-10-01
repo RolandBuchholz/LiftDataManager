@@ -2183,7 +2183,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
         var msz9eSchindlerCertified = _parameterDictionary[name].DropDownListValue?.Id == 2;
-        var msz9e = _parameterDictionary["var_Steuerungstyp"].DropDownList.FirstOrDefault(x => x.Id == 6);
+        var msz9e = _parameterDictionary["var_Steuerungstyp"].DropDownList.FirstOrDefault(x => x.Name == "Kühn MSZ 9E");
         if (msz9e is not null)
         {
             msz9e.SchindlerCertified = msz9eSchindlerCertified;
@@ -2300,9 +2300,6 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             return;
         }
         double liftspeed = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_v");
-        double load = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Q");
-        double carWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_F");
-        double cwtWeight = LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Gegengewichtsmasse");
         double bufferLoad = 0.0;
         int bufferCount = 0;
         string bufferTyp = string.Empty;
@@ -2352,5 +2349,15 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)) 
             { DependentParameter = dependentParameter });
         }      
+    }
+
+    private void ValidateHasOilbuffer(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        if (!string.Equals(name, "var_Puffertyp"))
+        {
+            return;
+        }
+        bool hasOilBuffer = !string.IsNullOrWhiteSpace(value) && value.StartsWith("LSB");
+        _parameterDictionary["var_HasOilbuffer"].AutoUpdateParameterValue(LiftParameterHelper.FirstCharToUpperAsSpan(hasOilBuffer.ToString()));
     }
 }

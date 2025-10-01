@@ -26,6 +26,7 @@ public partial class NavigationPageMappings
         {"LiftDataManager.Views.EinreichunterlagenPage", typeof(LiftDataManager.Views.EinreichunterlagenPage)},
         {"LiftDataManager.Views.KabinengewichtPage", typeof(LiftDataManager.Views.KabinengewichtPage)},
         {"LiftDataManager.Views.NutzlastberechnungPage", typeof(LiftDataManager.Views.NutzlastberechnungPage)},
+        {"LiftDataManager.Views.StructureLoadsPage", typeof(LiftDataManager.Views.StructureLoadsPage)},
         {"LiftDataManager.Views.KabinenLüftungPage", typeof(LiftDataManager.Views.KabinenLüftungPage)},
         {"LiftDataManager.Views.SchachtDetailPage", typeof(LiftDataManager.Views.SchachtDetailPage)},
         {"LiftDataManager.Views.KabineDetailPage", typeof(LiftDataManager.Views.KabineDetailPage)},

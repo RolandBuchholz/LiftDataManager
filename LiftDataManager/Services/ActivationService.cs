@@ -78,8 +78,7 @@ public class ActivationService : IActivationService
 
     private async Task StartupAsync()
     {
-        _themeService.AutoInitialize(App.MainWindow)
-                     .ConfigureTintColor();
+        _themeService.Initialize(App.MainWindow);
         await Task.CompletedTask;
     }
 

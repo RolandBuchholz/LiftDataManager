@@ -29,7 +29,6 @@ public class CarDesignComponent : IComponent
     string? flaeche;
     string? personen;
 
-
     public CarDesignComponent(ObservableDictionary<string, Parameter> parameterDictionary, bool lowPrintColor)
     {
         ParameterDictionary = parameterDictionary;

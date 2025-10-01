@@ -396,7 +396,10 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             //Headroom
             case 2:
-                _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                if (!LiftParameterHelper.IsValueNullOrWhiteSpaceOr0(_parameterDictionary["var_Anzahl_Puffer_EM_SG"].Value))
+                {
+                    _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                };
                 _parameterDictionary["var_Puffertyp_EM_SG"].DropDownListValue = new SelectionValue();
                 break;
             //Shaftpit
@@ -409,8 +412,16 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 break;
             //None or ESG or pre-triggered stopping system
             default:
-                _parameterDictionary["var_Anzahl_Puffer_EM_SK"].AutoUpdateParameterValue(string.Empty);
-                _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                if (!LiftParameterHelper.IsValueNullOrWhiteSpaceOr0(_parameterDictionary["var_Anzahl_Puffer_EM_SK"].Value))
+                {
+                    _parameterDictionary["var_Anzahl_Puffer_EM_SK"].AutoUpdateParameterValue(string.Empty);
+                }
+                ;
+                if (!LiftParameterHelper.IsValueNullOrWhiteSpaceOr0(_parameterDictionary["var_Anzahl_Puffer_EM_SG"].Value))
+                {
+                    _parameterDictionary["var_Anzahl_Puffer_EM_SG"].AutoUpdateParameterValue(string.Empty);
+                }
+                ;
                 _parameterDictionary["var_Puffertyp_EM_SK"].DropDownListValue = new SelectionValue();
                 _parameterDictionary["var_Puffertyp_EM_SG"].DropDownListValue = new SelectionValue();
                 break;

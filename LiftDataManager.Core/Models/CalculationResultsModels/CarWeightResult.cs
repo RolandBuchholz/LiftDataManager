@@ -1,6 +1,8 @@
-﻿namespace LiftDataManager.Core.Models.CalculationResultsModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-public class CarWeightResult
+namespace LiftDataManager.Core.Models.CalculationResultsModels;
+
+public partial class CarWeightResult : ObservableObject
 {
     public int AnzahlKabinentueren { get; set; }
     public int AnzahlKabinentuerfluegel { get; set; }

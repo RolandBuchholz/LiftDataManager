@@ -417,7 +417,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(9).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Seitenwand"]);
                 table.Cell().Row(10).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Rueckwand"]);
                 table.Cell().Row(10).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Rueckwand"]);
-                table.Cell().Row(11).Column(3).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Eingangswand"]);
+                table.Cell().Row(11).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Eingangswand"]);
+                table.Cell().Row(11).Column(5).ParameterBoolCell(ParameterDictionary["var_BelueftungHals"]);
                 table.Cell().Row(11).Column(6).ParameterStringCell(ParameterDictionary["var_RAL_Eingangswand"]);
                 table.Cell().Row(12).Column(3).ParameterStringCell(ParameterDictionary["var_Materialstaerke"]);
                 table.Cell().Row(12).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_Schotten_ZT"]);
@@ -605,7 +606,7 @@ public class SpezifikationDocument : PdfBaseDocument
                 {
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteHoeheBenutzerdefiniert"], "mm", false, false, "benutzerdef. Höhe");
                     row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteBreiteBenutzerdefiniert"], "mm", false, false, "benutzerdef. Breite");
-                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "mm", false, false, "benutzerdef. Gewicht");
+                    row.RelativeItem(1).ParameterStringCell(ParameterDictionary["var_SockelleisteGewichtBenutzerdefiniert"], "kg/m", false, false, "benutzerdef. Gewicht");
                 });
                 table.Cell().Row(12).Column(3).ColumnSpan(2).Row(row =>
                 {
@@ -670,11 +671,14 @@ public class SpezifikationDocument : PdfBaseDocument
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteC"], true, "Seite C");
                     row.RelativeItem().PaddingTop(5).ParameterBoolCell(ParameterDictionary["var_TeilungsleisteD"], true, "Seite D");
                 });
-                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Fahrkorb Ventilator").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Zusatzausstattung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(17).Column(3).ParameterBoolCell(ParameterDictionary["var_VentilatorLuftmenge"], false, "Ventilator 90 m³/h");
-                table.Cell().Row(17).Column(4).ColumnSpan(3).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
-                table.Cell().Row(18).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(18).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
+                table.Cell().Row(17).Column(4).ParameterStringCell(ParameterDictionary["var_VentilatorAnzahl"], "Stk", true);
+                table.Cell().Row(17).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_VentilatorEinbau"]);
+                table.Cell().Row(18).Column(3).ParameterBoolCell(ParameterDictionary["var_KabBauschutz"]);
+                table.Cell().Row(18).Column(4).ColumnSpan(3).ParameterBoolCell(ParameterDictionary["var_KabSchutzvorhang"]);
+                table.Cell().Row(19).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Fahrkorb").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(19).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_SonstigesFahrkorb"], null, true, true);
             });
         });
     }
@@ -1086,8 +1090,8 @@ public class SpezifikationDocument : PdfBaseDocument
                 });
 
 
-                table.Cell().Row(1).Column(1).RowSpan(16).RotateLeft().AlignMiddle().AlignCenter().Text("Steuerung").FontColor(borderColor).Bold();
-                table.Cell().Row(1).RowSpan(12).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(1).Column(1).RowSpan(17).RotateLeft().AlignMiddle().AlignCenter().Text("Steuerung").FontColor(borderColor).Bold();
+                table.Cell().Row(1).RowSpan(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Steuerung/ELT").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(1).Column(3).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_Steuerungstyp"]);
                 table.Cell().Row(1).Column(5).ColumnSpan(2).ParameterStringCell(ParameterDictionary["var_AnmerkungSteuerung"], null, false, true);
                 table.Cell().Row(2).Column(3).ColumnSpan(4).Row(row =>
@@ -1142,39 +1146,44 @@ public class SpezifikationDocument : PdfBaseDocument
                 table.Cell().Row(10).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_ErsatzmassnahmenSG"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_11"]);
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_HasOilbuffer"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_18"]);
                 });
                 table.Cell().Row(11).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_SchutzgelaenderKontakt"]);
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_14"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_11"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_21"]);
                 });
                 table.Cell().Row(12).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_NotlichtKab"], false, "WECO Notstromgerät");
-                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_17"]);
+                    row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_14"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_20"]);
 
                 });
-                table.Cell().Row(13).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluss").FontSize(fontSizeXS).FontColor(borderColor).Bold();
                 table.Cell().Row(13).Column(3).ColumnSpan(4).Row(row =>
+                {
+                    row.RelativeItem().ParameterBoolCell(ParameterDictionary["var_HasCwtSafetyGear"]);
+                    row.RelativeItem(2).ParameterCustomBoolCell(ParameterDictionary["var_BenDef_17"]);
+                });
+                table.Cell().Row(14).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Stromanschluss").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(14).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Stromanschluss"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Netzform"]);
                     row.RelativeItem().ParameterCustomBoolCell(ParameterDictionary["var_BenDef_22"]);
                 });
-                table.Cell().Row(14).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schaltschrank").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(14).Column(3).ColumnSpan(4).Row(row =>
+                table.Cell().Row(15).RowSpan(2).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Schaltschrank").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(15).Column(3).ColumnSpan(4).Row(row =>
                 {
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_LageSchaltschrank"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_Schaltschrankoberflaeche"]);
                     row.RelativeItem().ParameterStringCell(ParameterDictionary["var_SchaltschrankRAL"]);
                 });
-                table.Cell().Row(15).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Schaltschrankgroesse"]);
-                table.Cell().Row(16).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Steuerung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
-                table.Cell().Row(16).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_SonstigesSteuerung"], null, true, true);
+                table.Cell().Row(16).Column(3).ColumnSpan(4).ParameterStringCell(ParameterDictionary["var_Schaltschrankgroesse"]);
+                table.Cell().Row(17).Column(2).BorderBottom(0.1f).BorderColor(borderColor).PaddingLeft(5).AlignMiddle().Text("Sonstiges Steuerung").FontSize(fontSizeXS).FontColor(borderColor).Bold();
+                table.Cell().Row(17).Column(3).ColumnSpan(4).MinHeight(30).ParameterStringCell(ParameterDictionary["var_SonstigesSteuerung"], null, true, true);
             });
         });
     }

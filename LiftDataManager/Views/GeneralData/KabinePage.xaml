@@ -803,19 +803,23 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="2*,Auto,*">
+                                    ColumnDefinitions="*,*,Auto,*">
                                     <SpeziControls:ParameterComboBox
                                         Grid.Column="0"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Eingangswand'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
-                                    <TextBlock
+                                    <SpeziControls:ParameterCheckBox
                                         Grid.Column="1"
+                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BelueftungHals'], Mode=TwoWay}"
+                                        ShowDefaultCheckBoxContent="True" />
+                                    <TextBlock
+                                        Grid.Column="2"
                                         Margin="5,0,5,5"
                                         VerticalAlignment="Bottom"
                                         FontSize="16"
                                         Text="RAL:" />
                                     <SpeziControls:ParameterTextBox
-                                        Grid.Column="2"
+                                        Grid.Column="3"
                                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_RAL_Eingangswand'], Mode=TwoWay}"
                                         ShowDefaultHeader="True" />
                                 </Grid>
@@ -1570,8 +1574,6 @@
                                                 </StackPanel>
                                             </ToolTipService.ToolTip>
                                         </SpeziControls:ParameterCheckBox>
-
-
                                     </StackPanel>
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="1" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_2'], Mode=TwoWay}" />
                                     <SpeziControls:ParameterCustomCheckBox Grid.Column="2" LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_BenDef_3'], Mode=TwoWay}" />
@@ -2388,10 +2390,10 @@
                             </Grid>
                         </Grid>
                         <Grid
-                            x:Name="Ventilator"
+                            x:Name="ZusatzAusstattung"
                             Grid.Row="3"
                             Margin="0,0,0,5">
-                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,10">
+                            <Grid ColumnDefinitions="200,*" RowDefinitions="Auto, 10">
                                 <Border
                                     Grid.RowSpan="2"
                                     Grid.ColumnSpan="2"
@@ -2403,30 +2405,54 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Ventilator" />
+                                    Text="Zusatzausstattung" />
                                 <Grid
                                     x:Name="Ausstattung11"
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,0,5,0"
-                                    ColumnDefinitions="auto,auto,*">
-                                    <SpeziControls:ParameterCheckBox
+                                    RowDefinitions="Auto, Auto">
+                                    <Grid
+                                        Grid.Row="0"
                                         Grid.Column="0"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'], Mode=TwoWay}"
-                                        ShowDefaultCheckBoxContent="True" />
-                                    <SpeziControls:ParameterNumberTextBox
-                                        Grid.Column="1"
-                                        Margin="0,5,0,0"
-                                        IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}"
-                                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorAnzahl'], Mode=TwoWay}"
-                                        ShowDefaultHeader="False" />
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        Margin="5,0,0,7"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        FontSize="14"
-                                        Text="Anzahl Ventilatoren" />
+                                        ColumnDefinitions="auto,auto,auto,*">
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="0"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <SpeziControls:ParameterNumberTextBox
+                                            Grid.Column="1"
+                                            Margin="0,5,0,0"
+                                            VerticalAlignment="Bottom"
+                                            IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorAnzahl'], Mode=TwoWay}"
+                                            ShowDefaultHeader="False" />
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            Margin="5,0,0,7"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Bottom"
+                                            FontSize="14"
+                                            Text="Anzahl Ventilatoren" />
+                                        <SpeziControls:ParameterComboBox
+                                            Grid.Column="3"
+                                            IsEnabled="{x:Bind ViewModel.ParameterDictionary['var_VentilatorLuftmenge'].Value, Mode=OneWay, Converter={StaticResource StringToBoolConverter}}"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_VentilatorEinbau'], Mode=TwoWay}"
+                                            ShowDefaultHeader="True" />
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        ColumnDefinitions="*,*,*,*">
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="0"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabBauschutz'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                        <SpeziControls:ParameterCheckBox
+                                            Grid.Column="1"
+                                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_KabSchutzvorhang'], Mode=TwoWay}"
+                                            ShowDefaultCheckBoxContent="True" />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>

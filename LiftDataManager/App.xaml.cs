@@ -96,6 +96,7 @@ public partial class App : Application
             services.AddTransient<WartungMontageTüvViewModel>();
             services.AddTransient<TürenViewModel>();
             services.AddTransient<EinreichunterlagenViewModel>();
+            services.AddTransient<StructureLoadsViewModel>();
             services.AddTransient<SonstigesViewModel>();
             services.AddTransient<SignalisationViewModel>();
             services.AddTransient<SchachtViewModel>();

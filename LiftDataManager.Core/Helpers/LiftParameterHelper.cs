@@ -1,4 +1,5 @@
 ﻿using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace LiftDataManager.Core.Helpers;
@@ -237,5 +238,10 @@ public class LiftParameterHelper
             return doubleValue;
         }
         return 0d;
+    }
+
+    public static bool IsValueNullOrWhiteSpaceOr0(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) || string.Equals(value, "0");
     }
 }

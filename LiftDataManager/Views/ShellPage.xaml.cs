@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-
-namespace LiftDataManager.Views;
+﻿namespace LiftDataManager.Views;
 
 public sealed partial class ShellPage : Page
 {
@@ -19,11 +17,11 @@ public sealed partial class ShellPage : Page
                                        .ConfigureDefaultPage(typeof(HomePage))
                                        .ConfigureSettingsPage(typeof(SettingsPage))
                                        .ConfigureTitleBar(AppTitleBar)
-                                       .ConfigureBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary,BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
+                                       .ConfigureBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary, BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
     }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
     {
-        ThemeService.ChangeThemeWithoutSave(App.MainWindow);
+        App.Current.ThemeService.SetElementThemeWithoutSaveAsync();
     }
 }

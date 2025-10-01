@@ -1,0 +1,224 @@
+﻿<Page
+    x:Class="LiftDataManager.Views.StructureLoadsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SpeziControls="using:LiftDataManager.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.Converters"
+    xmlns:coreModels="using:LiftDataManager.Core.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
+
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <!--  Parameter  -->
+        <ScrollViewer
+            Grid.Row="0"
+            Margin="0,0,0,0"
+            Padding="0,0,15,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Expander
+                    Grid.Row="0"
+                    Margin="0,0,0,10"
+                    Header="Belastung auf das Gebäude (Schienen, Puffer)"
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Q'], Mode=TwoWay}"
+                            PlaceholderText="Nutzlast"
+                            ShowDefaultHeader="True"
+                            Unit="kg" />
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_F'], Mode=TwoWay}"
+                            PlaceholderText="Fahrkorbgewicht"
+                            ReadOnly="True"
+                            ShowDefaultHeader="True"
+                            Unit="kg">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    <Run
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                    Fahrkorbgewicht wird automatisch berechnet</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </SpeziControls:ParameterNumberTextBox>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_v'], Mode=TwoWay}"
+                            PlaceholderText="Nenngeschwindigkeit"
+                            ShowDefaultHeader="True"
+                            Unit="m/s" />
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Margin="5,0,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                Grid.Column="0"
+                                Header="Sprunghöhe"
+                                Style="{ThemeResource InfoTextboxStyle}"
+                                Text="{x:Bind ViewModel.JumpHeight, Mode=OneWay}"
+                                TextAlignment="End" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Width="35"
+                                Margin="5,0,0,8"
+                                VerticalAlignment="Bottom"
+                                Text="mm" />
+                        </Grid>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewichtsmasse'], Mode=TwoWay}"
+                            PlaceholderText="Gegengewichtsmasse"
+                            ShowDefaultHeader="True"
+                            Unit="kg" />
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGWNutzlastausgleich'], Mode=TwoWay}"
+                            PlaceholderText="Ausgleich"
+                            ShowDefaultHeader="True" />
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Header="GGW-Rahmengewicht"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Rahmen_Gewicht'], Mode=TwoWay}"
+                            PlaceholderText="Gegengewichtsrahmen"
+                            ShowDefaultHeader="False"
+                            Unit="kg" />
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellgewicht'], Mode=TwoWay}"
+                            PlaceholderText="Füllungsgewicht"
+                            ShowDefaultHeader="True"
+                            Unit="kg" />
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagenbreite'], Mode=TwoWay}"
+                            PlaceholderText="Einlagenbreite"
+                            ShowDefaultHeader="True"
+                            Unit="mm">
+                            <ToolTipService.ToolTip>
+                                <Image Source="/Images/CarFrameDetails/CounterWeightFilling.png" />
+                            </ToolTipService.ToolTip>
+                        </SpeziControls:ParameterNumberTextBox>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Gegengewicht_Einlagentiefe'], Mode=TwoWay}"
+                            PlaceholderText="Einlagentiefe"
+                            ShowDefaultHeader="True"
+                            Unit="mm">
+                            <ToolTipService.ToolTip>
+                                <Image Source="/Images/CarFrameDetails/CounterWeightFilling.png" />
+                            </ToolTipService.ToolTip>
+                        </SpeziControls:ParameterNumberTextBox>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_Fuellhoehe'], Mode=TwoWay}"
+                            ReadOnly="True"
+                            ShowDefaultHeader="True"
+                            Unit="mm">
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    <Run
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                    Füllhöhe wird automatisch berechnet</TextBlock>
+                            </ToolTipService.ToolTip>
+                        </SpeziControls:ParameterNumberTextBox>
+                        <SpeziControls:ParameterNumberTextBox
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_GGW_FuellhoeheMax'], Mode=TwoWay}"
+                            ShowDefaultHeader="True"
+                            Unit="mm" />
+                    </Grid>
+                </Expander>
+                <Expander
+                    Grid.Row="1"
+                    Margin="0,0,0,10"
+                    Header="Belastung auf das Gebäude (Schienen, Puffer)"
+                    IsExpanded="True"
+                    Style="{StaticResource ExpanderContentStyle}">
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </Expander>
+            </Grid>
+
+        </ScrollViewer>
+        <!--  InfoSidebarPanel  -->
+        <SpeziControls:SidebarPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            InfoCenterEntrys="{x:Bind ViewModel.InfoCenterEntrys, Mode=OneWay}"
+            InfoCenterIsOpen="{x:Bind ViewModel.InfoCenterIsOpen, Mode=TwoWay}"
+            ShowQuickLinks="{x:Bind ViewModel.AuftragsbezogeneXml, Mode=OneWay}" />
+        <!--  Footer  -->
+        <SpeziControls:FooterControl
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0"
+            CheckOut="{x:Bind ViewModel.CheckOut, Mode=OneWay}"
+            ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
+            HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
+            HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
+            ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
+            XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
+    </Grid>
+</Page>

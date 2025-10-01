@@ -375,6 +375,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             FullPathXml = _pathDefaultAutoDeskTransfer;
         }
         await LoadDataFromXmlFile(downloadResult.Item1);
+        await SetDefaultAutodeskXmlSettingsAsync();
     }
 
     private async Task LoadDataFromXmlFile(long searchTime)
@@ -939,6 +940,26 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         }
     }
 
+    private async Task SetDefaultAutodeskXmlSettingsAsync()
+    {
+        var improvedCarWeightCalcActivationDate = new DateTime(2025, 10, 01);
+        var creationDate = DateTime.MinValue;
+        if (DateTime.TryParse(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_ErstelltAm"), out DateTime parsedDate))
+        {
+            creationDate = parsedDate;
+        }
+
+        var xx = improvedCarWeightCalcActivationDate.CompareTo(creationDate) < 0;
+        var yy = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ImprovedCarWeightCalc");
+
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ImprovedCarWeightCalc") && improvedCarWeightCalcActivationDate.CompareTo(creationDate) < 0)
+        {
+            ParameterDictionary["var_ImprovedCarWeightCalc"].AutoUpdateParameterValue("True");
+        }
+
+        await Task.CompletedTask;
+    }
+
     public void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
@@ -947,6 +968,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
         {
             SetCalculatedValuesAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
             SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
+            
             if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SkipRatedLoad"))
             {
                 CustomPayloadInfo = "Gedrängelastberechnung nach EN81:20 deaktiviert! (Gedrängelast >= Nutzlast)";
