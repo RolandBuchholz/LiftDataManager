@@ -16,7 +16,7 @@
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampServerUrl>http://timestamp.comodoca.com</AppxPackageSigningTimestampServerUrl>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -27,7 +27,6 @@
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>\\Bauer\AUFTRÄGE NEU\Vorlagen\LiftDataManager</AppInstallerUri>
     <AppxPackageDir>C:\Users\Buchholz.PPS\source\BE\LiftDataManager\LiftDataManager\bin\AppPackages\</AppxPackageDir>
-    <PackageCertificateThumbprint>0CD8FB65AE2C0CA386EBD01686E71A6D1521F529</PackageCertificateThumbprint>
     <EnableMsixTooling>true</EnableMsixTooling>
     <!--<PublishAot>true</PublishAot>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>
