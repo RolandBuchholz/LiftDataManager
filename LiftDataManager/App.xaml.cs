@@ -90,6 +90,7 @@ public partial class App : Application
             services.AddTransient<BausatzDetailRailBracketViewModel>();
             services.AddTransient<HelpViewModel>();
             services.AddTransient<LiftHistoryViewModel>();
+            services.AddTransient<SafetyComponentsRecordingViewModel>();
             services.AddTransient<DataBaseEditViewModel>();
             services.AddTransient<ErrorViewModel>();
             services.AddTransient<SettingsViewModel>();

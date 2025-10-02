@@ -108,7 +108,6 @@
     <Folder Include="ViewModels\DetailData\" />
     <Folder Include="ViewModels\Dialogs\" />
     <Folder Include="ViewModels\GeneralData\" />
-    <Folder Include="ViewModels\Settings\" />
     <Folder Include="Views\DetailData\" />
     <Folder Include="Views\Dialogs\" />
     <Folder Include="Views\GeneralData\" />

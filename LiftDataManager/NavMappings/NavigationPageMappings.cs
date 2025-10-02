@@ -42,6 +42,7 @@ public partial class NavigationPageMappings
         {"LiftDataManager.Views.TabellenansichtPage", typeof(LiftDataManager.Views.TabellenansichtPage)},
         {"LiftDataManager.Views.LiftHistoryPage", typeof(LiftDataManager.Views.LiftHistoryPage)},
         {"LiftDataManager.Views.AbbreviationPage", typeof(LiftDataManager.Views.AbbreviationPage)},
+        {"LiftDataManager.Views.SafetyComponentsRecordingPage", typeof(LiftDataManager.Views.SafetyComponentsRecordingPage)},
         {"LiftDataManager.Views.DataBaseEditPage", typeof(LiftDataManager.Views.DataBaseEditPage)},
         {"LiftDataManager.Views.QuickLinksPage", typeof(LiftDataManager.Views.QuickLinksPage)},
         {"LiftDataManager.Views.HelpPage", typeof(LiftDataManager.Views.HelpPage)},

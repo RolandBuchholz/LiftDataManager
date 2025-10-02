@@ -277,6 +277,14 @@
           "HideItem": false
         },
         {
+          "UniqueId": "LiftDataManager.Views.SafetyComponentsRecordingPage",
+          "Title": "Sicherheitskomponeten Datenbank",
+          "Description": "Sicherheitskomponeten Datenbank",
+          "Subtitle": "Sicherheitskomponeten Datenbank",
+          "ImagePath": "ms-appx:///Assets/Fluent/SafetyComponents.png",
+          "HideItem": false
+        },
+        {
           "UniqueId": "LiftDataManager.Views.DataBaseEditPage",
           "Title": "Databank bearbeiten",
           "Subtitle": "Databank bearbeiten",
