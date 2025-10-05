@@ -68,9 +68,10 @@ public partial class App : Application
             services.AddSingleton<IInfoCenterService, InfoCenterService>();
 
             // DataBase Services
-            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString(true))
+            services.AddDbContext<ParameterContext>(options => options.UseSqlite(GetConnectionString("Parameter", true))
                                                                       .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            services.AddDbContext<ParameterEditContext>(options => options.UseSqlite(GetConnectionString(false)));
+            services.AddDbContext<ParameterEditContext>(options => options.UseSqlite(GetConnectionString("Parameter", false)));
+            services.AddDbContext<SafetyComponentRecordContext>(options => options.UseSqlite(GetConnectionString("SafetyComponentsRecord", false)));
             // Core Services
             services.AddSingleton<IParameterDataService, ParameterDataService>();
             services.AddSingleton<IValidationParameterDataService, ValidationParameterDataService>();
@@ -224,12 +225,13 @@ public partial class App : Application
         return loglevel;
     }
 
-    public static string GetConnectionString(bool dbReadOnly)
+    public static string GetConnectionString(string dbContext ,bool dbReadOnly)
     {
         var dbConnectionStringLogger = GetService<ILogger<App>>();
         var installationPath = AppDomain.CurrentDomain.BaseDirectory;
         dbConnectionStringLogger.LogInformation(00104, "DbConnectionString InstallationPath: {installationPath} ", installationPath);
-        string dbPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+        string parameterDBPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
+        string safetyComponentsRecordDBPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\SafetyComponentRecords.db";
         bool vaultDisabled = false;
 
         if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppVaultDisabledRequested", out var vaultSettingValue))
@@ -247,15 +249,15 @@ public partial class App : Application
             {
                 var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
                 dbConnectionStringLogger.LogInformation(00102, "DbConnectionString SettingsDBPath: {dbPathValue} ", dbPathValue);
-                dbPath = string.IsNullOrWhiteSpace(dbPathValue) ? dbPath : dbPathValue;
-                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString selected DBPath: {dbPath} ", dbPath);
+                parameterDBPath = string.IsNullOrWhiteSpace(dbPathValue) ? parameterDBPath : dbPathValue;
+                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString selected DBPath: {dbPath} ", parameterDBPath);
             }
         }
 
-        if (!File.Exists(dbPath) || vaultDisabled)
+        if (!File.Exists(parameterDBPath) || vaultDisabled)
         {
-            dbPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");
-            dbConnectionStringLogger.LogInformation(00104, "DbConnectionString DBPath LocalMode: {dbPath} ", dbPath);
+            parameterDBPath = Path.Combine(installationPath, "LiftDataManager.Core", "Assets", "DataComponents", "LiftDataParameter.db");
+            dbConnectionStringLogger.LogInformation(00104, "DbConnectionString DBPath LocalMode: {dbPath} ", parameterDBPath);
         }
 
         //TODO UseForLocalModeSpecialFolder
@@ -272,7 +274,7 @@ public partial class App : Application
         {
             Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
         }
-        if (!string.IsNullOrWhiteSpace(dbPath) && dbReadOnly)
+        if (!string.IsNullOrWhiteSpace(parameterDBPath) && dbReadOnly)
         {
             if (File.Exists(workPathDb))
             {
@@ -282,13 +284,15 @@ public partial class App : Application
                     workPathDbFileInfo.IsReadOnly = false;
                 }
             }
-            File.Copy(dbPath, workPathDb, true);
+            File.Copy(parameterDBPath, workPathDb, true);
         }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;
+        var dBPath = string.Equals(dbContext, "Parameter") ? parameterDBPath : safetyComponentsRecordDBPath;
+
         return new SqliteConnectionStringBuilder()
         {
-            DataSource = dbReadOnly ? workPathDb : dbPath,
+            DataSource = dbReadOnly ? workPathDb : dBPath,
             Mode = sqliteOpenMode,
             ForeignKeys = true,
         }.ToString();
