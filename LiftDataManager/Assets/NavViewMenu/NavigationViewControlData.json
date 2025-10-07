@@ -286,8 +286,8 @@
         },
         {
           "UniqueId": "LiftDataManager.Views.DataBaseEditPage",
-          "Title": "Databank bearbeiten",
-          "Subtitle": "Databank bearbeiten",
+          "Title": "LDM-Databank bearbeiten",
+          "Subtitle": "LDM-Databank bearbeiten",
           "ImagePath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
           "HideItem": true
         }

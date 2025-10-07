@@ -2,17 +2,15 @@
 
 namespace LiftDataManager.Core.DataAccessLayer;
 
-public class SafetyComponentRecordContext : DbContext
+public partial class SafetyComponentRecordContext(DbContextOptions<SafetyComponentRecordContext> options) : DbContext(options)
 {
-    public DbSet<SafetyComponentRecord>? SafetyComponentsRecords { get; set; }
-
-    public SafetyComponentRecordContext(DbContextOptions<SafetyComponentRecordContext> options) : base(options)
-    {
-    }
+    public DbSet<SafetyComponentRecord>? SafetyComponentRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SafetyComponentRecordContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SafetyComponentRecordContext).Assembly, a => 
+            a.Namespace is not null && 
+            a.Namespace.StartsWith("LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordConfiguration"));
     }
 }

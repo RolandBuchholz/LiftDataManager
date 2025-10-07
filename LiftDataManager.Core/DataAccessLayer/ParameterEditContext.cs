@@ -1,17 +1,15 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer;
 
-public class ParameterEditContext : DbContext
+public partial class ParameterEditContext(DbContextOptions<ParameterEditContext> options) : DbContext(options)
 {
     public DbSet<ParameterDto>? ParameterDtos { get; set; }
     public DbSet<DropdownValue>? DropdownValues { get; set; }
 
-    public ParameterEditContext(DbContextOptions<ParameterEditContext> options) : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ParameterEditContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ParameterEditContext).Assembly, a =>
+            a.Namespace is not null &&
+            a.Namespace.StartsWith("LiftDataManager.Core.DataAccessLayer.Configuration"));
     }
 }

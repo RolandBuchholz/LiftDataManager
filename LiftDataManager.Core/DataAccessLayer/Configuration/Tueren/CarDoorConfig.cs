@@ -48,5 +48,3 @@ public class CarDoorConfig : BaseModelBuilder<CarDoor>
                .HasConversion(intArrayConverter, intArrayComparer);
     }
 }
-
-
