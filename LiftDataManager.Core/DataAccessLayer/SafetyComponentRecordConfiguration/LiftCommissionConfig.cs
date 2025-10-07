@@ -10,5 +10,8 @@ public class LiftCommissionConfig : BaseModelBuilder<LiftCommission>
         base.Configure(builder);
         builder.Property(x => x.SAISEquipment)
                .HasMaxLength(12);
+        builder.HasMany(t => t.SafetyComponentRecords)
+               .WithOne(g => g.LiftCommission)
+               .HasForeignKey(t => t.LiftCommissionId);
     }
 }

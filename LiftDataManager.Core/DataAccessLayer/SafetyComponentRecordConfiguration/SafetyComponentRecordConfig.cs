@@ -10,5 +10,6 @@ public class SafetyComponentRecordConfig : BaseModelBuilder<SafetyComponentRecor
         base.Configure(builder);
         builder.Property(x => x.IncompleteRecord);
         builder.Property(x => x.SchindlerCertified);
+        builder.Property(x => x.LiftCommissionId);
     }
 }
