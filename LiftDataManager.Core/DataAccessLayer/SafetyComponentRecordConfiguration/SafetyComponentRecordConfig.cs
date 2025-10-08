@@ -8,8 +8,14 @@ public class SafetyComponentRecordConfig : BaseModelBuilder<SafetyComponentRecor
     public override void Configure(EntityTypeBuilder<SafetyComponentRecord> builder)
     {
         base.Configure(builder);
+        builder.Property(x => x.LiftCommissionId);
         builder.Property(x => x.IncompleteRecord);
         builder.Property(x => x.SchindlerCertified);
-        builder.Property(x => x.LiftCommissionId);
+        builder.Property(x => x.Release);
+        builder.Property(x => x.Revision);
+        builder.Property(x => x.IdentificationNumber);
+        builder.Property(x => x.SerialNumber);
+        builder.Property(x => x.BatchNumber);
+        builder.Property(x => x.SafetyComponentManfacturerId);
     }
 }

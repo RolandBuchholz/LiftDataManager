@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
 {
     [DbContext(typeof(SafetyComponentRecordContext))]
-    partial class SafetyComponentRecordContextModelSnapshot : ModelSnapshot
+    [Migration("20251008090327_ForeignKey_SafetyComponentManfacturer")]
+    partial class ForeignKey_SafetyComponentManfacturer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -65,8 +68,14 @@ namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
                     b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Street")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ZIPCode")

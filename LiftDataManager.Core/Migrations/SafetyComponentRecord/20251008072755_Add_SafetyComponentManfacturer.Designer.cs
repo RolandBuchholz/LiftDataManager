@@ -2,6 +2,7 @@
 using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
 {
     [DbContext(typeof(SafetyComponentRecordContext))]
-    partial class SafetyComponentRecordContextModelSnapshot : ModelSnapshot
+    [Migration("20251008072755_Add_SafetyComponentManfacturer")]
+    partial class Add_SafetyComponentManfacturer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -55,24 +58,29 @@ namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels.SafetyComponentManfacturer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("HouseNumber")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Street")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ZIPCode")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("Country");
 
                     b.ToTable("SafetyComponentManfacturers", (string)null);
                 });
@@ -105,9 +113,6 @@ namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
                     b.Property<int>("Revision")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SafetyComponentManfacturerId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -117,8 +122,6 @@ namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
                     b.HasKey("Id");
 
                     b.HasIndex("LiftCommissionId");
-
-                    b.HasIndex("SafetyComponentManfacturerId");
 
                     b.ToTable("SafetyComponentRecords", (string)null);
                 });
@@ -131,23 +134,10 @@ namespace LiftDataManager.Core.Migrations.SafetyComponentRecord
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels.SafetyComponentManfacturer", "SafetyComponentManfacturer")
-                        .WithMany("SafetyComponentRecords")
-                        .HasForeignKey("SafetyComponentManfacturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("LiftCommission");
-
-                    b.Navigation("SafetyComponentManfacturer");
                 });
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels.LiftCommission", b =>
-                {
-                    b.Navigation("SafetyComponentRecords");
-                });
-
-            modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels.SafetyComponentManfacturer", b =>
                 {
                     b.Navigation("SafetyComponentRecords");
                 });
