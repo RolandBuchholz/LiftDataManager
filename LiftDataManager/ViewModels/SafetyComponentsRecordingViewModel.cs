@@ -1,24 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.Collections;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.DataAccessLayer;
 using LiftDataManager.Core.DataAccessLayer.Models;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
 
-public partial class SafetyComponentsRecordingViewModel : ObservableObject, INavigationAwareEx
+public partial class SafetyComponentsRecordingViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    //private readonly ParameterContext _parametercontext;
+    private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
     //public ObservableCollection<Abbreviation> Abbreviations { get; set; } = [];
     //public ObservableGroupedCollection<string, Abbreviation> GroupedFilteredAbbreviations { get; private set; } = [];
     //public CollectionViewSource GroupedAbbreviations { get; set; }
 
 
-    public SafetyComponentsRecordingViewModel(ParameterContext parametercontext)
+    public SafetyComponentsRecordingViewModel(IParameterDataService parameterDataService, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService,
+                              ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
+         base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         //GroupedAbbreviations = new CollectionViewSource
         //{
         //    IsSourceGrouped = true
         //};
-        //_parametercontext = parametercontext;
+        _safetyComponentRecordContext = safetyComponentRecordContext;
     }
 
     //[ObservableProperty]
