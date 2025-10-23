@@ -1334,8 +1334,8 @@
             ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

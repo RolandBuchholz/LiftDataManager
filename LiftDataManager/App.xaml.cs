@@ -91,7 +91,6 @@ public partial class App : Application
             services.AddTransient<BausatzDetailRailBracketViewModel>();
             services.AddTransient<HelpViewModel>();
             services.AddTransient<LiftHistoryViewModel>();
-            services.AddTransient<SafetyComponentsRecordingViewModel>();
             services.AddTransient<DataBaseEditViewModel>();
             services.AddTransient<ErrorViewModel>();
             services.AddTransient<SettingsViewModel>();
@@ -134,6 +133,11 @@ public partial class App : Application
             services.AddTransient<ImportLiftDataDialogViewModel>();
             services.AddTransient<CheckOutDialogViewModel>();
             services.AddTransient<ValidationDialogViewModel>();
+
+            // SafetyComponentsRecordingViewModels
+            services.AddTransient<CurrentSafetyComponentsViewModel>();
+            services.AddTransient<SafetyComponentsEquipmentsViewModel>();
+            services.AddTransient<SafetyComponentsRecordingViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

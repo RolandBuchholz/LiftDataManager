@@ -6,6 +6,8 @@ public partial class SafetyComponentRecordContext(DbContextOptions<SafetyCompone
 {
     public DbSet<SafetyComponentRecord>? SafetyComponentRecords { get; set; }
 
+    public DbSet<LiftCommission>? LiftCommissions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
