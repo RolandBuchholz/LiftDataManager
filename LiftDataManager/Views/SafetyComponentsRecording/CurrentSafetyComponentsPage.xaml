@@ -6,6 +6,7 @@
     xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dbModels="using:LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:linq="using:System.Linq"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tableView="using:WinUI.TableView"
@@ -303,6 +304,43 @@
                 CornerRadius="4"
                 ItemsSource="{x:Bind ViewModel.ListOfSafetyComponents, Mode=OneWay}">
                 <tableView:TableView.Columns>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="dbModels:SafetyComponentRecord">
+                                <Grid>
+                                    <FontIcon
+                                        Foreground="MediumSeaGreen"
+                                        Glyph="&#xEC61;"
+                                        Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(CompleteRecord), Mode=OneWay}" />
+                                    <FontIcon
+                                        Foreground="Goldenrod"
+                                        Glyph="&#xE7BA;"
+                                        Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(CompleteRecord), Mode=OneWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xEB95;" ToolTipService.ToolTip="Sicherheitsbauteil von Schindler freigegeben" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="dbModels:SafetyComponentRecord">
+                                <FontIcon Foreground="{x:Bind helpers:XamlFunctions.BoolToSolidColorBrushError(SchindlerCertified), Mode=OneWay}" Glyph="&#xEB95;" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
                     <tableView:TableViewTextColumn
                         Width="250"
                         Binding="{Binding Name}"
@@ -332,14 +370,14 @@
                         Header="Identificationr."
                         IsReadOnly="False" />
                     <tableView:TableViewTextColumn
-                        Width="150"
+                        Width="125"
                         Binding="{Binding SerialNumber}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Seriennr."
                         IsReadOnly="False" />
                     <tableView:TableViewTextColumn
-                        Width="150"
+                        Width="125"
                         Binding="{Binding BatchNumber}"
                         CanFilter="False"
                         CanSort="False"
@@ -373,44 +411,50 @@
                         CanSort="False"
                         Header="Land"
                         IsReadOnly="False" />
-
-
                     <tableView:TableViewTextColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
+                        Width="75"
+                        Binding="{Binding Imported}"
                         CanFilter="False"
                         CanSort="False"
-                        Header="Importiert"
+                        Header="Import"
                         IsReadOnly="False" />
                     <tableView:TableViewDateColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
+                        Width="110"
+                        Binding="{Binding CreationDate}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Erstellungsdatum"
                         IsReadOnly="False" />
                     <tableView:TableViewCheckBoxColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
+                        Width="75"
+                        Binding="{Binding Active}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Aktiv"
                         IsReadOnly="False" />
-                    <tableView:TableViewCheckBoxColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Aktiv"
-                        IsReadOnly="False" />
-                    <tableView:TableViewCheckBoxColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Aktiv"
-                        IsReadOnly="False" />
-
+                    <tableView:TableViewTemplateColumn Width="60">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Sicherheitsbauteil löschen" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                    <FontIcon
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="16"
+                                        Glyph="&#xE74D;" />
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock Text="Sicherheitsbauteil löschen" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
                 </tableView:TableView.Columns>
             </tableView:TableView>
         </Grid>

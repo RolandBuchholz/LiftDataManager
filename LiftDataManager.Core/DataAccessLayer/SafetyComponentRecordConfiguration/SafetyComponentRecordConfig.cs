@@ -9,7 +9,7 @@ public class SafetyComponentRecordConfig : BaseModelBuilder<SafetyComponentRecor
     {
         base.Configure(builder);
         builder.Property(x => x.LiftCommissionId);
-        builder.Property(x => x.IncompleteRecord);
+        builder.Property(x => x.CompleteRecord);
         builder.Property(x => x.SchindlerCertified);
         builder.Property(x => x.Release);
         builder.Property(x => x.Revision);
@@ -17,5 +17,8 @@ public class SafetyComponentRecordConfig : BaseModelBuilder<SafetyComponentRecor
         builder.Property(x => x.SerialNumber);
         builder.Property(x => x.BatchNumber);
         builder.Property(x => x.SafetyComponentManfacturerId);
+        builder.Property(x => x.Imported);
+        builder.Property(x => x.CreationDate);
+        builder.Property(x => x.Active);
     }
 }

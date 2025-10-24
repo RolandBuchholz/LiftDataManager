@@ -1,4 +1,6 @@
-﻿namespace LiftDataManager.Helpers;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace LiftDataManager.Helpers;
 public static class XamlFunctions
 {
     public static Visibility TrueToVisible(bool value)
@@ -39,5 +41,19 @@ public static class XamlFunctions
         return  string.Equals(value, "True")
             ? Visibility.Visible
             : Visibility.Collapsed;
+    }
+
+    public static SolidColorBrush BoolToSolidColorBrushError(bool value)
+    {
+        return value
+            ? new SolidColorBrush(Colors.MediumSeaGreen)
+            : new SolidColorBrush(Colors.IndianRed);
+    }
+
+    public static SolidColorBrush BoolToSolidColorBrushWarning(bool value)
+    {
+        return value
+            ? new SolidColorBrush(Colors.MediumSeaGreen)
+            : new SolidColorBrush(Colors.Gold);
     }
 }

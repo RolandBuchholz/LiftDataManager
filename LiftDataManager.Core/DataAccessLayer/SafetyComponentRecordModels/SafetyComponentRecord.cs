@@ -4,7 +4,7 @@ public class SafetyComponentRecord : BaseEntity
 {
     public int LiftCommissionId { get; set; }
     public LiftCommission? LiftCommission { get; set; }
-    public bool IncompleteRecord { get; set; }
+    public bool CompleteRecord { get; set; }
     public bool SchindlerCertified { get; set; }
     public int Release { get; set; }
     public int Revision { get; set; }

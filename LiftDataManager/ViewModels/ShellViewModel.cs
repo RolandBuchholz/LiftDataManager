@@ -79,10 +79,6 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
             {
                 dataItem = e.Parameter as DataItem;
             }
-            else if (e.Parameter is not null)
-            {
-                dataItem = new DataItem() { Description = $"{e.Parameter}"};
-            }
             HeaderText = dataItem?.Description;
             ShowGlobalSearch = dataItem is null || !dataItem.HideItem;
             view.AlwaysShowHeader = !string.IsNullOrWhiteSpace(dataItem?.Description);

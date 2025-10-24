@@ -25,8 +25,7 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
             var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
             if (pageType != null)
             {
-                var pageTitle = "Equipments";
-                LiftParameterNavigationHelper.NavigatePivotItem(pageType, pageTitle);
+                LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
     }

@@ -25,8 +25,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
             if (pageType != null)
             {
-                var pageTitle = "Aktueller Auftrag";
-                LiftParameterNavigationHelper.NavigatePivotItem(pageType, pageTitle);
+                LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
     }
@@ -51,10 +50,40 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         await Task.CompletedTask;
     }
 
+    private async Task SetDefaultDataAsync() 
+    {
+        if (string.IsNullOrWhiteSpace(SpezifikationsNumber))
+        {
+            return;
+        }
+        var saisNumber = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_SAISEquipment");
+        if (CurrentLiftCommission is null)
+        {
+            CurrentLiftCommission = new LiftCommission()
+            {
+                Name = SpezifikationsNumber,
+                LiftInstallerID = 1491,
+                SAISEquipment = saisNumber,
+                Country = "DE",
+                SafetyComponentRecords = []
+            };
+            await _safetyComponentRecordContext.LiftCommissions!.AddAsync(CurrentLiftCommission);
+            await _safetyComponentRecordContext.SaveChangesAsync();
+        }
+   
+        if (string.IsNullOrWhiteSpace(saisNumber) &&
+            !string.IsNullOrWhiteSpace(CurrentLiftCommission.SAISEquipment))
+        {
+            ParameterDictionary["var_SAISEquipment"].Value = CurrentLiftCommission.SAISEquipment;
+        }
+        await Task.CompletedTask;
+    }
+
     public async void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
         await GetCurrentSafetyComponentsFromDatabaseAsync();
+        await SetDefaultDataAsync();
         await Task.CompletedTask;
     }
 

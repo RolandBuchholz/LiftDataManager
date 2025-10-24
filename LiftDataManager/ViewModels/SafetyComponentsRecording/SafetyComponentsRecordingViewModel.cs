@@ -26,8 +26,7 @@ public partial class SafetyComponentsRecordingViewModel : DataViewModelBase, INa
             var pageType = Application.Current.GetType().Assembly.GetType($"LiftDataManager.Views.{value.Tag}");
             if (pageType != null)
             {
-                var pageTitle = "Sicherheitskomponenten";
-                LiftParameterNavigationHelper.NavigatePivotItem(pageType, pageTitle);
+                LiftParameterNavigationHelper.NavigatePivotItem(pageType);
             }
         }
     }
