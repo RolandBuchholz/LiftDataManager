@@ -200,32 +200,64 @@
                     Margin="5,5,5,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom"
-                    Content="Sicherheitskomponenten importieren"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Command="{x:Bind ViewModel.ImportSafetyComponentRecordCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE8B6;" />
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            FontWeight="Bold"
+                            Text="Sicherheitskomponenten importieren" />
+                    </StackPanel>
+                </Button>
                 <Button
                     Grid.Row="1"
                     Grid.Column="3"
                     Margin="5,5,5,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom"
-                    Content="Sicherheitskomponente hinzufügen"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Command="{x:Bind ViewModel.AddSafetyComponentRecordCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xED0E;" />
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            FontWeight="Bold"
+                            Text="Sicherheitskomponente hinzufügen" />
+                    </StackPanel>
+                </Button>
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
-                    Content="Sicherheitskomponenten löschen"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Command="{x:Bind ViewModel.DeleteAllSafetyComponentRecordsCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE74D;" />
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            FontWeight="Bold"
+                            Text="Alle Sicherheitskomponenten löschen" />
+                    </StackPanel>
+                </Button>
                 <Button
                     Grid.Row="2"
                     Grid.Column="3"
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
-                    Content="Datenblatt erstellen"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    Command="{x:Bind ViewModel.CreateSafetyComponentRecordPDFCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xEA90;" />
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            FontWeight="Bold"
+                            Text="Datenblatt erstellen" />
+                    </StackPanel>
+                </Button>
             </Grid>
             <TextBlock
                 Grid.Row="2"
@@ -253,41 +285,41 @@
                     Grid.Column="0"
                     Margin="0,0,5,0"
                     Header="Montagebetrieb"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.LiftInstallerID, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.LiftInstallerID, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="1"
                     Margin="0,0,5,0"
                     Header="Herstellernummer"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.Name, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.LiftName, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="2"
                     Margin="0,0,5,0"
                     Header="Equipmentnummer"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.SAISEquipment, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.SAISEquipment, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="3"
                     Margin="0,0,5,0"
                     Header="Straße"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.Street, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.Street, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="4"
                     Margin="0,0,5,0"
                     Header="Hausnummer"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.HouseNumber, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.HouseNumber, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="5"
                     Margin="0,0,5,0"
                     Header="Postleitzahl"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.ZIPCode, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.ZIPCode, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="6"
                     Margin="0,0,5,0"
                     Header="Stadt"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.City, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.City, Mode=TwoWay}" />
                 <TextBox
                     Grid.Column="7"
                     Header="Land"
-                    Text="{x:Bind ViewModel.CurrentLiftCommission.Country, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.Country, Mode=TwoWay}" />
             </Grid>
             <TextBlock
                 Grid.Row="4"
@@ -441,7 +473,9 @@
                                 <Button
                                     Margin="0"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="Center"
+                                    Click="Delete_Click"
+                                    CommandParameter="{Binding}">
                                     <FontIcon
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
