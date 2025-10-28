@@ -17,7 +17,7 @@ public sealed partial class ShellPage : Page
                                        .ConfigureDefaultPage(typeof(HomePage))
                                        .ConfigureSettingsPage(typeof(SettingsPage))
                                        .ConfigureTitleBar(AppTitleBar)
-                                       .ConfigureBreadcrumbBar(JsonBreadCrumbNavigator, BreadcrumbPageMappings.PageDictionary, BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
+                                       .ConfigureBreadcrumbBar(BreadCrumbNav, BreadcrumbPageMappings.PageDictionary, BreadcrumbNavigatorHeaderVisibilityOptions.BreadcrumbNavigatorOnly);
     }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
