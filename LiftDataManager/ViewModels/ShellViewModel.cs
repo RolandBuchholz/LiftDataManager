@@ -1,5 +1,4 @@
-﻿using DevWinUI;
-using Microsoft.UI.Xaml.Navigation;
+﻿using Microsoft.UI.Xaml.Navigation;
 using System.Text.Json;
 using Windows.Storage;
 
@@ -16,8 +15,6 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         JsonNavigationService.FrameNavigated += OnNavigated;
         IsActive = true;
     }
-
-
 
     [ObservableProperty]
     public partial bool ShowGlobalSearch { get; set; } = true;
@@ -101,7 +98,7 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
     {
         if (NavigationDataItemsDictionary.Count == 0)
         {
-           await GenreateNavigationDataItemsDictionary();
+            await GenreateNavigationDataItemsDictionary();
         }
         if (BreadcrumbPageMappings.PageDictionary.ContainsKey(e.SourcePageType))
         {
@@ -112,17 +109,6 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         }
         else
         {
-            breadcrumbnavigator.Visibility = Visibility.Collapsed;
-            headerTextBlock.Visibility = Visibility.Visible;
-            DataItem? dataItem = null;
-            if (e.Parameter is DataItem)
-            {
-                dataItem = e.Parameter as DataItem;
-            }
-            HeaderText = dataItem?.Description;
-            ShowGlobalSearch = dataItem is null || !dataItem.HideItem;
-            view.AlwaysShowHeader = !string.IsNullOrWhiteSpace(dataItem?.Description);
-
             BreadcrumbnavigatorVisibility = Visibility.Collapsed;
             HeaderTextVisibility = Visibility.Visible;
             var dataItem = NavigationDataItemsDictionary.GetValueOrDefault(e.SourcePageType);
