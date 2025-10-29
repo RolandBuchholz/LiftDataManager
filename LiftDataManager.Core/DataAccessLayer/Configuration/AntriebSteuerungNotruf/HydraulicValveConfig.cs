@@ -18,5 +18,9 @@ public class HydraulicValveConfig : BaseModelBuilder<HydraulicValve>
         builder.Property(x => x.SchindlerCertified);
         builder.Property(x => x.OrderSelection);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.Property(x => x.SAISDescription)
+                               .HasMaxLength(50);
+        builder.Property(x => x.SAISIdentificationNumber)
+                               .HasMaxLength(50);
     }
 }

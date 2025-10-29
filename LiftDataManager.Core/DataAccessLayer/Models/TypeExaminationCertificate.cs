@@ -7,6 +7,7 @@ public class TypeExaminationCertificate : BaseEntity
 {
     public string? CertificateNumber { get; set; }
     public string? ManufacturerName { get; set; }
+    public int SAISManufacturerld { get; set; }
     public int SafetyComponentTypId { get; set; }
     public required SafetyComponentTyp SafetyComponentTyp { get; set; }
     public IEnumerable<SafetyGearModelType>? SafetyGearModelTypes { get; set; }
