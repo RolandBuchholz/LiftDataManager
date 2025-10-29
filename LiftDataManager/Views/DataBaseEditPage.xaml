@@ -8,6 +8,7 @@
     xmlns:dbmodels="using:LiftDataManager.Core.DataAccessLayer.Models"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tableView="using:WinUI.TableView"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
     <interactivity:Interaction.Behaviors>
@@ -28,16 +29,17 @@
             FontWeight="Bold"
             Foreground="IndianRed"
             TextWrapping="WrapWholeWords"
-            Visibility="{x:Bind ViewModel.Adminmode, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
-            <Run FontSize="48" Text="Editieren der Datenbank nur im Adminmode möglich!" />
+            Visibility="{x:Bind ViewModel.CanEditDatabase, Mode=OneWay, Converter={StaticResource InvertBoolToObjectConverter}}">
+            <Run FontSize="48" Text="Die Datenbank bei nur bei aktiviertem PDM(Vault) und Adminmode bearbeitet werden!" />
+            <LineBreak />
             <LineBreak />
             <Underline>
                 <Run FontSize="36" Text="Info:" />
             </Underline>
             <LineBreak />
-            <Run FontSize="24" Text="Adminmode kann in den Einstellungen aktiviert werden" />
+            <Run FontSize="24" Text="Adminmode und PDM(Vault) kann in den Einstellungen aktiviert werden." />
         </TextBlock>
-        <Grid Visibility="{x:Bind ViewModel.Adminmode, Mode=OneWay}">
+        <Grid Visibility="{x:Bind ViewModel.CanEditDatabase, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -64,264 +66,94 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <StackPanel
-                                    Margin="10,5,10,5"
-                                    Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Orientation="Horizontal">
-                                    <CommandBar
-                                        x:Name="CommandBar_DB"
-                                        VerticalAlignment="Center"
-                                        DefaultLabelPosition="Right">
-                                        <AppBarButton
-                                            x:Name="btn_Filter"
-                                            Icon="Filter"
-                                            Label="{x:Bind ViewModel.FilterValue, Mode=OneWay}">
-                                            <ToolTipService.ToolTip>
-                                                <StackPanel>
-                                                    <TextBlock HorizontalAlignment="Center" Text="Aktueller Filter:" />
-                                                    <TextBlock
-                                                        x:Name="txb_tooltip_Filter"
-                                                        HorizontalAlignment="Center"
-                                                        FontSize="16"
-                                                        Foreground="DarkRed"
-                                                        Text="{x:Bind ViewModel.FilterValue, Mode=OneWay}" />
-                                                </StackPanel>
-                                            </ToolTipService.ToolTip>
-                                            <AppBarButton.Flyout>
-                                                <MenuFlyout>
-                                                    <MenuFlyoutItem
-                                                        x:Name="None"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="None"
-                                                        Text="Kein Filter" />
-                                                    <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Text"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Text"
-                                                        Text="Text Parameter" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="NumberOnly"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="NumberOnly"
-                                                        Text="Nummer Parameter" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Date"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Date"
-                                                        Text="Datums Parameter" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Boolean"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Boolean"
-                                                        Text="Wahr-Falsch Parameter" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="DropDownList"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="DropDownList"
-                                                        Text="Auswahllisten Parameter" />
-                                                    <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem
-                                                        x:Name="AllgemeineDaten"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="AllgemeineDaten"
-                                                        Text="Allgemeine Daten" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Schacht"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Schacht"
-                                                        Text="Schacht" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Bausatz"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Bausatz"
-                                                        Text="Bausatz" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Fahrkorb"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Fahrkorb"
-                                                        Text="Fahrkorb" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Tueren"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Tueren"
-                                                        Text="Türen" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="AntriebSteuerungNotruf"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="AntriebSteuerungNotruf"
-                                                        Text="Antrieb/Steuerung/Notruf" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Signalisation"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Signalisation"
-                                                        Text="Signalisation" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="Wartung"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="Wartung"
-                                                        Text="Wartung" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="MontageTUEV"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="MontageTUEV"
-                                                        Text="Montage/TÜV" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="RWA"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="RWA"
-                                                        Text="Rauch- und Wärmeabzugsanlage" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="FilterSonstiges"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="FilterSonstiges"
-                                                        Text="Sonstiges" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="KommentareVault"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="KommentareVault"
-                                                        Text="Kommentare im Vault" />
-                                                    <MenuFlyoutItem
-                                                        x:Name="CFP"
-                                                        Command="{x:Bind ViewModel.SetFilterCommand}"
-                                                        CommandParameter="CFP"
-                                                        Text="Car Frame Programm" />
-                                                </MenuFlyout>
-                                            </AppBarButton.Flyout>
-                                        </AppBarButton>
-                                    </CommandBar>
-                                    <AutoSuggestBox
-                                        MinWidth="250"
-                                        Margin="10,0,0,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        QueryIcon="Find"
-                                        Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </StackPanel>
-                                <controls:DataGrid
-                                    Grid.Row="1"
-                                    Margin="10,5,10,5"
-                                    AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                                    AutoGenerateColumns="False"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                                    BorderThickness="1"
-                                    CanUserReorderColumns="True"
-                                    CanUserResizeColumns="True"
-                                    ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
-                                    GridLinesVisibility="All"
-                                    ItemsSource="{x:Bind ViewModel.FilteredParameterDtos, Mode=OneWay}">
-                                    <interactivity:Interaction.Behaviors>
-                                        <interactivity:EventTriggerBehavior EventName="CurrentCellChanged">
-                                            <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.CheckParameterChangedCommand}" />
-                                        </interactivity:EventTriggerBehavior>
-                                    </interactivity:Interaction.Behaviors>
-                                    <controls:DataGrid.Columns>
-                                        <controls:DataGridTemplateColumn Width="55" Header="Id">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{x:Bind Id}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="125" Header="ParameterTyp">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterTyp.Name, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="125" Header="TypeCode">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterTypeCode.Name, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="175" Header="ParameterCategory">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource TableTextboxStyleCenter}" Text="{x:Bind ParameterCategory.Name, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="175" Header="Unique Name">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind Name, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="175" Header="DisplayName">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind DisplayName, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="175" Header="Wert">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind Value, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="200" Header="Kommentar">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox
-                                                        Margin="0,0,0,0"
-                                                        HorizontalAlignment="Stretch"
-                                                        AcceptsReturn="True"
-                                                        Style="{StaticResource GridTextboxStyle}"
-                                                        Text="{x:Bind Comment, Mode=TwoWay}"
-                                                        TextWrapping="Wrap" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="45" HeaderStyle="{StaticResource SymbolHeaderKey}">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <CheckBox
-                                                        Margin="12,0,0,0"
-                                                        VerticalAlignment="Center"
-                                                        IsChecked="{x:Bind IsKey, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn
-                                            Width="45"
-                                            Header="DefaultUserEditable"
-                                            HeaderStyle="{StaticResource AdminHeaderKey}">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <CheckBox
-                                                        Margin="12,0,0,0"
-                                                        VerticalAlignment="Center"
-                                                        IsChecked="{x:Bind DefaultUserEditable, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Width="175" Header="Auswahlliste">
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="dbmodels:ParameterDto">
-                                                    <TextBox Style="{StaticResource GridTextboxStyle}" Text="{x:Bind DropdownList, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-                                    </controls:DataGrid.Columns>
-                                </controls:DataGrid>
-                            </Grid>
+                            <tableView:TableView
+                                x:Name="DataBaseDTOTableView"
+                                Grid.Row="0"
+                                Margin="10,5,10,5"
+                                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                AutoGenerateColumns="False"
+                                CornerRadius="4"
+                                ItemsSource="{x:Bind ViewModel.ParameterDtos, Mode=OneWay}">
+                                <interactivity:Interaction.Behaviors>
+                                    <interactivity:EventTriggerBehavior EventName="CurrentCellChanged">
+                                        <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.CheckParameterChangedCommand}" />
+                                    </interactivity:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                                <tableView:TableView.Columns>
+                                    <tableView:TableViewNumberColumn
+                                        Width="55"
+                                        Binding="{Binding Id}"
+                                        Header="ID"
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
+                                        Width="125"
+                                        Binding="{Binding ParameterTyp.Name, Mode=TwoWay}"
+                                        Header="ParameterTyp" />
+                                    <tableView:TableViewTextColumn
+                                        Width="125"
+                                        Binding="{Binding ParameterTypeCode.Name, Mode=TwoWay}"
+                                        Header="TypeCode" />
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding ParameterCategory.Name, Mode=TwoWay}"
+                                        Header="ParameterCategory" />
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding Name, Mode=TwoWay}"
+                                        Header="Unique Name" />
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding DisplayName, Mode=TwoWay}"
+                                        Header="DisplayName" />
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding Value, Mode=TwoWay}"
+                                        Header="Wert" />
+                                    <tableView:TableViewTemplateColumn
+                                        Width="200"
+                                        CanSort="True"
+                                        Header="Kommentar">
+                                        <tableView:TableViewTemplateColumn.CellTemplate>
+                                            <DataTemplate x:DataType="dbmodels:ParameterDto">
+                                                <TextBlock
+                                                    Margin="10,0,10,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Comment, Mode=TwoWay}"
+                                                    TextWrapping="WrapWholeWords" />
+                                            </DataTemplate>
+                                        </tableView:TableViewTemplateColumn.CellTemplate>
+                                    </tableView:TableViewTemplateColumn>
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding IsKey, Mode=TwoWay}">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE7E6;" ToolTipService.ToolTip="IsKey: Schlüsselparameter" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding IsDefaultUserEditable, Mode=TwoWay}">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE7EF;" ToolTipService.ToolTip="IsDefaultUserEditable: durch Standartbenutzer veränderbar" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding CarDesignRelated, Mode=TwoWay}">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE70A;" ToolTipService.ToolTip="CarDesignRelated: Relevant für Kabinenerstellung" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding DispoPlanRelated, Mode=TwoWay}">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE8BF;" ToolTipService.ToolTip="DispoPlanRelated: Relevant für Dispoplanerstellung" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding LiftPanelRelated, Mode=TwoWay}">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xEF3D;" ToolTipService.ToolTip="LiftPanelRelated: Relevant für Tableauerstellung" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding DropdownList, Mode=TwoWay}"
+                                        Header="Auswahlliste" />
+                                </tableView:TableView.Columns>
+                            </tableView:TableView>
                             <ScrollViewer
                                 Grid.Row="1"
                                 Margin="10,10,10,0"
@@ -330,9 +162,9 @@
                                 <Grid
                                     Margin="0,0,0,10"
                                     Padding="5"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
                                     BorderThickness="1"
-                                    CornerRadius="4">
+                                    CornerRadius="4"
+                                    Style="{ThemeResource GridCardPanel}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="147" />
                                         <ColumnDefinition Width="122" />
@@ -342,6 +174,9 @@
                                         <ColumnDefinition Width="150" />
                                         <ColumnDefinition Width="150" />
                                         <ColumnDefinition Width="175" />
+                                        <ColumnDefinition Width="35" />
+                                        <ColumnDefinition Width="35" />
+                                        <ColumnDefinition Width="35" />
                                         <ColumnDefinition Width="35" />
                                         <ColumnDefinition Width="35" />
                                         <ColumnDefinition Width="150" />
@@ -413,15 +248,39 @@
                                             <TextBlock Text="DefaultUserEditable" />
                                         </ToolTipService.ToolTip>
                                     </CheckBox>
-                                    <ComboBox
+                                    <CheckBox
                                         Grid.Column="10"
+                                        Margin="5"
+                                        IsChecked="{x:Bind ViewModel.IsCarDesignRelated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="CarDesignRelated: Relevant für Kabinenerstellung" />
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="11"
+                                        Margin="5"
+                                        IsChecked="{x:Bind ViewModel.IsDispoPlanRelated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="DispoPlanRelated: Relevant für Dispoplanerstellung" />
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        Grid.Column="12"
+                                        Margin="5"
+                                        IsChecked="{x:Bind ViewModel.IsLiftPanelRelated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="LiftPanelRelated: Relevant für Tableauerstellung" />
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+                                    <ComboBox
+                                        Grid.Column="13"
                                         Margin="0,5,5,5"
                                         ItemsSource="{x:Bind ViewModel.DropdownlistTables, Mode=OneWay}"
                                         PlaceholderText="Auswahlliste"
                                         SelectedItem="{x:Bind ViewModel.SelectedDropdownlistTable, Mode=TwoWay}"
                                         Visibility="{x:Bind ViewModel.IsdropdownlistTablesVisible, Mode=OneWay}" />
                                     <Button
-                                        Grid.Column="11"
+                                        Grid.Column="14"
                                         Width="150"
                                         Margin="0,0,0,0"
                                         HorizontalAlignment="Right"
@@ -542,29 +401,26 @@
                                 Margin="10"
                                 FontSize="20"
                                 Text="Parameter Tabelle" />
-                            <controls:DataGrid
+                            <tableView:TableView
+                                x:Name="DataBaseTable"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="10,5,10,5"
-                                AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                                AutoGenerateColumns="true"
-                                AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                                BorderThickness="1"
-                                CanUserReorderColumns="True"
-                                CanUserResizeColumns="True"
-                                ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
-                                GridLinesVisibility="All"
+                                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                AutoGenerateColumns="True"
+                                AutoGeneratingColumn="{x:Bind ViewModel.DataBaseTables_AutoGeneratingColumn}"
+                                CornerRadius="4"
                                 ItemsSource="{x:Bind ViewModel.DatabaseTable, Mode=OneWay}"
+                                Loaded="{x:Bind ViewModel.DataBaseTable_Loaded}"
                                 Visibility="{x:Bind ViewModel.ShowTable, Mode=OneWay}">
                                 <interactivity:Interaction.Behaviors>
                                     <interactivity:EventTriggerBehavior EventName="CurrentCellChanged">
                                         <interactivity:InvokeCommandAction Command="{x:Bind ViewModel.CheckParameterChangedCommand}" />
                                     </interactivity:EventTriggerBehavior>
                                 </interactivity:Interaction.Behaviors>
-                                <controls:DataGrid.Columns>
-                                    <controls:DataGridTemplateColumn Width="60">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                <tableView:TableView.Columns>
+                                    <tableView:TableViewTemplateColumn Width="60">
+                                        <tableView:TableViewTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button
                                                     Margin="0"
@@ -578,14 +434,59 @@
                                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                         FontSize="16"
                                                         Glyph="&#xE74D;" />
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock Text="Parameter löschen" />
+                                                    </ToolTipService.ToolTip>
                                                 </Button>
                                             </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                                    <controls:DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                                </controls:DataGrid.Columns>
-                            </controls:DataGrid>
+                                        </tableView:TableViewTemplateColumn.CellTemplate>
+                                    </tableView:TableViewTemplateColumn>
+                                    <tableView:TableViewNumberColumn
+                                        Width="55"
+                                        Binding="{Binding Id}"
+                                        Header="Id" />
+                                    <tableView:TableViewNumberColumn Width="55" Binding="{Binding OrderSelection}">
+                                        <tableView:TableViewNumberColumn.Header>
+                                            <FontIcon Glyph="&#xE8CB;" />
+                                        </tableView:TableViewNumberColumn.Header>
+                                    </tableView:TableViewNumberColumn>
+                                    <tableView:TableViewTextColumn
+                                        Width="150"
+                                        Binding="{Binding Name}"
+                                        Header="Name" />
+                                    <tableView:TableViewTextColumn
+                                        Width="175"
+                                        Binding="{Binding DisplayName}"
+                                        Header="DisplayName" />
+                                    <tableView:TableViewCheckBoxColumn
+                                        Width="55"
+                                        Binding="{Binding IsFavorite}"
+                                        CanFilter="False"
+                                        CanSort="False">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE735;" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn
+                                        Width="55"
+                                        Binding="{Binding IsObsolete}"
+                                        CanFilter="False"
+                                        CanSort="False">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xE77A;" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                    <tableView:TableViewCheckBoxColumn
+                                        Width="55"
+                                        Binding="{Binding SchindlerCertified}"
+                                        CanFilter="False"
+                                        CanSort="False">
+                                        <tableView:TableViewCheckBoxColumn.Header>
+                                            <FontIcon Glyph="&#xEB95;" />
+                                        </tableView:TableViewCheckBoxColumn.Header>
+                                    </tableView:TableViewCheckBoxColumn>
+                                </tableView:TableView.Columns>
+                            </tableView:TableView>
                             <StackPanel
                                 Grid.Row="2"
                                 Grid.Column="1"
@@ -626,117 +527,58 @@
                                 Margin="10"
                                 FontSize="24"
                                 Text="Datenbank Parameteränderungen History" />
-                            <controls:DataGrid
+                            <tableView:TableView
+                                x:Name="DataBaseDTOHistory"
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                Margin="5"
-                                AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                                AutoGenerateColumns="false"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                                BorderThickness="1"
-                                CanUserReorderColumns="True"
-                                CanUserResizeColumns="True"
-                                ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
-                                GridLinesVisibility="All"
+                                Margin="10,5,10,5"
+                                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                                AutoGenerateColumns="False"
+                                CornerRadius="4"
                                 ItemsSource="{x:Bind ViewModel.TableHistory, Mode=OneWay}">
-                                <controls:DataGrid.Columns>
-                                    <controls:DataGridTemplateColumn
+                                <tableView:TableView.Columns>
+                                    <tableView:TableViewNumberColumn
                                         Width="55"
+                                        Binding="{Binding Id}"
                                         Header="Id"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind Id}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
                                         Width="150"
+                                        Binding="{Binding Timestamp}"
                                         Header="Timestamp"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind Timestamp}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
                                         Width="150"
+                                        Binding="{Binding Name}"
                                         Header="Benutzername"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind Name}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn Header="Operation" IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind Operation}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
+                                        Width="90"
+                                        Binding="{Binding Operation}"
+                                        Header="Operation"
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
                                         Width="auto"
-                                        Header="Auswahl Parameter Tabelle"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind TableName}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn
+                                        Binding="{Binding TableName}"
+                                        Header="Tabellenname"
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewNumberColumn
                                         Width="55"
+                                        Binding="{Binding EntityId}"
                                         Header="Id"
-                                        IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind EntityId}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn Header="AuswahlParameter" IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind EntityName}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTemplateColumn Header="neuer Wert" IsReadOnly="True">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate x:DataType="dbmodels:DatabaseTableValueModification">
-                                                <TextBlock
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    Text="{x:Bind NewEntityValue}" />
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                </controls:DataGrid.Columns>
-                            </controls:DataGrid>
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
+                                        Width="auto"
+                                        Binding="{Binding EntityName}"
+                                        Header="Parametername"
+                                        IsReadOnly="True" />
+                                    <tableView:TableViewTextColumn
+                                        Width="auto"
+                                        Binding="{Binding NewEntityValue}"
+                                        Header="neuer Wert"
+                                        IsReadOnly="True" />
+                                </tableView:TableView.Columns>
+                            </tableView:TableView>
                         </Grid>
                     </TabViewItem>
                 </TabView.TabItems>
@@ -744,7 +586,3 @@
         </Grid>
     </Grid>
 </Page>
-
-
-
-

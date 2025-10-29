@@ -62,27 +62,23 @@
         <NavigationView
             x:Name="NavigationViewControl"
             Grid.Row="1"
-            AlwaysShowHeader="False"
-            Canvas.ZIndex="0"
+            AlwaysShowHeader="{x:Bind ViewModel.ShowHeaderNavigationViewControl, Mode=OneWay}"
             ExpandedModeThresholdWidth="1280"
             IsBackButtonVisible="Collapsed"
-            IsPaneToggleButtonVisible="False"
-            IsSettingsVisible="True">
+            IsPaneToggleButtonVisible="False">
             <NavigationView.Resources>
                 <Thickness x:Key="NavigationViewHeaderMargin">24,6,0,-6</Thickness>
             </NavigationView.Resources>
             <NavigationView.Header>
                 <Grid>
-                    <dev:BreadcrumbNavigator x:Name="JsonBreadCrumbNavigator" Visibility="Collapsed" />
+                    <dev:BreadcrumbNavigator x:Name="BreadCrumbNav" Visibility="{x:Bind ViewModel.BreadcrumbnavigatorVisibility, Mode=OneWay}" />
                     <TextBlock
                         x:Name="HeaderText"
                         Text="{x:Bind ViewModel.HeaderText, Mode=OneWay}"
-                        Visibility="Visible" />
+                        Visibility="{x:Bind ViewModel.HeaderTextVisibility, Mode=OneWay}" />
                 </Grid>
             </NavigationView.Header>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <Frame x:Name="NavigationFrame" />
-            </Grid>
+            <Frame x:Name="NavigationFrame" Margin="{StaticResource NavigationViewPageContentMargin}" />
         </NavigationView>
     </Grid>
 </Page>
